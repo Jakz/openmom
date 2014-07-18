@@ -8,6 +8,8 @@
 
 #include "Gfx.h"
 
+#include "Texture.h"
+
 SDL_Surface* Gfx::buffer = nullptr;
 SDL_Surface* Gfx::activeBuffer = nullptr;
 SDL_Surface* Gfx::canvas = nullptr;
@@ -140,5 +142,45 @@ void Gfx::resetBuffer(u16 w, u16 h)
   for (int yy = 0; yy < h; ++yy)
     for (int xx = 0; xx < w; ++xx)
       pixels[xx+buffer->pitch*yy] = 0x00000000;
+  unlock(buffer);
+}
+
+void Gfx::maskBuffer(TextureID texture, int r, int c)
+{
+  const Texture& tex = Texture::get(texture);
+  
+  lock(tex.img);
+  lock(buffer);
+  
+  u32* mp = static_cast<u32*>(tex.img->pixels);
+  u32* dp = static_cast<u32*>(buffer->pixels);
+  
+  int w = tex.w;
+  int h = tex.h;
+  
+  int ox = c*w;
+  int oy = r*h;
+  
+  for (int i = 0; i < w; ++i)
+    for (int j = 0; j < h; ++j)
+    {
+      int p = mp[ox + oy + i + j*tex.img->pitch];
+      
+      if ((p & 0xFF000000) == 0)
+        dp[i + j*buffer->pitch] = 0x0000000;
+    }
+  
+  unlock(buffer);
+  unlock(tex.img);
+}
+
+void Gfx::colorMapBuffer(int w, int h, ColorMap& map)
+{
+  lock(buffer);
+  u32* pixels = static_cast<u32*>(buffer->pixels);
+  for (int yy = 0; yy < h; ++yy)
+    for (int xx = 0; xx < w; ++xx)
+      pixels[xx+buffer->pitch*yy] = map.get(pixels[xx+buffer->pitch*yy]);
+  
   unlock(buffer);
 }

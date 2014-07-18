@@ -195,43 +195,14 @@ enum TextureID : u16
   FONT_HELP,
   
   FONT_TINY,
-  FONT_WHITE_TINY,
-  FONT_WHITE_TINY_STROKE,
-  FONT_YELLOW_TINY_STROKE,
-  FONT_RED_TINY_STROKE,
-  
   FONT_TINY_COMPACT,
-  
   FONT_TINY_COMPACT_CRYPT,
-  FONT_TINY_COMPACT_CRYPT_BROWN,
-  
   FONT_SERIF_CRYPT,
-  FONT_SERIF_CRYPT_BROWN,
-  
-  
-  
   FONT_YELLOW_SMALL,
-  FONT_WHITE_SMALL,
-  FONT_TEAL_SMALL,
-  FONT_BROWN_SMALL,
-  
-  FONT_GREEN_SMALLW,
-  FONT_BLUE_SMALLW,
-  FONT_RED_SMALLW,
-  FONT_PURPLE_SMALLW,
-  FONT_YELLOW_SMALLW,
-  
   FONT_SERIF,
-  
   FONT_TEAL_MEDIUM,
-  FONT_TEAL_MEDIUM_STROKE,
-  FONT_BRIGHT_TEAL_MEDIUM,
-  FONT_BLACK_MEDIUM,
-  
   FONT_MEDIUM_BOLD,
-  
   FONT_HUGE_SERIF,
-  
   
   UNIT_MAGIC_SPIRIT,
   
@@ -309,6 +280,8 @@ class Texture
       ident(ident), name(name), rows(rows), cols(cols), w(-1), h(-1), ws(ws), hs(hs), bx(-1), by(-1), animated(animated), animFactor(animFactor) { }
   
     Texture(TextureID ident, const Texture& source, ColorMap& map);
+  
+    static inline const Texture& get(TextureID ident) { return textures[ident]; }
   
     void load();
   

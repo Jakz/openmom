@@ -15,6 +15,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 
+enum TextureID : u16;
+
 #define WIDTH (320)
 #define HEIGHT (200)
 
@@ -48,7 +50,8 @@ class Gfx
   
     static void resetBuffer(u16 w = WIDTH, u16 h = HEIGHT);
     static void mergeBuffer(u16 xf = 0, u16 yf = 0, u16 xt = 0, u16 yt = 0, u16 w = WIDTH, u16 h = HEIGHT) { blit(buffer, canvas, xf, yf, xt, yt, w, h); }
-  
+    static void maskBuffer(TextureID texture, int r, int c);
+    static void colorMapBuffer(int w, int h, ColorMap& map);
   
     static u32 getRealTicks() { return realTicks; }
   

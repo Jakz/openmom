@@ -11,8 +11,6 @@
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A4D1978374100313BC7 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04879A4C1978374100313BC7 /* main.cpp */; };
 		04879A591978374100313BC7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04879A581978374100313BC7 /* Images.xcassets */; };
-		04879A601978374100313BC7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A5F1978374100313BC7 /* XCTest.framework */; };
-		04879A611978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
 		04879A7C1978391F00313BC7 /* SDL2_image.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
@@ -21,19 +19,10 @@
 		04879A83197839CB00313BC7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04879A80197839CB00313BC7 /* InfoPlist.strings */; };
 		04879A8D19783E3600313BC7 /* Race.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04879A8B19783E3600313BC7 /* Race.cpp */; };
 		04879A9119783EA700313BC7 /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04879A8F19783EA700313BC7 /* Localization.cpp */; };
+		048FBD491978D93A0067C1A8 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048FBD471978D93A0067C1A8 /* Font.cpp */; };
 		04E0AB8719787FDE007898E6 /* Gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E0AB8519787FDE007898E6 /* Gfx.cpp */; };
 		04E0AB8A1978A1BB007898E6 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E0AB881978A1BB007898E6 /* Texture.cpp */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		04879A621978374100313BC7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 04879A351978374100313BC7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 04879A3C1978374100313BC7;
-			remoteInfo = OpenMoM;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		04879A7B1978391500313BC7 /* CopyFiles */ = {
@@ -51,7 +40,7 @@
 
 /* Begin PBXFileReference section */
 		04227E9C1978BC970055519A /* ColorMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorMap.cpp; path = src/gfx/ColorMap.cpp; sourceTree = SOURCE_ROOT; };
-		04227E9D1978BC970055519A /* ColorMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorMap.h; sourceTree = "<group>"; };
+		04227E9D1978BC970055519A /* ColorMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorMap.h; path = src/gfx/ColorMap.h; sourceTree = SOURCE_ROOT; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04879A401978374100313BC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		04879A431978374100313BC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -60,7 +49,6 @@
 		04879A481978374100313BC7 /* OpenMoM-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "OpenMoM-Info.plist"; path = "misc/OpenMoM-Info.plist"; sourceTree = SOURCE_ROOT; };
 		04879A4C1978374100313BC7 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		04879A581978374100313BC7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = misc/Images.xcassets; sourceTree = SOURCE_ROOT; };
-		04879A5E1978374100313BC7 /* OpenMoMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenMoMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04879A5F1978374100313BC7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		04879A751978385800313BC7 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = libs/SDL2_image.framework; sourceTree = SOURCE_ROOT; };
 		04879A761978385800313BC7 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = libs/SDL2.framework; sourceTree = SOURCE_ROOT; };
@@ -72,8 +60,10 @@
 		04879A8F19783EA700313BC7 /* Localization.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Localization.cpp; sourceTree = "<group>"; };
 		04879A9019783EA700313BC7 /* Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Localization.h; sourceTree = "<group>"; };
 		04879A931978486000313BC7 /* Upkeep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Upkeep.h; sourceTree = "<group>"; };
-		04E0AB8519787FDE007898E6 /* Gfx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Gfx.cpp; sourceTree = "<group>"; };
-		04E0AB8619787FDE007898E6 /* Gfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gfx.h; sourceTree = "<group>"; };
+		048FBD471978D93A0067C1A8 /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Font.cpp; path = src/gfx/Font.cpp; sourceTree = SOURCE_ROOT; };
+		048FBD481978D93A0067C1A8 /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Font.h; path = src/gfx/Font.h; sourceTree = SOURCE_ROOT; };
+		04E0AB8519787FDE007898E6 /* Gfx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Gfx.cpp; path = src/gfx/Gfx.cpp; sourceTree = SOURCE_ROOT; };
+		04E0AB8619787FDE007898E6 /* Gfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Gfx.h; path = src/gfx/Gfx.h; sourceTree = SOURCE_ROOT; };
 		04E0AB881978A1BB007898E6 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Texture.cpp; path = src/gfx/Texture.cpp; sourceTree = SOURCE_ROOT; };
 		04E0AB891978A1BB007898E6 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = src/gfx/Texture.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -86,15 +76,6 @@
 				04879A781978385800313BC7 /* SDL2.framework in Frameworks */,
 				04879A411978374100313BC7 /* Cocoa.framework in Frameworks */,
 				04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		04879A5B1978374100313BC7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				04879A611978374100313BC7 /* Cocoa.framework in Frameworks */,
-				04879A601978374100313BC7 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,7 +96,6 @@
 			isa = PBXGroup;
 			children = (
 				04879A3D1978374100313BC7 /* OpenMoM.app */,
-				04879A5E1978374100313BC7 /* OpenMoMTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -212,6 +192,8 @@
 				04E0AB891978A1BB007898E6 /* Texture.h */,
 				04227E9C1978BC970055519A /* ColorMap.cpp */,
 				04227E9D1978BC970055519A /* ColorMap.h */,
+				048FBD471978D93A0067C1A8 /* Font.cpp */,
+				048FBD481978D93A0067C1A8 /* Font.h */,
 			);
 			name = gfx;
 			path = src/gfx;
@@ -238,24 +220,6 @@
 			productReference = 04879A3D1978374100313BC7 /* OpenMoM.app */;
 			productType = "com.apple.product-type.application";
 		};
-		04879A5D1978374100313BC7 /* OpenMoMTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 04879A711978374100313BC7 /* Build configuration list for PBXNativeTarget "OpenMoMTests" */;
-			buildPhases = (
-				04879A5A1978374100313BC7 /* Sources */,
-				04879A5B1978374100313BC7 /* Frameworks */,
-				04879A5C1978374100313BC7 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				04879A631978374100313BC7 /* PBXTargetDependency */,
-			);
-			name = OpenMoMTests;
-			productName = OpenMoMTests;
-			productReference = 04879A5E1978374100313BC7 /* OpenMoMTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -264,11 +228,6 @@
 			attributes = {
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Jack;
-				TargetAttributes = {
-					04879A5D1978374100313BC7 = {
-						TestTargetID = 04879A3C1978374100313BC7;
-					};
-				};
 			};
 			buildConfigurationList = 04879A381978374100313BC7 /* Build configuration list for PBXProject "OpenMoM" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -284,7 +243,6 @@
 			projectRoot = "";
 			targets = (
 				04879A3C1978374100313BC7 /* OpenMoM */,
-				04879A5D1978374100313BC7 /* OpenMoMTests */,
 			);
 		};
 /* End PBXProject section */
@@ -297,13 +255,6 @@
 				04879A591978374100313BC7 /* Images.xcassets in Resources */,
 				04879A83197839CB00313BC7 /* InfoPlist.strings in Resources */,
 				04879A82197839CB00313BC7 /* Credits.rtf in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		04879A5C1978374100313BC7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,25 +271,11 @@
 				04E0AB8719787FDE007898E6 /* Gfx.cpp in Sources */,
 				04879A9119783EA700313BC7 /* Localization.cpp in Sources */,
 				04879A4D1978374100313BC7 /* main.cpp in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		04879A5A1978374100313BC7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				048FBD491978D93A0067C1A8 /* Font.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		04879A631978374100313BC7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 04879A3C1978374100313BC7 /* OpenMoM */;
-			targetProxy = 04879A621978374100313BC7 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		04879A7E197839CB00313BC7 /* Credits.rtf */ = {
@@ -462,46 +399,6 @@
 			};
 			name = Release;
 		};
-		04879A721978374100313BC7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/OpenMoM.app/Contents/MacOS/OpenMoM";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "OpenMoM/OpenMoM-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "OpenMoMTests/OpenMoMTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		04879A731978374100313BC7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/OpenMoM.app/Contents/MacOS/OpenMoM";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "OpenMoM/OpenMoM-Prefix.pch";
-				INFOPLIST_FILE = "OpenMoMTests/OpenMoMTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -519,15 +416,6 @@
 			buildConfigurations = (
 				04879A6F1978374100313BC7 /* Debug */,
 				04879A701978374100313BC7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		04879A711978374100313BC7 /* Build configuration list for PBXNativeTarget "OpenMoMTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				04879A721978374100313BC7 /* Debug */,
-				04879A731978374100313BC7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
