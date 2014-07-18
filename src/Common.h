@@ -22,5 +22,14 @@ typedef u32 Color;
 
 enum I18 : u16;
 
+enum PlayerColor : u8
+{
+  GREEN = 0,
+  BLUE,
+  RED,
+  PURPLE,
+  YELLOW,
+  NEUTRAL
+};
 
 #endif

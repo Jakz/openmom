@@ -11,6 +11,7 @@
 
 #include "Texture.h"
 
+#include <string>
 #include <vector>
 #include <unordered_map>
 
@@ -68,8 +69,8 @@ enum TextAlign : u8
 
 class Font
 {
-  
-  const Texture& texture;
+  const TextureID texture;
+  //const Texture& texture;
   s8 widths[128];
   ColorMap *map;
   
@@ -97,7 +98,7 @@ class Font
   
   protected:
     Font(TextureID tex, s16 w, s16 h, s16 hor, s16 ver, s16 space, ColorMap* map = nullptr) :
-      texture(Texture::get(tex)), w(w), h(h), hor(hor), ver(ver), space(space), map(map), widths{-1} { }
+      texture(tex), w(w), h(h), hor(hor), ver(ver), space(space), map(map), widths{-1} { }
   
   
     void setWidth(const std::string str, s8 width) { for (const s8 i : str) widths[i] = width; }
@@ -281,6 +282,7 @@ class Fonts
     static inline u16 stringHeight() { return 0; }
       
     static inline const std::string join(std::vector<const std::string>& tokens, s16 s, s16 e);
+    static inline void split(std::string string, std::vector<const std::string>& tokens, s8 delim);
   
     static inline void setFace(FontFace face)
     {
@@ -318,6 +320,29 @@ class Fonts
   
     static u16 drawString(const std::string string, u16 x, u16 y, TextAlign align);
     static u16 drawStringContext(const std::string string, u16 x, u16 y, TextAlign align);
+  
+    static u16 drawStringBounded(const std::string string, FontFace face, u16 x, u16 y, s16 bound, TextAlign align, ColorMap* map = nullptr)
+    {
+      setFace(face);
+      setMap(map);
+      return drawStringBounded(string, x, y, bound, align);
+    }
+  
+    static u16 drawStringBounded(const std::string string, int x, int y, int bound, TextAlign align, ColorMap* map = nullptr);
+  
+    static FontFace fontForColor(PlayerColor color)
+    {
+      switch (color)
+      {
+        case GREEN: return GREEN_SMALLW;
+        case BLUE: return BLUE_SMALLW;
+        case RED: return RED_SMALLW;
+        case PURPLE: return PURPLE_SMALLW;
+        case YELLOW: return YELLOW_SMALLW;
+        default: return WHITE_SMALL;
+      }
+    }
+
 };
 
 #endif

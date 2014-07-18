@@ -62,7 +62,19 @@ const string Fonts::join(vector<const string>& tokens, s16 s, s16 e)
   return result;
 }
 
-u16 Fonts::drawString(const std::string string, u16 x, u16 y, TextAlign align)
+void Fonts::split(string s, vector<const std::string>& tokens, s8 delim)
+{
+  size_t pos = 0;
+  std::string token;
+  while ((pos = s.find(delim)) != std::string::npos) {
+    token = s.substr(0, pos);
+    tokens.push_back(token);
+    s.erase(0, pos + 1);
+  }
+  tokens.push_back(s);
+}
+
+u16 Fonts::drawString(const string string, u16 x, u16 y, TextAlign align)
 {
   Gfx::bindColorMap(map);
   
@@ -85,5 +97,108 @@ u16 Fonts::drawString(const std::string string, u16 x, u16 y, TextAlign align)
     if (map) Gfx::unbindColorMap();
     
     return w;
+  }
+}
+
+u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)
+{
+  u16 sx = align == ALIGN_RIGHT ? 0 : x, sy = y;
+  u16 length = string.length();
+  bool switchingColor = false;
+  
+  for (int i = 0; i < length; ++i)
+  {
+    s8 c = string[align == ALIGN_RIGHT ? length - i - 1: i];
+
+    if (switchingColor)
+    {
+      if (c == '^')
+      {
+        if (omap)
+        {
+          map = omap;
+          Gfx::bindColorMap(omap);
+        }
+        else
+        {
+          map = nullptr;
+          Gfx::unbindColorMap();
+        }
+      }
+      else
+      {
+        map = fontColors.find(c)->second;
+        Gfx::bindColorMap(map);
+      }
+      
+      switchingColor = false;
+    }
+    else if (c == ' ')
+    {
+      sx += hSpace + font->hor;
+    }
+    else if (c == '^')
+    {
+      switchingColor = true;
+    }
+    else
+    {
+      s8 cw = font->charWidth(c);
+      s8 r = c - ' ';
+      s8 d = align == ALIGN_RIGHT ? (s8)ceilf((font->w - cw) / 2.0f) : (font->w - cw) / 2;
+      
+      sx -= d;
+      Gfx::draw(font->texture, r/32, r%32, align == ALIGN_RIGHT ? x - sx : sx, sy);
+      sx += cw + font->hor + d;
+    }
+  }
+  
+  return sx - 1 - (align == ALIGN_RIGHT ? 0 : x);
+}
+
+u16 Fonts::drawStringBounded(const string str, int x, int y, int bound, TextAlign align, ColorMap* map)
+{
+  setMap(map);
+  vector<const string> lines;
+  split(str, lines, '\n');
+  
+  if (lines.size() > 1)
+  {
+    int dy = 0;
+    
+    for (const string& line : lines)
+    {
+      int ndy = drawStringBounded(line, x, y+dy, bound, align) - y;
+      
+      if (dy == 0) dy = vSpace;
+      dy += ndy;
+    }
+    
+    return y+dy;
+  }
+  else
+  {
+    vector<const string> words;
+    split(str, words, ' ');
+
+    int s = 0, e = 0;
+    
+    while (e < words.size() - 1)
+    {
+      ++e;
+      int w = font->stringWidth(join(words,s,e), hSpace);
+      
+      if (w > bound)
+      {
+        drawString(join(words,s,e-1), x, y, align);
+        s = e;
+        y += vSpace + font->h;
+      }
+    }
+    
+    if (s != e || e < words.size())
+      drawString(join(words,s,e), x, y, align);
+    
+    return y + font->h;
   }
 }
