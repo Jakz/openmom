@@ -184,3 +184,142 @@ void Gfx::colorMapBuffer(int w, int h, ColorMap& map)
   
   unlock(buffer);
 }
+
+void Gfx::maskBufferWithImage(TextureID mask, TextureID snd, u16 r, u16 c, u16 r2, u16 c2)
+{
+  const Texture& tex1 = Texture::get(mask), &tex2 = Texture::get(snd);
+  
+  lock(tex1.img);
+  lock(tex2.img);
+  lock(buffer);
+  
+  u32* mp = static_cast<u32*>(tex1.img->pixels);
+  u32* dp = static_cast<u32*>(buffer->pixels);
+  u32* sp = static_cast<u32*>(tex2.img->pixels);
+  
+  u16 w = tex1.img->w;
+  u16 h = tex1.img->h;
+  
+  u16 ox = c*w;
+  u16 oy = r*h;
+  
+  u16 ox2 = c2*w;
+  u16 oy2 = r2*h;
+  
+  for (int i = 0; i < w; ++i)
+    for (int j = 0; j < h; ++j)
+    {
+      int p = mp[ox + oy + i + j*tex1.img->pitch];
+      
+      if ((p & 0xFF000000) == 0)
+        dp[i + j*buffer->pitch] = sp[ox2+oy2+i+j*tex2.img->pitch];
+    }
+
+  unlock(tex1.img);
+  unlock(tex2.img);
+  unlock(buffer);
+}
+
+
+
+void Gfx::drawClippedToWidth(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t)
+{
+  const Texture& tex = Texture::get(texture);
+  drawClipped(texture, x, y, r*tex.w, c*tex.h, t, tex.h);
+}
+
+void Gfx::drawClippedFromWidth(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t)
+{
+  const Texture& tex = Texture::get(texture);
+  drawClipped(texture, x, y, r*tex.w + t, c*tex.h, tex.w - t, tex.h);
+}
+
+void Gfx::drawClippedFromHeight(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t)
+{
+  const Texture& tex = Texture::get(texture);
+  drawClipped(texture, x, y, r*tex.w, c*tex.h + t, tex.w, tex.h - t);
+}
+
+void Gfx::drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h)
+{
+  const Texture& tex = Texture::get(texture);
+  s16 tw = w != 0 ? (w > 0 ? w : tex.w + w - fx) : tex.w - fx;
+  s16 th = h != 0 ? (h > 0 ? h : tex.h + h - fy) : tex.h - fy;
+  s16 tx = fx;
+  s16 ty = fy;
+  s16 dx = x;
+  s16 dy = y;
+  
+  blit(tex.img, activeBuffer, tx, ty, dx, dy, tw, th);
+}
+
+
+
+void Gfx::rawDraw(TextureID texture, u16 r, u16 c, u16 x, u16 y)
+{
+  const Texture& tex = Texture::get(texture);
+  blit(tex.img, canvas, tex.w*c, tex.h*r, x, y, tex.w, tex.h);
+}
+
+void Gfx::draw(TextureID texture, u16 x, u16 y)
+{
+  const Texture& tex = Texture::get(texture);
+  blit(tex.img, activeBuffer, 0, 0, x, y, tex.w, tex.h);
+}
+
+void Gfx::draw(TextureID texture, u16 i, u16 x, u16 y)
+{
+  const Texture& tex = Texture::get(texture);
+  draw(texture, i / tex.cols, i % tex.cols, x, y);
+}
+
+void Gfx::draw(TextureID texture, u16 r, u16 c, u16 x, u16 y)
+{
+  const Texture& tex = Texture::get(texture);
+  u16 tx = x;
+  u16 ty = y;
+  u16 tw = 0, th = 0;
+  u16 sx = 0, sy = 0;
+  
+  if (tex.w != -1)
+  {
+    tw = tex.w;
+    sx = tw*c;
+  }
+  else
+  {
+    if (tex.h != -1)
+    {
+      tw = tex.ws[c];
+      sx = upTo(tex.ws, c);
+    }
+    else
+    {
+      tw = tex.ws[r];
+      sx = tw*c;
+    }
+  }
+  
+  if (tex.h != -1)
+  {
+    th = tex.h;
+    sy = th*r;
+  }
+  else
+  {
+    th = tex.hs[r];
+    sy = upTo(tex.hs, r);
+  }
+  
+  blit(tex.img, activeBuffer, sx, sy, tx, ty, tw, th);
+}
+
+void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
+{
+  const Texture& tex = Texture::get(texture);
+  
+  if (tex.animatedSprites.empty())
+    draw(texture, r, (((offset+ticks)/tex.animFactor)%tex.cols), x, y);
+  else
+    draw(texture, r, (((offset+ticks)/tex.animFactor)%tex.animatedSprites[r]), x, y);
+}
