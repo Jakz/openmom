@@ -26,7 +26,7 @@ class Gfx
     static SDL_Surface *buffer, *canvas, *activeBuffer;
     static u32 ticks, realTicks;
   
-    static ColorMap* map;
+    static const ColorMap* map;
   
   public:
     static void init();
@@ -38,7 +38,7 @@ class Gfx
     static inline void bindCanvas() { activeBuffer = canvas; }
     static inline void bindBuffer() { activeBuffer = buffer; }
   
-    static inline void bindColorMap(ColorMap *map) { Gfx::map = map; }
+    static inline void bindColorMap(const ColorMap *map) { Gfx::map = map; }
     static inline void unbindColorMap() { Gfx::map = nullptr; }
   
     static void rect(u16 x, u16 y, u16 w, u16 h, u32 color);

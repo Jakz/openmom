@@ -18,8 +18,11 @@
 class ColorMap
 {
   public:
-    virtual u32 get(u32 k) = 0;
+    virtual u32 get(u32 k) const = 0;
 };
+
+typedef std::initializer_list<Color> color_list;
+typedef std::unordered_map<Color, Color> color_map;
 
 class BlinkMap : public ColorMap
 {
@@ -29,26 +32,26 @@ class BlinkMap : public ColorMap
     const u16 ticks, updatedForTick = -1;
   
     std::unordered_set<Color> set;
-    Color color;
+    //Color color;
   
   
   public:
-    BlinkMap(std::initializer_list<Color>colors, u8 r1, u8 g1, u8 b1, u8 r2, u8 g2, u8 b2, u16 ticks) :
+    BlinkMap(color_list colors, u8 r1, u8 g1, u8 b1, u8 r2, u8 g2, u8 b2, u16 ticks) :
       set(colors), s{r1,g1,b1}, d{static_cast<s16>(r2-r1),static_cast<s16>(g2-g1),static_cast<s16>(b2-b1)}, ticks(ticks) { }
   
-    u32 get(u32 k) override;
+    u32 get(u32 k) const override;
   
 };
 
 class HashColorMap : public ColorMap
 {
   private:
-    std::unordered_map<Color, Color> map;
+    color_map map;
   
   public:
-    HashColorMap(std::initializer_list<Color> data)
+    HashColorMap(color_list data)
     {
-      std::initializer_list<Color>::iterator it = data.begin();
+      color_list::iterator it = data.begin();
       
       while (it != data.end())
       {
@@ -58,12 +61,57 @@ class HashColorMap : public ColorMap
       }
     }
   
-    u32 get(u32 k) override
+    HashColorMap(color_list from, color_list to)
     {
-      std::unordered_map<Color,Color>::iterator it = map.find(k);
+      color_list::iterator it = from.begin(), it2 = to.begin();
+      while (it != from.end())
+        map[*it++] = *it2++;
+    }
+
+    u32 get(u32 k) const override
+    {
+      color_map::const_iterator it = map.find(k);
       
       return it != map.end() ? it->second : k;
     }
+};
+
+namespace FontMap
+{
+  class Small
+  {
+    public:
+      static const BlinkMap WHITE_GREY_BLINK;
+      static const HashColorMap BLUE_MAGIC, WHITE_PALE, YELLOW_PALE, RED_PALE, WHITE, TEAL, BROWN, GREEN, BLUE, RED, PURPLE, YELLOW;
+      static const HashColorMap GRAY_ITEM_CRAFT;
+  };
+  
+  class Tiny
+  {
+    public: static const HashColorMap WHITE, WHITE_STROKE, YELLOW_STROKE, RED_STROKE;
+  };
+  
+  class TinyCompact
+  {
+    public: static const HashColorMap BROWN;
+    static const BlinkMap WHITE_BLUE_BLINK;
+  };
+  
+  class Medium
+  {
+    public: static const HashColorMap BLUE_MAGIC, TEAL_STROKE, TEAL_BRIGHT, BLACK;
+  };
+  
+  class Serif
+  {
+    public: static const HashColorMap TEAL_STROKE, BROWN, YELLOW_SHADOW, GOLD_SHADOW, SILVER_SHADOW, WHITE_SURVEY, DARK_BROWN;
+  };
+  
+  class Misc
+  {
+    public: static const HashColorMap SERIF_CRYPT_BROWN;
+    static const HashColorMap TINY_BROWN_CRYPT;
+  };
 };
 
 #endif

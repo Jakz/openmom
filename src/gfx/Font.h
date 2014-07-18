@@ -26,7 +26,6 @@ enum FontFace : u16
   
   TINY_COMPACT_CRYPT_BROWN,
   
-  HELP_FONT,
   YELLOW_SMALL,
   WHITE_SMALL,
   TEAL_SMALL,
@@ -72,7 +71,7 @@ class Font
   const TextureID texture;
   //const Texture& texture;
   s8 widths[128];
-  ColorMap *map;
+  const ColorMap *map;
   
   public:
 
@@ -97,19 +96,25 @@ class Font
   }
   
   protected:
-    Font(TextureID tex, s16 w, s16 h, s16 hor, s16 ver, s16 space, ColorMap* map = nullptr) :
-      texture(tex), w(w), h(h), hor(hor), ver(ver), space(space), map(map), widths{-1} { }
+    Font(TextureID tex, s16 w, s16 h, s16 hor, s16 ver, s16 space, const ColorMap* map = nullptr) :
+      texture(tex), w(w), h(h), hor(hor), ver(ver), space(space), map(map)
+    {
+      std::fill(std::begin(widths), std::end(widths), -1);
+    }
   
   
-    void setWidth(const std::string str, s8 width) { for (const s8 i : str) widths[i] = width; }
+    void setWidth(const std::string&& str, s8 width) { for (const s8 i : str) widths[i] = width; }
     void setWidth(s8 c, s8 width) { widths[c] = width; }
     void fillWidth(s8 upperWidth, s8 lowerWidth, u8 otherWidth)
     {
       for (u8 i = 0; i < 128; ++i)
       {
-        if (isupper(i)) widths[i] = upperWidth;
-        else if (islower(i)) widths[i] = lowerWidth;
-        else widths[i] = otherWidth;
+        if (widths[i] == -1)
+        {
+          if (isupper(i)) widths[i] = upperWidth;
+          else if (islower(i)) widths[i] = lowerWidth;
+          else widths[i] = otherWidth;
+        }
       }
     }
   
@@ -119,7 +124,7 @@ class Font
 class TinyFont : public Font
 {
   public:
-  TinyFont(TextureID tex, ColorMap *map = nullptr) : Font(tex,7,8,1,-2,2, map)
+  TinyFont(TextureID tex, const ColorMap *map = nullptr) : Font(tex,7,8,1,-2,2, map)
   {
     setWidth("ilI1.:\'",1);
 		setWidth(",()",2);
@@ -132,7 +137,7 @@ class TinyFont : public Font
 class TinyCompactFont : public Font
 {
   public:
-  TinyCompactFont(TextureID tex, ColorMap *map = nullptr) : Font(tex,7,8,1,-2,2, map)
+  TinyCompactFont(TextureID tex, const ColorMap *map = nullptr) : Font(tex,7,8,1,-2,2, map)
   {
     setWidth("ilI1.:\'",1);
 		setWidth(",()",2);
@@ -145,7 +150,7 @@ class TinyCompactFont : public Font
 class TinyCompactCryptFont : public Font
 {
   public:
-  TinyCompactCryptFont(TextureID tex, ColorMap *map = nullptr) : Font(tex,7,8,1,-2,2, map)
+  TinyCompactCryptFont(TextureID tex, const ColorMap *map = nullptr) : Font(tex,7,8,1,-2,2, map)
   {
     setWidth("iI123-.:\'",1);
 		setWidth(",()l",2);
@@ -164,7 +169,7 @@ class TinyCompactCryptFont : public Font
 class SmallFont : public Font
 {
   public:
-  SmallFont(TextureID tex, ColorMap *map = nullptr) : Font(tex,7,7,1,3,3,map)
+  SmallFont(TextureID tex, const ColorMap *map = nullptr) : Font(tex,7,7,1,3,3,map)
   {
     setWidth("il1.:\'",1);
 		setWidth(",()",2);
@@ -177,7 +182,7 @@ class SmallFont : public Font
 class SmallShorterFont : public Font
 {
   public:
-  SmallShorterFont(TextureID tex, ColorMap *map = nullptr) : Font(tex, 7, 7, 1, 2, 3, map)
+  SmallShorterFont(TextureID tex, const ColorMap *map = nullptr) : Font(tex, 7, 7, 1, 2, 3, map)
   {
     setWidth("il1.:\'", 1);
     setWidth(",()", 2);
@@ -190,7 +195,7 @@ class SmallShorterFont : public Font
 class MediumFont : public Font
 {
   public:
-  MediumFont(TextureID tex, ColorMap *map = nullptr) : Font(tex,9,11,1,3,1,map)
+  MediumFont(TextureID tex, const ColorMap *map = nullptr) : Font(tex,9,11,1,3,1,map)
   {
     setWidth("il.:\'",1);
 		setWidth(",1",2);
@@ -203,7 +208,7 @@ class MediumFont : public Font
 class MediumBoldFont : public Font
 {
   public:
-  MediumBoldFont(TextureID tex, ColorMap *map = nullptr) : Font(tex, 10, 10, 1, 3, 4, map)
+  MediumBoldFont(TextureID tex, const ColorMap *map = nullptr) : Font(tex, 10, 10, 1, 3, 4, map)
   {
     setWidth("Iil'.1",2);
 		setWidth("j",3);
@@ -219,7 +224,7 @@ class MediumBoldFont : public Font
 class SerifFont : public Font
 {
   public:
-  SerifFont(TextureID tex, ColorMap *map = nullptr) : Font(tex, 11, 12, 1, -1, 3, map)
+  SerifFont(TextureID tex, const ColorMap *map = nullptr) : Font(tex, 11, 12, 1, -1, 3, map)
   {
     setWidth("'",2);
 		setWidth("il",3);
@@ -235,7 +240,7 @@ class SerifFont : public Font
 class SerifCryptFont : public Font
 {
   public:
-  SerifCryptFont(TextureID tex, ColorMap *map = nullptr) : Font(tex, 10, 10, 1, -1, 3, map)
+  SerifCryptFont(TextureID tex, const ColorMap *map = nullptr) : Font(tex, 10, 10, 1, -1, 3, map)
   {
     setWidth("bcegijl",3);
 		setWidth("bcegkosty",5); // TODO: bug b repeated
@@ -253,7 +258,7 @@ class SerifCryptFont : public Font
 class HugeSerifFont : public Font
 {
   public:
-  HugeSerifFont(TextureID tex, ColorMap *map = nullptr) : Font(tex, 17, 17, 1, -1, 11, map)
+  HugeSerifFont(TextureID tex, const ColorMap *map = nullptr) : Font(tex, 17, 17, 1, -1, 11, map)
   {
     setWidth("cegilort",6);
 		setWidth("afs",7);
@@ -271,7 +276,7 @@ class Fonts
   private:
     static Font* font;
     static s16 vSpace, hSpace;
-    static ColorMap *map, *omap;
+    static const ColorMap *map, *omap;
     static Font fonts[];
     static std::unordered_map<s8, ColorMap*> fontColors;
   

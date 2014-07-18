@@ -60,7 +60,6 @@
 		04879A451978374100313BC7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		04879A481978374100313BC7 /* OpenMoM-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "OpenMoM-Info.plist"; path = "misc/OpenMoM-Info.plist"; sourceTree = SOURCE_ROOT; };
 		04879A581978374100313BC7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = misc/Images.xcassets; sourceTree = SOURCE_ROOT; };
-		04879A5F1978374100313BC7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		04879A751978385800313BC7 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = libs/SDL2_image.framework; sourceTree = SOURCE_ROOT; };
 		04879A761978385800313BC7 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = libs/SDL2.framework; sourceTree = SOURCE_ROOT; };
 		04879A7F197839CB00313BC7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = misc/en.lproj/Credits.rtf; sourceTree = SOURCE_ROOT; };
@@ -168,7 +167,6 @@
 				04879A751978385800313BC7 /* SDL2_image.framework */,
 				04879A761978385800313BC7 /* SDL2.framework */,
 				04879A401978374100313BC7 /* Cocoa.framework */,
-				04879A5F1978374100313BC7 /* XCTest.framework */,
 				04879A421978374100313BC7 /* Other Frameworks */,
 			);
 			name = Frameworks;

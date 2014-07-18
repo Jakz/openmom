@@ -14,15 +14,54 @@ using namespace std;
 
 s16 Fonts::vSpace = 0;
 s16 Fonts::hSpace = 0;
-ColorMap* Fonts::map = nullptr;
-ColorMap* Fonts::omap = nullptr;
+const ColorMap* Fonts::map = nullptr;
+const ColorMap* Fonts::omap = nullptr;
 
 unordered_map<s8, ColorMap*> Fonts::fontColors = {
   
 };
 
 Font Fonts::fonts[] = {
-  TinyFont(FONT_TINY)
+  TinyFont(FONT_TINY, &FontMap::Tiny::WHITE),
+  TinyFont(FONT_TINY, &FontMap::Tiny::WHITE_STROKE),
+  TinyFont(FONT_TINY, &FontMap::Tiny::YELLOW_STROKE),
+  TinyFont(FONT_TINY, &FontMap::Tiny::RED_STROKE),
+  
+  TinyCompactFont(FONT_TINY_COMPACT),
+  
+  TinyCompactFont(FONT_TINY_COMPACT_CRYPT, &FontMap::Misc::TINY_BROWN_CRYPT),
+  
+  SmallFont(FONT_YELLOW_SMALL),
+  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::WHITE),
+  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::TEAL),
+  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::BROWN),
+  
+  SmallShorterFont(FONT_YELLOW_SMALL),
+  
+  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::GREEN),
+  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::BLUE),
+  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::RED),
+  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::PURPLE),
+  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::YELLOW),
+  
+  SerifFont(FONT_SERIF, &FontMap::Serif::TEAL_STROKE),
+  SerifFont(FONT_SERIF, &FontMap::Serif::YELLOW_SHADOW),
+  SerifFont(FONT_SERIF, &FontMap::Serif::GOLD_SHADOW),
+  SerifFont(FONT_SERIF, &FontMap::Serif::SILVER_SHADOW),
+  SerifFont(FONT_SERIF, &FontMap::Serif::WHITE_SURVEY),
+  SerifFont(FONT_SERIF, &FontMap::Serif::BROWN),
+  SerifFont(FONT_SERIF, &FontMap::Serif::DARK_BROWN),
+  
+  SerifCryptFont(FONT_SERIF_CRYPT, &FontMap::Misc::SERIF_CRYPT_BROWN),
+  
+  MediumFont(FONT_TEAL_MEDIUM),
+  MediumFont(FONT_TEAL_MEDIUM, &FontMap::Medium::TEAL_STROKE),
+  MediumFont(FONT_TEAL_MEDIUM, &FontMap::Medium::BLACK),
+  MediumFont(FONT_TEAL_MEDIUM, &FontMap::Medium::TEAL_BRIGHT),
+  
+  MediumBoldFont(FONT_MEDIUM_BOLD),
+  
+  HugeSerifFont(FONT_HUGE_SERIF)
 };
 
 
@@ -102,7 +141,7 @@ u16 Fonts::drawString(const string string, u16 x, u16 y, TextAlign align)
 
 u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)
 {
-  u16 sx = align == ALIGN_RIGHT ? 0 : x, sy = y;
+  s16 sx = align == ALIGN_RIGHT ? 0 : x, sy = y;
   u16 length = string.length();
   bool switchingColor = false;
   
@@ -146,6 +185,8 @@ u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)
       s8 cw = font->charWidth(c);
       s8 r = c - ' ';
       s8 d = align == ALIGN_RIGHT ? (s8)ceilf((font->w - cw) / 2.0f) : (font->w - cw) / 2;
+      
+      printf("%c: %d\n",c,cw);
       
       sx -= d;
       Gfx::draw(font->texture, r/32, r%32, align == ALIGN_RIGHT ? x - sx : sx, sy);

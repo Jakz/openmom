@@ -17,7 +17,7 @@ SDL_Surface* Gfx::canvas = nullptr;
 u32 Gfx::ticks = 0;
 u32 Gfx::realTicks = 0;
 
-ColorMap* Gfx::map = nullptr;
+const ColorMap* Gfx::map = nullptr;
 
 
 

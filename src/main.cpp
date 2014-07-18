@@ -64,7 +64,7 @@ void SDL::deinit()
 void SDL::render()
 {
   Gfx::draw(MAIN_BACKDROP, 0, 0);
-  Fonts::drawString("La sciarpina di patanella", RED_SMALLW, 20, 20, ALIGN_LEFT);
+  Fonts::drawString("Population:", YELLOW_SMALL, 20, 20, ALIGN_LEFT);
   
   SDL_Surface *canvas = Gfx::getCanvas();
   SDL_UpdateTexture(screen, nullptr, canvas->pixels, canvas->pitch);
@@ -75,7 +75,7 @@ void SDL::render()
   SDL_RenderCopy(renderer, screen, nullptr, nullptr);
   SDL_RenderPresent(renderer);
   
-  SDL_Delay(16);
+  SDL_Delay(1600000);
 }
 
 
