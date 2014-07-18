@@ -28,6 +28,11 @@ void Gfx::init()
   activeBuffer = canvas;
 }
 
+void Gfx::deinit()
+{
+  SDL_FreeSurface(buffer);
+  SDL_FreeSurface(canvas);
+}
 
 
 void Gfx::rect(u16 x, u16 y, u16 w, u16 h, u32 color)

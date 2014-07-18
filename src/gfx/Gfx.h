@@ -23,7 +23,6 @@ enum TextureID : u16;
 
 class Gfx
 {
-  private:
     static SDL_Surface *buffer, *canvas, *activeBuffer;
     static u32 ticks, realTicks;
   
@@ -31,6 +30,7 @@ class Gfx
   
   public:
     static void init();
+    static void deinit();
   
     static inline const u32 color(u8 r, u8 g, u8 b) { return (255 << 24) | (r << 16) | (g << 8) | b; }
     static inline const u32 colora(u8 r, u8 g, u8 b, u8 a) { return (a << 24) | (r << 16) | (g << 8) | b; }
@@ -85,6 +85,8 @@ class Gfx
   
     static inline void lock(SDL_Surface *surface) { SDL_LockSurface(surface); }
     static inline void unlock(SDL_Surface *surface) { SDL_UnlockSurface(surface); }
+  
+    static inline SDL_Surface* getCanvas() { return canvas; }
 };
 
 

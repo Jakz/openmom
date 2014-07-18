@@ -7,21 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04227E9E1978BC970055519A /* ColorMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04227E9C1978BC970055519A /* ColorMap.cpp */; };
+		040375C6197990A100A5B5FC /* data in Resources */ = {isa = PBXBuildFile; fileRef = 040375C21979905100A5B5FC /* data */; };
+		040375DC197990B900A5B5FC /* Race.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375CD197990B900A5B5FC /* Race.cpp */; };
+		040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D0197990B900A5B5FC /* ColorMap.cpp */; };
+		040375DE197990B900A5B5FC /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D2197990B900A5B5FC /* Font.cpp */; };
+		040375DF197990B900A5B5FC /* Gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D4197990B900A5B5FC /* Gfx.cpp */; };
+		040375E0197990B900A5B5FC /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D6197990B900A5B5FC /* Texture.cpp */; };
+		040375E1197990B900A5B5FC /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D9197990B900A5B5FC /* Localization.cpp */; };
+		040375E2197990B900A5B5FC /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375DB197990B900A5B5FC /* main.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
-		04879A4D1978374100313BC7 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04879A4C1978374100313BC7 /* main.cpp */; };
-		04879A591978374100313BC7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04879A581978374100313BC7 /* Images.xcassets */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
 		04879A7C1978391F00313BC7 /* SDL2_image.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A7D1978391F00313BC7 /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
-		04879A82197839CB00313BC7 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 04879A7E197839CB00313BC7 /* Credits.rtf */; };
-		04879A83197839CB00313BC7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04879A80197839CB00313BC7 /* InfoPlist.strings */; };
-		04879A8D19783E3600313BC7 /* Race.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04879A8B19783E3600313BC7 /* Race.cpp */; };
-		04879A9119783EA700313BC7 /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04879A8F19783EA700313BC7 /* Localization.cpp */; };
-		048FBD491978D93A0067C1A8 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048FBD471978D93A0067C1A8 /* Font.cpp */; };
-		04E0AB8719787FDE007898E6 /* Gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E0AB8519787FDE007898E6 /* Gfx.cpp */; };
-		04E0AB8A1978A1BB007898E6 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E0AB881978A1BB007898E6 /* Texture.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,33 +37,34 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		04227E9C1978BC970055519A /* ColorMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorMap.cpp; path = src/gfx/ColorMap.cpp; sourceTree = SOURCE_ROOT; };
-		04227E9D1978BC970055519A /* ColorMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorMap.h; path = src/gfx/ColorMap.h; sourceTree = SOURCE_ROOT; };
+		040375C21979905100A5B5FC /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
+		040375C8197990B900A5B5FC /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		040375CB197990B900A5B5FC /* Upkeep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Upkeep.h; sourceTree = "<group>"; };
+		040375CD197990B900A5B5FC /* Race.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Race.cpp; sourceTree = "<group>"; };
+		040375CE197990B900A5B5FC /* Race.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Race.h; sourceTree = "<group>"; };
+		040375D0197990B900A5B5FC /* ColorMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorMap.cpp; sourceTree = "<group>"; };
+		040375D1197990B900A5B5FC /* ColorMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorMap.h; sourceTree = "<group>"; };
+		040375D2197990B900A5B5FC /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
+		040375D3197990B900A5B5FC /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
+		040375D4197990B900A5B5FC /* Gfx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Gfx.cpp; sourceTree = "<group>"; };
+		040375D5197990B900A5B5FC /* Gfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gfx.h; sourceTree = "<group>"; };
+		040375D6197990B900A5B5FC /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
+		040375D7197990B900A5B5FC /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
+		040375D9197990B900A5B5FC /* Localization.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Localization.cpp; sourceTree = "<group>"; };
+		040375DA197990B900A5B5FC /* Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Localization.h; sourceTree = "<group>"; };
+		040375DB197990B900A5B5FC /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04879A401978374100313BC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		04879A431978374100313BC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		04879A441978374100313BC7 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		04879A451978374100313BC7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		04879A481978374100313BC7 /* OpenMoM-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "OpenMoM-Info.plist"; path = "misc/OpenMoM-Info.plist"; sourceTree = SOURCE_ROOT; };
-		04879A4C1978374100313BC7 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		04879A581978374100313BC7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = misc/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		04879A5F1978374100313BC7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		04879A751978385800313BC7 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = libs/SDL2_image.framework; sourceTree = SOURCE_ROOT; };
 		04879A761978385800313BC7 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = libs/SDL2.framework; sourceTree = SOURCE_ROOT; };
 		04879A7F197839CB00313BC7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = misc/en.lproj/Credits.rtf; sourceTree = SOURCE_ROOT; };
 		04879A81197839CB00313BC7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = misc/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
-		04879A8A19783A8A00313BC7 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Common.h; path = src/Common.h; sourceTree = "<group>"; };
-		04879A8B19783E3600313BC7 /* Race.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Race.cpp; sourceTree = "<group>"; };
-		04879A8C19783E3600313BC7 /* Race.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Race.h; sourceTree = "<group>"; };
-		04879A8F19783EA700313BC7 /* Localization.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Localization.cpp; sourceTree = "<group>"; };
-		04879A9019783EA700313BC7 /* Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Localization.h; sourceTree = "<group>"; };
-		04879A931978486000313BC7 /* Upkeep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Upkeep.h; sourceTree = "<group>"; };
-		048FBD471978D93A0067C1A8 /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Font.cpp; path = src/gfx/Font.cpp; sourceTree = SOURCE_ROOT; };
-		048FBD481978D93A0067C1A8 /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Font.h; path = src/gfx/Font.h; sourceTree = SOURCE_ROOT; };
-		04E0AB8519787FDE007898E6 /* Gfx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Gfx.cpp; path = src/gfx/Gfx.cpp; sourceTree = SOURCE_ROOT; };
-		04E0AB8619787FDE007898E6 /* Gfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Gfx.h; path = src/gfx/Gfx.h; sourceTree = SOURCE_ROOT; };
-		04E0AB881978A1BB007898E6 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Texture.cpp; path = src/gfx/Texture.cpp; sourceTree = SOURCE_ROOT; };
-		04E0AB891978A1BB007898E6 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = src/gfx/Texture.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,10 +81,73 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040375C7197990B900A5B5FC /* src */ = {
+			isa = PBXGroup;
+			children = (
+				040375C9197990B900A5B5FC /* game */,
+				040375CF197990B900A5B5FC /* gfx */,
+				040375D8197990B900A5B5FC /* i18n */,
+				040375C8197990B900A5B5FC /* Common.h */,
+				040375DB197990B900A5B5FC /* main.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		040375C9197990B900A5B5FC /* game */ = {
+			isa = PBXGroup;
+			children = (
+				040375CA197990B900A5B5FC /* common */,
+				040375CC197990B900A5B5FC /* players */,
+			);
+			path = game;
+			sourceTree = "<group>";
+		};
+		040375CA197990B900A5B5FC /* common */ = {
+			isa = PBXGroup;
+			children = (
+				040375CB197990B900A5B5FC /* Upkeep.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		040375CC197990B900A5B5FC /* players */ = {
+			isa = PBXGroup;
+			children = (
+				040375CD197990B900A5B5FC /* Race.cpp */,
+				040375CE197990B900A5B5FC /* Race.h */,
+			);
+			path = players;
+			sourceTree = "<group>";
+		};
+		040375CF197990B900A5B5FC /* gfx */ = {
+			isa = PBXGroup;
+			children = (
+				040375D0197990B900A5B5FC /* ColorMap.cpp */,
+				040375D1197990B900A5B5FC /* ColorMap.h */,
+				040375D2197990B900A5B5FC /* Font.cpp */,
+				040375D3197990B900A5B5FC /* Font.h */,
+				040375D4197990B900A5B5FC /* Gfx.cpp */,
+				040375D5197990B900A5B5FC /* Gfx.h */,
+				040375D6197990B900A5B5FC /* Texture.cpp */,
+				040375D7197990B900A5B5FC /* Texture.h */,
+			);
+			path = gfx;
+			sourceTree = "<group>";
+		};
+		040375D8197990B900A5B5FC /* i18n */ = {
+			isa = PBXGroup;
+			children = (
+				040375D9197990B900A5B5FC /* Localization.cpp */,
+				040375DA197990B900A5B5FC /* Localization.h */,
+			);
+			path = i18n;
+			sourceTree = "<group>";
+		};
 		04879A341978374100313BC7 = {
 			isa = PBXGroup;
 			children = (
-				04879A74197837FB00313BC7 /* src */,
+				040375C7197990B900A5B5FC /* src */,
+				040375C21979905100A5B5FC /* data */,
 				04879A471978374100313BC7 /* Supporting Files */,
 				04879A3F1978374100313BC7 /* Frameworks */,
 				04879A3E1978374100313BC7 /* Products */,
@@ -134,71 +196,6 @@
 			path = OpenMoM;
 			sourceTree = "<group>";
 		};
-		04879A74197837FB00313BC7 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				04E0AB8419787FD3007898E6 /* gfx */,
-				04879A8519783A2A00313BC7 /* game */,
-				04879A4C1978374100313BC7 /* main.cpp */,
-				04879A8A19783A8A00313BC7 /* Common.h */,
-			);
-			name = src;
-			sourceTree = "<group>";
-		};
-		04879A8519783A2A00313BC7 /* game */ = {
-			isa = PBXGroup;
-			children = (
-				04879A921978485700313BC7 /* common */,
-				04879A8E19783EA700313BC7 /* i18n */,
-				04879A8619783A2A00313BC7 /* players */,
-			);
-			name = game;
-			path = src/game;
-			sourceTree = "<group>";
-		};
-		04879A8619783A2A00313BC7 /* players */ = {
-			isa = PBXGroup;
-			children = (
-				04879A8B19783E3600313BC7 /* Race.cpp */,
-				04879A8C19783E3600313BC7 /* Race.h */,
-			);
-			path = players;
-			sourceTree = "<group>";
-		};
-		04879A8E19783EA700313BC7 /* i18n */ = {
-			isa = PBXGroup;
-			children = (
-				04879A8F19783EA700313BC7 /* Localization.cpp */,
-				04879A9019783EA700313BC7 /* Localization.h */,
-			);
-			name = i18n;
-			path = src/i18n;
-			sourceTree = SOURCE_ROOT;
-		};
-		04879A921978485700313BC7 /* common */ = {
-			isa = PBXGroup;
-			children = (
-				04879A931978486000313BC7 /* Upkeep.h */,
-			);
-			path = common;
-			sourceTree = "<group>";
-		};
-		04E0AB8419787FD3007898E6 /* gfx */ = {
-			isa = PBXGroup;
-			children = (
-				04E0AB8519787FDE007898E6 /* Gfx.cpp */,
-				04E0AB8619787FDE007898E6 /* Gfx.h */,
-				04E0AB881978A1BB007898E6 /* Texture.cpp */,
-				04E0AB891978A1BB007898E6 /* Texture.h */,
-				04227E9C1978BC970055519A /* ColorMap.cpp */,
-				04227E9D1978BC970055519A /* ColorMap.h */,
-				048FBD471978D93A0067C1A8 /* Font.cpp */,
-				048FBD481978D93A0067C1A8 /* Font.h */,
-			);
-			name = gfx;
-			path = src/gfx;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -208,8 +205,8 @@
 			buildPhases = (
 				04879A391978374100313BC7 /* Sources */,
 				04879A3A1978374100313BC7 /* Frameworks */,
-				04879A3B1978374100313BC7 /* Resources */,
 				04879A7B1978391500313BC7 /* CopyFiles */,
+				040375C51979909C00A5B5FC /* Resources */,
 			);
 			buildRules = (
 			);
@@ -248,13 +245,11 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		04879A3B1978374100313BC7 /* Resources */ = {
+		040375C51979909C00A5B5FC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04879A591978374100313BC7 /* Images.xcassets in Resources */,
-				04879A83197839CB00313BC7 /* InfoPlist.strings in Resources */,
-				04879A82197839CB00313BC7 /* Credits.rtf in Resources */,
+				040375C6197990A100A5B5FC /* data in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,13 +260,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04E0AB8A1978A1BB007898E6 /* Texture.cpp in Sources */,
-				04879A8D19783E3600313BC7 /* Race.cpp in Sources */,
-				04227E9E1978BC970055519A /* ColorMap.cpp in Sources */,
-				04E0AB8719787FDE007898E6 /* Gfx.cpp in Sources */,
-				04879A9119783EA700313BC7 /* Localization.cpp in Sources */,
-				04879A4D1978374100313BC7 /* main.cpp in Sources */,
-				048FBD491978D93A0067C1A8 /* Font.cpp in Sources */,
+				040375E0197990B900A5B5FC /* Texture.cpp in Sources */,
+				040375DE197990B900A5B5FC /* Font.cpp in Sources */,
+				040375DF197990B900A5B5FC /* Gfx.cpp in Sources */,
+				040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */,
+				040375E2197990B900A5B5FC /* main.cpp in Sources */,
+				040375E1197990B900A5B5FC /* Localization.cpp in Sources */,
+				040375DC197990B900A5B5FC /* Race.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
