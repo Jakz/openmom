@@ -9,6 +9,7 @@
 #include "Buttons.h"
 
 #include "Gfx.h"
+#include "Font.h"
 
 void Clickable::draw()
 {
@@ -48,4 +49,13 @@ void TristateButton::draw()
     SpriteInfo &info = active ? (pressed ? pressedCoords : normalCoords) : inactiveCoords;
     Gfx::draw(info, x, y);
   }
+}
+
+void LabeledSimpleButton::draw()
+{
+  OffsetButton::draw();
+  if (!pressed)
+    Fonts::drawString(label, font, textX, textY, ALIGN_CENTER);
+  else
+    Fonts::drawString(label, font, textX+1, textY+1, ALIGN_CENTER);
 }

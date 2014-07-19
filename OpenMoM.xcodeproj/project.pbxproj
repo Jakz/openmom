@@ -16,6 +16,7 @@
 		040375E1197990B900A5B5FC /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D9197990B900A5B5FC /* Localization.cpp */; };
 		040375E2197990B900A5B5FC /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375DB197990B900A5B5FC /* main.cpp */; };
 		040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E41979EA6700A5B5FC /* Buttons.cpp */; };
+		040375E8197A775300A5B5FC /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E7197A775300A5B5FC /* Common.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
@@ -56,6 +57,7 @@
 		040375DB197990B900A5B5FC /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		040375E41979EA6700A5B5FC /* Buttons.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Buttons.cpp; path = src/ui/Buttons.cpp; sourceTree = SOURCE_ROOT; };
 		040375E51979EA6700A5B5FC /* Buttons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Buttons.h; path = src/ui/Buttons.h; sourceTree = SOURCE_ROOT; };
+		040375E7197A775300A5B5FC /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04879A401978374100313BC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		04879A431978374100313BC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -90,6 +92,7 @@
 				040375CF197990B900A5B5FC /* gfx */,
 				040375E31979E82900A5B5FC /* ui */,
 				040375D8197990B900A5B5FC /* i18n */,
+				040375E7197A775300A5B5FC /* Common.cpp */,
 				040375C8197990B900A5B5FC /* Common.h */,
 				040375DB197990B900A5B5FC /* main.cpp */,
 			);
@@ -273,6 +276,7 @@
 			files = (
 				040375E0197990B900A5B5FC /* Texture.cpp in Sources */,
 				040375DE197990B900A5B5FC /* Font.cpp in Sources */,
+				040375E8197A775300A5B5FC /* Common.cpp in Sources */,
 				040375DF197990B900A5B5FC /* Gfx.cpp in Sources */,
 				040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */,
 				040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */,

@@ -16,6 +16,8 @@
 #include <functional>
 #include <SDL2/SDL.h>
 
+enum FontFace : u16;
+
 typedef std::function<void()> Action;
 
 class Clickable
@@ -79,16 +81,14 @@ class SimpleButton : public Button
 {
   public:
     SimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info) : Button(name, x, y, info) { }
-  
     void draw() override;
 };
 
 class OffsetButton : public Button
 {
-public:
-  OffsetButton(const std::string name, u16 x, u16 y, SpriteInfo info) : Button(name, x, y, info) { }
-  
-  void draw() override;
+  public:
+    OffsetButton(const std::string name, u16 x, u16 y, SpriteInfo info) : Button(name, x, y, info) { }
+    void draw() override;
 };
 
 class BistateButton : public Button
@@ -98,7 +98,6 @@ class BistateButton : public Button
 
   public:
     BistateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Button(name, x, y, normal), pressedCoords(pressed) { }
-    
     void draw() override;
 };
 
@@ -109,8 +108,21 @@ class TristateButton : public BistateButton
     
   public:
     TristateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : BistateButton(name, x, y, normal, pressed), inactiveCoords(inactive) { }
-    
     void draw() override;
 };
+
+class LabeledSimpleButton : public OffsetButton
+{
+  protected:
+    std::string label;
+    u16 textX, textY;
+    FontFace font;
+  
+  public:
+    LabeledSimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, FontFace font) : OffsetButton(name,x,y,info), label(label), font(font) { }
+    void setLabel(std::string label) { this->label = label; }
+    void draw() override;
+};
+
 
 #endif

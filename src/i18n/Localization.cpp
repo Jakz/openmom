@@ -36,5 +36,18 @@ void i18n::load()
   data.emplace(I18_UNIT_NAME_ORCS, "Orc");
   data.emplace(I18_UNIT_NAME_TROLLS, "Troll");
 
-
+  data.emplace(I18_WIZARD_NAME_MERLIN, "Merlin");
+  data.emplace(I18_WIZARD_NAME_RAVEN, "Raven");
+  data.emplace(I18_WIZARD_NAME_SHAREE, "Sharee");
+  data.emplace(I18_WIZARD_NAME_LO_PAN, "Lo Pan");
+  data.emplace(I18_WIZARD_NAME_JAFAR, "Jafar");
+  data.emplace(I18_WIZARD_NAME_OBERIC, "Oberic");
+  data.emplace(I18_WIZARD_NAME_RJAK, "Rjak");
+  data.emplace(I18_WIZARD_NAME_SSS_RA, "Sss'Ra");
+  data.emplace(I18_WIZARD_NAME_TAURON, "Tauron");
+  data.emplace(I18_WIZARD_NAME_FREYA, "Freya");
+  data.emplace(I18_WIZARD_NAME_HORUS, "Horus");
+  data.emplace(I18_WIZARD_NAME_ARIEL, "Ariel");
+  data.emplace(I18_WIZARD_NAME_TLALOC, "Tlaloc");
+  data.emplace(I18_WIZARD_NAME_KALI, "Kali");
 }
