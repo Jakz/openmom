@@ -8,13 +8,21 @@
 #include "Texture.h"
 #include "Gfx.h"
 
+#include "NewGameView.h"
+
 using namespace std;
 
 ViewManager ViewManager::gvm;
 
+ViewManager::ViewManager() : views{nullptr}, animating(false)
+{
+  views[VIEW_NEW_GAME] = new NewGameView();
+}
+
 void ViewManager::switchView(ViewID type)
 {
-  current->doDeactivate();
+  if (current)
+    current->doDeactivate();
   current = views[type];
   current->doActivate(LocalGame::i->currentPlayer);
 }
@@ -58,7 +66,7 @@ void ViewManager::draw()
   if (animations.empty())
     animating = false;
   
-  current->draw();
+  current->doDraw();
   
   if (LocalGame::i->currentPlayer->hasMessage() && !isThereOverview())
     switchOverview(VIEW_MESSAGE);
@@ -68,7 +76,7 @@ void ViewManager::draw()
     Gfx::draw(DARKNER, 0, 0);
     
     for (View *v : overviews)
-      v->draw();
+      v->doDraw();
   }
   
   for (Animation *a : animations)
@@ -80,41 +88,41 @@ void ViewManager::draw()
 void ViewManager::mouseClicked(u16 x, u16 y, MouseButton b)
 {
   if (!animating)
-    respondingView()->mouseClicked(x, y, b);
+    respondingView()->doMouseClicked(x, y, b);
 }
 
 void ViewManager::mouseDragged(u16 x, u16 y, MouseButton b)
 {
   if (!animating)
-    respondingView()->mouseDragged(x, y, b);
+    respondingView()->doMouseDragged(x, y, b);
 }
 
 void ViewManager::mouseMoved(u16 x, u16 y, MouseButton b)
 {
   if (!animating)
-    respondingView()->mouseMoved(x, y, b);
+    respondingView()->doMouseMoved(x, y, b);
 }
 
 void ViewManager::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   if (!animating)
-    respondingView()->mouseReleased(x, y, b);
+    respondingView()->doMouseReleased(x, y, b);
 }
 
 void ViewManager::mousePressed(u16 x, u16 y, MouseButton b)
 {
   if (!animating)
-    respondingView()->mousePressed(x, y, b);
+    respondingView()->doMousePressed(x, y, b);
 }
 
 void ViewManager::keyPressed(KeyboardKey key, KeyboardMod mod)
 {
   if (!animating)
-    respondingView()->keyPressed(key, mod);
+    respondingView()->doKeyPressed(key, mod);
 }
 
 void ViewManager::keyReleased(KeyboardKey key, KeyboardMod mod)
 {
   if (!animating)
-    respondingView()->keyReleased(key, mod);
+    respondingView()->doKeyReleased(key, mod);
 }

@@ -46,6 +46,8 @@ struct SpriteInfo
   TextureID texture;
   s16 x;
   s16 y;
+  
+  SpriteInfo(TextureID texture, s16 x, s16 y) : texture(texture), x(x), y(y) { }
 };
 
 class Upkeep

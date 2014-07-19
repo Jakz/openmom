@@ -347,6 +347,8 @@ class Fonts
         default: return WHITE_SMALL;
       }
     }
+  
+    static const Font& fontFor(FontFace face) { return fonts[face]; }
 
 };
 

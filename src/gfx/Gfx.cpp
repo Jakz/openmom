@@ -43,14 +43,14 @@ void Gfx::rect(u16 x, u16 y, u16 w, u16 h, u32 color)
   
   for (int i = 0; i < w; ++i)
   {
-    p[y*canvas->pitch + i + x] = color;
-    p[(y+h)*canvas->pitch + i + x] = color;
+    p[y*canvas->w + i + x] = color;
+    p[(y+h)*canvas->w + i + x] = color;
   }
   
   for (int i = 0; i < h; ++i)
   {
-    p[(y+i)*canvas->pitch + x] = color;
-    p[(y+i)*canvas->pitch + x + w] = color;
+    p[(y+i)*canvas->w + x] = color;
+    p[(y+i)*canvas->w + x + w] = color;
   }
   
   unlock(canvas);
@@ -62,7 +62,7 @@ void Gfx::rawBlit(SDL_Surface *gsrc, SDL_Surface *gdst, u16 fx, u16 fy, u16 tx, 
   lock(gsrc);
   lock(gdst);
   
-  u16 sw = gsrc->w, dw = gdst->w;
+  u32 sw = gsrc->w, dw = gdst->w;
   u32* sp = static_cast<u32*>(gsrc->pixels), *dp = static_cast<u32*>(gdst->pixels);
   
   u32 bs = fy*sw + fx, bd = ty*dw + tx;
@@ -98,7 +98,7 @@ void Gfx::rawBlit(SDL_Surface *gsrc, SDL_Surface *gdst, u16 fx, u16 fy, u16 tx, 
           if (map)
             ps = map->get(ps);
           
-          int sa = ((ps & 0xFF000000) >> 24);
+          u32 sa = ((ps & 0xFF000000) >> 24);
           
           if (sa == 0xFF)
             dp[cd] = ps;
@@ -131,7 +131,7 @@ void Gfx::rawBlit(SDL_Surface *gsrc, SDL_Surface *gdst, u16 fx, u16 fy, u16 tx, 
 void Gfx::drawPixel(u32 color, u16 x, u16 y)
 {
   lock(activeBuffer);
-  static_cast<u32*>(activeBuffer->pixels)[y*activeBuffer->pitch + x] = color;
+  static_cast<u32*>(activeBuffer->pixels)[y*activeBuffer->w + x] = color;
   unlock(activeBuffer);
 }
 
@@ -146,7 +146,7 @@ void Gfx::resetBuffer(u16 w, u16 h)
   u32* pixels = static_cast<u32*>(buffer->pixels);
   for (int yy = 0; yy < h; ++yy)
     for (int xx = 0; xx < w; ++xx)
-      pixels[xx+buffer->pitch*yy] = 0x00000000;
+      pixels[xx+buffer->w*yy] = 0x00000000;
   unlock(buffer);
 }
 
@@ -169,10 +169,10 @@ void Gfx::maskBuffer(TextureID texture, int r, int c)
   for (int i = 0; i < w; ++i)
     for (int j = 0; j < h; ++j)
     {
-      int p = mp[ox + oy + i + j*tex.img->pitch];
+      int p = mp[ox + oy + i + j*tex.img->w];
       
       if ((p & 0xFF000000) == 0)
-        dp[i + j*buffer->pitch] = 0x0000000;
+        dp[i + j*buffer->w] = 0x0000000;
     }
   
   unlock(buffer);
@@ -185,7 +185,7 @@ void Gfx::colorMapBuffer(int w, int h, ColorMap& map)
   u32* pixels = static_cast<u32*>(buffer->pixels);
   for (int yy = 0; yy < h; ++yy)
     for (int xx = 0; xx < w; ++xx)
-      pixels[xx+buffer->pitch*yy] = map.get(pixels[xx+buffer->pitch*yy]);
+      pixels[xx+buffer->w*yy] = map.get(pixels[xx+buffer->w*yy]);
   
   unlock(buffer);
 }
@@ -217,7 +217,7 @@ void Gfx::maskBufferWithImage(TextureID mask, TextureID snd, u16 r, u16 c, u16 r
       int p = mp[ox + oy + i + j*tex1.img->pitch];
       
       if ((p & 0xFF000000) == 0)
-        dp[i + j*buffer->pitch] = sp[ox2+oy2+i+j*tex2.img->pitch];
+        dp[i + j*buffer->w] = sp[ox2+oy2+i+j*tex2.img->w];
     }
 
   unlock(tex1.img);
@@ -329,7 +329,7 @@ void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
     draw(texture, r, (((offset+ticks)/tex.animFactor)%tex.animatedSprites[r]), x, y);
 }
 
-void Gfx::draw(SpriteInfo& info, int x, int y)
+void Gfx::draw(SpriteInfo& info, u16 x, u16 y)
 {
-  draw(info.texture, info.x, info.y, x, y);
+  draw(info.texture, info.y, info.x, x, y);
 }

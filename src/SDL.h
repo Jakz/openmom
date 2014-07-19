@@ -13,6 +13,8 @@
 
 #include <SDL2/SDL.h>
 
+class ViewManager;
+
 class SDL
 {
   private:
@@ -24,18 +26,21 @@ class SDL
     static constexpr float TICKS_PER_FRAME = 1000 / (float)FRAME_RATE;
     
     static bool willQuit;
-    
+  
+  
   public:
     static bool init();
     static void deinit();
     
     static void loop();
     static void render();
-    
+    static void handleEvents();
+  
     static void capFPS();
     
     static u32 ticks;
   
+    static ViewManager *gvm;
 };
 
 #endif

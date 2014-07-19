@@ -1,0 +1,39 @@
+#include "Settings.h"
+
+#include "Localization.h"
+
+Settings::Settings()
+{
+  settings.push_back(SettingGroup(SETTING_DIFFICULTY, I18_PLACEHOLDER, DIFFICULTY_NORMAL, {
+    {I18_PLACEHOLDER, DIFFICULTY_INTRO},
+    {I18_PLACEHOLDER, DIFFICULTY_EASY},
+    {I18_PLACEHOLDER, DIFFICULTY_NORMAL},
+    {I18_PLACEHOLDER, DIFFICULTY_HARD},
+    {I18_PLACEHOLDER, DIFFICULTY_IMPOSSIBLE}}));
+  
+  settings.push_back(SettingGroup(SETTING_LAND_SIZE, I18_PLACEHOLDER, LAND_SIZE_LARGE, {
+    {I18_PLACEHOLDER, LAND_SIZE_SMALL},
+    {I18_PLACEHOLDER, LAND_SIZE_MEDIUM},
+    {I18_PLACEHOLDER, LAND_SIZE_LARGE}}));
+  
+  settings.push_back(SettingGroup(SETTING_OPPONENTS, I18_PLACEHOLDER, OPPONENTS_ONE, {
+    {I18_PLACEHOLDER, OPPONENTS_ONE},
+    {I18_PLACEHOLDER, OPPONENTS_TWO},
+    {I18_PLACEHOLDER, OPPONENTS_THREE},
+    {I18_PLACEHOLDER, OPPONENTS_FOUR}}));
+  
+  settings.push_back(SettingGroup(SETTING_MAGIC_POWER, I18_PLACEHOLDER, MAGIC_POWER_NORMAL, {
+    {I18_PLACEHOLDER, MAGIC_POWER_WEAK},
+    {I18_PLACEHOLDER, MAGIC_POWER_NORMAL},
+    {I18_PLACEHOLDER, MAGIC_POWER_POWERFUL}}));
+}
+
+const std::string& SettingGroup::groupName()
+{
+  return i18n::s(name);
+}
+
+const std::string& SettingGroup::currentValue()
+{
+  return i18n::s(group[selected].name);
+}

@@ -8,4 +8,8 @@
 
 #include "Game.h"
 
-LocalGame* LocalGame::i = new LocalGame();
+#include "LocalPlayer.h"
+
+LocalGame* LocalGame::i = nullptr;
+
+LocalGame::LocalGame()  { }

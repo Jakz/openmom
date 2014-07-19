@@ -42,7 +42,7 @@ class ViewManager : public EventListener
     bool animating;
   
   public:
-    ViewManager() : views{nullptr}, animating(false) { }
+    ViewManager();
   
     void push(Animation* animation)
     {

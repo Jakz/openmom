@@ -268,7 +268,7 @@ class Texture
     Texture(TextureID ident, std::string name, u16 rows, u16 cols, std::initializer_list<u16> ws, std::initializer_list<u16> hs) : Texture(ident, name, rows, cols, ws, hs, false, 0) { }
   
     Texture(TextureID ident, std::string name, u16 rows, u16 cols, std::initializer_list<u16> ws, u16 h) :
-      img(nullptr), ident(ident), name(name), rows(rows), cols(cols), w(-1), h(h), bx(-1), by(-1), animated(false), animFactor(0) { }
+      img(nullptr), ident(ident), name(name), rows(rows), cols(cols), w(-1), h(h), bx(-1), by(-1), ws(ws), animated(false), animFactor(0) { }
   
     Texture(TextureID ident, std::string name, u16 rows, u16 cols, u16 w, u16 h, bool animated, u16 animFactor) :
       img(nullptr), ident(ident), name(name), rows(rows), cols(cols), w(w), h(h), bx(-1), by(-1), animated(animated), animFactor(animFactor) { }

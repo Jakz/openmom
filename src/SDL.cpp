@@ -11,12 +11,16 @@
 #include "Font.h"
 #include "Gfx.h"
 
+#include "ViewManager.h"
+
 SDL_Window* SDL::window = nullptr;
 SDL_Renderer* SDL::renderer = nullptr;
 SDL_Texture* SDL::screen = nullptr;
 
 bool SDL::willQuit = false;
 u32 SDL::ticks = 0;
+
+ViewManager* SDL::gvm = new ViewManager();
 
 bool SDL::init()
 {
@@ -36,6 +40,7 @@ void SDL::loop()
   while (!willQuit)
   {
     render();
+    handleEvents();
     
     capFPS();
   }
@@ -60,10 +65,55 @@ void SDL::deinit()
   SDL_Quit();
 }
 
+bool buttonDown = false;
+void SDL::handleEvents()
+{
+  SDL_Event event;
+  while (SDL_PollEvent(&event))
+  {
+    switch (event.type)
+    {
+      case SDL_QUIT: willQuit = true; break;
+      
+      case SDL_MOUSEBUTTONDOWN:
+      {
+        gvm->mousePressed(event.button.x/2, event.button.y/2, static_cast<MouseButton>(event.button.button));
+        buttonDown = true;
+        break;
+      }
+      case SDL_MOUSEBUTTONUP:
+      {
+        gvm->mouseReleased(event.button.x/2, event.button.y/2, static_cast<MouseButton>(event.button.button));
+        buttonDown = false;
+        break;
+      }
+      case SDL_MOUSEMOTION:
+      {
+        if (buttonDown)
+          gvm->mouseDragged(event.button.x/2, event.button.y/2, BUTTON_LEFT);
+        else
+          gvm->mouseMoved(event.button.x/2, event.button.y/2, BUTTON_LEFT);
+        break;
+      }
+      
+      case SDL_KEYDOWN:
+      {
+        gvm->keyPressed(event.key.keysym.scancode, static_cast<KeyboardMod>(event.key.keysym.mod));
+        break;
+      }
+        
+      case SDL_KEYUP:
+      {
+        gvm->keyReleased(event.key.keysym.scancode, static_cast<KeyboardMod>(event.key.keysym.mod));
+        break;
+      }
+    }
+  }
+}
+
 void SDL::render()
 {
-  Gfx::draw(MAIN_BACKDROP, 0, 0);
-  Fonts::drawString("Population:", RED_SMALLW, 20, 20, ALIGN_LEFT);
+  gvm->draw();
   
   SDL_Surface *canvas = Gfx::getCanvas();
   SDL_UpdateTexture(screen, nullptr, canvas->pixels, canvas->pitch);

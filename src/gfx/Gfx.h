@@ -65,7 +65,7 @@ class Gfx
     //  public static void drawGlow(Texture texture, int i, int x, int y, School school)
     //  public static void drawGlow(SpriteInfo info, int x, int y, School school)
     // public static void drawGrayScale(SpriteInfo info, int x, int y)
-    static void draw(SpriteInfo& info, int x, int y);
+    static void draw(SpriteInfo& info, u16 x, u16 y);
   
     static void rawDraw(TextureID texture, u16 r, u16 c, u16 x, u16 y);
     static void draw(TextureID texture, u16 x, u16 y);

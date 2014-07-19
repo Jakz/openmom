@@ -51,6 +51,12 @@ void TristateButton::draw()
   }
 }
 
+LabeledSimpleButton::LabeledSimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, FontFace font) : OffsetButton(name,x,y,info), label(label), font(font)
+{
+  textX = x + Texture::get(info.texture).span(info.x)/2 - 4;
+  textY = y + Texture::get(info.texture).h/2 - Fonts::fontFor(font).h/2 + 1;
+}
+
 void LabeledSimpleButton::draw()
 {
   OffsetButton::draw();

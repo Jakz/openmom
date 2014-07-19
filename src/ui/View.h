@@ -32,22 +32,22 @@ class View : public EventListener
     virtual void activate() = 0;
     virtual void deactivate() = 0;
   
+    virtual void draw() = 0;
+    virtual void drawPost() = 0;
+
+
+  
   public:
     View() : curButton(nullptr) { }
   
     void doActivate(LocalPlayer* player);
     void doDeactivate() { deactivate(); }
   
-
-  
     void doDraw()
     {
       draw();
       drawButtons();
     }
-  
-    virtual void draw() = 0;
-    virtual void drawPost() = 0;
   
     void drawButtons();
   

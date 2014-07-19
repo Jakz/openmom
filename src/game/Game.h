@@ -21,9 +21,11 @@ class Game
 class LocalGame
 {
   public:
+    LocalGame();
+  
     LocalPlayer *currentPlayer;
   
-    static LocalGame *i;
+    static LocalGame* i;
 };
 
 #endif

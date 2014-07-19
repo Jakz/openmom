@@ -71,7 +71,7 @@ class Button : public Clickable
 
     inline void press() { pressed = true;}
     inline void release() { pressed = false; }
-  
+    
     inline void click() {
       //TODO log clicked
       execute();
@@ -120,7 +120,7 @@ class LabeledSimpleButton : public OffsetButton
     FontFace font;
   
   public:
-    LabeledSimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, FontFace font) : OffsetButton(name,x,y,info), label(label), font(font) { }
+    LabeledSimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, FontFace font);
     void setLabel(std::string label) { this->label = label; }
     void draw() override;
 };
