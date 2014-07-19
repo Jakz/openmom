@@ -7,9 +7,11 @@
 typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
+typedef uint64_t u64;
 typedef int8_t s8;
 typedef int16_t s16;
 typedef int32_t s32;
+typedef int64_t s64;
 
 typedef u32 Color;
 
@@ -23,6 +25,9 @@ enum MouseButton : u8
   BUTTON_RIGHT = SDL_BUTTON_RIGHT,
   BUTTON_MIDDLE = SDL_BUTTON_MIDDLE
 };
+
+typedef SDL_Scancode KeyboardKey;
+typedef SDL_Keymod KeyboardMod;
 
 
 struct Position

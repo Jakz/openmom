@@ -185,9 +185,7 @@ u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)
       s8 cw = font->charWidth(c);
       s8 r = c - ' ';
       s8 d = align == ALIGN_RIGHT ? (s8)ceilf((font->w - cw) / 2.0f) : (font->w - cw) / 2;
-      
-      printf("%c: %d\n",c,cw);
-      
+            
       sx -= d;
       Gfx::draw(font->texture, r/32, r%32, align == ALIGN_RIGHT ? x - sx : sx, sy);
       sx += cw + font->hor + d;

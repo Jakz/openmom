@@ -31,6 +31,7 @@ class Clickable
   public:
     Clickable(u16 x, u16 y, u16 w, u16 h, MouseButton b = BUTTON_LEFT) : x(x), y(y), w(w), h(h), button(b), active(true) { }
 
+    bool isCorrectButton(MouseButton b) { return b == button; }
     bool isInside(u16 x, u16 y) { return x >= this->x && x <= this->x+w && y >= this->y && y <= this->y+h; }
     virtual bool isActive() { return active; }
     inline void activate() { active = true; }

@@ -17,6 +17,13 @@
 		040375E2197990B900A5B5FC /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375DB197990B900A5B5FC /* main.cpp */; };
 		040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E41979EA6700A5B5FC /* Buttons.cpp */; };
 		040375E8197A775300A5B5FC /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E7197A775300A5B5FC /* Common.cpp */; };
+		040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E9197A9ABC00A5B5FC /* Animations.cpp */; };
+		040375EE197A9DD600A5B5FC /* SDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375EC197A9DD600A5B5FC /* SDL.cpp */; };
+		040375F2197AAF7B00A5B5FC /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F0197AAF7B00A5B5FC /* View.cpp */; };
+		040375F5197AB04100A5B5FC /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F3197AB04100A5B5FC /* Player.cpp */; };
+		040375F8197AB04700A5B5FC /* LocalPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F6197AB04700A5B5FC /* LocalPlayer.cpp */; };
+		040375FB197AB09000A5B5FC /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F9197AB09000A5B5FC /* Game.cpp */; };
+		040375FE197ABA9100A5B5FC /* ViewManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375FC197ABA9100A5B5FC /* ViewManager.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
@@ -58,6 +65,21 @@
 		040375E41979EA6700A5B5FC /* Buttons.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Buttons.cpp; path = src/ui/Buttons.cpp; sourceTree = SOURCE_ROOT; };
 		040375E51979EA6700A5B5FC /* Buttons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Buttons.h; path = src/ui/Buttons.h; sourceTree = SOURCE_ROOT; };
 		040375E7197A775300A5B5FC /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
+		040375E9197A9ABC00A5B5FC /* Animations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Animations.cpp; path = src/ui/Animations.cpp; sourceTree = SOURCE_ROOT; };
+		040375EA197A9ABC00A5B5FC /* Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animations.h; sourceTree = "<group>"; };
+		040375EC197A9DD600A5B5FC /* SDL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDL.cpp; path = src/SDL.cpp; sourceTree = SOURCE_ROOT; };
+		040375ED197A9DD600A5B5FC /* SDL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDL.h; path = src/SDL.h; sourceTree = SOURCE_ROOT; };
+		040375EF197AAC1800A5B5FC /* EventListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventListener.h; path = src/ui/EventListener.h; sourceTree = SOURCE_ROOT; };
+		040375F0197AAF7B00A5B5FC /* View.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = View.cpp; sourceTree = "<group>"; };
+		040375F1197AAF7B00A5B5FC /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
+		040375F3197AB04100A5B5FC /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = src/game/players/Player.cpp; sourceTree = SOURCE_ROOT; };
+		040375F4197AB04100A5B5FC /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = src/game/players/Player.h; sourceTree = SOURCE_ROOT; };
+		040375F6197AB04700A5B5FC /* LocalPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LocalPlayer.cpp; path = src/game/players/LocalPlayer.cpp; sourceTree = SOURCE_ROOT; };
+		040375F7197AB04700A5B5FC /* LocalPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalPlayer.h; path = src/game/players/LocalPlayer.h; sourceTree = SOURCE_ROOT; };
+		040375F9197AB09000A5B5FC /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
+		040375FA197AB09000A5B5FC /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		040375FC197ABA9100A5B5FC /* ViewManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewManager.cpp; path = src/ui/ViewManager.cpp; sourceTree = SOURCE_ROOT; };
+		040375FD197ABA9100A5B5FC /* ViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewManager.h; path = src/ui/ViewManager.h; sourceTree = SOURCE_ROOT; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04879A401978374100313BC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		04879A431978374100313BC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -94,6 +116,8 @@
 				040375D8197990B900A5B5FC /* i18n */,
 				040375E7197A775300A5B5FC /* Common.cpp */,
 				040375C8197990B900A5B5FC /* Common.h */,
+				040375EC197A9DD600A5B5FC /* SDL.cpp */,
+				040375ED197A9DD600A5B5FC /* SDL.h */,
 				040375DB197990B900A5B5FC /* main.cpp */,
 			);
 			path = src;
@@ -104,6 +128,9 @@
 			children = (
 				040375CA197990B900A5B5FC /* common */,
 				040375CC197990B900A5B5FC /* players */,
+				040375FF197AC2E100A5B5FC /* world */,
+				040375F9197AB09000A5B5FC /* Game.cpp */,
+				040375FA197AB09000A5B5FC /* Game.h */,
 			);
 			path = game;
 			sourceTree = "<group>";
@@ -121,6 +148,10 @@
 			children = (
 				040375CD197990B900A5B5FC /* Race.cpp */,
 				040375CE197990B900A5B5FC /* Race.h */,
+				040375F3197AB04100A5B5FC /* Player.cpp */,
+				040375F4197AB04100A5B5FC /* Player.h */,
+				040375F6197AB04700A5B5FC /* LocalPlayer.cpp */,
+				040375F7197AB04700A5B5FC /* LocalPlayer.h */,
 			);
 			path = players;
 			sourceTree = "<group>";
@@ -152,10 +183,24 @@
 		040375E31979E82900A5B5FC /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				040375EF197AAC1800A5B5FC /* EventListener.h */,
+				040375F0197AAF7B00A5B5FC /* View.cpp */,
+				040375F1197AAF7B00A5B5FC /* View.h */,
+				040375FC197ABA9100A5B5FC /* ViewManager.cpp */,
+				040375FD197ABA9100A5B5FC /* ViewManager.h */,
 				040375E41979EA6700A5B5FC /* Buttons.cpp */,
 				040375E51979EA6700A5B5FC /* Buttons.h */,
+				040375E9197A9ABC00A5B5FC /* Animations.cpp */,
+				040375EA197A9ABC00A5B5FC /* Animations.h */,
 			);
 			path = ui;
+			sourceTree = "<group>";
+		};
+		040375FF197AC2E100A5B5FC /* world */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = world;
 			sourceTree = "<group>";
 		};
 		04879A341978374100313BC7 = {
@@ -274,12 +319,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				040375FE197ABA9100A5B5FC /* ViewManager.cpp in Sources */,
+				040375F2197AAF7B00A5B5FC /* View.cpp in Sources */,
 				040375E0197990B900A5B5FC /* Texture.cpp in Sources */,
 				040375DE197990B900A5B5FC /* Font.cpp in Sources */,
 				040375E8197A775300A5B5FC /* Common.cpp in Sources */,
+				040375EE197A9DD600A5B5FC /* SDL.cpp in Sources */,
 				040375DF197990B900A5B5FC /* Gfx.cpp in Sources */,
 				040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */,
 				040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */,
+				040375F8197AB04700A5B5FC /* LocalPlayer.cpp in Sources */,
+				040375FB197AB09000A5B5FC /* Game.cpp in Sources */,
+				040375F5197AB04100A5B5FC /* Player.cpp in Sources */,
+				040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */,
 				040375E2197990B900A5B5FC /* main.cpp in Sources */,
 				040375E1197990B900A5B5FC /* Localization.cpp in Sources */,
 				040375DC197990B900A5B5FC /* Race.cpp in Sources */,
