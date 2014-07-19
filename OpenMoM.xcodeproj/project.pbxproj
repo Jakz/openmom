@@ -24,6 +24,9 @@
 		040375F8197AB04700A5B5FC /* LocalPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F6197AB04700A5B5FC /* LocalPlayer.cpp */; };
 		040375FB197AB09000A5B5FC /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F9197AB09000A5B5FC /* Game.cpp */; };
 		040375FE197ABA9100A5B5FC /* ViewManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375FC197ABA9100A5B5FC /* ViewManager.cpp */; };
+		04037603197AC90900A5B5FC /* Places.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037601197AC90900A5B5FC /* Places.cpp */; };
+		04037606197AC92200A5B5FC /* Army.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037604197AC92200A5B5FC /* Army.cpp */; };
+		0403760A197AD00800A5B5FC /* Buildings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037608197AD00800A5B5FC /* Buildings.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
@@ -48,7 +51,6 @@
 /* Begin PBXFileReference section */
 		040375C21979905100A5B5FC /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
 		040375C8197990B900A5B5FC /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
-		040375CB197990B900A5B5FC /* Upkeep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Upkeep.h; sourceTree = "<group>"; };
 		040375CD197990B900A5B5FC /* Race.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Race.cpp; sourceTree = "<group>"; };
 		040375CE197990B900A5B5FC /* Race.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Race.h; sourceTree = "<group>"; };
 		040375D0197990B900A5B5FC /* ColorMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorMap.cpp; sourceTree = "<group>"; };
@@ -80,6 +82,12 @@
 		040375FA197AB09000A5B5FC /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		040375FC197ABA9100A5B5FC /* ViewManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewManager.cpp; path = src/ui/ViewManager.cpp; sourceTree = SOURCE_ROOT; };
 		040375FD197ABA9100A5B5FC /* ViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewManager.h; path = src/ui/ViewManager.h; sourceTree = SOURCE_ROOT; };
+		04037601197AC90900A5B5FC /* Places.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Places.cpp; sourceTree = "<group>"; };
+		04037602197AC90900A5B5FC /* Places.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Places.h; sourceTree = "<group>"; };
+		04037604197AC92200A5B5FC /* Army.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Army.cpp; sourceTree = "<group>"; };
+		04037605197AC92200A5B5FC /* Army.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Army.h; sourceTree = "<group>"; };
+		04037608197AD00800A5B5FC /* Buildings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Buildings.cpp; path = src/game/cities/Buildings.cpp; sourceTree = SOURCE_ROOT; };
+		04037609197AD00800A5B5FC /* Buildings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Buildings.h; path = src/game/cities/Buildings.h; sourceTree = SOURCE_ROOT; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04879A401978374100313BC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		04879A431978374100313BC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -128,6 +136,8 @@
 			children = (
 				040375CA197990B900A5B5FC /* common */,
 				040375CC197990B900A5B5FC /* players */,
+				04037607197ACFD300A5B5FC /* cities */,
+				04037600197AC8CE00A5B5FC /* units */,
 				040375FF197AC2E100A5B5FC /* world */,
 				040375F9197AB09000A5B5FC /* Game.cpp */,
 				040375FA197AB09000A5B5FC /* Game.h */,
@@ -138,7 +148,6 @@
 		040375CA197990B900A5B5FC /* common */ = {
 			isa = PBXGroup;
 			children = (
-				040375CB197990B900A5B5FC /* Upkeep.h */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -199,8 +208,28 @@
 		040375FF197AC2E100A5B5FC /* world */ = {
 			isa = PBXGroup;
 			children = (
+				04037601197AC90900A5B5FC /* Places.cpp */,
+				04037602197AC90900A5B5FC /* Places.h */,
 			);
 			path = world;
+			sourceTree = "<group>";
+		};
+		04037600197AC8CE00A5B5FC /* units */ = {
+			isa = PBXGroup;
+			children = (
+				04037604197AC92200A5B5FC /* Army.cpp */,
+				04037605197AC92200A5B5FC /* Army.h */,
+			);
+			path = units;
+			sourceTree = "<group>";
+		};
+		04037607197ACFD300A5B5FC /* cities */ = {
+			isa = PBXGroup;
+			children = (
+				04037608197AD00800A5B5FC /* Buildings.cpp */,
+				04037609197AD00800A5B5FC /* Buildings.h */,
+			);
+			path = cities;
 			sourceTree = "<group>";
 		};
 		04879A341978374100313BC7 = {
@@ -319,6 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
 				040375FE197ABA9100A5B5FC /* ViewManager.cpp in Sources */,
 				040375F2197AAF7B00A5B5FC /* View.cpp in Sources */,
 				040375E0197990B900A5B5FC /* Texture.cpp in Sources */,
@@ -330,8 +360,10 @@
 				040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */,
 				040375F8197AB04700A5B5FC /* LocalPlayer.cpp in Sources */,
 				040375FB197AB09000A5B5FC /* Game.cpp in Sources */,
+				04037603197AC90900A5B5FC /* Places.cpp in Sources */,
 				040375F5197AB04100A5B5FC /* Player.cpp in Sources */,
 				040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */,
+				0403760A197AD00800A5B5FC /* Buildings.cpp in Sources */,
 				040375E2197990B900A5B5FC /* main.cpp in Sources */,
 				040375E1197990B900A5B5FC /* Localization.cpp in Sources */,
 				040375DC197990B900A5B5FC /* Race.cpp in Sources */,

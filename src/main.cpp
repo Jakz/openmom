@@ -6,7 +6,6 @@
 #include "Gfx.h"
 #include "Texture.h"
 
-#include "Upkeep.h"
 #include "Race.h"
 
 #include <unordered_map>

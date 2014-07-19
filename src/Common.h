@@ -14,6 +14,9 @@ typedef int32_t s32;
 typedef int64_t s64;
 
 typedef u32 Color;
+#define RGB(r,g,b) Gfx::color(r,g,b)
+#define RGBA(r,g,b,a) Gfx::colora(r,g,b,a)
+
 
 enum I18 : u16;
 enum TextureID : u16;
@@ -43,18 +46,28 @@ struct SpriteInfo
   s16 y;
 };
 
-
+class Upkeep
+{
+  private:
+    s16 gold, mana, food;
+    
+  public:
+    Upkeep(s16 gold = 0, s16 mana = 16, s16 food = 0) : gold(gold), mana(mana), food(food) { }
+    
+  public:
+    void add(const Upkeep &upkeep)
+    {
+      gold += upkeep.gold;
+      mana += upkeep.mana;
+      food += upkeep.food;
+    }
+};
 
 
 
 
 #include <vector>
 
-enum Plane : u8
-{
-  ARCANUS = 0,
-  MYRRAN
-};
 
 enum School : s8
 {
@@ -180,6 +193,67 @@ enum SpellTarget : u8
   
   TARGET_NONE
 };
+
+#pragma mark Map Related
+
+enum Plane : u8
+{
+  ARCANUS = 0,
+  MYRRAN,
+  
+  PLANE_COUNT
+};
+
+enum TileType
+{
+  TILE_GRASS = 0,
+  TILE_WATER,
+  TILE_SHORE,
+  TILE_MOUNTAIN,
+  TILE_VOLCANO,
+  TILE_HILL,
+  TILE_FOREST,
+  TILE_SWAMP,
+  TILE_DESERT,
+  TILE_TUNDRA,
+  TILE_RIVER,
+  TILE_RIVER_MOUTH
+};
+
+enum TileGfxType
+{
+  TILE_GFX_NONE = 0,
+  TILE_GFX_ANIMATED,
+  TILE_GFX_BORDER,
+  TILE_GFX_PLAIN
+};
+
+enum TileResource : u8
+{
+  RESOURCE_ADAMANTIUM = 0,
+  RESOURCE_COAL,
+  RESOURCE_CRYSX_CRYSTAL,
+  RESOURCE_GEMS,
+  RESOURCE_GOLD,
+  RESOURCE_IRON_ORE,
+  RESOURCE_MITHIL,
+  RESOURCE_NIGHT_SHADE,
+  RESOURCE_QOURK_CRYSTAL,
+  RESOURCE_SILVER,
+  RESOURCE_WILD_GAME
+};
+
+enum PlaceType : u8
+{
+  PLACE_TOWER_OF_WIZARDRY = 0,
+  PLACE_TOWER_OF_WIZARDRY_EMPTY,
+  PLACE_CAVE,
+  PLACE_RUINS,
+  PLACE_KEEP,
+  PLACE_TEMPLE,
+  PLACE_ANCIENT_RUINS
+};
+
 
 class Data
 {

@@ -38,10 +38,6 @@ u32 BlinkMap::get(u32 k) const
   }
 }
 
-#define RGB(r,g,b) Gfx::color(r,g,b)
-#define RGBA(r,g,b,a) Gfx::colora(r,g,b,a)
-
-
 namespace FontMap
 {
   static const color_list SMALL_COLORS = {RGB(223, 150, 28), RGB(150, 109, 52), RGB(81, 60, 48)};
