@@ -88,4 +88,6 @@ void i18n::load()
   data.emplace(I18_BUILDING_HOUSING,"Housing");
   data.emplace(I18_BUILDING_MAGE_FORTRESS,"Fortress");
   data.emplace(I18_BUILDING_SUMMONING_CIRCLE,"Summoning Circle");
+  
+  data.emplace(I18_PLACEHOLDER, "Placeholder");
 }

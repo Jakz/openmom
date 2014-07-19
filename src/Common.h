@@ -22,6 +22,8 @@ enum I18 : u16;
 enum TextureID : u16;
 enum Plane : u8;
 
+enum SpellKind : u8;
+
 enum MouseButton : u8
 {
   BUTTON_LEFT = SDL_BUTTON_LEFT,
@@ -145,54 +147,6 @@ struct Trait
   const School school;
 };
 
-enum SpellRarity : u8
-{
-  RARITY_COMMON = 0,
-  RARITY_UNCOMMON,
-  RARITY_RARE,
-  RARITY_VERY_RARE,
-  
-  RARITY_COUNT
-};
-
-enum SpellKind : u8
-{
-  KIND_SUMMONING = 0,
-  KIND_SPECIAL,
-  KIND_CITY,
-  KIND_ENCHANTMENT,
-  KIND_UNIT_SPELL,
-  KIND_COMBAT_SPELL,
-  
-  KIND_COUNT
-};
-
-enum SpellDuration : u8
-{
-  COMBAT_INSTANT,
-  CONTINUOUS,
-  COMBAT_CONTINUOUS,
-  COMBAT_ENCHANTMENT,
-  PERMANENT,
-  UNDEFINED
-};
-
-enum SpellTarget : u8
-{
-  TARGET_FRIENDLY_UNIT,
-  TARGET_ENEMY_UNIT,
-  TARGET_FRIENDLY_CITY,
-  TARGET_ENEMY_CITY,
-  TARGET_ENEMY_UNIT_SPELL,
-  TARGET_FRIENDLY_ARMY,
-  TARGET_ENEMY_ARMY,
-  TARGET_BOTH_ARMIES,
-  TARGET_MAP_TILE,
-  TARGET_VIEWPORT,
-  TARGET_GLOBAL,
-  
-  TARGET_NONE
-};
 
 #pragma mark Map Related
 

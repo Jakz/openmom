@@ -27,6 +27,8 @@
 		04037603197AC90900A5B5FC /* Places.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037601197AC90900A5B5FC /* Places.cpp */; };
 		04037606197AC92200A5B5FC /* Army.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037604197AC92200A5B5FC /* Army.cpp */; };
 		0403760A197AD00800A5B5FC /* Buildings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037608197AD00800A5B5FC /* Buildings.cpp */; };
+		0403760D197AE16100A5B5FC /* Level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403760B197AE16100A5B5FC /* Level.cpp */; };
+		04037611197AE1FF00A5B5FC /* Spells.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403760F197AE1FF00A5B5FC /* Spells.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
@@ -88,6 +90,10 @@
 		04037605197AC92200A5B5FC /* Army.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Army.h; sourceTree = "<group>"; };
 		04037608197AD00800A5B5FC /* Buildings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Buildings.cpp; path = src/game/cities/Buildings.cpp; sourceTree = SOURCE_ROOT; };
 		04037609197AD00800A5B5FC /* Buildings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Buildings.h; path = src/game/cities/Buildings.h; sourceTree = SOURCE_ROOT; };
+		0403760B197AE16100A5B5FC /* Level.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Level.cpp; sourceTree = "<group>"; };
+		0403760C197AE16100A5B5FC /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level.h; sourceTree = "<group>"; };
+		0403760F197AE1FF00A5B5FC /* Spells.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Spells.cpp; path = src/game/spells/Spells.cpp; sourceTree = SOURCE_ROOT; };
+		04037610197AE1FF00A5B5FC /* Spells.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Spells.h; path = src/game/spells/Spells.h; sourceTree = SOURCE_ROOT; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04879A401978374100313BC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		04879A431978374100313BC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -138,6 +144,7 @@
 				040375CC197990B900A5B5FC /* players */,
 				04037607197ACFD300A5B5FC /* cities */,
 				04037600197AC8CE00A5B5FC /* units */,
+				0403760E197AE1F400A5B5FC /* spells */,
 				040375FF197AC2E100A5B5FC /* world */,
 				040375F9197AB09000A5B5FC /* Game.cpp */,
 				040375FA197AB09000A5B5FC /* Game.h */,
@@ -219,6 +226,8 @@
 			children = (
 				04037604197AC92200A5B5FC /* Army.cpp */,
 				04037605197AC92200A5B5FC /* Army.h */,
+				0403760B197AE16100A5B5FC /* Level.cpp */,
+				0403760C197AE16100A5B5FC /* Level.h */,
 			);
 			path = units;
 			sourceTree = "<group>";
@@ -230,6 +239,15 @@
 				04037609197AD00800A5B5FC /* Buildings.h */,
 			);
 			path = cities;
+			sourceTree = "<group>";
+		};
+		0403760E197AE1F400A5B5FC /* spells */ = {
+			isa = PBXGroup;
+			children = (
+				0403760F197AE1FF00A5B5FC /* Spells.cpp */,
+				04037610197AE1FF00A5B5FC /* Spells.h */,
+			);
+			path = spells;
 			sourceTree = "<group>";
 		};
 		04879A341978374100313BC7 = {
@@ -350,10 +368,12 @@
 			files = (
 				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
 				040375FE197ABA9100A5B5FC /* ViewManager.cpp in Sources */,
+				04037611197AE1FF00A5B5FC /* Spells.cpp in Sources */,
 				040375F2197AAF7B00A5B5FC /* View.cpp in Sources */,
 				040375E0197990B900A5B5FC /* Texture.cpp in Sources */,
 				040375DE197990B900A5B5FC /* Font.cpp in Sources */,
 				040375E8197A775300A5B5FC /* Common.cpp in Sources */,
+				0403760D197AE16100A5B5FC /* Level.cpp in Sources */,
 				040375EE197A9DD600A5B5FC /* SDL.cpp in Sources */,
 				040375DF197990B900A5B5FC /* Gfx.cpp in Sources */,
 				040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */,

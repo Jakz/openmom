@@ -2,6 +2,7 @@
 
 #include "Localization.h"
 #include "Gfx.h"
+#include "Spells.h"
 
 using namespace std;
 
