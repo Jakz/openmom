@@ -281,7 +281,7 @@ class Texture
   
     Texture(TextureID ident, const Texture& source, ColorMap& map);
   
-    u16 span(u16 i) { return ws.empty() ? w : ws[i]; }
+    u16 span(u16 i) const { return ws.empty() ? w : ws[i]; }
 
   
     static inline const Texture& get(TextureID ident) { return textures[ident]; }

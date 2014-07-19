@@ -328,3 +328,8 @@ void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
   else
     draw(texture, r, (((offset+ticks)/tex.animFactor)%tex.animatedSprites[r]), x, y);
 }
+
+void Gfx::draw(SpriteInfo& info, int x, int y)
+{
+  draw(info.texture, info.x, info.y, x, y);
+}

@@ -10,16 +10,6 @@
 
 #include <unordered_map>
 
-struct SpriteInfo
-{
-  u16 x, y;
-};
-
-constexpr long double operator"" _deg ( long double deg )
-{
-  return deg*3.141592/180;
-}
-
 
 class SDL
 {
@@ -64,7 +54,7 @@ void SDL::deinit()
 void SDL::render()
 {
   Gfx::draw(MAIN_BACKDROP, 0, 0);
-  Fonts::drawString("Population:", YELLOW_SMALL, 20, 20, ALIGN_LEFT);
+  Fonts::drawString("Population:", RED_SMALLW, 20, 20, ALIGN_LEFT);
   
   SDL_Surface *canvas = Gfx::getCanvas();
   SDL_UpdateTexture(screen, nullptr, canvas->pixels, canvas->pitch);
@@ -84,7 +74,7 @@ int main(int argc, char * arg[])
   const Race &race = Race::race(RACE_BARBARIANS);
   
   std::unordered_map<const void*, SpriteInfo> map;
-  map[reinterpret_cast<const Race *>(&race)] = {15,15};
+  map[reinterpret_cast<const Race *>(&race)] = {MAIN_BACKDROP, 15,15};
   
   //const Race* ptRace = reinterpret_cast<const Race *>(&race);
   
