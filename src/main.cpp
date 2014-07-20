@@ -23,7 +23,7 @@
 void init()
 {
   Game *game = new Game();
-  LocalPlayer *player = new LocalPlayer(game);
+  LocalPlayer *player = new LocalPlayer(game, "Kali", Data::wizard(KALI), GREEN, Race::race(RACE_BARBARIANS), 60, 40);
   
   LocalGame *localGame = new LocalGame();
   localGame->currentPlayer = player;

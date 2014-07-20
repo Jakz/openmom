@@ -17,7 +17,6 @@ typedef u32 Color;
 #define RGB(r,g,b) Gfx::color(r,g,b)
 #define RGBA(r,g,b,a) Gfx::colora(r,g,b,a)
 
-
 enum I18 : u16;
 enum TextureID : u16;
 enum Plane : u8;
@@ -39,6 +38,15 @@ struct Position
 {
   s16 x, y;
   Plane plane;
+  
+  Position() { }
+  Position(s16 x, s16 y, Plane plane) : x(x), y(y), plane(plane) { }
+};
+
+struct PositionOffset
+{
+  s8 x;
+  s8 y;
 };
 
 struct SpriteInfo
@@ -160,7 +168,7 @@ enum Plane : u8
   PLANE_COUNT
 };
 
-enum TileType
+enum TileType : u8
 {
   TILE_GRASS = 0,
   TILE_WATER,
@@ -176,7 +184,7 @@ enum TileType
   TILE_RIVER_MOUTH
 };
 
-enum TileGfxType
+enum TileGfxType : u8
 {
   TILE_GFX_NONE = 0,
   TILE_GFX_ANIMATED,

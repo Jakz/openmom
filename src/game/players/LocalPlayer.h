@@ -18,7 +18,8 @@ class LocalPlayer : public Player
   
   
   public:
-    LocalPlayer(Game *game) : Player(game) { }
+    LocalPlayer(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight) :
+      Player(game,name,wizard,color,race,mapWidth,mapHeight) { }
   
     bool hasMessage() { return false; } // TODO
 };

@@ -31,6 +31,11 @@
 		04037611197AE1FF00A5B5FC /* Spells.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403760F197AE1FF00A5B5FC /* Spells.cpp */; };
 		04037614197AF68700A5B5FC /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037613197AF68700A5B5FC /* Settings.cpp */; };
 		04037618197AF93600A5B5FC /* NewGameView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037616197AF93600A5B5FC /* NewGameView.cpp */; };
+		0403761B197B46DA00A5B5FC /* City.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037619197B46DA00A5B5FC /* City.cpp */; };
+		0403761E197B52F800A5B5FC /* Unit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403761C197B52F800A5B5FC /* Unit.cpp */; };
+		04037621197B539400A5B5FC /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403761F197B539400A5B5FC /* Tile.cpp */; };
+		04037624197B550F00A5B5FC /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037622197B550F00A5B5FC /* Util.cpp */; };
+		04037627197B58C900A5B5FC /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037625197B58C900A5B5FC /* World.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
@@ -54,52 +59,62 @@
 
 /* Begin PBXFileReference section */
 		040375C21979905100A5B5FC /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
-		040375C8197990B900A5B5FC /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
-		040375CD197990B900A5B5FC /* Race.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Race.cpp; sourceTree = "<group>"; };
-		040375CE197990B900A5B5FC /* Race.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Race.h; sourceTree = "<group>"; };
-		040375D0197990B900A5B5FC /* ColorMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorMap.cpp; sourceTree = "<group>"; };
-		040375D1197990B900A5B5FC /* ColorMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorMap.h; sourceTree = "<group>"; };
-		040375D2197990B900A5B5FC /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
-		040375D3197990B900A5B5FC /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
-		040375D4197990B900A5B5FC /* Gfx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Gfx.cpp; sourceTree = "<group>"; };
-		040375D5197990B900A5B5FC /* Gfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gfx.h; sourceTree = "<group>"; };
-		040375D6197990B900A5B5FC /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
-		040375D7197990B900A5B5FC /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
-		040375D9197990B900A5B5FC /* Localization.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Localization.cpp; sourceTree = "<group>"; };
-		040375DA197990B900A5B5FC /* Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Localization.h; sourceTree = "<group>"; };
-		040375DB197990B900A5B5FC /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		040375C8197990B900A5B5FC /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = src/Common.h; sourceTree = SOURCE_ROOT; };
+		040375CD197990B900A5B5FC /* Race.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Race.cpp; path = src/game/players/Race.cpp; sourceTree = SOURCE_ROOT; };
+		040375CE197990B900A5B5FC /* Race.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Race.h; path = src/game/players/Race.h; sourceTree = SOURCE_ROOT; };
+		040375D0197990B900A5B5FC /* ColorMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorMap.cpp; path = src/gfx/ColorMap.cpp; sourceTree = SOURCE_ROOT; };
+		040375D1197990B900A5B5FC /* ColorMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorMap.h; path = src/gfx/ColorMap.h; sourceTree = SOURCE_ROOT; };
+		040375D2197990B900A5B5FC /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Font.cpp; path = src/gfx/Font.cpp; sourceTree = SOURCE_ROOT; };
+		040375D3197990B900A5B5FC /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Font.h; path = src/gfx/Font.h; sourceTree = SOURCE_ROOT; };
+		040375D4197990B900A5B5FC /* Gfx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Gfx.cpp; path = src/gfx/Gfx.cpp; sourceTree = SOURCE_ROOT; };
+		040375D5197990B900A5B5FC /* Gfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Gfx.h; path = src/gfx/Gfx.h; sourceTree = SOURCE_ROOT; };
+		040375D6197990B900A5B5FC /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Texture.cpp; path = src/gfx/Texture.cpp; sourceTree = SOURCE_ROOT; };
+		040375D7197990B900A5B5FC /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = src/gfx/Texture.h; sourceTree = SOURCE_ROOT; };
+		040375D9197990B900A5B5FC /* Localization.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Localization.cpp; path = src/i18n/Localization.cpp; sourceTree = SOURCE_ROOT; };
+		040375DA197990B900A5B5FC /* Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Localization.h; path = src/i18n/Localization.h; sourceTree = SOURCE_ROOT; };
+		040375DB197990B900A5B5FC /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		040375E41979EA6700A5B5FC /* Buttons.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Buttons.cpp; path = src/ui/Buttons.cpp; sourceTree = SOURCE_ROOT; };
 		040375E51979EA6700A5B5FC /* Buttons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Buttons.h; path = src/ui/Buttons.h; sourceTree = SOURCE_ROOT; };
-		040375E7197A775300A5B5FC /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
+		040375E7197A775300A5B5FC /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = src/Common.cpp; sourceTree = SOURCE_ROOT; };
 		040375E9197A9ABC00A5B5FC /* Animations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Animations.cpp; path = src/ui/Animations.cpp; sourceTree = SOURCE_ROOT; };
-		040375EA197A9ABC00A5B5FC /* Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animations.h; sourceTree = "<group>"; };
+		040375EA197A9ABC00A5B5FC /* Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Animations.h; path = src/ui/Animations.h; sourceTree = SOURCE_ROOT; };
 		040375EC197A9DD600A5B5FC /* SDL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDL.cpp; path = src/SDL.cpp; sourceTree = SOURCE_ROOT; };
 		040375ED197A9DD600A5B5FC /* SDL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDL.h; path = src/SDL.h; sourceTree = SOURCE_ROOT; };
 		040375EF197AAC1800A5B5FC /* EventListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventListener.h; path = src/ui/EventListener.h; sourceTree = SOURCE_ROOT; };
-		040375F0197AAF7B00A5B5FC /* View.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = View.cpp; sourceTree = "<group>"; };
-		040375F1197AAF7B00A5B5FC /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
+		040375F0197AAF7B00A5B5FC /* View.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = View.cpp; path = src/ui/View.cpp; sourceTree = SOURCE_ROOT; };
+		040375F1197AAF7B00A5B5FC /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = View.h; path = src/ui/View.h; sourceTree = SOURCE_ROOT; };
 		040375F3197AB04100A5B5FC /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = src/game/players/Player.cpp; sourceTree = SOURCE_ROOT; };
 		040375F4197AB04100A5B5FC /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = src/game/players/Player.h; sourceTree = SOURCE_ROOT; };
 		040375F6197AB04700A5B5FC /* LocalPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LocalPlayer.cpp; path = src/game/players/LocalPlayer.cpp; sourceTree = SOURCE_ROOT; };
 		040375F7197AB04700A5B5FC /* LocalPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalPlayer.h; path = src/game/players/LocalPlayer.h; sourceTree = SOURCE_ROOT; };
-		040375F9197AB09000A5B5FC /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
-		040375FA197AB09000A5B5FC /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		040375F9197AB09000A5B5FC /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Game.cpp; path = src/game/Game.cpp; sourceTree = SOURCE_ROOT; };
+		040375FA197AB09000A5B5FC /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Game.h; path = src/game/Game.h; sourceTree = SOURCE_ROOT; };
 		040375FC197ABA9100A5B5FC /* ViewManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewManager.cpp; path = src/ui/ViewManager.cpp; sourceTree = SOURCE_ROOT; };
 		040375FD197ABA9100A5B5FC /* ViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewManager.h; path = src/ui/ViewManager.h; sourceTree = SOURCE_ROOT; };
-		04037601197AC90900A5B5FC /* Places.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Places.cpp; sourceTree = "<group>"; };
-		04037602197AC90900A5B5FC /* Places.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Places.h; sourceTree = "<group>"; };
-		04037604197AC92200A5B5FC /* Army.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Army.cpp; sourceTree = "<group>"; };
-		04037605197AC92200A5B5FC /* Army.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Army.h; sourceTree = "<group>"; };
+		04037601197AC90900A5B5FC /* Places.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Places.cpp; path = src/game/world/Places.cpp; sourceTree = SOURCE_ROOT; };
+		04037602197AC90900A5B5FC /* Places.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Places.h; path = src/game/world/Places.h; sourceTree = SOURCE_ROOT; };
+		04037604197AC92200A5B5FC /* Army.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Army.cpp; path = src/game/units/Army.cpp; sourceTree = SOURCE_ROOT; };
+		04037605197AC92200A5B5FC /* Army.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Army.h; path = src/game/units/Army.h; sourceTree = SOURCE_ROOT; };
 		04037608197AD00800A5B5FC /* Buildings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Buildings.cpp; path = src/game/cities/Buildings.cpp; sourceTree = SOURCE_ROOT; };
 		04037609197AD00800A5B5FC /* Buildings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Buildings.h; path = src/game/cities/Buildings.h; sourceTree = SOURCE_ROOT; };
-		0403760B197AE16100A5B5FC /* Level.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Level.cpp; sourceTree = "<group>"; };
-		0403760C197AE16100A5B5FC /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level.h; sourceTree = "<group>"; };
+		0403760B197AE16100A5B5FC /* Level.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Level.cpp; path = src/game/units/Level.cpp; sourceTree = SOURCE_ROOT; };
+		0403760C197AE16100A5B5FC /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Level.h; path = src/game/units/Level.h; sourceTree = SOURCE_ROOT; };
 		0403760F197AE1FF00A5B5FC /* Spells.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Spells.cpp; path = src/game/spells/Spells.cpp; sourceTree = SOURCE_ROOT; };
 		04037610197AE1FF00A5B5FC /* Spells.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Spells.h; path = src/game/spells/Spells.h; sourceTree = SOURCE_ROOT; };
 		04037612197AF3D400A5B5FC /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Settings.h; path = src/game/Settings.h; sourceTree = SOURCE_ROOT; };
 		04037613197AF68700A5B5FC /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Settings.cpp; path = src/game/Settings.cpp; sourceTree = SOURCE_ROOT; };
 		04037616197AF93600A5B5FC /* NewGameView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NewGameView.cpp; path = src/ui/views/NewGameView.cpp; sourceTree = SOURCE_ROOT; };
 		04037617197AF93600A5B5FC /* NewGameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewGameView.h; path = src/ui/views/NewGameView.h; sourceTree = SOURCE_ROOT; };
+		04037619197B46DA00A5B5FC /* City.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = City.cpp; path = src/game/cities/City.cpp; sourceTree = SOURCE_ROOT; };
+		0403761A197B46DA00A5B5FC /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = City.h; path = src/game/cities/City.h; sourceTree = SOURCE_ROOT; };
+		0403761C197B52F800A5B5FC /* Unit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Unit.cpp; path = src/game/units/Unit.cpp; sourceTree = SOURCE_ROOT; };
+		0403761D197B52F800A5B5FC /* Unit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Unit.h; path = src/game/units/Unit.h; sourceTree = SOURCE_ROOT; };
+		0403761F197B539400A5B5FC /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tile.cpp; path = src/game/world/Tile.cpp; sourceTree = SOURCE_ROOT; };
+		04037620197B539400A5B5FC /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tile.h; path = src/game/world/Tile.h; sourceTree = SOURCE_ROOT; };
+		04037622197B550F00A5B5FC /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Util.cpp; path = src/game/world/Util.cpp; sourceTree = SOURCE_ROOT; };
+		04037623197B550F00A5B5FC /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = src/game/world/Util.h; sourceTree = SOURCE_ROOT; };
+		04037625197B58C900A5B5FC /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = World.cpp; path = src/game/world/World.cpp; sourceTree = SOURCE_ROOT; };
+		04037626197B58C900A5B5FC /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = World.h; path = src/game/world/World.h; sourceTree = SOURCE_ROOT; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04879A401978374100313BC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		04879A431978374100313BC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -154,8 +169,8 @@
 				040375FF197AC2E100A5B5FC /* world */,
 				040375F9197AB09000A5B5FC /* Game.cpp */,
 				040375FA197AB09000A5B5FC /* Game.h */,
-				04037612197AF3D400A5B5FC /* Settings.h */,
 				04037613197AF68700A5B5FC /* Settings.cpp */,
+				04037612197AF3D400A5B5FC /* Settings.h */,
 			);
 			path = game;
 			sourceTree = "<group>";
@@ -163,6 +178,8 @@
 		040375CA197990B900A5B5FC /* common */ = {
 			isa = PBXGroup;
 			children = (
+				04037622197B550F00A5B5FC /* Util.cpp */,
+				04037623197B550F00A5B5FC /* Util.h */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -192,8 +209,9 @@
 				040375D6197990B900A5B5FC /* Texture.cpp */,
 				040375D7197990B900A5B5FC /* Texture.h */,
 			);
-			path = gfx;
-			sourceTree = "<group>";
+			name = gfx;
+			path = src/gfx;
+			sourceTree = SOURCE_ROOT;
 		};
 		040375D8197990B900A5B5FC /* i18n */ = {
 			isa = PBXGroup;
@@ -201,8 +219,9 @@
 				040375D9197990B900A5B5FC /* Localization.cpp */,
 				040375DA197990B900A5B5FC /* Localization.h */,
 			);
-			path = i18n;
-			sourceTree = "<group>";
+			name = i18n;
+			path = src/i18n;
+			sourceTree = SOURCE_ROOT;
 		};
 		040375E31979E82900A5B5FC /* ui */ = {
 			isa = PBXGroup;
@@ -218,37 +237,49 @@
 				040375E9197A9ABC00A5B5FC /* Animations.cpp */,
 				040375EA197A9ABC00A5B5FC /* Animations.h */,
 			);
-			path = ui;
-			sourceTree = "<group>";
+			name = ui;
+			path = src/ui;
+			sourceTree = SOURCE_ROOT;
 		};
 		040375FF197AC2E100A5B5FC /* world */ = {
 			isa = PBXGroup;
 			children = (
 				04037601197AC90900A5B5FC /* Places.cpp */,
 				04037602197AC90900A5B5FC /* Places.h */,
+				0403761F197B539400A5B5FC /* Tile.cpp */,
+				04037620197B539400A5B5FC /* Tile.h */,
+				04037625197B58C900A5B5FC /* World.cpp */,
+				04037626197B58C900A5B5FC /* World.h */,
 			);
-			path = world;
-			sourceTree = "<group>";
+			name = world;
+			path = src/game/world;
+			sourceTree = SOURCE_ROOT;
 		};
 		04037600197AC8CE00A5B5FC /* units */ = {
 			isa = PBXGroup;
 			children = (
+				0403761C197B52F800A5B5FC /* Unit.cpp */,
+				0403761D197B52F800A5B5FC /* Unit.h */,
 				04037604197AC92200A5B5FC /* Army.cpp */,
 				04037605197AC92200A5B5FC /* Army.h */,
 				0403760B197AE16100A5B5FC /* Level.cpp */,
 				0403760C197AE16100A5B5FC /* Level.h */,
 			);
-			path = units;
-			sourceTree = "<group>";
+			name = units;
+			path = src/game/units;
+			sourceTree = SOURCE_ROOT;
 		};
 		04037607197ACFD300A5B5FC /* cities */ = {
 			isa = PBXGroup;
 			children = (
 				04037608197AD00800A5B5FC /* Buildings.cpp */,
 				04037609197AD00800A5B5FC /* Buildings.h */,
+				04037619197B46DA00A5B5FC /* City.cpp */,
+				0403761A197B46DA00A5B5FC /* City.h */,
 			);
-			path = cities;
-			sourceTree = "<group>";
+			name = cities;
+			path = src/game/cities;
+			sourceTree = SOURCE_ROOT;
 		};
 		0403760E197AE1F400A5B5FC /* spells */ = {
 			isa = PBXGroup;
@@ -256,8 +287,9 @@
 				0403760F197AE1FF00A5B5FC /* Spells.cpp */,
 				04037610197AE1FF00A5B5FC /* Spells.h */,
 			);
-			path = spells;
-			sourceTree = "<group>";
+			name = spells;
+			path = src/game/spells;
+			sourceTree = SOURCE_ROOT;
 		};
 		04037615197AF92C00A5B5FC /* views */ = {
 			isa = PBXGroup;
@@ -265,8 +297,9 @@
 				04037616197AF93600A5B5FC /* NewGameView.cpp */,
 				04037617197AF93600A5B5FC /* NewGameView.h */,
 			);
-			path = views;
-			sourceTree = "<group>";
+			name = views;
+			path = src/ui/views;
+			sourceTree = SOURCE_ROOT;
 		};
 		04879A341978374100313BC7 = {
 			isa = PBXGroup;
@@ -384,11 +417,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04037624197B550F00A5B5FC /* Util.cpp in Sources */,
 				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
 				040375FE197ABA9100A5B5FC /* ViewManager.cpp in Sources */,
 				04037611197AE1FF00A5B5FC /* Spells.cpp in Sources */,
 				040375F2197AAF7B00A5B5FC /* View.cpp in Sources */,
 				040375E0197990B900A5B5FC /* Texture.cpp in Sources */,
+				04037621197B539400A5B5FC /* Tile.cpp in Sources */,
 				040375DE197990B900A5B5FC /* Font.cpp in Sources */,
 				04037614197AF68700A5B5FC /* Settings.cpp in Sources */,
 				040375E8197A775300A5B5FC /* Common.cpp in Sources */,
@@ -402,6 +437,9 @@
 				040375FB197AB09000A5B5FC /* Game.cpp in Sources */,
 				04037603197AC90900A5B5FC /* Places.cpp in Sources */,
 				040375F5197AB04100A5B5FC /* Player.cpp in Sources */,
+				0403761B197B46DA00A5B5FC /* City.cpp in Sources */,
+				0403761E197B52F800A5B5FC /* Unit.cpp in Sources */,
+				04037627197B58C900A5B5FC /* World.cpp in Sources */,
 				040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */,
 				0403760A197AD00800A5B5FC /* Buildings.cpp in Sources */,
 				040375E2197990B900A5B5FC /* main.cpp in Sources */,

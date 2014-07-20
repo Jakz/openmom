@@ -92,7 +92,7 @@ class Building : public Productable
       }
     };
   
-    const Building* get(BuildingID b) { return &buildings[b]; }
+    static const Building* get(BuildingID b) { return &buildings[b]; }
 };
 
 #endif

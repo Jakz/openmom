@@ -59,7 +59,7 @@ class TileGfxSpec
         return colors[plane][0];
     }
   
-  static const TileGfxSpec& spec(TileType type);
+  static const TileGfxSpec& spec(TileType type) { return specs[type]; }
 };
 
 #endif
