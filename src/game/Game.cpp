@@ -8,7 +8,15 @@
 
 #include "Game.h"
 
+#include "World.h"
 #include "LocalPlayer.h"
+
+
+Game::Game() : world(new World(this, 60,40))
+{
+  
+}
+
 
 LocalGame* LocalGame::i = nullptr;
 

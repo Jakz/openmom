@@ -15,7 +15,7 @@ class City;
 class Tile
 {
 private:
-  const World *world;
+  World* world;
   
 public:
   
@@ -27,7 +27,7 @@ public:
   Position position;
   
   ManaNode *node;
-  TileResource resource;
+  Resource resource;
   Place *place;
   
   City* city;
@@ -37,18 +37,30 @@ public:
   
   std::list<SpellCast> spells;
   
-  s8 animationOffset;
+  const s8 animationOffset;
   
   Tile() { }
   
-  Tile(const World* world, Position position) : world(world), position(position), subtype(0), tileGfxType(TILE_GFX_NONE), animationOffset(Util::randomIntUpTo(10))
+  Tile(World* const world, Position position) : world(world), position(position), subtype(0), tileGfxType(TILE_GFX_NONE), animationOffset(Util::randomIntUpTo(10))
   {
   }
   
-  void settleCity(City* city)
+  void settleCity(City* city);
+  
+  void placeRoad(bool enchanted) { hasRoad = true; hasEnchantedRoad = enchanted; }
+  void placeResource(Resource resource) { this->resource = resource; }
+  void placeManaNode(ManaNode* node) { this->node = node; }
+  void placePlace(Place* place) { this->place = place; }
+
+  void unplaceArmy() { army = nullptr; }
+  void placeArmy(Army* army)
   {
-    this->city = city;
+    // TODO
   }
+  
+  bool isCorrupted() { /* TODO*/return false; }
+    
+  void addSpell(SpellCast cast) { spells.push_back(cast); }
 };
 
 #endif

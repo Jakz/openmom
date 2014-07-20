@@ -11,10 +11,15 @@
 
 class Player;
 class LocalPlayer;
+class World;
 
 class Game
 {
+public:
+  Game();
   
+  
+  World* const world;
 };
 
 

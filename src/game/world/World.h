@@ -19,10 +19,8 @@ class World
 private:
   Tile** map;
   
-  const Game* game;
-  
 public:
-  World(const Game* game, u16 w, u16 h) : game(game), w(w), h(h)
+  World(Game* const game, u16 w, u16 h) : game(game), w(w), h(h)
   {
     map = new Tile*[PLANE_COUNT];
     
@@ -131,6 +129,7 @@ public:
   
   void calcSubTile(u16 x, u16 y, Plane p);
   
+  Game* const game;
   const u16 w, h;
 };
 
