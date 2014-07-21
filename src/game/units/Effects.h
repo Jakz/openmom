@@ -16,98 +16,107 @@
 enum class Property : u8;
 class Unit;
 
-enum class SkillEffectType : u8
-{
-  MOVEMENT,
-  IMMUNITY,
-  MAGIC_WEAPONS,
-  
-  PROPERTY_BONUS,
-  ARMY_BONUS,
-  
-  SPECIAL_ATTACK
-};
-
 enum class ImmunityEffectID : u8
 {
-  MAGIC,
-  ILLUSIONS,
-  MISSILE
+
 };
 
-enum class MovementEffectID : u8 // TODO: maybe they can be moved inside relative effect
-{
-  FORESTWALK = 0,
-  FLYING,
-  UNDERGROUND,
-  MOUNTAINWALK,
-  NON_CORPOREAL,
-  PATH_FINDER,
-  PLANAR_TRAVEL,
-  TELEPORT,
-  SWIMMING,
-  WINDWALK,
-  SAILING,
-  DESERTWALK,
-  SWAMPWALK
-};
 
-enum class SpecialAttackID : u8
-{
-  POISON,
-  LIFE_STEALING,
-  STONE_TOUCH,
-  
-  IMMOLATION,
-  
-  FIRE_BREATH,
-  LIGHTING_BREATH,
-  
-  THROWN_ATTACK,
-  
-  DOOM_GAZE,
-  DEATH_GAZE,
-  STONE_GAZE
-};
 
 class SkillEffect
 {
 public:
-  SkillEffect(SkillEffectType type) : type(type) { }
+  const enum class Type : u8
+  {
+    MOVEMENT,
+    ABILITY,
+    IMMUNITY,
+    MAGIC_WEAPONS,
+    
+    PROPERTY_BONUS,
+    ARMY_BONUS,
+    
+    SPECIAL_ATTACK
+  } type;
   
-  const SkillEffectType type;
+  SkillEffect(Type type) : type(type) { }
 };
 
-class MovementEffect : public SkillEffect
+class SimpleEffect : public SkillEffect
 {
 public:
-  MovementEffect(MovementEffectID movement, bool shared) : SkillEffect(SkillEffectType::MOVEMENT), movement(movement), shared(shared) { }
+  const enum class Type : u16
+  {
+    FORESTWALK = 0,
+    FLYING,
+    UNDERGROUND,
+    MOUNTAINWALK,
+    NON_CORPOREAL,
+    PATH_FINDER,
+    PLANAR_TRAVEL,
+    TELEPORT,
+    SWIMMING,
+    WINDWALK,
+    SAILING,
+    DESERTWALK,
+    SWAMPWALK,
+    
+    IMMUNITY_MAGIC,
+    IMMUNITY_ILLUSIONS,
+    IMMUNITY_MISSILE,
+    
+    
+    POISON,
+    LIFE_STEALING,
+    STONE_TOUCH,
+    
+    IMMOLATION,
+    
+    FIRE_BREATH,
+    LIGHTING_BREATH,
+    
+    THROWN_ATTACK,
+    
+    DOOM_GAZE,
+    DEATH_GAZE,
+    STONE_GAZE,
+    
+    
+    
+    CREATE_OUTPOST,
+    CREATE_ROAD,
+    MELD_NODE,
+    WALL_CRUSHING,
+    PURIFY,
+    
+    FIRST_STRIKE,
+    NEGATE_FIRST_STRIKE,
+    ARMOR_PIERCING,
+    LONG_RANGE,
+    ILLUSIONARY_ATTACK
+  } effect;
   
-  const MovementEffectID movement;
+  SimpleEffect(SkillEffect::Type type, Type effect) : SkillEffect(type), effect(effect) { }
+};
+
+class MovementEffect : public SimpleEffect
+{
+public:
+  MovementEffect(SimpleEffect::Type movement, bool shared) : SimpleEffect(SkillEffect::Type::MOVEMENT, movement), shared(shared) { }
   const bool shared;
 };
 
-class ImmunityEffect : public SkillEffect
+class SpecialAttackEffect : public SimpleEffect
 {
 public:
-  ImmunityEffect(ImmunityEffectID immunity) : SkillEffect(SkillEffectType::IMMUNITY), immunity(immunity) { }
-  
-  const ImmunityEffectID immunity;
-};
-
-class SpecialAttackEffect : public SkillEffect
-{
-public:
-  SpecialAttackEffect(SpecialAttackID attack, s16 strength = 0) : SkillEffect(SkillEffectType::SPECIAL_ATTACK), attack(attack), strength(strength) { }
-  
-  const SpecialAttackID attack;
+  SpecialAttackEffect(SimpleEffect::Type attack, s16 strength = 0) : SimpleEffect(SkillEffect::Type::SPECIAL_ATTACK, attack), strength(strength) { }
   const s16 strength;
 };
 
 class PropertyBonus : public SkillEffect
 {
 protected:
-  PropertyBonus(Property property, s16 value) : SkillEffect(SkillEffectType::PROPERTY_BONUS), property(property), value(value) { }
+  PropertyBonus(Property property, s16 value) : SkillEffect(SkillEffect::Type::PROPERTY_BONUS), property(property), value(value) { }
   
 public:
  

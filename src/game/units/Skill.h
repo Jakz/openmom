@@ -248,9 +248,8 @@ public:
   
   effect_list& getEffects() const override { return effects; }
   
-  const MovementEffect* hasEffect(MovementEffectID ident);
-  const SpecialAttackEffect* hasEffect(SpecialAttackID ident);
-  const ImmunityEffect* hasEffect(ImmunityEffectID ident);
+  bool hasSimpleEffect(SimpleEffect::Type type);
+  const SpecialAttackEffect* hasEffect(SimpleEffect::Type ident);
   
   const std::string name() override;
 };

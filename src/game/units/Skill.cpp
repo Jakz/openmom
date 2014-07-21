@@ -79,38 +79,39 @@ const string ConcreteSkill::name()
   {
     const SkillEffect *effect = effects[0];
     
-    if (effect->type == SkillEffectType::PROPERTY_BONUS)
+    if (effect->type == SkillEffect::Type::PROPERTY_BONUS)
       return string("+") + to_string(static_cast<const PropertyBonus*>(effect)->value) + " " + Skill::name();
-    else if (effects[0]->type == SkillEffectType::SPECIAL_ATTACK)
+    else if (effects[0]->type == SkillEffect::Type::SPECIAL_ATTACK)
       return Skill::name() + " (" + to_string(static_cast<const SpecialAttackEffect*>(effect)->strength) + ")";
   }
   
   return "";
 }
 
-const MovementEffect* ConcreteSkill::hasEffect(MovementEffectID ident)
+bool ConcreteSkill::hasSimpleEffect(SimpleEffect::Type type)
 {
-  auto it = find_if(effects.begin(), effects.end(), [&](const SkillEffect* effect) { return effect->type == SkillEffectType::MOVEMENT && static_cast<const MovementEffect*>(effect)->movement == ident; });
-  return it != effects.end() ? static_cast<const MovementEffect*>(*it) : nullptr;
+  auto it = find_if(effects.begin(), effects.end(), [&](const SkillEffect* effect) {
+    switch (effect->type)
+    {
+      case SkillEffect::Type::IMMUNITY:
+      case SkillEffect::Type::MOVEMENT:
+      case SkillEffect::Type::ABILITY:
+        return static_cast<const SimpleEffect*>(effect)->effect == type;
+      default: return false;
+    }
+  });
+  
+  return it != effects.end();
 }
 
-const SpecialAttackEffect* ConcreteSkill::hasEffect(SpecialAttackID ident)
+const SpecialAttackEffect* ConcreteSkill::hasEffect(SimpleEffect::Type ident)
 {
-  auto it = find_if(effects.begin(), effects.end(), [&](const SkillEffect* effect) { return effect->type == SkillEffectType::SPECIAL_ATTACK && static_cast<const SpecialAttackEffect*>(effect)->attack == ident; });
+  auto it = find_if(effects.begin(), effects.end(), [&](const SkillEffect* effect) { return effect->type == SkillEffect::Type::SPECIAL_ATTACK && static_cast<const SimpleEffect*>(effect)->effect == ident; });
   return it != effects.end() ? static_cast<const SpecialAttackEffect*>(*it) : nullptr;
 }
 
-const ImmunityEffect* ConcreteSkill::hasEffect(ImmunityEffectID ident)
-{
-  auto it = find_if(effects.begin(), effects.end(), [&](const SkillEffect* effect) { return effect->type == SkillEffectType::IMMUNITY && static_cast<const ImmunityEffect*>(effect)->immunity == ident; });
-  return it != effects.end() ? static_cast<const ImmunityEffect*>(*it) : nullptr;
-}
 
-
-
-
-
-const ConcreteSkill Skills::IMMUNITY_MAGIC = ConcreteSkill(SkillBase::IMMUNITY_MAGIC, {new ImmunityEffect(ImmunityEffectID::MAGIC), new UnitBonus(Property::RESIST, 50)} );
-const ConcreteSkill Skills::IMMUNITY_MISSILE = ConcreteSkill(SkillBase::IMMUNITY_MISSILE, {new ImmunityEffect(ImmunityEffectID::MISSILE), new UnitBonus(Property::SHIELDS_RANGED, 50)} );
-const ConcreteSkill Skills::IMMUNITY_ILLUSIONS = ConcreteSkill(SkillBase::IMMUNITY_ILLUSIONS, {new ImmunityEffect(ImmunityEffectID::ILLUSIONS)} );
+const ConcreteSkill Skills::IMMUNITY_MAGIC = ConcreteSkill(SkillBase::IMMUNITY_MAGIC, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MAGIC), new UnitBonus(Property::RESIST, 50)} );
+const ConcreteSkill Skills::IMMUNITY_MISSILE = ConcreteSkill(SkillBase::IMMUNITY_MISSILE, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MISSILE), new UnitBonus(Property::SHIELDS_RANGED, 50)} );
+const ConcreteSkill Skills::IMMUNITY_ILLUSIONS = ConcreteSkill(SkillBase::IMMUNITY_ILLUSIONS, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_ILLUSIONS)} );
 
