@@ -8,6 +8,7 @@
 
 class MovementEffect;
 class Unit;
+class Route;
 class Player;
 
 typedef std::unordered_set<const MovementEffect*> movement_list;
@@ -27,7 +28,7 @@ private:
   
   void updateMovementType();
 
-  //TODO: Route route
+  const Route* route;
 
 public:
   Army(Player* owner, std::initializer_list<Unit*> units = {});
@@ -59,6 +60,9 @@ public:
   Player* getOwner() { return owner; }
   
   void turnBegin();
+  
+  void setRoute(const Route* route) { this->route = route; }
+  void clearRoute() { this->route = nullptr; }
   
   typedef std::list<Unit*>::iterator iterator;
   typedef std::list<Unit*>::const_iterator const_iterator;
