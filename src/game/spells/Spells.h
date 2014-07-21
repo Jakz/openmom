@@ -3,8 +3,13 @@
 
 #include "Common.h"
 
+#include <list>
+
+
 class Player;
 class Skill;
+
+
 
 enum SpellRarity : u8
 {
@@ -155,6 +160,9 @@ struct ResearchStatus
   
   ResearchStatus(const Spell& spell, bool discovered = false) : spell(spell), discovered(discovered) { }
 };
+
+typedef std::list<const SpellCast> cast_list;
+
 
 
 #endif

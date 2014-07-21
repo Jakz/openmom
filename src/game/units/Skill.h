@@ -245,6 +245,8 @@ public:
   bool hideValue;
   
   ConcreteSkill(SkillBase base, effect_init_list effects, bool hideValue = true) : Skill(base), effects(effects), hideValue(hideValue) { }
+  ConcreteSkill(SkillBase base, effect_list effects, bool hideValue = true) : Skill(base), effects(effects), hideValue(hideValue) { }
+
   
   effect_list& getEffects() const override { return effects; }
   
@@ -277,6 +279,10 @@ class Skills
 {
 public:
   static const ConcreteSkill IMMUNITY_MISSILE, IMMUNITY_MAGIC, IMMUNITY_ILLUSIONS;
+  
+  static const ConcreteSkill LUCKY;
+  
+  static const ConcreteSkill LARGE_SHIELD;
 };
 
 #endif

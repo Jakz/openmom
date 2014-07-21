@@ -20,6 +20,8 @@
 
 #include "Localization.h"
 
+#include "Skill.h"
+
 void init()
 {
   Game *game = new Game();
@@ -42,7 +44,7 @@ int main(int argc, char * arg[])
   //const Race* ptRace = reinterpret_cast<const Race *>(&race);
   
   // init SDL
-    
+      
   init();
   
   SDL::init();

@@ -63,7 +63,7 @@ private:
   
   bool isStillOutpost;
   
-  std::list<const SpellCast> spells;
+  cast_list spells;
   
 
 public:
@@ -91,7 +91,7 @@ public:
     return std::find_if(spells.begin(), spells.end(), [&](const SpellCast cast) { return &cast.spell == &spell; }) != spells.end();
   }
   // TODO: remove spell is missing
-  const std::list<const SpellCast>& getSpells() { return spells; }
+  const cast_list& getSpells() { return spells; }
 };
 
 #endif

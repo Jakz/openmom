@@ -115,3 +115,9 @@ const ConcreteSkill Skills::IMMUNITY_MAGIC = ConcreteSkill(SkillBase::IMMUNITY_M
 const ConcreteSkill Skills::IMMUNITY_MISSILE = ConcreteSkill(SkillBase::IMMUNITY_MISSILE, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MISSILE), new UnitBonus(Property::SHIELDS_RANGED, 50)} );
 const ConcreteSkill Skills::IMMUNITY_ILLUSIONS = ConcreteSkill(SkillBase::IMMUNITY_ILLUSIONS, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_ILLUSIONS)} );
 
+const ConcreteSkill Skills::LUCKY = ConcreteSkill(SkillBase::LUCKY, UnitBonus::build({Property::TO_HIT, Property::TO_DEFEND, Property::RESIST}, 1));
+
+
+const ConcreteSkill Skills::LARGE_SHIELD = ConcreteSkill(SkillBase::LARGE_SHIELD, {new UnitBonus(Property::SHIELDS_RANGED,2)} );
+
+

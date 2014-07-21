@@ -18,11 +18,15 @@
 class Race;
 class Game;
 class City;
+class Army;
+class Hero;
 
 class Player
 {
   private:
     std::list<City*> cities;
+    std::list<Army*> armies;
+    std::list<Hero*> heroes;
 
     Game *g;
   
@@ -34,6 +38,14 @@ class Player
     Game *game() { return g; }
 
     void add(City* city) { cities.push_back(city); }
+    void add(Army* army) { armies.push_back(army); }
+    void add(Hero* hero) { heroes.push_back(hero); }
+  
+    void remove(Army* army) { armies.remove(army); }
+  
+    void selectAll() { } // TODO
+  
+    void discoverRange(Position pos, s16 range) { } // TODO
   
     const std::string name;
     const Wizard& wizard;

@@ -13,15 +13,12 @@
 
 #include <vector>
 
+class SkillEffect;
+typedef const std::vector<const SkillEffect*> effect_list;
+typedef const std::initializer_list<const SkillEffect*> effect_init_list;
+
 enum class Property : u8;
 class Unit;
-
-enum class ImmunityEffectID : u8
-{
-
-};
-
-
 
 class SkillEffect
 {
@@ -132,6 +129,14 @@ class UnitBonus : public PropertyBonus
 {
 public:
   UnitBonus(Property property, s16 value) : PropertyBonus(property, value) { }
+  
+  static effect_list  build(std::initializer_list<Property> properties, s16 value)
+  {
+    std::vector<const SkillEffect*> effects;
+    effects.resize(properties.size());
+    std::transform(properties.begin(), properties.end(), effects.begin(), [&] (const Property& property) { return new UnitBonus(property, value); });
+    return effects;
+  }
 };
 
 class ArmyBonus : public PropertyBonus
@@ -154,7 +159,6 @@ public:
   static const MovementEffect FORESTWALK, FLYING, UNDERGROUND, MOUNTAINWALK, NON_CORPOREAL, PATH_FINDER, PLANAR_TRAVEL, TELEPORT, SWIMMING, WINDWALK, SAILING, DESERTWALK, SWAMPWALK;
 };
 
-typedef const std::vector<const SkillEffect*> effect_list;
-typedef const std::initializer_list<const SkillEffect*> effect_init_list;
+
 
 #endif

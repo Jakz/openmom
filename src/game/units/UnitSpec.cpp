@@ -44,7 +44,7 @@ s16 UnitSpec::getProperty(Property property) const
 
 
 static const RaceUnitSpec raceSpecs[] = {
-  RaceUnitSpec(  UnitID::SPEARMEN, RaceID::BARBARIANS, 0,  15,     1, 0,   Ranged::NONE, 0,    2, 5, 1, 8,    1, 1,   {}), // LARGE_SHIELD
+  RaceUnitSpec(  UnitID::SPEARMEN, RaceID::BARBARIANS, 0,  15,     1, 0,   Ranged::NONE, 0,    2, 5, 1, 8,    1, 1,   {&Skills::LARGE_SHIELD}),
   RaceUnitSpec( UnitID::SWORDSMEN, RaceID::BARBARIANS, 1,  30,     3, 0,   Ranged::NONE, 0,    2, 5, 1, 6,    1, 1,   {}),
   RaceUnitSpec(    UnitID::BOWMEN, RaceID::BARBARIANS, 1,  30,     1, 1,  Ranged::ARROW, 8,    1, 5, 1, 6,    1, 1,   {}),
   RaceUnitSpec(   UnitID::CAVALRY, RaceID::BARBARIANS, 2,  60,     4, 0,   Ranged::NONE, 0,    2, 5, 3, 4,    2, 1,   {}),
