@@ -23,6 +23,7 @@ private:
 
 public:
   static float rand() { return real(rng); }
+  static float rand(float max) { return real(rng)*max; }
   
   static u32 randomIntUpTo(u32 i) { return integer(rng)%i; }
   static u32 randomIntInclusive(u32 l, u32 h) { return l + integer(rng)%(h-l+1); }

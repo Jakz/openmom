@@ -200,11 +200,12 @@ enum class Resource : u8
   GEMS,
   GOLD,
   IRON_ORE,
-  MITHIL,
+  MITHRIL,
   NIGHT_SHADE,
   QOURK_CRYSTAL,
   SILVER,
-  WILD_GAME
+  WILD_GAME,
+  NONE
 };
 
 enum PlaceType : u8

@@ -35,7 +35,7 @@ class Player
       g(game), wizard(wizard), race(race), color(color), name(name)
     { }
   
-    Game *game() { return g; }
+    Game *game() const { return g; }
 
     void add(City* city) { cities.push_back(city); }
     void add(Army* army) { armies.push_back(army); }
@@ -44,6 +44,7 @@ class Player
     void remove(Army* army) { armies.remove(army); }
   
     void selectAll() { } // TODO
+    s16 selectedCount() const { return 0; } // TODO
   
     void discoverRange(Position pos, s16 range) { } // TODO
   

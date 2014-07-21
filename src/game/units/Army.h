@@ -10,6 +10,9 @@ class MovementEffect;
 class Unit;
 class Player;
 
+typedef std::unordered_set<const MovementEffect*> movement_list;
+typedef std::list<Unit*> unit_list;
+
 class Army
 {
 
@@ -18,11 +21,11 @@ private:
   bool isPatrol;
 
   Player *owner;
-  std::list<Unit*> units;
+  unit_list units;
   
-  std::unordered_set<const MovementEffect*> movementType;
+  movement_list movementType;
   
-  void updateMovementType() { } // TODO
+  void updateMovementType();
 
   //TODO: Route route
 
@@ -34,8 +37,8 @@ public:
   s16 availableMoves();
   void resetMoves();
   
-  const std::unordered_set<const MovementEffect*> getMovementType() { return movementType; }
-  bool hasMovement(const MovementEffect& movement) { return movementType.find(&movement) != movementType.end(); }
+  const movement_list& getMovementType() { return movementType; }
+  bool hasMovement(const MovementEffect& movement) const { return movementType.find(&movement) != movementType.end(); }
   
   Unit* firstSelected() { return !units.empty() ? units.front() : nullptr; }
   void merge(Army* army);
@@ -44,12 +47,16 @@ public:
   void unpatrol() { isPatrol = false; }
   bool isPatrolling() { return isPatrol; }
   bool isPlaced() { return position.x != -1; }
+  const Position& getPosition() { return position; }
   
   void add(Unit* unit);
   Unit* remove(Unit* unit);
   
   size_t size() { return units.size(); }
   Unit* get(u16 index) { return *std::next(units.begin(), index); }
+  const unit_list& getUnits() { return units; }
+  
+  Player* getOwner() { return owner; }
   
   void turnBegin();
   

@@ -9,6 +9,9 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include "Settings.h"
+#include "MapMechanics.h"
+
 class Player;
 class LocalPlayer;
 class World;
@@ -18,7 +21,9 @@ class Game
 public:
   Game();
   
+  Settings settings;
   
+  MapMechanics mapMechanics;
   World* const world;
 };
 
@@ -29,6 +34,8 @@ class LocalGame
     LocalGame();
   
     LocalPlayer *currentPlayer;
+  
+  
   
     static LocalGame* i;
 };

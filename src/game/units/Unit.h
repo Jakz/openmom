@@ -28,7 +28,11 @@ public:
   
   void resetMoves() { } // TODO
   s16 availableMoves() const { return 0; } // TODO
+  void useMoves(s16 moves) { } // TODO
+  
   void turnBegin() { } // TODO
+  
+  bool hasSkillEffect(const SkillEffect* effect) const { return false; }
   
   const UnitSpec& spec;
 };

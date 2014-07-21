@@ -41,7 +41,7 @@ public:
   
   Tile() { }
   
-  Tile(World* const world, Position position) : world(world), position(position), subtype(0), tileGfxType(TILE_GFX_NONE), animationOffset(Util::randomIntUpTo(10))
+  Tile(World* const world, Position position) : world(world), position(position), subtype(0), tileGfxType(TILE_GFX_NONE), animationOffset(Util::randomIntUpTo(10)), resource(Resource::NONE)
   {
   }
   

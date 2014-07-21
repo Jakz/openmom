@@ -7,7 +7,7 @@ const s16 ArmyBonus::getValue(Unit* unit) const {
 }
 
 
-
+constexpr const MovementEffect* const Effects::MOVEMENT_EFFECTS[];
 
 const MovementEffect Effects::FORESTWALK = MovementEffect(SimpleEffect::Type::FORESTWALK, true);
 const MovementEffect Effects::FLYING = MovementEffect(SimpleEffect::Type::FLYING, false);

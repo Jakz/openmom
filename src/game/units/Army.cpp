@@ -2,6 +2,7 @@
 
 #include "Unit.h"
 #include "Player.h"
+#include "Game.h"
 
 using namespace std;
 
@@ -13,6 +14,11 @@ Army::Army(Player* owner, initializer_list<Unit*> units) : owner(owner), isPatro
     updateMovementType();
 }
 
+
+void Army::updateMovementType()
+{
+  movementType = owner->game()->mapMechanics.movementTypeOfArmy(units);
+}
 
 
 s16 Army::sightRange()

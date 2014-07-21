@@ -60,6 +60,8 @@ struct SettingGroup
   const std::string& groupName();
   const std::string& currentValue();
   
+  const SettingID value() { return group[selected].value; }
+  
 };
 
 struct Settings
@@ -70,7 +72,7 @@ struct Settings
   public:
     Settings();
   
-  SettingGroup &group(SettingGroupID ident) { return *std::find_if(settings.begin(), settings.end(), [&](SettingGroup &group) { return group.ident == ident; });  }
+    SettingGroup &group(SettingGroupID ident) { return *std::find_if(settings.begin(), settings.end(), [&](SettingGroup &group) { return group.ident == ident; });  }
 };
 
 

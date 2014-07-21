@@ -19,7 +19,7 @@ class ManaNode
   
     Army* guards;
   
-    ManaNode(School school) : school(school), owner(nullptr), guards(nullptr), mana(0) { }
+    ManaNode(School school, s16 mana = 0) : school(school), owner(nullptr), guards(nullptr), mana(mana) { }
 };
 
 class Place
