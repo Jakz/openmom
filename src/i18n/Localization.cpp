@@ -103,6 +103,10 @@ unordered_map<I18, const string> i18n::data =
   {I18::HERO_DWARF,"Dward"},
   {I18::HERO_ORC_WARRIOR,"Orc Warrior"},
   
+  {I18::UNIT_MAGIC_SPIRIT,"Magic Spirit"},
+  {I18::UNIT_HELL_HOUNDS,"Hell Hounds"},
+  {I18::UNIT_GREAT_DRAKE,"Great Drake"},
+
   
   {I18::PLACEHOLDER, "Placeholder"},
 };

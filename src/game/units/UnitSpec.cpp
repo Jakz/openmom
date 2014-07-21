@@ -62,6 +62,13 @@ static const HeroSpec heroSpecs[] = {
   HeroSpec(UnitID::HERO_ORC_WARRIOR, I18::HERO_ORC_WARRIOR, HeroType::HERO, ItemSlots::WARRIOR, 2, -1,   6, 0, Ranged::NONE, 0,    4, 6, 8, 1,    1, 1,   {}) // MOUNTAINWALK
 };
 
+static const SummonSpec summonSpecs[] = {
+  SummonSpec(UnitID::MAGIC_SPIRIT, I18::UNIT_MAGIC_SPIRIT, 1, 30,    5, 0, Ranged::NONE, 0,    4, 8, 10, 1,     1, 2,   {}), // MELD NON_CORPOREAL
+
+  SummonSpec(UnitID::HELL_HOUNDS, I18::UNIT_HELL_HOUNDS,   1, 40,     3, 0, Ranged::NONE, 0,      2, 6, 4, 4,     2, 1,   {}),
+  SummonSpec(UnitID::GREAT_DRAKE, I18::UNIT_GREAT_DRAKE, 30, 900,    30, 0, Ranged::NONE, 0,     10,12,30, 1,     2, 2,   {})  //FLYING TO_HIT3 FIERY_BREATH20
+};
+
 
 
 
@@ -79,3 +86,20 @@ const HeroSpec* UnitSpec::heroSpec(UnitID unit)
   return spec != end(heroSpecs) ? spec : nullptr;
 }
 
+const SummonSpec* UnitSpec::summonSpec(UnitID unit)
+{
+  const SummonSpec* spec =  find_if(begin(summonSpecs), end(summonSpecs), [&](const SummonSpec& spec) { return spec.ident == unit; } );
+  return spec != end(summonSpecs) ? spec : nullptr;
+}
+
+const UnitSpec* UnitSpec::unitSpec(UnitID unit, RaceID race)
+{
+  const UnitSpec* spec = heroSpec(unit);
+  if (spec) return spec;
+  
+  spec = summonSpec(unit);
+  if (spec) return spec;
+  
+  spec = raceSpec(unit, race);
+  return spec ? spec : nullptr;
+}

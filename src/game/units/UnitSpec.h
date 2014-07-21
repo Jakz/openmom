@@ -81,8 +81,9 @@ enum class UnitID : u16
   
   
   MAGIC_SPIRIT,
-  GREAT_DRAKE,
   HELL_HOUNDS,
+  GREAT_DRAKE,
+
   
   HERO_DWARF,
   HERO_ORC_WARRIOR
@@ -150,6 +151,7 @@ enum class HeroType : u8
 
 class RaceUnitSpec;
 class HeroSpec;
+class SummonSpec;
 
 class UnitSpec : public Productable
 {
@@ -184,8 +186,10 @@ public:
   u16 productionCost() const override { return cost; }
   const Upkeep& productionUpkeep() const override { return upkeep; }
   
+  static const UnitSpec* unitSpec(UnitID unit, RaceID race = RaceID::BARBARIANS);
   static const RaceUnitSpec* raceSpec(UnitID unit, RaceID race);
   static const HeroSpec* heroSpec(UnitID unit);
+  static const SummonSpec* summonSpec(UnitID unit);
 };
 
 class RaceUnitSpec : public UnitSpec
