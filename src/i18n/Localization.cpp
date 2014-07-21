@@ -1,5 +1,8 @@
 #include "Localization.h"
 
+#include "UnitSpec.h"
+
+
 using namespace std;
 
 unordered_map<I18, const string> i18n::data =
@@ -110,3 +113,162 @@ unordered_map<I18, const string> i18n::data =
   
   {I18::PLACEHOLDER, "Placeholder"},
 };
+
+unordered_map<UnitID, const string> i18n::units =
+{
+  {UnitID::SPEARMEN,"Spearmen"},
+  {UnitID::SWORDSMEN,"Swordsmen"},
+  {UnitID::BOWMEN,"Bowmen"},
+  {UnitID::CAVALRY,"Cavalry"},
+  {UnitID::SHAMANS,"Shaman"},
+  {UnitID::HALBERDIERS,"Helberdiers"},
+  {UnitID::PRIESTS,"Priests"},
+  {UnitID::MAGICIANS,"Magicians"},
+  {UnitID::ENGINEERS,"Engineers"},
+  {UnitID::SETTLERS,"Settlers"},
+  
+  {UnitID::BERSERKERS,"Berserkers"},
+  
+  {UnitID::HERO_DWARF,"Dward"},
+  {UnitID::HERO_ORC_WARRIOR,"Orc Warrior"},
+  
+  {UnitID::MAGIC_SPIRIT,"Magic Spirit"},
+  {UnitID::HELL_HOUNDS,"Hell Hounds"},
+  {UnitID::GREAT_DRAKE,"Great Drake"},
+};
+
+unordered_map<SkillBase, const string> i18n::skills =
+{
+  {SkillBase::HERO_AGILITY, "Agility"},
+  {SkillBase::HERO_ARCANE_POWER, "Arcane Power"},
+  {SkillBase::HERO_ARMS_MASTER, "Arms Master"},
+  {SkillBase::HERO_BLADE_MASTER, "Blade Master"},
+  {SkillBase::HERO_CHARMED, "Charmed"},
+  {SkillBase::HERO_CONSTITUTION, "Constitution"},
+  {SkillBase::HERO_LEADERSHIP, "Leadership"},
+  {SkillBase::HERO_LEGENDARY, "Legendary"},
+  {SkillBase::HERO_LUCK, "Luck"},
+  {SkillBase::HERO_MIGHT, "Might"},
+  {SkillBase::HERO_NOBLE, "Noble"},
+  {SkillBase::HERO_PRAYER_MASTER, "Prayer Master"},
+  {SkillBase::HERO_SAGE, "Sage"},
+  {SkillBase::HERO_SPELL_CASTER, "Spell Caster"},
+  
+  {SkillBase::LARGE_SHIELD, "Large Shield"},
+  {SkillBase::FIRST_STRIKE, "First Strike"},
+  {SkillBase::NEGATE_FIRST_STRIKE, "Negate First Strike"},
+  {SkillBase::ARMOR_PIERCING, "Armor Piercing"},
+  {SkillBase::LONG_RANGE, "Long Range"},
+  {SkillBase::DISPEL_EVIL, "Dispel Evil"},
+  {SkillBase::CAUSE_FEAR, "Cause Fear Spell"},
+  {SkillBase::WEB_SPELL, "Web Spell"},
+  {SkillBase::CREATE_UNDEAD, "Create Undead"},
+  {SkillBase::SUMMON_DEMONS, "Summon Demons"},
+  {SkillBase::CASTER, "Caster"},
+  {SkillBase::HEALING_SPELL, "Healing Spell"},
+  {SkillBase::FIRE_BALL_SPELL, "Fire Ball Spell"},
+  {SkillBase::DOOM_BOLT_SPELL, "Doom Bolt Spell"},
+  
+  {SkillBase::ILLUSIONARY_ATTACK, "Illusionary Attack"},
+  {SkillBase::POISON_ATTACK, "Poison Attack"},
+  {SkillBase::LIFE_STEALING, "Life Stealing"},
+  {SkillBase::FIERY_BREATH, "Fiery Breath"},
+  {SkillBase::LIGHTING_BREATH, "Lighting Breath"},
+  {SkillBase::DOOM_GAZE, "Doom Gaze"},
+  {SkillBase::DEATH_GAZE, "Death Gaze"},
+  {SkillBase::STONE_GAZE, "Stoning Gaze"},
+  {SkillBase::STONE_TOUCH, "Stoning Touch"},
+  {SkillBase::IMMOLATION, "Immolation"},
+  {SkillBase::THROW_WEAPON, "Throw Weapon"},
+  
+  {SkillBase::IMMUNITY_POISON, "Poison Immunity"},
+  {SkillBase::IMMUNITY_FIRE, "Fire Immunity"},
+  {SkillBase::IMMUNITY_STONING, "Stoning Immunity"},
+  {SkillBase::IMMUNITY_WEAPON, "Weapon Immunity"},
+  {SkillBase::IMMUNITY_MISSILE, "Missiles Immunity"},
+  {SkillBase::IMMUNITY_ILLUSIONS, "Illusions Immunity"},
+  {SkillBase::IMMUNITY_COLD, "Cold Immunity"},
+  {SkillBase::IMMUNITY_MAGIC, "Magic Immunity"},
+  {SkillBase::IMMUNITY_DEATH, "Death Immunity"},
+  
+  {SkillBase::MELD, "Meld With Node"},
+  {SkillBase::PURIFY, "Purify"},
+  {SkillBase::CREATE_OUTPOST, "Create Outpost"},
+  {SkillBase::CREATE_ROAD, "Create Road"},
+  {SkillBase::WALL_CRUSHING, "Wall Crushing"},
+  
+  {SkillBase::SCOUTING, "Scouting"},
+  {SkillBase::TO_HIT, "To Hit"},
+  {SkillBase::LUCKY, "Lucky"},
+  {SkillBase::HOLY_BONUS, "Holy Bonus"},
+  {SkillBase::RESISTANCE_TO_ALL, "Resistance to All"},
+  {SkillBase::HEALER, "Healer"},
+  
+  {SkillBase::FORESTWALK, "Forester"},
+  {SkillBase::FLYING, "Flight"},
+  {SkillBase::UNDERGROUND, "Merging"},
+  {SkillBase::MOUNTAINWALK, "Mountaineer"},
+  {SkillBase::NON_CORPOREAL, "Non Corporeal"},
+  {SkillBase::PATH_FINDER, "Path Finding"},
+  {SkillBase::PLANAR_TRAVEL, "Plane Shift"},
+  {SkillBase::TELEPORT, "Teleport"},
+  {SkillBase::SWIMMING, "Waterwalking"},
+  {SkillBase::WINDWALK, "Windwalking"},
+  {SkillBase::SAILING, "Sailing"},
+  {SkillBase::DESERTWALK, "Sandwalk"},
+  {SkillBase::SWAMPWALK, "Swampwalking"},
+  
+  {SkillBase::SPELL_ELDRITCH_WEAPON, "Eldritch Weapon"},
+  {SkillBase::SPELL_FLAME_BLADE, "Flame blade"},
+  {SkillBase::SPELL_CHAOS_CHANNELS_SHIELD, "Chaos Channels"},
+  {SkillBase::SPELL_CHAOS_CHANNELS_WINGS, "Chaos Channels"},
+  {SkillBase::SPELL_CHAOS_CHANNELS_BREATH, "Chaos Channels"},
+  
+  {SkillBase::SPELL_RESIST_ELEMENTS, "Resist Elements"},
+  {SkillBase::SPELL_STONE_SKIN, "Stone Skin"},
+  {SkillBase::SPELL_GIANT_STRENGTH, "Giant Strength"},
+  
+  {SkillBase::SPELL_ELEMENTAL_ARMOR, "Elemental Armor"},
+  {SkillBase::SPELL_IRON_SKIN, "Iron Skin"},
+  {SkillBase::SPELL_REGENERATION, "Regeneration"},
+  
+  {SkillBase::SPELL_RESIST_MAGIC, "Resist Magic"},
+  {SkillBase::SPELL_GUARDIAN_WIND, "Guardian Wind"},
+  {SkillBase::SPELL_SPELL_LOCK, "Spell Lock"},
+  {SkillBase::SPELL_INVISIBILITY, "Invisibility"},
+  {SkillBase::SPELL_HASTE, "Haste"},
+  
+  {SkillBase::SPELL_HOLY_WEAPON, "Holy Weapon"},
+  {SkillBase::SPELL_BLESS, "Bless"},
+  {SkillBase::SPELL_ENDURANCE, "Endurance"},
+  {SkillBase::SPELL_TRUE_SIGHT, "True Sight"},
+  {SkillBase::SPELL_HEROISM, "Heroism"},
+  {SkillBase::SPELL_HOLY_ARMOR, "Holy Armor"},
+  {SkillBase::SPELL_LION_HEART, "Lion Heart"},
+  {SkillBase::SPELL_INVULNERABILITY, "Invulnerability"},
+  {SkillBase::SPELL_RIGHTEOUSNESS, "Righteousness"},
+  
+  {SkillBase::SPELL_UNDEAD, "Undead"},
+  
+  {SkillBase::SPELL_CLOAK_OF_FEAR, "Cloak of Fear"},
+  {SkillBase::SPELL_BLACK_CHANNELS, "Black Channels"},
+  {SkillBase::SPELL_WRAITH_FORM, "Wraith Form"},
+  {SkillBase::SPELL_BERSERK, "Berserk"},
+  
+  {SkillBase::MITHRIL_WEAPONS, "Mithril Weapons"},
+  {SkillBase::ADAMANTIUM_WEAPONS, "Adamantium Weapons"},
+  
+  
+  {SkillBase::STATUS_WEB, "Web"},
+  {SkillBase::STATUS_CONFUSION, "Confusion"},
+  {SkillBase::STATUS_VERTIGO, "Vertigo"},
+  {SkillBase::STATUS_HIT_PENALTY, "To Hit"},
+  {SkillBase::STATUS_SHATTER, "Shatter"},
+  {SkillBase::STATUS_WARP_CREATURE_DEFENSE, "Warp Creature"},
+  {SkillBase::STATUS_WARP_CREATURE_ATTACK, "Warp Creature"},
+  {SkillBase::STATUS_WARP_CREATURE_MAGIC_DEFENSE, "Warp Creature"},
+  {SkillBase::STATUS_BLACK_SLEEP, "Black Sleep"},
+  {SkillBase::STATUS_WEAKNESS, "Weakness"},
+  {SkillBase::STATUS_POSESSION, "Posession"}
+};
+

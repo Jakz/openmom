@@ -157,10 +157,9 @@ class UnitSpec : public Productable
 {
 protected:
   const UnitID ident;
-  const I18 name;
   
-  UnitSpec(UnitID ident, I18 name, Upkeep upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-  ident(ident), name(name), upkeep(upkeep), cost(cost), melee(melee), ranged(ranged), rangedType(rangedType), ammo(ammo),
+  UnitSpec(UnitID ident, Upkeep upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+  ident(ident), upkeep(upkeep), cost(cost), melee(melee), ranged(ranged), rangedType(rangedType), ammo(ammo),
   defense(defense), resistance(resistance), hits(hits), figures(figures), movement(movement), sight(sight), skills(skills) { }
 
 public:
@@ -195,8 +194,8 @@ public:
 class RaceUnitSpec : public UnitSpec
 {
 public:
-  RaceUnitSpec(UnitID ident, RaceID race, I18 name, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, name, Upkeep(upkeep,0,1), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), race(Race::race(race)) { }
+  RaceUnitSpec(UnitID ident, RaceID race, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(ident, Upkeep(upkeep,0,1), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), race(Race::race(race)) { }
   
   Type productionType() const override { return Type::UNIT; }
   
@@ -206,8 +205,8 @@ public:
 class SummonSpec : public UnitSpec
 {
 public:
-  SummonSpec(UnitID ident, I18 name, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, name, Upkeep(0,upkeep,0), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills) { }
+  SummonSpec(UnitID ident, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(ident, Upkeep(0,upkeep,0), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills) { }
   
   Type productionType() const override { return Type::SUMMON; }
 };
@@ -215,8 +214,8 @@ public:
 class HeroSpec : public UnitSpec
 {
 public:
-  HeroSpec(UnitID ident, I18 name, HeroType type, ItemSlots items, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, name, Upkeep(upkeep,0,0), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items) { }
+  HeroSpec(UnitID ident, HeroType type, ItemSlots items, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(ident, Upkeep(upkeep,0,0), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items) { }
   
   const HeroType type;
   const ItemSlots items;

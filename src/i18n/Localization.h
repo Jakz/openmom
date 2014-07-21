@@ -14,6 +14,9 @@
 #include <unordered_map>
 #include <string>
 
+enum class UnitID : u16;
+enum class SkillBase : u16;
+
 enum class I18 : u16
 {
   RACE_NAME_BARBARIANS,
@@ -129,15 +132,32 @@ namespace std
   {
     std::size_t operator()(const I18& k) const { return static_cast<u16>(k); }
   };
+  
+  template<>
+  struct hash<UnitID>
+  {
+    std::size_t operator()(const UnitID& k) const { return static_cast<u16>(k); }
+  };
+  
+  template<>
+  struct hash<SkillBase>
+  {
+    std::size_t operator()(const SkillBase& k) const { return static_cast<u16>(k); }
+  };
 }
 
 class i18n
 {
   private:
     static std::unordered_map<I18, const std::string> data;
+    static std::unordered_map<UnitID, const std::string> units;
+    static std::unordered_map<SkillBase, const std::string> skills;
   
   public:
     static const std::string& s(I18 ident) { return data[ident]; }
+    static const std::string& s(UnitID unit) { return units[unit]; }
+    static const std::string& s(SkillBase skill) { return skills[skill]; }
+
 };
 
 

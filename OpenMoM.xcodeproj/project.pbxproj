@@ -36,6 +36,7 @@
 		04037621197B539400A5B5FC /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403761F197B539400A5B5FC /* Tile.cpp */; };
 		04037624197B550F00A5B5FC /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037622197B550F00A5B5FC /* Util.cpp */; };
 		04037627197B58C900A5B5FC /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037625197B58C900A5B5FC /* World.cpp */; };
+		04205386197D484600B4C2CA /* Effects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04205384197D484600B4C2CA /* Effects.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
@@ -119,6 +120,8 @@
 		04037623197B550F00A5B5FC /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = src/game/world/Util.h; sourceTree = SOURCE_ROOT; };
 		04037625197B58C900A5B5FC /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = World.cpp; path = src/game/world/World.cpp; sourceTree = SOURCE_ROOT; };
 		04037626197B58C900A5B5FC /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = World.h; path = src/game/world/World.h; sourceTree = SOURCE_ROOT; };
+		04205384197D484600B4C2CA /* Effects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Effects.cpp; sourceTree = "<group>"; };
+		04205385197D484600B4C2CA /* Effects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Effects.h; sourceTree = "<group>"; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04879A401978374100313BC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		04879A431978374100313BC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -283,6 +286,8 @@
 				0403760C197AE16100A5B5FC /* Level.h */,
 				04EE4589197C80ED00EA0CC0 /* Skill.cpp */,
 				04EE458A197C80ED00EA0CC0 /* Skill.h */,
+				04205384197D484600B4C2CA /* Effects.cpp */,
+				04205385197D484600B4C2CA /* Effects.h */,
 				04EE4592197C9D7A00EA0CC0 /* Items.cpp */,
 				04EE4593197C9D7A00EA0CC0 /* Items.h */,
 			);
@@ -442,6 +447,7 @@
 				04EE458B197C80ED00EA0CC0 /* Skill.cpp in Sources */,
 				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
 				040375FE197ABA9100A5B5FC /* ViewManager.cpp in Sources */,
+				04205386197D484600B4C2CA /* Effects.cpp in Sources */,
 				04037611197AE1FF00A5B5FC /* Spells.cpp in Sources */,
 				040375F2197AAF7B00A5B5FC /* View.cpp in Sources */,
 				040375E0197990B900A5B5FC /* Texture.cpp in Sources */,
