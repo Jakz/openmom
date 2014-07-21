@@ -61,7 +61,7 @@ struct SpriteInfo
 class Upkeep
 {
   private:
-    s16 gold, mana, food;
+    mutable s16 gold, mana, food;
     
   public:
     Upkeep(s16 gold = 0, s16 mana = 16, s16 food = 0) : gold(gold), mana(mana), food(food) { }
@@ -128,26 +128,26 @@ struct Wizard
   I18 name;
 };
 
-enum TraitID : u8
+enum class TraitID : u8
 {
-  TRAIT_ALCHEMY = 0,
-  TRAIT_WARLORD,
-  TRAIT_CHANNELER,
-  TRAIT_ARCHMAGE,
-  TRAIT_ARTIFICER,
-  TRAIT_CONJURER,
-  TRAIT_SAGE_MASTER,
-  TRAIT_MYRRAN,
-  TRAIT_DIVINE_POWER,
-  TRAIT_FAMOUS,
-  TRAIT_RUNEMASTER,
-  TRAIT_CHARISMATIC,
-  TRAIT_CHAOS_MASTERY,
-  TRAIT_NATURE_MASTERY,
-  TRAIT_SORCERY_MASTERY,
-  TRAIT_INFERNAL_POWER,
-  TRAIT_MANA_FOCUSING,
-  TRAIT_NODE_MASTERY
+  ALCHEMY = 0,
+  WARLORD,
+  CHANNELER,
+  ARCHMAGE,
+  ARTIFICER,
+  CONJURER,
+  SAGE_MASTER,
+  MYRRAN,
+  DIVINE_POWER,
+  FAMOUS,
+  RUNEMASTER,
+  CHARISMATIC,
+  CHAOS_MASTERY,
+  NATURE_MASTERY,
+  SORCERY_MASTERY,
+  INFERNAL_POWER,
+  MANA_FOCUSING,
+  NODE_MASTERY
 };
 
 struct Trait
@@ -222,7 +222,6 @@ enum PlaceType : u8
 class Data
 {
   public:
-    static Color colorForSchool(const School school);
     static const Trait& trait(const TraitID trait);
     static const Wizard& wizard(const WizardID wizard);
   

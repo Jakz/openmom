@@ -4,6 +4,7 @@
 #include "Common.h"
 
 class Player;
+class Skill;
 
 enum SpellRarity : u8
 {
@@ -42,21 +43,34 @@ enum SpellDuration : u8
   UNDEFINED
 };
 
-enum SpellTarget : u8
+enum class Target : u8
 {
-  TARGET_FRIENDLY_UNIT,
-  TARGET_ENEMY_UNIT,
-  TARGET_FRIENDLY_CITY,
-  TARGET_ENEMY_CITY,
-  TARGET_ENEMY_UNIT_SPELL,
-  TARGET_FRIENDLY_ARMY,
-  TARGET_ENEMY_ARMY,
-  TARGET_BOTH_ARMIES,
-  TARGET_MAP_TILE,
-  TARGET_VIEWPORT,
-  TARGET_GLOBAL,
+  FRIENDLY_UNIT,
+  ENEMY_UNIT,
+  FRIENDLY_CITY,
+  ENEMY_CITY,
+  ENEMY_UNIT_SPELL,
+  FRIENDLY_ARMY,
+  ENEMY_ARMY,
+  BOTH_ARMIES,
+  MAP_TILE,
+  VIEWPORT,
+  GLOBAL,
   
-  TARGET_NONE
+  NONE
+};
+
+struct ManaInfo
+{
+  const s16 researchCost;
+  const s16 manaCost;
+  const s16 manaCostDelta;
+  const s16 combatManaCost;
+  const s16 combatManaCostDelta;
+  const s16 upkeep;
+  
+  ManaInfo(s16 rc, s16 mc, s16 mcd, s16 cmc, s16 cmcd, s16 upk) :
+  researchCost(rc), manaCost(mc), manaCostDelta(mcd), combatManaCost(cmc), combatManaCostDelta(cmcd), upkeep(upk) { }
 };
 
 class Spell
@@ -68,36 +82,42 @@ class Spell
     const SpellKind kind;
     const SpellDuration duration;
     const School school;
-    const SpellTarget target;
-    const s16 researchCost;
-    const s16 manaCost;
-    const s16 manaCostDelta;
-    const s16 combatManaCost;
-    const s16 combatManaCostDelta;
-    const s16 upkeep;
+    const Target target;
+    const ManaInfo mana;
   
-  Spell(I18 name, /*SpellType type,*/ SpellRarity rarity, SpellKind kind, SpellDuration duration, School school, SpellTarget target,
-            s16 researchCost, s16 manaCost, s16 manaCostDelta, s16 combatManaCost, s16 combatManaCostDelta, s16 upkeep) :
-    name(name), /*type(type),*/ rarity(rarity), kind(kind), duration(duration), school(school), target(target),
-    researchCost(researchCost), manaCost(manaCost), manaCostDelta(manaCostDelta), combatManaCost(combatManaCost), combatManaCostDelta(combatManaCostDelta), upkeep(upkeep)
+  Spell(I18 name, /*SpellType type,*/ SpellRarity rarity, SpellKind kind, SpellDuration duration, School school, Target target, const ManaInfo mana) :
+    name(name), /*type(type),*/ rarity(rarity), kind(kind), duration(duration), school(school), target(target), mana(mana)
   {
     
   }
   
-  bool canBeCastInCombat() { return combatManaCost > 0; }
-  bool canBeCastInOverland() { return manaCost > 0; }
+  bool canBeCastInCombat() const { return mana.combatManaCost > 0; }
+  bool canBeCastInOverland() const { return mana.manaCost > 0; }
 };
+
+
 
 class UnitSpell : public Spell
 {
-  // TODO
+public:
+	UnitSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost , s16 manaCost, s16 combatManaCost, s16 upkeep, const Skill& skill) :
+    Spell(name,rarity,KIND_UNIT_SPELL,duration,school,Target::FRIENDLY_UNIT, ManaInfo{researchCost,manaCost,-1,combatManaCost,-1,upkeep}), skill(skill) { }
+
+  const Skill& skill;
 };
 
 class CitySpell : public Spell
 {
-  public:
-    CitySpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 combatManaCost, s16 upkeep, SpellTarget target) :
-    Spell(name, rarity, KIND_CITY, duration, school, target, researchCost, manaCost, -1, combatManaCost, -1, upkeep) { }
+public:
+  CitySpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, Target target, s16 researchCost, s16 manaCost, s16 combatManaCost, s16 upkeep) :
+  Spell(name, rarity, KIND_CITY, duration, school, target, ManaInfo{researchCost, manaCost, -1, combatManaCost, -1, upkeep}) { }
+};
+
+class GlobalSpell : public Spell
+{
+public:
+  GlobalSpell(I18 name, SpellRarity rarity, SpellKind kind, School school, SpellDuration duration, Target target, s16 researchCost, s16 manaCost, s16 upkeep) :
+  Spell(name, rarity, kind, duration, school, target, ManaInfo{researchCost, manaCost, -1, -1, -1, upkeep}) { }
 };
 
 class CombatEnchSpell : public Spell
@@ -126,6 +146,14 @@ class VariableSpellCast : public SpellCast
     const u16 extraMana;
   
     VariableSpellCast(const Player* player, const Spell& spell, u16 extraMana) : SpellCast(player,spell), extraMana(extraMana) { }
+};
+
+struct ResearchStatus
+{
+  const Spell& spell;
+  const bool discovered;
+  
+  ResearchStatus(const Spell& spell, bool discovered = false) : spell(spell), discovered(discovered) { }
 };
 
 

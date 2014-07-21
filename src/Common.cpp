@@ -6,34 +6,25 @@
 
 using namespace std;
 
-static const Color schoolColors[] = {
-  Gfx::color(0,0,0),
-  Gfx::color(255, 0, 0),
-  Gfx::color(0, 0, 0),
-  Gfx::color(255, 255, 255),
-  Gfx::color(0, 255, 0),
-  Gfx::color(0, 0, 255)
-};
-
 static const Trait traitInfo[] = {
-  {TRAIT_ALCHEMY,1,NO_SCHOOL},
-  {TRAIT_WARLORD,2,NO_SCHOOL},
-  {TRAIT_CHANNELER,2,NO_SCHOOL},
-  {TRAIT_ARCHMAGE,1,NO_SCHOOL},
-  {TRAIT_ARTIFICER,1,NO_SCHOOL},
-  {TRAIT_CONJURER,1,NO_SCHOOL},
-  {TRAIT_SAGE_MASTER,1,NO_SCHOOL},
-  {TRAIT_MYRRAN,3,NO_SCHOOL},
-  {TRAIT_DIVINE_POWER,2,NO_SCHOOL},
-  {TRAIT_FAMOUS,2,NO_SCHOOL},
-  {TRAIT_RUNEMASTER,1,NO_SCHOOL},
-  {TRAIT_CHARISMATIC,1,NO_SCHOOL},
-  {TRAIT_CHAOS_MASTERY,1,CHAOS},
-  {TRAIT_NATURE_MASTERY,1,NATURE},
-  {TRAIT_SORCERY_MASTERY,1,SORCERY},
-  {TRAIT_INFERNAL_POWER,1,NO_SCHOOL},
-  {TRAIT_MANA_FOCUSING,1,NO_SCHOOL},
-  {TRAIT_NODE_MASTERY,1,NO_SCHOOL}
+  {TraitID::ALCHEMY,1,NO_SCHOOL},
+  {TraitID::WARLORD,2,NO_SCHOOL},
+  {TraitID::CHANNELER,2,NO_SCHOOL},
+  {TraitID::ARCHMAGE,1,NO_SCHOOL},
+  {TraitID::ARTIFICER,1,NO_SCHOOL},
+  {TraitID::CONJURER,1,NO_SCHOOL},
+  {TraitID::SAGE_MASTER,1,NO_SCHOOL},
+  {TraitID::MYRRAN,3,NO_SCHOOL},
+  {TraitID::DIVINE_POWER,2,NO_SCHOOL},
+  {TraitID::FAMOUS,2,NO_SCHOOL},
+  {TraitID::RUNEMASTER,1,NO_SCHOOL},
+  {TraitID::CHARISMATIC,1,NO_SCHOOL},
+  {TraitID::CHAOS_MASTERY,1,CHAOS},
+  {TraitID::NATURE_MASTERY,1,NATURE},
+  {TraitID::SORCERY_MASTERY,1,SORCERY},
+  {TraitID::INFERNAL_POWER,1,NO_SCHOOL},
+  {TraitID::MANA_FOCUSING,1,NO_SCHOOL},
+  {TraitID::NODE_MASTERY,1,NO_SCHOOL}
 };
 
 static const Wizard wizardInfo[] = {
@@ -53,16 +44,9 @@ static const Wizard wizardInfo[] = {
   {I18_WIZARD_NAME_KALI}
 };
 
-
-
-Color Data::colorForSchool(const School school)
-{
-  return school < SCHOOL_COUNT ? schoolColors[school] : 0;
-}
-
 const Trait& Data::trait(const TraitID trait)
 {
-  return traitInfo[trait];
+  return traitInfo[static_cast<u8>(trait)];
 }
 
 const Wizard& Data::wizard(const WizardID wizard)

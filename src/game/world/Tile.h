@@ -37,7 +37,7 @@ public:
   
   std::list<SpellCast> spells;
   
-  const s8 animationOffset;
+  s8 animationOffset;
   
   Tile() { }
   

@@ -1,5 +1,7 @@
 #include "World.h"
 
+#include "GfxData.h"
+
 void World::calcSubTile(u16 x, u16 y, Plane p)
 {
   Tile* t = get(x,y,p);
@@ -89,7 +91,7 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
       else
       {
         t->tileGfxType = TILE_GFX_PLAIN;
-        t->subtype = Util::randomIntUpTo(TileGfxSpec::spec(t->type).count);
+        t->subtype = Util::randomIntUpTo(GfxData::tileGfxSpec(t->type).count);
       }
     }
   }
@@ -143,9 +145,9 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
   {
     // in the Myrran sprites I haven't been able to find the sixth sprite for grass
     if (t->type == TILE_GRASS && p == MYRRAN)
-      t->subtype = Util::randomIntUpTo(TileGfxSpec::spec(t->type).count-1);
+      t->subtype = Util::randomIntUpTo(GfxData::tileGfxSpec(t->type).count-1);
     else
-      t->subtype = Util::randomIntUpTo(TileGfxSpec::spec(t->type).count);
+      t->subtype = Util::randomIntUpTo(GfxData::tileGfxSpec(t->type).count);
   }
   
 }

@@ -41,6 +41,10 @@
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
 		04879A7C1978391F00313BC7 /* SDL2_image.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A7D1978391F00313BC7 /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
+		04EE458B197C80ED00EA0CC0 /* Skill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4589197C80ED00EA0CC0 /* Skill.cpp */; };
+		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
+		04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
+		04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4592197C9D7A00EA0CC0 /* Items.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -126,6 +130,14 @@
 		04879A761978385800313BC7 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = libs/SDL2.framework; sourceTree = SOURCE_ROOT; };
 		04879A7F197839CB00313BC7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = misc/en.lproj/Credits.rtf; sourceTree = SOURCE_ROOT; };
 		04879A81197839CB00313BC7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = misc/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		04EE4589197C80ED00EA0CC0 /* Skill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Skill.cpp; path = src/game/units/Skill.cpp; sourceTree = SOURCE_ROOT; };
+		04EE458A197C80ED00EA0CC0 /* Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Skill.h; path = src/game/units/Skill.h; sourceTree = SOURCE_ROOT; };
+		04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnitSpec.cpp; path = src/game/units/UnitSpec.cpp; sourceTree = SOURCE_ROOT; };
+		04EE458D197C85C000EA0CC0 /* UnitSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitSpec.h; path = src/game/units/UnitSpec.h; sourceTree = SOURCE_ROOT; };
+		04EE458F197C92C400EA0CC0 /* GfxData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GfxData.cpp; sourceTree = "<group>"; };
+		04EE4590197C92C400EA0CC0 /* GfxData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GfxData.h; sourceTree = "<group>"; };
+		04EE4592197C9D7A00EA0CC0 /* Items.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Items.cpp; sourceTree = "<group>"; };
+		04EE4593197C9D7A00EA0CC0 /* Items.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Items.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,8 +206,9 @@
 				040375F6197AB04700A5B5FC /* LocalPlayer.cpp */,
 				040375F7197AB04700A5B5FC /* LocalPlayer.h */,
 			);
-			path = players;
-			sourceTree = "<group>";
+			name = players;
+			path = src/game/players;
+			sourceTree = SOURCE_ROOT;
 		};
 		040375CF197990B900A5B5FC /* gfx */ = {
 			isa = PBXGroup;
@@ -231,6 +244,8 @@
 				040375F0197AAF7B00A5B5FC /* View.cpp */,
 				040375F1197AAF7B00A5B5FC /* View.h */,
 				040375FC197ABA9100A5B5FC /* ViewManager.cpp */,
+				04EE458F197C92C400EA0CC0 /* GfxData.cpp */,
+				04EE4590197C92C400EA0CC0 /* GfxData.h */,
 				040375FD197ABA9100A5B5FC /* ViewManager.h */,
 				040375E41979EA6700A5B5FC /* Buttons.cpp */,
 				040375E51979EA6700A5B5FC /* Buttons.h */,
@@ -260,10 +275,16 @@
 			children = (
 				0403761C197B52F800A5B5FC /* Unit.cpp */,
 				0403761D197B52F800A5B5FC /* Unit.h */,
+				04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */,
+				04EE458D197C85C000EA0CC0 /* UnitSpec.h */,
 				04037604197AC92200A5B5FC /* Army.cpp */,
 				04037605197AC92200A5B5FC /* Army.h */,
 				0403760B197AE16100A5B5FC /* Level.cpp */,
 				0403760C197AE16100A5B5FC /* Level.h */,
+				04EE4589197C80ED00EA0CC0 /* Skill.cpp */,
+				04EE458A197C80ED00EA0CC0 /* Skill.h */,
+				04EE4592197C9D7A00EA0CC0 /* Items.cpp */,
+				04EE4593197C9D7A00EA0CC0 /* Items.h */,
 			);
 			name = units;
 			path = src/game/units;
@@ -418,6 +439,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04037624197B550F00A5B5FC /* Util.cpp in Sources */,
+				04EE458B197C80ED00EA0CC0 /* Skill.cpp in Sources */,
 				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
 				040375FE197ABA9100A5B5FC /* ViewManager.cpp in Sources */,
 				04037611197AE1FF00A5B5FC /* Spells.cpp in Sources */,
@@ -436,12 +458,15 @@
 				040375F8197AB04700A5B5FC /* LocalPlayer.cpp in Sources */,
 				040375FB197AB09000A5B5FC /* Game.cpp in Sources */,
 				04037603197AC90900A5B5FC /* Places.cpp in Sources */,
+				04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */,
 				040375F5197AB04100A5B5FC /* Player.cpp in Sources */,
 				0403761B197B46DA00A5B5FC /* City.cpp in Sources */,
+				04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */,
 				0403761E197B52F800A5B5FC /* Unit.cpp in Sources */,
 				04037627197B58C900A5B5FC /* World.cpp in Sources */,
 				040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */,
 				0403760A197AD00800A5B5FC /* Buildings.cpp in Sources */,
+				04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */,
 				040375E2197990B900A5B5FC /* main.cpp in Sources */,
 				040375E1197990B900A5B5FC /* Localization.cpp in Sources */,
 				040375DC197990B900A5B5FC /* Race.cpp in Sources */,

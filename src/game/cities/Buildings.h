@@ -51,7 +51,7 @@ enum BuildingID : u8
 class Productable
 {
   public:
-    enum Type
+    enum class Type : u8
     {
       TRADE_GOODS = 0,
       HOUSING,
@@ -82,7 +82,7 @@ class Building : public Productable
     const std::string& productionName() const override;
     u16 productionCost() const override { return cost; }
     const Upkeep& productionUpkeep() const override { return upkeep; }
-    Productable::Type productionType() const override { return BUILDING; }
+    Productable::Type productionType() const override { return Type::BUILDING; }
   
     struct ComparatorByName : public std::binary_function<const Productable*, const Productable*, bool>
     {
