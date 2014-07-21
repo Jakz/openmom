@@ -268,6 +268,15 @@ Texture::Texture(TextureID ident, const Texture& source, ColorMap& map) :
   Gfx::unlock(source.img);
 }
 
+const Texture& Texture::get(TextureID ident) {
+  const Texture& texture = textures[ident];
+  
+  if (!texture.img) texture.img = IMG_Load(("data/gfx/"+texture.name).c_str());
+  
+  return textures[ident];
+
+}
+
 
 
 void Texture::load()

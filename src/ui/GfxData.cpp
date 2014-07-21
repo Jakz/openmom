@@ -9,6 +9,10 @@
 #include "GfxData.h"
 
 #include "Gfx.h"
+#include "UnitSpec.h"
+#include "Texture.h"
+
+using namespace std;
 
 static const Color schoolColors[] = {
   Gfx::color(0,0,0),
@@ -41,3 +45,28 @@ Color GfxData::colorForSchool(const School school)
   return school < SCHOOL_COUNT ? schoolColors[school] : 0;
 }
 
+std::unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
+  { UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 0, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_SPEARMEN) },
+  { UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 1, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_SWORDSMEN) },
+  { UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 2, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_BOWMEN) },
+  { UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 3, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_CAVALRY) },
+  { UnitSpec::raceSpec(UnitID::SHAMANS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 4, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_SHAMAN) },
+  { UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 8, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_BERSERKERS) },
+  { UnitSpec::raceSpec(UnitID::SETTLERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 10,(u8)RaceID::BARBARIANS), UNIT_BARBARIANS_SETTLERS) },
+
+  //{ UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 0, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_SPEARMEN) },
+  //{ UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 1, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_SWORDSMEN) },
+  //{ UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 2, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_BOWMEN) }
+  
+  
+  { UnitSpec::heroSpec(UnitID::HERO_DWARF), UnitGfxSpec(SpriteInfo(UNITS_HEROES, 0, 0), UNIT_HERO_DWARF, false) }
+  //{ UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), UnitGfxSpec(SpriteInfo(UNITS_HEROES, 6, 0), UNIT_HERO_ORC_WARRIOR) }
+
+
+};
+
+const UnitGfxSpec& GfxData::unitGfxSpec(const UnitSpec* spec)
+{
+  const UnitGfxSpec& gspec = unitSpecs.find(spec)->second;
+  return gspec;
+}

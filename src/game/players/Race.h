@@ -11,24 +11,22 @@
 
 #include "Common.h"
 
-enum RaceID : u8
+enum class RaceID : u8
 {
-	RACE_BARBARIANS = 0,
-	RACE_BEASTMEN,
-	RACE_DARK_ELVES,
-	RACE_DRACONIANS,
-	RACE_DWARVES,
-	RACE_GNOLLS,
-	RACE_HALFLINGS,
-	RACE_HIGH_ELVES,
-	RACE_HIGH_MEN,
-	RACE_KLACKONS,
-	RACE_LIZARDMEN,
-	RACE_NOMADS,
-	RACE_ORCS,
-	RACE_TROLLS,
-  
-  RACE_COUNT
+  BARBARIANS = 0,
+  BEASTMEN,
+  DARK_ELVES,
+  DRACONIANS,
+  DWARVES,
+  GNOLLS,
+  HALFLINGS,
+  HIGH_ELVES,
+  HIGH_MEN,
+  KLACKONS,
+  LIZARDMEN,
+  NOMADS,
+  ORCS,
+  TROLLS,
 };
 
 enum HouseType : u8
@@ -52,7 +50,7 @@ class Race
     const s16 growthBonus;
     const float outpostGrowthChance;
   
-  static const Race& race(RaceID ident) { return races[ident]; }
+  static const Race& race(RaceID ident) { return races[static_cast<u8>(ident)]; }
 };
 
 #endif

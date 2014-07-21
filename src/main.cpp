@@ -23,7 +23,7 @@
 void init()
 {
   Game *game = new Game();
-  LocalPlayer *player = new LocalPlayer(game, "Kali", Data::wizard(KALI), GREEN, Race::race(RACE_BARBARIANS), 60, 40);
+  LocalPlayer *player = new LocalPlayer(game, "Kali", Data::wizard(KALI), GREEN, Race::race(RaceID::BARBARIANS), 60, 40);
   
   LocalGame *localGame = new LocalGame();
   localGame->currentPlayer = player;
@@ -42,9 +42,7 @@ int main(int argc, char * arg[])
   //const Race* ptRace = reinterpret_cast<const Race *>(&race);
   
   // init SDL
-  
-  i18n::load();
-  
+    
   init();
   
   SDL::init();

@@ -17,7 +17,7 @@ typedef u32 Color;
 #define RGB(r,g,b) Gfx::color(r,g,b)
 #define RGBA(r,g,b,a) Gfx::colora(r,g,b,a)
 
-enum I18 : u16;
+enum class I18 : u16;
 enum TextureID : u16;
 enum Plane : u8;
 

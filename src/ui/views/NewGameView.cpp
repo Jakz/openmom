@@ -4,6 +4,9 @@
 #include "Buttons.h"
 #include "Gfx.h"
 
+#include "GfxData.h"
+#include "UnitSpec.h"
+
 NewGameView::NewGameView() : View()
 {
   buttons.resize(BUTTON_COUNT);
@@ -36,6 +39,8 @@ void NewGameView::draw()
 {
   Gfx::draw(NEW_GAME_BACKDROP, 0, 0);
   Gfx::draw(NEW_GAME_PARTIALS, 0, 0, 165, 0);
+  
+  Gfx::draw(GfxData::unitGfxSpec(UnitSpec::heroSpec(UnitID::HERO_DWARF)).still, 30, 30);
   
   switch (phase)
   {

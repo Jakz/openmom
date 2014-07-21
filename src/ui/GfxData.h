@@ -11,9 +11,12 @@
 
 #include "Common.h"
 
+#include <unordered_map>
+
 enum class Ranged : u8;
 enum class Property : u8;
 
+class UnitSpec;
 
 class TileGfxSpec
 {
@@ -40,10 +43,20 @@ public:
   
 };
 
+struct UnitGfxSpec
+{
+  const SpriteInfo still;
+  const TextureID fullFigure;
+  const bool isFlyingFigure;
+  
+  UnitGfxSpec(SpriteInfo still, TextureID fullFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), isFlyingFigure(isFlyingFigure) { }
+};
+
 
 class GfxData
 {
 private:
+  static std::unordered_map<const UnitSpec*, UnitGfxSpec> unitSpecs;
   static const TileGfxSpec specs[];
   static constexpr s8 rangedIndex[] = {-1,6,5,6,14,15,16,17,18};
   static constexpr s8 propertyIndex[] = {-1,-1,-1,-1,9,22,14,15,16,17,18};
@@ -53,7 +66,8 @@ public:
   static const TileGfxSpec& tileGfxSpec(TileType type) { return specs[type]; }
   static const s8 rangedGfxIndex(Ranged ranged) { return rangedIndex[static_cast<u8>(ranged)]; }
   static const s8 propertyGfxIndex(Property property) { return rangedIndex[static_cast<u8>(property)]; }
-
+  
+  static const UnitGfxSpec& unitGfxSpec(const UnitSpec* spec);
 };
 
 #endif

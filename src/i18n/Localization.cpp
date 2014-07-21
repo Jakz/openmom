@@ -2,92 +2,107 @@
 
 using namespace std;
 
-unordered_map<I18, const string> i18n::data;
-
-void i18n::load()
+unordered_map<I18, const string> i18n::data =
 {
-  data.emplace(I18_RACE_NAME_BARBARIANS, "Barbarians");
-  data.emplace(I18_RACE_NAME_BEASTMEN, "Beastmen");
-  data.emplace(I18_RACE_NAME_DARK_ELVES, "Dark Elves");
-  data.emplace(I18_RACE_NAME_DRACONIANS, "Draconians");
-  data.emplace(I18_RACE_NAME_DWARVES, "Dwarves");
-  data.emplace(I18_RACE_NAME_GNOLLS, "Gnolls");
-  data.emplace(I18_RACE_NAME_HALFLINGS, "Halflings");
-  data.emplace(I18_RACE_NAME_HIGH_ELVES, "High Elves");
-  data.emplace(I18_RACE_NAME_HIGH_MEN, "High Men");
-  data.emplace(I18_RACE_NAME_KLACKONS, "Klackons");
-  data.emplace(I18_RACE_NAME_LIZARDMEN, "Lizardmen");
-  data.emplace(I18_RACE_NAME_NOMADS, "Nomads");
-  data.emplace(I18_RACE_NAME_ORCS, "Orcs");
-  data.emplace(I18_RACE_NAME_TROLLS, "Trolls");
+  {I18::RACE_NAME_BARBARIANS, "Barbarians"},
+  {I18::RACE_NAME_BEASTMEN, "Beastmen"},
+  {I18::RACE_NAME_DARK_ELVES, "Dark Elves"},
+  {I18::RACE_NAME_DRACONIANS, "Draconians"},
+  {I18::RACE_NAME_DWARVES, "Dwarves"},
+  {I18::RACE_NAME_GNOLLS, "Gnolls"},
+  {I18::RACE_NAME_HALFLINGS, "Halflings"},
+  {I18::RACE_NAME_HIGH_ELVES, "High Elves"},
+  {I18::RACE_NAME_HIGH_MEN, "High Men"},
+  {I18::RACE_NAME_KLACKONS, "Klackons"},
+  {I18::RACE_NAME_LIZARDMEN, "Lizardmen"},
+  {I18::RACE_NAME_NOMADS, "Nomads"},
+  {I18::RACE_NAME_ORCS, "Orcs"},
+  {I18::RACE_NAME_TROLLS, "Trolls"},
   
-  data.emplace(I18_UNIT_NAME_BARBARIANS, "Barbarian");
-  data.emplace(I18_UNIT_NAME_BEASTMEN, "Beastman");
-  data.emplace(I18_UNIT_NAME_DARK_ELVES, "Dark Elf");
-  data.emplace(I18_UNIT_NAME_DRACONIANS, "Draconian");
-  data.emplace(I18_UNIT_NAME_DWARVES, "Dwarven");
-  data.emplace(I18_UNIT_NAME_GNOLLS, "Gnoll");
-  data.emplace(I18_UNIT_NAME_HALFLINGS, "Halfling");
-  data.emplace(I18_UNIT_NAME_HIGH_ELVES, "High Elf");
-  data.emplace(I18_UNIT_NAME_HIGH_MEN, "High Man");
-  data.emplace(I18_UNIT_NAME_KLACKONS, "Klackon");
-  data.emplace(I18_UNIT_NAME_LIZARDMEN, "Lizardman");
-  data.emplace(I18_UNIT_NAME_NOMADS, "Nomad");
-  data.emplace(I18_UNIT_NAME_ORCS, "Orc");
-  data.emplace(I18_UNIT_NAME_TROLLS, "Troll");
-
-  data.emplace(I18_WIZARD_NAME_MERLIN, "Merlin");
-  data.emplace(I18_WIZARD_NAME_RAVEN, "Raven");
-  data.emplace(I18_WIZARD_NAME_SHAREE, "Sharee");
-  data.emplace(I18_WIZARD_NAME_LO_PAN, "Lo Pan");
-  data.emplace(I18_WIZARD_NAME_JAFAR, "Jafar");
-  data.emplace(I18_WIZARD_NAME_OBERIC, "Oberic");
-  data.emplace(I18_WIZARD_NAME_RJAK, "Rjak");
-  data.emplace(I18_WIZARD_NAME_SSS_RA, "Sss'Ra");
-  data.emplace(I18_WIZARD_NAME_TAURON, "Tauron");
-  data.emplace(I18_WIZARD_NAME_FREYA, "Freya");
-  data.emplace(I18_WIZARD_NAME_HORUS, "Horus");
-  data.emplace(I18_WIZARD_NAME_ARIEL, "Ariel");
-  data.emplace(I18_WIZARD_NAME_TLALOC, "Tlaloc");
-  data.emplace(I18_WIZARD_NAME_KALI, "Kali");
+  {I18::UNIT_NAME_BARBARIANS, "Barbarian"},
+  {I18::UNIT_NAME_BEASTMEN, "Beastman"},
+  {I18::UNIT_NAME_DARK_ELVES, "Dark Elf"},
+  {I18::UNIT_NAME_DRACONIANS, "Draconian"},
+  {I18::UNIT_NAME_DWARVES, "Dwarven"},
+  {I18::UNIT_NAME_GNOLLS, "Gnoll"},
+  {I18::UNIT_NAME_HALFLINGS, "Halfling"},
+  {I18::UNIT_NAME_HIGH_ELVES, "High Elf"},
+  {I18::UNIT_NAME_HIGH_MEN, "High Man"},
+  {I18::UNIT_NAME_KLACKONS, "Klackon"},
+  {I18::UNIT_NAME_LIZARDMEN, "Lizardman"},
+  {I18::UNIT_NAME_NOMADS, "Nomad"},
+  {I18::UNIT_NAME_ORCS, "Orc"},
+  {I18::UNIT_NAME_TROLLS, "Troll"},
   
-  data.emplace(I18_BUILDING_BUILDERS_HALL,"Builders Hall");
-  data.emplace(I18_BUILDING_SMITHY,"Smithy");
-  data.emplace(I18_BUILDING_CITY_WALLS,"City Walls");
-  data.emplace(I18_BUILDING_SHRINE,"Shrine");
-  data.emplace(I18_BUILDING_TEMPLE,"Temple");
-  data.emplace(I18_BUILDING_PARTHENON,"Parthenon");
-  data.emplace(I18_BUILDING_CATHEDRAL,"Cathedral");
-  data.emplace(I18_BUILDING_ANIMISTS_GUILD,"Animists Guild");
-  data.emplace(I18_BUILDING_ORACLE,"Oracle");
-  data.emplace(I18_BUILDING_ALCHEMISTS_GUILD,"Alchemists Guild");
-  data.emplace(I18_BUILDING_WIZARDS_GUILD,"Wizards Guild");
-  data.emplace(I18_BUILDING_STABLE,"Stable");
-  data.emplace(I18_BUILDING_FANTASTIC_STABLE,"Fantastic Stable");
-  data.emplace(I18_BUILDING_BARRACKS,"Barracks");
-  data.emplace(I18_BUILDING_ARMORY,"Armory");
-  data.emplace(I18_BUILDING_FIGHTERS_GUILD,"Fighters Guild");
-  data.emplace(I18_BUILDING_ARMORERS_GUILD,"Armorers Guild");
-  data.emplace(I18_BUILDING_WAR_COLLEGE,"War College");
-  data.emplace(I18_BUILDING_SHIP_WRIGHTS_GUILD,"Ship Wrights Guild");
-  data.emplace(I18_BUILDING_SHIP_YARD,"Ship Yard");
-  data.emplace(I18_BUILDING_MARITIME_GUILD,"Maritime Guild");
-  data.emplace(I18_BUILDING_MARKETPLACE,"Marketplace");
-  data.emplace(I18_BUILDING_BANK,"Bank");
-  data.emplace(I18_BUILDING_MERCHANTS_GUILD,"Merchants Guild");
-  data.emplace(I18_BUILDING_GRANARY,"Granary");
-  data.emplace(I18_BUILDING_FARMERS_MARKET,"Farmers Market");
-  data.emplace(I18_BUILDING_LIBRARY,"Library");
-  data.emplace(I18_BUILDING_UNIVERSITY,"University");
-  data.emplace(I18_BUILDING_SAGES_GUILD,"Sages Guild");
-  data.emplace(I18_BUILDING_MINERS_GUILD,"Miners Guild");
-  data.emplace(I18_BUILDING_MECHANICIANS_GUILD,"Mechanicians Guild");
-  data.emplace(I18_BUILDING_SAWMILL,"Sawmill");
-  data.emplace(I18_BUILDING_FORESTERS_GUILD,"Forester's Guild");
-  data.emplace(I18_BUILDING_TRADE_GOODS,"Trade Goods");
-  data.emplace(I18_BUILDING_HOUSING,"Housing");
-  data.emplace(I18_BUILDING_MAGE_FORTRESS,"Fortress");
-  data.emplace(I18_BUILDING_SUMMONING_CIRCLE,"Summoning Circle");
+  {I18::WIZARD_NAME_MERLIN, "Merlin"},
+  {I18::WIZARD_NAME_RAVEN, "Raven"},
+  {I18::WIZARD_NAME_SHAREE, "Sharee"},
+  {I18::WIZARD_NAME_LO_PAN, "Lo Pan"},
+  {I18::WIZARD_NAME_JAFAR, "Jafar"},
+  {I18::WIZARD_NAME_OBERIC, "Oberic"},
+  {I18::WIZARD_NAME_RJAK, "Rjak"},
+  {I18::WIZARD_NAME_SSS_RA, "Sss'Ra"},
+  {I18::WIZARD_NAME_TAURON, "Tauron"},
+  {I18::WIZARD_NAME_FREYA, "Freya"},
+  {I18::WIZARD_NAME_HORUS, "Horus"},
+  {I18::WIZARD_NAME_ARIEL, "Ariel"},
+  {I18::WIZARD_NAME_TLALOC, "Tlaloc"},
+  {I18::WIZARD_NAME_KALI, "Kali"},
   
-  data.emplace(I18_PLACEHOLDER, "Placeholder");
-}
+  {I18::BUILDING_BUILDERS_HALL,"Builders Hall"},
+  {I18::BUILDING_SMITHY,"Smithy"},
+  {I18::BUILDING_CITY_WALLS,"City Walls"},
+  {I18::BUILDING_SHRINE,"Shrine"},
+  {I18::BUILDING_TEMPLE,"Temple"},
+  {I18::BUILDING_PARTHENON,"Parthenon"},
+  {I18::BUILDING_CATHEDRAL,"Cathedral"},
+  {I18::BUILDING_ANIMISTS_GUILD,"Animists Guild"},
+  {I18::BUILDING_ORACLE,"Oracle"},
+  {I18::BUILDING_ALCHEMISTS_GUILD,"Alchemists Guild"},
+  {I18::BUILDING_WIZARDS_GUILD,"Wizards Guild"},
+  {I18::BUILDING_STABLE,"Stable"},
+  {I18::BUILDING_FANTASTIC_STABLE,"Fantastic Stable"},
+  {I18::BUILDING_BARRACKS,"Barracks"},
+  {I18::BUILDING_ARMORY,"Armory"},
+  {I18::BUILDING_FIGHTERS_GUILD,"Fighters Guild"},
+  {I18::BUILDING_ARMORERS_GUILD,"Armorers Guild"},
+  {I18::BUILDING_WAR_COLLEGE,"War College"},
+  {I18::BUILDING_SHIP_WRIGHTS_GUILD,"Ship Wrights Guild"},
+  {I18::BUILDING_SHIP_YARD,"Ship Yard"},
+  {I18::BUILDING_MARITIME_GUILD,"Maritime Guild"},
+  {I18::BUILDING_MARKETPLACE,"Marketplace"},
+  {I18::BUILDING_BANK,"Bank"},
+  {I18::BUILDING_MERCHANTS_GUILD,"Merchants Guild"},
+  {I18::BUILDING_GRANARY,"Granary"},
+  {I18::BUILDING_FARMERS_MARKET,"Farmers Market"},
+  {I18::BUILDING_LIBRARY,"Library"},
+  {I18::BUILDING_UNIVERSITY,"University"},
+  {I18::BUILDING_SAGES_GUILD,"Sages Guild"},
+  {I18::BUILDING_MINERS_GUILD,"Miners Guild"},
+  {I18::BUILDING_MECHANICIANS_GUILD,"Mechanicians Guild"},
+  {I18::BUILDING_SAWMILL,"Sawmill"},
+  {I18::BUILDING_FORESTERS_GUILD,"Forester's Guild"},
+  {I18::BUILDING_TRADE_GOODS,"Trade Goods"},
+  {I18::BUILDING_HOUSING,"Housing"},
+  {I18::BUILDING_MAGE_FORTRESS,"Fortress"},
+  {I18::BUILDING_SUMMONING_CIRCLE,"Summoning Circle"},
+  
+  {I18::UNIT_SPEARMEN,"Spearmen"},
+  {I18::UNIT_SWORDSMEN,"Swordsmen"},
+  {I18::UNIT_BOWMEN,"Bowmen"},
+  {I18::UNIT_CAVALRY,"Cavalry"},
+  {I18::UNIT_SHAMAN,"Shaman"},
+  {I18::UNIT_HALBERDIERS,"Helberdiers"},
+  {I18::UNIT_PRIESTS,"Priests"},
+  {I18::UNIT_MAGICIANS,"Magicians"},
+  {I18::UNIT_ENGINEERS,"Engineers"},
+  {I18::UNIT_SETTLERS,"Settlers"},
+  
+  {I18::UNIT_BERSERKERS,"Berserkers"},
+  
+  {I18::HERO_DWARF,"Dward"},
+  {I18::HERO_ORC_WARRIOR,"Orc Warrior"},
+  
+  
+  {I18::PLACEHOLDER, "Placeholder"},
+};

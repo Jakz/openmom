@@ -13,6 +13,6 @@ City::City(Player *owner, std::string name, u16 population, Position position) :
   maxPopulation = 25;
   owner->add(this);
   
-  production = Building::get(HOUSING);
+  production = Building::get(BuildingID::HOUSING);
   productionPool = 0;
 }

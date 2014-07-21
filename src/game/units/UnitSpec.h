@@ -12,6 +12,7 @@
 #include "Common.h"
 #include "Buildings.h"
 #include "Skill.h"
+#include "Race.h"
 
 #include <vector>
 
@@ -19,7 +20,72 @@ enum class ItemSlots : u8;
 
 enum class UnitID : u16
 {
+  SPEARMEN,
+	SWORDSMEN,
+	BOWMEN,
+	CAVALRY,
+	SHAMANS,
+	PRIESTS,
+	MAGICIANS,
+	PIKEMEN,
+	HALBERDIERS,
+	ENGINEERS,
+  SETTLERS,
+	
+	GALLEY,
+	TRIREME,
+	WARSHIP,
+	CATAPULT,
+	
+	BERSERKERS,
+	ELVEN_LORDS,
+	MINOTAURS,
+	GOLEM,
+	
+	STAG_BEETLE,
+	DRAGON_TURTLE,
+	WAR_MAMMOTHS,
+	
+	PALADINS,
+	
+	SLINGERS,
+	
+	RANGERS,
+	MANTICORES,
+	
+	LONGBOWMEN,
+	
+	DOOM_DRAKES,
+	WOLF_RIDERS,
+	CENTAURS,
+	HORSEBOWMEN,
+	
+	PEGASAI,
+	GRIFFINS,
+	WYVERN_RIDERS,
+	NIGHTMARES,
+	
+	JAVELINEERS,
+	NIGHTBLADES,
+	HAMMERHANDS,
+	WAR_TROLLS,
+	
+	STEAM_CANNON,
+	
+	AIR_SHIP,
+	
+	WARLOCKS,
   
+  
+  
+  
+  
+  MAGIC_SPIRIT,
+  GREAT_DRAKE,
+  HELL_HOUNDS,
+  
+  HERO_DWARF,
+  HERO_ORC_WARRIOR
 };
 
 enum class Ranged : u8
@@ -82,6 +148,8 @@ enum class HeroType : u8
   SPECIAL
 };
 
+class RaceUnitSpec;
+class HeroSpec;
 
 class UnitSpec : public Productable
 {
@@ -113,17 +181,22 @@ public:
   s16 getProperty(Property property) const;
   
   const std::string& productionName() const override;
-  virtual u16 productionCost() { return cost; }
-  virtual const Upkeep& productionUpkeep() { return upkeep; }
+  u16 productionCost() const override { return cost; }
+  const Upkeep& productionUpkeep() const override { return upkeep; }
   
-  Type productionType() const override { return Type::UNIT; }
+  static const RaceUnitSpec* raceSpec(UnitID unit, RaceID race);
+  static const HeroSpec* heroSpec(UnitID unit);
 };
 
 class RaceUnitSpec : public UnitSpec
 {
 public:
-  RaceUnitSpec(UnitID ident, I18 name, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, name, Upkeep(upkeep,0,1), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills) { }
+  RaceUnitSpec(UnitID ident, RaceID race, I18 name, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(ident, name, Upkeep(upkeep,0,1), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), race(Race::race(race)) { }
+  
+  Type productionType() const override { return Type::UNIT; }
+  
+  const Race& race;
 };
 
 class SummonSpec : public UnitSpec
@@ -131,6 +204,8 @@ class SummonSpec : public UnitSpec
 public:
   SummonSpec(UnitID ident, I18 name, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
     UnitSpec(ident, name, Upkeep(0,upkeep,0), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills) { }
+  
+  Type productionType() const override { return Type::SUMMON; }
 };
 
 class HeroSpec : public UnitSpec

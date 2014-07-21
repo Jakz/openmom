@@ -5,9 +5,7 @@
 
 #include <string>
 
-enum I18 : u16;
-
-enum BuildingID : u8
+enum class BuildingID : u8
 {
   BUILDERS_HALL,
   SMITHY,
@@ -57,7 +55,8 @@ class Productable
       HOUSING,
       BUILDING,
       UNIT,
-      HERO
+      HERO,
+      SUMMON
     };
   
   virtual const std::string& productionName() const = 0;
@@ -92,7 +91,7 @@ class Building : public Productable
       }
     };
   
-    static const Building* get(BuildingID b) { return &buildings[b]; }
+    static const Building* get(BuildingID b) { return &buildings[static_cast<u8>(b)]; }
 };
 
 #endif

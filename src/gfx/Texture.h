@@ -252,7 +252,7 @@ class Texture
   public:
     const TextureID ident;
     const std::string name;
-    SDL_Surface *img;
+    mutable SDL_Surface *img;
     const s16 cols, rows;
     const s16 w, h;
     std::vector<u16> ws, hs;
@@ -284,7 +284,7 @@ class Texture
     u16 span(u16 i) const { return ws.empty() ? w : ws[i]; }
 
   
-    static inline const Texture& get(TextureID ident) { return textures[ident]; }
+    static const Texture& get(TextureID ident);
     static void load();
     static void unload();
 };
