@@ -36,13 +36,14 @@
 		04037621197B539400A5B5FC /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403761F197B539400A5B5FC /* Tile.cpp */; };
 		04037624197B550F00A5B5FC /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037622197B550F00A5B5FC /* Util.cpp */; };
 		04037627197B58C900A5B5FC /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037625197B58C900A5B5FC /* World.cpp */; };
-		04205386197D484600B4C2CA /* Effects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04205384197D484600B4C2CA /* Effects.cpp */; };
+		0420538D197DA9D700B4C2CA /* SkillSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0420538B197DA9D700B4C2CA /* SkillSet.cpp */; };
+		04205392197DA9E900B4C2CA /* Effects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0420538E197DA9E900B4C2CA /* Effects.cpp */; };
+		04205393197DA9E900B4C2CA /* Skill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04205390197DA9E900B4C2CA /* Skill.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
 		04879A7C1978391F00313BC7 /* SDL2_image.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A7D1978391F00313BC7 /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
-		04EE458B197C80ED00EA0CC0 /* Skill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4589197C80ED00EA0CC0 /* Skill.cpp */; };
 		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
 		04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
 		04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4592197C9D7A00EA0CC0 /* Items.cpp */; };
@@ -120,8 +121,12 @@
 		04037623197B550F00A5B5FC /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = src/game/world/Util.h; sourceTree = SOURCE_ROOT; };
 		04037625197B58C900A5B5FC /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = World.cpp; path = src/game/world/World.cpp; sourceTree = SOURCE_ROOT; };
 		04037626197B58C900A5B5FC /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = World.h; path = src/game/world/World.h; sourceTree = SOURCE_ROOT; };
-		04205384197D484600B4C2CA /* Effects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Effects.cpp; sourceTree = "<group>"; };
-		04205385197D484600B4C2CA /* Effects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Effects.h; sourceTree = "<group>"; };
+		0420538B197DA9D700B4C2CA /* SkillSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SkillSet.cpp; path = src/game/spells/SkillSet.cpp; sourceTree = SOURCE_ROOT; };
+		0420538C197DA9D700B4C2CA /* SkillSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SkillSet.h; path = src/game/spells/SkillSet.h; sourceTree = SOURCE_ROOT; };
+		0420538E197DA9E900B4C2CA /* Effects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Effects.cpp; sourceTree = "<group>"; };
+		0420538F197DA9E900B4C2CA /* Effects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Effects.h; sourceTree = "<group>"; };
+		04205390197DA9E900B4C2CA /* Skill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Skill.cpp; sourceTree = "<group>"; };
+		04205391197DA9E900B4C2CA /* Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skill.h; sourceTree = "<group>"; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04879A401978374100313BC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		04879A431978374100313BC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -133,8 +138,6 @@
 		04879A761978385800313BC7 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = libs/SDL2.framework; sourceTree = SOURCE_ROOT; };
 		04879A7F197839CB00313BC7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = misc/en.lproj/Credits.rtf; sourceTree = SOURCE_ROOT; };
 		04879A81197839CB00313BC7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = misc/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
-		04EE4589197C80ED00EA0CC0 /* Skill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Skill.cpp; path = src/game/units/Skill.cpp; sourceTree = SOURCE_ROOT; };
-		04EE458A197C80ED00EA0CC0 /* Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Skill.h; path = src/game/units/Skill.h; sourceTree = SOURCE_ROOT; };
 		04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnitSpec.cpp; path = src/game/units/UnitSpec.cpp; sourceTree = SOURCE_ROOT; };
 		04EE458D197C85C000EA0CC0 /* UnitSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitSpec.h; path = src/game/units/UnitSpec.h; sourceTree = SOURCE_ROOT; };
 		04EE458F197C92C400EA0CC0 /* GfxData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GfxData.cpp; sourceTree = "<group>"; };
@@ -180,6 +183,7 @@
 				040375CC197990B900A5B5FC /* players */,
 				04037607197ACFD300A5B5FC /* cities */,
 				04037600197AC8CE00A5B5FC /* units */,
+				0420538A197DA9B900B4C2CA /* skills */,
 				0403760E197AE1F400A5B5FC /* spells */,
 				040375FF197AC2E100A5B5FC /* world */,
 				040375F9197AB09000A5B5FC /* Game.cpp */,
@@ -284,10 +288,6 @@
 				04037605197AC92200A5B5FC /* Army.h */,
 				0403760B197AE16100A5B5FC /* Level.cpp */,
 				0403760C197AE16100A5B5FC /* Level.h */,
-				04EE4589197C80ED00EA0CC0 /* Skill.cpp */,
-				04EE458A197C80ED00EA0CC0 /* Skill.h */,
-				04205384197D484600B4C2CA /* Effects.cpp */,
-				04205385197D484600B4C2CA /* Effects.h */,
 				04EE4592197C9D7A00EA0CC0 /* Items.cpp */,
 				04EE4593197C9D7A00EA0CC0 /* Items.h */,
 			);
@@ -326,6 +326,19 @@
 			name = views;
 			path = src/ui/views;
 			sourceTree = SOURCE_ROOT;
+		};
+		0420538A197DA9B900B4C2CA /* skills */ = {
+			isa = PBXGroup;
+			children = (
+				0420538E197DA9E900B4C2CA /* Effects.cpp */,
+				0420538F197DA9E900B4C2CA /* Effects.h */,
+				04205390197DA9E900B4C2CA /* Skill.cpp */,
+				04205391197DA9E900B4C2CA /* Skill.h */,
+				0420538B197DA9D700B4C2CA /* SkillSet.cpp */,
+				0420538C197DA9D700B4C2CA /* SkillSet.h */,
+			);
+			path = skills;
+			sourceTree = "<group>";
 		};
 		04879A341978374100313BC7 = {
 			isa = PBXGroup;
@@ -444,11 +457,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				04037624197B550F00A5B5FC /* Util.cpp in Sources */,
-				04EE458B197C80ED00EA0CC0 /* Skill.cpp in Sources */,
 				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
 				040375FE197ABA9100A5B5FC /* ViewManager.cpp in Sources */,
-				04205386197D484600B4C2CA /* Effects.cpp in Sources */,
 				04037611197AE1FF00A5B5FC /* Spells.cpp in Sources */,
+				04205392197DA9E900B4C2CA /* Effects.cpp in Sources */,
 				040375F2197AAF7B00A5B5FC /* View.cpp in Sources */,
 				040375E0197990B900A5B5FC /* Texture.cpp in Sources */,
 				04037621197B539400A5B5FC /* Tile.cpp in Sources */,
@@ -459,6 +471,7 @@
 				040375EE197A9DD600A5B5FC /* SDL.cpp in Sources */,
 				040375DF197990B900A5B5FC /* Gfx.cpp in Sources */,
 				04037618197AF93600A5B5FC /* NewGameView.cpp in Sources */,
+				04205393197DA9E900B4C2CA /* Skill.cpp in Sources */,
 				040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */,
 				040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */,
 				040375F8197AB04700A5B5FC /* LocalPlayer.cpp in Sources */,
@@ -471,6 +484,7 @@
 				0403761E197B52F800A5B5FC /* Unit.cpp in Sources */,
 				04037627197B58C900A5B5FC /* World.cpp in Sources */,
 				040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */,
+				0420538D197DA9D700B4C2CA /* SkillSet.cpp in Sources */,
 				0403760A197AD00800A5B5FC /* Buildings.cpp in Sources */,
 				04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */,
 				040375E2197990B900A5B5FC /* main.cpp in Sources */,
