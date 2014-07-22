@@ -32,7 +32,8 @@ public:
   
   void turnBegin() { } // TODO
   
-  bool hasSkillEffect(const SkillEffect* effect) const { return false; }
+  bool hasSkillEffect(const SkillEffect* effect) const { return false; } // TODO
+  bool hasSpellSkill(const SkillBase skill) const { return false; } // TODO
   
   const UnitSpec& spec;
 };

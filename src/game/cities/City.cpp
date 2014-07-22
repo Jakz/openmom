@@ -16,3 +16,5 @@ City::City(Player *owner, std::string name, u16 population, Position position) :
   production = Building::get(BuildingID::HOUSING);
   productionPool = 0;
 }
+
+bool City::hasBuilding(const BuildingID b) { return std::find_if(buildings.begin(), buildings.end(), [&](const Building* bb) { return bb->ident == b; }) != buildings.end(); }

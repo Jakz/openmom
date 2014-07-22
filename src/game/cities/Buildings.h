@@ -72,11 +72,12 @@ class Building : public Productable
     static const Building buildings[];
   
   public:
+    const BuildingID ident;
     const I18 name;
     const u16 cost;
     const Upkeep upkeep;
   
-    Building(I18 name, u16 cost, u16 gupkeep, u16 mupkeep) : name(name), cost(cost), upkeep(Upkeep(gupkeep,mupkeep)) { }
+    Building(BuildingID ident, I18 name, u16 cost, u16 gupkeep, u16 mupkeep) : ident(ident), name(name), cost(cost), upkeep(Upkeep(gupkeep,mupkeep)) { }
   
     const std::string& productionName() const override;
     u16 productionCost() const override { return cost; }

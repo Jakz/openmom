@@ -84,7 +84,7 @@ void Route::consumeMovement(World *world)
   
   while (availMoves > currentMove.cost)
   {
-    army->getOwner()->discoverRange(Position(currentMove.x, currentMove.y, army->getPosition().plane), army->sightRange());
+    army->getOwner()->fog()->setRange(Position(currentMove.x, currentMove.y, army->getPosition().plane), army->sightRange());
     
     pending.push_back(currentMove);
     availMoves -= currentMove.gameCost;

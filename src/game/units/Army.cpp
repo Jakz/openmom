@@ -57,7 +57,7 @@ void Army::merge(Army *army)
 void Army::patrol()
 {
   isPatrol = true;
-  owner->discoverRange(position, sightRange()+1);
+  owner->fog()->setRange(position, sightRange()+1);
 }
 
 void Army::add(Unit* unit)

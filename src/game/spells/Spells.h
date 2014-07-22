@@ -21,9 +21,13 @@ enum SpellRarity : u8
   RARITY_COUNT
 };
 
-enum SpellType : u8
+enum class SpellType : u8
 {
-  
+  CITY,
+  GLOBAL,
+  GLOBAL_SKILL,
+  UNIT_SKILL,
+  UNKNOWN
 };
 
 enum SpellKind : u8
@@ -82,7 +86,7 @@ class Spell
 {
   public:
     const I18 name;
-    //const SpellType type;
+    const SpellType type;
     const SpellRarity rarity;
     const SpellKind kind;
     const SpellDuration duration;
@@ -90,8 +94,8 @@ class Spell
     const Target target;
     const ManaInfo mana;
   
-  Spell(I18 name, /*SpellType type,*/ SpellRarity rarity, SpellKind kind, SpellDuration duration, School school, Target target, const ManaInfo mana) :
-    name(name), /*type(type),*/ rarity(rarity), kind(kind), duration(duration), school(school), target(target), mana(mana)
+  Spell(I18 name, SpellType type, SpellRarity rarity, SpellKind kind, SpellDuration duration, School school, Target target, const ManaInfo mana) :
+    name(name), type(type), rarity(rarity), kind(kind), duration(duration), school(school), target(target), mana(mana)
   {
     
   }
@@ -106,7 +110,7 @@ class UnitSpell : public Spell
 {
 public:
 	UnitSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost , s16 manaCost, s16 combatManaCost, s16 upkeep, const Skill& skill) :
-    Spell(name,rarity,KIND_UNIT_SPELL,duration,school,Target::FRIENDLY_UNIT, ManaInfo{researchCost,manaCost,-1,combatManaCost,-1,upkeep}), skill(skill) { }
+    Spell(name,SpellType::UNIT_SKILL,rarity,KIND_UNIT_SPELL,duration,school,Target::FRIENDLY_UNIT, ManaInfo{researchCost,manaCost,-1,combatManaCost,-1,upkeep}), skill(skill) { }
 
   const Skill& skill;
 };
@@ -115,14 +119,30 @@ class CitySpell : public Spell
 {
 public:
   CitySpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, Target target, s16 researchCost, s16 manaCost, s16 combatManaCost, s16 upkeep) :
-  Spell(name, rarity, KIND_CITY, duration, school, target, ManaInfo{researchCost, manaCost, -1, combatManaCost, -1, upkeep}) { }
+  Spell(name, SpellType::CITY, rarity, KIND_CITY, duration, school, target, ManaInfo{researchCost, manaCost, -1, combatManaCost, -1, upkeep}) { }
 };
 
 class GlobalSpell : public Spell
 {
+protected:
+  GlobalSpell(I18 name, SpellType type, SpellRarity rarity, SpellKind kind, School school, SpellDuration duration, Target target, s16 researchCost, s16 manaCost, s16 upkeep) :
+  Spell(name, type, rarity, kind, duration, school, target, ManaInfo{researchCost, manaCost, -1, -1, -1, upkeep}) { }
+};
+
+class SkillGlobalSpell : public GlobalSpell
+{
 public:
-  GlobalSpell(I18 name, SpellRarity rarity, SpellKind kind, School school, SpellDuration duration, Target target, s16 researchCost, s16 manaCost, s16 upkeep) :
-  Spell(name, rarity, kind, duration, school, target, ManaInfo{researchCost, manaCost, -1, -1, -1, upkeep}) { }
+  SkillGlobalSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 upkeep, const Skill& skill) :
+    GlobalSpell(name, SpellType::GLOBAL_SKILL, rarity, KIND_ENCHANTMENT, school, duration, Target::GLOBAL, researchCost, manaCost, upkeep), skill(skill) { }
+  
+  const Skill& skill;
+};
+
+class StaticGlobalSpell : public GlobalSpell
+{
+public:
+  StaticGlobalSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 upkeep) :
+    GlobalSpell(name, SpellType::GLOBAL, rarity, KIND_ENCHANTMENT, school, duration, Target::GLOBAL, researchCost, manaCost, upkeep) { }
 };
 
 class CombatEnchSpell : public Spell

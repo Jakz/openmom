@@ -8,6 +8,8 @@
 #include <set>
 #include <list>
 
+enum class BuildingID : u8;
+
 class Player;
 class Race;
 class Productable;
@@ -84,6 +86,7 @@ public:
   
   void addBuilding(const Building *b) { buildings.insert(b); }
   bool hasBuilding(const Building *b) { return buildings.find(b) != buildings.end(); }
+  bool hasBuilding(const BuildingID b);
   const std::set<const Building*>& getBuildings() { return buildings; }
   
   void addSpell(const SpellCast spell) { spells.push_back(spell); }
