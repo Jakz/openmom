@@ -35,6 +35,8 @@ public:
   bool hasSkillEffect(const SkillEffect* effect) const { return false; } // TODO
   bool hasSpellSkill(const SkillBase skill) const { return false; } // TODO
   
+  const School school() { return CHAOS; } // TODO
+  
   const UnitSpec& spec;
 };
 

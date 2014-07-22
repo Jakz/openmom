@@ -49,6 +49,7 @@
 		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
 		04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
 		04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4592197C9D7A00EA0CC0 /* Items.cpp */; };
+		04F00C87197E0CB000293EE0 /* CombatSpells.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F00C85197E0CB000293EE0 /* CombatSpells.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -150,6 +151,8 @@
 		04EE4590197C92C400EA0CC0 /* GfxData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GfxData.h; path = src/ui/GfxData.h; sourceTree = SOURCE_ROOT; };
 		04EE4592197C9D7A00EA0CC0 /* Items.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Items.cpp; path = src/game/units/Items.cpp; sourceTree = SOURCE_ROOT; };
 		04EE4593197C9D7A00EA0CC0 /* Items.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Items.h; path = src/game/units/Items.h; sourceTree = SOURCE_ROOT; };
+		04F00C85197E0CB000293EE0 /* CombatSpells.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CombatSpells.cpp; sourceTree = "<group>"; };
+		04F00C86197E0CB000293EE0 /* CombatSpells.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CombatSpells.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -321,6 +324,8 @@
 			children = (
 				0403760F197AE1FF00A5B5FC /* Spells.cpp */,
 				04037610197AE1FF00A5B5FC /* Spells.h */,
+				04F00C85197E0CB000293EE0 /* CombatSpells.cpp */,
+				04F00C86197E0CB000293EE0 /* CombatSpells.h */,
 			);
 			name = spells;
 			path = src/game/spells;
@@ -503,6 +508,7 @@
 				04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */,
 				0403761E197B52F800A5B5FC /* Unit.cpp in Sources */,
 				04037627197B58C900A5B5FC /* World.cpp in Sources */,
+				04F00C87197E0CB000293EE0 /* CombatSpells.cpp in Sources */,
 				040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */,
 				0420538D197DA9D700B4C2CA /* SkillSet.cpp in Sources */,
 				0420539B197DCDB300B4C2CA /* MapMechanics.cpp in Sources */,

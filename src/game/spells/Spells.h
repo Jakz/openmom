@@ -3,6 +3,8 @@
 
 #include "Common.h"
 
+#include "CombatSpells.h"
+
 #include <list>
 
 
@@ -27,7 +29,10 @@ enum class SpellType : u8
   GLOBAL,
   GLOBAL_SKILL,
   UNIT_SKILL,
-  UNKNOWN
+  UNKNOWN,
+  
+  COMBAT_ENCHANT,
+  COMBAT_INSTANT
 };
 
 enum SpellKind : u8
@@ -147,9 +152,21 @@ public:
 
 class CombatEnchSpell : public Spell
 {
-  // TODO
+public:
+  CombatEnchSpell(I18 name, SpellRarity rarity, School school, s16 researchCost, s16 combatManaCost, s16 combatManaCostDelta, Target target, const CombatEnchEffect& effect) :
+  Spell(name, SpellType::COMBAT_INSTANT, rarity, KIND_ENCHANTMENT, COMBAT_ENCHANTMENT, school, target, {researchCost, -1, -1, combatManaCost, combatManaCostDelta, 0}), effect(effect) { }
+  
+  const CombatEnchEffect& effect;
 };
 
+class CombatSpell : public Spell
+{
+public:
+  CombatSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 combatManaCost, s16 combatManaCostDelta, Target target, const CombatSpellEffect& effect) :
+  Spell(name, SpellType::COMBAT_INSTANT, rarity, KIND_COMBAT_SPELL, duration, school, target, {researchCost, -1, -1, combatManaCost, combatManaCostDelta, 0}), effect(effect) { }
+  
+  const CombatSpellEffect& effect;
+};
 
 
 class SpellCast
@@ -162,7 +179,7 @@ class SpellCast
   
     const UnitSpell& asUnitSpell() { return static_cast<const UnitSpell&>(spell); }
     const CitySpell& asCitySpell() { return static_cast<const CitySpell&>(spell); }
-    const CombatEnchSpell& asCombatEnchSpell() { return static_cast<const CombatEnchSpell&>(spell); }
+    //const CombatEnchSpell& asCombatEnchSpell() { return static_cast<const CombatEnchSpell&>(spell); } // TODO
 };
 
 class VariableSpellCast : public SpellCast

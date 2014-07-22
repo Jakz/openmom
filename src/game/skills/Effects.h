@@ -120,6 +120,8 @@ public:
   const Property property;
   const s16 value;
   
+  bool sameProperty(Property property) const { return this->property == property; }
+  
   virtual const s16 getValue(Unit* unit) const { return value; }
   
   // TODO: finish
@@ -129,14 +131,26 @@ class UnitBonus : public PropertyBonus
 {
 public:
   UnitBonus(Property property, s16 value) : PropertyBonus(property, value) { }
+
   
-  static effect_list  build(std::initializer_list<Property> properties, s16 value)
+  static effect_list build(std::initializer_list<Property> properties, s16 value)
   {
     std::vector<const SkillEffect*> effects;
     effects.resize(properties.size());
     std::transform(properties.begin(), properties.end(), effects.begin(), [&] (const Property& property) { return new UnitBonus(property, value); });
     return effects;
   }
+};
+
+class FilterUnitBonus : public UnitBonus
+{
+public:
+  
+  FilterUnitBonus(Property property, s16 value, School school) : UnitBonus(property, value), school(school) { }
+
+  virtual const s16 getValue(Unit* unit) const;
+  
+  const School school;
 };
 
 class ArmyBonus : public PropertyBonus

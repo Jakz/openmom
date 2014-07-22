@@ -6,6 +6,13 @@ const s16 ArmyBonus::getValue(Unit* unit) const {
   return (target == Type::WHOLE_ARMY || (target == Type::NORMAL_UNITS && unit->type() == Productable::Type::UNIT)) ? value : 0;
 }
 
+const s16 FilterUnitBonus::getValue(Unit* unit) const {
+  return unit->school() == school ? value : 0;
+}
+
+
+
+
 
 constexpr const MovementEffect* const Effects::MOVEMENT_EFFECTS[];
 
@@ -22,3 +29,7 @@ const MovementEffect Effects::WINDWALK = MovementEffect(SimpleEffect::Type::WIND
 const MovementEffect Effects::SAILING = MovementEffect(SimpleEffect::Type::SAILING, true);
 const MovementEffect Effects::DESERTWALK = MovementEffect(SimpleEffect::Type::DESERTWALK, true);
 const MovementEffect Effects::SWAMPWALK = MovementEffect(SimpleEffect::Type::SWAMPWALK, true);
+
+
+
+
