@@ -113,7 +113,7 @@ public:
 class PropertyBonus : public SkillEffect
 {
 protected:
-  PropertyBonus(Property property, s16 value) : SkillEffect(SkillEffect::Type::UNIT_BONUS), property(property), value(value) { }
+  PropertyBonus(SkillEffect::Type type, Property property, s16 value) : SkillEffect(type), property(property), value(value) { }
   
 public:
  
@@ -130,7 +130,7 @@ public:
 class UnitBonus : public PropertyBonus
 {
 public:
-  UnitBonus(Property property, s16 value) : PropertyBonus(property, value) { }
+  UnitBonus(Property property, s16 value) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, value) { }
 
   
   static effect_list build(std::initializer_list<Property> properties, s16 value)
@@ -142,23 +142,48 @@ public:
   }
 };
 
+class UnitLevelBonus : public UnitBonus
+{
+private:
+  const float multiplier;
+  
+public:
+  UnitLevelBonus(Property property, float multiplier) : UnitBonus(property, 0), multiplier(multiplier) { }
+
+  const s16 getValue(const Unit* unit) const override;
+};
+
 class FilterUnitBonus : public UnitBonus
 {
 public:
   
   FilterUnitBonus(Property property, s16 value, School school) : UnitBonus(property, value), school(school) { }
 
-  virtual const s16 getValue(const Unit* unit) const override;
+  const s16 getValue(const Unit* unit) const override;
   
   const School school;
 };
 
 class ArmyBonus : public PropertyBonus
 {
+protected:
+  bool applicableOn(const Unit* unit) const;
+  
 public:
   const enum class Type { WHOLE_ARMY, NORMAL_UNITS } target;
   
-  ArmyBonus(Property property, s16 value, Type target) : PropertyBonus(property, value), target(target) { }
+  ArmyBonus(Property property, s16 value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, value), target(target) { }
+  
+  const s16 getValue(const Unit* unit) const override;
+};
+
+class ArmyLevelBonus : public ArmyBonus
+{
+private:
+  const float multiplier;
+  
+public:
+  ArmyLevelBonus(Property property, float multiplier, Type target) : ArmyBonus(property, 0, target), multiplier(multiplier) { }
   
   const s16 getValue(const Unit* unit) const override;
 };

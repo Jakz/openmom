@@ -3,6 +3,7 @@
 
 #include "Common.h"
 
+#include "Level.h"
 #include "UnitSpec.h"
 #include "SkillSet.h"
 
@@ -17,7 +18,7 @@ private:
   Army* army;
 
 protected:
-  Unit(const UnitSpec& spec) : spec(spec), army(nullptr), skills(*this) { }
+  Unit(const UnitSpec& spec) : spec(spec), army(nullptr), skills(*this), level(UnitLevel::LEVELS[0]) { } // TODO: remove hardcoded level
 
 public:
   const SkillSet skills;
@@ -36,6 +37,7 @@ public:
   
   void turnBegin() { } // TODO
   
+  const Level* level;
   const School school() const { return CHAOS; } // TODO
   
 
