@@ -2,6 +2,8 @@
 
 #include "Spells.h"
 #include "Army.h"
+#include "Unit.h"
+
 
 s16 CombatEnchModifier::apply(Combat* combat, const SpellCast& cast, CombatUnit* unit, Property property)
 {

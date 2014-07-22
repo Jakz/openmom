@@ -4,10 +4,12 @@
 #include "Common.h"
 
 #include "UnitSpec.h"
+#include "SkillSet.h"
 
 enum class Property : u8;
 
 class Army;
+class SkillSet;
 
 class Unit
 {
@@ -15,14 +17,16 @@ private:
   Army* army;
 
 protected:
-  Unit(const UnitSpec& spec) : spec(spec), army(nullptr) { }
+  Unit(const UnitSpec& spec) : spec(spec), army(nullptr), skills(*this) { }
 
 public:
+  const SkillSet skills;
+  const UnitSpec& spec;
   
   void setArmy(Army* army) { this->army = army; }
-  Army* getArmy() { return army; }
+  Army* getArmy() const { return army; }
   
-  Productable::Type type() { return spec.productionType(); }
+  Productable::Type type() const { return spec.productionType(); }
   
   s16 getProperty(Property property) const { return 0; } // TODO
   
@@ -32,12 +36,9 @@ public:
   
   void turnBegin() { } // TODO
   
-  bool hasSkillEffect(const SkillEffect* effect) const { return false; } // TODO
-  bool hasSpellSkill(const SkillBase skill) const { return false; } // TODO
+  const School school() const { return CHAOS; } // TODO
   
-  const School school() { return CHAOS; } // TODO
-  
-  const UnitSpec& spec;
+
 };
 
 class Hero : public Unit

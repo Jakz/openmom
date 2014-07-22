@@ -2,11 +2,11 @@
 
 #include "Unit.h"
 
-const s16 ArmyBonus::getValue(Unit* unit) const {
+const s16 ArmyBonus::getValue(const Unit* unit) const {
   return (target == Type::WHOLE_ARMY || (target == Type::NORMAL_UNITS && unit->type() == Productable::Type::UNIT)) ? value : 0;
 }
 
-const s16 FilterUnitBonus::getValue(Unit* unit) const {
+const s16 FilterUnitBonus::getValue(const Unit* unit) const {
   return unit->school() == school ? value : 0;
 }
 

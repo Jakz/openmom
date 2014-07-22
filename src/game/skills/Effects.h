@@ -30,7 +30,7 @@ public:
     IMMUNITY,
     MAGIC_WEAPONS,
     
-    PROPERTY_BONUS,
+    UNIT_BONUS,
     ARMY_BONUS,
     
     SPECIAL_ATTACK
@@ -113,7 +113,7 @@ public:
 class PropertyBonus : public SkillEffect
 {
 protected:
-  PropertyBonus(Property property, s16 value) : SkillEffect(SkillEffect::Type::PROPERTY_BONUS), property(property), value(value) { }
+  PropertyBonus(Property property, s16 value) : SkillEffect(SkillEffect::Type::UNIT_BONUS), property(property), value(value) { }
   
 public:
  
@@ -122,7 +122,7 @@ public:
   
   bool sameProperty(Property property) const { return this->property == property; }
   
-  virtual const s16 getValue(Unit* unit) const { return value; }
+  virtual const s16 getValue(const Unit* unit) const { return value; }
   
   // TODO: finish
 };
@@ -148,7 +148,7 @@ public:
   
   FilterUnitBonus(Property property, s16 value, School school) : UnitBonus(property, value), school(school) { }
 
-  virtual const s16 getValue(Unit* unit) const;
+  virtual const s16 getValue(const Unit* unit) const override;
   
   const School school;
 };
@@ -160,7 +160,7 @@ public:
   
   ArmyBonus(Property property, s16 value, Type target) : PropertyBonus(property, value), target(target) { }
   
-  const s16 getValue(Unit* unit) const;
+  const s16 getValue(const Unit* unit) const override;
 };
 
 

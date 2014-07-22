@@ -2,6 +2,8 @@
 #define _COMBAT_SPELLS_H_
 
 #include "Common.h"
+#include "Effects.h"
+#include "UnitSpec.h"
 
 #include <string>
 #include <functional>
@@ -10,8 +12,7 @@
 class CombatUnit;
 class Combat;
 class SpellCast;
-
-#include "Unit.h"
+class Unit;
 
 class CombatUnit
 {
@@ -133,7 +134,7 @@ class CombatEffects
      }
      else
      {
-     // TODO: modifiers al danno?
+     // TODO: modifiers al to damage?
      unit.unit.applyDamage(10);
      return new CastResult();
      }

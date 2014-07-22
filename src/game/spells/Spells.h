@@ -177,8 +177,8 @@ class SpellCast
   
     SpellCast(const Player* player, const Spell& spell) : player(player), spell(spell) { }
   
-    const UnitSpell& asUnitSpell() { return static_cast<const UnitSpell&>(spell); }
-    const CitySpell& asCitySpell() { return static_cast<const CitySpell&>(spell); }
+    const UnitSpell& asUnitSpell() const { return static_cast<const UnitSpell&>(spell); }
+    const CitySpell& asCitySpell() const { return static_cast<const CitySpell&>(spell); }
     //const CombatEnchSpell& asCombatEnchSpell() { return static_cast<const CombatEnchSpell&>(spell); } // TODO
 };
 

@@ -79,7 +79,7 @@ const string ConcreteSkill::name()
   {
     const SkillEffect *effect = effects[0];
     
-    if (effect->type == SkillEffect::Type::PROPERTY_BONUS)
+    if (effect->type == SkillEffect::Type::UNIT_BONUS)
       return string("+") + to_string(static_cast<const PropertyBonus*>(effect)->value) + " " + Skill::name();
     else if (effects[0]->type == SkillEffect::Type::SPECIAL_ATTACK)
       return Skill::name() + " (" + to_string(static_cast<const SpecialAttackEffect*>(effect)->strength) + ")";

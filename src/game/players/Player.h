@@ -136,8 +136,8 @@ public:
   void selectAll() { } // TODO
   s16 selectedCount() const { return 0; } // TODO
   
-  s16 globalSkillSpellsCount(Unit* u);
-  const SkillGlobalSpell& nthGlobalSkillSpell(u16 i, Unit* u);
+  s16 globalSkillSpellsCount(const Unit* u) const;
+  const SkillGlobalSpell& nthGlobalSkillSpell(u16 i, const Unit* u) const;
 
   
   //SpellBook* book() { return spellBook; } TODO

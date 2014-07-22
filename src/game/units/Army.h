@@ -57,7 +57,7 @@ public:
   Unit* get(u16 index) { return *std::next(units.begin(), index); }
   const unit_list& getUnits() { return units; }
   
-  Player* getOwner() { return owner; }
+  Player* getOwner() const { return owner; }
   
   void turnBegin();
   
