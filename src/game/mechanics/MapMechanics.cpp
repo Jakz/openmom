@@ -174,7 +174,7 @@ const movement_list MapMechanics::movementTypeOfArmy(const unit_list& units) con
     Unit* unit = units.front();
     for (const MovementEffect* const effect : Effects::MOVEMENT_EFFECTS)
     {
-      if (unit->skills.hasSkillEffect(effect))
+      if (unit->skills().hasSkillEffect(effect))
         movements.insert(effect);
     }
     

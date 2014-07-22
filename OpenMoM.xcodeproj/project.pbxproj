@@ -41,6 +41,7 @@
 		04205393197DA9E900B4C2CA /* Skill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04205390197DA9E900B4C2CA /* Skill.cpp */; };
 		04205396197DAA3C00B4C2CA /* Pathfind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04205394197DAA3C00B4C2CA /* Pathfind.cpp */; };
 		0420539B197DCDB300B4C2CA /* MapMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04205399197DCDB300B4C2CA /* MapMechanics.cpp */; };
+		04243F2B197ED3F500E8A716 /* Combat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04243F29197ED3F500E8A716 /* Combat.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
@@ -134,6 +135,8 @@
 		04205395197DAA3C00B4C2CA /* Pathfind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pathfind.h; path = src/game/world/Pathfind.h; sourceTree = SOURCE_ROOT; };
 		04205399197DCDB300B4C2CA /* MapMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapMechanics.cpp; sourceTree = "<group>"; };
 		0420539A197DCDB300B4C2CA /* MapMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapMechanics.h; sourceTree = "<group>"; };
+		04243F29197ED3F500E8A716 /* Combat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Combat.cpp; sourceTree = "<group>"; };
+		04243F2A197ED3F500E8A716 /* Combat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Combat.h; sourceTree = "<group>"; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04879A401978374100313BC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		04879A431978374100313BC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -195,6 +198,7 @@
 				04037600197AC8CE00A5B5FC /* units */,
 				0420538A197DA9B900B4C2CA /* skills */,
 				0403760E197AE1F400A5B5FC /* spells */,
+				04243F28197ED3E800E8A716 /* combat */,
 				040375FF197AC2E100A5B5FC /* world */,
 				040375F9197AB09000A5B5FC /* Game.cpp */,
 				040375FA197AB09000A5B5FC /* Game.h */,
@@ -364,6 +368,15 @@
 			path = mechanics;
 			sourceTree = "<group>";
 		};
+		04243F28197ED3E800E8A716 /* combat */ = {
+			isa = PBXGroup;
+			children = (
+				04243F29197ED3F500E8A716 /* Combat.cpp */,
+				04243F2A197ED3F500E8A716 /* Combat.h */,
+			);
+			path = combat;
+			sourceTree = "<group>";
+		};
 		04879A341978374100313BC7 = {
 			isa = PBXGroup;
 			children = (
@@ -489,6 +502,7 @@
 				040375E0197990B900A5B5FC /* Texture.cpp in Sources */,
 				04037621197B539400A5B5FC /* Tile.cpp in Sources */,
 				040375DE197990B900A5B5FC /* Font.cpp in Sources */,
+				04243F2B197ED3F500E8A716 /* Combat.cpp in Sources */,
 				04205396197DAA3C00B4C2CA /* Pathfind.cpp in Sources */,
 				04037614197AF68700A5B5FC /* Settings.cpp in Sources */,
 				040375E8197A775300A5B5FC /* Common.cpp in Sources */,

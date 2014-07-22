@@ -39,7 +39,7 @@ void SkillSet::remove(const Spell* spell)
       spells.erase(it);
 }
 
-s16 SkillSet::spellsUpkeep()
+s16 SkillSet::spellsUpkeep() const
 {
   return accumulate(spells.begin(), spells.end(), 0, [](s16 value, const SpellCast& cast) { return value + cast.spell.mana.upkeep; });
 }
@@ -69,7 +69,7 @@ s16 SkillSet::bonusForProperty(Property property)
   {
     for (const auto u : *unit.getArmy())
     {
-      for (const Skill& skill : u->skills)
+      for (const Skill& skill : u->skills())
       {
         const effect_list& effects = skill.getEffects();
         
@@ -78,7 +78,6 @@ s16 SkillSet::bonusForProperty(Property property)
           if (e->type == SkillEffect::Type::ARMY_BONUS)
           {
             const UnitBonus* ub = static_cast<const UnitBonus*>(e);
-            
             if (ub->sameProperty(property)) bonus += ub->getValue(&unit);
           }
         }
@@ -111,4 +110,12 @@ bool SkillSet::hasSkillEffect(const SkillEffect* effect) const
   }
   
   return false;
+}
+
+School SkillSet::glowEffect() const
+{
+  School school = NO_SCHOOL;
+  s16 mana = 0;
+  for_each(spells.begin(), spells.end(), [&](const SpellCast& cast) { if (cast.spell.mana.manaCost > mana) { mana = cast.spell.mana.manaCost; school = cast.spell.school; } });
+  return school;
 }

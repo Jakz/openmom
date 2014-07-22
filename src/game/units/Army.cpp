@@ -32,7 +32,7 @@ s16 Army::availableMoves()
   s16 min = std::numeric_limits<s16>::max();
   for (auto u : units)
   {
-    s16 umoves = u->availableMoves();
+    s16 umoves = u->getAvailableMoves();
     min = std::min(min, umoves);
   }
   

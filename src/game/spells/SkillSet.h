@@ -30,7 +30,7 @@ public:
   
   void remove(const Spell* spell);
   
-  s16 spellsUpkeep();
+  s16 spellsUpkeep() const;
   
   s16 bonusForProperty(Property property);
   
@@ -40,6 +40,8 @@ public:
   bool hasSpellSkill(SkillBase base) const;
   bool hasSkill(SkillBase base) const;
   bool hasSkillEffect(const SkillEffect* effect) const;
+  
+  School glowEffect() const;
   
   template<typename Skill>
   class myiterator //: public /*std::iterator<std::forward_iterator_tag, Skill>/*, std::iterator_traits<iterator<Skill>>,*/

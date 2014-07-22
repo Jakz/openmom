@@ -11,4 +11,11 @@ enum class ItemSlots : u8
   WARRIOR
 };
 
+class Item
+{
+  
+  public:
+    const static u32 MAX_SLOTS = 3;
+};
+
 #endif

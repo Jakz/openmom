@@ -37,7 +37,7 @@ protected:
 public:
   Level(I18 name, const Level* next, s32 maxXP, level_bonuses bonuses) : name(name), next(next), maxXP(maxXP), bonuses(bonuses) { }
   
-  bool hasLeveled(s32 xp) { return xp > maxXP && next; }
+  bool hasLeveled(s32 xp) const { return xp > maxXP && next; }
   
   const Level* next;
   const I18 name;
