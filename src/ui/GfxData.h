@@ -32,7 +32,7 @@ public:
   u8 row;
   u8 count;
   
-  Color minimapColor(Plane plane, u16 i = 0)
+  Color minimapColor(Plane plane, u16 i = 0) const
   {
     if (colors[plane].size() > 1)
       return colors[plane][i];

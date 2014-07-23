@@ -33,12 +33,12 @@ public:
     }
   }
   
-  Tile* get(Position position)
+  Tile* get(Position position) const
   {
     return get(position.x, position.y, position.plane);
   }
   
-  Tile* get(u16 x, u16 y, Plane plane)
+  Tile* get(u16 x, u16 y, Plane plane) const
   {
     int tX, tY;
 		
@@ -67,12 +67,12 @@ public:
 		return &map[plane][tX+tY*w];
   }
   
-  Tile *get(Position position, PositionOffset offset)
+  Tile *get(Position position, PositionOffset offset) const
   {
     return get(position.x+offset.x, position.y+offset.y, position.plane);
   }
   
-  Tile *get(u16 x, u16 y, Plane plane, PositionOffset offset)
+  Tile *get(u16 x, u16 y, Plane plane, PositionOffset offset) const
   {
     return get(x+offset.x, y+offset.y, plane);
   }

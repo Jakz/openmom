@@ -43,6 +43,7 @@
 		0420539B197DCDB300B4C2CA /* MapMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04205399197DCDB300B4C2CA /* MapMechanics.cpp */; };
 		04243F2B197ED3F500E8A716 /* Combat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04243F29197ED3F500E8A716 /* Combat.cpp */; };
 		04243F2E197EE9E700E8A716 /* SpellBook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04243F2C197EE9E700E8A716 /* SpellBook.cpp */; };
+		044E466D1980202D00E396AD /* MiniMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044E466B1980202D00E396AD /* MiniMap.cpp */; };
 		0487516D197F612400009661 /* Messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0487516B197F612400009661 /* Messages.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
@@ -141,6 +142,8 @@
 		04243F2A197ED3F500E8A716 /* Combat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Combat.h; path = src/game/combat/Combat.h; sourceTree = SOURCE_ROOT; };
 		04243F2C197EE9E700E8A716 /* SpellBook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpellBook.cpp; path = src/game/spells/SpellBook.cpp; sourceTree = SOURCE_ROOT; };
 		04243F2D197EE9E700E8A716 /* SpellBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpellBook.h; path = src/game/spells/SpellBook.h; sourceTree = SOURCE_ROOT; };
+		044E466B1980202D00E396AD /* MiniMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MiniMap.cpp; path = src/ui/parts/MiniMap.cpp; sourceTree = SOURCE_ROOT; };
+		044E466C1980202D00E396AD /* MiniMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniMap.h; path = src/ui/parts/MiniMap.h; sourceTree = SOURCE_ROOT; };
 		0487516B197F612400009661 /* Messages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Messages.cpp; path = src/game/players/Messages.cpp; sourceTree = SOURCE_ROOT; };
 		0487516C197F612400009661 /* Messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Messages.h; path = src/game/players/Messages.h; sourceTree = SOURCE_ROOT; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -268,6 +271,7 @@
 		040375E31979E82900A5B5FC /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				044E466A1980202300E396AD /* parts */,
 				04037615197AF92C00A5B5FC /* views */,
 				040375EF197AAC1800A5B5FC /* EventListener.h */,
 				040375F0197AAF7B00A5B5FC /* View.cpp */,
@@ -388,6 +392,15 @@
 			name = combat;
 			path = src/game/combat;
 			sourceTree = SOURCE_ROOT;
+		};
+		044E466A1980202300E396AD /* parts */ = {
+			isa = PBXGroup;
+			children = (
+				044E466B1980202D00E396AD /* MiniMap.cpp */,
+				044E466C1980202D00E396AD /* MiniMap.h */,
+			);
+			path = parts;
+			sourceTree = "<group>";
 		};
 		04879A341978374100313BC7 = {
 			isa = PBXGroup;
@@ -545,6 +558,7 @@
 				040375E2197990B900A5B5FC /* main.cpp in Sources */,
 				040375E1197990B900A5B5FC /* Localization.cpp in Sources */,
 				040375DC197990B900A5B5FC /* Race.cpp in Sources */,
+				044E466D1980202D00E396AD /* MiniMap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

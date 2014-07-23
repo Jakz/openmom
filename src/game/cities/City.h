@@ -80,6 +80,8 @@ public:
     return 4;
   }
   
+  Player* getOwner() { return owner; }
+  
   u16 sightRange() { return 2; } // TODO
   
   bool hasPlacement(CityPlacement flag) { return (placement & flag) != 0; }
