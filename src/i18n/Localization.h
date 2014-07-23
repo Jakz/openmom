@@ -19,6 +19,15 @@ enum class SkillBase : u16;
 
 enum class I18 : u16
 {
+  CITY_HAMLET,
+  CITY_VILLAGE,
+  CITY_TOWN,
+  CITY_CITY,
+  CITY_CAPITOL,
+
+  
+  MESSAGE_NEW_BUILDING,
+  
   RACE_NAME_BARBARIANS,
   RACE_NAME_BEASTMEN,
   RACE_NAME_DARK_ELVES,
@@ -157,6 +166,9 @@ class i18n
     static const std::string& s(I18 ident) { return data[ident]; }
     static const std::string& s(UnitID unit) { return units[unit]; }
     static const std::string& s(SkillBase skill) { return skills[skill]; }
+
+  
+    static constexpr const I18 CITY_SIZE_NAMES[] { I18::CITY_HAMLET, I18::CITY_VILLAGE, I18::CITY_TOWN, I18::CITY_CITY, I18::CITY_CAPITOL };
 
 };
 

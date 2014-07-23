@@ -61,7 +61,6 @@ private:
   
   std::array<s8, 6> books;
   
-  
 public:
   enum Type
   {

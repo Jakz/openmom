@@ -69,7 +69,7 @@ s16 SkillSet::bonusForProperty(Property property)
   {
     for (const auto u : *unit.getArmy())
     {
-      for (const Skill& skill : u->skills())
+      for (const Skill& skill : *u->skills())
       {
         const effect_list& effects = skill.getEffects();
         

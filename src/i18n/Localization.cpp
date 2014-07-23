@@ -7,6 +7,14 @@ using namespace std;
 
 unordered_map<I18, const string> i18n::data =
 {
+  {I18::CITY_HAMLET, "Hamlet"},
+  {I18::CITY_VILLAGE, "Village"},
+  {I18::CITY_TOWN, "Town"},
+  {I18::CITY_CITY, "City"},
+  {I18::CITY_CAPITOL, "Capitol"},
+  
+  {I18::MESSAGE_NEW_BUILDING, "The %s of %s has completed the construction of a %s."},
+  
   {I18::RACE_NAME_BARBARIANS, "Barbarians"},
   {I18::RACE_NAME_BEASTMEN, "Beastmen"},
   {I18::RACE_NAME_DARK_ELVES, "Dark Elves"},

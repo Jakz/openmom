@@ -15,13 +15,16 @@ class Game;
 
 class LocalPlayer : public Player
 {
+private:
+  s16 viewportX, viewportY;
   
+public:
+  LocalPlayer(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight) :
+    Player(game,name,wizard,color,race,mapWidth,mapHeight) { }
   
-  public:
-    LocalPlayer(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight) :
-      Player(game,name,wizard,color,race,mapWidth,mapHeight) { }
-  
-    bool hasMessage() { return false; } // TODO
+  void discoverTile(const Position& position) override { } // TODO
+
+  bool hasMessage() { return false; } // TODO
 };
 
 #endif

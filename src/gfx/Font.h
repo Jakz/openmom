@@ -281,7 +281,7 @@ class Fonts
     static std::unordered_map<s8, ColorMap*> fontColors;
   
   public:
-    static std::string format(const std::string, ...);
+    static std::string format(const char* str, ...);
   
     static inline u16 stringWidth(FontFace face, const std::string string) { return fonts[face].stringWidth(string, hSpace); }
     static inline u16 stringHeight() { return 0; }

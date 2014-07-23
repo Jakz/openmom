@@ -29,7 +29,7 @@ private:
   Player* owner;
   const Race& race;
   
-  std::string name;
+  const std::string name;
   
   u16 population;
   u16 maxPopulation;
@@ -71,7 +71,8 @@ private:
 public:
   City(Player *owner, std::string name, u16 population, Position position);
   
-  u16 tileSize()
+  const std::string& getName() const { return name; }
+  u16 tileSize() const
   {
     u16 sizes[] = {5000,9000,13000,17000};
     for (int i = 0; i < 4; ++i) if (population < sizes[i]) return i;

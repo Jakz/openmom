@@ -103,7 +103,8 @@ void SpellBook::fillPool()
         remove_if(totspells.begin(), totspells.end(), [this](const Spell* spell){ return spells.find(spell) != spells.end(); });
         
         random_device rd;
-        shuffle(totspells.begin(), totspells.end(), mt19937(rd));
+        mt19937 gen(rd());
+        shuffle(totspells.begin(), totspells.end(), gen);
         
         auto it = totspells.begin();
         int k = 0;
@@ -134,29 +135,26 @@ const vector<ResearchStatus> SpellBook::availableForResearch() const
 const vector<ResearchStatus> SpellBook::bookSpells(Type type) const
 {
   vector<ResearchStatus> rspells;
-  binary_function<const Spell*, const Spell*, bool> comparator;
   
   for (auto it : spells)
   {
     switch (type) {
       case RESEARCH:
         rspells.push_back(ResearchStatus(it.first, it.second));
-        comparator = SpellComparatorByResearch();
+        sort(rspells.begin(), rspells.end(), SpellComparatorByResearch());
         break;
       case OVERLAND:
         if (it.second && it.first->canBeCastInOverland())
           rspells.push_back(ResearchStatus(it.first, it.second));
-        comparator = SpellComparatorByManaCost();
+        sort(rspells.begin(), rspells.end(), SpellComparatorByManaCost());
         break;
       case COMBAT:
         if (it.second && it.first->canBeCastInCombat())
           rspells.push_back(ResearchStatus(it.first, it.second));
-        comparator = SpellComparatorByManaCostCombat();
+        sort(rspells.begin(), rspells.end(), SpellComparatorByManaCostCombat());
         break;
     }
   }
-  
-  sort(rspells.begin(), rspells.end(), comparator);
   
   return rspells;
 }
