@@ -192,13 +192,20 @@ class VariableSpellCast : public SpellCast
 
 struct ResearchStatus
 {
-  const Spell& spell;
+  const Spell* spell;
   const bool discovered;
   
-  ResearchStatus(const Spell& spell, bool discovered = false) : spell(spell), discovered(discovered) { }
+  ResearchStatus(const Spell* spell, bool discovered = false) : spell(spell), discovered(discovered) { }
 };
 
 typedef std::list<const SpellCast> cast_list;
+typedef std::list<const Spell*> spell_list;
+
+class Spells
+{
+public:
+  static spell_list spellsByRarityAndSchool(SpellRarity rarity, School school) { return spell_list(); } // TODO
+};
 
 
 

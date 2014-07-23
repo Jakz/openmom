@@ -188,7 +188,7 @@ const movement_list MapMechanics::movementTypeOfArmy(const unit_list& units) con
     {
       for (const Unit* unit : units)
       {
-        bool hasMovement = unit->skills.hasSkillEffect(effect);
+        bool hasMovement = unit->skills().hasSkillEffect(effect);
         
         if (hasMovement && effect->shared)
           movements.insert(effect);
