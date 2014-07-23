@@ -44,7 +44,7 @@ s16 SkillSet::spellsUpkeep() const
   return accumulate(spells.begin(), spells.end(), 0, [](s16 value, const SpellCast& cast) { return value + cast.spell.mana.upkeep; });
 }
 
-s16 SkillSet::bonusForProperty(Property property)
+s16 SkillSet::bonusForProperty(Property property) const
 {
   s16 bonus = 0;
   

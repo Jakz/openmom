@@ -32,7 +32,7 @@ public:
   
   s16 spellsUpkeep() const;
   
-  s16 bonusForProperty(Property property);
+  s16 bonusForProperty(Property property) const;
   
   cast_list::iterator spellIterator() { return spells.begin(); }
   cast_list::const_iterator spellIterator() const { return spells.begin(); }

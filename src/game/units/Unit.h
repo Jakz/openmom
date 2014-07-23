@@ -75,7 +75,7 @@ public:
   
   Productable::Type type() const { return spec.productionType(); }
   
-  s16 getProperty(Property property) const;
+  s16 getProperty(Property property) const { return getBaseProperty(property) + getBonusProperty(property); };
   s16 getBaseProperty(Property property) const;
   s16 getBonusProperty(Property property) const;
   

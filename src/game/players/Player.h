@@ -23,6 +23,7 @@ class Army;
 class Hero;
 class ManaNode;
 class Unit;
+class Combat;
 
 class FogMap
 {
@@ -65,7 +66,7 @@ private:
 
   // SpellBook TODO
   // Relations TODO
-  // Combat TODO
+  const Combat* combat;
   FogMap *fogMap;
 
   u8 taxRate; // TODO: maybe enum
@@ -108,6 +109,9 @@ public:
    10% per book >= 8
    
    */
+  
+  const Combat* getCombat() const { return combat; }
+  void setCombat(Combat* combat) { this->combat = combat; }
   
   s32 baseResearchPoints() { return researchGain + manaRatios[1]; }
   s32 researchPoints() { return 0; /*TODO game.spellMechanics.actualResearchGain(this, spellBook().currentResearch()); */ }

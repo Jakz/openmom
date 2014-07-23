@@ -179,7 +179,7 @@ class SpellCast
   
     const UnitSpell& asUnitSpell() const { return static_cast<const UnitSpell&>(spell); }
     const CitySpell& asCitySpell() const { return static_cast<const CitySpell&>(spell); }
-    //const CombatEnchSpell& asCombatEnchSpell() { return static_cast<const CombatEnchSpell&>(spell); } // TODO
+    const CombatEnchSpell& asCombatEnchSpell() { return static_cast<const CombatEnchSpell&>(spell); }
 };
 
 class VariableSpellCast : public SpellCast
@@ -193,13 +193,13 @@ class VariableSpellCast : public SpellCast
 struct ResearchStatus
 {
   const Spell* spell;
-  const bool discovered;
+  bool discovered;
   
   ResearchStatus(const Spell* spell, bool discovered = false) : spell(spell), discovered(discovered) { }
 };
 
 typedef std::list<const SpellCast> cast_list;
-typedef std::list<const Spell*> spell_list;
+typedef std::vector<const Spell*> spell_list;
 
 class Spells
 {

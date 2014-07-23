@@ -49,34 +49,37 @@ namespace combat
     DamageEachFatal(std::vector<bool>&& amounts) : Damage(Type::EACH_FATAL), amounts(amounts) { }
     const std::vector<bool> amounts;
   };
-  
-  class CombatUnit
-  {
-  private:
-    Unit& unit;
-    const Player* player;
-    
-  public:
-    CombatUnit(Unit& unit) : unit(unit), player(unit.getArmy()->getOwner()), moves(unit.getProperty(Property::MOVEMENT)) { }
-    
-    void resetMoves() { moves = unit.getProperty(Property::MOVEMENT); }
-    
-    void setPosition(u16 x, u16 y) { this-> x = x; this->y = y; }
-    void setPosition(u16 x, u16 y, u16 facing) { setPosition(x,y); this->facing = facing; }
-    
-    friend bool operator<(const CombatUnit &c1, const CombatUnit &c2);
-    
-    u16 x, y;
-    u16 facing;
-    u16 moves;
-  };
-  
-  bool operator<(const CombatUnit &c1, const CombatUnit &c2)
-  {
-    if (c1.y < c2.y) return true;
-    else if (c1.x < c2.x) return true;
-    else return false;
-  }
 }
+
+class CombatUnit
+{
+private:
+  Unit& unit;
+  const Player* player;
+  
+public:
+  CombatUnit(Unit& unit) : unit(unit), player(unit.getArmy()->getOwner()), moves(unit.getProperty(Property::MOVEMENT)) { }
+  
+  void resetMoves() { moves = unit.getProperty(Property::MOVEMENT); }
+  
+  void setPosition(u16 x, u16 y) { this-> x = x; this->y = y; }
+  void setPosition(u16 x, u16 y, u16 facing) { setPosition(x,y); this->facing = facing; }
+  
+  friend bool operator<(const CombatUnit &c1, const CombatUnit &c2);
+  
+  u16 x, y;
+  u16 facing;
+  u16 moves;
+};
+
+class Combat
+{
+private:
+  cast_list spells;
+  
+public:
+  const cast_list& getSpells() const { return spells; }
+  
+};
 
 #endif

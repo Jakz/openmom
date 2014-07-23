@@ -2,6 +2,7 @@
 
 #include "Combat.h"
 #include "Localization.h"
+#include "Player.h"
 
 #include <numeric>
 
@@ -67,7 +68,106 @@ void HitPoints::killFigures(const std::vector<bool>& indices)
 
 
 
+
+s16 Unit::getBaseProperty(Property property) const
+{
+  switch (property) {
+    case Property::ALIVE_FIGURES:
+      return health_.aliveCount();
+    case Property::XP:
+      return 1;
+    case Property::RESIST_CHAOS:
+    case Property::RESIST_NATURE:
+    case Property::RESIST_SORCERY:
+    case Property::RESIST_LIFE:
+    case Property::RESIST_DEATH:
+      return spec.getProperty(Property::RESIST);
+    case Property::SHIELDS_RANGED:
+    case Property::SHIELDS_CHAOS:
+    case Property::SHIELDS_NATURE:
+    case Property::SHIELDS_SORCERY:
+    case Property::SHIELDS_LIFE:
+    case Property::SHIELDS_DEATH:
+      return spec.getProperty(Property::SHIELDS);
+    default:
+      return spec.getProperty(property);
+  }
+}
+
+s16 Unit::getBonusProperty(Property property) const
+{
+  int bonus = 0;
+  
+  if (property == Property::FIGURES)
+    return 0;
+  
+  if (spec.productionType() != Productable::Type::SUMMON)
+  {
+    switch (property)
+    {
+      case Property::MELEE: bonus += level->bonuses[0]; break;
+      case Property::RANGED: bonus += level->bonuses[0]; break;
+      case Property::SHIELDS: bonus += level->bonuses[1]; break;
+      case Property::RESIST: bonus  += level->bonuses[2]; break;
+      case Property::HIT_POINTS: bonus += level->bonuses[3]; break;
+      default: break;
+    }
+  }
+  
+  switch (property)
+  {
+    case Property::SHIELDS_RANGED:
+    case Property::SHIELDS_CHAOS:
+    case Property::SHIELDS_NATURE:
+    case Property::SHIELDS_SORCERY:
+    case Property::SHIELDS_LIFE:
+    case Property::SHIELDS_DEATH:
+      bonus += getBonusProperty(Property::SHIELDS); //TODO: maybe SHIELDS_RANGED should be used
+      break;
+    case Property::RESIST_CHAOS:
+    case Property::RESIST_NATURE:
+    case Property::RESIST_SORCERY:
+    case Property::RESIST_LIFE:
+    case Property::RESIST_DEATH:
+      bonus += getBonusProperty(Property::RESIST);
+      break;
+    default: break;
+  }
+  
+  bonus += skills_.bonusForProperty(property);
+  
+  // if army is in combat then apply every possible global buff / debuff
+  // TODO: use better check to see if it's in combat
+  if (army && army->getOwner()->getCombat())
+  {
+    const cast_list& spells = army->getOwner()->getCombat()->getSpells();
+    
+    for (auto cast : spells)
+    {
+      if (cast.spell.type == SpellType::COMBAT_ENCHANT)
+      {
+        const CombatEnchSpell& ench = cast.asCombatEnchSpell();
+        
+        if (ench.effect.type == CombatEnchEffect::Type::UNIT_MODIFIER)
+        {
+          const CombatEnchModifier& modifier = static_cast<const CombatEnchModifier&>(ench.effect);
+          modifier.apply(army->getOwner()->getCombat(), cast, this, property);
+        }
+      }
+    }
+  }
+  
+  if (property == Property::TO_HIT || property == Property::TO_DEFEND)
+    bonus *= 10;
+  
+  return bonus;
+}
+
+
+
+
 const std::string Hero::title() const
 {
   return "";
 }
+

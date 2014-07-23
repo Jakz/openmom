@@ -5,6 +5,9 @@
 
 using namespace std;
 
+
+constexpr const I18 i18n::CITY_SIZE_NAMES[];
+
 unordered_map<I18, const string> i18n::data =
 {
   {I18::CITY_HAMLET, "Hamlet"},

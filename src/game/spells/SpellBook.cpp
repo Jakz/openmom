@@ -140,19 +140,28 @@ const vector<ResearchStatus> SpellBook::bookSpells(Type type) const
   {
     switch (type) {
       case RESEARCH:
+      {
         rspells.push_back(ResearchStatus(it.first, it.second));
-        sort(rspells.begin(), rspells.end(), SpellComparatorByResearch());
+        SpellComparatorByResearch c = SpellComparatorByResearch();
+        sort(rspells.begin(), rspells.end(), [&](const ResearchStatus &s1, const ResearchStatus& s2) { return c(s1.spell, s2.spell); });
         break;
+      }
       case OVERLAND:
+      {
         if (it.second && it.first->canBeCastInOverland())
           rspells.push_back(ResearchStatus(it.first, it.second));
-        sort(rspells.begin(), rspells.end(), SpellComparatorByManaCost());
+        SpellComparatorByManaCost c = SpellComparatorByManaCost();
+        sort(rspells.begin(), rspells.end(), [&](const ResearchStatus &s1, const ResearchStatus& s2) { return c(s1.spell, s2.spell); });
         break;
+      }
       case COMBAT:
+      {
         if (it.second && it.first->canBeCastInCombat())
           rspells.push_back(ResearchStatus(it.first, it.second));
-        sort(rspells.begin(), rspells.end(), SpellComparatorByManaCostCombat());
+        SpellComparatorByManaCostCombat c = SpellComparatorByManaCostCombat();
+        sort(rspells.begin(), rspells.end(), [&](const ResearchStatus &s1, const ResearchStatus& s2) { return c(s1.spell, s2.spell); });
         break;
+      }
     }
   }
   
