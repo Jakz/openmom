@@ -120,6 +120,10 @@ unordered_map<I18, const string> i18n::data =
   {I18::UNIT_MAGIC_SPIRIT,"Magic Spirit"},
   {I18::UNIT_HELL_HOUNDS,"Hell Hounds"},
   {I18::UNIT_GREAT_DRAKE,"Great Drake"},
+  
+  {I18::SPELL_CORRUPTION, "Corruption"},
+  {I18::SPELL_CHANGE_TERRAIN, "Change Terrain"},
+  {I18::SPELL_RAISE_VOLCANO, "Raise Volcano"},
 
   
   {I18::PLACEHOLDER, "Placeholder"},

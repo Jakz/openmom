@@ -93,7 +93,7 @@ FogMap::~FogMap()
 
 
 Player::Player(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight) :
-g(game), wizard(wizard), race(race), color(color), name(name), fogMap(new FogMap(mapWidth, mapHeight)), combat(nullptr)
+g(game), wizard(wizard), race(race), color(color), name(name), fogMap(new FogMap(mapWidth, mapHeight)), combat(nullptr), spellBook(SpellBook(*this))
 {
   
   goldPool = 5000;

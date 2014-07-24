@@ -11,6 +11,7 @@
 
 #include "Common.h"
 #include "Spells.h"
+#include "SpellBook.h"
 
 #include <list>
 #include <string>
@@ -35,7 +36,7 @@ private:
 public:
   FogMap(u16 w, u16 h);
   
-  bool get(const Position& position);
+  bool get(const Position& position) const;
   void set(const Position& position);
   
   void setRect(s16 x, s16 y, s16 w, s16 h, Plane plane);
@@ -55,16 +56,16 @@ namespace std
 
 class Player
 {
-private:
+protected:
   std::list<City*> cities;
   std::list<Army*> armies;
   std::list<Hero*> heroes;
   std::list<ManaNode*> nodes;
-  std::list<SpellCast> spells;
+  std::list<const SpellCast> spells;
 
   std::unordered_set<TraitID> traits;
 
-  // SpellBook TODO
+  SpellBook spellBook;
   // Relations TODO
   const Combat* combat;
   FogMap *fogMap;
@@ -91,30 +92,20 @@ private:
 public:
   Player(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight);
 
-  s32 goldDelta() { return goldGain - goldUpkeep; }
-  s32 manaDelta() { return manaRatios[0] - manaUpkeep; }
-  s32 foodDelta() { return foodGain - foodUpkeep; }
+  s32 goldDelta() const { return goldGain - goldUpkeep; }
+  s32 manaDelta() const { return manaRatios[0] - manaUpkeep; }
+  s32 foodDelta() const { return foodGain - foodUpkeep; }
   
-  s32 castingSkillBase() { return /*TODO game.playerMechanics.computeBaseCastingSkill(this) +*/ castingSkillGained_; }
-  s32 castingSkill() { return castingSkillBase() /*TODO + game.playerMechanics.computeBonusCastingSkill(this)*/; }
-  s32 castingSkillGained() { return castingSkillGained_; }
-  s32 manaRatio(u8 index) { return manaRatios[index]; }
-  
-  /* TODO:
-   SAGE MASTER: bonus -20% research cost
-   CONJURER trait: bonus -25% research cost summon
-   NATURE MASTERY trait: bonus -15% research
-   CHAOS MASTERY trait: bonus -15% research
-   SORCERY MASTERY trait: bonus -15% research
-   10% per book >= 8
-   
-   */
+  s32 castingSkillBase() const { return /*TODO game.playerMechanics.computeBaseCastingSkill(this) +*/ castingSkillGained_; }
+  s32 castingSkill() const { return castingSkillBase() /*TODO + game.playerMechanics.computeBonusCastingSkill(this)*/; }
+  s32 castingSkillGained() const { return castingSkillGained_; }
+  s32 manaRatio(u8 index) const { return manaRatios[index]; }
   
   const Combat* getCombat() const { return combat; }
   void setCombat(Combat* combat) { this->combat = combat; }
   
-  s32 baseResearchPoints() { return researchGain + manaRatios[1]; }
-  s32 researchPoints() { return 0; /*TODO game.spellMechanics.actualResearchGain(this, spellBook().currentResearch()); */ }
+  s32 baseResearchPoints() const { return researchGain + manaRatios[1]; }
+  s32 researchPoints() const { return 0; /*TODO game.spellMechanics.actualResearchGain(this, spellBook().currentResearch()); */ }
   
   void setManaRatios(s32 m, s32 r, s32 s) { manaRatios[0] = m; manaRatios[1] = r; manaRatios[2] = s; }
   
@@ -126,6 +117,7 @@ public:
   void add(Hero* hero) { heroes.push_back(hero); }
   void add(ManaNode* node) { nodes.push_back(node); }
   void add(const SpellCast& spell) { spells.push_back(spell); }
+  const cast_list& getSpells() const { return spells; }
   
   void updateCities() { for (auto* c : cities) return; } // TODO game.cityMechanics.updateValues(c);
   void growCities() { for (auto* c : cities) return; } // TODO game.cityMechanics.growCity(c);
@@ -140,12 +132,14 @@ public:
   void selectAll() { } // TODO
   s16 selectedCount() const { return 0; } // TODO
   
+  const SpellBook* book() const { return &spellBook; }
+  
   s16 globalSkillSpellsCount(const Unit* u) const;
   const SkillGlobalSpell& nthGlobalSkillSpell(u16 i, const Unit* u) const;
 
   
   //SpellBook* book() { return spellBook; } TODO
-  FogMap* fog() { return fogMap; }
+  const FogMap* fog() const { return fogMap; }
   virtual void discoverTile(const Position& position) = 0;
   
   Game *game() const { return g; }
@@ -154,8 +148,8 @@ public:
   City* cityWithFortress();
   City* cityWithSummoningCircle();
   
-  bool hasTrait(TraitID trait) { return traits.find(trait) != traits.end(); }
-  bool hasMastery(School school) { return (school == NATURE && hasTrait(TraitID::NATURE_MASTERY)) || (school == CHAOS && hasTrait(TraitID::CHAOS_MASTERY)) || (school == SORCERY && hasTrait(TraitID::SORCERY_MASTERY)); }
+  bool hasTrait(TraitID trait) const { return traits.find(trait) != traits.end(); }
+  bool hasMastery(School school) const { return (school == NATURE && hasTrait(TraitID::NATURE_MASTERY)) || (school == CHAOS && hasTrait(TraitID::CHAOS_MASTERY)) || (school == SORCERY && hasTrait(TraitID::SORCERY_MASTERY)); }
   
   const std::string name;
   const Wizard& wizard;

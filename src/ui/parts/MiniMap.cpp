@@ -20,6 +20,12 @@ MiniMap::MiniMap(const World* world) : world(world), maps{Gfx::createSurface(wor
   
 }
 
+MiniMap::~MiniMap()
+{
+  SDL_FreeSurface(maps[0]);
+  SDL_FreeSurface(maps[1]);
+}
+
 void MiniMap::discover(const Position& position)
 {
   Gfx::lock(maps[position.plane]);

@@ -17,9 +17,14 @@
 
 #include "Messages.h"
 
+#include "MiniMap.h"
+
 #include <list>
 
 class Game;
+class Army;
+class Route;
+
 
 class LocalPlayer : public Player
 {
@@ -40,11 +45,20 @@ private:
   CombatUnit *combatSelectedUnit;
   bool combatCurrentlyPlaying;
   
+  MiniMap map;
+  
   std::list<const messages::Message*> messages;
   
 public:
-  LocalPlayer(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight) :
-    Player(game,name,wizard,color,race,mapWidth,mapHeight) { }
+  LocalPlayer(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight);
+
+  void selectArmy(Army* army);
+  Army* getSelectedArmy() { return selectedArmy; }
+  const movement_list selectedArmyMovementType();
+  bool selectedArmyCanBuildOutpost();
+  
+  void combatTurnBegun() { combatCurrentlyPlaying = true; }
+  void combatTurnEnded() { combatCurrentlyPlaying = false; }
   
   void discoverTile(const Position& position) override { } // TODO
 

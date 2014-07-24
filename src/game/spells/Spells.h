@@ -31,6 +31,8 @@ enum class SpellType : u8
   UNIT_SKILL,
   UNKNOWN,
   
+  SPECIAL
+  
   COMBAT_ENCHANT,
   COMBAT_INSTANT
 };
@@ -168,27 +170,31 @@ public:
   const CombatSpellEffect& effect;
 };
 
+class SpecialSpell : public Spell
+{
+public:
+  SpecialSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 manaCostDelta, Target Target) :
+    Spell(name, SpellType::SPECIAL, rarity, KIND_SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, -1, -1, 0}) { }
+  
+  SpecialSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 manaCostDelta, s16 combatManaCost, s16 combatManaCostDelta, Target Target) :
+    Spell(name, SpellType::SPECIAL, rarity, KIND_SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, combatManaCost, combatManaCostDelta, 0}) { } // TODO: will upkeep be always 0=
+};
 
 class SpellCast
 {
   public:
     const Player* player;
-    const Spell& spell;
+    const Spell* spell;
+    const u16 extraMana;
+    const bool isVariable;
   
-    SpellCast(const Player* player, const Spell& spell) : player(player), spell(spell) { }
+    SpellCast(const Player* player, const Spell* spell, u16 extraMana = 0) : player(player), spell(spell), extraMana(extraMana), isVariable(extraMana > 0) { }
   
-    const UnitSpell& asUnitSpell() const { return static_cast<const UnitSpell&>(spell); }
-    const CitySpell& asCitySpell() const { return static_cast<const CitySpell&>(spell); }
-    const CombatEnchSpell& asCombatEnchSpell() { return static_cast<const CombatEnchSpell&>(spell); }
+    const UnitSpell* asUnitSpell() const { return static_cast<const UnitSpell*>(spell); }
+    const CitySpell* asCitySpell() const { return static_cast<const CitySpell*>(spell); }
+    const CombatEnchSpell* asCombatEnchSpell() { return static_cast<const CombatEnchSpell*>(spell); }
 };
 
-class VariableSpellCast : public SpellCast
-{
-  public:
-    const u16 extraMana;
-  
-    VariableSpellCast(const Player* player, const Spell& spell, u16 extraMana) : SpellCast(player,spell), extraMana(extraMana) { }
-};
 
 struct ResearchStatus
 {
@@ -205,6 +211,13 @@ class Spells
 {
 public:
   static spell_list spellsByRarityAndSchool(SpellRarity rarity, School school) { return spell_list(); } // TODO
+  
+  
+  
+  static const Spell* CORRUPTION;
+  static const Spell* CHANGE_TERRAIN;
+  static const Spell* RAISE_VOLCANO;
+  
 };
 
 

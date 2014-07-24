@@ -131,6 +131,10 @@ enum class I18 : u16
   UNIT_HELL_HOUNDS,
   UNIT_GREAT_DRAKE,
   
+  SPELL_CORRUPTION,
+  SPELL_CHANGE_TERRAIN,
+  SPELL_RAISE_VOLCANO,
+  
   PLACEHOLDER
 };
 
@@ -167,7 +171,6 @@ class i18n
     static const std::string& s(UnitID unit) { return units[unit]; }
     static const std::string& s(SkillBase skill) { return skills[skill]; }
 
-  
     static constexpr const I18 CITY_SIZE_NAMES[] { I18::CITY_HAMLET, I18::CITY_VILLAGE, I18::CITY_TOWN, I18::CITY_CITY, I18::CITY_CAPITOL };
 
 };

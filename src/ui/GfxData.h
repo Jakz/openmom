@@ -17,6 +17,7 @@ enum class Ranged : u8;
 enum class Property : u8;
 
 class UnitSpec;
+class SpecialSpell;
 
 class TileGfxSpec
 {
@@ -60,6 +61,8 @@ private:
   static const TileGfxSpec specs[];
   static constexpr s8 rangedIndex[] = {-1,6,5,6,14,15,16,17,18};
   static constexpr s8 propertyIndex[] = {-1,-1,-1,-1,9,22,14,15,16,17,18};
+  
+  static std::unordered_map<const SpecialSpell*, s16> specialSpellGfxEffects;
 
 public:
   static Color colorForSchool(School school);
@@ -68,6 +71,8 @@ public:
   static const s8 propertyGfxIndex(Property property) { return rangedIndex[static_cast<u8>(property)]; }
   
   static const UnitGfxSpec& unitGfxSpec(const UnitSpec* spec);
+  
+  static s16 specialSpellGfxEffect(const SpecialSpell* spell);
 };
 
 #endif

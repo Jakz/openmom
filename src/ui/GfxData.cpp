@@ -11,6 +11,7 @@
 #include "Gfx.h"
 #include "UnitSpec.h"
 #include "Texture.h"
+#include "Spells.h"
 
 using namespace std;
 
@@ -38,6 +39,13 @@ const TileGfxSpec GfxData::specs[] =
   TileGfxSpec(0,0,RGB(255, 255, 255),RGB(255, 255, 255)), // RIVER
   TileGfxSpec(0,0,{RGB(0, 14, 90),RGB(7, 25, 95)},{RGB(8,4,4),RGB(36,28,24)}) // RIVER_MOUTH TODO: check colors
 };
+
+std::unordered_map<const SpecialSpell*, s16> GfxData::specialSpellGfxEffects = {
+  {&Spells::CORRUPTION, 11},
+  {&Spells::CHANGE_TERRAIN, 12},
+  {&Spells::RAISE_VOLCANO, 7}
+};
+
 
 
 Color GfxData::colorForSchool(const School school)
@@ -75,3 +83,5 @@ const UnitGfxSpec& GfxData::unitGfxSpec(const UnitSpec* spec)
   const UnitGfxSpec& gspec = unitSpecs.find(spec)->second;
   return gspec;
 }
+
+s16 GfxData::specialSpellGfxEffect(const SpecialSpell *spell) { return specialSpellGfxEffects[spell]; }

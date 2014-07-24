@@ -28,7 +28,7 @@ private:
   
   void updateMovementType();
 
-  const Route* route;
+  Route* route;
 
 public:
   Army(Player* owner, std::initializer_list<Unit*> units = {});
@@ -61,7 +61,8 @@ public:
   
   void turnBegin();
   
-  void setRoute(const Route* route) { this->route = route; }
+  Route* getRoute() { return route; }
+  void setRoute(Route* route) { this->route = route; }
   void clearRoute() { this->route = nullptr; }
   
   typedef std::list<Unit*>::iterator iterator;

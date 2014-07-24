@@ -35,7 +35,7 @@ public:
   
   bool hasRoad, hasEnchantedRoad;
   
-  std::list<SpellCast> spells;
+  std::list<const SpellCast> spells;
   
   s8 animationOffset;
   
@@ -60,7 +60,7 @@ public:
   
   bool isCorrupted() { /* TODO*/return false; }
     
-  void addSpell(SpellCast cast) { spells.push_back(cast); }
+  void addSpell(const SpellCast& cast) { spells.push_back(cast); }
 };
 
 #endif

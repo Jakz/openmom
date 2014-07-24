@@ -18,10 +18,11 @@ struct SDL_Surface;
 class MiniMap
 {
 private:
-  const World* world;
+  const World* const world;
   SDL_Surface* maps[PLANE_COUNT];
 public:
-  MiniMap(const World* world);
+  MiniMap(const World* const world);
+  ~MiniMap();
   
   SDL_Surface* get(Plane plane) { return maps[plane]; }
   
