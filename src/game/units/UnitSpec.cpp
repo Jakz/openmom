@@ -69,10 +69,18 @@ static const SummonSpec summonSpecs[] = {
   SummonSpec(UnitID::GREAT_DRAKE, 30, 900,    30, 0, Ranged::NONE, 0,     10,12,30, 1,     2, 2,   {})  //FLYING TO_HIT3 FIERY_BREATH20
 };
 
-
-
-
-
+const std::vector<const RaceUnitSpec*> UnitSpec::unitsForRace(RaceID race)
+{
+  std::vector<const RaceUnitSpec*> units;
+  
+  for (auto u : raceSpecs)
+  {
+    if (u.race.ident == race)
+      units.push_back(&u);
+  }
+  
+  return units;
+}
 
 const RaceUnitSpec* UnitSpec::raceSpec(UnitID unit, RaceID race)
 {

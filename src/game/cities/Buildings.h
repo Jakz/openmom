@@ -5,47 +5,6 @@
 
 #include <string>
 
-enum class BuildingID : u8
-{
-  BUILDERS_HALL,
-  SMITHY,
-  CITY_WALLS,
-  SHRINE,
-  TEMPLE,
-  PARTHENON,
-  CATHEDRAL,
-  ANIMISTS_GUILD,
-  ORACLE,
-  ALCHEMISTS_GUILD,
-  WIZARDS_GUILD,
-  STABLE,
-  FANTASTIC_STABLE,
-  BARRACKS,
-  ARMORY,
-  FIGHTERS_GUILD,
-  ARMORERS_GUILD,
-  WAR_COLLEGE,
-  SHIP_WRIGHTS_GUILD,
-  SHIP_YARD,
-  MARITIME_GUILD,
-  MARKETPLACE,
-  BANK,
-  MERCHANTS_GUILD,
-  GRANARY,
-  FARMERS_MARKET,
-  LIBRARY,
-  UNIVERSITY,
-  SAGES_GUILD,
-  MINERS_GUILD,
-  MECHANICIANS_GUILD,
-  SAWMILL,
-  FORESTERS_GUILD,
-  TRADE_GOODS,
-  HOUSING,
-  MAGE_FORTRESS,
-  SUMMONING_CIRCLE
-};
-
 class Productable
 {
   public:
@@ -69,15 +28,14 @@ class Productable
 class Building : public Productable
 {
   private:
-    static const Building buildings[];
   
   public:
-    const BuildingID ident;
+    /*const BuildingID ident;*/
     const I18 name;
     const u16 cost;
     const Upkeep upkeep;
   
-    Building(BuildingID ident, I18 name, u16 cost, u16 gupkeep, u16 mupkeep) : ident(ident), name(name), cost(cost), upkeep(Upkeep(gupkeep,mupkeep)) { }
+    Building(/*BuildingID ident, */I18 name, u16 cost, u16 gupkeep, u16 mupkeep) : /*ident(ident),*/ name(name), cost(cost), upkeep(Upkeep(gupkeep,mupkeep)) { }
   
     const std::string& productionName() const override;
     u16 productionCost() const override { return cost; }
@@ -92,7 +50,46 @@ class Building : public Productable
       }
     };
   
-    static const Building* get(BuildingID b) { return &buildings[static_cast<u8>(b)]; }
+  static const Building* BUILDERS_HALL;
+  static const Building* SMITHY;
+  static const Building* CITY_WALLS;
+  static const Building* SHRINE;
+  static const Building* TEMPLE;
+  static const Building* PARTHENON;
+  static const Building* CATHEDRAL;
+  static const Building* ANIMISTS_GUILD;
+  static const Building* ORACLE;
+  static const Building* ALCHEMISTS_GUILD;
+  static const Building* WIZARDS_GUILD;
+  static const Building* STABLE;
+  static const Building* FANTASTIC_STABLE;
+  static const Building* BARRACKS;
+  static const Building* ARMORY;
+  static const Building* FIGHTERS_GUILD;
+  static const Building* ARMORERS_GUILD;
+  static const Building* WAR_COLLEGE;
+  static const Building* SHIP_WRIGHTS_GUILD;
+  static const Building* SHIP_YARD;
+  static const Building* MARITIME_GUILD;
+  static const Building* MARKETPLACE;
+  static const Building* BANK;
+  static const Building* MERCHANTS_GUILD;
+  static const Building* GRANARY;
+  static const Building* FARMERS_MARKET;
+  static const Building* LIBRARY;
+  static const Building* UNIVERSITY;
+  static const Building* SAGES_GUILD;
+  static const Building* MINERS_GUILD;
+  static const Building* MECHANICIANS_GUILD;
+  static const Building* SAWMILL;
+  static const Building* FORESTERS_GUILD;
+  static const Building* TRADE_GOODS;
+  static const Building* HOUSING;
+  static const Building* MAGE_FORTRESS;
+  static const Building* SUMMONING_CIRCLE;
+  
+  static const size_t COUNT; // TODO: ugly
+  static const Building* buildings[];
 };
 
 #endif

@@ -104,7 +104,7 @@ bool SpellMechanics::applyTileSpell(const SpellCast& cast, Tile *tile)
   return true;
 }
 
-s32 SpellMechanics::actualManaCost(const Player *player, const Spell *spell, bool combat)
+s32 SpellMechanics::actualManaCost(Player *player, const Spell *spell, bool combat)
 {
   return combat ? spell->mana.combatManaCost : spell->mana.manaCost;
 }

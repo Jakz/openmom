@@ -88,8 +88,7 @@ public:
   void setPlacement(CityPlacement flag) { placement = static_cast<CityPlacement>(placement | flag); }
   
   void addBuilding(const Building *b) { buildings.insert(b); }
-  bool hasBuilding(const Building *b) { return buildings.find(b) != buildings.end(); }
-  bool hasBuilding(const BuildingID b);
+  bool hasBuilding(const Building *b) const { return buildings.find(b) != buildings.end(); }
   const std::set<const Building*>& getBuildings() { return buildings; }
   
   void addSpell(const SpellCast spell) { spells.push_back(spell); }
@@ -98,6 +97,8 @@ public:
   }
   // TODO: remove spell is missing
   const cast_list& getSpells() { return spells; }
+  
+  friend class CityMechanics;
 };
 
 #endif

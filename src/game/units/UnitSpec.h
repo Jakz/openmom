@@ -156,8 +156,6 @@ class SummonSpec;
 class UnitSpec : public Productable
 {
 protected:
-  const UnitID ident;
-  
   UnitSpec(UnitID ident, Upkeep upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
   ident(ident), upkeep(upkeep), cost(cost), melee(melee), ranged(ranged), rangedType(rangedType), ammo(ammo),
   defense(defense), resistance(resistance), hits(hits), figures(figures), movement(movement), sight(sight), skills(skills) { }
@@ -185,10 +183,13 @@ public:
   u16 productionCost() const override { return cost; }
   const Upkeep& productionUpkeep() const override { return upkeep; }
   
+  const UnitID ident;
+  
   static const UnitSpec* unitSpec(UnitID unit, RaceID race = RaceID::BARBARIANS);
   static const RaceUnitSpec* raceSpec(UnitID unit, RaceID race);
   static const HeroSpec* heroSpec(UnitID unit);
   static const SummonSpec* summonSpec(UnitID unit);
+  static const std::vector<const RaceUnitSpec*> unitsForRace(RaceID race);
 };
 
 class RaceUnitSpec : public UnitSpec

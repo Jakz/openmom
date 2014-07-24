@@ -75,20 +75,13 @@ public:
   
   }
   
-  s16 totalBooks()
-  {
-    return std::accumulate(books.begin(), books.end(), 0);
-  }
+  s16 totalBooks() const {return std::accumulate(books.begin(), books.end(), 0); }
   
   s16 booksForSchool(School school) const { return books[school]; }
   
   s16 baseCastingSkill() { return 100; /* TODO: forced */ }
   
-  void startCast(const Spell* spell)
-  {
-    currentCast = spell;
-    manaToCast = 0; // TODO: player.game.spellMechanics.actualManaCost(player, spell, false)
-  }
+  void startCast(const Spell* spell);
   
   void discoverSpell(const Spell* spell, bool discovered = true)
   {

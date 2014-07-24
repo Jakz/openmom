@@ -11,6 +11,8 @@
 
 #include "Settings.h"
 #include "MapMechanics.h"
+#include "SpellMechanics.h"
+#include "EventMechanics.h"
 
 class Player;
 class LocalPlayer;
@@ -24,6 +26,8 @@ public:
   Settings settings;
   
   MapMechanics mapMechanics;
+  SpellMechanics spellMechanics;
+  EventMechanics eventMechanics;
   World* const world;
 };
 

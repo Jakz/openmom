@@ -12,7 +12,7 @@
 #include "LocalPlayer.h"
 
 
-Game::Game() : world(new World(this, 60,40)), mapMechanics(*this)
+Game::Game() : world(new World(this, 60,40)), mapMechanics(*this), spellMechanics(*this), eventMechanics(*this)
 {
   
 }

@@ -28,7 +28,7 @@ public:
   
   bool applyTileSpell(const SpellCast& cast, Tile* tile);
   
-  s32 actualManaCost(const Player* player, const Spell* spell, bool combat);
+  s32 actualManaCost(Player* player, const Spell* spell, bool combat);
   s32 actualResearchGain(const Player* player, const Spell* spell);
   
   bool willDispel(const SpellCast& cast, const SpellCast& dispelCast);

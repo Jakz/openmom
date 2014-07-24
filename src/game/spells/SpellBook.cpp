@@ -1,6 +1,8 @@
 #include "SpellBook.h"
 
 #include "Player.h"
+#include "SpellMechanics.h"
+#include "Game.h"
 
 #include <random>
 
@@ -76,6 +78,12 @@ const Spell* SpellBook::advanceResearch()
   }
   
   return nullptr;
+}
+
+void SpellBook::startCast(const Spell* spell)
+{
+  currentCast = spell;
+  manaToCast = player.game()->spellMechanics.actualManaCost(&player, spell, false);
 }
 
 void SpellBook::fillPool()

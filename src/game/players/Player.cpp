@@ -13,8 +13,11 @@
 #include "City.h"
 #include "Buildings.h"
 #include "Unit.h"
+#include "Game.h"
 
 using namespace std;
+
+constexpr const float Player::TAX_RATES[];
 
 FogMap::FogMap(u16 w, u16 h) : w(w), h(h), map{new bool**[PLANE_COUNT]}
 {
@@ -118,7 +121,7 @@ void Player::refreshArmies()
 City* Player::cityWithFortress()
 {
   for (auto c : cities)
-    if (c->hasBuilding(BuildingID::MAGE_FORTRESS))
+    if (c->hasBuilding(Building::MAGE_FORTRESS))
       return c;
   
   return nullptr;
@@ -127,11 +130,16 @@ City* Player::cityWithFortress()
 City* Player::cityWithSummoningCircle()
 {
   for (auto c : cities)
-    if (c->hasBuilding(BuildingID::SUMMONING_CIRCLE))
+    if (c->hasBuilding(Building::SUMMONING_CIRCLE))
       return c;
   
   return nullptr;
 }
+
+s32 Player::castingSkillBase() const { return /*TODO game.playerMechanics.computeBaseCastingSkill(this) +*/ castingSkillGained_; }
+s32 Player::castingSkill() const { return castingSkillBase() /*TODO + game.playerMechanics.computeBonusCastingSkill(this)*/; }
+s32 Player::researchPoints() const { return g->spellMechanics.actualResearchGain(this, spellBook.getCurrentResearch()); }
+
 
 s16 Player::globalSkillSpellsCount(const Unit* u) const
 {

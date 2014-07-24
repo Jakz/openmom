@@ -92,12 +92,17 @@ protected:
 public:
   Player(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight);
 
+  void spendGold(s32 amount) { goldPool -= amount; }
+  
+  u8 getTaxRate() { return taxRate; }
+  s32 totalGoldPool() { return goldPool; }
+  
   s32 goldDelta() const { return goldGain - goldUpkeep; }
   s32 manaDelta() const { return manaRatios[0] - manaUpkeep; }
   s32 foodDelta() const { return foodGain - foodUpkeep; }
   
-  s32 castingSkillBase() const { return /*TODO game.playerMechanics.computeBaseCastingSkill(this) +*/ castingSkillGained_; }
-  s32 castingSkill() const { return castingSkillBase() /*TODO + game.playerMechanics.computeBonusCastingSkill(this)*/; }
+  s32 castingSkillBase() const;
+  s32 castingSkill() const;
   s32 castingSkillGained() const { return castingSkillGained_; }
   s32 manaRatio(u8 index) const { return manaRatios[index]; }
   
@@ -105,11 +110,11 @@ public:
   void setCombat(Combat* combat) { this->combat = combat; }
   
   s32 baseResearchPoints() const { return researchGain + manaRatios[1]; }
-  s32 researchPoints() const { return 0; /*TODO game.spellMechanics.actualResearchGain(this, spellBook().currentResearch()); */ }
+  s32 researchPoints() const;
   
   void setManaRatios(s32 m, s32 r, s32 s) { manaRatios[0] = m; manaRatios[1] = r; manaRatios[2] = s; }
   
-  void combatCast(Spell spell) { /* TODO spellBook.combatSpell(spell); */ }
+  void combatCast(const Spell* spell) { spellBook.combatCast(spell); }
 
 
   void add(City* city) { cities.push_back(city); }
@@ -138,7 +143,6 @@ public:
   const SkillGlobalSpell* nthGlobalSkillSpell(u16 i, const Unit* u) const;
 
   
-  //SpellBook* book() { return spellBook; } TODO
   FogMap* fog() const { return fogMap; }
   virtual void discoverTile(const Position& position) = 0;
   
