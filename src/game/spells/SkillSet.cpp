@@ -15,14 +15,14 @@ size_t SkillSet::size() const {
   return nativeSkills.size() + additionalSkills.size() + spells.size() + (army ? army->getOwner()->globalSkillSpellsCount(&unit) : 0);
 }
 
-const Skill& SkillSet::get(int index) const
+const Skill* SkillSet::get(int index) const
 {
   size_t native = nativeSkills.size(), additional = additionalSkills.size(), armyc = unit.getArmy() ? unit.getArmy()->getOwner()->globalSkillSpellsCount(&unit) : 0;
   
   if (index < native)
-    return *nativeSkills[index];
+    return nativeSkills[index];
   else if (index < native + additional)
-    return *additionalSkills[index - native];
+    return additionalSkills[index - native];
   else if (index < native + additional + armyc)
     return unit.getArmy()->getOwner()->nthGlobalSkillSpell(index - native - additional, &unit)->skill;
   else
@@ -49,9 +49,9 @@ s16 SkillSet::bonusForProperty(Property property) const
   s16 bonus = 0;
   
   // add bonuses from specific UnitBonus effect
-  for (const Skill& skill : *this)
+  for (const Skill* skill : *this)
   {
-    const effect_list& effects = skill.getEffects();
+    const effect_list& effects = skill->getEffects();
     
     for (const auto e : effects)
     {
@@ -69,9 +69,9 @@ s16 SkillSet::bonusForProperty(Property property) const
   {
     for (const auto u : *unit.getArmy())
     {
-      for (const Skill& skill : *u->skills())
+      for (const Skill* skill : *u->skills())
       {
-        const effect_list& effects = skill.getEffects();
+        const effect_list& effects = skill->getEffects();
         
         for (const auto e : effects)
         {
@@ -90,19 +90,19 @@ s16 SkillSet::bonusForProperty(Property property) const
 }
 
 bool SkillSet::hasSpellSkill(SkillBase base) const {
-  return std::find_if(spells.begin(), spells.end(), [&](const SpellCast& c) { return c.asUnitSpell()->skill.base == base; }) != spells.end();
+  return std::find_if(spells.begin(), spells.end(), [&](const SpellCast& c) { return c.asUnitSpell()->skill->base == base; }) != spells.end();
 }
 
 bool SkillSet::hasSkill(SkillBase base) const
 {
-  return std::find_if(this->begin(), this->end(), [&](const Skill& c) { return c.base == base; }) != this->end();
+  return std::find_if(this->begin(), this->end(), [&](const Skill* c) { return c->base == base; }) != this->end();
 }
 
 bool SkillSet::hasSkillEffect(const SkillEffect* effect) const
 {
-  for (auto& skill : *this)
+  for (auto skill : *this)
   {
-    effect_list& effects = skill.getEffects();
+    effect_list& effects = skill->getEffects();
     
     for (const auto e : effects)
       if (e == effect)

@@ -23,7 +23,7 @@ public:
   SkillSet(Unit& unit);
 
   size_t size() const;
-  const Skill& get(int index) const;
+  const Skill* get(int index) const;
   
   void add(const Skill& skill) { additionalSkills.push_back(&skill); }
   void add(const SpellCast& cast) { spells.push_back(cast); }
@@ -64,14 +64,14 @@ public:
     
     myiterator<Skill>(const s16& offset) { auto old = current; current += offset; auto tmp(*this); current = old; return tmp; }
 
-    Skill& operator*() { return parent.get(current); }
-    const Skill& operator*() const { return parent.get(current); }
+    Skill operator*() { return parent.get(current); }
+    const Skill operator*() const { return parent.get(current); }
     //const Skill* operator->() { return parent.get(current); }
     
     typedef s16 difference_type; //almost always ptrdif_t
-    typedef Skill value_type; //almost always T
+    typedef Skill* value_type; //almost always T
     typedef const Skill& reference; //almost always T& or const T&
-    //typedef const Skill* pointer; //almost always T* or const T*
+    typedef const Skill* pointer; //almost always T* or const T*
     typedef std::forward_iterator_tag iterator_category;  //usually std::forward_iterator_tag or similar
     
     protected:
@@ -79,7 +79,7 @@ public:
       s16 current = 0;
   };
     
-  typedef myiterator<const Skill&> const_iterator;
+  typedef myiterator<const Skill*> const_iterator;
 
   const_iterator begin() const { return const_iterator(*this); }
   const_iterator end() const { return const_iterator(*this, size()); }

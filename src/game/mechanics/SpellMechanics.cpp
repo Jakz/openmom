@@ -62,7 +62,7 @@ bool SpellMechanics::isTileAllowed(const Player *player, const Spell *spell, con
 
 bool SpellMechanics::isUnitAllowed(const Player *player, const UnitSpell *spell, const Unit *unit)
 {
-  return !unit->skills()->hasSpellSkill(spell->skill.base);
+  return !unit->skills()->hasSpellSkill(spell->skill->base);
 }
 
 bool SpellMechanics::applyTileSpell(const SpellCast& cast, Tile *tile)

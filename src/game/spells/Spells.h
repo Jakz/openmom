@@ -116,10 +116,10 @@ class Spell
 class UnitSpell : public Spell
 {
 public:
-	UnitSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost , s16 manaCost, s16 combatManaCost, s16 upkeep, const Skill& skill) :
+	UnitSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost , s16 manaCost, s16 combatManaCost, s16 upkeep, const Skill* skill) :
     Spell(name,SpellType::UNIT_SKILL,rarity,KIND_UNIT_SPELL,duration,school,Target::FRIENDLY_UNIT, ManaInfo{researchCost,manaCost,-1,combatManaCost,-1,upkeep}), skill(skill) { }
 
-  const Skill& skill;
+  const Skill* skill;
 };
 
 class CitySpell : public Spell
@@ -139,10 +139,10 @@ protected:
 class SkillGlobalSpell : public GlobalSpell
 {
 public:
-  SkillGlobalSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 upkeep, const Skill& skill) :
+  SkillGlobalSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 upkeep, const Skill* skill) :
     GlobalSpell(name, SpellType::GLOBAL_SKILL, rarity, KIND_ENCHANTMENT, school, duration, Target::GLOBAL, researchCost, manaCost, upkeep), skill(skill) { }
   
-  const Skill& skill;
+  const Skill* skill;
 };
 
 class StaticGlobalSpell : public GlobalSpell

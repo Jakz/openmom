@@ -30,6 +30,7 @@ public:
     IMMUNITY,
     MAGIC_WEAPONS,
     
+    COMBAT_BONUS,
     UNIT_BONUS,
     ARMY_BONUS,
     
@@ -186,6 +187,23 @@ public:
   ArmyLevelBonus(Property property, float multiplier, Type target) : ArmyBonus(property, 0, target), multiplier(multiplier) { }
   
   const s16 getValue(const Unit* unit) const override;
+};
+
+class CombatBonus : public SkillEffect
+{
+public:
+  enum class Phase : u8
+  {
+    ATTACKER,
+    DEFENDER
+  };
+  
+  CombatBonus(Property property, s16 value, Phase owner, Phase target, bool boundToSkill) : SkillEffect(SkillEffect::Type::COMBAT_BONUS), property(property), value(value), owner(owner), target(target), boundToSkill(boundToSkill) { }
+  
+  const Phase owner, target;
+  const Property property;
+  const s16 value;
+  const bool boundToSkill; // TODO wtf?
 };
 
 

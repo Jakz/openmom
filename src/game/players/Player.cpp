@@ -145,7 +145,7 @@ s16 Player::globalSkillSpellsCount(const Unit* u) const
 {
   u32 count = static_cast<u32>(count_if(spells.begin(), spells.end(), [&](const SpellCast& cast) {
     const Spell* spell = cast.spell;
-    return spell->type == SpellType::GLOBAL_SKILL && !u->skills()->hasSpellSkill(static_cast<const SkillGlobalSpell*>(spell)->skill.base);
+    return spell->type == SpellType::GLOBAL_SKILL && !u->skills()->hasSpellSkill(static_cast<const SkillGlobalSpell*>(spell)->skill->base);
   }));
   
   return count;
@@ -156,7 +156,7 @@ const SkillGlobalSpell* Player::nthGlobalSkillSpell(u16 i, const Unit* u) const
   for (auto& cast : spells)
   {
     const Spell* spell = cast.spell;
-    if (spell->type == SpellType::GLOBAL_SKILL && !u->skills()->hasSpellSkill(static_cast<const SkillGlobalSpell*>(spell)->skill.base))
+    if (spell->type == SpellType::GLOBAL_SKILL && !u->skills()->hasSpellSkill(static_cast<const SkillGlobalSpell*>(spell)->skill->base))
     {
       if (i > 0) { --i; continue; }
       return static_cast<const SkillGlobalSpell*>(spell);
