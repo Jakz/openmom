@@ -29,7 +29,7 @@ FogMap::FogMap(u16 w, u16 h) : w(w), h(h), map{new bool**[PLANE_COUNT]}
   }
 }
 
-bool FogMap::get(const Position& position) {
+bool FogMap::get(const Position& position) const {
   s16 x = position.x, y = position.y;
   
   if (y < 0 || y >= h)
@@ -136,26 +136,26 @@ City* Player::cityWithSummoningCircle()
 s16 Player::globalSkillSpellsCount(const Unit* u) const
 {
   u32 count = static_cast<u32>(count_if(spells.begin(), spells.end(), [&](const SpellCast& cast) {
-    const Spell& spell = cast.spell;
-    return spell.type == SpellType::GLOBAL_SKILL && !u->skills()->hasSpellSkill(static_cast<const SkillGlobalSpell&>(spell).skill.base);
+    const Spell* spell = cast.spell;
+    return spell->type == SpellType::GLOBAL_SKILL && !u->skills()->hasSpellSkill(static_cast<const SkillGlobalSpell*>(spell)->skill.base);
   }));
   
   return count;
 }
 
-const SkillGlobalSpell& Player::nthGlobalSkillSpell(u16 i, const Unit* u) const
+const SkillGlobalSpell* Player::nthGlobalSkillSpell(u16 i, const Unit* u) const
 {
   for (auto& cast : spells)
   {
-    const Spell& spell = cast.spell;
-    if (spell.type == SpellType::GLOBAL_SKILL && !u->skills()->hasSpellSkill(static_cast<const SkillGlobalSpell&>(spell).skill.base))
+    const Spell* spell = cast.spell;
+    if (spell->type == SpellType::GLOBAL_SKILL && !u->skills()->hasSpellSkill(static_cast<const SkillGlobalSpell*>(spell)->skill.base))
     {
       if (i > 0) { --i; continue; }
-      return static_cast<const SkillGlobalSpell&>(spell);
+      return static_cast<const SkillGlobalSpell*>(spell);
     }
   }
   
-  return static_cast<const SkillGlobalSpell&>(spells.front().spell); // TODO: hacky and bad practice, the whole management should be refactored
+  return static_cast<const SkillGlobalSpell*>(spells.front().spell); // TODO: hacky and bad practice, the whole management should be refactored
 }
 
 

@@ -68,7 +68,7 @@ protected:
   SpellBook spellBook;
   // Relations TODO
   const Combat* combat;
-  FogMap *fogMap;
+  mutable FogMap *fogMap;
 
   u8 taxRate; // TODO: maybe enum
 
@@ -135,11 +135,11 @@ public:
   const SpellBook* book() const { return &spellBook; }
   
   s16 globalSkillSpellsCount(const Unit* u) const;
-  const SkillGlobalSpell& nthGlobalSkillSpell(u16 i, const Unit* u) const;
+  const SkillGlobalSpell* nthGlobalSkillSpell(u16 i, const Unit* u) const;
 
   
   //SpellBook* book() { return spellBook; } TODO
-  const FogMap* fog() const { return fogMap; }
+  FogMap* fog() const { return fogMap; }
   virtual void discoverTile(const Position& position) = 0;
   
   Game *game() const { return g; }

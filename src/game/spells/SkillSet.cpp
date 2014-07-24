@@ -24,9 +24,9 @@ const Skill& SkillSet::get(int index) const
   else if (index < native + additional)
     return *additionalSkills[index - native];
   else if (index < native + additional + armyc)
-    return unit.getArmy()->getOwner()->nthGlobalSkillSpell(index - native - additional, &unit).skill;
+    return unit.getArmy()->getOwner()->nthGlobalSkillSpell(index - native - additional, &unit)->skill;
   else
-    return (*next(spells.begin(), index - native - additional - armyc)).asUnitSpell().skill;
+    return (*next(spells.begin(), index - native - additional - armyc)).asUnitSpell()->skill;
   
   return Skills::LARGE_SHIELD;
 }
@@ -35,13 +35,13 @@ void SkillSet::remove(const Spell* spell)
 {
   auto it = spells.begin();
   while (it != spells.end())
-    if (&(*it++).spell == spell)
+    if ((*it++).spell == spell)
       spells.erase(it);
 }
 
 s16 SkillSet::spellsUpkeep() const
 {
-  return accumulate(spells.begin(), spells.end(), 0, [](s16 value, const SpellCast& cast) { return value + cast.spell.mana.upkeep; });
+  return accumulate(spells.begin(), spells.end(), 0, [](s16 value, const SpellCast& cast) { return value + cast.spell->mana.upkeep; });
 }
 
 s16 SkillSet::bonusForProperty(Property property) const
@@ -90,7 +90,7 @@ s16 SkillSet::bonusForProperty(Property property) const
 }
 
 bool SkillSet::hasSpellSkill(SkillBase base) const {
-  return std::find_if(spells.begin(), spells.end(), [&](const SpellCast& c) { return c.asUnitSpell().skill.base == base; }) != spells.end();
+  return std::find_if(spells.begin(), spells.end(), [&](const SpellCast& c) { return c.asUnitSpell()->skill.base == base; }) != spells.end();
 }
 
 bool SkillSet::hasSkill(SkillBase base) const
@@ -116,6 +116,6 @@ School SkillSet::glowEffect() const
 {
   School school = NO_SCHOOL;
   s16 mana = 0;
-  for_each(spells.begin(), spells.end(), [&](const SpellCast& cast) { if (cast.spell.mana.manaCost > mana) { mana = cast.spell.mana.manaCost; school = cast.spell.school; } });
+  for_each(spells.begin(), spells.end(), [&](const SpellCast& cast) { if (cast.spell->mana.manaCost > mana) { mana = cast.spell->mana.manaCost; school = cast.spell->school; } });
   return school;
 }

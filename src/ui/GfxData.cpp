@@ -40,10 +40,10 @@ const TileGfxSpec GfxData::specs[] =
   TileGfxSpec(0,0,{RGB(0, 14, 90),RGB(7, 25, 95)},{RGB(8,4,4),RGB(36,28,24)}) // RIVER_MOUTH TODO: check colors
 };
 
-std::unordered_map<const SpecialSpell*, s16> GfxData::specialSpellGfxEffects = {
-  {&Spells::CORRUPTION, 11},
-  {&Spells::CHANGE_TERRAIN, 12},
-  {&Spells::RAISE_VOLCANO, 7}
+unordered_map<const Spell*, s16> GfxData::specialSpellGfxEffects = {
+  {Spells::CORRUPTION, 11},
+  {Spells::CHANGE_TERRAIN, 12},
+  {Spells::RAISE_VOLCANO, 7}
 };
 
 
@@ -53,7 +53,7 @@ Color GfxData::colorForSchool(const School school)
   return school < SCHOOL_COUNT ? schoolColors[school] : 0;
 }
 
-std::unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
+unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
   { UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 0, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_SPEARMEN) },
   { UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 1, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_SWORDSMEN) },
   { UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 2, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_BOWMEN) },
@@ -84,4 +84,4 @@ const UnitGfxSpec& GfxData::unitGfxSpec(const UnitSpec* spec)
   return gspec;
 }
 
-s16 GfxData::specialSpellGfxEffect(const SpecialSpell *spell) { return specialSpellGfxEffects[spell]; }
+s16 GfxData::specialSpellGfxEffect(const Spell *spell) { return specialSpellGfxEffects[spell]; }

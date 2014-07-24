@@ -31,7 +31,7 @@ enum class SpellType : u8
   UNIT_SKILL,
   UNKNOWN,
   
-  SPECIAL
+  SPECIAL,
   
   COMBAT_ENCHANT,
   COMBAT_INSTANT

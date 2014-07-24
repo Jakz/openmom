@@ -93,8 +93,8 @@ public:
   const std::set<const Building*>& getBuildings() { return buildings; }
   
   void addSpell(const SpellCast spell) { spells.push_back(spell); }
-  bool hasSpell(const CitySpell& spell) {
-    return std::find_if(spells.begin(), spells.end(), [&](const SpellCast cast) { return &cast.spell == &spell; }) != spells.end();
+  bool hasSpell(const CitySpell* spell) {
+    return std::find_if(spells.begin(), spells.end(), [&](const SpellCast cast) { return cast.spell == spell; }) != spells.end();
   }
   // TODO: remove spell is missing
   const cast_list& getSpells() { return spells; }
