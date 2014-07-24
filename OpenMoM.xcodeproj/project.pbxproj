@@ -44,6 +44,7 @@
 		04243F2B197ED3F500E8A716 /* Combat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04243F29197ED3F500E8A716 /* Combat.cpp */; };
 		04243F2E197EE9E700E8A716 /* SpellBook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04243F2C197EE9E700E8A716 /* SpellBook.cpp */; };
 		0442470F1980A04800A8D7CC /* SpellMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0442470D1980A04800A8D7CC /* SpellMechanics.cpp */; };
+		044247121980B97900A8D7CC /* EventMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044247101980B97900A8D7CC /* EventMechanics.cpp */; };
 		044E466D1980202D00E396AD /* MiniMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044E466B1980202D00E396AD /* MiniMap.cpp */; };
 		0487516D197F612400009661 /* Messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0487516B197F612400009661 /* Messages.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
@@ -145,6 +146,8 @@
 		04243F2D197EE9E700E8A716 /* SpellBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpellBook.h; path = src/game/spells/SpellBook.h; sourceTree = SOURCE_ROOT; };
 		0442470D1980A04800A8D7CC /* SpellMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpellMechanics.cpp; path = src/game/mechanics/SpellMechanics.cpp; sourceTree = SOURCE_ROOT; };
 		0442470E1980A04800A8D7CC /* SpellMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpellMechanics.h; path = src/game/mechanics/SpellMechanics.h; sourceTree = SOURCE_ROOT; };
+		044247101980B97900A8D7CC /* EventMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventMechanics.cpp; path = src/game/mechanics/EventMechanics.cpp; sourceTree = SOURCE_ROOT; };
+		044247111980B97900A8D7CC /* EventMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventMechanics.h; path = src/game/mechanics/EventMechanics.h; sourceTree = SOURCE_ROOT; };
 		044E466B1980202D00E396AD /* MiniMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MiniMap.cpp; path = src/ui/parts/MiniMap.cpp; sourceTree = SOURCE_ROOT; };
 		044E466C1980202D00E396AD /* MiniMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniMap.h; path = src/ui/parts/MiniMap.h; sourceTree = SOURCE_ROOT; };
 		0487516B197F612400009661 /* Messages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Messages.cpp; path = src/game/players/Messages.cpp; sourceTree = SOURCE_ROOT; };
@@ -383,6 +386,8 @@
 				0442470E1980A04800A8D7CC /* SpellMechanics.h */,
 				04205399197DCDB300B4C2CA /* MapMechanics.cpp */,
 				0420539A197DCDB300B4C2CA /* MapMechanics.h */,
+				044247101980B97900A8D7CC /* EventMechanics.cpp */,
+				044247111980B97900A8D7CC /* EventMechanics.h */,
 			);
 			name = mechanics;
 			path = src/game/mechanics;
@@ -531,6 +536,7 @@
 				040375F2197AAF7B00A5B5FC /* View.cpp in Sources */,
 				040375E0197990B900A5B5FC /* Texture.cpp in Sources */,
 				04243F2E197EE9E700E8A716 /* SpellBook.cpp in Sources */,
+				044247121980B97900A8D7CC /* EventMechanics.cpp in Sources */,
 				04037621197B539400A5B5FC /* Tile.cpp in Sources */,
 				040375DE197990B900A5B5FC /* Font.cpp in Sources */,
 				04243F2B197ED3F500E8A716 /* Combat.cpp in Sources */,
