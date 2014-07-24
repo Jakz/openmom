@@ -51,11 +51,13 @@ namespace std
 class Route
 {
 private:
-  Army* army;
+  mutable Army* army;
   std::list<PathTileInfo> positions, pending;
   
 public:
   bool completed() { return positions.empty(); }
+  
+  void setArmy(Army* army) const { this->army = army; }
   
   bool stillValid(World* world);
   
@@ -88,6 +90,7 @@ private:
   
 public:
   PathFinder(World* world);
+  ~PathFinder();
   
   void reset()
   {

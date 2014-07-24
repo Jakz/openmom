@@ -13,6 +13,8 @@
 #include "MapMechanics.h"
 #include "SpellMechanics.h"
 #include "EventMechanics.h"
+#include "CityMechanics.h"
+#include "PlayerMechanics.h"
 
 class Player;
 class LocalPlayer;
@@ -28,6 +30,8 @@ public:
   MapMechanics mapMechanics;
   SpellMechanics spellMechanics;
   EventMechanics eventMechanics;
+  CityMechanics cityMechanics;
+  PlayerMechanics playerMechanics;
   World* const world;
 };
 

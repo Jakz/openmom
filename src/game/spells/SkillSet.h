@@ -40,6 +40,7 @@ public:
   bool hasSpellSkill(SkillBase base) const;
   bool hasSkill(SkillBase base) const;
   bool hasSkillEffect(const SkillEffect* effect) const;
+  bool hasSimpleEffect(SimpleEffect::Type type) const;
   
   School glowEffect() const;
   

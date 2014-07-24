@@ -80,6 +80,13 @@ public:
     return 4;
   }
   
+  const Position& getPosition() const { return position; }
+  
+  bool isOutpost() const { return isStillOutpost; }
+  Upkeep getUpkeep() const { return upkeep; }
+  Upkeep getProduction() const { return Upkeep(gold, mana, food); }
+  s32 getKnowledge() const { return knowledge; }
+  
   Player* getOwner() { return owner; }
   
   u16 sightRange() { return 2; } // TODO

@@ -28,7 +28,7 @@ private:
   
   void updateMovementType();
 
-  Route* route;
+  const Route* route;
 
 public:
   Army(Player* owner, std::initializer_list<Unit*> units = {});
@@ -49,6 +49,7 @@ public:
   bool isPatrolling() { return isPatrol; }
   bool isPlaced() { return position.x != -1; }
   const Position& getPosition() { return position; }
+  void setPosition(const Position& position) { this->position = position; }
   
   void add(Unit* unit);
   Unit* remove(Unit* unit);
@@ -61,9 +62,9 @@ public:
   
   void turnBegin();
   
-  Route* getRoute() { return route; }
-  void setRoute(Route* route) { this->route = route; }
-  void clearRoute() { this->route = nullptr; }
+  const Route* getRoute() const { return route; }
+  void setRoute(const Route* route);
+  void clearRoute();
   
   typedef std::list<Unit*>::iterator iterator;
   typedef std::list<Unit*>::const_iterator const_iterator;

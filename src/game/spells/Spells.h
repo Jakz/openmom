@@ -29,6 +29,7 @@ enum class SpellType : u8
   GLOBAL,
   GLOBAL_SKILL,
   UNIT_SKILL,
+  SUMMON,
   UNKNOWN,
   
   SPECIAL,
@@ -179,6 +180,16 @@ public:
   SpecialSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 manaCostDelta, s16 combatManaCost, s16 combatManaCostDelta, Target Target) :
     Spell(name, SpellType::SPECIAL, rarity, KIND_SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, combatManaCost, combatManaCostDelta, 0}) { } // TODO: will upkeep be always 0=
 };
+
+class SummonSpell : public Spell
+{
+public:
+  SummonSpell(I18 name, SpellRarity rarity, School school, s16 researchCost, s16 manaCost, s16 combatManaCost, const SummonSpec* spec) :
+    Spell(name, SpellType::SUMMON, rarity, KIND_SUMMONING, UNDEFINED, school, Target::NONE, {researchCost, manaCost, -1, combatManaCost, -1, 0}) { }
+
+  const SummonSpec* spec;
+};
+
 
 class SpellCast
 {

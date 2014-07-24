@@ -34,7 +34,7 @@ private:
   s16 spellBookPage;
   
   Army* selectedArmy;
-  Route* selectedRoute;
+  const Route* selectedRoute;
   unit_list selectedUnits;
   
   bool drawSelectedArmy = true;
@@ -53,16 +53,41 @@ public:
   LocalPlayer(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight);
 
   void selectArmy(Army* army);
-  Army* getSelectedArmy() { return selectedArmy; }
+  Army* getSelectedArmy() override { return selectedArmy; }
   const movement_list selectedArmyMovementType();
   bool selectedArmyCanBuildOutpost();
+  s16 selectedCount() const override { return selectedUnits.size(); }
+  void selectNone();
+  void selectAll() override;
+  s16 selectedAvailMoves();
+  bool wholeSelected() { return selectedCount() == selectedArmy->size(); }
+  void resetArmy() { selectedArmy = nullptr; selectedRoute = nullptr; }
+  void computeRoute(s16 dx, s16 dy);
+  bool consumeRoute();
+  Army* splitAndSelect();
+  
+  void setSpellTarget(Target target) { this->target = target; }
+  Target getSpellTarget() const { return target; }
+  
+  void moveCombatUnit(CombatUnit* unit) { combatSelectedUnit = unit; }
+  
+  void selectUnit(Unit* unit);
+  void deselectUnit(Unit* unit);
+  bool isSelectedUnit(Unit* unit);
+
   
   void combatTurnBegun() { combatCurrentlyPlaying = true; }
   void combatTurnEnded() { combatCurrentlyPlaying = false; }
   
-  void discoverTile(const Position& position) override { } // TODO
+  void discoverTile(const Position& position) override { map.discover(position); }
+  void switchPlane() { viewport.plane = viewport.plane == ARCANUS ? MYRRAN : ARCANUS; }
+  const Position& getViewport() const { return viewport; }
+  void setViewport(s16 x, s16 y);
 
-  bool hasMessage() { return false; } // TODO
+  void push(Animation* animation) override;
+
+  void send(messages::Message* message) override { messages.push_back(message); }
+  bool hasMessage() { return !messages.empty(); }
 };
 
 #endif

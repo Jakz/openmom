@@ -24,3 +24,20 @@ void Tile::settleCity(City* city)
     }
   }
 }
+
+void Tile::placeArmy(Army* army)
+{
+  if (this->army && this->army->getOwner() == army->getOwner() && this->army->size() + army->size() <= 9)
+  {
+    this->army->merge(army);
+    delete army;
+    
+    // since armies are merged we need to update the current selected army of the player
+    // TODO LocalGame.i.currentPlayer.selectedArmy(this.army);
+  }
+  else
+  {
+    army->setPosition(position);
+    this->army = army;
+  }
+}

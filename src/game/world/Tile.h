@@ -53,12 +53,9 @@ public:
   void placePlace(Place* place) { this->place = place; }
 
   void unplaceArmy() { army = nullptr; }
-  void placeArmy(Army* army)
-  {
-    // TODO
-  }
+  void placeArmy(Army* army);
   
-  bool isCorrupted() { /* TODO*/return false; }
+  bool isCorrupted() { return std::find_if(spells.begin(), spells.end(), [](const SpellCast& cast) { return cast.spell == Spells::CORRUPTION; }) != spells.end(); }
     
   void addSpell(const SpellCast& cast) { spells.push_back(cast); }
 };

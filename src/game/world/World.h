@@ -11,6 +11,7 @@
 
 #include "Util.h"
 #include "Tile.h"
+#include "Pathfind.h"
 
 class Game;
 
@@ -20,7 +21,7 @@ private:
   Tile** map;
   
 public:
-  World(Game* const game, u16 w, u16 h) : game(game), w(w), h(h)
+  World(Game* const game, u16 w, u16 h) : game(game), w(w), h(h), pathfinder(this)
   {
     map = new Tile*[PLANE_COUNT];
     
@@ -128,6 +129,8 @@ public:
   }
   
   void calcSubTile(u16 x, u16 y, Plane p);
+  
+  PathFinder pathfinder;
   
   Game* const game;
   const u16 w, h;

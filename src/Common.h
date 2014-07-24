@@ -41,6 +41,8 @@ struct Position
   
   Position() { }
   Position(s16 x, s16 y, Plane plane) : x(x), y(y), plane(plane) { }
+  
+  bool same(const Position& p) const { return p.x == x && p.y == y && p.plane == plane; }
 };
 
 struct PositionOffset
@@ -60,7 +62,7 @@ struct SpriteInfo
 
 class Upkeep
 {
-  private:
+  public:
     mutable s16 gold, mana, food;
     
   public:

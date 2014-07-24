@@ -25,6 +25,9 @@ class Hero;
 class ManaNode;
 class Unit;
 class Combat;
+class Animation;
+namespace messages { class Message; }
+class CombatUnit;
 
 class FogMap
 {
@@ -54,7 +57,20 @@ namespace std
   };
 }
 
-class Player
+class PlayerInterface
+{
+public:
+  virtual void selectAll() = 0;
+  virtual Army* getSelectedArmy() = 0;
+  virtual void push(Animation* animation) = 0;
+  virtual void send(messages::Message* message) = 0;
+  virtual s16 selectedCount() const = 0;
+  virtual void discoverTile(const Position& position) = 0;
+  virtual void setSpellTarget(Target target) = 0;
+  virtual void moveCombatUnit(CombatUnit* unit) = 0;
+};
+
+class Player : public PlayerInterface
 {
 protected:
   std::list<City*> cities;
@@ -116,7 +132,6 @@ public:
   
   void combatCast(const Spell* spell) { spellBook.combatCast(spell); }
 
-
   void add(City* city) { cities.push_back(city); }
   void add(Army* army) { armies.push_back(army); }
   void add(Hero* hero) { heroes.push_back(hero); }
@@ -124,8 +139,8 @@ public:
   void add(const SpellCast& spell) { spells.push_back(spell); }
   const cast_list& getSpells() const { return spells; }
   
-  void updateCities() { for (auto* c : cities) return; } // TODO game.cityMechanics.updateValues(c);
-  void growCities() { for (auto* c : cities) return; } // TODO game.cityMechanics.growCity(c);
+  void updateCities();
+  void growCities();
   
   void fameGain(s32 fame) { this->fame += fame; }
   void fameLoss(s32 fame) { this->fame -= fame; }
@@ -133,9 +148,6 @@ public:
   void turnBeginArmies();
   void refreshArmies();
   void remove(Army* army) { armies.remove(army); }
-
-  void selectAll() { } // TODO
-  s16 selectedCount() const { return 0; } // TODO
   
   const SpellBook* book() const { return &spellBook; }
   
@@ -144,13 +156,12 @@ public:
 
   
   FogMap* fog() const { return fogMap; }
-  virtual void discoverTile(const Position& position) = 0;
   
   Game *game() const { return g; }
   
   
-  City* cityWithFortress();
-  City* cityWithSummoningCircle();
+  City* cityWithFortress() const;
+  City* cityWithSummoningCircle() const;
   
   bool hasTrait(TraitID trait) const { return traits.find(trait) != traits.end(); }
   bool hasMastery(School school) const { return (school == NATURE && hasTrait(TraitID::NATURE_MASTERY)) || (school == CHAOS && hasTrait(TraitID::CHAOS_MASTERY)) || (school == SORCERY && hasTrait(TraitID::SORCERY_MASTERY)); }
@@ -161,7 +172,8 @@ public:
   const Race& race;
   
   static constexpr const float TAX_RATES[] = {0.5f,1.0f,1.5f,2.0f,2.5f,3.0f};
-
+  
+  friend class PlayerMechanics;
 };
 
 #endif

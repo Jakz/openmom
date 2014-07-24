@@ -3,6 +3,7 @@
 #include "Unit.h"
 #include "Player.h"
 #include "Game.h"
+#include "Pathfind.h"
 
 using namespace std;
 
@@ -13,6 +14,14 @@ Army::Army(Player* owner, initializer_list<Unit*> units) : owner(owner), isPatro
   if (units.begin() != units.end())
     updateMovementType();
 }
+
+void Army::setRoute(const Route* route)
+{
+  delete this->route;
+  this->route = route;
+}
+
+void Army::clearRoute() { delete route; route = nullptr; }
 
 
 void Army::updateMovementType()

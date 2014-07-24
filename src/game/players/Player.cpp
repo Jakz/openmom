@@ -105,6 +105,8 @@ g(game), wizard(wizard), race(race), color(color), name(name), fogMap(new FogMap
   alive = true;
 }
 
+void Player::updateCities() { for (auto* c : cities) g->cityMechanics.updateValues(c); }
+void Player::growCities() { for (auto* c : cities) g->cityMechanics.growCity(c); }
 
 void Player::turnBeginArmies()
 {
@@ -118,7 +120,7 @@ void Player::refreshArmies()
     a->resetMoves();
 }
 
-City* Player::cityWithFortress()
+City* Player::cityWithFortress() const
 {
   for (auto c : cities)
     if (c->hasBuilding(Building::MAGE_FORTRESS))
@@ -127,7 +129,7 @@ City* Player::cityWithFortress()
   return nullptr;
 }
 
-City* Player::cityWithSummoningCircle()
+City* Player::cityWithSummoningCircle() const
 {
   for (auto c : cities)
     if (c->hasBuilding(Building::SUMMONING_CIRCLE))
