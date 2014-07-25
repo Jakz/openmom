@@ -58,7 +58,7 @@ private:
   
   s16 knowledge;
   
-  bool revalidateLayout; // should be here?
+  mutable bool revalidateLayout; // TODO: should be here?
   
   CityPlacement placement;
   
@@ -107,6 +107,7 @@ public:
   const Race& race;
   
   friend class CityMechanics;
+  friend class CityLayout;
 };
 
 #endif

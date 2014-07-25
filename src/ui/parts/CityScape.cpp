@@ -4,10 +4,13 @@
 #include "Buildings.h"
 #include "City.h"
 #include "Gfx.h"
+#include "Util.h"
+
+#include <set>
 
 using namespace std;
 
-unordered_map<const Building*, CityScape::BuildingSpecs> CityScape::specs = {
+unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
   {Building::MAGE_FORTRESS,      BuildingSpecs(SpriteInfo(TextureID::CITY_FORTRESS,   -1, -1), 0, 2, 3)},
   {Building::BUILDERS_HALL,      BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1, 0,  0), 27, 2, 3)},
   {Building::SMITHY,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2, 4, -1), 25, 2, 2)},
@@ -49,7 +52,7 @@ unordered_map<const Building*, CityScape::BuildingSpecs> CityScape::specs = {
   {Building::SUMMONING_CIRCLE,   BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 2), 25, 3, 2)}
 };
 
-void CityScape::draw(const City *city, LocalPlayer *player)
+void CityLayout::draw(const City *city, LocalPlayer *player)
 {
   Plane p = city->getPosition().plane;
   Gfx::draw(TextureID::CITY_BACKGROUND, 4, p, 3, 101);
@@ -74,12 +77,12 @@ void CityScape::draw(const City *city, LocalPlayer *player)
   // TODO requiring CityLayout
 }
 
-s16 CityScape::buildingHeight(const Building *building)
+s16 CityLayout::buildingHeight(const Building *building)
 {
   return Texture::get(specs[building].info.texture).h;
 }
 
-void CityScape::drawBuilding(const Building *building, s16 x, s16 y)
+void CityLayout::drawBuilding(const Building *building, s16 x, s16 y)
 {
   const BuildingSpecs& spec = specs[building];
   
@@ -89,7 +92,7 @@ void CityScape::drawBuilding(const Building *building, s16 x, s16 y)
     Gfx::draw(spec.info, x, y - buildingHeight(building));
 }
 
-void CityScape::drawBuildingCentered(const Building *building, s16 x, s16 y)
+void CityLayout::drawBuildingCentered(const Building *building, s16 x, s16 y)
 {
   if (building == Building::TRADE_GOODS || building == Building::HOUSING || building == Building::CITY_WALLS)
     drawBuilding(building, x, y);
@@ -103,3 +106,110 @@ void CityScape::drawBuildingCentered(const Building *building, s16 x, s16 y)
       Gfx::draw(spec.info, x + (40 - spec.pixelWidth)/2, y - buildingHeight(building));
   }
 }
+
+
+void CityLayout::deploy()
+{
+  positions.clear();
+  zones = getZones();
+  
+  set<const Building*> buildings;
+  
+  for (auto b : city->buildings)
+    if (b != Building::CITY_WALLS)
+      buildings.insert(b);
+  
+  // TODO: fix - it doesn't show mage fortress anymore
+  if (buildings.find(Building::MAGE_FORTRESS) != buildings.end())
+  {
+    positions.push_back(createPosition(zones[6], 0, 0, Building::MAGE_FORTRESS));
+    zones.erase(zones.begin()+6);
+    buildings.erase(Building::MAGE_FORTRESS);
+  }
+  if (buildings.find(Building::SHIP_WRIGHTS_GUILD) != buildings.end())
+  {
+    positions.push_back(createPosition(zones[4], 0, 0, Building::SHIP_WRIGHTS_GUILD));
+    zones.erase(zones.begin()+6);
+  }
+  else if (buildings.find(Building::MARITIME_GUILD) != buildings.end())
+  {
+    positions.push_back(createPosition(zones[4], 0, 0, Building::MARITIME_GUILD));
+    zones.erase(zones.begin()+6);
+  }
+  if (buildings.find(Building::SHIP_YARD) != buildings.end())
+  {
+    positions.push_back(createPosition(zones[4], 0, 0, Building::SHIP_YARD));
+    zones.erase(zones.begin()+6);
+  }
+  
+  vector<const Building*> vbuildings;
+  for_each(buildings.begin(), buildings.end(), [&](const Building* b) { vbuildings.push_back(b); });
+  sort(vbuildings.begin(), vbuildings.end(), GFX_COMPARATOR);
+  
+  for (auto b : vbuildings)
+  {
+    auto suitable = findSuitable(b);
+    
+    if (suitable.empty())
+    {
+      deploy();
+      return;
+    }
+    
+    LayoutZone zone = suitable[Util::randomIntUpTo(static_cast<u32>(suitable.size()))];
+    placeAndSplit(b, zone);
+  }
+  
+  int houses = 20 + Util::randomIntUpTo(10);
+  for (int i = 0; i < houses; ++i)
+  {
+    placeAndSplit(nullptr, zones[Util::randomIntUpTo(static_cast<u32>(zones.size()))]);
+  }
+}
+
+CityLayout::LayoutPosition CityLayout::createPosition(LayoutZone &zone, s16 ox, s16 oy, const Building *building)
+{
+  if (building)
+    return LayoutPosition(zone.x + ox*U*2 - oy*U - (specs[building].depth-1)*U, zone.y + oy*U + (specs[building].depth-1)*U, building);
+  else
+    return LayoutPosition(zone.x + ox*U*2 - oy*U, zone.y + oy*U, Util::randomIntUpTo(5));
+}
+
+const vector<CityLayout::LayoutZone> CityLayout::findSuitable(const Building *building)
+{
+  vector<LayoutZone> zn;
+  copy_if(zones.begin(), zones.end(), zn.begin(), [&](const LayoutZone& z) { return z.w >= specs[building].width && z.h >= specs[building].depth; });
+  return zn;
+}
+
+void CityLayout::placeAndSplit(const Building *b, CityLayout::LayoutZone &z)
+{
+  s16 bw = b ? specs[b].width : 1;
+  s16 bh = b ? specs[b].depth : 1;
+
+  if (bw == z.w && bh == z.h)
+    positions.push_back(createPosition(z,0,0,b));
+  else
+  {
+    if (z.w > bw && z.h > bh)
+    {
+      positions.push_back(createPosition(z,0,0,b));
+      zones.push_back(LayoutZone(z.x + bw*U*2, z.y, z.w - bw, bh, false, false));
+      zones.push_back(LayoutZone(z.x - bh*U, z.y + bh*U, z.w, z.h - bh, false, false));
+    }
+    else if (z.w > bw)
+    {
+      positions.push_back(createPosition(z,0,0,b));
+      zones.push_back(LayoutZone(z.x + bw*U*2, z.y, z.w - bw, z.h, false, false));
+    }
+    else
+    {
+      positions.push_back(createPosition(z,0,0,b));
+      zones.push_back(LayoutZone(z.x + bw*U*2 - bh*U, z.y + bh*U, z.h, z.h - bh, false, false));
+    }
+  }
+  
+  zones.erase(find(zones.begin(), zones.end(), z)); // TODO who knows if it works
+}
+
+
