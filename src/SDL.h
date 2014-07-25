@@ -21,7 +21,11 @@ class SDL
     static SDL_Window *window;
     static SDL_Renderer *renderer;
     static SDL_Texture *screen;
-    
+
+    static SDL_Surface *filter;
+  
+    static const u32 WIDTH = 320, HEIGHT = 200;
+    static const u32 SCALE_FACTOR = 2;
     static const u32 FRAME_RATE = 60;
     static constexpr float TICKS_PER_FRAME = 1000 / (float)FRAME_RATE;
     

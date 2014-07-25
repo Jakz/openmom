@@ -11,11 +11,17 @@
 #include "Font.h"
 #include "Gfx.h"
 
+#include "Hqx.h"
+
 #include "ViewManager.h"
+
+#define HQXFILTER
 
 SDL_Window* SDL::window = nullptr;
 SDL_Renderer* SDL::renderer = nullptr;
 SDL_Texture* SDL::screen = nullptr;
+
+SDL_Surface* SDL::filter = nullptr;
 
 bool SDL::willQuit = false;
 u32 SDL::ticks = 0;
@@ -27,10 +33,15 @@ bool SDL::init()
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     return false;
   
-  window = SDL_CreateWindow("OpenMoM v0.01a",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 400, SDL_WINDOW_OPENGL);
+  window = SDL_CreateWindow("OpenMoM v0.01a",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH*SCALE_FACTOR, HEIGHT*SCALE_FACTOR, SDL_WINDOW_OPENGL);
   renderer = SDL_CreateRenderer(window, -1, 0);
   
-  screen = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 320, 200);
+#ifndef HQXFILTER
+  screen = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
+#else
+  screen = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIDTH*SCALE_FACTOR, HEIGHT*SCALE_FACTOR);
+  filter = Gfx::createSurface(WIDTH*SCALE_FACTOR, HEIGHT*SCALE_FACTOR);
+#endif
   
   return true;
 }
@@ -62,6 +73,11 @@ void SDL::deinit()
   SDL_DestroyRenderer(renderer);
   SDL_DestroyTexture(screen);
   SDL_DestroyWindow(window);
+  
+#ifdef HQXFILTER
+  SDL_FreeSurface(filter);
+#endif
+  
   SDL_Quit();
 }
 
@@ -77,22 +93,22 @@ void SDL::handleEvents()
       
       case SDL_MOUSEBUTTONDOWN:
       {
-        gvm->mousePressed(event.button.x/2, event.button.y/2, static_cast<MouseButton>(event.button.button));
+        gvm->mousePressed(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, static_cast<MouseButton>(event.button.button));
         buttonDown = true;
         break;
       }
       case SDL_MOUSEBUTTONUP:
       {
-        gvm->mouseReleased(event.button.x/2, event.button.y/2, static_cast<MouseButton>(event.button.button));
+        gvm->mouseReleased(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, static_cast<MouseButton>(event.button.button));
         buttonDown = false;
         break;
       }
       case SDL_MOUSEMOTION:
       {
         if (buttonDown)
-          gvm->mouseDragged(event.button.x/2, event.button.y/2, BUTTON_LEFT);
+          gvm->mouseDragged(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, BUTTON_LEFT);
         else
-          gvm->mouseMoved(event.button.x/2, event.button.y/2, BUTTON_LEFT);
+          gvm->mouseMoved(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, BUTTON_LEFT);
         break;
       }
       
@@ -115,10 +131,19 @@ void SDL::render()
 {
   gvm->draw();
   
+#ifndef HQXFILTER
   SDL_Surface *canvas = Gfx::getCanvas();
-  SDL_UpdateTexture(screen, nullptr, canvas->pixels, canvas->pitch);
+  SDL_UpdateTexture(screen, nullptr, canvas->pixels, canvas->pitch);  
+#else
+  SDL_Surface *canvas = Gfx::getCanvas();
+  Gfx::lock(canvas);
+  Gfx::lock(filter);
+  hq2x_32(static_cast<u32*>(canvas->pixels), static_cast<u32*>(filter->pixels), WIDTH, HEIGHT);
+  Gfx::unlock(canvas);
+  Gfx::unlock(filter);
+  SDL_UpdateTexture(screen, nullptr, filter->pixels, filter->pitch);
   
-  
+#endif
   
   SDL_RenderClear(renderer);
   SDL_RenderCopy(renderer, screen, nullptr, nullptr);
