@@ -57,6 +57,7 @@
 		04879A7C1978391F00313BC7 /* SDL2_image.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A7D1978391F00313BC7 /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
 		048E08B919829C6D009AED0A /* SkillDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08B719829C6D009AED0A /* SkillDraw.cpp */; };
+		048E08BC1982B20A009AED0A /* WorldGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08BA1982B20A009AED0A /* WorldGenerator.cpp */; };
 		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
 		04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
 		04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4592197C9D7A00EA0CC0 /* Items.cpp */; };
@@ -178,6 +179,8 @@
 		04879A81197839CB00313BC7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = misc/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		048E08B719829C6D009AED0A /* SkillDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SkillDraw.cpp; path = src/ui/parts/SkillDraw.cpp; sourceTree = SOURCE_ROOT; };
 		048E08B819829C6D009AED0A /* SkillDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SkillDraw.h; path = src/ui/parts/SkillDraw.h; sourceTree = SOURCE_ROOT; };
+		048E08BA1982B20A009AED0A /* WorldGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WorldGenerator.cpp; path = src/game/world/WorldGenerator.cpp; sourceTree = SOURCE_ROOT; };
+		048E08BB1982B20A009AED0A /* WorldGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldGenerator.h; sourceTree = "<group>"; };
 		04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnitSpec.cpp; path = src/game/units/UnitSpec.cpp; sourceTree = SOURCE_ROOT; };
 		04EE458D197C85C000EA0CC0 /* UnitSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitSpec.h; path = src/game/units/UnitSpec.h; sourceTree = SOURCE_ROOT; };
 		04EE458F197C92C400EA0CC0 /* GfxData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GfxData.cpp; path = src/ui/GfxData.cpp; sourceTree = SOURCE_ROOT; };
@@ -323,6 +326,8 @@
 				04037626197B58C900A5B5FC /* World.h */,
 				04205394197DAA3C00B4C2CA /* Pathfind.cpp */,
 				04205395197DAA3C00B4C2CA /* Pathfind.h */,
+				048E08BA1982B20A009AED0A /* WorldGenerator.cpp */,
+				048E08BB1982B20A009AED0A /* WorldGenerator.h */,
 			);
 			name = world;
 			path = src/game/world;
@@ -594,6 +599,7 @@
 				0420538D197DA9D700B4C2CA /* SkillSet.cpp in Sources */,
 				0442470F1980A04800A8D7CC /* SpellMechanics.cpp in Sources */,
 				0420539B197DCDB300B4C2CA /* MapMechanics.cpp in Sources */,
+				048E08BC1982B20A009AED0A /* WorldGenerator.cpp in Sources */,
 				0403760A197AD00800A5B5FC /* Buildings.cpp in Sources */,
 				04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */,
 				048E08B919829C6D009AED0A /* SkillDraw.cpp in Sources */,

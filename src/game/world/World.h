@@ -21,7 +21,7 @@ private:
   Tile** map;
   
 public:
-  World(Game* const game, u16 w, u16 h) : game(game), w(w), h(h), pathfinder(this)
+  World(Game* const game, u16 w, u16 h) : game(game), w(w), h(h), pathfinder(this, w, h)
   {
     map = new Tile*[PLANE_COUNT];
     

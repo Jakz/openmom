@@ -3,6 +3,7 @@
 #include "Combat.h"
 #include "Localization.h"
 #include "Player.h"
+#include "Game.h"
 
 #include <numeric>
 
@@ -65,8 +66,11 @@ void HitPoints::killFigures(const std::vector<bool>& indices)
   remove_if(data.begin(), data.end(), [&](s16& hp) { return indices[current++]; });
 }
 
-
-
+void Unit::removeSpell(const Spell* spell)
+{
+  skills_.remove(spell);
+  army->getOwner()->game()->playerMechanics.updateGlobalGains(army->getOwner());
+}
 
 
 s16 Unit::getBaseProperty(Property property) const

@@ -216,7 +216,7 @@ const Route* PathFinder::computeRoute(World* world, const Position& position, co
 
 
 
-PathFinder::PathFinder(World* world) : w(world->w), h(world->h)
+PathFinder::PathFinder(World* world, s16 w, s16 h) : w(w), h(h)
 {
   info = new PathTileInfo*[w];
   

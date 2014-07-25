@@ -89,7 +89,7 @@ private:
   PathTileInfo** info;
   
 public:
-  PathFinder(World* world);
+  PathFinder(World* world, s16 w, s16 h);
   ~PathFinder();
   
   void reset()

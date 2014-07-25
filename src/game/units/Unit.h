@@ -91,7 +91,7 @@ public:
   
   Upkeep upkeep() const { Upkeep u = spec.upkeep; u.add(speelUpkeep()); return u; }
   Upkeep speelUpkeep() const { return Upkeep(0, skills_.spellsUpkeep(), 0); }
-  void removeSpell(const Spell* spell) { skills_.remove(spell); } // TODO: army.owner.game.playerMechanics.updateGlobalGains(army.owner);
+  void removeSpell(const Spell* spell);
   
   void turnBegin() {
     xp += getProperty(Property::XP);

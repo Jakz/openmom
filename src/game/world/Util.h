@@ -22,6 +22,7 @@ private:
 
 
 public:
+  static void seed(u32 s) { rng.seed(s); }
   static float rand() { return real(rng); }
   static float rand(float max) { return real(rng)*max; }
   
