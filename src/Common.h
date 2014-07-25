@@ -183,7 +183,9 @@ enum TileType : u8
   TILE_DESERT,
   TILE_TUNDRA,
   TILE_RIVER,
-  TILE_RIVER_MOUTH
+  TILE_RIVER_MOUTH,
+  
+  TILE_TYPES
 };
 
 enum TileGfxType : u8

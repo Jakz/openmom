@@ -15,7 +15,19 @@
 
 class Game;
 
-class World
+class GenerableWorld
+{
+public:
+  virtual s16 width() const = 0;
+  virtual s16 height() const = 0;
+  
+  virtual void set(TileType type, u16 x, u16 y, Plane plane) = 0;
+  virtual void rect(TileType type, u16 x, u16 y, u16 w, u16 h, Plane plane) = 0;
+  virtual void line(TileType type, int k1, int k2, int j, bool vertical, Plane plane) = 0;
+  virtual Tile* get(u16 x, u16 y, Plane plane) const = 0;
+};
+
+class World : public GenerableWorld
 {
 private:
   Tile** map;
@@ -34,12 +46,15 @@ public:
     }
   }
   
+  s16 width() const override { return w; }
+  s16 height() const override { return h; }
+  
   Tile* get(Position position) const
   {
     return get(position.x, position.y, position.plane);
   }
   
-  Tile* get(u16 x, u16 y, Plane plane) const
+  Tile* get(u16 x, u16 y, Plane plane) const override
   {
     int tX, tY;
 		
@@ -84,16 +99,17 @@ public:
       map[plane][x].type = type;
   }
   
-  void tile(TileType type, Position position) { get(position)->type = type; }
+  void set(TileType type, Position position) { get(position)->type = type; }
+  void set(TileType type, u16 x, u16 y, Plane plane) override { get(x,y,plane)->type = type; }
   
-  void rect(TileType type, u16 x, u16 y, u16 w, u16 h, Plane plane)
+  void rect(TileType type, u16 x, u16 y, u16 w, u16 h, Plane plane) override
 	{
 		for (int i = x; i < x+w; ++i)
 			for (int j = y; j < y+h; ++j)
         get(i,j,plane)->type = type;
 	}
   
-  void line(TileType type, int k1, int k2, int j, bool vertical, Plane plane)
+  void line(TileType type, int k1, int k2, int j, bool vertical, Plane plane) override
 	{
 		if (vertical)
 			for (int i = k1; i <= k2; ++i)

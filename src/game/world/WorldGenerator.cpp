@@ -2,11 +2,12 @@
 
 #include "Util.h"
 
+using namespace std;
+
 AtlasMap::AtlasMap(s32 width, s32 height, char defaultValue) :
   W(width), H(height), mapGrid(new char[width*height])
 {
   memset(mapGrid, defaultValue, width*height);
-  // TODO: dealloc on destruction
 }
 
 void AtlasMap::initialize(s32 w, s32 h, s32 continents, s32 continentSize, s32 islands, IslandType islandType, CoastWaters coastType, bool wrapX, bool wrapY, CoastMode coastMode)
@@ -372,3 +373,344 @@ float AtlasMap::equatorDistance(s32 p)
   float d3 = d2 / (0.5f * H);
   return d3;
 }
+
+#pragma mark WorldGenerator
+
+void WorldGenerator::count(Plane plane)
+{
+  fill(begin(quantities), end(quantities), 0);
+  totalTiles = 0;
+  
+  for (int x = 0; x < world->width(); ++x)
+    for (int y = 0; y < world->height(); ++y)
+    {
+      ++quantities[static_cast<u16>(world->get(x, y, plane)->type)];
+      ++totalTiles;
+    }
+}
+
+void WorldGenerator::makeAreas(Plane plane, TileType type,  float perc, float expandO, float expandT, int limit)
+{
+  count(plane);
+  
+  s32 placed = 0;
+  s32 itotal = static_cast<s32>(perc*quantities[TILE_GRASS]);
+  
+  // TODO: break after some time if stuck
+  
+  for (s32 i = 0; placed < itotal; ++i)
+  {
+    s32 gx = Util::randomIntUpTo(W);
+    s32 gy = Util::randomIntUpTo(H);
+    
+    if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TILE_GRASS && (limit == 0 || (gy < limit && gy > H-limit)) )
+    {
+      world->set(type, gx, gy, plane);
+      
+      for (int x = -1; x <= 1; ++x)
+        for (int y = -1; y <= 1;++y)
+          if (gx+x >= 0 && gx+x < W && gy+y >= 0 && gy+y < H && std::abs(x) - std::abs(y) != 0 && (limit == 0 || (gy+y > limit && gy+y > H-limit)))
+            if (Util::chance(expandO) && world->get(gx+x, gy+y, plane)->type == TILE_GRASS)
+            {
+              
+              world->set(type, gx+x, gy+y, plane);
+							
+              if (y != 0)
+              {
+                Tile* t = world->get(gx+x-1, gy+y, plane);
+                if (Util::chance(expandT) && t && t->type == TILE_GRASS)
+                  world->set(type, gx+x-1, gy+y, plane);
+                
+                t = world->get(gx+x+1, gy+y, plane);
+                if (Util::chance(expandT) && t && t->type == TILE_GRASS)
+                  world->set(type, gx+x+1, gy+y, plane);
+              }
+              else if (x != 0)
+              {
+                Tile* t = world->get(gx+x, gy+y-1, plane);
+                if (Util::chance(expandT) && t && t->type == TILE_GRASS)
+                  world->set(type, gx+x, gy+y-1, plane);
+                
+                t = world->get(gx+x, gy+y+1, plane);
+                if (Util::chance(expandT) && t && t->type == TILE_GRASS)
+                  world->set(type, gx+x, gy+y+1, plane);
+              }
+            }		
+      ++placed;
+    }
+  }
+}
+
+void WorldGenerator::makeChains(Plane plane, TileType type,  float perc, float branchProb, int length)
+{
+  count(plane);
+  s32 placed = 0;
+  s32 itotal = (int)(perc*quantities[TILE_GRASS]);
+  
+  for (s32 i = 0; placed < itotal; ++i)
+  {
+    int gx = Util::randomIntUpTo(W);
+    int gy = Util::randomIntUpTo(H);
+    
+    if (world->get(gx, gy, plane)->type == TILE_GRASS)
+    {
+      world->set(type, gx, gy, plane);
+      
+      int l = Util::randomIntUpTo(length);
+      PositionOffset d;
+      
+      for (int k = 0; k < l; ++k)
+      {
+        if (k == 0 ||  Util::chance(branchProb))
+          d = Util::ODIRS[Util::randomIntUpTo(4)];
+        int rx = gx+d.x;
+        int ry = gy+d.y;
+        while (!(rx > 0 && rx < W && ry > 0 && ry < H))
+        {
+          d = Util::ODIRS[Util::randomIntUpTo(4)];
+          rx = gx+d.x;
+          ry = gy+d.y;
+        }
+        
+        if (world->get(rx, ry, plane)->type == TILE_GRASS)
+          world->set(type, rx, ry, plane);
+        
+        gx = rx;
+        gy = ry;
+      }
+      
+      ++placed;
+    }
+  }
+}
+
+void WorldGenerator::makeSpots(Plane plane, TileType type, float perc)
+{
+  count(plane);
+  s32 placed = 0;
+  s32 itotal = (int)(perc*quantities[TILE_GRASS]);
+  
+  for (s32 i = 0; placed < itotal; ++i)
+  {
+    s32 gx = Util::randomIntUpTo(W);
+    s32 gy = Util::randomIntUpTo(H);
+    
+    if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TILE_GRASS )
+    {
+      world->set(type, gx, gy, plane);
+      ++placed;
+    }
+  }
+}
+
+void WorldGenerator::makeTundraEdges(Plane plane)
+{
+  s32 l[] = {1,1}, c[] = {0,0};
+  
+  for (int x = 0; x < W; ++x)
+  {
+    world->set(TILE_TUNDRA, x, 0, plane);
+    world->set(TILE_TUNDRA, x, H-1, plane);
+    
+    if (l[0] == 2)
+      world->set(TILE_TUNDRA, x, 1, plane);
+    if (l[1] == 2)
+      world->set(TILE_TUNDRA, x, H-2, plane);
+    
+    for (int k = 0; k < 2; ++k)
+    {
+      if (Util::chance(c[k]/10.0f))
+      {
+        l[k] = l[k] == 1 ? 2 : 1;
+        c[k] = 1;
+      }
+      else
+        ++c[k];
+    }
+    
+    /*for (int k = 0; k < 2; ++k)
+     {
+     if (l[k] == 1)
+     world->set(TILE_TUNDRA, x, y[k][0], Plane.ARCANUS);
+     else
+     {
+     world->set(TILE_TUNDRA, x, y[k][0], Plane.ARCANUS);
+     world->set(TILE_TUNDRA, x, y[k][1], Plane.ARCANUS);
+     }
+     l[k] = Util::chance(0.5f) ? 1 : 2;
+     }*/
+  }
+}
+
+void WorldGenerator::makeNodes(Plane plane)
+{
+  s32 total = plane == ARCANUS ? 16 : 14;
+  s32 minDistance = 10, counter = 1;
+  s32 cur = 0;
+  while (cur < total)
+  {
+    s32 gx = Util::randomIntUpTo(W);
+    s32 gy = Util::randomIntUpTo(H);
+    
+    if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TILE_GRASS)
+    {
+      // check if there are nodes within minimal distance
+      bool allowed = true;
+      for (s32 x = -minDistance; x <= minDistance; ++x)
+        for (s32 y = -minDistance; y <= minDistance; ++y)
+        {
+          Tile* t = world->get(gx+x, gy+y, plane);
+          if (t && t->node)
+            allowed = false;
+        }
+      
+      // if we spent at least 500 tries looking for a tile at valid distance reduce the maximum, probably we must be less restrictive
+      if (counter % 500 == 0 && !allowed && minDistance > 1)
+        --minDistance;
+      else if (counter % 50000 == 0 && !allowed && minDistance > 0)
+        --minDistance;
+      
+      if (!allowed)
+      {
+        ++counter;
+        continue;
+      }
+      
+      /* count tiles around the location to decide the type of the node */
+      int sea = 0, forest = 0, mountain = 0;
+      for (int x = -2; x <= 2; ++x)
+        for (int y = -2; y <= 2; ++y)
+        {
+          Tile* t = world->get(gx+x, gy+y, plane);
+          if (t)
+            switch (t->type) {
+              case TILE_WATER:
+                ++sea;
+                break;
+              case TILE_FOREST:
+              case TILE_SWAMP:
+                ++forest;
+                break;
+              case TILE_HILL:
+              case TILE_MOUNTAIN:
+                ++mountain;
+                break;
+              default: break;
+            }
+        }
+      
+      School schools[] = {SORCERY,NATURE,CHAOS};
+      School type;
+      
+      if (sea == forest && mountain == forest) type = schools[Util::randomIntUpTo(3)];
+      else if (sea >= forest && sea >= mountain) type = SORCERY;
+      else if (forest >= sea && forest >= mountain) type = NATURE;
+      else if (mountain >= sea && mountain >= forest) type = CHAOS;
+      
+      world->get(gx,gy,plane)->node = mapMech->generateManaNode(static_cast<World*>(world), Position(gx, gx, plane), type);
+
+      counter = 1;
+      ++cur;
+    }			
+  }
+}
+
+void WorldGenerator::makeLairs()
+{
+  s32 lairs[] = {25,32}; // lairs, weak lairs
+  s32 minDistance = 2, counter = 1;
+  
+  PlaceType places[] = {PLACE_CAVE,PLACE_RUINS,PLACE_KEEP,PLACE_TEMPLE,PLACE_ANCIENT_RUINS};
+  s32 placeTypes = sizeof(places)/sizeof(places[0]);
+  
+  for (int plane = 0; plane < PLANE_COUNT; ++plane)
+  {
+    int c = 0;
+    //counter = 1;
+    while (c < lairs[plane])
+    {
+      int gx = Util::randomIntUpTo(W);
+      int gy = Util::randomIntUpTo(H);
+      Plane gp = static_cast<Plane>(Util::randomIntUpTo(2)); // TODO: why extracting random plane? check behavior
+      
+      Tile* t = world->get(gx, gy, gp);
+      
+      // TODO: then place resources underneath, it shouldn't be that way
+      
+      if (t->type != TILE_WATER && t->type != TILE_SHORE && t->type != TILE_TUNDRA && !t->node&& !t->place && t->resource == Resource::NONE)
+      {
+        // check if there are places within minimal distance
+        bool allowed = true;
+        for (int x = -minDistance; x <= minDistance; ++x)
+          for (int y = -minDistance; y <= minDistance; ++y)
+          {
+            Tile* t2 = world->get(gx+x, gy+y, gp);
+            if (t2 && t2->place)
+              allowed = false;
+          }
+        
+        // if we spent at least 500 tries looking for a tile at valid distance reduce the maximum, probably we must be less restrictive
+        if (counter % 500 == 0 && !allowed && minDistance > 1)
+          --minDistance;
+        else if (counter % 50000 == 0 && !allowed && minDistance > 0)
+          --minDistance;
+        
+        if (!allowed)
+        {
+          ++counter;
+          continue;
+        }
+        
+        //TODO: weak dipende da plane esterno ma poi plane viene estratto random? check behavior
+        t->placePlace(new Place(places[Util::randomIntUpTo(placeTypes)], plane == MYRRAN));
+        ++c;
+      }
+    }
+  }
+}
+
+void WorldGenerator::atlasGenerate()
+{
+  s32 continents = 12;
+  s32 continentsSize = 1;
+  s32 islands = 28;
+  IslandType islandType = IslandType::MIXED;
+  CoastWaters coastWaters = CoastWaters::CALM;
+  CoastMode coastMode = CoastMode::BLOBBY;
+  
+  AtlasMap atlas = AtlasMap(W, H, 'w');
+  atlas.initialize(W, H, continents, continentsSize, islands, islandType, coastWaters, true, false, coastMode);
+  atlas.fill(world, ARCANUS);
+  atlas.print();
+  
+  atlas = AtlasMap(W, H, 'w');
+  atlas.initialize(W, H, continents, continentsSize, islands, islandType, coastWaters, true, false, coastMode);
+  atlas.fill(world, MYRRAN);
+
+}
+
+void WorldGenerator::generate()
+{
+  atlasGenerate();
+  
+  for (int i = 0; i < PLANE_COUNT; ++i)
+  {
+    Plane which = static_cast<Plane>(i);
+    
+    makeAreas(which, TILE_DESERT,  0.04f, 0.40f, 0.30f,0);
+  	makeChains(which, TILE_MOUNTAIN, 0.07f, 0.60f, 9);
+  	makeChains(which, TILE_HILL, 0.09f, 0.60f, 9);
+    
+  	makeSpots(which, TILE_SWAMP, 0.05f);
+  	makeAreas(which, TILE_TUNDRA,  0.01f, 0.20f, 0.20f,7);
+  	makeSpots(which, TILE_FOREST, 0.40f);
+    
+    makeTundraEdges(which);
+
+  	makeNodes(which);
+  }
+  
+  makeLairs();
+
+}
+

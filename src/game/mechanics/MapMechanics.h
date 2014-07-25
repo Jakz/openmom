@@ -32,7 +32,7 @@ public:
   float chanceResourceForTile(TileType type, Plane which) const;
   Resource generateResourceForTile(TileType type, Plane which) const;
   
-  ManaNode* generateManaNode(World* world, const Position& position, const School school) const;
+  ManaNode* generateManaNode(World* world, const Position position, const School school) const;
   
   u16 turnsRequiredToBuildRoadOnTile(Tile* tile) const;
   

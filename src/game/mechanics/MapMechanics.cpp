@@ -80,7 +80,7 @@ Resource MapMechanics::generateResourceForTile(TileType type, Plane which) const
   return Resource::NONE;
 }
 
-ManaNode* MapMechanics::generateManaNode(World* world, const Position& position, const School school) const
+ManaNode* MapMechanics::generateManaNode(World* world, const Position position, const School school) const
 {
   float mana = Util::randomIntUpTo(position.plane == ARCANUS ? 10 : 20);
   
@@ -148,6 +148,7 @@ s16 MapMechanics::baseMovementCost(TileType type) const
 			//default:
 			//	return 0;
 			// TODO: river mouth / shore?
+    case TILE_TYPES: return 0;
   }
 }
 

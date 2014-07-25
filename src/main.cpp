@@ -32,17 +32,16 @@ void init()
   LocalGame *localGame = new LocalGame();
   localGame->currentPlayer = player;
   LocalGame::i = localGame;
+  
+  //Util::seed(time(nullptr));
+  //WorldGenerator gen = WorldGenerator(game->world);
+  //gen.generate();
 }
 
 
 
 int main(int argc, char * arg[])
 {
-  Util::seed(time(nullptr));
-  AtlasMap* map = new AtlasMap(60,40,'w');
-  map->initialize(60, 40, 12, 1, 28, IslandType::MIXED, CoastWaters::CALM, true, false, CoastMode::BLOBBY);
-  map->print();
-    
   //const Race &race = Race::race(RACE_BARBARIANS);
   
   //std::unordered_map<const void*, SpriteInfo> map;
