@@ -48,6 +48,7 @@
 		044E466D1980202D00E396AD /* MiniMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044E466B1980202D00E396AD /* MiniMap.cpp */; };
 		0464E11419813E1A009C91ED /* CityMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11219813E1A009C91ED /* CityMechanics.cpp */; };
 		0464E11719818239009C91ED /* PlayerMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11519818239009C91ED /* PlayerMechanics.cpp */; };
+		0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E1181981D1EF009C91ED /* CityScape.cpp */; };
 		0487516D197F612400009661 /* Messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0487516B197F612400009661 /* Messages.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
@@ -156,6 +157,8 @@
 		0464E11319813E1A009C91ED /* CityMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CityMechanics.h; path = src/game/mechanics/CityMechanics.h; sourceTree = SOURCE_ROOT; };
 		0464E11519818239009C91ED /* PlayerMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlayerMechanics.cpp; path = src/game/mechanics/PlayerMechanics.cpp; sourceTree = SOURCE_ROOT; };
 		0464E11619818239009C91ED /* PlayerMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerMechanics.h; path = src/game/mechanics/PlayerMechanics.h; sourceTree = SOURCE_ROOT; };
+		0464E1181981D1EF009C91ED /* CityScape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CityScape.cpp; path = src/ui/parts/CityScape.cpp; sourceTree = SOURCE_ROOT; };
+		0464E1191981D1EF009C91ED /* CityScape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CityScape.h; path = src/ui/parts/CityScape.h; sourceTree = SOURCE_ROOT; };
 		0487516B197F612400009661 /* Messages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Messages.cpp; path = src/game/players/Messages.cpp; sourceTree = SOURCE_ROOT; };
 		0487516C197F612400009661 /* Messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Messages.h; path = src/game/players/Messages.h; sourceTree = SOURCE_ROOT; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -418,6 +421,8 @@
 			children = (
 				044E466B1980202D00E396AD /* MiniMap.cpp */,
 				044E466C1980202D00E396AD /* MiniMap.h */,
+				0464E1181981D1EF009C91ED /* CityScape.cpp */,
+				0464E1191981D1EF009C91ED /* CityScape.h */,
 			);
 			path = parts;
 			sourceTree = "<group>";
@@ -571,6 +576,7 @@
 				04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */,
 				0403761E197B52F800A5B5FC /* Unit.cpp in Sources */,
 				0487516D197F612400009661 /* Messages.cpp in Sources */,
+				0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */,
 				04037627197B58C900A5B5FC /* World.cpp in Sources */,
 				04F00C87197E0CB000293EE0 /* CombatSpells.cpp in Sources */,
 				040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */,

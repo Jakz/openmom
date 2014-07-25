@@ -27,7 +27,6 @@ class City
 {
 private:
   Player* owner;
-  const Race& race;
   
   const std::string name;
   
@@ -91,7 +90,7 @@ public:
   
   u16 sightRange() { return 2; } // TODO
   
-  bool hasPlacement(CityPlacement flag) { return (placement & flag) != 0; }
+  bool hasPlacement(CityPlacement flag) const { return (placement & flag) != 0; }
   void setPlacement(CityPlacement flag) { placement = static_cast<CityPlacement>(placement | flag); }
   
   void addBuilding(const Building *b) { buildings.insert(b); }
@@ -99,11 +98,13 @@ public:
   const std::set<const Building*>& getBuildings() { return buildings; }
   
   void addSpell(const SpellCast spell) { spells.push_back(spell); }
-  bool hasSpell(const CitySpell* spell) {
+  bool hasSpell(const CitySpell* spell) const {
     return std::find_if(spells.begin(), spells.end(), [&](const SpellCast cast) { return cast.spell == spell; }) != spells.end();
   }
   // TODO: remove spell is missing
   const cast_list& getSpells() { return spells; }
+  
+  const Race& race;
   
   friend class CityMechanics;
 };

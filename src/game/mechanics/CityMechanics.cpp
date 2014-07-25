@@ -751,8 +751,8 @@ void CityMechanics::updateProduction(City *c)
       
       c->productionPool = 0;
       updateValues(c);
-      //TODO: game.playerMechanics.updatePools(c.owner);
-      //TODO: game.playerMechanics.updateGlobalGains(c.owner);
+      g.playerMechanics.updatePools(c->owner);
+      g.playerMechanics.updateGlobalGains(c->owner);
     }
   }
 }
