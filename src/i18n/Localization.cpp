@@ -143,7 +143,22 @@ unordered_map<I18, const string> i18n::data =
   {I18::EVENT_PLAGUE, "Plague"},
   {I18::EVENT_POPULATION_BOOM, "Population Boom"},
   {I18::EVENT_REBELLION, "Rebellion"},
-
+  
+  {I18::ITEM_SWORD, "Sword"},
+  {I18::ITEM_MACE, "Mace"},
+  {I18::ITEM_AXE, "Axe"},
+  {I18::ITEM_BOW, "Bow"},
+  {I18::ITEM_STAFF, "Staff"},
+  {I18::ITEM_WAND, "Wand"},
+  {I18::ITEM_AMULET, "Amulet"},
+  {I18::ITEM_RING, "Ring"},
+  {I18::ITEM_CLOAK, "Cloak"},
+  {I18::ITEM_GAUNTLET, "Gauntlet"},
+  {I18::ITEM_HELM, "Helm"},
+  {I18::ITEM_ORB, "Orb"},
+  {I18::ITEM_SHIELD, "Shield"},
+  {I18::ITEM_CHAIN_MAIL, "Chain Mail"},
+  {I18::ITEM_PLATE_MAIL, "Plate Mail"},
   
   {I18::PLACEHOLDER, "Placeholder"},
 };
@@ -291,7 +306,6 @@ unordered_map<SkillBase, const string> i18n::skills =
   
   {SkillBase::MITHRIL_WEAPONS, "Mithril Weapons"},
   {SkillBase::ADAMANTIUM_WEAPONS, "Adamantium Weapons"},
-  
   
   {SkillBase::STATUS_WEB, "Web"},
   {SkillBase::STATUS_CONFUSION, "Confusion"},

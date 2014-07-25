@@ -64,7 +64,7 @@ protected:
   
   bool selected;
   
-  s16 xp;
+  s32 xp;
   s16 availableMoves;
 
 public:
@@ -72,6 +72,8 @@ public:
   
   void setArmy(Army* army) { this->army = army; }
   Army* getArmy() const { return army; }
+  
+  s32 getExperience() const { return xp; }
   
   Productable::Type type() const { return spec.productionType(); }
   
