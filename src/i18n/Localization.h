@@ -176,6 +176,12 @@ namespace std
   {
     std::size_t operator()(const SkillBase& k) const { return static_cast<u16>(k); }
   };
+  
+  template<>
+  struct hash<TileType>
+  {
+    std::size_t operator()(const TileType& k) const { return static_cast<u16>(k); }
+  };
 }
 
 class i18n
@@ -184,11 +190,16 @@ class i18n
     static std::unordered_map<I18, const std::string> data;
     static std::unordered_map<UnitID, const std::string> units;
     static std::unordered_map<SkillBase, const std::string> skills;
+    static std::unordered_map<I18, I18> buildingDescs;
+    static std::unordered_map<TileType, std::vector<std::string> > surveyorDescs;
   
   public:
     static const std::string& s(I18 ident) { return data[ident]; }
     static const std::string& s(UnitID unit) { return units[unit]; }
     static const std::string& s(SkillBase skill) { return skills[skill]; }
+  
+    static I18 buildingDesc(I18 b) { return buildingDescs[b]; }
+    static const std::vector<std::string> surveyorDesc(TileType type) { return surveyorDescs[type]; }
 
     static constexpr const I18 CITY_SIZE_NAMES[] { I18::CITY_HAMLET, I18::CITY_VILLAGE, I18::CITY_TOWN, I18::CITY_CITY, I18::CITY_CAPITOL };
 

@@ -11,6 +11,7 @@
 
 #include <string>
 #include <functional>
+#include <list>
 
 #include "Font.h"
 #include "Localization.h"
@@ -77,6 +78,36 @@ class NewBuilding : public Message
   const Building* building;
   const City* city;
 };
+
+  class HelpPiece { };
+  
+  class HelpHeader : public HelpPiece
+  {
+    const SpriteInfo info;
+    const std::string title;
+    
+    HelpHeader(const SpriteInfo&& info, std::string&& title) : info(info), title(title) { }
+  };
+  
+  class HelpText : public HelpPiece
+  {
+    const std::string text;
+    
+    HelpText(const std::string&& text) : text(text) { }
+  };
+  
+  
+  class Help
+  {
+    std::list<HelpPiece*> parts;
+    
+    Help() { }
+    ~Help()
+    {
+      for (auto p : parts) delete p;
+    }
+    
+  };
   
 }
 

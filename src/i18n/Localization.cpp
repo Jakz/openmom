@@ -306,3 +306,24 @@ unordered_map<SkillBase, const string> i18n::skills =
   {SkillBase::STATUS_POSESSION, "Posession"}
 };
 
+std::unordered_map<I18, I18> i18n::buildingDescs
+{
+  // TODO
+};
+
+std::unordered_map<TileType, std::vector<std::string> > i18n::surveyorDescs
+{
+  {TILE_FOREST, {"Forest", "1/2 production", "+3% production"} },
+  {TILE_MOUNTAIN, {"Mountain", "+5% production"} },
+  {TILE_DESERT, {"Desert"} },
+  {TILE_GRASS, {"Grasslands"} },
+  {TILE_HILL, {"Hills"} },
+  {TILE_MOUNTAIN, {"Mountain"} },
+  {TILE_TUNDRA, {"Tundra"} },
+  {TILE_SWAMP, {"Swamp"} },
+  {TILE_VOLCANO, {"Volcano"} },
+  {TILE_WATER, {"Ocean"} },
+  {TILE_SHORE, {"Shore", "1/2 food", "+10% gold"} },
+  {TILE_RIVER_MOUTH, {"River Mouth"} },
+};
+
