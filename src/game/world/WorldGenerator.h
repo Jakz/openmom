@@ -49,6 +49,18 @@ public:
   void removeIsles();
   float equatorDistance(s32);
   
+  void print()
+  {
+    for (int y = 0; y < 40; ++y)
+    {
+      for (int x = 0; x < 60; ++x)
+      {
+        printf("%c", mapGrid[x+y*W]);
+      }
+      printf("\n");
+    }
+  }
+  
   inline char get(s32 x, s32 y) { return mapGrid[x+y*W]; }
   inline void set(s32 x, s32 y, char c) { mapGrid[x+y*W] = c; }
 

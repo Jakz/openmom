@@ -38,19 +38,11 @@ void init()
 
 int main(int argc, char * arg[])
 {
-  //Util::seed(time(nullptr));
+  Util::seed(time(nullptr));
   AtlasMap* map = new AtlasMap(60,40,'w');
   map->initialize(60, 40, 12, 1, 28, IslandType::MIXED, CoastWaters::CALM, true, false, CoastMode::BLOBBY);
-  
-  for (int y = 0; y < 40; ++y)
-  {
-    for (int x = 0; x < 60; ++x)
-    {
-      printf("%c", map->get(x, y));
-    }
-    printf("\n");
-  }
-  
+  map->print();
+    
   //const Race &race = Race::race(RACE_BARBARIANS);
   
   //std::unordered_map<const void*, SpriteInfo> map;

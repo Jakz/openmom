@@ -251,7 +251,7 @@ void AtlasMap::cellCount4(s32 count, float chance, char t1, char t2, char t3)
   for (int i = 0; i < count; ++i)
   {
     char* tmp = new char[W*H];
-    memcpy(tmp, mapGrid, sizeof(W*H));
+    memcpy(tmp, mapGrid, W*H);
     
     for (int i = 0; i < W; ++i)
     {
@@ -262,7 +262,7 @@ void AtlasMap::cellCount4(s32 count, float chance, char t1, char t2, char t3)
       }
     }
     
-    memcpy(mapGrid, tmp, sizeof(W*H));
+    memcpy(mapGrid, tmp, W*H);
     delete [] tmp;
   }
 }
@@ -272,8 +272,8 @@ void AtlasMap::cellCountRadius(s32 count, float chance, char t1, char t2, char t
   for (int i = 0; i < count; ++i)
   {
     char* tmp = new char[W*H];
-    memcpy(tmp, mapGrid, sizeof(W*H));
-    
+    memcpy(tmp, mapGrid, W*H);
+
     for (int i = 0; i < W; ++i)
     {
       for (int j = 0; j < H; ++j)
@@ -283,8 +283,8 @@ void AtlasMap::cellCountRadius(s32 count, float chance, char t1, char t2, char t
           tmp[i+j*W] = t3;
       }
     }
-    
-    memcpy(mapGrid, tmp, sizeof(W*H));
+
+    memcpy(mapGrid, tmp, W*H);
     delete [] tmp;
   }
 }
@@ -305,7 +305,7 @@ void AtlasMap::bays(s32 count)
   }
   
   char* tmp = new char[W*H];
-  memcpy(tmp, mapGrid, sizeof(W*H));
+  memcpy(tmp, mapGrid, W*H);
   s32 k;
   for (j = 0; j < W; j++) {
     for (k = 0; k < H; k++) {
@@ -315,12 +315,12 @@ void AtlasMap::bays(s32 count)
       tmp[j + k*W] = 'b';
     }
     
-    memcpy(mapGrid, tmp, sizeof(W*H));
+    memcpy(mapGrid, tmp, W*H);
   }
   
   for (j = 0; j < count; j++)
   {
-    memcpy(tmp, mapGrid, sizeof(W*H));
+    memcpy(tmp, mapGrid, W*H);
     for (k = 0; k < W; k++) {
       for (int m = 0; m < H; m++) {
         if ((get(k,m) != 'G') || (surroundingType(k, m, 'b', 1) <= 0) || (surroundingType(k, m, 'b', 1) >= i) || (Util::chance(1.0f-d2)))
@@ -329,7 +329,7 @@ void AtlasMap::bays(s32 count)
         tmp[k + m*W] = 'b';
       }
     }
-    memcpy(mapGrid, tmp, sizeof(W*H));
+    memcpy(mapGrid, tmp, W*H);
   }
 
   for (j = 0; j < W; j++) {
@@ -344,7 +344,7 @@ void AtlasMap::bays(s32 count)
       tmp[j+k*W] = 'w';
     }
     
-    memcpy(mapGrid, tmp, sizeof(W*H));
+    memcpy(mapGrid, tmp, W*H);
   }
   
   delete [] tmp;
