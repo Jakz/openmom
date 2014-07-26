@@ -24,7 +24,7 @@ public:
   MiniMap(const World* const world);
   ~MiniMap();
   
-  SDL_Surface* get(Plane plane) { return maps[plane]; }
+  SDL_Surface* get(Plane plane) const { return maps[plane]; }
   
   void discover(const Position& position);
 

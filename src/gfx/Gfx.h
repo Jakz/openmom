@@ -47,6 +47,8 @@ class Gfx
   
     static void rect(u16 x, u16 y, u16 w, u16 h, u32 color);
   
+    static void canvasBlit(SDL_Surface* gdest, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h) { blit(canvas, gdest, fx, fy, tx, ty, w, h); }
+  
     static void blit(SDL_Surface* gsrc, SDL_Surface* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h) { rawBlit(gsrc,gdst,fx,fy,tx,ty,w,h); }
     static void rawBlit(SDL_Surface* gsrc, SDL_Surface* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h);
   

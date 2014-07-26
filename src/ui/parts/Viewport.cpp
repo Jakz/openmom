@@ -11,6 +11,7 @@
 #include "City.h"
 #include "Army.h"
 #include "Util.h"
+#include "Game.h"
 
 std::unordered_map<u8,u8> Viewport::waterMap = {
   {0, 0},
@@ -289,4 +290,62 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
     sy += tileHeight;
     sx = ttx;
   }
+}
+
+void Viewport::drawMainViewport(const LocalPlayer* player, const World* map)
+{
+  drawViewport(map, player, player->getViewport(), baseX, baseY, viewportW, viewportH, false);
+}
+
+void drawMicroMap(const LocalPlayer* player, s16 dx, s16 dy, s16 w, s16 h, s16 vx, s16 vy, Plane plane)
+{
+  s16 lw = w/2, rw = w - lw;
+  s16 uh = h/2, lh = h - uh;
+  
+  s16 ww = player->game()->world->w;
+  s16 wh = player->game()->world->h;
+  
+  s16 fx1, fx2 = -1, fy;
+  s16 fw1, fw2 = -1, fh;
+  s16 dx1 = dx, dx2 = -1;
+  
+  // maps upper edge starts before frame edge, clip minimap
+  if (vy > uh)
+  {
+    fy = (vy - uh);
+    fh = std::min(static_cast<s16>(wh - (vy - uh)), h);
+  }
+  else
+  {
+    fy = 0;
+    dy += uh - vy;
+    fh = std::min(h, static_cast<s16>(h - (uh - vy )));
+  }
+  
+  if (vx > lw)
+  {
+    fx1 = (vx - lw);
+    fw1 = std::min(static_cast<s16>(ww - (vx - lw)), w);
+    
+    // wrap map to the right
+    dx2 = dx + fw1;
+    fw2 = w - fw1;
+    fx2 = 0;
+  }
+  else
+  {
+    fx1 = 0;
+    dx1 += lw - vx;
+    fw1 = std::min(w, static_cast<s16>(w - (lw - vx)));
+    
+    // wrap map to the left
+    dx2 = dx;
+    fw2 = w - fw1;
+    fx2 = ww - fw2;
+  }
+  
+  Gfx::canvasBlit(player->miniMap()->get(plane), fx1, fy, dx1, dy, fw1, fh);
+  
+  if (dx2 != -1)
+    Gfx::canvasBlit(player->miniMap()->get(plane), fx2, fy, dx2, dy, fw2, fh);
 }

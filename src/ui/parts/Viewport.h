@@ -19,7 +19,7 @@ private:
   static const u16 tileWidth = 20, tileHeight = 18;
   static const u16 baseX = 0, baseY = 20;
   
-  
+  static void drawViewport(const World* map, const LocalPlayer* player, const Position& p, s16 ttx, s16 tty, s16 w, s16 h, bool darkenEdges);
   
 public:
   static void drawTile(const Tile* tile, u16 x, s16 y, Plane plane);
@@ -30,7 +30,11 @@ public:
   static Position tileCoords(const LocalPlayer* player, s16 x, s16 y);
   static bool isOutsideViewport(const LocalPlayer* player, s16 x, s16 y);
   
-  static void drawViewport(const World* map, const LocalPlayer* player, const Position& p, s16 ttx, s16 tty, s16 w, s16 h, bool darkenEdges);
+  static void drawCityViewport(const LocalPlayer* player, const World* map, const Position& p) { drawViewport(map, player, p, 215, 3, 5, 5, true); }
+  static void drawMainViewport(const LocalPlayer* player, const World* map);
+
+  static void drawMicroMap(const LocalPlayer* player, s16 dx, s16 dy, s16 w, s16 h, s16 vx, s16 vy, Plane plane);
+
 
 };
 

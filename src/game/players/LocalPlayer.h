@@ -79,6 +79,7 @@ public:
   void combatTurnBegun() { combatCurrentlyPlaying = true; }
   void combatTurnEnded() { combatCurrentlyPlaying = false; }
   
+  const MiniMap* miniMap() const { return &map; }
   void discoverTile(const Position& position) override { map.discover(position); }
   void switchPlane() { viewport.plane = viewport.plane == ARCANUS ? MYRRAN : ARCANUS; }
   const Position& getViewport() const { return viewport; }
