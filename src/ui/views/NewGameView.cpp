@@ -6,6 +6,7 @@
 
 #include "GfxData.h"
 #include "UnitSpec.h"
+#include "UnitDraw.h"
 
 NewGameView::NewGameView() : View()
 {
@@ -40,7 +41,10 @@ void NewGameView::draw()
   Gfx::draw(NEW_GAME_BACKDROP, 0, 0);
   Gfx::draw(NEW_GAME_PARTIALS, 0, 0, 165, 0);
 
-  Gfx::draw(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30);
+  /*Gfx::drawGrayScale(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30);
+  Gfx::drawGlow(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30, CHAOS);*/
+  
+  UnitDraw::drawUnitIso(UnitSpec::summonSpec(UnitID::HELL_HOUNDS), 20, 20, nullptr);
   
   switch (phase)
   {

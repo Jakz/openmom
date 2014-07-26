@@ -76,6 +76,41 @@ class HashColorMap : public ColorMap
     }
 };
 
+class MiscMaps
+{
+public:
+  static const Color SCHOOL_GLOW_COLORS[][5];
+  static constexpr u8 SCHOOL_GLOW_COUNT = sizeof(SCHOOL_GLOW_COLORS[0])/sizeof(SCHOOL_GLOW_COLORS[0][0]);
+  
+  static const HashColorMap FLAG_COLORS_MAP[6];
+  static constexpr u8 FLAG_COLORS_COUNT = sizeof(FLAG_COLORS_MAP)/sizeof(FLAG_COLORS_MAP[0]);
+  
+  class GrayscaleMap : public ColorMap
+  {
+    public:
+      GrayscaleMap() { }
+      
+      u32 get(u32 k) const override
+      {
+        if (k & 0xFF000000)
+        {
+          u8 r = (k >> 16) & 0xFF;
+          u8 g = (k >> 8) & 0xFF;
+          u8 b = k & 0xFF;
+          
+          u8 v = static_cast<u8>(0.21f*r + 0.72f*g + 0.07*b);
+          return 0xFF000000 | (v << 16) | (v << 8) | v;
+        }
+        else
+          return k;
+        
+      };
+  };
+  
+  
+  static const GrayscaleMap GRAYSCALE;
+};
+
 namespace FontMap
 {
   class Small

@@ -9,6 +9,9 @@
 #include "Gfx.h"
 
 #include "Texture.h"
+#include "GfxData.h"
+#include "Util.h"
+#include "SDL.h"
 
 SDL_Surface* Gfx::buffer = nullptr;
 SDL_Surface* Gfx::activeBuffer = nullptr;
@@ -332,4 +335,106 @@ void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
 void Gfx::draw(const SpriteInfo& info, u16 x, u16 y)
 {
   draw(info.texture, info.y, info.x, x, y);
+}
+
+
+void Gfx::drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color)
+{
+  //TODO: sometimes it looks like it fails (like great drake iso with glow)
+  const Texture& tex = Texture::get(texture);
+
+  s32 w = tex.w;
+  s32 h = tex.h;
+  
+  resetBuffer((w+2)*2,h+2);
+  bindBuffer();
+  draw(texture,r,c,1,1);
+  bindCanvas();
+  
+  lock(buffer);
+  const Color* glowColors = MiscMaps::SCHOOL_GLOW_COLORS[color];
+  u8 glowLength = MiscMaps::SCHOOL_GLOW_COUNT;
+
+  // TODO: phase is too much linear compared to real one
+  int phase = (SDL::fticks%50)/3;
+  
+  for (s16 i = 0; i < w+2; ++i)
+  {
+    for (s16 j = 0; j < h+2; ++j)
+    {
+      bool found = false;
+      
+      for (int k = 0; k < Util::ODIRS_LENGTH; ++k)
+      {
+        s16 dx = i+Util::ODIRS[k].x, dy = j+Util::ODIRS[k].y;
+        
+        Color pixel = get(buffer,i, j);
+        
+        if ((pixel & 0x00FFFFFF) == 0)
+        {
+          if (dx > 0 && dx < w && dy > 0 && dy < h)
+          {
+            if ((get(buffer,dx,dy) & 0x00FFFFFF) != 0)
+            {
+              found = true;
+              break;
+            }
+          }
+        }
+      }
+      
+      if (found)
+        set(buffer,w+2+i, j, glowColors[(phase+i+j)%glowLength]);
+    }
+  }
+  
+  unlock(buffer);
+  mergeBuffer(w+2, 0, x-1, y-1, w+2, h+2);
+}
+
+void Gfx::drawGlow(TextureID texture, s16 i, s16 x, s16 y, School school)
+{
+  const Texture& tex = Texture::get(texture);
+  drawGlow(texture, i/tex.cols, i%tex.cols, x, y, school);
+}
+
+void Gfx::drawGrayScale(TextureID texture, u16 r, u16 c, u16 x, u16 y)
+{
+  const Texture& tex = Texture::get(texture);
+  u16 tw = 0, th = 0;
+  
+  if (tex.w != -1)
+    tw = tex.w;
+  else
+  {
+    if (tex.h != -1)
+      tw = tex.ws[c];
+    else
+      tw = tex.ws[r];
+  }
+  
+  if (tex.h != -1)
+    th = tex.h;
+  else
+    th = tex.hs[r];
+  
+  resetBuffer(tw,th);
+  bindBuffer();
+  draw(texture, r, c, 0, 0);
+  
+  lock(buffer);
+  
+  for (s16 xx = 0; xx < tw; ++xx)
+    for (s16 yy = 0; yy < th; ++yy)
+      set(buffer,xx, yy, MiscMaps::GRAYSCALE.get(get(buffer, xx, yy)));
+  
+  unlock(buffer);
+  mergeBuffer(0, 0, x, y, tw, th);
+  bindCanvas();
+
+}
+
+void Gfx::drawGrayScale(const SpriteInfo& info, s16 x, s16 y)
+{
+  drawGrayScale(info.texture, info.y, info.x, x, y);
 }

@@ -46,16 +46,16 @@ public:
   
   void patrol();
   void unpatrol() { isPatrol = false; }
-  bool isPatrolling() { return isPatrol; }
-  bool isPlaced() { return position.x != -1; }
-  const Position& getPosition() { return position; }
+  bool isPatrolling() const { return isPatrol; }
+  bool isPlaced() const { return position.x != -1; }
+  const Position& getPosition() const { return position; }
   void setPosition(const Position& position) { this->position = position; }
   
   void add(Unit* unit);
   Unit* remove(Unit* unit);
   
   size_t size() { return units.size(); }
-  Unit* get(u16 index) { return *std::next(units.begin(), index); }
+  Unit* get(u16 index) const { return *std::next(units.begin(), index); }
   const unit_list& getUnits() { return units; }
   
   Player* getOwner() const { return owner; }

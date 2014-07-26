@@ -24,13 +24,13 @@ class SDL
 
     static SDL_Surface *filter;
   
-    static const u32 WIDTH = 320, HEIGHT = 200;
     static const u32 SCALE_FACTOR = 2;
     static const u32 FRAME_RATE = 60;
     static constexpr float TICKS_PER_FRAME = 1000 / (float)FRAME_RATE;
     
     static bool willQuit;
   
+    static u32 fticksr;
   
   public:
     static bool init();
@@ -43,6 +43,7 @@ class SDL
     static void capFPS();
     
     static u32 ticks;
+    static u32 fticks;
   
     static ViewManager *gvm;
 };

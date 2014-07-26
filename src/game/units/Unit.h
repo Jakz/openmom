@@ -106,7 +106,7 @@ public:
   const HitPoints* health() const { return &health_; }
   
   virtual const std::string name() const { return spec.productionName(); }
-  School glow() { return skills_.glowEffect(); }
+  School glow() const { return skills_.glowEffect(); }
 };
 
 class Hero : public Unit

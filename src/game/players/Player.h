@@ -61,7 +61,7 @@ class PlayerInterface
 {
 public:
   virtual void selectAll() = 0;
-  virtual Army* getSelectedArmy() = 0;
+  virtual Army* getSelectedArmy() const = 0;
   virtual void push(Animation* animation) = 0;
   virtual void send(messages::Message* message) = 0;
   virtual s16 selectedCount() const = 0;

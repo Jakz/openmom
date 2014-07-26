@@ -58,6 +58,8 @@
 		04879A7D1978391F00313BC7 /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
 		048E08B919829C6D009AED0A /* SkillDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08B719829C6D009AED0A /* SkillDraw.cpp */; };
 		048E08BC1982B20A009AED0A /* WorldGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08BA1982B20A009AED0A /* WorldGenerator.cpp */; };
+		04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B11983286E00291B82 /* Viewport.cpp */; };
+		04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B419833C1E00291B82 /* UnitDraw.cpp */; };
 		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
 		04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
 		04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4592197C9D7A00EA0CC0 /* Items.cpp */; };
@@ -181,6 +183,10 @@
 		048E08B819829C6D009AED0A /* SkillDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SkillDraw.h; path = src/ui/parts/SkillDraw.h; sourceTree = SOURCE_ROOT; };
 		048E08BA1982B20A009AED0A /* WorldGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WorldGenerator.cpp; path = src/game/world/WorldGenerator.cpp; sourceTree = SOURCE_ROOT; };
 		048E08BB1982B20A009AED0A /* WorldGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldGenerator.h; sourceTree = "<group>"; };
+		04ABF7B11983286E00291B82 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Viewport.cpp; path = src/ui/parts/Viewport.cpp; sourceTree = SOURCE_ROOT; };
+		04ABF7B21983286E00291B82 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Viewport.h; path = src/ui/parts/Viewport.h; sourceTree = SOURCE_ROOT; };
+		04ABF7B419833C1E00291B82 /* UnitDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnitDraw.cpp; path = src/ui/parts/UnitDraw.cpp; sourceTree = SOURCE_ROOT; };
+		04ABF7B519833C1E00291B82 /* UnitDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitDraw.h; path = src/ui/parts/UnitDraw.h; sourceTree = SOURCE_ROOT; };
 		04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnitSpec.cpp; path = src/game/units/UnitSpec.cpp; sourceTree = SOURCE_ROOT; };
 		04EE458D197C85C000EA0CC0 /* UnitSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitSpec.h; path = src/game/units/UnitSpec.h; sourceTree = SOURCE_ROOT; };
 		04EE458F197C92C400EA0CC0 /* GfxData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GfxData.cpp; path = src/ui/GfxData.cpp; sourceTree = SOURCE_ROOT; };
@@ -438,6 +444,10 @@
 				0464E1191981D1EF009C91ED /* CityScape.h */,
 				048E08B719829C6D009AED0A /* SkillDraw.cpp */,
 				048E08B819829C6D009AED0A /* SkillDraw.h */,
+				04ABF7B11983286E00291B82 /* Viewport.cpp */,
+				04ABF7B21983286E00291B82 /* Viewport.h */,
+				04ABF7B419833C1E00291B82 /* UnitDraw.cpp */,
+				04ABF7B519833C1E00291B82 /* UnitDraw.h */,
 			);
 			path = parts;
 			sourceTree = "<group>";
@@ -587,12 +597,14 @@
 				040375FB197AB09000A5B5FC /* Game.cpp in Sources */,
 				04037603197AC90900A5B5FC /* Places.cpp in Sources */,
 				04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */,
+				04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */,
 				040375F5197AB04100A5B5FC /* Player.cpp in Sources */,
 				0403761B197B46DA00A5B5FC /* City.cpp in Sources */,
 				04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */,
 				0403761E197B52F800A5B5FC /* Unit.cpp in Sources */,
 				0487516D197F612400009661 /* Messages.cpp in Sources */,
 				0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */,
+				04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */,
 				04037627197B58C900A5B5FC /* World.cpp in Sources */,
 				04F00C87197E0CB000293EE0 /* CombatSpells.cpp in Sources */,
 				040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */,

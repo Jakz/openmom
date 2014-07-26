@@ -4,6 +4,9 @@
 #include <cstdint>
 #include <SDL2/SDL.h>
 
+#define WIDTH (320)
+#define HEIGHT (200)
+
 typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;

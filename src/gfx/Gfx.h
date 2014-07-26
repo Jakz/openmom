@@ -28,6 +28,10 @@ class Gfx
   
     static const ColorMap* map;
   
+    static Color get(SDL_Surface* surface, u16 x, u16 y) { return static_cast<Color*>(surface->pixels)[x + y*surface->w]; }
+    static void set(SDL_Surface* surface, u16 x, u16 y, Color color) { static_cast<Color*>(surface->pixels)[x + y*surface->w] = color; }
+
+  
   public:
     static void init();
     static void deinit();
@@ -60,11 +64,11 @@ class Gfx
     static inline void drawClippedFromHeight(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t);
     static void drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h);
   
+    static void drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color);
+    static void drawGlow(TextureID texture, s16 i, s16 x, s16 y, School school);
+    static void drawGlow(const SpriteInfo& info, s16 x, s16 y, School school) { drawGlow(info.texture, info.y, info.x, x, y, school); }
+    static void drawGrayScale(const SpriteInfo& info, s16 x, s16 y);
     static void drawGrayScale(TextureID texture, u16 r, u16 c, u16 x, u16 y);
-    //   public static void drawGlow(Texture texture, int r, int c, int x, int y, School color)
-    //  public static void drawGlow(Texture texture, int i, int x, int y, School school)
-    //  public static void drawGlow(SpriteInfo info, int x, int y, School school)
-    // public static void drawGrayScale(SpriteInfo info, int x, int y)
     static void draw(const SpriteInfo& info, u16 x, u16 y);
   
     static void rawDraw(TextureID texture, u16 r, u16 c, u16 x, u16 y);

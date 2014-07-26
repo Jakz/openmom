@@ -53,7 +53,7 @@ public:
   LocalPlayer(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight);
 
   void selectArmy(Army* army);
-  Army* getSelectedArmy() override { return selectedArmy; }
+  Army* getSelectedArmy() const override { return selectedArmy; }
   const movement_list selectedArmyMovementType();
   bool selectedArmyCanBuildOutpost();
   s16 selectedCount() const override { return selectedUnits.size(); }

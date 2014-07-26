@@ -55,7 +55,7 @@ public:
   void unplaceArmy() { army = nullptr; }
   void placeArmy(Army* army);
   
-  bool isCorrupted() { return std::find_if(spells.begin(), spells.end(), [](const SpellCast& cast) { return cast.spell == Spells::CORRUPTION; }) != spells.end(); }
+  bool isCorrupted() const { return std::find_if(spells.begin(), spells.end(), [](const SpellCast& cast) { return cast.spell == Spells::CORRUPTION; }) != spells.end(); }
     
   void addSpell(const SpellCast& cast) { spells.push_back(cast); }
 };

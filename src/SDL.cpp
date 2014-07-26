@@ -15,7 +15,7 @@
 
 #include "ViewManager.h"
 
-#define HQXFILTER
+//#define HQXFILTER
 
 SDL_Window* SDL::window = nullptr;
 SDL_Renderer* SDL::renderer = nullptr;
@@ -25,6 +25,8 @@ SDL_Surface* SDL::filter = nullptr;
 
 bool SDL::willQuit = false;
 u32 SDL::ticks = 0;
+u32 SDL::fticks = 0;
+u32 SDL::fticksr = 0;
 
 ViewManager* SDL::gvm = new ViewManager();
 
@@ -42,7 +44,7 @@ bool SDL::init()
   screen = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIDTH*SCALE_FACTOR, HEIGHT*SCALE_FACTOR);
   filter = Gfx::createSurface(WIDTH*SCALE_FACTOR, HEIGHT*SCALE_FACTOR);
 #endif
-  
+
   return true;
 }
 
@@ -57,13 +59,27 @@ void SDL::loop()
   }
 }
 
+char titleBuffer[64];
+
 void SDL::capFPS()
 {
   u32 ticks = SDL_GetTicks();
   u32 elapsed = ticks - SDL::ticks;
+
+  
+  u32 frameTime = elapsed;
   
   if (elapsed < TICKS_PER_FRAME)
+  {
     SDL_Delay(TICKS_PER_FRAME - elapsed);
+    frameTime = TICKS_PER_FRAME;
+  }
+  
+  fticks += (frameTime + fticksr) / 100;
+  fticksr = (frameTime + fticksr) % 100;
+  
+  sprintf(titleBuffer, "OpenMoM v0.01 (%2.2f)", 1000.0f/fmax(elapsed, TICKS_PER_FRAME));
+  SDL_SetWindowTitle(window, titleBuffer);
   
   SDL::ticks = SDL_GetTicks();
 }
