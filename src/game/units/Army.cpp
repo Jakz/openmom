@@ -15,7 +15,7 @@ Army::Army(Player* owner, initializer_list<Unit*> units) : owner(owner), isPatro
     updateMovementType();
 }
 
-void Army::setRoute(const Route* route)
+void Army::setRoute(Route* route)
 {
   delete this->route;
   this->route = route;

@@ -101,7 +101,7 @@ public:
   bool hasSpell(const CitySpell* spell) const {
     return std::find_if(spells.begin(), spells.end(), [&](const SpellCast cast) { return cast.spell == spell; }) != spells.end();
   }
-  // TODO: remove spell is missing
+  void removeSpell(const Spell* spell, const Player* player) { /* TODO const problems std::remove_if(spells.begin(), spells.end(), [&](const SpellCast& cast){return cast.spell == spell && cast.player == player; });*/ }
   const cast_list& getSpells() { return spells; }
   
   const Race& race;

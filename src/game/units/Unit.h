@@ -102,6 +102,8 @@ public:
   const Level* level;
   const School school() const { return CHAOS; } // TODO
   
+  SkillSet* skills() { return &skills_; }
+  HitPoints* health() { return &health_; }
   const SkillSet* skills() const { return &skills_; }
   const HitPoints* health() const { return &health_; }
   

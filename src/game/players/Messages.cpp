@@ -13,6 +13,6 @@
 
 //using namespace messages;
 
-messages::NewBuilding::NewBuilding(const City* city, const Building* building) : Message(
+msgs::NewBuilding::NewBuilding(const City* city, const Building* building) : Message(
 Fonts::format(i18n::s(I18::MESSAGE_NEW_BUILDING).c_str(), i18n::s(i18n::CITY_SIZE_NAMES[city->tileSize()]).c_str(), city->getName().c_str(), i18n::s(building->name).c_str()), NEW_BUILDING),
 city(city), building(building) { }

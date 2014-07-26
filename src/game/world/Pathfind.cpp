@@ -113,7 +113,7 @@ void Route::consumeMovement(World *world)
 
 const MovementStrategy PathFinder::strategy;
 
-const Route* PathFinder::computeRoute(World* world, const Position& position, const unit_list& units, const Player* player, s16 dx, s16 dy)
+Route* PathFinder::computeRoute(World* world, const Position& position, const unit_list& units, const Player* player, s16 dx, s16 dy)
 {
   reset();
   

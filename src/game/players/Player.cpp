@@ -142,6 +142,14 @@ s32 Player::castingSkillBase() const { return /*TODO game.playerMechanics.comput
 s32 Player::castingSkill() const { return castingSkillBase() /*TODO + game.playerMechanics.computeBonusCastingSkill(this)*/; }
 s32 Player::researchPoints() const { return g->spellMechanics.actualResearchGain(this, spellBook.getCurrentResearch()); }
 
+bool Player::hasSpell(const GlobalSpell* spell) const
+{
+  for (auto s : spells)
+    if (s.spell == spell)
+      return true;
+  return false;
+}
+
 
 s16 Player::globalSkillSpellsCount(const Unit* u) const
 {

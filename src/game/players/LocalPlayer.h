@@ -34,7 +34,7 @@ private:
   s16 spellBookPage;
   
   Army* selectedArmy;
-  const Route* selectedRoute;
+  Route* selectedRoute;
   unit_list selectedUnits;
   
   bool drawSelectedArmy = true;
@@ -47,7 +47,7 @@ private:
   
   MiniMap map;
   
-  std::list<const messages::Message*> messages;
+  std::list<const msgs::Message*> messages;
   
 public:
   LocalPlayer(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight);
@@ -87,7 +87,7 @@ public:
 
   void push(Animation* animation) override;
 
-  void send(messages::Message* message) override { messages.push_back(message); }
+  void send(msgs::Message* message) override { messages.push_back(message); }
   bool hasMessage() { return !messages.empty(); }
 };
 

@@ -106,8 +106,8 @@ public:
     openSet.clear();
   }
   
-  const Route* computeRoute(World* world, Army* army, s16 dx, s16 dy) { return computeRoute(world, army->getPosition(), army->getUnits(), army->getOwner(), dx, dy); }
-  const Route* computeRoute(World* world, const Position& position, const unit_list& units, const Player* player, s16 x, s16 y);
+  Route* computeRoute(World* world, Army* army, s16 dx, s16 dy) { return computeRoute(world, army->getPosition(), army->getUnits(), army->getOwner(), dx, dy); }
+  Route* computeRoute(World* world, const Position& position, const unit_list& units, const Player* player, s16 x, s16 y);
   
   static const MovementStrategy strategy;
 };

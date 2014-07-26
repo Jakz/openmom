@@ -88,7 +88,7 @@ bool LocalPlayer::consumeRoute()
 Army* LocalPlayer::splitAndSelect()
 {
   Army* newArmy = new Army(this);
-  const Route* r = selectedRoute;
+  Route* r = selectedRoute;
   
   for (auto u : *selectedArmy)
   {

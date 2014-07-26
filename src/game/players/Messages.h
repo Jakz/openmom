@@ -20,7 +20,7 @@ class Skill;
 class City;
 class Building;
 
-namespace messages {
+namespace msgs {
 
 typedef std::function<void()> Action;
 
@@ -53,6 +53,7 @@ class Error : public Message
 {
 public:
   Error(std::string& message) : Message(message, ERROR) { }
+  Error(std::string&& message) : Message(message, ERROR) { }
 };
 
 class Confirm : public Message

@@ -26,7 +26,7 @@ class ManaNode;
 class Unit;
 class Combat;
 class Animation;
-namespace messages { class Message; }
+namespace msgs { class Message; }
 class CombatUnit;
 
 class FogMap
@@ -63,7 +63,7 @@ public:
   virtual void selectAll() = 0;
   virtual Army* getSelectedArmy() const = 0;
   virtual void push(Animation* animation) = 0;
-  virtual void send(messages::Message* message) = 0;
+  virtual void send(msgs::Message* message) = 0;
   virtual s16 selectedCount() const = 0;
   virtual void discoverTile(const Position& position) = 0;
   virtual void setSpellTarget(Target target) = 0;
@@ -121,6 +121,9 @@ public:
   s32 castingSkill() const;
   s32 castingSkillGained() const { return castingSkillGained_; }
   s32 manaRatio(u8 index) const { return manaRatios[index]; }
+  s32 getAvailableMana() const { return availableMana; }
+  
+  void alchemy(s32 gold, s32 mana) { goldPool += gold; manaPool -= mana; }
   
   const Combat* getCombat() const { return combat; }
   void setCombat(Combat* combat) { this->combat = combat; }
@@ -149,10 +152,12 @@ public:
   void refreshArmies();
   void remove(Army* army) { armies.remove(army); }
   
+  SpellBook* book() { return &spellBook; }
   const SpellBook* book() const { return &spellBook; }
   
   s16 globalSkillSpellsCount(const Unit* u) const;
   const SkillGlobalSpell* nthGlobalSkillSpell(u16 i, const Unit* u) const;
+  bool hasSpell(const GlobalSpell* spell) const;
 
   
   FogMap* fog() const { return fogMap; }
