@@ -144,6 +144,14 @@ public:
     }
   }
   
+  void calcSubTiles()
+	{
+		for (int i = 0; i < PLANE_COUNT; ++i)
+			for (int x = 0; x < w; ++x)
+				for (int y = 0; y < h; ++y)
+					calcSubTile(x,y,static_cast<Plane>(i));
+	}
+  
   void calcSubTile(u16 x, u16 y, Plane p);
   
   PathFinder pathfinder;

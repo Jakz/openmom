@@ -21,10 +21,10 @@ void View::doActivate(LocalPlayer* player)
 void View::drawButtons()
 {
   for (const auto b : buttons)
-    if (b->isVisible())
+    if (b && b->isVisible())
       b->draw();
   for (const auto c : areas)
-    if (c->isActive())
+    if (c && c->isActive())
       c->draw();
 }
 
@@ -48,7 +48,7 @@ void View::doMouseReleased(u16 x, u16 y, MouseButton b)
   
   for (const auto c : areas)
   {
-    if (c->isActive() && c->isCorrectButton(b) && c->isInside(x,y))
+    if (c && c->isActive() && c->isCorrectButton(b) && c->isInside(x,y))
       c->getAction()();
   }
   
@@ -61,7 +61,7 @@ void View::doMousePressed(u16 x, u16 y, MouseButton b)
   {
     for (const auto bt : buttons)
     {
-      if (bt->isActive() && bt->isInside(x,y) && b == BUTTON_LEFT)
+      if (bt && bt->isActive() && bt->isInside(x,y) && b == BUTTON_LEFT)
       {
         bt->press();
         curButton = bt;
@@ -87,7 +87,7 @@ void View::doMouseDragged(u16 x, u16 y, MouseButton b)
   
   for (const auto bt : buttons)
   {
-    if (bt->isActive() && bt->isInside(x,y) && b == BUTTON_LEFT)
+    if (bt && bt->isActive() && bt->isInside(x,y) && b == BUTTON_LEFT)
     {
       bt->press();
       curButton = bt;

@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "Gfx.h"
 
+#include "MainView.h"
 #include "NewGameView.h"
 
 using namespace std;
@@ -16,6 +17,8 @@ ViewManager ViewManager::gvm;
 
 ViewManager::ViewManager() : views{nullptr}, animating(false)
 {
+  views[VIEW_MAIN] = new MainView();
+  
   views[VIEW_NEW_GAME] = new NewGameView();
 }
 
@@ -24,13 +27,13 @@ void ViewManager::switchView(ViewID type)
   if (current)
     current->doDeactivate();
   current = views[type];
-  current->doActivate(LocalGame::i->currentPlayer);
+  current->doActivate(LocalGame::i->currentPlayer());
 }
 
 void ViewManager::switchOverview(ViewID type)
 {
   View* overview = views[type];
-  overview->doActivate(LocalGame::i->currentPlayer);
+  overview->doActivate(LocalGame::i->currentPlayer());
   overviews.push_front(overview);
 }
 
@@ -68,7 +71,7 @@ void ViewManager::draw()
   
   current->doDraw();
   
-  if (LocalGame::i->currentPlayer->hasMessage() && !isThereOverview())
+  if (LocalGame::i->currentPlayer()->hasMessage() && !isThereOverview())
     switchOverview(VIEW_MESSAGE);
   
   if (isThereOverview())

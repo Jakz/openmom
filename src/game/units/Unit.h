@@ -48,6 +48,9 @@ public:
 
 class Unit
 {
+public:
+  const UnitSpec& spec;
+  
 private:
   Army* army;
 
@@ -68,7 +71,6 @@ protected:
   s16 availableMoves;
 
 public:
-  const UnitSpec& spec;
   
   void setArmy(Army* army) { this->army = army; }
   Army* getArmy() const { return army; }

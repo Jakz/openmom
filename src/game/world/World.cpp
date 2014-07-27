@@ -124,7 +124,7 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
   }
   else if (t->type == TILE_RIVER)
   {
-    subtype = 0;
+    /*subtype = 0;
     for (int i = 0; i < Util::DIRS_LENGTH; ++i)
     {
       Tile* tile = get(x,y,p,Util::DIRS[i]);
@@ -139,7 +139,8 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
     int baseIndex = 0;
     for (int i = 0; i < subtype; ++i) baseIndex += riverTilesCount[i];
     
-    t->subtype = baseIndex + Util::randomIntUpTo(riverTilesCount[subtype]);
+    t->subtype = baseIndex + Util::randomIntUpTo(riverTilesCount[subtype]);*/
+    // TDO: fix
   }
   else if (t->tileGfxType == TILE_GFX_PLAIN && (t->type == TILE_GRASS || t->type == TILE_SWAMP || t->type == TILE_FOREST || t->type == TILE_DESERT || t->type == TILE_TUNDRA))
   {

@@ -38,7 +38,7 @@ class Clickable
     inline void deactivate() { active = false; }
     inline void activateIf(bool condition) { active = condition; }
   
-    inline void setAction(Action action) { this->action = action; }
+    virtual inline Clickable* setAction(Action action) { this->action = action; return this; }
     inline Action getAction() { return action; }
   
     void draw();
@@ -60,15 +60,18 @@ class Button : public Clickable
   
     virtual void draw() = 0;
   
-    inline void execute() { action(); }
+    inline void execute() { if (action) action(); }
   
     inline void showIf(bool condition) { visible = condition;}
-    inline void hide() { visible = false; }
-    inline void show() { visible = true; }
+    inline Button* hide() { visible = false; return this; }
+    inline Button* show() { visible = true; return this; }
     inline bool isVisible() { return visible;}
   
     bool isActive() override { return active && visible; }
 
+    inline Button* setAction(Action action) override { this->action = action; return this; }
+
+  
     inline void press() { pressed = true;}
     inline void release() { pressed = false; }
     
@@ -104,12 +107,20 @@ class BistateButton : public Button
 
 class TristateButton : public BistateButton
 {
+  private:
+    TristateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : BistateButton(name, x, y, normal, pressed), inactiveCoords(inactive) { }
+
+
   protected:
     SpriteInfo inactiveCoords;
     
   public:
-    TristateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : BistateButton(name, x, y, normal, pressed), inactiveCoords(inactive) { }
     void draw() override;
+  
+    static TristateButton* build(const std::string name, u16 x, u16 y, TextureID texture, u16 c)
+    {
+      return new TristateButton(name, x, y, SpriteInfo(texture, c, 0), SpriteInfo(texture, c, 1), SpriteInfo(texture, c, 2));
+    }
 };
 
 class LabeledSimpleButton : public OffsetButton

@@ -37,7 +37,7 @@ private:
   Player *player;
   
 public:
-  FogMap(u16 w, u16 h);
+  FogMap(Player* player, u16 w, u16 h);
   
   bool get(const Position& position) const;
   void set(const Position& position);

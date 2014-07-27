@@ -60,6 +60,7 @@
 		048E08BC1982B20A009AED0A /* WorldGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08BA1982B20A009AED0A /* WorldGenerator.cpp */; };
 		04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B11983286E00291B82 /* Viewport.cpp */; };
 		04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B419833C1E00291B82 /* UnitDraw.cpp */; };
+		04C729C119853F4E002F16E6 /* MainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729BF19853F4E002F16E6 /* MainView.cpp */; };
 		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
 		04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
 		04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4592197C9D7A00EA0CC0 /* Items.cpp */; };
@@ -187,6 +188,8 @@
 		04ABF7B21983286E00291B82 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Viewport.h; path = src/ui/parts/Viewport.h; sourceTree = SOURCE_ROOT; };
 		04ABF7B419833C1E00291B82 /* UnitDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnitDraw.cpp; path = src/ui/parts/UnitDraw.cpp; sourceTree = SOURCE_ROOT; };
 		04ABF7B519833C1E00291B82 /* UnitDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitDraw.h; path = src/ui/parts/UnitDraw.h; sourceTree = SOURCE_ROOT; };
+		04C729BF19853F4E002F16E6 /* MainView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainView.cpp; path = src/ui/views/MainView.cpp; sourceTree = SOURCE_ROOT; };
+		04C729C019853F4E002F16E6 /* MainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainView.h; path = src/ui/views/MainView.h; sourceTree = SOURCE_ROOT; };
 		04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnitSpec.cpp; path = src/game/units/UnitSpec.cpp; sourceTree = SOURCE_ROOT; };
 		04EE458D197C85C000EA0CC0 /* UnitSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitSpec.h; path = src/game/units/UnitSpec.h; sourceTree = SOURCE_ROOT; };
 		04EE458F197C92C400EA0CC0 /* GfxData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GfxData.cpp; path = src/ui/GfxData.cpp; sourceTree = SOURCE_ROOT; };
@@ -309,9 +312,9 @@
 				040375F0197AAF7B00A5B5FC /* View.cpp */,
 				040375F1197AAF7B00A5B5FC /* View.h */,
 				040375FC197ABA9100A5B5FC /* ViewManager.cpp */,
+				040375FD197ABA9100A5B5FC /* ViewManager.h */,
 				04EE458F197C92C400EA0CC0 /* GfxData.cpp */,
 				04EE4590197C92C400EA0CC0 /* GfxData.h */,
-				040375FD197ABA9100A5B5FC /* ViewManager.h */,
 				040375E41979EA6700A5B5FC /* Buttons.cpp */,
 				040375E51979EA6700A5B5FC /* Buttons.h */,
 				040375E9197A9ABC00A5B5FC /* Animations.cpp */,
@@ -386,6 +389,8 @@
 		04037615197AF92C00A5B5FC /* views */ = {
 			isa = PBXGroup;
 			children = (
+				04C729BF19853F4E002F16E6 /* MainView.cpp */,
+				04C729C019853F4E002F16E6 /* MainView.h */,
 				04037616197AF93600A5B5FC /* NewGameView.cpp */,
 				04037617197AF93600A5B5FC /* NewGameView.h */,
 			);
@@ -601,6 +606,7 @@
 				040375F5197AB04100A5B5FC /* Player.cpp in Sources */,
 				0403761B197B46DA00A5B5FC /* City.cpp in Sources */,
 				04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */,
+				04C729C119853F4E002F16E6 /* MainView.cpp in Sources */,
 				0403761E197B52F800A5B5FC /* Unit.cpp in Sources */,
 				0487516D197F612400009661 /* Messages.cpp in Sources */,
 				0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */,

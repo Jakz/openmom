@@ -10,7 +10,7 @@ class View;
 
 enum ViewID
 {
-  VIEW_MAP,
+  VIEW_MAIN,
   VIEW_SPELLS,
   VIEW_MAGIC,
   VIEW_RESEARCH,

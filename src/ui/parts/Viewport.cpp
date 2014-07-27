@@ -179,7 +179,7 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
   {
     for (s16 x = 0; x < w; ++x)
     {
-      Position op = Position(vx+p.x, vy+p.y, p.plane);
+      Position op = Position(vx+x, vy+y, p.plane);
       
       Tile* t = map->get(op);
       if (t)
@@ -200,8 +200,10 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
   {
     for (s16 x = 0; x < w; ++x)
     {
-      Position op = Position(vx+p.x, vy+p.y, p.plane);
+      Position op = Position(vx+x, vy+y, p.plane);
       Tile* t = map->get(op);
+      
+      printf("%d, %d\n", op.x, op.y);
       
       if (t)
       {
@@ -297,7 +299,7 @@ void Viewport::drawMainViewport(const LocalPlayer* player, const World* map)
   drawViewport(map, player, player->getViewport(), baseX, baseY, viewportW, viewportH, false);
 }
 
-void drawMicroMap(const LocalPlayer* player, s16 dx, s16 dy, s16 w, s16 h, s16 vx, s16 vy, Plane plane)
+void Viewport::drawMicroMap(const LocalPlayer* player, s16 dx, s16 dy, s16 w, s16 h, s16 vx, s16 vy, Plane plane)
 {
   s16 lw = w/2, rw = w - lw;
   s16 uh = h/2, lh = h - uh;

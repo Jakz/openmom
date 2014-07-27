@@ -27,11 +27,7 @@
 void init()
 {
   Game *game = new Game();
-  LocalPlayer *player = new LocalPlayer(game, "Kali", Data::wizard(KALI), GREEN, Race::race(RaceID::BARBARIANS), 60, 40);
-  
-  LocalGame *localGame = new LocalGame(game);
-  localGame->currentPlayer = player;
-  LocalGame::i = localGame;
+  game->dummyInit();
   
   //Util::seed(time(nullptr));
   //WorldGenerator gen = WorldGenerator(game->world);
@@ -57,7 +53,7 @@ int main(int argc, char * arg[])
   Gfx::init();
   Texture::load();
 
-  SDL::gvm->switchView(VIEW_NEW_GAME);
+  SDL::gvm->switchView(VIEW_MAIN);
   
   SDL::loop();
   

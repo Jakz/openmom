@@ -263,7 +263,7 @@ class Texture
     const u16 animFactor;
     const s16 bx, by;
   
-    Texture(TextureID ident, std::string name, u16 rows, u16 cols, u16 w, u16 h) : Texture(ident, name, rows, cols, w, h, false, 0) { }
+    Texture(TextureID ident, std::string name, u16 rows, u16 cols, u16 w, u16 h) : Texture(ident, name, rows, cols, w, h, false, 1) { }
     Texture(TextureID ident, std::string name, u16 w, u16 h) : Texture(ident, name, 1, 1, w, h, false, 0) { }
     Texture(TextureID ident, std::string name, u16 rows, u16 cols, std::initializer_list<u16> ws, std::initializer_list<u16> hs) : Texture(ident, name, rows, cols, ws, hs, false, 0) { }
   

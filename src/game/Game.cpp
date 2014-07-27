@@ -83,7 +83,12 @@ void Game::dummyInit()
   
   world->set(TILE_HILL, 1, 2, MYRRAN);
   
+  player->fog()->setRect(0, 0, 59, 30, ARCANUS);
+  
   LocalGame* localGame = new LocalGame(this);
+  
+  world->calcSubTiles();
+  world->updateRoads();
 
 }
 
@@ -341,3 +346,12 @@ void Game::turnBeginning()
 
 LocalGame* LocalGame::i = nullptr;
 
+LocalGame::LocalGame(Game* game) : game(game)
+{
+  game->localGame = this;
+  for (Player* p : game->players)
+    this->players.push_back(static_cast<LocalPlayer*>(p));
+  
+  current = players.begin();
+  LocalGame::i = this;
+}

@@ -49,7 +49,7 @@ public:
   {
   public:
 
-    myiterator(const SkillSet& parent, s16 current = 0) : parent(parent), current(current) { }
+    myiterator(const SkillSet& parent, s16 current = 0) : parent(parent), current(current), size(parent.size()) { }
     myiterator(const myiterator<Skill> &other) = default;
     ~myiterator() { }
     
@@ -78,6 +78,7 @@ public:
     protected:
       const SkillSet& parent;
       s16 current = 0;
+      const s16 size;
   };
     
   typedef myiterator<const Skill*> const_iterator;

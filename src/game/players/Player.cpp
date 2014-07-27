@@ -19,7 +19,7 @@ using namespace std;
 
 constexpr const float Player::TAX_RATES[];
 
-FogMap::FogMap(u16 w, u16 h) : w(w), h(h), map{new bool**[PLANE_COUNT]}
+FogMap::FogMap(Player* player, u16 w, u16 h) : player(player), w(w), h(h), map{new bool**[PLANE_COUNT]}
 {
   for (int i = 0; i < PLANE_COUNT; ++i)
   {
@@ -96,7 +96,7 @@ FogMap::~FogMap()
 
 
 Player::Player(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight) :
-g(game), wizard(wizard), race(race), color(color), name(name), fogMap(new FogMap(mapWidth, mapHeight)), combat(nullptr), spellBook(SpellBook(*this))
+g(game), wizard(wizard), race(race), color(color), name(name), fogMap(new FogMap(this, mapWidth, mapHeight)), combat(nullptr), spellBook(SpellBook(*this))
 {
   
   goldPool = 5000;

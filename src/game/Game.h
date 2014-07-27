@@ -26,6 +26,7 @@ class World;
 class City;
 class Player;
 class Tile;
+class LocalGame;
 
 class Game
 {
@@ -110,22 +111,34 @@ public:
   CityMechanics cityMechanics;
   PlayerMechanics playerMechanics;
   World* const world;
+  
+  LocalGame* localGame;
+  
+  friend class LocalGame;
 };
 
 
 class LocalGame
 {
 private:
-  const Game* game;
+  Game* game;
+  std::list<LocalPlayer*> players;
+  std::list<LocalPlayer*>::iterator current;
 
 public:
-  LocalGame(const Game* game) : game(game) { }
+  LocalGame(Game* game);
   
-    LocalPlayer *currentPlayer;
+  LocalPlayer* currentPlayer() { return *current; }
   
-  
-  
-    static LocalGame* i;
+  void nextTurn()
+  {
+    ++current;
+    
+    if (current == players.end())
+      current = players.begin();
+  }
+
+  static LocalGame* i;
 };
 
 #endif
