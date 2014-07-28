@@ -66,7 +66,7 @@ public:
   bool castSpell(City* city, Player* player);
   bool castSpell(const GlobalSpell* spell, Player* player);
   bool castSpell(Tile* tile, Player* player);
-  void dispelCast(City* city, const Player* player, const Spell* spell);
+  void dispelCast(City* city, const SpellCast& cast);
   void cancelCast(Player* player);
   
   void addSkill(Unit* unit, const Skill* skill);
@@ -138,6 +138,8 @@ public:
       current = players.begin();
   }
 
+  Game* getGame() { return game; }
+  
   static LocalGame* i;
 };
 

@@ -271,10 +271,10 @@ bool Game::castSpell(Tile* tile, Player* player)
   }
 }
 
-void Game::dispelCast(City* city, const Player* player, const Spell* spell)
+void Game::dispelCast(City* city, const SpellCast& cast)
 {
   // TODO: update layout city if spell added building
-  city->removeSpell(spell, player);
+  city->removeSpell(cast);
   playerMechanics.updateGlobalGains(city->getOwner());
 }
 

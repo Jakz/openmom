@@ -89,6 +89,7 @@ public:
   Upkeep getProduction() const { return Upkeep(gold, mana, food); }
   s32 getKnowledge() const { return knowledge; }
   
+  u16 getPopulation() const { return population; }
   u16 getMaxPopulation() const { return maxPopulation; }
   
   Player* getOwner() { return owner; }
@@ -106,13 +107,16 @@ public:
   bool hasSpell(const CitySpell* spell) const {
     return std::find_if(spells.begin(), spells.end(), [&](const SpellCast cast) { return cast.spell == spell; }) != spells.end();
   }
-  void removeSpell(const Spell* spell, const Player* player) { /* TODO const problems std::remove_if(spells.begin(), spells.end(), [&](const SpellCast& cast){return cast.spell == spell && cast.player == player; });*/ }
+  void removeSpell(const SpellCast& cast) {
+    for (auto it = spells.begin(); it != spells.end(); ++it) if (&cast == &(*it)) spells.erase(it);
+  }
   const cast_list& getSpells() { return spells; }
   
   const Race& race;
   
   friend class CityMechanics;
   friend class CityLayout;
+  friend class CityView;
 };
 
 #endif

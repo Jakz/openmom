@@ -186,7 +186,18 @@ void Gfx::drawPixel(u32 color, u16 x, u16 y)
 
 void Gfx::drawLine(u32 color, u16 x1, u16 y1, u16 x2, u16 y2)
 {
-  // TODO
+  lock(activeBuffer);
+  if (y1 == y2)
+  {
+    for (u16 x = x1; x < x2; ++x)
+      static_cast<u32*>(activeBuffer->pixels)[y1*activeBuffer->w + x] = color;
+  }
+  else if (x1 == x2)
+  {
+    for (u16 y = y1; y < y2; ++y)
+      static_cast<u32*>(activeBuffer->pixels)[y*activeBuffer->w + x1] = color;
+  }
+  unlock(activeBuffer);
 }
 
 void Gfx::resetBuffer(u16 w, u16 h)

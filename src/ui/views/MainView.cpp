@@ -17,6 +17,8 @@
 
 #include "ViewManager.h"
 
+#include "OutpostView.h"
+
 MainView::MainView(ViewManager *gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
@@ -30,23 +32,24 @@ MainView::MainView(ViewManager *gvm) : View(gvm)
   buttons[PLANE] = TristateButton::build("Plane", 270, 4, TextureID::UPPER_MENU, 6);
   
   buttons[NEXT] = TristateButton::build("Next", 240, 173, TextureID::MAIN_LOW_BUTTONS, 0);
-  buttons[CANCEL] = TristateButton::build("Cancel", 240, 173, TextureID::MAIN_LOW_BUTTONS, 1);
+  buttons[CANCEL_SURVEYOR] = TristateButton::build("Cancel", 240, 173, TextureID::MAIN_LOW_BUTTONS, 1);
 
   buttons[DONE] = TristateButton::build("Done", 246, 176, TextureID::MAIN_SMALL_BUTTONS, 0);
   buttons[PATROL] = TristateButton::build("Patrol", 280, 176, TextureID::MAIN_SMALL_BUTTONS, 1);
   buttons[WAIT] = TristateButton::build("Wait", 246, 186, TextureID::MAIN_SMALL_BUTTONS, 2);
   buttons[BUILD] = TristateButton::build("Build", 280, 186, TextureID::MAIN_SMALL_BUTTONS, 3);
+  // CANCEL BUTTON MISSING
   
   buttons[SPELLS]->setAction([gvm](){ gvm->switchView(VIEW_MAGIC); });
   buttons[ARMIES]->setAction([gvm](){ gvm->switchView(VIEW_ARMIES); });
   buttons[PLANE]->setAction([this](){ player->switchPlane(); switchToNormalState(player); });
-  buttons[NEXT]->setAction([this](){ LocalGame::i->nextTurn(); switchToNormalState(player); });
-  //buttons[CANCEL_SURVEYOR]->setAction([this](){ if (substate == SPELL_CAST) g->cancelCast(player); switchToNormalState(player); }); // TODO what is this for?
+  buttons[NEXT]->setAction([this](){ LocalGame::i->getGame()->nextTurn(); switchToNormalState(player); });
+  buttons[CANCEL_SURVEYOR]->setAction([this](){ if (substate == SPELL_CAST) g->cancelCast(player); switchToNormalState(player); });
   buttons[DONE]->setAction([this](){ switchToNormalState(player );}); /*if (player.selectedArmy() != null && player.selectedRoute() != null && !player.selectedRoute().completed()) player.saveRoute();*/
   buttons[PATROL]->setAction([this](){ player->getSelectedArmy()->patrol(); });
   buttons[BUILD]->setAction([this](){ g->settleCity(player->getSelectedArmy(), "Test"); player->resetArmy(); });
   
-  for (auto e : {DONE,PATROL,WAIT,BUILD} )
+  for (auto e : {DONE,PATROL,WAIT,BUILD,CANCEL_SURVEYOR} )
     buttons[e]->hide();
   
   buttons[BUILD]->deactivate();
@@ -63,7 +66,7 @@ void MainView::switchToSpellCast(LocalPlayer *p)
 	buttons[PATROL]->hide();
 	buttons[WAIT]->hide();
 	buttons[BUILD]->hide();
-	//buttons[CANCEL_SURVEYOR]->show();
+	buttons[CANCEL_SURVEYOR]->show();
 	
 	substate = SPELL_CAST;
 }
@@ -74,7 +77,7 @@ void MainView::switchToUnitSelection(LocalPlayer *p, Army* a)
 	a->unpatrol();
 	p->selectAll();
 	
-	//buttons[CANCEL_SURVEYOR]->hide();
+	buttons[CANCEL_SURVEYOR]->hide();
 	buttons[NEXT]->hide();
 	buttons[DONE]->show();
 	buttons[PATROL]->show();
@@ -208,16 +211,16 @@ void MainView::draw()
   {
     int gg = player->goldDelta(), f = player->foodDelta(), m = player->manaDelta();
     
-    Fonts::drawString(Fonts::format("%u Gold",gg), gg > 0 ? FontFace::YELLOW_TINY_STROKE : FontFace::RED_TINY_STROKE, 278, 100, ALIGN_CENTER);
-    Fonts::drawString(Fonts::format("%u Food",f), f > 0 ? FontFace::YELLOW_TINY_STROKE : FontFace::RED_TINY_STROKE, 278, 132, ALIGN_CENTER);
-    Fonts::drawString(Fonts::format("%u Mana",m), m > 0 ? FontFace::YELLOW_TINY_STROKE : FontFace::RED_TINY_STROKE, 278, 164, ALIGN_CENTER);
+    Fonts::drawString(Fonts::format("%d Gold",gg), gg > 0 ? FontFace::YELLOW_TINY_STROKE : FontFace::RED_TINY_STROKE, 278, 100, ALIGN_CENTER);
+    Fonts::drawString(Fonts::format("%d Food",f), f > 0 ? FontFace::YELLOW_TINY_STROKE : FontFace::RED_TINY_STROKE, 278, 132, ALIGN_CENTER);
+    Fonts::drawString(Fonts::format("%d Mana",m), m > 0 ? FontFace::YELLOW_TINY_STROKE : FontFace::RED_TINY_STROKE, 278, 164, ALIGN_CENTER);
   }
   
   if (substate == MAIN || substate == UNIT)
   {
-    Fonts::drawString(Fonts::format("%u",player->totalGoldPool()), FontFace::WHITE_SMALL, 259, 68, ALIGN_RIGHT);
+    Fonts::drawString(Fonts::format("%d",player->totalGoldPool()), FontFace::WHITE_SMALL, 259, 68, ALIGN_RIGHT);
     Fonts::drawString("GP", FontFace::WHITE_TINY, 268, 67, ALIGN_LEFT);
-    Fonts::drawString(Fonts::format("%u",player->totalManaPool()), FontFace::WHITE_SMALL, 297, 68, ALIGN_RIGHT);
+    Fonts::drawString(Fonts::format("%d",player->totalManaPool()), FontFace::WHITE_SMALL, 297, 68, ALIGN_RIGHT);
     Fonts::drawString("MP", FontFace::WHITE_TINY, 306, 67, ALIGN_LEFT);
   }
 }

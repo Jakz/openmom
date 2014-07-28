@@ -173,17 +173,21 @@ void PlayerMechanics::updateSpellCast(Player *player)
   /* mana that the player can spend is the minimum between the mana cost of the spell, the available mana from casting skill
    * and the mana pool available
    */
-  s32 manaAvailable = std::min(player->availableMana, std::min(g.spellMechanics.actualManaCost(player, spell, false), player->manaPool));
-
-  if (player->spellBook.spendManaForCast(manaAvailable))
-  {
-    castSpell(player, spell);
-    player->spellBook.cancelCast();
-  }
   
-  // remove mana spent during this turn for the spell cast
-  player->manaPool -= manaAvailable;
-  player->availableMana -= manaAvailable;
+  if (spell)
+  {
+    s32 manaAvailable = std::min(player->availableMana, std::min(g.spellMechanics.actualManaCost(player, spell, false), player->manaPool));
+
+    if (player->spellBook.spendManaForCast(manaAvailable))
+    {
+      castSpell(player, spell);
+      player->spellBook.cancelCast();
+    }
+    
+    // remove mana spent during this turn for the spell cast
+    player->manaPool -= manaAvailable;
+    player->availableMana -= manaAvailable;
+  }
 }
 
 void PlayerMechanics::updateSpellResearch(Player *player)

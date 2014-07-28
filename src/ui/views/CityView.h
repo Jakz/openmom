@@ -11,6 +11,9 @@
 
 #include "View.h"
 
+
+class City;
+class CityLayout;
 class ViewManager;
 
 class CityView : public View
@@ -25,14 +28,21 @@ private:
     BUTTON_COUNT
   };
   
-  void draw() override { };
+  City* city;
+  CityLayout *cityScape;
+  
+  void draw() override;
   void drawPost() override { }
+  
+  s16 drawCityProp(s16 value, s16 row, s16 sx, s16 sy);
   
 public:
   CityView(ViewManager* gvm);
   
   void activate() override { }
   void deactivate() override { }
+  
+  void setCity(City* city);
   
   friend class ProductionView;
 };
