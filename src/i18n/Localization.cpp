@@ -7,6 +7,7 @@ using namespace std;
 
 
 constexpr const I18 i18n::CITY_SIZE_NAMES[];
+constexpr I18 i18n::SPELL_KIND_NAMES[];
 
 unordered_map<I18, const string> i18n::data =
 {
@@ -121,6 +122,15 @@ unordered_map<I18, const string> i18n::data =
   {I18::UNIT_HELL_HOUNDS,"Hell Hounds"},
   {I18::UNIT_GREAT_DRAKE,"Great Drake"},
   
+  {I18::SPELL_KIND_SUMMONING,"Summoning"},
+  {I18::SPELL_KIND_SPECIAL,"Special Spells"},
+  {I18::SPELL_KIND_CITY,"City Spells"},
+  {I18::SPELL_KIND_ENCHANTMENT,"Enchantment"},
+  {I18::SPELL_KIND_UNIT_SPELL,"Unit Spells"},
+  {I18::SPELL_KIND_COMBAT_SPELL,"Combat Spells"},
+  {I18::SPELL_KIND_RESEARCH,"Research"},
+  {I18::SPELL_KIND_SPELLS,"Spells"},
+  
   {I18::SPELL_BLESS, "Bless"},
   {I18::SPELL_ENDURANCE, "Endurance"},
   {I18::SPELL_GUARDIAN_SPIRIT, "Guardian Spirit"},
@@ -171,6 +181,7 @@ unordered_map<I18, const string> i18n::data =
   {I18::ITEM_CHAIN_MAIL, "Chain Mail"},
   {I18::ITEM_PLATE_MAIL, "Plate Mail"},
   
+  {I18::EMPTY, ""},
   {I18::PLACEHOLDER, "Placeholder"},
 };
 

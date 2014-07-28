@@ -2,6 +2,7 @@
 
 #include "Localization.h"
 
+using namespace std;
 
 //   SpecialSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 manaCostDelta, Target Target) :
 
@@ -22,9 +23,46 @@ namespace spellimpl
 
 }
 
+const vector<const SpellKind>& Spells::spellKinds(bool combat)
+{
+  static vector<const SpellKind> overland = {KIND_SUMMONING,KIND_SPECIAL,KIND_ENCHANTMENT,KIND_UNIT_SPELL};
+  static vector<const SpellKind> combatb = {KIND_SUMMONING,KIND_SPECIAL,KIND_ENCHANTMENT,KIND_UNIT_SPELL,KIND_COMBAT_SPELL};
+  return combat ? combatb : overland;
+}
+
 const Spell* Spells::BLESS = &spellimpl::BLESS;
 const Spell* Spells::ENDURANCE = &spellimpl::ENDURANCE;
 
 const Spell* Spells::CORRUPTION = &spellimpl::CORRUPTION;
 const Spell* Spells::CHANGE_TERRAIN = &spellimpl::CHANGE_TERRAIN;
 const Spell* Spells::RAISE_VOLCANO = &spellimpl::RAISE_VOLCANO;
+
+
+vector<vector<vector<const Spell*> > > SPELLS =
+{
+  // arcane
+  {},
+  // chaos
+  {},
+  // death
+  {},
+  // life
+  {},
+  // nature
+  {},
+  // sorcery
+  {}
+};
+
+spell_list& Spells::spellsByRarityAndSchool(SpellRarity rarity, School school)
+{
+  return SPELLS[school][rarity];
+}
+
+Spell::Spell(I18 name, SpellType type, SpellRarity rarity, SpellKind kind, SpellDuration duration, School school, Target target, const ManaInfo mana) :
+name(name), type(type), rarity(rarity), kind(kind), duration(duration), school(school), target(target), mana(mana)
+{
+  SPELLS[school][rarity].push_back(this);
+}
+
+

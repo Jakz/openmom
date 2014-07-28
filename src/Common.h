@@ -254,8 +254,6 @@ class Data
   public:
     static const Trait& trait(const TraitID trait);
     static const Wizard& wizard(const WizardID wizard);
-  
-    static const std::vector<const SpellKind>& spellKinds(bool combat);
 };
 
 #endif

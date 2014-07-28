@@ -102,11 +102,7 @@ class Spell
     const Target target;
     const ManaInfo mana;
   
-  Spell(I18 name, SpellType type, SpellRarity rarity, SpellKind kind, SpellDuration duration, School school, Target target, const ManaInfo mana) :
-    name(name), type(type), rarity(rarity), kind(kind), duration(duration), school(school), target(target), mana(mana)
-  {
-    
-  }
+  Spell(I18 name, SpellType type, SpellRarity rarity, SpellKind kind, SpellDuration duration, School school, Target target, const ManaInfo mana);
   
   bool canBeCastInCombat() const { return mana.combatManaCost > 0; }
   bool canBeCastInOverland() const { return mana.manaCost > 0; }
@@ -221,7 +217,8 @@ typedef std::vector<const Spell*> spell_list;
 class Spells
 {
 public:
-  static spell_list spellsByRarityAndSchool(SpellRarity rarity, School school) { return spell_list(); } // TODO
+  static const std::vector<const SpellKind>& spellKinds(bool combat);
+  static spell_list& spellsByRarityAndSchool(SpellRarity rarity, School school);
   
   static const Spell *BLESS, *ENDURANCE;
   

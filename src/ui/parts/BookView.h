@@ -16,12 +16,12 @@ public:
   {
   private:
     std::vector<ResearchStatus> pages;
-    std::string title;
+    I18 title;
     bool research;
     u16 size;
     
   public:
-    Page(u16 size, std::string& title, bool research = false) : title(title), size(size), research(research)
+    Page(u16 size, I18 title, bool research = false) : title(title), size(size), research(research)
     {
       pages.resize(size, ResearchStatus(nullptr));
     }
@@ -30,9 +30,9 @@ public:
     bool isFull() { return actualSize() == size; }
     const ResearchStatus& at(u16 i) { return pages[i]; }
     bool isResearch() { return research; }
-    std::string& getTitle() { return title; }
+    I18 getTitle() { return title; }
     
-    void put(ResearchStatus&& rs) {
+    void put(ResearchStatus& rs) {
       for (int i = 0; i < size; ++i)
         if (!pages[i].spell)
         {
@@ -52,18 +52,18 @@ public:
 
   void populate(const Player* player, SpellBook::Type type);
   
-  bool hasNextPage() { return currentPage < bookPages.size() - 1; }
-  bool hasPrevPage() { return currentPage > 0; }
+  bool hasNextPage() const { return currentPage < bookPages.size() - 1; }
+  bool hasPrevPage() const { return currentPage > 0; }
   
   void nextPage() { currentPage += 2; }
   void prevPage() { currentPage -= 2; }
   
-  const Page& current() { return bookPages[currentPage]; }
-  const Page& current(s16 i) { return bookPages[currentPage+i]; }
+  const Page& current() const { return bookPages[currentPage]; }
+  const Page& current(s16 i) const { return bookPages[currentPage+i]; }
   
   const Page& get(s16 i) { return bookPages[i]; }
   
-  const ResearchStatus& getEntry(s16 i) { return bookPages[currentPage + i/pageSize].at(i%pageSize); }
+  const ResearchStatus& getEntry(s16 i) { return bookPages.at(currentPage + i/pageSize).at(i%pageSize); }
 };
 
 

@@ -53,10 +53,3 @@ const Wizard& Data::wizard(const WizardID wizard)
 {
   return wizardInfo[wizard];
 }
-
-const std::vector<const SpellKind>& Data::spellKinds(bool combat)
-{
-  static vector<const SpellKind> overland = {KIND_SUMMONING,KIND_SPECIAL,KIND_ENCHANTMENT,KIND_UNIT_SPELL};
-  static vector<const SpellKind> combatb = {KIND_SUMMONING,KIND_SPECIAL,KIND_ENCHANTMENT,KIND_UNIT_SPELL,KIND_COMBAT_SPELL};
-  return combat ? combatb : overland;
-}
