@@ -96,7 +96,7 @@ void MainView::switchToNormalState(LocalPlayer *p)
 	buttons[BUILD]->hide();
 	buttons[CANCEL_SURVEYOR]->hide();
 	
-	// TODO: Surveyor.updateTile(null);
+	surveyor.updateInfo(nullptr);
 	
 	substate = MAIN;
 }
@@ -183,7 +183,7 @@ void MainView::draw()
   else if (substate == SURVEYOR)
   {
     Gfx::draw(TextureID::MAIN_RIGHT_BACKDROPS, 0, 1, 240, 76);
-    //TODO Surveyor.drawSurveyor();
+    surveyor.draw();
   }
   else if (substate == SPELL_CAST)
   {
@@ -291,6 +291,117 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
         
         player.setViewport(t.x, ty);
       }*/
+    }
+  }
+}
+
+void MainView::mouseMoved(u16 x, u16 y, MouseButton b)
+{
+  if (substate == SURVEYOR)
+  {
+    const Position pos = Viewport::hoveredPosition(g->world, player, x, y);
+    Tile* tile = g->world->get(pos);
+    if (tile && tile != hoveredTile) surveyor.updateInfo(tile);
+    hoveredTile = tile;
+  }
+}
+
+void MainView::keyPressed(KeyboardKey key, KeyboardMod mod)
+{
+  
+}
+
+void MainView::keyReleased(KeyboardKey key, KeyboardMod mod)
+{
+  
+}
+
+void MainView::Surveyor::updateInfo(Tile *t)
+{
+  tile = t;
+  
+  if (!tile)
+  {
+    cityCanBeBuilt = false;
+    cityForbidMsg = I18::EMPTY;
+    return;
+  }
+  
+  cityCanBeBuilt = view.g->cityMechanics.canCityBeBuiltOnTle(t);
+  
+  if (!cityCanBeBuilt)
+  {
+    World* w = view.g->world;
+    
+    if (!t || t->city)
+    {
+      cityForbidMsg = I18::EMPTY;
+      return;
+    }
+    else if (t->type == TILE_WATER || t->type == TILE_SHORE)
+    {
+      cityForbidMsg = I18::SURVEYOR_CITY_FORBID_WATER;
+      return;
+    }
+    
+    for (int i = -3; i <= 3; ++i)
+      for (int j = -3; j <= 3; ++j)
+      {
+        Tile* t2 = w->get(t->position.x+i, t->position.y+j, t->position.plane);
+        
+        if (t2 && t2->city)
+        {
+          cityForbidMsg = I18::SURVEYOR_CITY_FORBID_DISTANCE;
+          return;
+        }
+      }
+    
+    cityForbidMsg = I18::EMPTY;
+  }
+}
+
+void MainView::Surveyor::draw()
+{
+  Fonts::drawString("Surveyor", FontFace::SURVEY_SERIF, 240+6+8, 76+2+1, ALIGN_LEFT);
+  
+  if (tile && view.g->currentPlayer()->fog()->get(tile->position))
+  {
+    Fonts::setFace(FontFace::YELLOW_SMALL, 0, 2);
+    
+    if (!cityCanBeBuilt)
+    {
+      const City* city = tile->city;
+      
+      if (!city)
+        Fonts::drawStringBounded(i18n::s(cityForbidMsg), 246, 143, 68, ALIGN_LEFT, &FontMap::Small::YELLOW_PALE);
+      else
+      {
+        // draw city name and size
+        Fonts::drawString(i18n::s(i18n::CITY_SIZE_NAMES[city->tileSize()])+" of", 276, 115, ALIGN_CENTER, &FontMap::Small::YELLOW_PALE);
+        Fonts::drawString(city->getName(), 276, 115+7, ALIGN_CENTER, &FontMap::Small::YELLOW_PALE);
+        
+        // draw city specs
+        Fonts::drawString("City Resources", 276, 143, ALIGN_CENTER, &FontMap::Small::YELLOW_PALE);
+        
+        const std::string pop = Fonts::format(i18n::s(I18::SURVEYOR_MAX_POPULATION).c_str(), city->getMaxPopulation());
+        const std::string prod = Fonts::format(i18n::s(I18::SURVEYOR_MAX_POPULATION).c_str(), (s32)(view.g->cityMechanics.computeProductionBonus(city)*100));
+        
+        Fonts::drawString(pop, 276, 150, ALIGN_CENTER, &FontMap::Small::WHITE_PALE);
+        Fonts::drawString(prod, 276, 157, ALIGN_CENTER, &FontMap::Small::WHITE_PALE);
+      }
+    }
+    
+    auto t = i18n::surveyorDesc(tile->type);
+
+    /* TODO: finish surveyor */
+    
+    if (!t.empty())
+    {
+      for (int i = 0; i < t.size(); ++i)
+      {
+        Fonts::setMap(i == 0 ? &FontMap::Small::YELLOW_PALE : &FontMap::Small::WHITE_PALE);
+        Fonts::drawString(t[i], 276, 91+7*i, ALIGN_CENTER);
+      }
     }
   }
 }

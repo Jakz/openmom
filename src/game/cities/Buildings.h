@@ -32,10 +32,11 @@ class Building : public Productable
   public:
     /*const BuildingID ident;*/
     const I18 name;
+    const I18 desc;
     const u16 cost;
     const Upkeep upkeep;
   
-    Building(/*BuildingID ident, */I18 name, u16 cost, u16 gupkeep, u16 mupkeep) : /*ident(ident),*/ name(name), cost(cost), upkeep(Upkeep(gupkeep,mupkeep)) { }
+    Building(/*BuildingID ident, */I18 name, I18 desc, u16 cost, u16 gupkeep, u16 mupkeep) : /*ident(ident),*/ name(name), desc(desc), cost(cost), upkeep(Upkeep(gupkeep,mupkeep)) { }
   
     const std::string& productionName() const override;
     u16 productionCost() const override { return cost; }

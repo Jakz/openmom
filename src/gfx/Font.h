@@ -289,6 +289,8 @@ class Fonts
     static inline const std::string join(std::vector<const std::string>& tokens, s16 s, s16 e);
     static inline void split(std::string string, std::vector<const std::string>& tokens, s8 delim);
   
+    static inline void setFace(FontFace face, s16 v, s16 h) { setFace(face); setVerHorSpace(v,h); }
+  
     static inline void setFace(FontFace face)
     {
       font = &fonts[face];
@@ -302,16 +304,16 @@ class Fonts
     static inline void setHorSpace(s16 h) { hSpace = h; }
     static inline void setVerSpace(s16 v) { vSpace = v; }
     static inline void setVerHorSpace(s16 v, s16 h) { vSpace = v; hSpace = h; }
-    static inline void setMap(ColorMap *m) { map = m; omap = m; }
+    static inline void setMap(const ColorMap *m) { map = m; omap = m; }
   
-    static u16 drawString(const std::string string, u16 x, u16 y, TextAlign align, ColorMap *map)
+    static u16 drawString(const std::string string, u16 x, u16 y, TextAlign align, const ColorMap *map)
     {
       setMap(map);
       u16 r = drawString(string,x,y,align);
       return r;
     }
   
-    static u16 drawString(const std::string string, FontFace face, u16 x, u16 y, TextAlign align, ColorMap *map)
+    static u16 drawString(const std::string string, FontFace face, u16 x, u16 y, TextAlign align, const ColorMap *map)
     {
       setFace(face);
       return drawString(string, x, y, align, map);
@@ -326,14 +328,14 @@ class Fonts
     static u16 drawString(const std::string string, u16 x, u16 y, TextAlign align);
     static u16 drawStringContext(const std::string string, u16 x, u16 y, TextAlign align);
   
-    static u16 drawStringBounded(const std::string string, FontFace face, u16 x, u16 y, s16 bound, TextAlign align, ColorMap* map = nullptr)
+    static u16 drawStringBounded(const std::string string, FontFace face, u16 x, u16 y, s16 bound, TextAlign align, const ColorMap* map = nullptr)
     {
       setFace(face);
       setMap(map);
       return drawStringBounded(string, x, y, bound, align);
     }
   
-    static u16 drawStringBounded(const std::string string, int x, int y, int bound, TextAlign align, ColorMap* map = nullptr);
+    static u16 drawStringBounded(const std::string string, int x, int y, int bound, TextAlign align, const ColorMap* map = nullptr);
   
     static FontFace fontForColor(PlayerColor color)
     {

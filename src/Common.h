@@ -83,7 +83,7 @@ class Upkeep
 enum ViewID
 {
   VIEW_MAIN,
-  VIEW_SPELLS,
+  VIEW_SPELL_BOOK,
   VIEW_MAGIC,
   VIEW_RESEARCH,
   VIEW_ALCHEMY,
@@ -152,6 +152,7 @@ enum WizardID : u8
 
 struct Wizard
 {
+  WizardID ident;
   I18 name;
 };
 

@@ -81,10 +81,15 @@ public:
   
   const Position& getPosition() const { return position; }
   
+  void setProductable(const Productable* productable) { this->production = productable; }
+  const Productable* getProductable() const { return production; }
+  
   bool isOutpost() const { return isStillOutpost; }
   Upkeep getUpkeep() const { return upkeep; }
   Upkeep getProduction() const { return Upkeep(gold, mana, food); }
   s32 getKnowledge() const { return knowledge; }
+  
+  u16 getMaxPopulation() const { return maxPopulation; }
   
   Player* getOwner() { return owner; }
   

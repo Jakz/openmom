@@ -195,7 +195,7 @@ u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)
   return sx - 1 - (align == ALIGN_RIGHT ? 0 : x);
 }
 
-u16 Fonts::drawStringBounded(const string str, int x, int y, int bound, TextAlign align, ColorMap* map)
+u16 Fonts::drawStringBounded(const string str, int x, int y, int bound, TextAlign align, const ColorMap* map)
 {
   setMap(map);
   vector<const string> lines;

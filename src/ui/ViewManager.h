@@ -9,8 +9,23 @@
 class Animation;
 class View;
 
+class AlchemyView;
+class ArmiesItemsView;
+class ArmiesView;
+class ArmyView;
 class CityView;
+class CombatView;
+class ItemCraftView;
+class MagicView;
+class MainView;
+class MessageView;
+class MirrorView;
+class NewGameView;
 class OutpostView;
+class ProductionView;
+class ResearchView;
+class SpellBookView;
+class UnitDetailView;
 
 class ViewManager : public EventListener
 {
@@ -50,8 +65,23 @@ class ViewManager : public EventListener
     inline View* firstOverview() { return isThereOverview() ? overviews.front() : nullptr; }
     inline View* respondingView() { return isThereOverview() ? overviews.front() : current; }
   
-    CityView* cityView();
-    OutpostView* outpostView();
+  AlchemyView* alchemyView();
+  ArmiesItemsView* armiesItemsView();
+  ArmiesView* armiesView();
+  ArmyView* armyView();
+  CityView* cityView();
+  CombatView* combatView();
+  ItemCraftView* itemCraftView();
+  MagicView* magicView();
+  MainView* mainView();
+  MessageView* messageView();
+  MirrorView* mirrorView();
+  NewGameView* newGameView();
+  OutpostView* outpostView();
+  ProductionView* productionView();
+  ResearchView* researchView();
+  SpellBookView* spellBookView();
+  UnitDetailView* unitDetailView();
   
     static ViewManager gvm;
 };

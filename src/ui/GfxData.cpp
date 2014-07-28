@@ -47,6 +47,9 @@ unordered_map<const Spell*, s16> GfxData::specialSpellGfxEffects = {
 };
 
 
+constexpr s8 GfxData::RANGED_INDEX[];
+constexpr s8 GfxData::PROPERTY_INDEX[];
+
 
 Color GfxData::colorForSchool(const School school)
 {

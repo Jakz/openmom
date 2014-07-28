@@ -44,6 +44,9 @@ class View : public EventListener
   public:
     View(ViewManager *gvm) : gvm(gvm), curButton(nullptr) { }
   
+    Button* buttonAt(u16 index) { return buttons[index]; }
+    Clickable* areaAt(u16 index) { return areas[index]; }
+  
     void doActivate(LocalPlayer* player);
     void doDeactivate() { deactivate(); }
   

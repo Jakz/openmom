@@ -56,6 +56,21 @@ private:
 
   void draw() override;
   void drawPost() override;
+  
+  struct Surveyor
+  {
+    MainView& view;
+    Tile* tile;
+    bool cityCanBeBuilt;
+    I18 cityForbidMsg;
+    
+    Surveyor(MainView& view) : view(view), tile(nullptr), cityCanBeBuilt(false) { }
+    
+    void updateInfo(Tile* tile);
+    void draw();
+  };
+  
+  Surveyor surveyor = Surveyor(*this);
     
 public:
   MainView(ViewManager* gvm);
@@ -70,6 +85,11 @@ public:
   void updateBuildButton(LocalPlayer* player);
   
   void mouseReleased(u16 x, u16 y, MouseButton b) override;
+  void mouseMoved(u16 x, u16 y, MouseButton b) override;
+  
+  void keyPressed(KeyboardKey key, KeyboardMod mod) override;
+  void keyReleased(KeyboardKey key, KeyboardMod mod) override;
+
 };
 
 #endif

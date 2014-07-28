@@ -49,6 +49,7 @@ class Race
     const HouseType houseType;
     const s16 growthBonus;
     const float outpostGrowthChance;
+    const char* cityNames[20];
   
   static const Race& race(RaceID ident) { return races[static_cast<u8>(ident)]; }
 };
