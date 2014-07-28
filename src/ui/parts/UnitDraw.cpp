@@ -17,18 +17,27 @@
 #include "SDL.h"
 #include "Player.h"
 
+#include "LocalPlayer.h"
+#include "Game.h"
+
 void UnitDraw::drawStatic(const Army *army, u16 x, u16 y)
 {
-  if (/*TODO army != LocalGame.i.currentPlayer.selectedArmy() ||*/ SDL::fticks % 6 < 3)
+  if (army != LocalGame::i->currentPlayer()->getSelectedArmy() || SDL::fticks % 6 < 3)
   {
     Gfx::draw(TextureID::UNITS_COLOR_BACKDROP, 0, army->getOwner()->color, x, y);
     
-    const Unit* first;
-    /*TODO if (army == LocalGame.i.currentPlayer.selectedArmy())
-      first = army.firstSelected();
+    const Unit* first = nullptr;
+    if (army == LocalGame::i->currentPlayer()->getSelectedArmy())
+    {
+      for (auto u : *army)
+        if (LocalGame::i->currentPlayer()->isSelectedUnit(u))
+        {
+          first = u;
+          break;
+        }
+    }
     else
-      first = army.units.get(0);*/
-    first = army->get(0);
+      first = army->get(0);
     
     Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[army->getOwner()->color]);
     
@@ -39,7 +48,6 @@ void UnitDraw::drawStatic(const Army *army, u16 x, u16 y)
     else
       Gfx::drawGrayScale(info, x+1, y+1);
     
-    // TODO: calculate glow
     School school = first->glow();
     if (school != NO_SCHOOL)
       Gfx::drawGlow(info, x+1, y+1, school);
@@ -62,7 +70,6 @@ void UnitDraw::drawStatic(const Unit *unit, u16 x, u16 y, bool backdrop, bool gr
   else
     Gfx::draw(info, x+1, y+1);
   
-  // TODO: calculate glow
   School school = unit->glow();
   if (school != NO_SCHOOL)
     Gfx::drawGlow(info, x+1, y+1, school);
@@ -80,7 +87,6 @@ void UnitDraw::rawDrawStatic(const Army *army, u16 x, u16 y)
   const SpriteInfo& info = GfxData::unitGfxSpec(&first->spec).still;
   Gfx::draw(info, x+1, y+1);
   
-  // TODO: calculate glow
   School school = first->glow();
   if (school != NO_SCHOOL)
     Gfx::drawGlow(info, x+1, y+1, school);

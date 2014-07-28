@@ -3,6 +3,9 @@
 #include "World.h"
 #include "City.h"
 
+#include "LocalPlayer.h"
+#include "Game.h"
+
 void Tile::settleCity(City* city)
 {
   this->city = city;
@@ -33,7 +36,7 @@ void Tile::placeArmy(Army* army)
     delete army;
     
     // since armies are merged we need to update the current selected army of the player
-    // TODO LocalGame.i.currentPlayer.selectedArmy(this.army);
+    LocalGame::i->currentPlayer()->selectArmy(this->army);
   }
   else
   {

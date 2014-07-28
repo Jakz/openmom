@@ -17,6 +17,7 @@
 #include "World.h"
 #include "Tile.h"
 #include "Util.h"
+#include "Messages.h"
 
 #include <vector>
 
@@ -698,7 +699,7 @@ void CityMechanics::updateProduction(City *c)
     if (c->production->productionType() == Productable::Type::BUILDING)
     {
       c->addBuilding(static_cast<const Building*>(c->production));
-      //TODO: c->owner->send(new NewBuildingMessage(c,stati_cast<const Building*>(c->production)));
+      c->getOwner()->send(new msgs::NewBuilding(c, static_cast<const Building*>(c->production)));
       c->production = Building::HOUSING;
       c->productionPool = 0;
       updateValues(c);

@@ -74,7 +74,27 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
   
   HouseType ht = city->race.houseType;
   
-  // TODO requiring CityLayout
+  const CityLayout& layout = layouts[city];
+  
+  for (auto p : layout.positions)
+  {
+    if (p.building)
+      drawBuilding(p.building, p.x, p.y);
+    else
+      Gfx::draw(TextureID::CITY_HOUSES, ht, p.house, p.x, p.y - Texture::get(TextureID::CITY_HOUSES).h);
+  }
+  
+  if (city->hasPlacement(CITY_BY_SEA))
+    Gfx::drawAnimated(TextureID::CITY_WATER, 0+2*city->getPosition().plane, 3, 100, 0);
+  else if (!city->hasPlacement(CITY_BY_SEA) && city->hasPlacement(CITY_BY_RIVER))
+    Gfx::drawAnimated(TextureID::CITY_WATER, 1+2*city->getPosition().plane, 3, 100, 0);
+  
+  //draw walls
+  //TODO: other kinds of walls + city wall spell
+  if (city->hasBuilding(Building::CITY_WALLS))
+    Gfx::drawAnimated(TextureID::CITY_WALLS, 0, 3, 183, 0);
+  /*if (c->hasSpell(Spells::WALL_OF_DARKNESS))   TODO MISSING SPELL
+  Gfx::drawAnimated(TextureID::CITY_WALLS, 3, 3, 183, 0);*/
 }
 
 s16 CityLayout::buildingHeight(const Building *building)

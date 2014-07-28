@@ -30,7 +30,7 @@ void LocalPlayer::selectArmy(Army* army)
 {
   selectedArmy = army;
   
-  //if (!game->revalidateRoute(army)) // TODO
+  if (!g->revalidateRoute(army))
     army->setRoute(nullptr);
   
   selectedRoute = army->getRoute();
@@ -82,7 +82,7 @@ bool LocalPlayer::consumeRoute()
   
   army->setRoute(selectedRoute);
   selectedRoute->setArmy(army);
-  return false; //game->consumeMovement(selectedArmy); TODO
+  return g->consumeMovement(selectedArmy);
 }
 
 Army* LocalPlayer::splitAndSelect()

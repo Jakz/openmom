@@ -73,7 +73,7 @@ public:
 
 class NewBuilding : public Message
 {
-  
+public:
   NewBuilding(const City* city, const Building* building);
   
   const Building* building;

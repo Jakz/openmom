@@ -118,6 +118,8 @@ class CombatEffects
   });
   
   const CombatSingleUnitEffect DOOM_BOLT = CombatSingleUnitEffect([](const Combat* combat, const CombatUnit* unit, const SpellCast& cast){
+    
+    
     // TODO
     /*
      if (unit.unit.hasSkill(SkillID.Immunity.MAGIC))

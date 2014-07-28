@@ -223,6 +223,8 @@ class Spells
 public:
   static spell_list spellsByRarityAndSchool(SpellRarity rarity, School school) { return spell_list(); } // TODO
   
+  static const Spell *BLESS, *ENDURANCE;
+  
   
   
   static const Spell* CORRUPTION;

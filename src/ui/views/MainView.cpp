@@ -249,10 +249,10 @@ void MainView::drawPost()
 void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   const Position pos = Viewport::hoveredPosition(g->world, player, x, y);
-  
-  if (pos.x != -1)
+  Tile* t = g->world->get(pos);
+
+  if (t)
   {
-    Tile* t = g->world->get(pos);
     City* c = t->city;
     Army* a = t->army;
     

@@ -157,7 +157,7 @@ void PlayerMechanics::castSpell(Player* player, const Spell* spell)
   }
   else if (spell->type == SpellType::GLOBAL || spell->type == SpellType::GLOBAL_SKILL)
   {
-    //g.castSpell(static_cast<GlobalSpell*>()); TODO
+    g.castSpell(static_cast<const GlobalSpell*>(spell), player);
     updateGlobalGains(player);
   }
   else if (spell->target != Target::NONE)

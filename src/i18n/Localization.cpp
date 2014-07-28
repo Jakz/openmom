@@ -121,6 +121,17 @@ unordered_map<I18, const string> i18n::data =
   {I18::UNIT_HELL_HOUNDS,"Hell Hounds"},
   {I18::UNIT_GREAT_DRAKE,"Great Drake"},
   
+  {I18::SPELL_BLESS, "Bless"},
+  {I18::SPELL_ENDURANCE, "Endurance"},
+  {I18::SPELL_GUARDIAN_SPIRIT, "Guardian Spirit"},
+  {I18::SPELL_HEALING, "Healing"},
+  {I18::SPELL_HEROISM, "Heroism"},
+  {I18::SPELL_HOLY_ARMOR, "Holy Armor"},
+  {I18::SPELL_HOLY_WEAPON, "Holy Weapon"},
+  {I18::SPELL_JUST_CAUSE, "Just Cause"},
+  {I18::SPELL_STAR_FIRES, "Star Fires"},
+  {I18::SPELL_TRUE_LIGHT, "True Light"},
+  
   {I18::SPELL_CORRUPTION, "Corruption"},
   {I18::SPELL_CHANGE_TERRAIN, "Change Terrain"},
   {I18::SPELL_RAISE_VOLCANO, "Raise Volcano"},

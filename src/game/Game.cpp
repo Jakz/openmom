@@ -80,12 +80,28 @@ void Game::dummyInit()
   world->set(TILE_VOLCANO, 59, 0, ARCANUS);
   world->set(TILE_VOLCANO, 0, 39, ARCANUS);
   world->set(TILE_VOLCANO, 59, 39, ARCANUS);
-  
   world->set(TILE_HILL, 1, 2, MYRRAN);
   
-  player->fog()->setRect(0, 0, 59, 30, ARCANUS);
+  player->fog()->setRect(0, 0, 60, 40, ARCANUS);
   
-  LocalGame* localGame = new LocalGame(this);
+  new LocalGame(this);
+  
+  placeArmy(a, Position(5, 6, ARCANUS));
+  placeArmy(new Army(player, {new FantasticUnit(*UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT)),new FantasticUnit(*UnitSpec::summonSpec(UnitID::GREAT_DRAKE))}), Position(4, 3, ARCANUS));
+  placeArmy(new Army(player, {new FantasticUnit(*UnitSpec::summonSpec(UnitID::GREAT_DRAKE)), new Hero(*UnitSpec::heroSpec(UnitID::HERO_DWARF))}), Position(4, 8, ARCANUS));
+  
+  City* florence = new City(player, "Florence", 4000, Position(3, 3, MYRRAN));
+  florence->addBuilding(Building::MAGE_FORTRESS);
+  florence->addBuilding(Building::SMITHY);
+  florence->addBuilding(Building::BUILDERS_HALL);
+  florence->addBuilding(Building::BARRACKS);
+  florence->addBuilding(Building::FIGHTERS_GUILD);
+  florence->addBuilding(Building::SUMMONING_CIRCLE);
+  settleCity(florence);
+  
+  world->get(7,6,ARCANUS)->placePlace(new Place(PLACE_TOWER_OF_WIZARDRY, false));
+  world->get(8,6,ARCANUS)->placePlace(new Place(PLACE_CAVE, false));
+  
   
   world->calcSubTiles();
   world->updateRoads();

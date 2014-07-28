@@ -138,8 +138,8 @@ City* Player::cityWithSummoningCircle() const
   return nullptr;
 }
 
-s32 Player::castingSkillBase() const { return /*TODO game.playerMechanics.computeBaseCastingSkill(this) +*/ castingSkillGained_; }
-s32 Player::castingSkill() const { return castingSkillBase() /*TODO + game.playerMechanics.computeBonusCastingSkill(this)*/; }
+s32 Player::castingSkillBase() const { return g->playerMechanics.computeBaseCastingSkill(this) + castingSkillGained_; }
+s32 Player::castingSkill() const { return castingSkillBase() + g->playerMechanics.computeBonusCastingSkill(this); }
 s32 Player::researchPoints() const { return g->spellMechanics.actualResearchGain(this, spellBook.getCurrentResearch()); }
 
 bool Player::hasSpell(const GlobalSpell* spell) const

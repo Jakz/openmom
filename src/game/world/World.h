@@ -56,14 +56,8 @@ public:
   
   Tile* get(u16 x, u16 y, Plane plane) const override
   {
-    int tX, tY;
-		
-		if (x < 0)
-			tX = w + x;
-		else if (x >= w)
-			tX = x % w;
-		else
-			tX = x;
+		if (x < 0) x += w;
+		else if (x >= w) x %= w;
 		
 		/* verical wrap unallowed
      if (y < 0)
@@ -73,14 +67,12 @@ public:
      else
      tY = y;
      */
-		tY = y;
 		if (y < 0)
 			return nullptr;
 		else if (y >= h)
 			return nullptr;
 		
-		//System.out.println(x+" "+y);
-		return &map[plane][tX+tY*w];
+		return &map[plane][x+y*w];
   }
   
   Tile *get(Position position, PositionOffset offset) const
