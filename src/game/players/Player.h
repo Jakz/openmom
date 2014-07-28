@@ -110,8 +110,9 @@ public:
 
   void spendGold(s32 amount) { goldPool -= amount; }
   
-  u8 getTaxRate() { return taxRate; }
-  s32 totalGoldPool() { return goldPool; }
+  u8 getTaxRate() const{ return taxRate; }
+  s32 totalGoldPool() const { return goldPool; }
+  s32 totalManaPool() const { return manaPool; }
   
   s32 goldDelta() const { return goldGain - goldUpkeep; }
   s32 manaDelta() const { return manaRatios[0] - manaUpkeep; }

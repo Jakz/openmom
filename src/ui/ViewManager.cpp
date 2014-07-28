@@ -17,9 +17,9 @@ ViewManager ViewManager::gvm;
 
 ViewManager::ViewManager() : views{nullptr}, animating(false)
 {
-  views[VIEW_MAIN] = new MainView();
+  views[VIEW_MAIN] = new MainView(this);
   
-  views[VIEW_NEW_GAME] = new NewGameView();
+  views[VIEW_NEW_GAME] = new NewGameView(this);
 }
 
 void ViewManager::switchView(ViewID type)
@@ -129,3 +129,6 @@ void ViewManager::keyReleased(KeyboardKey key, KeyboardMod mod)
   if (!animating)
     respondingView()->doKeyReleased(key, mod);
 }
+
+
+//CityView* ViewManager::cityView() { return static_cast<CityView*>(views[VIEW_CITY]); }

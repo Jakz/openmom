@@ -17,9 +17,6 @@ SDL_Surface* Gfx::buffer = nullptr;
 SDL_Surface* Gfx::activeBuffer = nullptr;
 SDL_Surface* Gfx::canvas = nullptr;
 
-u32 Gfx::ticks = 0;
-u32 Gfx::realTicks = 0;
-
 const ColorMap* Gfx::map = nullptr;
 
 
@@ -327,9 +324,9 @@ void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
   const Texture& tex = Texture::get(texture);
   
   if (tex.animatedSprites.empty())
-    draw(texture, r, (((offset+ticks)/tex.animFactor)%tex.cols), x, y);
+    draw(texture, r, (((offset+SDL::fticks)/tex.animFactor)%tex.cols), x, y);
   else
-    draw(texture, r, (((offset+ticks)/tex.animFactor)%tex.animatedSprites[r]), x, y);
+    draw(texture, r, (((offset+SDL::fticks)/tex.animFactor)%tex.animatedSprites[r]), x, y);
 }
 
 void Gfx::draw(const SpriteInfo& info, u16 x, u16 y)

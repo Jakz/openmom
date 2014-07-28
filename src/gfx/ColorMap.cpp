@@ -9,6 +9,7 @@
 #include "ColorMap.h"
 
 #include "Gfx.h"
+#include "SDL.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ u32 BlinkMap::get(u32 k) const
   if (set.find(k) == set.end()) return 0x00000000;
   else
   {
-    s16 phase = Gfx::getRealTicks() % ticks;
+    s16 phase = SDL::ticks % ticks;
     
     if (updatedForTick != phase)
     {
@@ -37,6 +38,12 @@ u32 BlinkMap::get(u32 k) const
     return 0x00000000;
   }
 }
+
+/*
+ static const color_list SMALL_COLORS = {RGB(222, 148, 34), RGB(149, 108, 55), RGB(82, 62, 51)};
+ static const color_list TINY_COLORS = {RGB(255, 255, 255), RGB(142, 132, 129), RGB(91, 91, 91)};
+
+*/
 
 namespace FontMap
 {

@@ -54,7 +54,7 @@ public:
   void add(Unit* unit);
   Unit* remove(Unit* unit);
   
-  size_t size() { return units.size(); }
+  const size_t size() const { return units.size(); }
   Unit* get(u16 index) const { return *std::next(units.begin(), index); }
   const unit_list& getUnits() { return units; }
   

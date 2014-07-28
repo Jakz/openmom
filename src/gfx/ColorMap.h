@@ -70,9 +70,16 @@ class HashColorMap : public ColorMap
 
     u32 get(u32 k) const override
     {
-      color_map::const_iterator it = map.find(k);
+      if (k != 0)
+      {
+        //printf("%d %d %d %d\n", k >> 24, (k>>16)&0xff, (k>>8)&0xff, k&0xff);
       
-      return it != map.end() ? it->second : k;
+        color_map::const_iterator it = map.find(k);
+      
+        return it != map.end() ? it->second : k;
+      }
+      
+      return k;
     }
 };
 

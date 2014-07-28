@@ -8,7 +8,7 @@
 #include "UnitSpec.h"
 #include "UnitDraw.h"
 
-NewGameView::NewGameView() : View()
+NewGameView::NewGameView(ViewManager * gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
   

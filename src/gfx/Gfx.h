@@ -24,7 +24,6 @@ enum TextureID : u16;
 class Gfx
 {
     static SDL_Surface *buffer, *canvas, *activeBuffer;
-    static u32 ticks, realTicks;
   
     static const ColorMap* map;
   
@@ -79,11 +78,6 @@ class Gfx
     static void draw(TextureID texture, u16 r, u16 c, u16 x, u16 y);
   
     static void drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset);
-
-  
-  
-    static u32 getRealTicks() { return realTicks; }
-  
   
     static u16 upTo(const std::vector<u16>& ws, u16 i) { u16 r = 0; for (u16 j = 0; j < i; ++j) r += ws[j]; return r; }
   

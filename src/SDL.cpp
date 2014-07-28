@@ -44,6 +44,15 @@ bool SDL::init()
   screen = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIDTH*SCALE_FACTOR, HEIGHT*SCALE_FACTOR);
   filter = Gfx::createSurface(WIDTH*SCALE_FACTOR, HEIGHT*SCALE_FACTOR);
 #endif
+  
+  /*u16 *r = new u16[256];
+  u16 *g = new u16[256];
+  u16 *b = new u16[256];
+  
+  SDL_GetWindowGammaRamp(window, r, g, b);
+  for (int i = 0; i < 256; ++i)
+    printf("%d %d %d %d\n", r[i], g[i], b[i], 257*i);*/
+
 
   return true;
 }

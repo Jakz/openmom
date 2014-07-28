@@ -15,10 +15,6 @@ class Viewport
 private:
   static std::unordered_map<u8,u8> waterMap;
   
-  static const u16 viewportW = 12, viewportH = 10;
-  static const u16 tileWidth = 20, tileHeight = 18;
-  static const u16 baseX = 0, baseY = 20;
-  
   static void drawViewport(const World* map, const LocalPlayer* player, const Position& p, s16 ttx, s16 tty, s16 w, s16 h, bool darkenEdges);
   
 public:
@@ -35,7 +31,11 @@ public:
 
   static void drawMicroMap(const LocalPlayer* player, s16 dx, s16 dy, s16 w, s16 h, s16 vx, s16 vy, Plane plane);
 
-
+  static const u16 viewportW = 12, viewportH = 10;
+  static const u16 tileWidth = 20, tileHeight = 18;
+  static const u16 baseX = 0, baseY = 20;
+  
+  static const Position hoveredPosition(const World* world, const LocalPlayer* player, u16 x, u16 y);
 };
 
 #endif

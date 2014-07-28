@@ -46,7 +46,7 @@ int main(int argc, char * arg[])
   //const Race* ptRace = reinterpret_cast<const Race *>(&race);
   
   // init SDL
-      
+        
   init();
   
   SDL::init();

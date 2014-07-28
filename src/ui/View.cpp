@@ -11,6 +11,18 @@
 #include "Buttons.h"
 #include "LocalPlayer.h"
 
+#include "ViewManager.h"
+
+Action View::buildSwitchViewAction(View* view, ViewID newView)
+{
+  return [&](){gvm->switchView(newView);};
+}
+
+Action View::buildSwitchOverviewAction(View* view, ViewID newView)
+{
+  return [&](){gvm->switchOverview(newView);};
+}
+
 void View::doActivate(LocalPlayer* player)
 {
   this->player = player;

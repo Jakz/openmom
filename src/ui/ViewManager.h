@@ -1,6 +1,7 @@
 #ifndef _VIEW_MANAGER_H_
 #define _VIEW_MANAGER_H_
 
+#include "Common.h"
 #include "EventListener.h"
 
 #include <list>
@@ -8,28 +9,8 @@
 class Animation;
 class View;
 
-enum ViewID
-{
-  VIEW_MAIN,
-  VIEW_SPELLS,
-  VIEW_MAGIC,
-  VIEW_RESEARCH,
-  VIEW_ALCHEMY,
-  VIEW_ARMIES,
-  VIEW_ARMIES_ITEMS,
-  VIEW_ITEM_CRAFT,
-  VIEW_CITY,
-  VIEW_UNIT,
-  VIEW_ARMY,
-  VIEW_MESSAGE,
-  VIEW_MIRROR,
-  VIEW_COMBAT,
-  VIEW_PRODUCTION,
-  VIEW_OUTPOST,
-  VIEW_NEW_GAME,
-  
-  VIEW_COUNT
-};
+class CityView;
+class OutpostView;
 
 class ViewManager : public EventListener
 {
@@ -69,6 +50,8 @@ class ViewManager : public EventListener
     inline View* firstOverview() { return isThereOverview() ? overviews.front() : nullptr; }
     inline View* respondingView() { return isThereOverview() ? overviews.front() : current; }
   
+    CityView* cityView();
+    OutpostView* outpostView();
   
     static ViewManager gvm;
 };

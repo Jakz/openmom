@@ -52,14 +52,8 @@ std::unordered_map<u8,u8> Viewport::waterMap = {
 };
 
 static TextureID planeTextures[][8] = {
-  {TextureID::ARCANUS_SHORE, TextureID::MYRRAN_SHORE},
-  {TextureID::ARCANUS_ANIMATED, TextureID::MYRRAN_ANIMATED},
-  {TextureID::ARCANUS_DESERT, TextureID::MYRRAN_DESERT},
-  {TextureID::ARCANUS_TUNDRA, TextureID::MYRRAN_TUNDRA},
-  {TextureID::ARCANUS_TILES, TextureID::MYRRAN_TILES},
-  {TextureID::ARCANUS_RIVERS, TextureID::MYRRAN_RIVERS},
-  {TextureID::ARCANUS_MOUNTAINS, TextureID::MYRRAN_MOUNTAINS},
-  {TextureID::ARCANUS_NODES, TextureID::MYRRAN_NODES}
+  {TextureID::ARCANUS_SHORE, TextureID::ARCANUS_ANIMATED, TextureID::ARCANUS_DESERT, TextureID::ARCANUS_TUNDRA, TextureID::ARCANUS_TILES, TextureID::ARCANUS_RIVERS, TextureID::ARCANUS_MOUNTAINS, TextureID::ARCANUS_NODES},
+  {TextureID::MYRRAN_SHORE, TextureID::MYRRAN_ANIMATED, TextureID::MYRRAN_DESERT, TextureID::MYRRAN_TUNDRA, TextureID::MYRRAN_TILES, TextureID::MYRRAN_RIVERS, TextureID::MYRRAN_MOUNTAINS, TextureID::MYRRAN_NODES},
 };
 
 enum TileSheet : u8 {
@@ -202,9 +196,7 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
     {
       Position op = Position(vx+x, vy+y, p.plane);
       Tile* t = map->get(op);
-      
-      printf("%d, %d\n", op.x, op.y);
-      
+            
       if (t)
       {
         if (player->fog()->get(op))
@@ -350,4 +342,19 @@ void Viewport::drawMicroMap(const LocalPlayer* player, s16 dx, s16 dy, s16 w, s1
   
   if (dx2 != -1)
     Gfx::canvasBlit(player->miniMap()->get(plane), fx2, fy, dx2, dy, fw2, fh);
+}
+
+const Position Viewport::hoveredPosition(const World* world, const LocalPlayer* player, u16 x, u16 y)
+{
+  const Position vp = player->getViewport();
+  
+  if (x > 0 && x < tileWidth*viewportW && y >= 20 && y <= (20 + tileWidth)*viewportH)
+  {
+    int cx = (x / 20) + baseOffsetX(vp.x, viewportW);
+    int cy = ((y - 20) / 18) + baseOffsetY(vp.y, viewportH);
+    
+    return Position(Util::wrap(cx, world->w), cy, vp.plane);
+  }
+  else
+    return Position(-1,-1,ARCANUS);
 }

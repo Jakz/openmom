@@ -5,6 +5,8 @@
 
 #include "Settings.h"
 
+class ViewManager;
+
 class NewGameView : public View
 {
   private:
@@ -33,7 +35,7 @@ class NewGameView : public View
     void drawPost() override { }
   
   public:
-    NewGameView();
+    NewGameView(ViewManager* gvm);
   
     void updateLabelsOptions();
   

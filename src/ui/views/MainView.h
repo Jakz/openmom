@@ -11,6 +11,8 @@
 
 #include "View.h"
 
+class ViewManager;
+
 class Army;
 class Tile;
 
@@ -54,9 +56,9 @@ private:
 
   void draw() override;
   void drawPost() override;
-  
+    
 public:
-  MainView();
+  MainView(ViewManager* gvm);
   
   void activate() override { }
   void deactivate() override { }
@@ -70,7 +72,7 @@ public:
   
   void mousePressed(u16 x, u16 y, MouseButton b) override {}
   void mouseClicked(u16 x, u16 y, MouseButton b) override {}
-  void mouseReleased(u16 x, u16 y, MouseButton b) override {}
+  void mouseReleased(u16 x, u16 y, MouseButton b) override;
   void mouseMoved(u16 x, u16 y, MouseButton b) override {}
   void mouseDragged(u16 x, u16 y, MouseButton b) override {}
   

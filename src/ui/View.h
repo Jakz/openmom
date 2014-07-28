@@ -11,12 +11,16 @@
 
 #include "EventListener.h"
 
+#include <functional>
 #include <vector>
+
+typedef std::function<void()> Action;
 
 class Button;
 class Clickable;
 class LocalPlayer;
 class Game;
+class ViewManager;
 
 class View : public EventListener
 {
@@ -35,10 +39,10 @@ class View : public EventListener
     virtual void draw() = 0;
     virtual void drawPost() = 0;
 
-
+    ViewManager *gvm;
   
   public:
-    View() : curButton(nullptr) { }
+    View(ViewManager *gvm) : gvm(gvm), curButton(nullptr) { }
   
     void doActivate(LocalPlayer* player);
     void doDeactivate() { deactivate(); }
@@ -62,6 +66,10 @@ class View : public EventListener
     void doKeyReleased(KeyboardKey key, KeyboardMod mod) { keyReleased(key,mod); }
   
   friend class ViewManager;
+  
+  Action buildSwitchViewAction(View* view, ViewID newView);
+  Action buildSwitchOverviewAction(View* view, ViewID newView);
+
 };
 
 #endif
