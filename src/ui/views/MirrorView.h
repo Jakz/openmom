@@ -28,11 +28,14 @@ private:
     BUTTON_COUNT
   };
   
-  void draw() override { }
+  void draw() override;
   void drawPost() override { }
   
 public:
   MirrorView(ViewManager* gvm);
+  
+  void mousePressed(u16 x, u16 y, MouseButton b) override;
+  void keyPressed(KeyboardKey key, KeyboardMod mod) override;
   
   void activate() override { }
   void deactivate() override { }

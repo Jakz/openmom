@@ -7,3 +7,8 @@
 //
 
 #include "MagicView.h"
+
+MagicView::MagicView(ViewManager* gvm) : View(gvm)
+{
+  
+}

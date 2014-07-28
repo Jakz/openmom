@@ -5,6 +5,7 @@
 #include "Font.h"
 #include "Viewport.h"
 #include "UnitDraw.h"
+#include "Animations.h"
 
 #include "Game.h"
 #include "World.h"
@@ -62,7 +63,7 @@ void MainView::switchToSpellCast(LocalPlayer *p)
 	buttons[PATROL]->hide();
 	buttons[WAIT]->hide();
 	buttons[BUILD]->hide();
-	buttons[CANCEL_SURVEYOR]->show();
+	//buttons[CANCEL_SURVEYOR]->show();
 	
 	substate = SPELL_CAST;
 }
@@ -73,7 +74,7 @@ void MainView::switchToUnitSelection(LocalPlayer *p, Army* a)
 	a->unpatrol();
 	p->selectAll();
 	
-	buttons[CANCEL_SURVEYOR]->hide();
+	//buttons[CANCEL_SURVEYOR]->hide();
 	buttons[NEXT]->hide();
 	buttons[DONE]->show();
 	buttons[PATROL]->show();
@@ -248,6 +249,8 @@ void MainView::drawPost()
 
 void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
+  //gvm->push(new BlinkAnimation(1000, Gfx::color(0, 0, 255), {0,0,320,200}, 220));
+  
   const Position pos = Viewport::hoveredPosition(g->world, player, x, y);
   Tile* t = g->world->get(pos);
 

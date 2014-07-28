@@ -7,3 +7,8 @@
 //
 
 #include "CityView.h"
+
+CityView::CityView(ViewManager* gvm) : View(gvm)
+{
+  
+}

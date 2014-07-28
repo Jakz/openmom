@@ -24,9 +24,6 @@ SDL_Texture* SDL::screen = nullptr;
 SDL_Surface* SDL::filter = nullptr;
 
 bool SDL::willQuit = false;
-u32 SDL::ticks = 0;
-u32 SDL::fticks = 0;
-u32 SDL::fticksr = 0;
 
 ViewManager* SDL::gvm = new ViewManager();
 
@@ -73,7 +70,7 @@ char titleBuffer[64];
 void SDL::capFPS()
 {
   u32 ticks = SDL_GetTicks();
-  u32 elapsed = ticks - SDL::ticks;
+  u32 elapsed = ticks - Gfx::ticks;
 
   
   u32 frameTime = elapsed;
@@ -84,13 +81,13 @@ void SDL::capFPS()
     frameTime = TICKS_PER_FRAME;
   }
   
-  fticks += (frameTime + fticksr) / 100;
-  fticksr = (frameTime + fticksr) % 100;
+  Gfx::fticks += (frameTime + Gfx::fticksr) / 100;
+  Gfx::fticksr = (frameTime + Gfx::fticksr) % 100;
   
   sprintf(titleBuffer, "OpenMoM v0.01 (%2.2f)", 1000.0f/fmax(elapsed, TICKS_PER_FRAME));
   SDL_SetWindowTitle(window, titleBuffer);
   
-  SDL::ticks = SDL_GetTicks();
+  Gfx::ticks = SDL_GetTicks();
 }
 
 void SDL::deinit()
@@ -154,6 +151,7 @@ void SDL::handleEvents()
 
 void SDL::render()
 {
+  SDL_FillRect(Gfx::getCanvas(), nullptr, 0x00000000);
   gvm->draw();
   
 #ifndef HQXFILTER

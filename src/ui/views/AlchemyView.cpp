@@ -7,3 +7,8 @@
 //
 
 #include "AlchemyView.h"
+
+AlchemyView::AlchemyView(ViewManager* gvm) : View(gvm)
+{
+  
+}

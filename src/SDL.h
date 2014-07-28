@@ -41,9 +41,6 @@ class SDL
     static void handleEvents();
   
     static void capFPS();
-    
-    static u32 ticks;
-    static u32 fticks;
   
     static ViewManager *gvm;
 };

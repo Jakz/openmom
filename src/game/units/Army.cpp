@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Army::Army(Player* owner, initializer_list<Unit*> units) : owner(owner), isPatrol(false), position(Position(-1, -1, ARCANUS)), route(nullptr)
+Army::Army(Player* owner, initializer_list<Unit*> units) : owner(owner), isPatrol(false), position(Position(-1, -1, ARCANUS)), route(nullptr), units(units)
 {
   owner->add(this);
   

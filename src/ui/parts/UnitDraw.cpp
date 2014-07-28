@@ -14,7 +14,6 @@
 #include "Texture.h"
 #include "Army.h"
 #include "Unit.h"
-#include "SDL.h"
 #include "Player.h"
 
 #include "LocalPlayer.h"
@@ -22,7 +21,7 @@
 
 void UnitDraw::drawStatic(const Army *army, u16 x, u16 y)
 {
-  if (army != LocalGame::i->currentPlayer()->getSelectedArmy() || SDL::fticks % 6 < 3)
+  if (army != LocalGame::i->currentPlayer()->getSelectedArmy() || Gfx::fticks % 6 < 3)
   {
     Gfx::draw(TextureID::UNITS_COLOR_BACKDROP, 0, army->getOwner()->color, x, y);
     
@@ -159,18 +158,18 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, u16 x, u16 y, s16 facing, Com
   
   if (caction == CombatAction::MOVE || (caction == CombatAction::STAY && GfxData::unitGfxSpec(&unit->spec).isFlyingFigure))
   {
-    if (SDL::fticks%6 < 2)
+    if (Gfx::fticks%6 < 2)
       action = 0;
-    else if (SDL::fticks%6 < 4)
+    else if (Gfx::fticks%6 < 4)
       action = 1;
     else
       action = 2;
   }
   else if (caction == CombatAction::ATTACK)
   {
-    if (SDL::fticks%2 == 0)
+    if (Gfx::fticks%2 == 0)
       action = 1;
-    else if (SDL::fticks%2 == 1)
+    else if (Gfx::fticks%2 == 1)
       action = 3;
   }
   

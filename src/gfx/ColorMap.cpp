@@ -19,7 +19,7 @@ u32 BlinkMap::get(u32 k) const
   if (set.find(k) == set.end()) return 0x00000000;
   else
   {
-    s16 phase = SDL::ticks % ticks;
+    s16 phase = Gfx::ticks % ticks;
     
     if (updatedForTick != phase)
     {

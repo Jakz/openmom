@@ -146,7 +146,7 @@ public:
     }
 };
 
-bool operator==(const CityLayout::LayoutZone& z1, const CityLayout::LayoutZone& z2)
+inline bool operator==(const CityLayout::LayoutZone& z1, const CityLayout::LayoutZone& z2)
 {
   return z1.w == z2.w && z1.h == z2.h && z1.y == z2.y && z1.y == z2.y;
 }

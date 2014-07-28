@@ -7,3 +7,8 @@
 //
 
 #include "ResearchView.h"
+
+ResearchView::ResearchView(ViewManager* gvm) : View(gvm)
+{
+  
+}

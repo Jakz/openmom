@@ -7,3 +7,8 @@
 //
 
 #include "UnitDetailView.h"
+
+UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm)
+{
+  
+}

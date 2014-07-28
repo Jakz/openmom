@@ -7,3 +7,8 @@
 //
 
 #include "ItemCraftView.h"
+
+ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm)
+{
+  
+}

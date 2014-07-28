@@ -7,3 +7,8 @@
 //
 
 #include "OutpostView.h"
+
+OutpostView::OutpostView(ViewManager* gvm) : View(gvm)
+{
+  
+}

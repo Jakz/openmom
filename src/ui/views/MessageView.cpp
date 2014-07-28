@@ -7,3 +7,8 @@
 //
 
 #include "MessageView.h"
+
+MessageView::MessageView(ViewManager* gvm) : View(gvm)
+{
+  
+}

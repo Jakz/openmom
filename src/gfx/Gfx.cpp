@@ -13,6 +13,10 @@
 #include "Util.h"
 #include "SDL.h"
 
+u32 Gfx::ticks = 0;
+u32 Gfx::fticks = 0;
+u32 Gfx::fticksr = 0;
+
 SDL_Surface* Gfx::buffer = nullptr;
 SDL_Surface* Gfx::activeBuffer = nullptr;
 SDL_Surface* Gfx::canvas = nullptr;
@@ -51,6 +55,51 @@ void Gfx::rect(u16 x, u16 y, u16 w, u16 h, u32 color)
   {
     p[(y+i)*canvas->w + x] = color;
     p[(y+i)*canvas->w + x + w] = color;
+  }
+  
+  unlock(canvas);
+}
+
+void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
+{
+  lock(canvas);
+  
+  u8 a = (color & 0xFF000000) >> 24;
+  u8 r = (color & 0x00FF0000) >> 16;
+  u8 g = (color & 0x0000FF00) >> 8;
+  u8 b = (color & 0x000000FF);
+  
+  u32 dw = canvas->w;
+  u32* dp = static_cast<u32*>(canvas->pixels);
+  
+  u32 bd = rect.y*dw + rect.x;
+  
+  for (u32 y = 0; y < rect.h; ++y)
+  {
+    for (u32 x = 0; x < rect.w; ++x)
+    {
+      if (x+rect.x < dw && y+rect.y < canvas->h && x+rect.x >= 0 && y+rect.y >= 0)
+      {
+        u32 cd = bd + y*dw + x;
+        
+        u32 ps = dp[cd];
+        
+        u8 a2 = (ps & 0xFF000000);
+        u8 r2 = (ps & 0x00FF0000) >> 16;
+        u8 g2 = (ps & 0x0000FF00) >> 8;
+        u8 b2 = (ps & 0x000000FF);
+        
+        u16 rd = (r * a) + (r2 * (255-a));
+        u16 gd = (g * a) + (g2 * (255-a));
+        u16 bd = (b * a) + (b2 * (255-a));
+        
+        u8 rb = (rd+1 + (rd >> 8)) >> 8;
+        u8 gb = (gd+1 + (gd >> 8)) >> 8;
+        u8 bb = (bd+1 + (bd >> 8)) >> 8;
+
+        dp[cd] = a2 | (rb << 16) | (gb << 8) | (bb);
+      }
+    }
   }
   
   unlock(canvas);
@@ -324,9 +373,9 @@ void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
   const Texture& tex = Texture::get(texture);
   
   if (tex.animatedSprites.empty())
-    draw(texture, r, (((offset+SDL::fticks)/tex.animFactor)%tex.cols), x, y);
+    draw(texture, r, (((offset+fticks)/tex.animFactor)%tex.cols), x, y);
   else
-    draw(texture, r, (((offset+SDL::fticks)/tex.animFactor)%tex.animatedSprites[r]), x, y);
+    draw(texture, r, (((offset+fticks)/tex.animFactor)%tex.animatedSprites[r]), x, y);
 }
 
 void Gfx::draw(const SpriteInfo& info, u16 x, u16 y)
@@ -353,7 +402,7 @@ void Gfx::drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color)
   u8 glowLength = MiscMaps::SCHOOL_GLOW_COUNT;
 
   // TODO: phase is too much linear compared to real one
-  int phase = (SDL::fticks%50)/3;
+  int phase = (fticks%50)/3;
   
   for (s16 i = 0; i < w+2; ++i)
   {

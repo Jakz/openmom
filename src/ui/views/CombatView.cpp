@@ -7,3 +7,8 @@
 //
 
 #include "CombatView.h"
+
+CombatView::CombatView(ViewManager* gvm) : View(gvm)
+{
+  
+}

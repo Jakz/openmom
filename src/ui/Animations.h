@@ -11,6 +11,8 @@
 
 #include "Common.h"
 
+#include "Gfx.h"
+
 class Animation
 {
   protected:
@@ -19,15 +21,27 @@ class Animation
   public:
     Animation() : nextAnim(nullptr) { }
   
-    virtual bool hasFinished(u32 ticks) = 0;
+    virtual bool hasFinished() = 0;
     virtual void step() = 0;
   
     Animation* next() { return nextAnim; }
     void setNext(Animation *animation) { this->nextAnim = animation; }
   
-    virtual void reset(u32 ticks) = 0;
+    virtual void reset() = 0;
   
     virtual ~Animation() { }
+};
+
+class DiscreteAnimation : public Animation
+{
+protected:
+  u32 start;
+  u32 duration;
+
+public:
+  DiscreteAnimation(u32 duration) : start(Gfx::fticks), duration(duration) { }
+  void reset() override { start = Gfx::fticks; }
+  bool hasFinished() override { return Gfx::fticks >= duration + start; }
 };
 
 class ContinuousAnimation : public Animation
@@ -37,15 +51,29 @@ class ContinuousAnimation : public Animation
     u32 duration;
   
   public:
-    ContinuousAnimation(u32 start, u32 duration) : start(start), duration(duration) { }
+    ContinuousAnimation(u32 duration) : start(Gfx::ticks), duration(duration) { }
   
-    void reset(u32 ticks) { start = ticks; }
+    void reset() { start = Gfx::ticks; }
   
-    float position(u32 ticks) {
-      return std::min(1.0f, (ticks - start) / (float)duration);
+    float position() {
+      return std::min(1.0f, (Gfx::ticks - start) / (float)duration);
     }
   
-    bool hasFinished(u32 ticks) override { return ticks > duration + start; }
+    bool hasFinished() override { return Gfx::ticks > duration + start; }
+};
+
+class BlinkAnimation : public ContinuousAnimation
+{
+private:
+  const Color color;
+  const SDL_Rect rect;
+  u8 maxAlpha;
+  
+public:
+  BlinkAnimation(Color color, SDL_Rect rect, u8 maxAlpha) : BlinkAnimation(800, color, rect, maxAlpha) { }
+  BlinkAnimation(u32 duration, Color color, SDL_Rect rect, u8 maxAlpha) : ContinuousAnimation(duration), color(color), rect(rect), maxAlpha(maxAlpha) { }
+  
+  void step() override;
 };
 
 

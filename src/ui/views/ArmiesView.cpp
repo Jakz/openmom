@@ -7,3 +7,8 @@
 //
 
 #include "ArmiesView.h"
+
+ArmiesView::ArmiesView(ViewManager* gvm) : View(gvm)
+{
+  
+}

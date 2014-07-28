@@ -83,6 +83,7 @@ void Game::dummyInit()
   world->set(TILE_HILL, 1, 2, MYRRAN);
   
   player->fog()->setRect(0, 0, 60, 40, ARCANUS);
+  player->setViewport(5, 5);
   
   new LocalGame(this);
   

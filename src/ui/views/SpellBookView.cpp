@@ -7,3 +7,8 @@
 //
 
 #include "SpellBookView.h"
+
+SpellBookView::SpellBookView(ViewManager* gvm) : View(gvm)
+{
+  
+}

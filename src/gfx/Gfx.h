@@ -44,6 +44,7 @@ class Gfx
     static inline void bindColorMap(const ColorMap *map) { Gfx::map = map; }
     static inline void unbindColorMap() { Gfx::map = nullptr; }
   
+    static void alphaBlend(const SDL_Rect& r, Color color);
     static void rect(u16 x, u16 y, u16 w, u16 h, u32 color);
   
     static void canvasBlit(SDL_Surface* gdest, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h) { blit(canvas, gdest, fx, fy, tx, ty, w, h); }
@@ -87,6 +88,10 @@ class Gfx
     static inline void unlock(SDL_Surface *surface) { SDL_UnlockSurface(surface); }
   
     static inline SDL_Surface* getCanvas() { return canvas; }
+  
+    static u32 ticks;
+    static u32 fticks;
+    static u32 fticksr;
 };
 
 

@@ -97,13 +97,13 @@ void ViewManager::draw()
   while (it != animations.end())
   {
     Animation* a = *it;
-    if (a->hasFinished(SDL::ticks))
+    if (a->hasFinished())
     {
       it = animations.erase(it);
       
       if (a->next())
       {
-        a->reset(SDL::ticks);
+        a->reset();
         push(a->next());
       }
       
