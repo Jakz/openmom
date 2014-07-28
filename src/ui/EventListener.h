@@ -14,14 +14,14 @@
 class EventListener
 {
   protected:
-  virtual void mousePressed(u16 x, u16 y, MouseButton b) = 0;
-  virtual void mouseClicked(u16 x, u16 y, MouseButton b) = 0;
-  virtual void mouseReleased(u16 x, u16 y, MouseButton b) = 0;
-  virtual void mouseMoved(u16 x, u16 y, MouseButton b) = 0;
-  virtual void mouseDragged(u16 x, u16 y, MouseButton b) = 0;
+  virtual void mousePressed(u16 x, u16 y, MouseButton b) { };
+  virtual void mouseClicked(u16 x, u16 y, MouseButton b) { };
+  virtual void mouseReleased(u16 x, u16 y, MouseButton b) { };
+  virtual void mouseMoved(u16 x, u16 y, MouseButton b) { };
+  virtual void mouseDragged(u16 x, u16 y, MouseButton b) { };
   
-  virtual void keyPressed(KeyboardKey key, KeyboardMod mod) = 0;
-  virtual void keyReleased(KeyboardKey key, KeyboardMod mod) = 0;
+  virtual void keyPressed(KeyboardKey key, KeyboardMod mod) { };
+  virtual void keyReleased(KeyboardKey key, KeyboardMod mod) { };
 };
 
 #endif

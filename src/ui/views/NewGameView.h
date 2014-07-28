@@ -41,17 +41,6 @@ class NewGameView : public View
   
     void activate() override { updateLabelsOptions(); }
     void deactivate() override { }
-  
-
-  
-    void mousePressed(u16 x, u16 y, MouseButton b) override {}
-    void mouseClicked(u16 x, u16 y, MouseButton b) override {}
-    void mouseReleased(u16 x, u16 y, MouseButton b) override {}
-    void mouseMoved(u16 x, u16 y, MouseButton b) override {}
-    void mouseDragged(u16 x, u16 y, MouseButton b) override {}
-      
-    void keyPressed(KeyboardKey key, KeyboardMod mod) override {}
-    void keyReleased(KeyboardKey key, KeyboardMod mod) override {}
 };
 
 #endif

@@ -52,6 +52,9 @@ unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
   {Building::SUMMONING_CIRCLE,   BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 2), 25, 3, 2)}
 };
 
+map<const City*, CityLayout> CityLayout::layouts;
+
+
 void CityLayout::draw(const City *city, LocalPlayer *player)
 {
   Plane p = city->getPosition().plane;
