@@ -125,7 +125,7 @@ void MainView::updateBuildButton(LocalPlayer *p)
 
 void MainView::draw()
 {
-  Fonts::drawString("Antani", FontFace::WHITE_SMALL, 278, 100, ALIGN_CENTER); return;
+  //Fonts::drawString("Antani", FontFace::WHITE_SMALL, 278, 100, ALIGN_CENTER); return;
 
   
   if (substate != SPELL_CAST && player->getSpellTarget() != Target::NONE)
