@@ -13,22 +13,24 @@
 
 class ViewManager;
 
+class Unit;
+
 class UnitDetailView : public View
 {
 private:
   enum Button
   {
-    OPTIONS_OK,
-    OPTIONS_CANCEL,
-    OPTIONS_DIFFICULTY,
-    OPTIONS_OPPONENTS,
-    OPTIONS_LAND_SIZE,
-    OPTIONS_MAGIC,
+    DISMISS,
+    OK,
+    UP_ARROW,
+    DOWN_ARROW,
     
     BUTTON_COUNT
   };
   
-  void draw() override { }
+  Unit* unit;
+  
+  void draw() override;
   void drawPost() override { }
   
 public:
@@ -36,6 +38,8 @@ public:
   
   void activate() override { }
   void deactivate() override { }
+  
+  void setUnit(Unit* unit);
 };
 
 #endif
