@@ -18,17 +18,13 @@ class ArmiesItemsView : public View
 private:
   enum Button
   {
-    OPTIONS_OK,
-    OPTIONS_CANCEL,
-    OPTIONS_DIFFICULTY,
-    OPTIONS_OPPONENTS,
-    OPTIONS_LAND_SIZE,
-    OPTIONS_MAGIC,
+    ALCHEMY,
+    OK,
     
     BUTTON_COUNT
   };
   
-  void draw() override { };
+  void draw() override;
   void drawPost() override { }
   
 public:
