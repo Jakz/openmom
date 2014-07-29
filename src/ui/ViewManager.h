@@ -6,9 +6,9 @@
 
 #include <list>
 
-class Animation;
-class View;
+namespace anims { class Animation; }
 
+class View;
 class AlchemyView;
 class ArmiesItemsView;
 class ArmiesView;
@@ -34,13 +34,13 @@ class ViewManager : public EventListener
     View* current;
     std::list<View*> overviews;
   
-    std::list<Animation*> animations;
+    std::list<anims::Animation*> animations;
     bool animating;
   
   public:
     ViewManager();
   
-    void push(Animation* animation)
+    void push(anims::Animation* animation)
     {
       animating = true;
       animations.push_back(animation);

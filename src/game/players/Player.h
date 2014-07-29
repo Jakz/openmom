@@ -25,7 +25,7 @@ class Hero;
 class ManaNode;
 class Unit;
 class Combat;
-class Animation;
+namespace anims { class Animation; }
 namespace msgs { class Message; }
 class CombatUnit;
 
@@ -62,7 +62,7 @@ class PlayerInterface
 public:
   virtual void selectAll() = 0;
   virtual Army* getSelectedArmy() const = 0;
-  virtual void push(Animation* animation) = 0;
+  virtual void push(anims::Animation* animation) = 0;
   virtual void send(msgs::Message* message) = 0;
   virtual s16 selectedCount() const = 0;
   virtual void discoverTile(const Position& position) = 0;

@@ -128,7 +128,7 @@ void PlayerMechanics::castCombatSpell(Player* player, const Spell* spell)
   if (spell->type == SpellType::COMBAT_ENCHANT)
   {
     //player->combat->castEnchantment(SpellCast(player,spell)) TODO
-    //player->push(new BlinkAnimation(spell.school)) BLA BLA TODO
+    //player->push(new Blink(spell.school)) BLA BLA TODO
     player->spellBook.cancelCast();
   }
   else if (spell->target != Target::NONE)

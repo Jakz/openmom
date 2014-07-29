@@ -62,11 +62,13 @@ public:
   s16 selectedAvailMoves();
   bool wholeSelected() { return selectedCount() == selectedArmy->size(); }
   void resetArmy() { selectedArmy = nullptr; selectedRoute = nullptr; }
+  Route* getRoute() { return selectedRoute; }
   void computeRoute(s16 dx, s16 dy);
   bool consumeRoute();
   Army* splitAndSelect();
   
-  bool shouldDrawSelectedArmy() { return drawSelectedArmy; }
+  bool shouldDrawSelectedArmy() const { return drawSelectedArmy; }
+  void setDrawSelectedArmy(bool v) { drawSelectedArmy = v; }
   
   void setSpellTarget(Target target) { this->target = target; }
   Target getSpellTarget() const { return target; }
@@ -87,7 +89,7 @@ public:
   const Position& getViewport() const { return viewport; }
   void setViewport(s16 x, s16 y);
 
-  void push(Animation* animation) override;
+  void push(anims::Animation* animation) override;
 
   void send(msgs::Message* message) override { messages.push_back(message); }
   bool hasMessage() { return !messages.empty(); }

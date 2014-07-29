@@ -59,7 +59,7 @@ void FogMap::setRect(s16 x, s16 y, s16 w, s16 h, Plane plane)
     for (int j = x; j < x+w; ++j)
     {
       map[plane][j][i] = true;
-      Position pos = Position(x,y,plane);
+      Position pos = Position(j,i,plane);
       player->discoverTile(pos);
     }
 }

@@ -56,7 +56,7 @@ bool LocalPlayer::selectedArmyCanBuildOutpost()
   return false;
 }
 
-void LocalPlayer::push(Animation* animation)
+void LocalPlayer::push(anims::Animation* animation)
 {
   // TODO
 }

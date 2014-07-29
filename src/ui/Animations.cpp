@@ -9,8 +9,14 @@
 #include "Animations.h"
 
 #include "Gfx.h"
+#include "Viewport.h"
+#include "UnitDraw.h"
+#include "LocalPlayer.h"
 
-void BlinkAnimation::step()
+using namespace std;
+using namespace anims;
+
+void Blink::step()
 {
   u8 alpha = 0;
   float pos = position();
@@ -22,4 +28,42 @@ void BlinkAnimation::step()
   printf("%f POS %d\n", pos, alpha);
   
   Gfx::alphaBlend(rect, (alpha << 24) | (color & 0x00FFFFFF));
+}
+
+
+
+UnitMovement::UnitMovement(LocalPlayer* player, const Army* army, const list<PathTileInfo>& moves) : ContinuousAnimation(100), player(player), army(army), moves(moves)
+{
+  Position s = Viewport::tileCoords(player, moves.front().x, moves.front().y);
+  Position d = Viewport::tileCoords(player, ::next(moves.begin())->x, ::next(moves.begin())->y);
+  
+  tx = d.x - s.x;
+  ty = d.y - s.y;
+  sx = s.x;
+  sy = s.y;
+  
+  player->setDrawSelectedArmy(false);
+}
+
+void UnitMovement::step()
+{
+  float d = position();
+  UnitDraw::drawStatic(army, sx + d*tx, sy + d*ty);
+}
+
+bool UnitMovement::hasFinished()
+{
+  bool h = ContinuousAnimation::hasFinished();
+  
+  if (h)
+  {
+    moves.pop_front();
+    
+    if (moves.size() < 2)
+      player->setDrawSelectedArmy(true);
+    else
+      player->push(new UnitMovement(player,army,moves));
+  }
+  
+  return h;
 }

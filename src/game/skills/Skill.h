@@ -221,7 +221,7 @@ public:
   
   const SkillBase base;
 
-  virtual const std::string name();
+  virtual const std::string name() const;
   virtual effect_list& getEffects() const = 0;
   
   virtual bool is(SkillBase base) const { return this->base == base; }
@@ -253,7 +253,7 @@ public:
   bool hasSimpleEffect(SimpleEffect::Type type);
   const SpecialAttackEffect* hasEffect(SimpleEffect::Type ident);
   
-  const std::string name() override;
+  const std::string name() const override;
 };
 
 class WrapSkill : public Skill

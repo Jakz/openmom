@@ -46,6 +46,9 @@ public:
   {
   }
   
+  u16 x() const { return position.x; }
+  u16 y() const { return position.y; }
+  
   void settleCity(City* city);
   
   void placeRoad(bool enchanted) { hasRoad = true; hasEnchantedRoad = enchanted; }

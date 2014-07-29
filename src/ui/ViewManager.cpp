@@ -27,6 +27,7 @@
 #include "UnitDetailView.h"
 
 using namespace std;
+using namespace anims;
 
 ViewManager ViewManager::gvm;
 

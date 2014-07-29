@@ -67,12 +67,12 @@ bool Skill::Comparator::operator()(const Skill *b1, const Skill *b2)
 
 
 
-const string Skill::name()
+const string Skill::name() const
 {
   return i18n::s(base);
 }
 
-const string ConcreteSkill::name()
+const string ConcreteSkill::name() const
 {
   if (hideValue) return Skill::name();
   else
@@ -171,17 +171,17 @@ namespace skillimpl
   const ConcreteSkill ADAMANTIUM_WEAPONS = ConcreteSkill(SkillBase::ADAMANTIUM_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,2)});
   
   const ConcreteSkill FORESTWALK = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::FORESTWALK});
-  const ConcreteSkill FLYING = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::FLYING});
-  const ConcreteSkill UNDERGROUND = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::UNDERGROUND});
-  const ConcreteSkill MOUNTAINWALK = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::MOUNTAINWALK});
-  const ConcreteSkill NON_CORPOREAL = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::NON_CORPOREAL});
-  const ConcreteSkill PATH_FINDER = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::PATH_FINDER});
-  const ConcreteSkill PLANAR_TRAVEL = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::PLANAR_TRAVEL});
-  const ConcreteSkill TELEPORT = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::TELEPORT});
-  const ConcreteSkill SWIMMING = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::SWIMMING});
-  const ConcreteSkill WINDWALK = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::WINDWALK});
-  const ConcreteSkill DESERTWALK = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::DESERTWALK});
-  const ConcreteSkill SWAMPWALK = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::SWAMPWALK});
+  const ConcreteSkill FLYING = ConcreteSkill(SkillBase::FLYING, {&Effects::FLYING});
+  const ConcreteSkill UNDERGROUND = ConcreteSkill(SkillBase::UNDERGROUND, {&Effects::UNDERGROUND});
+  const ConcreteSkill MOUNTAINWALK = ConcreteSkill(SkillBase::MOUNTAINWALK, {&Effects::MOUNTAINWALK});
+  const ConcreteSkill NON_CORPOREAL = ConcreteSkill(SkillBase::NON_CORPOREAL, {&Effects::NON_CORPOREAL});
+  const ConcreteSkill PATH_FINDER = ConcreteSkill(SkillBase::PATH_FINDER, {&Effects::PATH_FINDER});
+  const ConcreteSkill PLANAR_TRAVEL = ConcreteSkill(SkillBase::PLANAR_TRAVEL, {&Effects::PLANAR_TRAVEL});
+  const ConcreteSkill TELEPORT = ConcreteSkill(SkillBase::TELEPORT, {&Effects::TELEPORT});
+  const ConcreteSkill SWIMMING = ConcreteSkill(SkillBase::SWIMMING, {&Effects::SWIMMING});
+  const ConcreteSkill WINDWALK = ConcreteSkill(SkillBase::WINDWALK, {&Effects::WINDWALK});
+  const ConcreteSkill DESERTWALK = ConcreteSkill(SkillBase::DESERTWALK, {&Effects::DESERTWALK});
+  const ConcreteSkill SWAMPWALK = ConcreteSkill(SkillBase::SWAMPWALK, {&Effects::SWAMPWALK});
 
   
   const ConcreteSkill IMMUNITY_MAGIC = ConcreteSkill(SkillBase::IMMUNITY_MAGIC, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MAGIC), new UnitBonus(Property::RESIST, 50)} );

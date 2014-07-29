@@ -20,7 +20,7 @@ void SkillDraw::openHelpForSkill(const Unit* unit, int i)
 void SkillDraw::drawSkill(s16 index, s16 sprite, const std::string& text, s16 sx, s16 sy)
 {
   s16 x = spX(index,sx);
-  s16 y = spX(index,sy);
+  s16 y = spY(index,sy);
   
   Gfx::draw(TextureID::UNIT_SKILL_ICONS, sprite, x, y);
   Fonts::drawString(text, FontFace::TEAL_MEDIUM_STROKE, x+19, y+4, ALIGN_LEFT);
@@ -52,7 +52,7 @@ void SkillDraw::draw(const Unit* unit)
     for (int i = p*8; i < unit->skills()->size(); ++i)
     {
       const Skill* s = unit->skills()->get(i);
-      drawSkill(curOffset++, static_cast<u16>(s->base), i18n::s(s->base), SKILLPANE_X, SKILLPANE_Y);
+      drawSkill(curOffset++, static_cast<u16>(s->base), s->name(), SKILLPANE_X, SKILLPANE_Y);
     }
   }
 }

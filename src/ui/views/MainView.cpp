@@ -19,6 +19,8 @@
 
 #include "OutpostView.h"
 #include "CityView.h"
+#include "ArmyView.h"
+#include "UnitDetailView.h"
 
 MainView::MainView(ViewManager *gvm) : View(gvm)
 {
@@ -206,6 +208,8 @@ void MainView::draw()
 
   const Position vp = player->getViewport();
   Viewport::drawMicroMap(player, 251, 21, 58, 30, vp.x, vp.y, vp.plane); // 58, 30
+  Gfx::drawClipped(TextureID::UNIT_DETAIL_SPECIAL_THINGS, 251 + 58/2 - 7, 21 + 30/2 - 6, 59, 0, 14, 12);
+
 
   if (substate == MAIN)
   {
@@ -252,7 +256,7 @@ void MainView::drawPost()
 
 void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-  //gvm->push(new BlinkAnimation(1000, Gfx::color(0, 0, 255), {0,0,320,200}, 220));
+  //gvm->push(new Blink(1000, Gfx::color(0, 0, 255), {0,0,320,200}, 220));
   /*gvm->cityView()->setCity(g->getCities().front());*/
   //gvm->switchView(VIEW_ITEM_CRAFT);
   
@@ -301,6 +305,80 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
         player->setViewport(pos.x, ty);
       }
     }
+    else if (b == BUTTON_LEFT)
+    {
+      if (substate == SPELL_CAST && player->getSpellTarget() == Target::MAP_TILE)
+        g->castSpell(t, player);
+      else if (substate == SPELL_CAST && player->getSpellTarget() == Target::FRIENDLY_UNIT)
+      {
+        if (t->army && t->army->getOwner() == player)
+        {
+          // TODO: check if unit is just 1 directly cast?
+          gvm->armyView()->setArmy(t->army);
+          gvm->armyView()->setAcceptSpellTarget();
+          gvm->switchOverview(VIEW_ARMY);
+        }
+      }
+      else if (substate == SPELL_CAST && player->getSpellTarget() == Target::FRIENDLY_CITY)
+      {
+        if (t->city && t->city->getOwner() == player)
+          g->castSpell(t->city, player);
+      }
+      else
+      {
+        Army* army = player->getSelectedArmy();
+        Route* route = player->getRoute();
+        
+        if (army && !route)
+          player->computeRoute(t->x(), t->y());
+        else if (army && !route->completed() && route->dx() == t->x() && route->dy() == t->y() && player->selectedAvailMoves() > 0)
+        {
+          player->consumeRoute();
+          player->push(new anims::UnitMovement(player, army, army->getRoute()->pendingPositions()));
+
+          updateBuildButton();
+        }
+        else if (army)
+          player->computeRoute(t->x(),t->y());
+        
+        /*if (route != null && !route.completed())
+         System.out.println(cx+" "+cy+"  "+route.dx()+" "+route.dy());*/
+      }
+    }
+    
+  }
+  else
+  {
+    Army* army = player->getSelectedArmy();
+    if (army)
+    {
+      for (int j = 0; j < army->size(); ++j)
+      {
+        int xx = (246+23*(j%3)), yy = (78+29*(j/3));
+        if (x >= xx+2 && x <= xx+20+2 && y >= yy+2 && y <= yy+18+2)
+        {
+          // select/deselect unit in army
+          if (b == BUTTON_LEFT)
+          {
+            Unit* u = army->get(j);
+            if (player->isSelectedUnit(u))
+              player->deselectUnit(u);
+            else
+              player->selectUnit(u);
+            
+            updateBuildButton();
+            
+            army->clearRoute();
+          }
+          // open detail view on unit
+          else if (b == BUTTON_RIGHT)
+          {
+            gvm->unitDetailView()->setUnit(army->get(j));
+            gvm->switchOverview(VIEW_UNIT);
+          }
+        }
+      }
+    }
   }
 }
 
@@ -335,6 +413,8 @@ void MainView::keyReleased(KeyboardKey key, KeyboardMod mod)
       buttons[NEXT]->click();
     }
     case SDL_SCANCODE_F1: switchToSurveyor(); break;
+    case SDL_SCANCODE_F3: gvm->switchView(VIEW_RESEARCH); break;
+    case SDL_SCANCODE_F9: gvm->switchView(VIEW_MIRROR); break;
       
     default: break;
 
