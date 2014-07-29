@@ -201,7 +201,7 @@ CityLayout::LayoutPosition CityLayout::createPosition(LayoutZone &zone, s16 ox, 
 const vector<CityLayout::LayoutZone> CityLayout::findSuitable(const Building *building)
 {
   vector<LayoutZone> zn;
-  copy_if(zones.begin(), zones.end(), zn.begin(), [&](const LayoutZone& z) { return z.w >= specs[building].width && z.h >= specs[building].depth; });
+  copy_if(zones.begin(), zones.end(), back_inserter(zn), [&](const LayoutZone& z) { return z.w >= specs[building].width && z.h >= specs[building].depth; });
   return zn;
 }
 

@@ -231,7 +231,7 @@ const list<const RaceUnitSpec*> CityMechanics::availableUnits(const City* city)
   vector<const RaceUnitSpec*> allUnits = UnitSpec::unitsForRace(city->race.ident);
   list<const RaceUnitSpec*> units;
 
-  copy_if(allUnits.begin(), allUnits.end(), units.begin(), [&](const RaceUnitSpec* spec) { return isUnitAllowed(city, spec); });
+  copy_if(allUnits.begin(), allUnits.end(), back_inserter(units), [&](const RaceUnitSpec* spec) { return isUnitAllowed(city, spec); });
   
   return units;
 }

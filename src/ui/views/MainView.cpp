@@ -18,6 +18,7 @@
 #include "ViewManager.h"
 
 #include "OutpostView.h"
+#include "CityView.h"
 
 MainView::MainView(ViewManager *gvm) : View(gvm)
 {
@@ -130,7 +131,6 @@ void MainView::updateBuildButton(LocalPlayer *p)
 void MainView::draw()
 {
   //Fonts::drawString("Antani", FontFace::WHITE_SMALL, 278, 100, ALIGN_CENTER); return;
-
   
   if (substate != SPELL_CAST && player->getSpellTarget() != Target::NONE)
     switchToSpellCast(player);
@@ -253,6 +253,8 @@ void MainView::drawPost()
 void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   //gvm->push(new BlinkAnimation(1000, Gfx::color(0, 0, 255), {0,0,320,200}, 220));
+  gvm->cityView()->setCity(g->getCities().front());
+  gvm->switchView(VIEW_CITY);
   
   const Position pos = Viewport::hoveredPosition(g->world, player, x, y);
   Tile* t = g->world->get(pos);

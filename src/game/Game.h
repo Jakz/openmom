@@ -42,6 +42,7 @@ private:
 public:
   Game();
   
+  void init();
   void dummyInit();
   
   void placeArmy(Army* army, const Position& position);

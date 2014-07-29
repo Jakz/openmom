@@ -23,6 +23,21 @@ Game::Game() : world(new World(this, 60,40)), mapMechanics(*this), spellMechanic
   
 }
 
+void Game::init()
+{
+  for (auto &c : cities)
+    cityMechanics.updateValues(c);
+  
+  for (auto *p : players)
+  {
+    playerMechanics.updateGlobalGains(p);
+    playerMechanics.setInitialManaRatios(p);
+    playerMechanics.resetAvailableMana(p);
+  }
+  
+  // Relations.initRelations blabla
+}
+
 void Game::dummyInit()
 {
   LocalPlayer *player = new LocalPlayer(this, "Kali", Data::wizard(KALI), GREEN, Race::race(RaceID::BARBARIANS), 60, 40);
@@ -106,7 +121,8 @@ void Game::dummyInit()
   
   world->calcSubTiles();
   world->updateRoads();
-
+  
+  init();
 }
 
 void Game::placeArmy(Army* army, const Position& position)
