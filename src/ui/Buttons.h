@@ -14,6 +14,7 @@
 
 #include <string>
 #include <functional>
+#include <vector>
 #include <SDL2/SDL.h>
 
 enum FontFace : u16;
@@ -75,7 +76,7 @@ class Button : public Clickable
     inline void press() { pressed = true;}
     inline void release() { pressed = false; }
     
-    inline void click() {
+    virtual void click() {
       //TODO log clicked
       execute();
     }
@@ -103,6 +104,11 @@ class BistateButton : public Button
   public:
     BistateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Button(name, x, y, normal), pressedCoords(pressed) { }
     void draw() override;
+  
+    static BistateButton* build(const std::string name, u16 x, u16 y, TextureID texture, u16 c)
+    {
+      return new BistateButton(name, x, y, SpriteInfo(texture, c, 0), SpriteInfo(texture, c, 1));
+    }
 };
 
 class TristateButton : public BistateButton
@@ -136,5 +142,66 @@ class LabeledSimpleButton : public OffsetButton
     void draw() override;
 };
 
+template<typename T>
+class RadioButton;
+
+template<typename T>
+class RadioButtonGroup
+{
+private:
+  std::vector<RadioButton<T>*> buttons;
+  RadioButton<T>* current;
+  std::function<void(RadioButton<T>*)> lambda;
+public:
+  RadioButtonGroup() : current(nullptr) { }
+  
+  RadioButton<T>* getCurrent() { return current; }
+  void set(u16 index) { current = buttons[index]; }
+  void click(RadioButton<T>* button)
+  {
+    if (current != button)
+    {
+      current = button;
+      lambda(current);
+    }
+  }
+  
+  void add(RadioButton<T>* button)
+  {
+    buttons.push_back(button);
+  }
+  
+  void setAction(std::function<void(RadioButton<T>*)> lambda) { this->lambda = lambda; }
+};
+
+template<typename T>
+class RadioButton : public Button
+{
+private:
+  RadioButtonGroup<T>* group;
+  u8 toggledOffset[2];
+  SpriteInfo pressedCoords;
+  bool toggled;
+  T data;
+  
+public:
+  RadioButton(const std::string name, T data, RadioButtonGroup<T>* group, int x, int y, SpriteInfo normal, SpriteInfo pressed, u8 offsetX, u8 offsetY) :
+    Button(name, x, y, normal), data(data), toggledOffset{offsetX, offsetY}, pressedCoords(pressed), toggled(false), group(group) { }
+  
+  void draw();
+  
+  const T getData() const { return data; }
+  
+  void click() override { group->click(this); }
+  
+  static RadioButton* build(const std::string name, T data, RadioButtonGroup<T>* group, u16 x, u16 y, TextureID texture, u16 c, u8 offsetX, u8 offsetY)
+  {
+    return new RadioButton(name, data, group, x, y, SpriteInfo(texture, c, 0), SpriteInfo(texture, c, 1), offsetX, offsetY);
+  }
+};
+
+#include "Items.h" // FIXME: forced for explicit declaration of template method
+
+template class RadioButton<Item::TypeID>;
 
 #endif

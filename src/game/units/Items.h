@@ -51,7 +51,7 @@ class Item
 {
   
 public:
-  enum class Class : u8 { MELEE, RANGED, MELEE_STAFF, STAFF_WAND, ARMOR, MISC };
+  enum class Class : u8 { MELEE = 0, RANGED, MELEE_STAFF, STAFF_WAND, ARMOR, MISC };
   
   struct TypeGroup
   {
@@ -59,7 +59,7 @@ public:
     u16 size;
   };
   
-  enum TypeID : u8 { SWORD, MACE, AXE, BOW, STAFF, WAND, MISC, SHIELD, CHAIN, PLATE };
+  enum TypeID : u8 { SWORD = 0, MACE, AXE, BOW, STAFF, WAND, MISC, SHIELD, CHAIN, PLATE };
   
   struct Type
   {
@@ -70,7 +70,7 @@ public:
     
     Type(TypeID type, Class iclass, u16 startOffset, std::initializer_list<TypeGroup> groups) : type(type), iclass(iclass), groups(groups), startOffset(startOffset) { }
     
-    u16 count() { return std::accumulate(groups.begin(), groups.end(), 0, [](s16 a, const TypeGroup& g) { return a + g.size; }); }
+    u16 count() const { return std::accumulate(groups.begin(), groups.end(), 0, [](s16 a, const TypeGroup& g) { return a + g.size; }); }
     
     TypeGroup typeForIndex(s16 index)
     {

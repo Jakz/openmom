@@ -36,8 +36,8 @@ AlchemyView::AlchemyView(ViewManager* gvm) : View(gvm), inverted(false), percent
     inverted = !inverted;
   };
   
-  buttons[SWITCH]->setAction(invertAction);
-  buttons[SWITCH2]->setAction(invertAction)->hide();
+  buttons[SWITCH] = TristateButton::build("Switch1", 148, 105, TextureID::ALCHEMY_BUTTONS, 2)->setAction(invertAction);
+  buttons[SWITCH2] = TristateButton::build("Switch2", 148, 105, TextureID::ALCHEMY_BUTTONS, 3)->setAction(invertAction)->hide();
 }
 
 void AlchemyView::draw()

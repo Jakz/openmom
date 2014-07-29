@@ -37,7 +37,7 @@ void BistateButton::draw()
 {
   if (isVisible())
   {
-    SpriteInfo &info = pressed ? pressedCoords : normalCoords;
+    const SpriteInfo &info = pressed ? pressedCoords : normalCoords;
     Gfx::draw(info, x, y);
   }
 }
@@ -46,7 +46,7 @@ void TristateButton::draw()
 {
   if (isVisible())
   {
-    SpriteInfo &info = active ? (pressed ? pressedCoords : normalCoords) : inactiveCoords;
+    const SpriteInfo &info = active ? (pressed ? pressedCoords : normalCoords) : inactiveCoords;
     Gfx::draw(info, x, y);
   }
 }
@@ -64,4 +64,22 @@ void LabeledSimpleButton::draw()
     Fonts::drawString(label, font, textX, textY, ALIGN_CENTER);
   else
     Fonts::drawString(label, font, textX+1, textY+1, ALIGN_CENTER);
+}
+
+
+template<typename T>
+void RadioButton<T>::draw()
+{
+  if (isVisible())
+  {
+    const SpriteInfo &info = pressed ? pressedCoords : normalCoords;
+    
+    if (group->getCurrent() == this)
+    {
+      SpriteInfo info2 = SpriteInfo(info.texture, info.x+toggledOffset[0], info.y+toggledOffset[1]);
+      Gfx::draw(info2, x, y);
+    }
+		else
+		  Gfx::draw(info, x, y);
+  }
 }
