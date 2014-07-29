@@ -13,6 +13,8 @@
 #include "Util.h"
 #include "Game.h"
 
+#include "Game.h"
+
 std::unordered_map<u8,u8> Viewport::waterMap = {
   {0, 0},
   {255, 2},
@@ -233,7 +235,7 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
           }
           
           /* TODO: simplify checks? */
-          if (t->army && !t->army->isPatrolling() && (t->army != player->getSelectedArmy() /* TODO || LocalGame.i.currentPlayer.drawSelectedArmy*/))
+          if (t->army && !t->army->isPatrolling() && (t->army != player->getSelectedArmy() || LocalGame::i->currentPlayer()->shouldDrawSelectedArmy()))
             UnitDraw::drawStatic(t->army, sx, sy);
           else if (t->army && t->army->isPatrolling() && !t->city)
             UnitDraw::drawStatic(t->army, sx, sy);

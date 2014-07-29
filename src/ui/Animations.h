@@ -13,6 +13,8 @@
 
 #include "Gfx.h"
 
+class CombatUnit;
+
 class Animation
 {
   protected:
@@ -75,6 +77,18 @@ public:
   
   void step() override;
 };
-
+/*
+class CombatUnitAttackAnimation
+{
+private:
+  s16 sx, sy;
+  s16 facing;
+  const CombatUnit* unit;
+  
+public:
+  CombatUnitAttack(Comat)
+  
+};
+*/
 
 #endif

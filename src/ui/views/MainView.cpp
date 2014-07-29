@@ -47,7 +47,7 @@ MainView::MainView(ViewManager *gvm) : View(gvm)
   buttons[NEXT]->setAction([this](){ LocalGame::i->getGame()->nextTurn(); switchToNormalState(); });
   buttons[CANCEL_SURVEYOR]->setAction([this](){ if (substate == SPELL_CAST) g->cancelCast(player); switchToNormalState(); });
   buttons[DONE]->setAction([this](){ switchToNormalState(); }); /*if (player.selectedArmy() != null && player.selectedRoute() != null && !player.selectedRoute().completed()) player.saveRoute();*/
-  buttons[PATROL]->setAction([this](){ player->getSelectedArmy()->patrol(); });
+  buttons[PATROL]->setAction([this](){ player->getSelectedArmy()->patrol(); switchToNormalState(); });
   buttons[BUILD]->setAction([this](){ g->settleCity(player->getSelectedArmy(), "Test"); player->resetArmy(); });
   
   for (auto e : {DONE,PATROL,WAIT,BUILD,CANCEL_SURVEYOR} )

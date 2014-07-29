@@ -7,9 +7,12 @@
 
 using namespace std;
 
-Army::Army(Player* owner, initializer_list<Unit*> units) : owner(owner), isPatrol(false), position(Position(-1, -1, ARCANUS)), route(nullptr), units(units)
+Army::Army(Player* owner, initializer_list<Unit*> units) : owner(owner), isPatrol(false), position(Position(-1, -1, ARCANUS)), route(nullptr)
 {
   owner->add(this);
+  
+  for (auto u : units)
+    add(u);
   
   if (units.begin() != units.end())
     updateMovementType();

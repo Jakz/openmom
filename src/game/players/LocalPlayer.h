@@ -66,6 +66,8 @@ public:
   bool consumeRoute();
   Army* splitAndSelect();
   
+  bool shouldDrawSelectedArmy() { return drawSelectedArmy; }
+  
   void setSpellTarget(Target target) { this->target = target; }
   Target getSpellTarget() const { return target; }
   

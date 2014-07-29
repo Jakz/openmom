@@ -21,7 +21,7 @@
 
 void UnitDraw::drawStatic(const Army *army, u16 x, u16 y)
 {
-  if (army != LocalGame::i->currentPlayer()->getSelectedArmy() || Gfx::fticks % 6 < 3)
+  if ((army != LocalGame::i->currentPlayer()->getSelectedArmy()) || (Gfx::fticks % 6) < 3)
   {
     Gfx::draw(TextureID::UNITS_COLOR_BACKDROP, 0, army->getOwner()->color, x, y);
     

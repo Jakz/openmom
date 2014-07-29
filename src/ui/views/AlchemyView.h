@@ -18,23 +18,33 @@ class AlchemyView : public View
 private:
   enum Button
   {
-    OPTIONS_OK,
-    OPTIONS_CANCEL,
-    OPTIONS_DIFFICULTY,
-    OPTIONS_OPPONENTS,
-    OPTIONS_LAND_SIZE,
-    OPTIONS_MAGIC,
+    CANCEL,
+    OK,
+    SWITCH,
+    SWITCH2,
     
     BUTTON_COUNT
   };
   
-  void draw() override { };
+  bool inverted;
+  float percent;
+  s32 amount;
+  
+  void draw() override;
   void drawPost() override { }
   
 public:
   AlchemyView(ViewManager* gvm);
   
-  void activate() override { }
+  void activate() override
+  {
+    percent = 0.0f;
+    amount = 0;
+  }
+  
+  void mouseDragged(u16 x, u16 y, MouseButton b) override;
+  void mouseClicked(u16 x, u16 y, MouseButton b) override { mouseDragged(x, y, b); }
+  
   void deactivate() override { }
 };
 

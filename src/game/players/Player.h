@@ -70,7 +70,14 @@ public:
   virtual void moveCombatUnit(CombatUnit* unit) = 0;
 };
 
-class Player : public PlayerInterface
+class CombatPlayerInterface
+{
+public:
+  virtual void combatTurnBegun() = 0;
+  virtual void combatTurnEnded() = 0;
+};
+
+class Player : public PlayerInterface, public CombatPlayerInterface
 {
 protected:
   std::list<City*> cities;
