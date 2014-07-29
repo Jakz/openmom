@@ -254,7 +254,7 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   //gvm->push(new BlinkAnimation(1000, Gfx::color(0, 0, 255), {0,0,320,200}, 220));
   /*gvm->cityView()->setCity(g->getCities().front());*/
-  gvm->switchView(VIEW_ITEM_CRAFT);
+  //gvm->switchView(VIEW_ITEM_CRAFT);
   
   Position pos = Viewport::hoveredPosition(g->world, player, x, y);
   Tile* t = g->world->get(pos);

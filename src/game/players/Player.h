@@ -164,6 +164,7 @@ public:
   const SpellBook* book() const { return &spellBook; }
   
   const std::list<Hero*>& getHeroes() const { return heroes; }
+  const std::list<Army*>& getArmies() const { return armies; }
   
   s16 globalSkillSpellsCount(const Unit* u) const;
   const SkillGlobalSpell* nthGlobalSkillSpell(u16 i, const Unit* u) const;

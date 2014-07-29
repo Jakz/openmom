@@ -290,6 +290,7 @@ class Fonts
     static inline void split(std::string string, std::vector<const std::string>& tokens, s8 delim);
   
     static inline void setFace(FontFace face, s16 v, s16 h) { setFace(face); setVerHorSpace(v,h); }
+    static inline void setFace(FontFace face, const ColorMap* map, s16 v, s16 h) { setFace(face,v,h); setMap(map); }
   
     static inline void setFace(FontFace face)
     {

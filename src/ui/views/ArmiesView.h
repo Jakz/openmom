@@ -13,18 +13,26 @@
 
 class ViewManager;
 class Army;
+class Unit;
 
 class ArmiesView : public View
 {
 private:
   enum Button
   {
-
+    ITEMS,
+    OK,
+    PREV1,
+    NEXT1,
+    PREV2,
+    NEXT2,
+    
     BUTTON_COUNT
   };
   
-  bool acceptSpellTarget;
-  Army* army;
+  s16 offset;
+  const Unit* unit;
+  const Army* army;
   
   void draw() override;
   void drawPost() override { }
@@ -32,13 +40,16 @@ private:
 public:
   ArmiesView(ViewManager* gvm);
   
-  void activate() override { }
-  void deactivate() override { acceptSpellTarget = false; }
+  void activate() override { updateScrollButtons(); }
+  void deactivate() override { offset = 0; }
   
-  void mouseReleased(u16 x, u16 y, MouseButton b) override;
+  void mouseMoved(u16 x, u16 y, MouseButton b) override;
   
-  void setArmy(Army* army) { this->army = army; }
-  void setAcceptSpellTarget() { acceptSpellTarget = true; }
+  void scrollDown() { ++offset; }
+  void scrollUp() { --offset; }
+  void updateScrollButtons();
+  
+
 };
 
 #endif

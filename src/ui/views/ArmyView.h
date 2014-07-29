@@ -12,30 +12,33 @@
 #include "View.h"
 
 class ViewManager;
+class Army;
 
 class ArmyView : public View
 {
 private:
   enum Button
   {
-    OPTIONS_OK,
-    OPTIONS_CANCEL,
-    OPTIONS_DIFFICULTY,
-    OPTIONS_OPPONENTS,
-    OPTIONS_LAND_SIZE,
-    OPTIONS_MAGIC,
     
     BUTTON_COUNT
   };
   
-  void draw() override { };
+  bool acceptSpellTarget;
+  Army* army;
+  
+  void draw() override;
   void drawPost() override { }
   
 public:
   ArmyView(ViewManager* gvm);
   
   void activate() override { }
-  void deactivate() override { }
+  void deactivate() override { acceptSpellTarget = false; }
+  
+  void mouseReleased(u16 x, u16 y, MouseButton b) override;
+  
+  void setArmy(Army* army) { this->army = army; }
+  void setAcceptSpellTarget() { acceptSpellTarget = true; }
 };
 
 #endif

@@ -156,7 +156,7 @@ unordered_map<I18, const string> i18n::data =
   
   {I18::UNIT_BERSERKERS,"Berserkers"},
   
-  {I18::HERO_DWARF,"Dward"},
+  {I18::HERO_DWARF,"Dwarf"},
   {I18::HERO_ORC_WARRIOR,"Orc Warrior"},
   
   {I18::UNIT_MAGIC_SPIRIT,"Magic Spirit"},
@@ -241,7 +241,7 @@ unordered_map<UnitID, const string> i18n::units =
   
   {UnitID::BERSERKERS,"Berserkers"},
   
-  {UnitID::HERO_DWARF,"Dward"},
+  {UnitID::HERO_DWARF,"Dwarf"},
   {UnitID::HERO_ORC_WARRIOR,"Orc Warrior"},
   
   {UnitID::MAGIC_SPIRIT,"Magic Spirit"},
