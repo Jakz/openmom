@@ -763,7 +763,7 @@ void CityMechanics::updateProduction(City *c)
 void CityMechanics::growCity(City *c)
 {
   if (!c->isStillOutpost)
-    c->population = std::max(c->population + c->growthRate, 25000);
+    c->population = std::min(c->population + c->growthRate, 25000);
   else
   {
     c->population += computeInitialPopulationGrowth(c);
@@ -776,7 +776,7 @@ void CityMechanics::growCity(City *c)
   }
 }
 
-bool CityMechanics::canCityBeBuiltOnTle(Tile *t)
+bool CityMechanics::canCityBeBuiltOnTile(Tile *t)
 {
   World* w = g.world;
   
@@ -788,7 +788,7 @@ bool CityMechanics::canCityBeBuiltOnTle(Tile *t)
     {
       Tile* t2 = w->get(t->position.x+i, t->position.y+j, t->position.plane);
       
-      if (t2 || t2->city)
+      if (t2 && t2->city)
         return false;
     }
   

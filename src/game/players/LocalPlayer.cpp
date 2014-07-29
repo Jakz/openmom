@@ -44,7 +44,7 @@ const movement_list LocalPlayer::selectedArmyMovementType()
 
 bool LocalPlayer::selectedArmyCanBuildOutpost()
 {
-  if (!g->cityMechanics.canCityBeBuiltOnTle(g->world->get(selectedArmy->getPosition())))
+  if (!g->cityMechanics.canCityBeBuiltOnTile(g->world->get(selectedArmy->getPosition())))
     return false;
   
   for (auto u : selectedUnits)

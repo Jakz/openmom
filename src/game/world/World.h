@@ -21,10 +21,10 @@ public:
   virtual s16 width() const = 0;
   virtual s16 height() const = 0;
   
-  virtual void set(TileType type, u16 x, u16 y, Plane plane) = 0;
-  virtual void rect(TileType type, u16 x, u16 y, u16 w, u16 h, Plane plane) = 0;
+  virtual void set(TileType type, s16 x, s16 y, Plane plane) = 0;
+  virtual void rect(TileType type, s16 x, s16 y, u16 w, u16 h, Plane plane) = 0;
   virtual void line(TileType type, int k1, int k2, int j, bool vertical, Plane plane) = 0;
-  virtual Tile* get(u16 x, u16 y, Plane plane) const = 0;
+  virtual Tile* get(s16 x, s16 y, Plane plane) const = 0;
 };
 
 class World : public GenerableWorld
@@ -54,7 +54,7 @@ public:
     return get(position.x, position.y, position.plane);
   }
   
-  Tile* get(u16 x, u16 y, Plane plane) const override
+  Tile* get(s16 x, s16 y, Plane plane) const override
   {
 		if (x < 0) x += w;
 		else if (x >= w) x %= w;
@@ -80,7 +80,7 @@ public:
     return get(position.x+offset.x, position.y+offset.y, position.plane);
   }
   
-  Tile *get(u16 x, u16 y, Plane plane, PositionOffset offset) const
+  Tile *get(s16 x, s16 y, Plane plane, PositionOffset offset) const
   {
     return get(x+offset.x, y+offset.y, plane);
   }
@@ -92,9 +92,9 @@ public:
   }
   
   void set(TileType type, Position position) { get(position)->type = type; }
-  void set(TileType type, u16 x, u16 y, Plane plane) override { get(x,y,plane)->type = type; }
+  void set(TileType type, s16 x, s16 y, Plane plane) override { get(x,y,plane)->type = type; }
   
-  void rect(TileType type, u16 x, u16 y, u16 w, u16 h, Plane plane) override
+  void rect(TileType type, s16 x, s16 y, u16 w, u16 h, Plane plane) override
 	{
 		for (int i = x; i < x+w; ++i)
 			for (int j = y; j < y+h; ++j)

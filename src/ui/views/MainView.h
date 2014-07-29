@@ -78,11 +78,11 @@ public:
   void activate() override { }
   void deactivate() override { }
   
-  void switchToSpellCast(LocalPlayer* player);
-  void switchToUnitSelection(LocalPlayer* player, Army* army);
-  void switchToNormalState(LocalPlayer* player);
-  void switchToSurveyor(LocalPlayer* player);
-  void updateBuildButton(LocalPlayer* player);
+  void switchToSpellCast();
+  void switchToUnitSelection(Army* army);
+  void switchToNormalState();
+  void switchToSurveyor();
+  void updateBuildButton();
   
   void mouseReleased(u16 x, u16 y, MouseButton b) override;
   void mouseMoved(u16 x, u16 y, MouseButton b) override;

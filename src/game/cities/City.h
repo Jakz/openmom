@@ -99,7 +99,7 @@ public:
   bool hasPlacement(CityPlacement flag) const { return (placement & flag) != 0; }
   void setPlacement(CityPlacement flag) { placement = static_cast<CityPlacement>(placement | flag); }
   
-  void addBuilding(const Building *b) { buildings.insert(b); }
+  void addBuilding(const Building *b) { buildings.insert(b); revalidateLayout = true; }
   bool hasBuilding(const Building *b) const { return buildings.find(b) != buildings.end(); }
   const std::set<const Building*>& getBuildings() { return buildings; }
   

@@ -39,7 +39,7 @@ private:
   static std::unordered_map<const Building*, BuildingSpecs> specs;
 
   static constexpr int U = 5;
-  static std::map<const City*, CityLayout> layouts;
+  static std::map<const City*, CityLayout*> layouts;
 
   
   static struct {
@@ -63,7 +63,7 @@ private:
     
     LayoutPosition() { }
     LayoutPosition(s16 x, s16 y, const Building* building) : x(x), y(y), building(building) { }
-    LayoutPosition(s16 x, s16 y, u8 house) : x(x), y(y), house(house) { }
+    LayoutPosition(s16 x, s16 y, u8 house) : x(x), y(y), house(house), building(nullptr) { }
     
     bool operator<(const LayoutPosition &rhs) const { return y < rhs.y; }
 
@@ -96,25 +96,21 @@ public:
   
   static void createLayout(const City* city)
   {
-    CityLayout&& layout = CityLayout(city);
-    layout.deploy();
+    CityLayout* layout = new CityLayout(city);
+    layouts.emplace(city, layout);
+    layout->deploy();
   }
   
   static void updateLayout(const City* city)
   {
-    CityLayout& layout = layouts[city];
-    layout.deploy();
+    CityLayout* layout = layouts[city];
+    layout->deploy();
     city->revalidateLayout = false;
   }
   
   static bool contains(const City* city) { return layouts.find(city) != layouts.end(); }
-  
-  CityLayout() { }
-  
-  CityLayout(const City* city) : city(city)
-  {
-    layouts.emplace(city, *this);
-  }
+
+  CityLayout(const City* city) : city(city) { }
   
   void deploy();
   
@@ -122,7 +118,6 @@ public:
     LayoutPosition createPosition(LayoutZone& zone, s16 ox, s16 oy, const Building* building);
     const std::vector<LayoutZone> findSuitable(const Building* building);
     void placeAndSplit(const Building* building, LayoutZone& zone);
-    const std::vector<LayoutPosition> getPositions() { std::sort(positions.begin(), positions.end()); return positions; }
   
     const std::vector<LayoutZone> getZones() {
      return

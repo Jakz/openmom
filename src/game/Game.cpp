@@ -106,7 +106,7 @@ void Game::dummyInit()
   placeArmy(new Army(player, {new FantasticUnit(*UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT)),new FantasticUnit(*UnitSpec::summonSpec(UnitID::GREAT_DRAKE))}), Position(4, 3, ARCANUS));
   placeArmy(new Army(player, {new FantasticUnit(*UnitSpec::summonSpec(UnitID::GREAT_DRAKE)), new Hero(*UnitSpec::heroSpec(UnitID::HERO_DWARF))}), Position(4, 8, ARCANUS));
   
-  City* florence = new City(player, "Florence", 4000, Position(3, 3, MYRRAN));
+  City* florence = new City(player, "Florence", 4000, Position(3, 3, ARCANUS));
   florence->addBuilding(Building::MAGE_FORTRESS);
   florence->addBuilding(Building::SMITHY);
   florence->addBuilding(Building::BUILDERS_HALL);

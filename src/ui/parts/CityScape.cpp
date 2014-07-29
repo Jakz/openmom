@@ -11,15 +11,15 @@
 using namespace std;
 
 unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
-  {Building::MAGE_FORTRESS,      BuildingSpecs(SpriteInfo(TextureID::CITY_FORTRESS,   -1, -1), 0, 2, 3)},
+  {Building::MAGE_FORTRESS,      BuildingSpecs(SpriteInfo(TextureID::CITY_FORTRESS,    0, -1),  0, 2, 3)},
   {Building::BUILDERS_HALL,      BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1, 0,  0), 27, 2, 3)},
   {Building::SMITHY,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2, 4, -1), 25, 2, 2)},
-  {Building::SHRINE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 0), 32, 3, 2)}, /*24*/
-  {Building::TEMPLE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 1), 36, 3, 2)},
+  {Building::SHRINE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 2), 32, 3, 2)}, /*24*/
+  {Building::TEMPLE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 2), 36, 3, 2)},
   {Building::PARTHENON,          BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 2), 40, 3, 3)},
-  {Building::CATHEDRAL,          BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 0), 34, 3, 3)},
-  {Building::ANIMISTS_GUILD,     BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 3), 24, 2, 2)},
-  {Building::ORACLE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 3), 25, 2, 2)},
+  {Building::CATHEDRAL,          BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 4), 34, 3, 3)},
+  {Building::ANIMISTS_GUILD,     BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 0), 24, 2, 2)},
+  {Building::ORACLE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 1), 25, 2, 2)},
   {Building::ALCHEMISTS_GUILD,   BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  9,-1), 14, 1, 1)},
   {Building::WIZARDS_GUILD,      BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2, 10,-1), 17, 2, 2)},
   {Building::STABLE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  5,-1), 40, 3, 3)},
@@ -28,31 +28,31 @@ unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
   {Building::ARMORY,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 1), 25, 2, 2)},
   {Building::FIGHTERS_GUILD,     BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  1,-1), 35, 3, 2)},
   {Building::ARMORERS_GUILD,     BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0,-1), 36, 3, 2)},
-  {Building::WAR_COLLEGE,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 2), 36, 3, 2)},
-  {Building::SHIP_WRIGHTS_GUILD, BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 4), 22, 2, 3)},
-  {Building::SHIP_YARD,          BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 0), 32, 2, 3)},
+  {Building::WAR_COLLEGE,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 0), 36, 3, 2)},
+  {Building::SHIP_WRIGHTS_GUILD, BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 0), 22, 2, 3)},
+  {Building::SHIP_YARD,          BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 1), 32, 2, 3)},
   {Building::MARITIME_GUILD,     BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  7,-1), 30, 2, 3)},
-  {Building::MARKETPLACE,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 3), 25, 2, 2)},
-  {Building::BANK,               BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 4), 26, 2, 2)},
-  {Building::MERCHANTS_GUILD,    BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 0), 25, 2, 2)},
-  {Building::GRANARY,            BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 1), 17, 2, 2)},
-  {Building::FARMERS_MARKET,     BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 2), 24, 2, 2)},
+  {Building::MARKETPLACE,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 2), 25, 2, 2)},
+  {Building::BANK,               BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 2), 26, 2, 2)},
+  {Building::MERCHANTS_GUILD,    BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 3), 25, 2, 2)},
+  {Building::GRANARY,            BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 3), 17, 2, 2)},
+  {Building::FARMERS_MARKET,     BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 3), 24, 2, 2)},
   {Building::LIBRARY,            BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 1), 36, 3, 2)},
-  {Building::UNIVERSITY,         BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 4), 36, 3, 2)},
-  {Building::SAGES_GUILD,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 2), 25, 2, 2)},
-  {Building::MINERS_GUILD,       BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 4), 23, 2, 2)},
+  {Building::UNIVERSITY,         BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 1), 36, 3, 2)},
+  {Building::SAGES_GUILD,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 1), 25, 2, 2)},
+  {Building::MINERS_GUILD,       BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 3), 23, 2, 2)},
   {Building::MECHANICIANS_GUILD, BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 3), 21, 2, 2)},
   {Building::SAWMILL,            BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  8,-1), 25, 2, 3)},
-  {Building::FORESTERS_GUILD,    BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 1), 25, 2, 2)},
+  {Building::FORESTERS_GUILD,    BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 4), 25, 2, 2)},
   
   {Building::HOUSING,            BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 4), 40, 2, 2)},
-  {Building::TRADE_GOODS,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 3), 40, 2, 2)},
-  {Building::CITY_WALLS,         BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  5, 2), 40, 2, 2)},
+  {Building::TRADE_GOODS,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 4), 40, 2, 2)},
+  {Building::CITY_WALLS,         BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 5), 40, 2, 2)},
   
-  {Building::SUMMONING_CIRCLE,   BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 2), 25, 3, 2)}
+  {Building::SUMMONING_CIRCLE,   BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 4), 25, 3, 2)}
 };
 
-map<const City*, CityLayout> CityLayout::layouts;
+map<const City*, CityLayout*> CityLayout::layouts;
 
 
 void CityLayout::draw(const City *city, LocalPlayer *player)
@@ -77,9 +77,9 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
   
   HouseType ht = city->race.houseType;
   
-  const CityLayout& layout = layouts[city];
+  const CityLayout* layout = layouts[city];
   
-  for (auto p : layout.positions)
+  for (auto &p : layout->positions)
   {
     if (p.building)
       drawBuilding(p.building, p.x, p.y);
@@ -183,11 +183,14 @@ void CityLayout::deploy()
     placeAndSplit(b, zone);
   }
   
+  // TODO: lower when building amount increases
   int houses = 20 + Util::randomIntUpTo(10);
   for (int i = 0; i < houses; ++i)
   {
     placeAndSplit(nullptr, zones[Util::randomIntUpTo(static_cast<u32>(zones.size()))]);
   }
+
+  sort(positions.begin(), positions.end());
 }
 
 CityLayout::LayoutPosition CityLayout::createPosition(LayoutZone &zone, s16 ox, s16 oy, const Building *building)

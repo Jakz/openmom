@@ -43,10 +43,10 @@ MainView::MainView(ViewManager *gvm) : View(gvm)
   
   buttons[SPELLS]->setAction([gvm](){ gvm->switchView(VIEW_MAGIC); });
   buttons[ARMIES]->setAction([gvm](){ gvm->switchView(VIEW_ARMIES); });
-  buttons[PLANE]->setAction([this](){ player->switchPlane(); switchToNormalState(player); });
-  buttons[NEXT]->setAction([this](){ LocalGame::i->getGame()->nextTurn(); switchToNormalState(player); });
-  buttons[CANCEL_SURVEYOR]->setAction([this](){ if (substate == SPELL_CAST) g->cancelCast(player); switchToNormalState(player); });
-  buttons[DONE]->setAction([this](){ switchToNormalState(player );}); /*if (player.selectedArmy() != null && player.selectedRoute() != null && !player.selectedRoute().completed()) player.saveRoute();*/
+  buttons[PLANE]->setAction([this](){ player->switchPlane(); switchToNormalState(); });
+  buttons[NEXT]->setAction([this](){ LocalGame::i->getGame()->nextTurn(); switchToNormalState(); });
+  buttons[CANCEL_SURVEYOR]->setAction([this](){ if (substate == SPELL_CAST) g->cancelCast(player); switchToNormalState(); });
+  buttons[DONE]->setAction([this](){ switchToNormalState(); }); /*if (player.selectedArmy() != null && player.selectedRoute() != null && !player.selectedRoute().completed()) player.saveRoute();*/
   buttons[PATROL]->setAction([this](){ player->getSelectedArmy()->patrol(); });
   buttons[BUILD]->setAction([this](){ g->settleCity(player->getSelectedArmy(), "Test"); player->resetArmy(); });
   
@@ -58,9 +58,9 @@ MainView::MainView(ViewManager *gvm) : View(gvm)
   substate = MAIN;
 }
 
-void MainView::switchToSpellCast(LocalPlayer *p)
+void MainView::switchToSpellCast()
 {
-	p->resetArmy();
+	player->resetArmy();
 	
 	buttons[NEXT]->hide();
 	buttons[DONE]->hide();
@@ -72,11 +72,11 @@ void MainView::switchToSpellCast(LocalPlayer *p)
 	substate = SPELL_CAST;
 }
 
-void MainView::switchToUnitSelection(LocalPlayer *p, Army* a)
+void MainView::switchToUnitSelection(Army* a)
 {
-	p->selectArmy(a);
+	player->selectArmy(a);
 	a->unpatrol();
-	p->selectAll();
+	player->selectAll();
 	
 	buttons[CANCEL_SURVEYOR]->hide();
 	buttons[NEXT]->hide();
@@ -85,14 +85,14 @@ void MainView::switchToUnitSelection(LocalPlayer *p, Army* a)
 	buttons[WAIT]->show();
 	buttons[BUILD]->show();
 	
-	updateBuildButton(p);
+	updateBuildButton();
   
 	substate = UNIT;
 }
 
-void MainView::switchToNormalState(LocalPlayer *p)
+void MainView::switchToNormalState()
 {
-	p->resetArmy();
+	player->resetArmy();
 	
 	buttons[NEXT]->show();
 	buttons[DONE]->hide();
@@ -106,9 +106,9 @@ void MainView::switchToNormalState(LocalPlayer *p)
 	substate = MAIN;
 }
 
-void MainView::switchToSurveyor(LocalPlayer *p)
+void MainView::switchToSurveyor()
 {
-	p->resetArmy();
+	player->resetArmy();
 	
 	buttons[CANCEL_SURVEYOR]->show();
 	buttons[NEXT]->hide();
@@ -120,9 +120,9 @@ void MainView::switchToSurveyor(LocalPlayer *p)
 	substate = SURVEYOR;
 }
 
-void MainView::updateBuildButton(LocalPlayer *p)
+void MainView::updateBuildButton()
 {
-	if (p->selectedArmyCanBuildOutpost())
+	if (player->selectedArmyCanBuildOutpost())
 		buttons[BUILD]->activate();
 	else
 		buttons[BUILD]->deactivate();
@@ -133,9 +133,9 @@ void MainView::draw()
   //Fonts::drawString("Antani", FontFace::WHITE_SMALL, 278, 100, ALIGN_CENTER); return;
   
   if (substate != SPELL_CAST && player->getSpellTarget() != Target::NONE)
-    switchToSpellCast(player);
+    switchToSpellCast();
   else if (substate == SPELL_CAST && player->getSpellTarget() == Target::NONE)
-    switchToNormalState(player);
+    switchToNormalState();
   
   Gfx::draw(TextureID::MAIN_BACKDROP, 0, 0);
   
@@ -253,14 +253,15 @@ void MainView::drawPost()
 void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   //gvm->push(new BlinkAnimation(1000, Gfx::color(0, 0, 255), {0,0,320,200}, 220));
-  gvm->cityView()->setCity(g->getCities().front());
-  gvm->switchView(VIEW_CITY);
+  /*gvm->cityView()->setCity(g->getCities().front());
+  gvm->switchView(VIEW_CITY);*/
   
-  const Position pos = Viewport::hoveredPosition(g->world, player, x, y);
+  Position pos = Viewport::hoveredPosition(g->world, player, x, y);
   Tile* t = g->world->get(pos);
-
+  
   if (t)
   {
+    pos = t->position;
     City* c = t->city;
     Army* a = t->army;
     
@@ -268,37 +269,37 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
     {
       if (a && (!c || (c && !a->isPatrolling())) && a->getOwner() == player)
       {
-        switchToUnitSelection(player,a);
+        switchToUnitSelection(a);
       }
-      /*else if (c)
+      else if (c)
       {
         if (!c->isOutpost())
         {
-          GameViewManager.instance.cityView().setCity(c);
-          GameViewManager.instance.switchView(GameViewManager.ViewType.CITY);
+          gvm->cityView()->setCity(c);
+          gvm->switchView(VIEW_CITY);
         }
         else
         {
-          GameViewManager.instance.outpostView().setCity(c);
-          GameViewManager.instance.switchOverView(GameViewManager.ViewType.OUTPOST);
+          gvm->outpostView()->setCity(c);
+          gvm->switchOverview(VIEW_OUTPOST);
         }
         
-        player.resetArmy();
-        switchToNormalState(player);
+        player->resetArmy();
+        switchToNormalState();
       }
       else
       {
-        int upperBoundY = t.y - WorldViewport.viewportH/2;
-        int lowerBoundY = t.y + (WorldViewport.viewportH  - WorldViewport.viewportH/2);
-        int ty = t.y;
+        s16 upperBoundY = pos.y - Viewport::viewportH/2;
+        s16 lowerBoundY = pos.y + (Viewport::viewportH  - Viewport::viewportH/2);
+        s16 ty = pos.y;
         
         if (upperBoundY < 0)
-          ty = WorldViewport.viewportH/2;
-        else if (lowerBoundY >= g.world().height())
-          ty = g.world().height() - (WorldViewport.viewportH  - WorldViewport.viewportH/2);
+          ty = Viewport::viewportH/2;
+        else if (lowerBoundY >= g->world->h)
+          ty = g->world->h - (Viewport::viewportH  - Viewport::viewportH/2);
         
-        player.setViewport(t.x, ty);
-      }*/
+        player->setViewport(pos.x, ty);
+      }
     }
   }
 }
@@ -316,12 +317,28 @@ void MainView::mouseMoved(u16 x, u16 y, MouseButton b)
 
 void MainView::keyPressed(KeyboardKey key, KeyboardMod mod)
 {
-  
+  switch (key)
+  {
+    case SDL_SCANCODE_RETURN: buttons[NEXT]->press(); break;
+      
+    default: break;
+  }
 }
 
 void MainView::keyReleased(KeyboardKey key, KeyboardMod mod)
 {
-  
+  switch (key)
+  {
+    case SDL_SCANCODE_RETURN:
+    {
+      buttons[NEXT]->release();
+      buttons[NEXT]->click();
+    }
+    case SDL_SCANCODE_F1: switchToSurveyor(); break;
+      
+    default: break;
+
+  }
 }
 
 void MainView::Surveyor::updateInfo(Tile *t)
@@ -335,7 +352,7 @@ void MainView::Surveyor::updateInfo(Tile *t)
     return;
   }
   
-  cityCanBeBuilt = view.g->cityMechanics.canCityBeBuiltOnTle(t);
+  cityCanBeBuilt = view.g->cityMechanics.canCityBeBuiltOnTile(t);
   
   if (!cityCanBeBuilt)
   {

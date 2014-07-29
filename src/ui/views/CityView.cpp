@@ -76,7 +76,7 @@ void CityView::setCity(City *city)
 
   if (!CityLayout::contains(city))
     CityLayout::createLayout(city);
-  else
+  else /*if (city->revalidateLayout)*/
     CityLayout::updateLayout(city);
 }
 
