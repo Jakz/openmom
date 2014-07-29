@@ -55,7 +55,9 @@ public:
   
   Player* currentPlayer() { return *current; }
 
-  const std::list<City*>& getCities() { return cities; }
+  const std::list<Player*>& getPlayers() const { return players; }
+  
+  const std::list<City*>& getCities() const { return cities; }
   
   bool meldNode(const Army* army, const Position& position);
   

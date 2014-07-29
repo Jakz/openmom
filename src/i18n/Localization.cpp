@@ -222,6 +222,18 @@ unordered_map<I18, const string> i18n::data =
   {I18::ITEM_CHAIN_MAIL, "Chain Mail"},
   {I18::ITEM_PLATE_MAIL, "Plate Mail"},
   
+  {I18::RELATION_HATRED, "Hatred"},
+  {I18::RELATION_TROUBLED, "Troubled"},
+  {I18::RELATION_TENSE, "Tense"},
+  {I18::RELATION_RESTLESS, "Restless"},
+  {I18::RELATION_UNEASY, "Uneasy"},
+  {I18::RELATION_NEUTRAL, "Neutral"},
+  {I18::RELATION_RELAXED, "Relaxed"},
+  {I18::RELATION_CALM, "Calm"},
+  {I18::RELATION_PEACEFUL, "Peaceful"},
+  {I18::RELATION_FRIENDLY, "Friendly"},
+  {I18::RELATION_HARMONY, "Harmony"},
+  
   {I18::EMPTY, ""},
   {I18::PLACEHOLDER, "Placeholder"},
 };

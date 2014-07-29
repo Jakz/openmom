@@ -10,6 +10,7 @@
 #define _PLAYER_H_
 
 #include "Common.h"
+#include "Diplomacy.h"
 #include "Spells.h"
 #include "SpellBook.h"
 
@@ -89,7 +90,7 @@ protected:
   std::unordered_set<TraitID> traits;
 
   SpellBook spellBook;
-  // Relations TODO
+  Relations relations;
   const Combat* combat;
   mutable FogMap *fogMap;
 
@@ -162,6 +163,8 @@ public:
   
   SpellBook* book() { return &spellBook; }
   const SpellBook* book() const { return &spellBook; }
+  
+  Relations* getRelations() { return &relations; }
   
   const std::list<Hero*>& getHeroes() const { return heroes; }
   const std::list<Army*>& getArmies() const { return armies; }

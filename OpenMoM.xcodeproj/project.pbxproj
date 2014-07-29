@@ -67,6 +67,7 @@
 		0464E11719818239009C91ED /* PlayerMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11519818239009C91ED /* PlayerMechanics.cpp */; };
 		0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E1181981D1EF009C91ED /* CityScape.cpp */; };
 		0464E11D19820301009C91ED /* Hqx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11B19820301009C91ED /* Hqx.cpp */; };
+		0482049F19885DA900D4B699 /* Diplomacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0482049D19885DA900D4B699 /* Diplomacy.cpp */; };
 		0487516D197F612400009661 /* Messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0487516B197F612400009661 /* Messages.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
@@ -219,6 +220,8 @@
 		0464E1191981D1EF009C91ED /* CityScape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CityScape.h; path = src/ui/parts/CityScape.h; sourceTree = SOURCE_ROOT; };
 		0464E11B19820301009C91ED /* Hqx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Hqx.cpp; path = src/gfx/Hqx.cpp; sourceTree = SOURCE_ROOT; };
 		0464E11C19820301009C91ED /* Hqx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hqx.h; path = src/gfx/Hqx.h; sourceTree = SOURCE_ROOT; };
+		0482049D19885DA900D4B699 /* Diplomacy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Diplomacy.cpp; path = src/game/players/Diplomacy.cpp; sourceTree = SOURCE_ROOT; };
+		0482049E19885DA900D4B699 /* Diplomacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Diplomacy.h; path = src/game/players/Diplomacy.h; sourceTree = SOURCE_ROOT; };
 		0487516B197F612400009661 /* Messages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Messages.cpp; path = src/game/players/Messages.cpp; sourceTree = SOURCE_ROOT; };
 		0487516C197F612400009661 /* Messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Messages.h; path = src/game/players/Messages.h; sourceTree = SOURCE_ROOT; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -326,6 +329,8 @@
 				040375F7197AB04700A5B5FC /* LocalPlayer.h */,
 				0487516B197F612400009661 /* Messages.cpp */,
 				0487516C197F612400009661 /* Messages.h */,
+				0482049D19885DA900D4B699 /* Diplomacy.cpp */,
+				0482049E19885DA900D4B699 /* Diplomacy.h */,
 			);
 			name = players;
 			path = src/game/players;
@@ -696,6 +701,7 @@
 				040375EE197A9DD600A5B5FC /* SDL.cpp in Sources */,
 				040375DF197990B900A5B5FC /* Gfx.cpp in Sources */,
 				0439E9B31986A3A60009BFF7 /* GUISettings.cpp in Sources */,
+				0482049F19885DA900D4B699 /* Diplomacy.cpp in Sources */,
 				04037618197AF93600A5B5FC /* NewGameView.cpp in Sources */,
 				04205393197DA9E900B4C2CA /* Skill.cpp in Sources */,
 				040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */,
