@@ -42,7 +42,7 @@ public:
   Tile() { }
   
   Tile(World* const world, Position position) : world(world), position(position), subtype(0), tileGfxType(TILE_GFX_NONE), animationOffset(Util::randomIntUpTo(10)),
-    resource(Resource::NONE), city(nullptr), army(nullptr), place(nullptr), type(TILE_WATER), roads(0), hasRoad(false), hasEnchantedRoad(false)
+    resource(Resource::NONE), city(nullptr), army(nullptr), node(nullptr), place(nullptr), type(TILE_WATER), roads(0), hasRoad(false), hasEnchantedRoad(false)
   {
   }
   

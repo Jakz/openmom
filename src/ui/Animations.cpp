@@ -16,6 +16,8 @@
 using namespace std;
 using namespace anims;
 
+constexpr const Color Blink::SCHOOL_COLORS[];
+
 void Blink::step()
 {
   u8 alpha = 0;

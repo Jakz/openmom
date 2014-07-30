@@ -25,7 +25,7 @@ class SDL
     static SDL_Surface *filter;
   
     static const u32 SCALE_FACTOR = 2;
-    static const u32 FRAME_RATE = 60;
+    static const u32 FRAME_RATE = 20;
     static constexpr float TICKS_PER_FRAME = 1000 / (float)FRAME_RATE;
     
     static bool willQuit;
