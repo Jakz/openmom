@@ -9,5 +9,12 @@
 #ifndef _LBX_H_
 #define _LBX_H_
 
+#include "Common.h"
+
+class LBX
+{
+public:
+  static void load();
+};
 
 #endif

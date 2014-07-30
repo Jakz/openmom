@@ -5,24 +5,10 @@
 #include "SDL.h"
 #include "Gfx.h"
 #include "Texture.h"
-
-#include "Race.h"
-
-#include <unordered_map>
-
-#include "EventListener.h"
-
-#include "Settings.h"
-
 #include "Game.h"
-#include "LocalPlayer.h"
 #include "ViewManager.h"
 
-#include "Localization.h"
-
-#include "Skill.h"
-
-#include "WorldGenerator.h"
+#include "LBX.h"
 
 void init()
 {
@@ -38,6 +24,9 @@ void init()
 
 int main(int argc, char * arg[])
 {
+  LBX::load();
+  return 0;
+  
   //const Race &race = Race::race(RACE_BARBARIANS);
   
   //std::unordered_map<const void*, SpriteInfo> map;
