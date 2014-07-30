@@ -77,7 +77,12 @@ namespace anims
     const SDL_Rect rect;
     u8 maxAlpha;
     
+    // TODO: true colors and maybe check duration/alpha
+    static constexpr const Color SCHOOL_COLORS[] = {RGB(0, 0, 0), RGB(255,0,0), RGB(0,0,0), RGB(255,255,255), RGB(0,255,0), RGB(0,0,255)};
+    
   public:
+    Blink(School school) : Blink(800, SCHOOL_COLORS[school], {0,0,320,200}, 220) { }
+    
     Blink(Color color, SDL_Rect rect, u8 maxAlpha) : Blink(800, color, rect, maxAlpha) { }
     Blink(u32 duration, Color color, SDL_Rect rect, u8 maxAlpha) : ContinuousAnimation(duration), color(color), rect(rect), maxAlpha(maxAlpha) { }
     

@@ -18,7 +18,7 @@
 
 using namespace std;
 
-Game::Game() : world(new World(this, 60,40)), mapMechanics(*this), spellMechanics(*this), eventMechanics(*this), cityMechanics(*this), playerMechanics(*this), firstTurn(true), turnCounter(0)
+Game::Game() : world(new World(this, 60,40)), mapMechanics(*this), spellMechanics(*this), eventMechanics(*this), cityMechanics(*this), playerMechanics(*this), combatMechanics(*this), firstTurn(true), turnCounter(0)
 {
   
 }
@@ -48,7 +48,7 @@ void Game::dummyInit()
   world->fill(TILE_WATER, MYRRAN);
   world->rect(TILE_GRASS, 3, 3, 10, 10, ARCANUS);
   world->rect(TILE_MOUNTAIN, 4, 4, 2, 2, ARCANUS);
-  world->line(TILE_RIVER, 4, 8, 11, false, ARCANUS);
+  world->line(TILE_HILL, 4, 8, 11, true, ARCANUS);
   world->rect(TILE_GRASS, 1, 1, 6, 6, MYRRAN);
   world->line(TILE_MOUNTAIN, 6, 8, 5, false, MYRRAN);
   world->line(TILE_HILL, 5, 8, 6, true, MYRRAN);
@@ -98,6 +98,7 @@ void Game::dummyInit()
   world->set(TILE_HILL, 1, 2, MYRRAN);
   
   player->fog()->setRect(0, 0, 60, 40, ARCANUS);
+  player->fog()->setRect(0, 0, 60, 40, MYRRAN);
   player->setViewport(5, 5);
   
   new LocalGame(this);

@@ -10,6 +10,7 @@
 #include "Game.h"
 #include "Spells.h"
 #include "Tile.h"
+#include "Animations.h"
 
 void PlayerMechanics::updateGlobalGains(Player* player)
 {
@@ -127,8 +128,8 @@ void PlayerMechanics::castCombatSpell(Player* player, const Spell* spell)
 {
   if (spell->type == SpellType::COMBAT_ENCHANT)
   {
-    //player->combat->castEnchantment(SpellCast(player,spell)) TODO
-    //player->push(new Blink(spell.school)) BLA BLA TODO
+    //TODO player->combat->castEnchantment(SpellCast(player,spell)) TODO
+    player->push(new anims::Blink(spell->school));
     player->spellBook.cancelCast();
   }
   else if (spell->target != Target::NONE)

@@ -256,7 +256,7 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
               if (!player->fog()->get(od))
                 Gfx::draw(TextureID::TILE_FOG, 0, i, sx, sy);
             }
-            else // TODO: check if this else goes with the correct if
+            else
             {
               Position od2 = Position(vx+x+Util::DIRS[(i+1)%8].x, vx+x+Util::DIRS[(i+1)%8].y, plane);
               Position od3 = Position(vx+x+Util::DIRS[i-1 < 0 ? 8 + (i-1) : i-1].x, vx+x+Util::DIRS[i-1 < 0 ? 8 + (i-1) : i-1].y, plane);

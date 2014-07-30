@@ -224,6 +224,5 @@ public:
   Type productionType() const override { return Type::HERO; }
 };
 
-// TODO: SpriteInfo management of units
 
 #endif

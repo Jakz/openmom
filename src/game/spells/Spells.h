@@ -174,7 +174,7 @@ public:
     Spell(name, SpellType::SPECIAL, rarity, KIND_SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, -1, -1, 0}) { }
   
   SpecialSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 manaCostDelta, s16 combatManaCost, s16 combatManaCostDelta, Target Target) :
-    Spell(name, SpellType::SPECIAL, rarity, KIND_SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, combatManaCost, combatManaCostDelta, 0}) { } // TODO: will upkeep be always 0=
+    Spell(name, SpellType::SPECIAL, rarity, KIND_SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, combatManaCost, combatManaCostDelta, 0}) { } // TODO: will upkeep be always 0?
 };
 
 class SummonSpell : public Spell

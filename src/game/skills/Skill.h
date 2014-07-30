@@ -53,7 +53,6 @@ enum class SkillBase : u16
 	
 	DISPEL_EVIL = 29,
 	INVISIBILITY = 34,
-	// TODO: cloak of fear would be nicer?
 	CAUSE_FEAR = 35,
 	WEB_SPELL = 36,
 	CREATE_UNDEAD = 39,

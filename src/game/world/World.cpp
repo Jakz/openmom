@@ -47,9 +47,9 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
     
     // check for rivers around
     subtype = 0;
-    for (int i = 0; i < Util::DIRS_LENGTH; ++i)
+    for (int i = 0; i < Util::ODIRS_LENGTH; ++i)
     {
-      Tile* tile = get(x,y,p,Util::DIRS[i]);
+      Tile* tile = get(x,y,p,Util::ODIRS[i]);
       if (tile && tile->type == TILE_RIVER)
         subtype |= (1 << i);
     }
@@ -100,9 +100,9 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
   {
     subtype = 0;
     
-    for (int i = 0; i < Util::DIRS_LENGTH; ++i)
+    for (int i = 0; i < Util::ODIRS_LENGTH; ++i)
     {
-      Tile* tile = get(x,y,p,Util::DIRS[i]);
+      Tile* tile = get(x,y,p,Util::ODIRS[i]);
       if (tile && tile->type == TILE_MOUNTAIN)
         subtype |= (1<<i);
     }
@@ -113,9 +113,9 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
   {
     subtype = 0;
     
-    for (int i = 0; i < Util::DIRS_LENGTH; ++i)
+    for (int i = 0; i < Util::ODIRS_LENGTH; ++i)
     {
-      Tile* tile = get(x,y,p,Util::DIRS[i]);
+      Tile* tile = get(x,y,p,Util::ODIRS[i]);
       if (tile && tile->type == TILE_HILL)
         subtype |= (1<<i);
     }

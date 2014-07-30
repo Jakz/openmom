@@ -12,10 +12,7 @@ enum class Property : u8;
 
 class Army;
 class SkillSet;
-
-namespace combat {
-  class Damage;
-}
+class Damage;
 
 typedef std::vector<s16> hit_points;
 
@@ -39,7 +36,7 @@ public:
   
   void healAll();
   
-  void applyDamage(const combat::Damage& damage);
+  void applyDamage(const Damage& damage);
   void applyDamage(s16 dmg);
   void applySameDamageToEachFigure(s16 dmg);
   void applyDifferentDamageToEachFigure(const hit_points& dmgs);

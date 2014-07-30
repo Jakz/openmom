@@ -142,7 +142,6 @@ void CityLayout::deploy()
     if (b != Building::CITY_WALLS)
       buildings.insert(b);
   
-  // TODO: fix - it doesn't show mage fortress anymore
   if (buildings.find(Building::MAGE_FORTRESS) != buildings.end())
   {
     positions.push_back(createPosition(zones[6], 0, 0, Building::MAGE_FORTRESS));

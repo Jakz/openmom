@@ -68,6 +68,8 @@
 		0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E1181981D1EF009C91ED /* CityScape.cpp */; };
 		0464E11D19820301009C91ED /* Hqx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11B19820301009C91ED /* Hqx.cpp */; };
 		0482049F19885DA900D4B699 /* Diplomacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0482049D19885DA900D4B699 /* Diplomacy.cpp */; };
+		048204A219888E5C00D4B699 /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
+		048204A5198893BA00D4B699 /* CombatMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A3198893BA00D4B699 /* CombatMechanics.cpp */; };
 		0487516D197F612400009661 /* Messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0487516B197F612400009661 /* Messages.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
@@ -222,6 +224,10 @@
 		0464E11C19820301009C91ED /* Hqx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hqx.h; path = src/gfx/Hqx.h; sourceTree = SOURCE_ROOT; };
 		0482049D19885DA900D4B699 /* Diplomacy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Diplomacy.cpp; path = src/game/players/Diplomacy.cpp; sourceTree = SOURCE_ROOT; };
 		0482049E19885DA900D4B699 /* Diplomacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Diplomacy.h; path = src/game/players/Diplomacy.h; sourceTree = SOURCE_ROOT; };
+		048204A019888E5C00D4B699 /* LBX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LBX.cpp; sourceTree = "<group>"; };
+		048204A119888E5C00D4B699 /* LBX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBX.h; sourceTree = "<group>"; };
+		048204A3198893BA00D4B699 /* CombatMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CombatMechanics.cpp; sourceTree = "<group>"; };
+		048204A4198893BA00D4B699 /* CombatMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CombatMechanics.h; sourceTree = "<group>"; };
 		0487516B197F612400009661 /* Messages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Messages.cpp; path = src/game/players/Messages.cpp; sourceTree = SOURCE_ROOT; };
 		0487516C197F612400009661 /* Messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Messages.h; path = src/game/players/Messages.h; sourceTree = SOURCE_ROOT; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -349,6 +355,8 @@
 				040375D7197990B900A5B5FC /* Texture.h */,
 				0464E11B19820301009C91ED /* Hqx.cpp */,
 				0464E11C19820301009C91ED /* Hqx.h */,
+				048204A019888E5C00D4B699 /* LBX.cpp */,
+				048204A119888E5C00D4B699 /* LBX.h */,
 			);
 			name = gfx;
 			path = src/gfx;
@@ -526,6 +534,8 @@
 			children = (
 				04243F29197ED3F500E8A716 /* Combat.cpp */,
 				04243F2A197ED3F500E8A716 /* Combat.h */,
+				048204A3198893BA00D4B699 /* CombatMechanics.cpp */,
+				048204A4198893BA00D4B699 /* CombatMechanics.h */,
 			);
 			name = combat;
 			path = src/game/combat;
@@ -687,6 +697,7 @@
 				0464E11D19820301009C91ED /* Hqx.cpp in Sources */,
 				04037621197B539400A5B5FC /* Tile.cpp in Sources */,
 				0464E11419813E1A009C91ED /* CityMechanics.cpp in Sources */,
+				048204A5198893BA00D4B699 /* CombatMechanics.cpp in Sources */,
 				040375DE197990B900A5B5FC /* Font.cpp in Sources */,
 				04243F2B197ED3F500E8A716 /* Combat.cpp in Sources */,
 				0464E11719818239009C91ED /* PlayerMechanics.cpp in Sources */,
@@ -698,6 +709,7 @@
 				0439E98919868F6D0009BFF7 /* ArmiesView.cpp in Sources */,
 				0439E9A1198690B70009BFF7 /* OutpostView.cpp in Sources */,
 				0403760D197AE16100A5B5FC /* Level.cpp in Sources */,
+				048204A219888E5C00D4B699 /* LBX.cpp in Sources */,
 				040375EE197A9DD600A5B5FC /* SDL.cpp in Sources */,
 				040375DF197990B900A5B5FC /* Gfx.cpp in Sources */,
 				0439E9B31986A3A60009BFF7 /* GUISettings.cpp in Sources */,

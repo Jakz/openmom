@@ -18,6 +18,7 @@ unordered_map<I18, const string> i18n::data =
   {I18::CITY_CAPITOL, "Capitol"},
   
   {I18::MESSAGE_NEW_BUILDING, "The %s of %s has completed the construction of a %s."},
+  {I18::MESSAGE_OUTPOST_GROWN_TO_CITY, "The outpost of %s has grown into a hamlet."},
   
   {I18::SURVEYOR_CITY_FORBID_DISTANCE, "Cities cannot be built less than 3 squares form any other city."},
   {I18::SURVEYOR_CITY_FORBID_WATER, "Cities cannot be built on water."},

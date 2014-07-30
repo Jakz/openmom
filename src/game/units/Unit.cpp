@@ -19,13 +19,13 @@ void HitPoints::healAll()
   data.assign(unit.getProperty(Property::FIGURES), unit.getProperty(Property::HIT_POINTS));
 }
 
-void HitPoints::applyDamage(const combat::Damage& damage)
+void HitPoints::applyDamage(const Damage& damage)
 {
   switch (damage.type) {
-    case combat::Damage::Type::SINGLE: applyDamage(static_cast<const combat::DamageSingle&>(damage).amount); break;
-    case combat::Damage::Type::EACH_SAME: applySameDamageToEachFigure(static_cast<const combat::DamageEachSame&>(damage).amount); break;
-    case combat::Damage::Type::EACH_DIFFERENT: applyDifferentDamageToEachFigure(static_cast<const combat::DamageEachDifferent&>(damage).amounts); break;
-    case combat::Damage::Type::EACH_FATAL: killFigures(static_cast<const combat::DamageEachFatal&>(damage).amounts); break;
+    case Damage::Type::SINGLE: applyDamage(static_cast<const DamageSingle&>(damage).amount); break;
+    case Damage::Type::EACH_SAME: applySameDamageToEachFigure(static_cast<const DamageEachSame&>(damage).amount); break;
+    case Damage::Type::EACH_DIFFERENT: applyDifferentDamageToEachFigure(static_cast<const DamageEachDifferent&>(damage).amounts); break;
+    case Damage::Type::EACH_FATAL: killFigures(static_cast<const DamageEachFatal&>(damage).amounts); break;
   }
 }
 
