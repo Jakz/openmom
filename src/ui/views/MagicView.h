@@ -18,24 +18,45 @@ class MagicView : public View
 private:
   enum Button
   {
-    OPTIONS_OK,
-    OPTIONS_CANCEL,
-    OPTIONS_DIFFICULTY,
-    OPTIONS_OPPONENTS,
-    OPTIONS_LAND_SIZE,
-    OPTIONS_MAGIC,
+    ALCHEMY,
+    OK,
     
     BUTTON_COUNT
   };
   
-  void draw() override { }
+  struct WandHoverInfo
+  {
+    s8 index;
+    float percent;
+    bool top;
+  };
+  
+  struct ManaDest
+  {
+    float v;
+    bool locked;
+    u8 index;
+  };
+  
+  ManaDest dests[3] = {{0.0f,false,0},{0.0f,false,1},{0.0f,false,2}};
+  const u8 DESTS = 3;
+  
+  void draw() override;
   void drawPost() override { }
+
+  WandHoverInfo hoveredWand(u16 x, u16 y);
   
 public:
   MagicView(ViewManager* gvm);
   
-  void activate() override { }
+  void activate() override;
   void deactivate() override { }
+  
+  void mouseReleased(u16 x, u16 y, MouseButton b) override;
+  void mouseDragged(u16 x, u16 y, MouseButton b) override;
+  
+  void updateValues(u16 dest);
+  void setPercent(u16 dest, float v);
 };
 
 #endif

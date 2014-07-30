@@ -63,6 +63,8 @@ private:
 public:
   Relation(Player* from, Player* to) : from(from), to(to), level(&RelationLevel::LEVELS[static_cast<u16>(RelationLevel::ID::NEUTRAL)]), discovered(false), dp(0) { }
   
+  bool isDiscovered() const { return discovered; }
+  
   s16 points() { return dp; }
   void incr(s16 v) { dp += v; level = RelationLevel::getByDP(dp); }
 };

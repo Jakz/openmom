@@ -43,7 +43,8 @@ MainView::MainView(ViewManager *gvm) : View(gvm)
   buttons[BUILD] = TristateButton::build("Build", 280, 186, TextureID::MAIN_SMALL_BUTTONS, 3);
   // CANCEL BUTTON MISSING
   
-  buttons[SPELLS]->setAction([gvm](){ gvm->switchView(VIEW_MAGIC); });
+  buttons[SPELLS]->setAction([gvm](){ gvm->switchOverview(VIEW_SPELL_BOOK); });
+  buttons[MAGIC]->setAction([gvm](){ gvm->switchView(VIEW_MAGIC); });
   buttons[ARMIES]->setAction([gvm](){ gvm->switchView(VIEW_ARMIES); });
   buttons[PLANE]->setAction([this](){ player->switchPlane(); switchToNormalState(); });
   buttons[NEXT]->setAction([this](){ LocalGame::i->getGame()->nextTurn(); switchToNormalState(); });

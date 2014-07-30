@@ -116,6 +116,8 @@ protected:
 public:
   Player(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight);
 
+  bool isAlive() const { return alive; }
+  
   void spendGold(s32 amount) { goldPool -= amount; }
   
   u8 getTaxRate() const{ return taxRate; }
@@ -131,6 +133,7 @@ public:
   s32 castingSkillGained() const { return castingSkillGained_; }
   s32 manaRatio(u8 index) const { return manaRatios[index]; }
   s32 getAvailableMana() const { return availableMana; }
+  s32 getManaGain() const { return manaGain; }
   
   void alchemy(s32 gold, s32 mana) { goldPool += gold; manaPool -= mana; }
   
