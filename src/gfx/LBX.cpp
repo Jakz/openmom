@@ -22,6 +22,9 @@
 
 using namespace std;
 
+const Color BLACK_ALPHA = RGB(0, 255, 0);
+const Color TRANSPARENT = RGB(255, 0, 255);
+
 static const Color PALETTE[256] =
 {
   RGB(0x0, 0x0, 0x0),
@@ -400,10 +403,16 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
 {
   s32 i = 0, x = 0;
   const u32 w = header.width, h = header.height;
-  s32 y = h;
+  s32 y = 0;
+  
+  //printf(">>>>>>>>>>>>>>>>>> FRAME %d\n", index);
   
   if (index > 0 && data[i] == 1)
-    memset(image, 0x00, sizeof(Color)*header.width*header.height);
+  {
+    //printf("CLEARING FRAME %d\n", index);
+    for (int k = 0; k < header.width*header.height; ++k)
+      static_cast<u32*>(image)[k] = TRANSPARENT;
+  }
   
   ++i;
   
@@ -431,8 +440,9 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
       
       if (data[i] == 0x00) RLE_val = pheader.firstIndex + pheader.count;
       else if (data[i] == 0x80) RLE_val = 0xE0;
-      else printf("UNRECOGNIZED RLE VALUE: %u\n", data[i]);
+      //else printf("UNRECOGNIZED RLE VALUE: %u\n", data[i]);
       
+      //printf("%d,%d..%d COLUMN SKIPPED\n", x, y, data[i+3]-1);
       y = data[i + 3];
       i += 4;
       
@@ -449,6 +459,7 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
             rleLength = data[n_r] - RLE_val + 1;
             rleCounter = 0;
             
+            //printf("%d,%d..%d RLE -> %d\n", x, y, y+rleCounter, data[lastPos]);
             
             while (rleCounter < rleLength && y < h)
             {
@@ -456,7 +467,7 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
               {
                 image[x + y*w] = palette[data[lastPos]];
               }
-              else printf("RLE OVERRUN: %d,%d\n",x,y);
+              //else printf("RLE OVERRUN: %d,%d\n",x,y);
               
               ++y;
               ++rleCounter;
@@ -469,6 +480,8 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
             if (x >= 0 && x < w && y >= 0 && y < h)
             {
               image[x + y*w] = palette[data[n_r]];
+              //printf("%d,%d SINGLE -> %d\n", x, y, data[n_r]);
+
             }
             
             ++n_r;
@@ -478,15 +491,19 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
         
         if (n_r < nextCtl)
         {
+          //printf("ANOTHER RLE\n");
           y += data[n_r + 1];
           i = n_r + 2;
           longData = data[n_r];
           n_r += 2;
         }
-        
-        i = nextCtl;
       }
+      
+      i = nextCtl;
     }
+    
+    /*if (y != h)
+      printf("%d,%d..%d -> EMPTY COLUMN\n", x, y, h-1);*/
     
     ++x;
   }
@@ -507,7 +524,7 @@ void scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
   Color* palette = new Color[256];
   memcpy(palette, PALETTE, sizeof(Color)*256);
 
-  LBXPaletteHeader paletteHeader = {0,0,255};
+  LBXPaletteHeader paletteHeader = {0,0,256};
   
   // there is a palette
   if (gfxHeader.paletteOffset > 0)
@@ -531,14 +548,14 @@ void scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
   for (int i = 0; i < 256; ++i)
   {
     if (palette[i] == 0xFFA0A0B4 || palette[i] == 0xFF8888A4)
-      palette[i] = 0x80000000;
+      palette[i] = BLACK_ALPHA; //palette[i] = 0x80000000;
     else if (i == 0)
-      palette[i] = 0x00000000;
+      palette[i] = TRANSPARENT; //palette[i] = 0x00000000;
   }
   
   SDL_Surface *image = Gfx::createSurface(gfxHeader.width, gfxHeader.height);
   Gfx::lock(image);
-  memset(image->pixels, 0, sizeof(u32)*image->w*image->h);
+  SDL_FillRect(image, nullptr, TRANSPARENT);
   
   for (int i = 0; i < gfxHeader.count; ++i)
   {
@@ -551,7 +568,6 @@ void scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
     printf("      FRAME %d AT OFFSET %d (SIZE: %d)\n", i, frameOffsets[i], dataSize);
     
     
-    Gfx::lock(image);
     scanGfxFrame(gfxHeader, paletteHeader, i, palette, static_cast<Color*>(image->pixels), data, dataSize);
     Gfx::unlock(image);
     
@@ -574,8 +590,8 @@ void scanFileNames(LBXHeader& header, LBXOffset* offsets, FILE *in)
   
   fread(names, sizeof(LBXFileName), header.count, in);
   
-  //int i = 1;
-  for (int i = 0; i < header.count; ++i)
+  int i = 25;
+  //for (int i = 0; i < header.count; ++i)
   {
     printf("> (%d) %s %s (%u)\n", i, names[i].folder, names[i].name, offsets[i]);
     scanGfx(header, offsets[i], in);
@@ -600,7 +616,7 @@ void scanFile(std::string& name)
     LBXOffset* offsets = new LBXOffset[header.count+1];
     fread(offsets, sizeof(LBXOffset), header.count+1, in);
     
-    if (name == "wizards.lbx")
+    if (name == "diplomac.lbx")
       scanFileNames(header, offsets, in);
     
     /*if (header.type == 5)
