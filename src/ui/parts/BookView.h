@@ -26,11 +26,11 @@ public:
       pages.resize(size, ResearchStatus(nullptr));
     }
     
-    u16 actualSize() { return std::accumulate(pages.begin(), pages.end(), 0, [](u16 c, const ResearchStatus& rs) { return c + (rs.spell != nullptr ? 1 : 0); }); }
-    bool isFull() { return actualSize() == size; }
-    const ResearchStatus& at(u16 i) { return pages[i]; }
-    bool isResearch() { return research; }
-    I18 getTitle() { return title; }
+    u16 actualSize() const { return std::accumulate(pages.begin(), pages.end(), 0, [](u16 c, const ResearchStatus& rs) { return c + (rs.spell != nullptr ? 1 : 0); }); }
+    bool isFull() const { return actualSize() == size; }
+    const ResearchStatus& at(u16 i) const { return pages[i]; }
+    bool isResearch() const { return research; }
+    I18 getTitle() const { return title; }
     
     void put(ResearchStatus& rs) {
       for (int i = 0; i < size; ++i)
@@ -58,8 +58,8 @@ public:
   void nextPage() { currentPage += 2; }
   void prevPage() { currentPage -= 2; }
   
-  const Page& current() const { return bookPages[currentPage]; }
-  const Page& current(s16 i) const { return bookPages[currentPage+i]; }
+  const Page* current() const { return bookPages.size() > currentPage ? &bookPages[currentPage] : nullptr; }
+  const Page* current(s16 i) const { return bookPages.size() > currentPage+i ? &bookPages[currentPage+i] : nullptr; }
   
   const Page& get(s16 i) { return bookPages[i]; }
   

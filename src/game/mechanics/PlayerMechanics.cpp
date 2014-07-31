@@ -182,7 +182,7 @@ void PlayerMechanics::updateSpellCast(Player *player)
     if (player->spellBook.spendManaForCast(manaAvailable))
     {
       castSpell(player, spell);
-      player->spellBook.cancelCast();
+      //player->spellBook.cancelCast(); // TODO: if you cancel it then since it is required by mechanics (eg. unit spell) it crashes, if you don't it keeps casting it
     }
     
     // remove mana spent during this turn for the spell cast

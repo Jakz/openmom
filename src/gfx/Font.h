@@ -95,6 +95,18 @@ class Font
     return l;
   }
   
+  u16 stringWidth(const std::vector<const std::string>& tokens, s8 hSpace, u16 s, u16 e)
+  {
+    u16 l = 0;
+    
+    for (u16 i = s; i <= e; ++i)
+      l += stringWidth(tokens[i], hSpace);
+
+    l += (e-s)*hSpace;
+    
+    return l;
+  }
+  
   protected:
     Font(TextureID tex, s16 w, s16 h, s16 hor, s16 ver, s16 space, const ColorMap* map = nullptr) :
       texture(tex), w(w), h(h), hor(hor), ver(ver), space(space), map(map)
@@ -278,7 +290,7 @@ class Fonts
     static s16 vSpace, hSpace;
     static const ColorMap *map, *omap;
     static Font fonts[];
-    static std::unordered_map<s8, ColorMap*> fontColors;
+    static std::unordered_map<char, const ColorMap*> fontColors;
   
   public:
     static std::string format(const char* str, ...);

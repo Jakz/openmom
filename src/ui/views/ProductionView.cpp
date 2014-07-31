@@ -155,8 +155,8 @@ void ProductionView::setCty(City *city)
 {
   this->city = city;
   
-  auto buildings = g->cityMechanics.availableBuildings(city);
-  auto units = g->cityMechanics.availableUnits(city);
+  auto buildings = city->getOwner()->game()->cityMechanics.availableBuildings(city); //TODO: should use inner game, not the player one
+  auto units = city->getOwner()->game()->cityMechanics.availableUnits(city);
   
   left.clear();
   right.clear();

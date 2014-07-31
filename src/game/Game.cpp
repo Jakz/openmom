@@ -18,7 +18,7 @@
 
 using namespace std;
 
-Game::Game() : world(new World(this, 60,40)), mapMechanics(*this), spellMechanics(*this), eventMechanics(*this), cityMechanics(*this), playerMechanics(*this), combatMechanics(*this), firstTurn(true), turnCounter(0)
+Game::Game() : world(new World(this, 60,40)), mapMechanics(*this), spellMechanics(*this), eventMechanics(*this), cityMechanics(this), playerMechanics(*this), combatMechanics(*this), firstTurn(true), turnCounter(0)
 {
   
 }
@@ -100,6 +100,9 @@ void Game::dummyInit()
   player->fog()->setRect(0, 0, 60, 40, ARCANUS);
   player->fog()->setRect(0, 0, 60, 40, MYRRAN);
   player->setViewport(5, 5);
+  
+  player->book()->discoverSpell(Spells::BLESS);
+  player->book()->discoverSpell(Spells::CORRUPTION);
   
   new LocalGame(this);
   

@@ -11,6 +11,10 @@
 
 #include "View.h"
 
+#include "BookView.h"
+
+enum SpellKind : u8;
+
 class ViewManager;
 
 class SpellBookView : public View
@@ -18,23 +22,25 @@ class SpellBookView : public View
 private:
   enum Button
   {
-    OPTIONS_OK,
-    OPTIONS_CANCEL,
-    OPTIONS_DIFFICULTY,
-    OPTIONS_OPPONENTS,
-    OPTIONS_LAND_SIZE,
-    OPTIONS_MAGIC,
+    PREV_PAGE,
+    NEXT_PAGE,
     
     BUTTON_COUNT
   };
   
-  void draw() override { }
+  BookView *book;
+  bool combatMode;
+
+  void draw() override;
   void drawPost() override { }
+  
+  void drawPage(u16 index);
+  void startCast(const ResearchStatus& spell);
   
 public:
   SpellBookView(ViewManager* gvm);
   
-  void activate() override { }
+  void activate() override;
   void deactivate() override { }
 };
 

@@ -313,7 +313,7 @@ s16 CityMechanics::countSurroundTileType(const City* city, TileType type)
     for (int y = -2; y <= 2; ++y)
       if ((x != 2 && x != -2) || (y != 2 && y != -2))
       {
-        Tile* t = g.world->get(city->position.x + x, city->position.y + y, city->position.plane);
+        Tile* t = game->world->get(city->position.x + x, city->position.y + y, city->position.plane);
         if (t && t->type == type)
           ++count;
       }
@@ -329,7 +329,7 @@ s16 CityMechanics::countSurroundResource(const City* city, Resource type)
     for (int y = -2; y <= 2; ++y)
       if ((x != 2 && x != -2) || (y != 2 && y != -2))
       {
-        Tile* t = g.world->get(city->position.x + x, city->position.y + y, city->position.plane);
+        Tile* t = game->world->get(city->position.x + x, city->position.y + y, city->position.plane);
         if (t && t->resource == type)
           ++count;
       }
@@ -345,7 +345,7 @@ s16 CityMechanics::countSurroundManaNode(const City* city, School type)
     for (int y = -2; y <= 2; ++y)
       if ((x != 2 && x != -2) || (y != 2 && y != -2))
       {
-        Tile* t = g.world->get(city->position.x + x, city->position.y + y, city->position.plane);
+        Tile* t = game->world->get(city->position.x + x, city->position.y + y, city->position.plane);
         if (t && t->node && t->node->school == type)
           ++count;
       }
@@ -373,7 +373,7 @@ s16 CityMechanics::computeInitialPopulationGrowth(const City* city)
   // let's compute the chance to increase outpost population
   float increaseChance = 0;
   
-  Tile* t = g.world->get(city->position);
+  Tile* t = game->world->get(city->position);
   
   // according to race there is a base chance of growing
   increaseChance += city->race.outpostGrowthChance;
@@ -386,7 +386,7 @@ s16 CityMechanics::computeInitialPopulationGrowth(const City* city)
     for (int y = -2; y <= 2; ++y)
       if ((x != 2 && x != -2) || (y != 2 && y != -2))
       {
-        Tile *t = g.world->get(city->position.x+x, city->position.y+y, city->position.plane);
+        Tile *t = game->world->get(city->position.x+x, city->position.y+y, city->position.plane);
         if (t && t->resource != Resource::NONE)
         {
           switch (t->resource)
@@ -626,7 +626,7 @@ s16 CityMechanics::computeMaxPopulationForTile(const Tile* tile)
       {
         if (tile)
         {
-          Tile* t = g.world->get(tile->position.x + x, tile->position.y + y, tile->position.plane);
+          Tile* t = game->world->get(tile->position.x + x, tile->position.y + y, tile->position.plane);
           if (t->resource == Resource::WILD_GAME)
             maxPop += 2.0f;
           else if (t->node && (t->node->school == SORCERY || t->node->school == NATURE))
@@ -652,7 +652,7 @@ s16 CityMechanics::computeMaxPopulationForTile(const Tile* tile)
 
 s16 CityMechanics::computeMaxPopulation(const City *city)
 {
-  float maxPop = computeMaxPopulationForTile(g.world->get(city->position));
+  float maxPop = computeMaxPopulationForTile(game->world->get(city->position));
   
   if (city->hasBuilding(Building::GRANARY))
     maxPop += 2.0f;
@@ -706,7 +706,7 @@ void CityMechanics::updateProduction(City *c)
     }
     else
     {
-      Tile* t = g.world->get(c->position);
+      Tile* t = game->world->get(c->position);
       Army* a = t->army;
       
       if (!a)
@@ -722,7 +722,7 @@ void CityMechanics::updateProduction(City *c)
         
         for (int i = 0; i < Util::DIRS_LENGTH; ++i)
         {
-          t = g.world->get(c->position, Util::DIRS[i]);
+          t = game->world->get(c->position, Util::DIRS[i]);
           a = t->army;
           
           if (a && a->getOwner() == c->owner && a->size() < 9)
@@ -737,7 +737,7 @@ void CityMechanics::updateProduction(City *c)
         {
           for (int i = 0; i < Util::DIRS_LENGTH; ++i)
           {
-            t = g.world->get(c->position, Util::DIRS[i]);
+            t = game->world->get(c->position, Util::DIRS[i]);
             a = t->army;
             
             if (!a)
@@ -752,8 +752,8 @@ void CityMechanics::updateProduction(City *c)
       
       c->productionPool = 0;
       updateValues(c);
-      g.playerMechanics.updatePools(c->owner);
-      g.playerMechanics.updateGlobalGains(c->owner);
+      game->playerMechanics.updatePools(c->owner);
+      game->playerMechanics.updateGlobalGains(c->owner);
     }
   }
 }
@@ -778,7 +778,7 @@ void CityMechanics::growCity(City *c)
 
 bool CityMechanics::canCityBeBuiltOnTile(Tile *t)
 {
-  World* w = g.world;
+  World* w = game->world;
   
   if (!t || t->city || (t->type == TILE_WATER || t->type == TILE_SHORE))
     return false;

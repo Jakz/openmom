@@ -17,8 +17,10 @@ s16 Fonts::hSpace = 0;
 const ColorMap* Fonts::map = nullptr;
 const ColorMap* Fonts::omap = nullptr;
 
-unordered_map<s8, ColorMap*> Fonts::fontColors = {
-  
+unordered_map<char, const ColorMap*> Fonts::fontColors = {
+  {'s', &FontMap::Serif::SILVER_SHADOW},
+  {'y', &FontMap::Small::YELLOW_PALE},
+  {'w', &FontMap::Small::WHITE_PALE}
 };
 
 Font Fonts::fonts[] = {
@@ -95,7 +97,7 @@ const string Fonts::join(vector<const string>& tokens, s16 s, s16 e)
 {
   string result = tokens[s];
   
-  for (int i = s; i <= e; ++i)
+  for (int i = s+1; i <= e; ++i)
     result += " "+tokens[i];
 
   return result;
@@ -225,7 +227,7 @@ u16 Fonts::drawStringBounded(const string str, int x, int y, int bound, TextAlig
     while (e < words.size() - 1)
     {
       ++e;
-      int w = font->stringWidth(join(words,s,e), hSpace);
+      int w = font->stringWidth(join(words,s,e),hSpace);
       
       if (w > bound)
       {

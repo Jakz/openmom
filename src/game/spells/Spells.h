@@ -25,7 +25,7 @@ enum SpellRarity : u8
 
 enum class SpellType : u8
 {
-  CITY,
+  CITY = 0,
   GLOBAL,
   GLOBAL_SKILL,
   UNIT_SKILL,
@@ -47,12 +47,14 @@ enum SpellKind : u8
   KIND_UNIT_SPELL,
   KIND_COMBAT_SPELL,
   
-  KIND_COUNT
+  KIND_COUNT,
+  
+  KIND_NONE
 };
 
 enum SpellDuration : u8
 {
-  COMBAT_INSTANT,
+  COMBAT_INSTANT = 0,
   CONTINUOUS,
   COMBAT_CONTINUOUS,
   COMBAT_ENCHANTMENT,
@@ -62,7 +64,7 @@ enum SpellDuration : u8
 
 enum class Target : u8
 {
-  FRIENDLY_UNIT,
+  FRIENDLY_UNIT = 0,
   ENEMY_UNIT,
   FRIENDLY_CITY,
   ENEMY_CITY,
@@ -170,10 +172,10 @@ public:
 class SpecialSpell : public Spell
 {
 public:
-  SpecialSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 manaCostDelta, Target Target) :
+  SpecialSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 manaCostDelta, Target target) :
     Spell(name, SpellType::SPECIAL, rarity, KIND_SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, -1, -1, 0}) { }
   
-  SpecialSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 manaCostDelta, s16 combatManaCost, s16 combatManaCostDelta, Target Target) :
+  SpecialSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 manaCostDelta, s16 combatManaCost, s16 combatManaCostDelta, Target target) :
     Spell(name, SpellType::SPECIAL, rarity, KIND_SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, combatManaCost, combatManaCostDelta, 0}) { } // TODO: will upkeep be always 0?
 };
 
