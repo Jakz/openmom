@@ -311,12 +311,7 @@ const vector<string> findFiles(string path, const char *ext)
   return packs;
 }
 
-struct LBXHeader
-{
-  u16 count;
-  u32 magic;
-  u16 type;
-} __attribute__((__packed__));
+
 
 struct LBXArray
 {
@@ -324,8 +319,7 @@ struct LBXArray
   u16 size;
 } __attribute__((__packed__));
 
-typedef u32 LBXOffset;
-
+/*
 void scanArray(LBXOffset offset, LBXArray& info, FILE *in)
 {
   fseek(in, offset, SEEK_SET);
@@ -337,8 +331,9 @@ void scanArray(LBXOffset offset, LBXArray& info, FILE *in)
     fread(buffer, 1, info.size, in);
     printf("  > %s\n",buffer);
   }
-}
+}*/
 
+/*
 void scanArrayFile(LBXHeader& header, LBXOffset* offsets, FILE *in)
 {
   LBXArray* arrays = new LBXArray[header.count];
@@ -362,7 +357,7 @@ void scanArrayFile(LBXHeader& header, LBXOffset* offsets, FILE *in)
       scanArray(offsets[i]+sizeof(LBXArray), arrays[i], in);
     }
   }
-}
+}*/
 
 struct LBXFileName
 {
@@ -510,7 +505,7 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
   
 }
 
-void scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
+void LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
 {
   fseek(in, offset, SEEK_SET);
   LBXGfxHeader gfxHeader;
@@ -582,7 +577,7 @@ void scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
   delete [] palette;
 }
 
-void scanFileNames(LBXHeader& header, LBXOffset* offsets, FILE *in)
+void LBX::scanFileNames(LBXHeader& header, offset_list& offsets, FILE *in)
 {
   fseek(in, offsets[0] - sizeof(LBXFileName)*header.count, SEEK_SET);
   
@@ -590,45 +585,230 @@ void scanFileNames(LBXHeader& header, LBXOffset* offsets, FILE *in)
   
   fread(names, sizeof(LBXFileName), header.count, in);
   
-  int i = 25;
-  //for (int i = 0; i < header.count; ++i)
+  //int i = 25;
+  for (int i = 0; i < header.count; ++i)
   {
-    printf("> (%d) %s %s (%u)\n", i, names[i].folder, names[i].name, offsets[i]);
-    scanGfx(header, offsets[i], in);
+    printf("> (%d) %s/%s (%u %08X)\n", i, names[i].folder, names[i].name, offsets[i], offsets[i]);
+    //scanGfx(header, offsets[i], in);
   }
 }
 
 static std::string path;
 
-void scanFile(std::string& name)
+bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
-  FILE *in = fopen((path+name).c_str(), "rb");
-  
-  LBXHeader header;
   fread(&header, sizeof(header), 1, in);
   
   if (header.magic == 0x0000FEAD)
   {
-    /*cout << "FILE: " << name;
-    cout << "  entries: " << header.count;
-    cout << "  type: " << header.type << endl;*/
-
-    LBXOffset* offsets = new LBXOffset[header.count+1];
-    fread(offsets, sizeof(LBXOffset), header.count+1, in);
+    offsets.resize(header.count);
+    fread(&offsets[0], sizeof(LBXOffset), header.count+1, in);
     
-    if (name == "diplomac.lbx")
-      scanFileNames(header, offsets, in);
-    
-    /*if (header.type == 5)
-    {
+    return true;
+  }
+  
+  return false;
+}
 
-      
-      scanArrayFile(header, offsets, in);
-    }*/
+static const u16 FONT_NUM = 8;
+static const u16 FONT_CHAR_NUM = 0x5E;
+
+void LBX::scanFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
+{
+  // position to start of character heights resource
+  fseek(in, offsets[0] + 0x16A, SEEK_SET);
+
+  u16 *heights = new u16[8];
+  fread(heights, FONT_NUM, sizeof(u16), in);
+  
+  // position to start of character widths
+  fseek(in, offsets[0] + 0x19A, SEEK_SET);
+  
+  u8 **widths = new u8*[FONT_NUM];
+  
+  // read widths
+  for (int i = 0; i < FONT_NUM; ++i)
+  {
+    // read 5E bytes for widths of current font
+    widths[i] = new u8[FONT_CHAR_NUM]; // 94
+    fread(widths[i], 1, FONT_CHAR_NUM, in);
+
+    // skip 2 control characters
+    u8 padding[2];
+    fread(padding, 1, 2, in);
+    if (padding[0] != 0 || padding[1] != 0)
+      printf("ERROR!\n");
   }
   
   
-  fclose(in);
+  // position to start of character offsets
+  fseek(in, offsets[0] + 0x49A, SEEK_SET);
+  
+  u16 **foffsets = new u16*[FONT_NUM];
+  
+  for (int i = 0; i < FONT_NUM; ++i)
+  {
+    foffsets[i] = new u16[FONT_CHAR_NUM];
+    
+    fread(foffsets[i], sizeof(u16), FONT_CHAR_NUM, in);
+    
+    u16 padding[2];
+    fread(&padding, sizeof(u16), 2, in);
+  }
+  
+  //int i = 0;
+  for (int i = 0; i < FONT_NUM; ++i)
+  {
+    u8 width = 0;
+    for (int j = 0; j < FONT_CHAR_NUM; ++j) width = std::max(widths[i][j], width);
+    width += 2;
+    
+    SDL_Surface *image = Gfx::createSurface(FONT_CHAR_NUM*(width), heights[i]+2);
+    Gfx::lock(image);
+    u32* pixels = static_cast<u32*>(image->pixels);
+    
+    for (int j = 0; j < FONT_CHAR_NUM; ++j)
+    {
+      printf("      CHAR %d (%c)\n",j,j+32);
+      
+      fseek(in, offsets[0] + foffsets[i][j], SEEK_SET);
+      
+      u16 bx = (width)*j;
+      u16 x = 0, y = 0;
+      u8 data;
+      
+      while (x < widths[i][j])
+      {
+        fread(&data, 1, 1, in);
+        
+        u8 high = (data >> 4) & 0x0F;
+        u8 low = data & 0x0F;
+        
+        Color color;
+        u8 strain = 0;
+        
+        if (high == 0x08)
+        {
+          color = 0x00000000;
+          strain = low;
+          
+          if (strain > 0)
+            printf("%d,%d..%d STRAIN TRANSPARENT\n", x, y, y+strain-1);
+          else
+            printf("%d,%d..%d SKIPPING\n", x, y, heights[i]-1);
+        }
+        else
+        {
+          printf(">>>>>>>>>>>>>>>>>>>>>>>> LOW %d\n", low);
+          color = 0xFF000000 | low;//RGB((low+1)*15,(low+1)*15,(low+1)*15);
+          strain = high;
+          
+          if (strain > 0)
+            printf("%d,%d..%d STRAIN %8X\n", x, y, y+strain-1, color);
+          else
+            printf("%d,%d..%d SKIPPING\n", x, y, heights[i]-1);
+        }
+        
+        if (strain == 0)
+        {
+          ++x;
+          y = 0;
+        }
+        else
+        {
+          for (int k = 0; k < strain; ++k)
+          {
+            if (color > 0)
+              pixels[bx+x + (y+1)*image->w] = color;
+            ++y;
+          }
+        }
+      }
+    }
+    
+    u8 maxColor = 0;
+    for (int i = 0; i < image->w*image->h; ++i)
+    {
+      Color *pixel = &pixels[i];
+      if (*pixel & 0xFF000000)
+        maxColor = std::max(maxColor, u8(*pixel & 0xFF));
+    }
+
+    u8 lightStroke = 0x29;
+    u8 darkStroke = 0x30;
+    
+    s8 dirs[8][2] = {{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1}};
+    
+    // precompute font stroke
+    for (int x = 0; x < image->w; ++x)
+      for (int y = 0; y < image->h; ++y)
+      { 
+        bool hasLightStroke = false, hasDarkStroke = false;
+        
+        for (int d = 0; d < 8; ++d)
+        {
+          int dx = x + dirs[d][0];
+          int dy = y + dirs[d][1];
+          
+          if (dx >= 0 && dy >= 0 && dx < image->w && dy < image->h)
+          {
+            Color pixel = pixels[dx + dy*image->w];
+            
+            if ((pixel & 0xFF000000) && (pixel & 0xFF) <= maxColor && pixels[x + y*image->w] == 0)
+            {
+              hasLightStroke |= (d == 1 || d == 2 || d == 3 || d == 4 || d == 5 || d == 6);
+              hasDarkStroke |= (d == 0 || ((d == 7 || d == 6) && ((pixel & 0xFF) > 0)) );
+            }
+          }
+        }
+
+        if (hasDarkStroke)
+          pixels[x + y*image->w] = 0xFF000000 | darkStroke;
+        else if (hasLightStroke)
+          pixels[x + y*image->w] = 0xFF000000 | lightStroke;
+
+      }
+    
+    maxColor += 1;
+    
+    
+    
+    for (int i = 0; i < image->w*image->h; ++i)
+    {
+      Color *pixel = &static_cast<u32*>(image->pixels)[i];
+      if (*pixel & 0xFF000000)
+      {
+        if ((*pixel & 0xFF) < 0x29)
+        {
+          float ratio = ((*pixel & 0xFF)+1) / (float)maxColor;
+          *pixel = RGB((u8)(ratio*255),(u8)(ratio*255),(u8)(ratio*255));
+        }
+        else
+        {
+          if ((*pixel & 0xFF) == 0x29)
+            *pixel = RGB(160,0,0);
+          else
+            *pixel = RGB(80,0,0);
+        }
+      }
+    }
+
+    
+    Gfx::unlock(image);
+    SDL_SaveBMP(image, (string("font") + to_string(i) + ".bmp").c_str());
+    SDL_FreeSurface(image);
+  }
+  
+  
+  
+  /*for (int i = 0; i < FONT_NUM; ++i)
+  {
+    printf("Font %d, height: %d\n  ", i, heights[i]);
+    for (int j = 0; j < 0x5E; ++j)
+      printf("%d(%04X) ", widths[i][j], foffsets[i][j]);
+    printf("\n");
+  }*/
+  
 }
 
 
@@ -639,6 +819,23 @@ void LBX::load()
   auto files = findFiles(path, ".lbx");
   
   for (auto f : files)
-    scanFile(f);
+  {
+    if (f == "fonts.lbx")
+    {
+      auto filePath = path + f;
+      
+      LBXHeader header;
+      offset_list offsets;
+      
+      FILE *in = fopen(filePath.c_str(), "rb");
+      
+      loadHeader(header, offsets, in);
+      scanFonts(header, offsets, in);
+      
+      fclose(in);
+    }
+  }
+  
+  
 }
 

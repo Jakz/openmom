@@ -11,10 +11,31 @@
 
 #include "Common.h"
 
+#include <vector>
+
 class LBX
 {
+private:
+  typedef u32 LBXOffset;
+  typedef std::vector<LBXOffset> offset_list;
+  
+  struct LBXHeader
+  {
+    u16 count;
+    u32 magic;
+    u16 type;
+  } __attribute__((__packed__));
+
+  static bool loadHeader(LBXHeader& header, offset_list& offsets, FILE *in);
+  
+  static void scanGfx(LBXHeader& header, LBXOffset offset, FILE *in);
+  static void scanFileNames(LBXHeader& header, offset_list& offsets, FILE *in);
+
+  static void scanFonts(LBXHeader& header, std::vector<LBXOffset>& offsets, FILE *in);
+  
 public:
   static void load();
+
 };
 
 #endif
