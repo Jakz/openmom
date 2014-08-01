@@ -248,7 +248,7 @@ Texture Texture::textures[] =
 };
 
 
-Color Texture::at(u16 x, u16 y, u16 c, u16 r)
+Color Texture::at(u16 x, u16 y, u16 c, u16 r) const
 {
   u16 sx, sy;
   u16 tw = img->w;

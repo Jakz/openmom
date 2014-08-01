@@ -56,7 +56,7 @@ class Button : public Clickable
   
   public:
     Button(const std::string name, u16 x, u16 y, SpriteInfo info) :
-      Clickable(x,y,Texture::get(info.texture).span(info.x),Texture::get(info.texture).h), name(name), pressed(false), visible(true), normalCoords(info)
+      Clickable(x,y,Texture::get(info.texture)->span(info.x),Texture::get(info.texture)->h), name(name), pressed(false), visible(true), normalCoords(info)
     {
     
     }
