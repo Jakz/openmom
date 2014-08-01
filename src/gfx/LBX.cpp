@@ -58,7 +58,7 @@ private:
   const u8 height;
   
 public:
-  FontData(FontType type, u8 height, u8 colorCount) : type(type), height(height)
+  FontData(FontType type, u8 height) : type(type), height(height)
   {
     //for (int i = 0; i < GLYPH_COUNT; ++i)
     //  data[i] = new u8[width*height];
