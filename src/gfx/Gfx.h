@@ -92,6 +92,9 @@ class Gfx
     static u32 ticks;
     static u32 fticks;
     static u32 fticksr;
+  
+  
+    static const Color PALETTE[256];
 };
 
 
