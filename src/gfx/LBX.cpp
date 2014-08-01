@@ -38,14 +38,27 @@ enum FontType
 
 const u16 GLYPH_COUNT = 96;
 
-class FontData
+class SpriteSheet
+{
+  
+public:
+  virtual const u8* dataAt(u16 x = 0, u16 y = 0) const = 0;
+  virtual u16 rows() const = 0;
+  virtual u16 columns() const = 0;
+  
+  virtual u16 w(u16 x = 0) const = 0;
+  virtual u16 h(u16 x = 0) const = 0;
+};
+
+class FontData : public SpriteSheet
 {
 private:
   u8* data[96];
   u8 widths[96];
+  const u8 height;
   
 public:
-  FontData(FontType type, u8 height, u8 colorCount) : type(type), height(height), colorCount(colorCount)
+  FontData(FontType type, u8 height, u8 colorCount) : type(type), height(height)
   {
     //for (int i = 0; i < GLYPH_COUNT; ++i)
     //  data[i] = new u8[width*height];
@@ -63,8 +76,13 @@ public:
     this->widths[index] = width;
   }
   
-  const u8 height;
-  const u8 colorCount;
+  const u8* dataAt(u16 x, u16 y) const override { return data[x]; }
+  u16 rows() const override { return 1; }
+  u16 columns() const override { return GLYPH_COUNT; }
+  u16 w(u16 x) const override { return widths[x]; }
+  u16 h(u16 y) const override { return height; }
+  
+  
   const FontType type;
   
   static constexpr const u8 LIGHT_STROKE_VALUE = 0x80;
