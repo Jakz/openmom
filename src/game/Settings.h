@@ -60,7 +60,8 @@ struct SettingGroup
   const std::string& groupName();
   const std::string& currentValue();
   
-  const SettingID value() { return group[selected].value; }
+  const u8 index() { return selected; }
+  const SettingID value() const { return group[selected].value; }
   
 };
 

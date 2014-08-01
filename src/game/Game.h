@@ -16,6 +16,7 @@
 #include "CityMechanics.h"
 #include "PlayerMechanics.h"
 #include "CombatMechanics.h"
+#include "LairMechanics.h"
 
 #include <list>
 #include <string>
@@ -115,6 +116,7 @@ public:
   CityMechanics cityMechanics;
   PlayerMechanics playerMechanics;
   CombatMechanics combatMechanics;
+  LairMechanics lairMechanics;
   World* const world;
   
   LocalGame* localGame;
