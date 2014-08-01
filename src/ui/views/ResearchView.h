@@ -12,29 +12,30 @@
 #include "View.h"
 
 class ViewManager;
+class BookView;
 
 class ResearchView : public View
 {
 private:
   enum Button
   {
-    OPTIONS_OK,
-    OPTIONS_CANCEL,
-    OPTIONS_DIFFICULTY,
-    OPTIONS_OPPONENTS,
-    OPTIONS_LAND_SIZE,
-    OPTIONS_MAGIC,
+    PREV_PAGE,
+    NEXT_PAGE,
     
     BUTTON_COUNT
   };
   
-  void draw() override { }
+  void draw() override;
   void drawPost() override { }
+  
+  void indexClicked(u16 index);
+  
+  BookView *book;
   
 public:
   ResearchView(ViewManager* gvm);
   
-  void activate() override { }
+  void activate() override;
   void deactivate() override { }
 };
 

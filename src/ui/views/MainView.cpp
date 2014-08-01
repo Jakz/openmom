@@ -415,7 +415,7 @@ void MainView::keyReleased(KeyboardKey key, KeyboardMod mod)
     }
     case SDL_SCANCODE_F1: switchToSurveyor(); break;
     case SDL_SCANCODE_F3: gvm->switchView(VIEW_RESEARCH); break;
-    case SDL_SCANCODE_F9: gvm->switchView(VIEW_MIRROR); break;
+    case SDL_SCANCODE_F9: gvm->switchOverview(VIEW_MIRROR); break;
       
     default: break;
 

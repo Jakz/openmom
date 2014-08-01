@@ -216,7 +216,7 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
       else
         Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, GfxData::rangedGfxIndex(rtype), xx-43, yy-1);
       
-      Fonts::drawString(Fonts::format("Ranged: ",unit->getProperty(Property::RANGED)), FontFace::TEAL_SMALL, xx - 30, yy + 1, ALIGN_LEFT);
+      Fonts::drawString(Fonts::format("Ranged: %d",unit->getProperty(Property::RANGED)), FontFace::TEAL_SMALL, xx - 30, yy + 1, ALIGN_LEFT);
     }
     yy += 10;
     //TextureID::draw(TextureID::UNIT_DETAIL_PROPS, 0, 4, xx-43, yy-1);
@@ -262,12 +262,12 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
     if (unit->getProperty(Property::RANGED) > 0)
     {
       Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, GfxData::rangedGfxIndex(static_cast<Ranged>(unit->getProperty(Property::RANGED_TYPE))), xx+60, yy-1);
-      Fonts::drawString(Fonts::format("Ammo: ",unit->getProperty(Property::AMMO)), FontFace::TEAL_SMALL, xx+73, yy+1, ALIGN_LEFT);
+      Fonts::drawString(Fonts::format("Ammo: %d",unit->getProperty(Property::AMMO)), FontFace::TEAL_SMALL, xx+73, yy+1, ALIGN_LEFT);
     }
     yy += 10;
     yy += 10;
     yy += 10;
     Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, 19, xx+60, yy-1);
-    Fonts::drawString(Fonts::format("Figures: ",unit->getProperty(Property::FIGURES)), FontFace::TEAL_SMALL, xx+73, yy+1, ALIGN_LEFT);
+    Fonts::drawString(Fonts::format("Figures: %d",unit->getProperty(Property::FIGURES)), FontFace::TEAL_SMALL, xx+73, yy+1, ALIGN_LEFT);
   }
 }
