@@ -386,7 +386,7 @@ void LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
   }
   
   SDL_Surface *image = Gfx::createSurface(gfxHeader.width, gfxHeader.height);
-  Gfx::lock(image);
+  SDL_LockSurface(image);
   SDL_FillRect(image, nullptr, TRANSPARENT);
   
   for (int i = 0; i < gfxHeader.count; ++i)
@@ -401,8 +401,8 @@ void LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
     
     
     scanGfxFrame(gfxHeader, paletteHeader, i, palette, static_cast<Color*>(image->pixels), data, dataSize);
-    Gfx::unlock(image);
     
+    SDL_UnlockSurface(image);
     SDL_SaveBMP(image, (to_string(offset)+" "+to_string(i)+".bmp").c_str());
     
     

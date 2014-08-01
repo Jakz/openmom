@@ -371,7 +371,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u1
   {
     for (u32 x = 0; x < w; ++x)
     {
-      if (x+tx < dw && y+ty < gdst->h && x+tx >= 0 && y+ty >= 0)
+      if (x+tx < dw && y+ty < gdst->th() && x+tx >= 0 && y+ty >= 0)
       {
         u32 cs = bs + y*sw + x;
         u32 cd = bd + y*dw + x;
@@ -563,25 +563,25 @@ void Gfx::drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s1
 
 void Gfx::rawDraw(TextureID texture, u16 r, u16 c, u16 x, u16 y)
 {
-  const Texture& tex = Texture::get(texture);
-  blit(tex.img, canvas, tex.w*c, tex.h*r, x, y, tex.w, tex.h);
+  const Texture* tex = Texture::get(texture);
+  blit(tex, canvas, tex->w*c, tex->h*r, x, y, tex->w, tex->h);
 }
 
 void Gfx::draw(TextureID texture, u16 x, u16 y)
 {
-  const Texture& tex = Texture::get(texture);
-  blit(tex.img, activeBuffer, 0, 0, x, y, tex.w, tex.h);
+  const Texture* tex = Texture::get(texture);
+  blit(tex, activeBuffer, 0, 0, x, y, tex->w, tex->h);
 }
 
 void Gfx::draw(TextureID texture, u16 i, u16 x, u16 y)
 {
-  const Texture& tex = Texture::get(texture);
-  draw(texture, i / tex.cols, i % tex.cols, x, y);
+  const Texture* tex = Texture::get(texture);
+  draw(texture, i / tex->cols, i % tex.cols, x, y);
 }
 
 void Gfx::draw(TextureID texture, u16 r, u16 c, u16 x, u16 y)
 {
-  const Texture& tex = Texture::get(texture);
+  const Texture* tex = Texture::get(texture);
   u16 tx = x;
   u16 ty = y;
   u16 tw = 0, th = 0;
