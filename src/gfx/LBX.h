@@ -31,7 +31,7 @@ private:
   static void scanGfx(LBXHeader& header, LBXOffset offset, FILE *in);
   static void scanFileNames(LBXHeader& header, offset_list& offsets, FILE *in);
 
-  static void scanFonts(LBXHeader& header, std::vector<LBXOffset>& offsets, FILE *in);
+  static void loadFonts(LBXHeader& header, std::vector<LBXOffset>& offsets, FILE *in);
   
 public:
   static void load();
