@@ -63,6 +63,14 @@ struct SpriteInfo
   SpriteInfo(TextureID texture, s16 x, s16 y) : texture(texture), x(x), y(y) { }
 };
 
+
+class SpriteSheet
+{
+public:
+  virtual Color at(u16 x, u16 y, u16 c = 0, u16 r = 0);
+};
+
+
 class Upkeep
 {
   public:

@@ -251,7 +251,7 @@ Texture Texture::textures[] =
 
 
 Texture::Texture(TextureID ident, const Texture& source, ColorMap& map) :
-  ident(ident), rows(source.rows), cols(source.cols), w(source.w), h(source.h), ws(source.ws), hs(source.hs), bx(-1), by(-1), animated(false), animFactor(0)
+  ident(ident), rows(source.rows), cols(source.cols), w(source.w), h(source.h), ws(source.ws), hs(source.hs), animated(false), animFactor(0)
 {
   img = Gfx::createSurface(source.img->w, source.img->h);
   

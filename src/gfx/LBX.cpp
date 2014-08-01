@@ -38,49 +38,73 @@ enum FontType
 
 const u16 GLYPH_COUNT = 96;
 
-class SpriteSheet
+
+typedef Color* Palette;
+
+class SpriteRawData
 {
   
 public:
-  virtual const u8* dataAt(u16 x = 0, u16 y = 0) const = 0;
+  virtual u8* dataAt(u16 x, u16 y) const = 0;
   virtual u16 rows() const = 0;
   virtual u16 columns() const = 0;
+  
+  virtual u16 tw() const = 0;
   
   virtual u16 w(u16 x = 0) const = 0;
   virtual u16 h(u16 x = 0) const = 0;
 };
 
-class FontData : public SpriteSheet
+
+class IndexedSpriteSheet : public SpriteSheet
 {
 private:
-  u8* data[96];
-  u8 widths[96];
+  SpriteRawData *rawData;
+  Palette palette;
+  
+public:
+  virtual Color at(u16 x, u16 y, u16 c = 0, u16 r = 0)
+  {
+    const u8* data = rawData->dataAt(c,r);
+    u8 value = data[x + y*rawData->tw()];
+    return palette[value];
+  }
+  
+};
+
+class FontData : public SpriteRawData
+{
+private:
+  u8* data;
+  u8 glyphWidth[GLYPH_COUNT];
+  const u8 width;
   const u8 height;
   
 public:
-  FontData(FontType type, u8 height) : type(type), height(height)
+  FontData(FontType type, u8 height, u8 width) : type(type), height(height), width(width), data(new u8[width*height*GLYPH_COUNT])
   {
-    //for (int i = 0; i < GLYPH_COUNT; ++i)
-    //  data[i] = new u8[width*height];
+    
   }
   
   ~FontData()
   {
     for (int i = 0; i < GLYPH_COUNT; ++i)
-      delete [] data[i];
+      delete data;
   }
   
-  void setGlyph(u8 index, u8 width, u8* data)
+  void setData(u8* data)
   {
-    this->data[index] = data;
-    this->widths[index] = width;
+    this->data = data;
   }
   
-  const u8* dataAt(u16 x, u16 y) const override { return data[x]; }
+  void setGlyphWidth(u8 index, u8 width) {  glyphWidth[index] = width; }
+  
+  u8* dataAt(u16 x = 0, u16 y = 0) const override { return &data[x*width]; }
   u16 rows() const override { return 1; }
   u16 columns() const override { return GLYPH_COUNT; }
-  u16 w(u16 x) const override { return widths[x]; }
-  u16 h(u16 y) const override { return height; }
+  u16 w(u16 x = 0) const override { return width; }
+  u16 h(u16 x = 0) const override { return height; }
+  u16 tw() const override { return width*GLYPH_COUNT; }
   
   const FontType type;
   
@@ -472,16 +496,13 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
   //int i = 0;
   for (int i = 0; i < FONT_NUM; ++i)
   {
-    // allocate storage for all glyphs
-    u8** glyphs = new u8*[GLYPH_COUNT];
-    for (int j = 0; j < GLYPH_COUNT; ++j)
-      glyphs[j] = new u8[(heights[i]+2)*(widths[i][j]+2)]; // add 2 pixels by side for precomputed stroke
-
-    
-    /*u8 width = 0;
+    u8 width = 0;
     for (int j = 0; j < FONT_CHAR_NUM; ++j) width = std::max(widths[i][j], width);
-    width += 2;*/
+    width += 2;
     
+    // allocate storage for all glyphs
+    FontData::fonts[i] = new FontData(static_cast<FontType>(i), heights[i]+2, width);  // add 2 pixels by side for precomputed stroke
+    u16 totalWidth = FontData::fonts[i]->tw();
     //SDL_Surface *image = Gfx::createSurface(FONT_CHAR_NUM*(width), heights[i]+2);
     //Gfx::lock(image);
     //u32* pixels = static_cast<u32*>(image->pixels);
@@ -489,9 +510,8 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
     
     for (int j = 0; j < FONT_CHAR_NUM; ++j)
     {
-      u8* glyph = glyphs[j];
-      u8 width = widths[i][j]+2;
-      
+      u8* glyph = FontData::fonts[i]->dataAt(j);
+
       printf("      CHAR %d (%c)\n",j,j+32);
       
       fseek(in, offsets[0] + foffsets[i][j], SEEK_SET);
@@ -564,7 +584,7 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
             
             if (dx >= 0 && dy >= 0 && dx < width && dy < heights[i]+2 && glyph[x + y*width] == 0)
             {
-              u8 pixel = glyph[dx + dy*width];
+              u8 pixel = glyph[dx + dy*totalWidth];
               
               // if neighbour pixel is a real font pixel
               if (pixel > FontData::DARK_STROKE_VALUE)
@@ -576,21 +596,14 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
           }
           
           if (hasDarkStroke)
-            glyph[x + y*width] = FontData::DARK_STROKE_VALUE;
+            glyph[x + y*totalWidth] = FontData::DARK_STROKE_VALUE;
           else if (hasLightStroke)
-            glyph[x + y*width] = FontData::LIGHT_STROKE_VALUE;
+            glyph[x + y*totalWidth] = FontData::LIGHT_STROKE_VALUE;
           
         }
       
-      
-      // pass the glyph data to the specific font
-      FontData::fonts[i] = new FontData(static_cast<FontType>(i), heights[i]);
-      for (int j = 0; j < GLYPH_COUNT; ++j)
-        FontData::fonts[i]->setGlyph(j, widths[i][j]+2, glyphs[j]);
-
+      FontData::fonts[i]->setGlyphWidth(j, widths[i][j]);
     }
-    
-    delete [] glyphs;
   }
   
   
