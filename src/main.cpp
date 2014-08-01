@@ -10,6 +10,21 @@
 
 #include "LBX.h"
 
+/*
+ Combat
+ CombatAIThread
+ CombatMechanics
+ CombatMind
+ CombatUnitAttack
+ CombatUnitMovement
+ CombatView
+ CombatView.SubState
+ GlobalSpellEffect
+ SpellEffect
+ SpellEffects
+ Spells
+*/
+
 void init()
 {
   Game *game = new Game();
