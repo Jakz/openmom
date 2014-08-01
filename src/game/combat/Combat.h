@@ -5,6 +5,8 @@
 #include "Unit.h"
 #include "Army.h"
 
+#include <unordered_map>
+
 class HitPoints;
 
 class Damage
@@ -61,7 +63,7 @@ private:
   const Player* player;
   
 public:
-  CombatUnit(Unit& unit) : unit(unit), player(unit.getArmy()->getOwner()), moves(unit.getProperty(Property::MOVEMENT)) { }
+  CombatUnit(Unit& unit) : unit(unit), player(unit.getArmy()->getOwner()), moves(unit.getProperty(Property::MOVEMENT)), selected(false) { }
   
   void resetMoves() { moves = unit.getProperty(Property::MOVEMENT); }
   
@@ -73,6 +75,7 @@ public:
   u16 x, y;
   u16 facing;
   u16 moves;
+  bool selected;
 };
 
 class CombatInterface
@@ -87,12 +90,70 @@ public:
   virtual void endTurn();
 };
 
+struct CombatPosition
+{
+  s8 x, y;
+  
+  CombatPosition(CombatUnit *unit) : x(unit->x), y(unit->y) { }
+};
+
+typedef std::unordered_map<CombatPosition,s32> position_map;
+
+
 class Combat
 {
 private:
+  static constexpr u8 W = 11;
+  static constexpr u8 H = 19;
+  
   cast_list spells;
+  Player* players[2];
+  std::list<CombatUnit*> funits, eunits;
+  
+  CombatUnit* selectedUnit;
+  Player* current;
+  
+  s16 tiles[W][H];
+  
+  position_map currents, visited, incoming;
   
 public:
+  Combat(Army* a1, Army* a2);
+  
+  void endTurn();
+  
+  Unit* unitAtTile(u16 x, u16 y);
+  bool isTileEmpty(u16 x, u16 y);
+  
+  const std::list<CombatUnit*>& enemyUnits(Player* player) { return eunits; }
+  const std::list<CombatUnit*>& friendlyUnits(Player* player) { return funits; }
+  
+  void attack(CombatUnit *u1, CombatUnit *u2);
+  
+  void relativeFacing(CombatUnit *u1, CombatUnit *u2);
+  
+  void moveUnit(CombatUnit *unit, u16 x, u16 y);
+  
+  void castEnchantment(const SpellCast &cast) { spells.push_back(cast); }
+  
+  const position_map& reachable(CombatUnit* unit);
+  
+  void deployUnits();
+  
+  void deselect()
+  {
+    selectedUnit->selected = false;
+    selectedUnit = nullptr;
+  }
+  
+  void select(CombatUnit *unit)
+  {
+    if (selectedUnit) selectedUnit->selected = false;
+    
+    selectedUnit = unit;
+    unit->selected = true;
+  }
+  
   const cast_list& getSpells() const { return spells; }
   
 };

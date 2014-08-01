@@ -105,6 +105,21 @@ namespace anims
     bool hasFinished() override;
   };
 
+  class CombatAttack : public ContinuousAnimation
+  {
+  private:
+    
+  public:
+    CombatAttack(const Unit* unit) : ContinuousAnimation(300) { }
+  };
+  
+  class CombatMovement : public ContinuousAnimation
+  {
+  private:
+    
+  public:
+    CombatMovement(const Unit* unit) : ContinuousAnimation(500) { }
+  };
   /*
   class CombatUnitAttackAnimation
   {
