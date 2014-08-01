@@ -31,16 +31,51 @@ enum FontType
   FONT_SERIF,
   FONT_HUGE,
   FONT_TINY_CRYPT,
-  FONT_SERIF_CRYPT
+  FONT_SERIF_CRYPT,
+  
+  FONT_TYPE_COUNT
 };
 
-class FontGlyphs
+const u16 GLYPH_COUNT = 96;
+
+class FontData
 {
 private:
+  u8* data[96];
+  u8 widths[96];
   
 public:
+  FontData(FontType type, u8 height, u8 colorCount) : type(type), height(height), colorCount(colorCount)
+  {
+    //for (int i = 0; i < GLYPH_COUNT; ++i)
+    //  data[i] = new u8[width*height];
+  }
   
+  ~FontData()
+  {
+    for (int i = 0; i < GLYPH_COUNT; ++i)
+      delete [] data[i];
+  }
+  
+  void setGlyph(u8 index, u8 width, u8* data)
+  {
+    this->data[index] = data;
+    this->widths[index] = width;
+  }
+  
+  const u8 height;
+  const u8 colorCount;
+  const FontType type;
+  
+  static constexpr const u8 LIGHT_STROKE_VALUE = 0x80;
+  static constexpr const u8 DARK_STROKE_VALUE = 0x81;
+  
+  static FontData* fonts[FONT_TYPE_COUNT];
 };
+
+FontData* FontData::fonts[FONT_TYPE_COUNT] = {nullptr};
+
+
 
 const Color BLACK_ALPHA = RGB(0, 255, 0);
 const Color TRANSPARENT = RGB(255, 0, 255);
@@ -633,7 +668,7 @@ bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 static const u16 FONT_NUM = 8;
 static const u16 FONT_CHAR_NUM = 0x5E;
 
-void LBX::scanFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
+void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
   // position to start of character heights resource
   fseek(in, offsets[0] + 0x16A, SEEK_SET);
@@ -679,23 +714,35 @@ void LBX::scanFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
   //int i = 0;
   for (int i = 0; i < FONT_NUM; ++i)
   {
-    u8 width = 0;
-    for (int j = 0; j < FONT_CHAR_NUM; ++j) width = std::max(widths[i][j], width);
-    width += 2;
+    // allocate storage for all glyphs
+    u8** glyphs = new u8*[GLYPH_COUNT];
+    for (int j = 0; j < GLYPH_COUNT; ++j)
+      glyphs[j] = new u8[(heights[i]+2)*(widths[i][j]+2)]; // add 2 pixels by side for precomputed stroke
+
     
-    SDL_Surface *image = Gfx::createSurface(FONT_CHAR_NUM*(width), heights[i]+2);
-    Gfx::lock(image);
-    u32* pixels = static_cast<u32*>(image->pixels);
+    /*u8 width = 0;
+    for (int j = 0; j < FONT_CHAR_NUM; ++j) width = std::max(widths[i][j], width);
+    width += 2;*/
+    
+    //SDL_Surface *image = Gfx::createSurface(FONT_CHAR_NUM*(width), heights[i]+2);
+    //Gfx::lock(image);
+    //u32* pixels = static_cast<u32*>(image->pixels);
+
     
     for (int j = 0; j < FONT_CHAR_NUM; ++j)
     {
+      u8* glyph = glyphs[j];
+      u8 width = widths[i][j]+2;
+      
       printf("      CHAR %d (%c)\n",j,j+32);
       
       fseek(in, offsets[0] + foffsets[i][j], SEEK_SET);
-      
-      u16 bx = (width)*j;
+
+      u16 bx = 1;
+      u16 by = 1;
       u16 x = 0, y = 0;
       u8 data;
+      u8 maxColor = 0;
       
       while (x < widths[i][j])
       {
@@ -704,12 +751,12 @@ void LBX::scanFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
         u8 high = (data >> 4) & 0x0F;
         u8 low = data & 0x0F;
         
-        Color color;
+        u8 color;
         u8 strain = 0;
         
         if (high == 0x08)
         {
-          color = 0x00000000;
+          color = 0;
           strain = low;
           
           if (strain > 0)
@@ -720,7 +767,8 @@ void LBX::scanFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
         else
         {
           printf(">>>>>>>>>>>>>>>>>>>>>>>> LOW %d\n", low);
-          color = 0xFF000000 | low;//RGB((low+1)*15,(low+1)*15,(low+1)*15);
+          color = low;
+          maxColor = std::max(maxColor, color);
           strain = high;
           
           if (strain > 0)
@@ -739,84 +787,53 @@ void LBX::scanFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
           for (int k = 0; k < strain; ++k)
           {
             if (color > 0)
-              pixels[bx+x + (y+1)*image->w] = color;
+              glyph[bx+x + (by+y)*width] = color;
             ++y;
           }
         }
       }
-    }
-    
-    u8 maxColor = 0;
-    for (int i = 0; i < image->w*image->h; ++i)
-    {
-      Color *pixel = &pixels[i];
-      if (*pixel & 0xFF000000)
-        maxColor = std::max(maxColor, u8(*pixel & 0xFF));
-    }
 
-    u8 lightStroke = 0x29;
-    u8 darkStroke = 0x30;
-    
-    s8 dirs[8][2] = {{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1}};
-    
-    // precompute font stroke
-    for (int x = 0; x < image->w; ++x)
-      for (int y = 0; y < image->h; ++y)
-      { 
-        bool hasLightStroke = false, hasDarkStroke = false;
-        
-        for (int d = 0; d < 8; ++d)
+      s8 dirs[8][2] = {{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1}};
+      
+      // precompute font stroke
+      for (int x = 0; x < width; ++x)
+        for (int y = 0; y < heights[i]+2; ++y)
         {
-          int dx = x + dirs[d][0];
-          int dy = y + dirs[d][1];
+          bool hasLightStroke = false, hasDarkStroke = false;
           
-          if (dx >= 0 && dy >= 0 && dx < image->w && dy < image->h)
+          for (int d = 0; d < 8; ++d)
           {
-            Color pixel = pixels[dx + dy*image->w];
+            int dx = x + dirs[d][0];
+            int dy = y + dirs[d][1];
             
-            if ((pixel & 0xFF000000) && (pixel & 0xFF) <= maxColor && pixels[x + y*image->w] == 0)
+            if (dx >= 0 && dy >= 0 && dx < width && dy < heights[i]+2)
             {
-              hasLightStroke |= (d == 1 || d == 2 || d == 3 || d == 4 || d == 5 || d == 6);
-              hasDarkStroke |= (d == 0 || ((d == 7 || d == 6) && ((pixel & 0xFF) > 0)) );
+              u8 pixel = glyph[dx + dy*width];
+              
+              if (pixel <= maxColor && glyph[x + y*width] == 0)
+              {
+                hasLightStroke |= (d == 1 || d == 2 || d == 3 || d == 4 || d == 5 || d == 6);
+                hasDarkStroke |= (d == 0 || ((d == 7 || d == 6) && (pixel > 0)) );
+              }
             }
           }
+          
+          if (hasDarkStroke)
+            glyph[x + y*width] = FontData::DARK_STROKE_VALUE;
+          else if (hasLightStroke)
+            glyph[x + y*width] = FontData::LIGHT_STROKE_VALUE;
+          
         }
+      
+      
+      // pass the glyph data to the specific font
+      FontData::fonts[i] = new FontData(static_cast<FontType>(i), heights[i], maxColor);
+      for (int j = 0; j < GLYPH_COUNT; ++j)
+        FontData::fonts[i]->setGlyph(j, widths[i][j]+2, glyphs[j]);
 
-        if (hasDarkStroke)
-          pixels[x + y*image->w] = 0xFF000000 | darkStroke;
-        else if (hasLightStroke)
-          pixels[x + y*image->w] = 0xFF000000 | lightStroke;
-
-      }
-    
-    maxColor += 1;
-    
-    
-    
-    for (int i = 0; i < image->w*image->h; ++i)
-    {
-      Color *pixel = &static_cast<u32*>(image->pixels)[i];
-      if (*pixel & 0xFF000000)
-      {
-        if ((*pixel & 0xFF) < 0x29)
-        {
-          float ratio = ((*pixel & 0xFF)+1) / (float)maxColor;
-          *pixel = RGB((u8)(ratio*255),(u8)(ratio*255),(u8)(ratio*255));
-        }
-        else
-        {
-          if ((*pixel & 0xFF) == 0x29)
-            *pixel = RGB(160,0,0);
-          else
-            *pixel = RGB(80,0,0);
-        }
-      }
     }
-
     
-    Gfx::unlock(image);
-    SDL_SaveBMP(image, (string("font") + to_string(i) + ".bmp").c_str());
-    SDL_FreeSurface(image);
+    delete [] glyphs;
   }
   
   
@@ -850,7 +867,7 @@ void LBX::load()
       FILE *in = fopen(filePath.c_str(), "rb");
       
       loadHeader(header, offsets, in);
-      scanFonts(header, offsets, in);
+      loadFonts(header, offsets, in);
       
       fclose(in);
     }
