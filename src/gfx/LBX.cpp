@@ -22,6 +22,26 @@
 
 using namespace std;
 
+enum FontType
+{
+  FONT_TINY = 0,
+  FONT_SMALL,
+  FONT_MEDIUM,
+  FONT_MEDIUM_THICK,
+  FONT_SERIF,
+  FONT_HUGE,
+  FONT_TINY_CRYPT,
+  FONT_SERIF_CRYPT
+};
+
+class FontGlyphs
+{
+private:
+  
+public:
+  
+};
+
 const Color BLACK_ALPHA = RGB(0, 255, 0);
 const Color TRANSPARENT = RGB(255, 0, 255);
 
