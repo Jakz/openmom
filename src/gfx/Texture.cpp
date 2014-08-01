@@ -268,6 +268,32 @@ Texture::Texture(TextureID ident, const Texture& source, ColorMap& map) :
   Gfx::unlock(source.img);
 }
 
+
+Color Texture::at(u16 x, u16 y, u16 c, u16 r)
+{
+  u16 sx, sy;
+  u16 tw = img->w;
+  
+  
+  if (w != -1)
+    sx = c*w;
+  else
+    sx = h != -1 ? sx = upTo(ws, c) : c*w;
+
+  if (h != -1)
+    sy = r*h;
+  else
+    sy = upTo(hs, r);
+  
+  return static_cast<u32*>(img->pixels)[sx+x + (sy+y)*tw];
+}
+
+
+
+
+
+
+
 const Texture& Texture::get(TextureID ident) {
   const Texture& texture = textures[ident];
   
@@ -276,6 +302,7 @@ const Texture& Texture::get(TextureID ident) {
   return textures[ident];
 
 }
+
 
 
 

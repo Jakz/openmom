@@ -21,9 +21,38 @@ enum TextureID : u16;
 #define WIDTH (320)
 #define HEIGHT (200)
 
+struct SurfaceWrapper : SpriteSheet
+{
+private:
+  SDL_Surface* data;
+  u32* pixels;
+ 
+public:
+  SurfaceWrapper(u16 w, u16 h) : data(SDL_CreateRGBSurface(0, w, h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000))
+  {
+    pixels = static_cast<u32*>(data->pixels);
+  }
+  
+  ~SurfaceWrapper()
+  {
+    SDL_FreeSurface(data);
+  }
+  
+  u16 tw() override { return data->w; }
+  u16 th() override { return data->h; }
+  
+  void lock() { SDL_LockSurface(data); }
+  void unlock() { SDL_UnlockSurface(data); }
+  
+  Color at(u16 x, u16 y, u16 c = 0, u16 r = 0) override { return pixels[x + y*data->w]; }
+  void set(u16 x, u16 y, Color c) override { pixels[x + y*data->w] = c; }
+  
+  friend class Gfx;
+};
+
 class Gfx
 {
-    static SDL_Surface *buffer, *canvas, *activeBuffer;
+    static SurfaceWrapper *buffer, *canvas, *activeBuffer;
   
     static const ColorMap* map;
   
@@ -47,10 +76,10 @@ class Gfx
     static void alphaBlend(const SDL_Rect& r, Color color);
     static void rect(u16 x, u16 y, u16 w, u16 h, u32 color);
   
-    static void canvasBlit(SDL_Surface* gsrc, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h) { blit(gsrc, canvas, fx, fy, tx, ty, w, h); }
+    static void canvasBlit(SpriteSheet* gsrc, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h) { blit(gsrc, canvas, fx, fy, tx, ty, w, h); }
   
-    static void blit(SDL_Surface* gsrc, SDL_Surface* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h) { rawBlit(gsrc,gdst,fx,fy,tx,ty,w,h); }
-    static void rawBlit(SDL_Surface* gsrc, SDL_Surface* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h);
+    static void blit(SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h) { rawBlit(gsrc,gdst,fx,fy,tx,ty,w,h); }
+    static void rawBlit(SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h);
   
     static void drawPixel(u32 color, u16 x, u16 y);
     static void drawLine(u32 color, u16 x1, u16 y1, u16 x2, u16 y2);
@@ -82,12 +111,12 @@ class Gfx
   
     static u16 upTo(const std::vector<u16>& ws, u16 i) { u16 r = 0; for (u16 j = 0; j < i; ++j) r += ws[j]; return r; }
   
-    static SDL_Surface *createSurface(u16 w, u16 h) { return SDL_CreateRGBSurface(0, w, h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000); }
+    //static SDL_Surface *createSurface(u16 w, u16 h) { return SDL_CreateRGBSurface(0, w, h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000); }
   
-    static inline void lock(SDL_Surface *surface) { SDL_LockSurface(surface); }
-    static inline void unlock(SDL_Surface *surface) { SDL_UnlockSurface(surface); }
+    static inline void lock(SurfaceWrapper *surface) { surface->lock(); }
+    static inline void unlock(SurfaceWrapper *surface) { surface->unlock(); }
   
-    static inline SDL_Surface* getCanvas() { return canvas; }
+    static inline SDL_Surface* getCanvas() { return canvas->data; }
   
     static u32 ticks;
     static u32 fticks;

@@ -67,7 +67,11 @@ struct SpriteInfo
 class SpriteSheet
 {
 public:
-  virtual Color at(u16 x, u16 y, u16 c = 0, u16 r = 0);
+  virtual Color at(u16 x, u16 y, u16 c = 0, u16 r = 0) { return 0x00000000; }
+  virtual void set(u16 x, u16 y, Color c) { }
+  virtual ~SpriteSheet() { }
+  virtual u16 tw() = 0;
+  virtual u16 th() = 0;
 };
 
 

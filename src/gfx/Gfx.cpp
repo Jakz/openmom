@@ -17,9 +17,9 @@ u32 Gfx::ticks = 0;
 u32 Gfx::fticks = 0;
 u32 Gfx::fticksr = 0;
 
-SDL_Surface* Gfx::buffer = nullptr;
-SDL_Surface* Gfx::activeBuffer = nullptr;
-SDL_Surface* Gfx::canvas = nullptr;
+SurfaceWrapper* Gfx::buffer = nullptr;
+SurfaceWrapper* Gfx::activeBuffer = nullptr;
+SurfaceWrapper* Gfx::canvas = nullptr;
 
 const ColorMap* Gfx::map = nullptr;
 
@@ -287,34 +287,32 @@ const Color Gfx::PALETTE[256] =
 
 void Gfx::init()
 {
-  buffer = createSurface(320, 200);
-  canvas = createSurface(320, 200);
+  buffer = new SurfaceWrapper(320, 200);
+  canvas = new SurfaceWrapper(320, 200);
   activeBuffer = canvas;
 }
 
 void Gfx::deinit()
 {
-  SDL_FreeSurface(buffer);
-  SDL_FreeSurface(canvas);
+  delete buffer;
+  delete canvas;
 }
 
 
 void Gfx::rect(u16 x, u16 y, u16 w, u16 h, u32 color)
 {
   lock(canvas);
-  
-  u32 *p = static_cast<u32*>(canvas->pixels);
-  
+
   for (int i = 0; i < w; ++i)
   {
-    p[y*canvas->w + i + x] = color;
-    p[(y+h)*canvas->w + i + x] = color;
+    canvas->set(x+i, y, color);
+    canvas->set(x+i, y+h, color);
   }
   
   for (int i = 0; i < h; ++i)
   {
-    p[(y+i)*canvas->w + x] = color;
-    p[(y+i)*canvas->w + x + w] = color;
+    canvas->set(x, y+i, color);
+    canvas->set(x+w, y+i, color);
   }
   
   unlock(canvas);
@@ -329,20 +327,13 @@ void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
   u8 g = (color & 0x0000FF00) >> 8;
   u8 b = (color & 0x000000FF);
   
-  u32 dw = canvas->w;
-  u32* dp = static_cast<u32*>(canvas->pixels);
-  
-  u32 bd = rect.y*dw + rect.x;
-  
   for (u32 y = 0; y < rect.h; ++y)
   {
     for (u32 x = 0; x < rect.w; ++x)
     {
-      if (x+rect.x < dw && y+rect.y < canvas->h && x+rect.x >= 0 && y+rect.y >= 0)
+      if (x+rect.x < canvas->tw() && y+rect.y < canvas->th() && x+rect.x >= 0 && y+rect.y >= 0)
       {
-        u32 cd = bd + y*dw + x;
-        
-        u32 ps = dp[cd];
+        u32 ps = canvas->at(rect.x+x, rect.y+y);
         
         u8 a2 = (ps & 0xFF000000);
         u8 r2 = (ps & 0x00FF0000) >> 16;
@@ -356,8 +347,8 @@ void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
         u8 rb = (rd+1 + (rd >> 8)) >> 8;
         u8 gb = (gd+1 + (gd >> 8)) >> 8;
         u8 bb = (bd+1 + (bd >> 8)) >> 8;
-
-        dp[cd] = a2 | (rb << 16) | (gb << 8) | (bb);
+        
+        canvas->set(rect.x+x, rect.y+y, a2 | (rb << 16) | (gb << 8) | (bb));
       }
     }
   }
@@ -440,7 +431,7 @@ void Gfx::rawBlit(SDL_Surface *gsrc, SDL_Surface *gdst, u16 fx, u16 fy, u16 tx, 
 void Gfx::drawPixel(u32 color, u16 x, u16 y)
 {
   lock(activeBuffer);
-  static_cast<u32*>(activeBuffer->pixels)[y*activeBuffer->w + x] = color;
+  activeBuffer->set(x, y, color);
   unlock(activeBuffer);
 }
 
@@ -450,12 +441,12 @@ void Gfx::drawLine(u32 color, u16 x1, u16 y1, u16 x2, u16 y2)
   if (y1 == y2)
   {
     for (u16 x = x1; x < x2; ++x)
-      static_cast<u32*>(activeBuffer->pixels)[y1*activeBuffer->w + x] = color;
+      activeBuffer->set(x, y1, color);
   }
   else if (x1 == x2)
   {
     for (u16 y = y1; y < y2; ++y)
-      static_cast<u32*>(activeBuffer->pixels)[y*activeBuffer->w + x1] = color;
+      activeBuffer->set(x1, y, color);
   }
   unlock(activeBuffer);
 }
@@ -463,10 +454,9 @@ void Gfx::drawLine(u32 color, u16 x1, u16 y1, u16 x2, u16 y2)
 void Gfx::resetBuffer(u16 w, u16 h)
 {
   lock(buffer);
-  u32* pixels = static_cast<u32*>(buffer->pixels);
   for (int yy = 0; yy < h; ++yy)
     for (int xx = 0; xx < w; ++xx)
-      pixels[xx+buffer->w*yy] = 0x00000000;
+      buffer->set(xx, yy, 0x00000000);
   unlock(buffer);
 }
 
