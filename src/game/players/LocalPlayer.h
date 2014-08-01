@@ -93,6 +93,9 @@ public:
 
   void send(msgs::Message* message) override { messages.push_back(message); }
   bool hasMessage() { return !messages.empty(); }
+  const msgs::Message* firstMessage() const { return messages.front(); }
+  void clearFirstMessage() { messages.pop_front(); }
+  void clearMessages(){ messages.clear(); }
 };
 
 #endif

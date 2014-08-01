@@ -12,29 +12,34 @@
 #include "View.h"
 
 class ViewManager;
+namespace msgs { class Message; }
 
 class MessageView : public View
 {
 private:
   enum Button
   {
-    OPTIONS_OK,
-    OPTIONS_CANCEL,
-    OPTIONS_DIFFICULTY,
-    OPTIONS_OPPONENTS,
-    OPTIONS_LAND_SIZE,
-    OPTIONS_MAGIC,
+    NO,
+    YES,
     
     BUTTON_COUNT
   };
   
-  void draw() override { }
+  const msgs::Message *message;
+  
+  void draw() override;
   void drawPost() override { }
+  
+  void discardMessage();
+  void discardAllMessages();
+  void handleMessage();
   
 public:
   MessageView(ViewManager* gvm);
   
-  void activate() override { }
+  void mouseReleased(u16 x, u16 y, MouseButton b) override;
+  
+  void activate() override { handleMessage(); }
   void deactivate() override { }
 };
 

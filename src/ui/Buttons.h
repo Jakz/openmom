@@ -24,7 +24,7 @@ typedef std::function<void()> Action;
 class Clickable
 {
   protected:
-    const u16 x, y, w, h;
+    u16 x, y, w, h;
     const MouseButton button;
     Action action;
     bool active;
@@ -38,6 +38,8 @@ class Clickable
     inline void activate() { active = true; }
     inline void deactivate() { active = false; }
     inline void activateIf(bool condition) { active = condition; }
+  
+    void setPosition(u16 x, u16 y) { this->x = x; this->y = y; }
   
     virtual inline Clickable* setAction(Action action) { this->action = action; return this; }
     inline Action getAction() { return action; }

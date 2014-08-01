@@ -41,7 +41,7 @@ public:
     HELP_SKILL
   } type;
   
-  const std::string getMessage() { return message; }
+  const std::string& getMessage() const { return message; }
   
   Message(std::string message) : message(message), type(MESSAGE) { }
 
@@ -74,10 +74,10 @@ public:
 class NewBuilding : public Message
 {
 public:
-  NewBuilding(const City* city, const Building* building);
+  NewBuilding(City* city, const Building* building);
   
-  const Building* building;
-  const City* city;
+  const Building* const building;
+  City* const city;
 };
 
   class HelpPiece { };

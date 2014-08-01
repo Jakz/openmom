@@ -35,7 +35,7 @@ private:
   constexpr static const u16 BX = 30+185;
   constexpr static const u16 BY = 50+30;
   
-  City* city;
+  const City* city;
   
 public:
   OutpostView(ViewManager* gvm);
@@ -45,7 +45,7 @@ public:
   void activate() override { }
   void deactivate() override { }
   
-  void setCity(City* city) { this->city = city; }
+  void setCity(const City* city) { this->city = city; }
 };
 
 #endif
