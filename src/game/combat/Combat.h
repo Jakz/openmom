@@ -97,4 +97,65 @@ public:
   
 };
 
+
+
+
+
+enum class DamageType : u8
+{
+  RANGED_MAGICAL_CHAOS,
+  RANGED_MAGICAL_NATURE,
+  RANGED_MAGICAL_LIFE,
+  RANGED_MAGICAL_SORCERY,
+  RANGED_MAGICAL_DEATH,
+  
+  RANGED_BOULDER,
+  RANGED_NORMAL,
+  
+  THROWN,
+  
+  PHYSICAL_MELEE_ATTACK,
+  PHYSICAL_MAGICAL_ATTACK,
+  
+  AREA_IMMOLATION,
+  AREA_BLIZZARD
+};
+
+enum class AttackPriority : s8
+{
+  GAZE_DEFENDER = 0,
+  THROWN_ATTACK = 0,
+  BREATH_ATTACK = 0,
+  
+  GAZE_ATTACKER = 1,
+  
+  FIRST_STRIKE_ATTACK = 3,
+  
+  MELEE_ATTACK = 4,
+  TOUCH_ATTACK = 4,
+  
+  NOT_AVAILABLE = -1
+};
+
+class Attack
+{
+protected:
+  Attack(AttackPriority attackerPriority, AttackPriority defenderPriority, bool availableToAttacker = true, bool availableToDefender = true) :
+    attackerPriority(attackerPriority), defenderPriority(defenderPriority), availableToAttacker(availableToAttacker), availableToDefender(availableToDefender) { }
+public:
+  const bool availableToAttacker, availableToDefender;
+  const AttackPriority attackerPriority;
+  const AttackPriority defenderPriority;
+};
+
+class PhysicalAttack : public Attack
+{
+public:
+  PhysicalAttack(Property defense) : Attack(AttackPriority::MELEE_ATTACK, AttackPriority::MELEE_ATTACK, true, true), defense(defense) { }
+
+  const Property defense;
+};
+
+
+
 #endif
