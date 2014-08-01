@@ -357,7 +357,7 @@ void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
 }
 
 #define ALPHA_SHIFT (1)
-void Gfx::rawBlit(SDL_Surface *gsrc, SDL_Surface *gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h)
+void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h)
 {
   lock(gsrc);
   lock(gdst);
@@ -462,31 +462,22 @@ void Gfx::resetBuffer(u16 w, u16 h)
 
 void Gfx::maskBuffer(TextureID texture, int r, int c)
 {
-  const Texture& tex = Texture::get(texture);
+  const Texture* tex = Texture::get(texture);
   
-  lock(tex.img);
+  lock(tex);
   lock(buffer);
-  
-  u32* mp = static_cast<u32*>(tex.img->pixels);
-  u32* dp = static_cast<u32*>(buffer->pixels);
-  
-  int w = tex.w;
-  int h = tex.h;
-  
-  int ox = c*w;
-  int oy = r*h;
-  
-  for (int i = 0; i < w; ++i)
-    for (int j = 0; j < h; ++j)
+
+  for (int i = 0; i < tex->w; ++i)
+    for (int j = 0; j < tex->h; ++j)
     {
-      int p = mp[ox + oy + i + j*tex.img->w];
+      Color p = tex->at(i,j,c,r);
       
       if ((p & 0xFF000000) == 0)
-        dp[i + j*buffer->w] = 0x0000000;
+        buffer->set(i, j, 0x00000000);
     }
   
   unlock(buffer);
-  unlock(tex.img);
+  unlock(tex);
 }
 
 void Gfx::colorMapBuffer(int w, int h, ColorMap& map)
@@ -495,7 +486,7 @@ void Gfx::colorMapBuffer(int w, int h, ColorMap& map)
   u32* pixels = static_cast<u32*>(buffer->pixels);
   for (int yy = 0; yy < h; ++yy)
     for (int xx = 0; xx < w; ++xx)
-      pixels[xx+buffer->w*yy] = map.get(pixels[xx+buffer->w*yy]);
+      buffer->set(xx, yy, map.get(buffer->at(xx,yy)));
   
   unlock(buffer);
 }
@@ -539,33 +530,33 @@ void Gfx::maskBufferWithImage(TextureID mask, TextureID snd, u16 r, u16 c, u16 r
 
 void Gfx::drawClippedToWidth(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t)
 {
-  const Texture& tex = Texture::get(texture);
-  drawClipped(texture, x, y, r*tex.w, c*tex.h, t, tex.h);
+  const Texture* tex = Texture::get(texture);
+  drawClipped(texture, x, y, r*tex->w, c*tex->h, t, tex->h);
 }
 
 void Gfx::drawClippedFromWidth(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t)
 {
-  const Texture& tex = Texture::get(texture);
-  drawClipped(texture, x, y, r*tex.w + t, c*tex.h, tex.w - t, tex.h);
+  const Texture* tex = Texture::get(texture);
+  drawClipped(texture, x, y, r*tex->w + t, c*tex->h, tex->w - t, tex->h);
 }
 
 void Gfx::drawClippedFromHeight(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t)
 {
-  const Texture& tex = Texture::get(texture);
-  drawClipped(texture, x, y, r*tex.w, c*tex.h + t, tex.w, tex.h - t);
+  const Texture* tex = Texture::get(texture);
+  drawClipped(texture, x, y, r*tex->w, c*tex->h + t, tex->w, tex->h - t);
 }
 
 void Gfx::drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h)
 {
-  const Texture& tex = Texture::get(texture);
-  s16 tw = w != 0 ? (w > 0 ? w : tex.w + w - fx) : tex.w - fx;
-  s16 th = h != 0 ? (h > 0 ? h : tex.h + h - fy) : tex.h - fy;
+  const Texture* tex = Texture::get(texture);
+  s16 tw = w != 0 ? (w > 0 ? w : tex->w + w - fx) : tex->w - fx;
+  s16 th = h != 0 ? (h > 0 ? h : tex->h + h - fy) : tex->h - fy;
   s16 tx = fx;
   s16 ty = fy;
   s16 dx = x;
   s16 dy = y;
   
-  blit(tex.img, activeBuffer, tx, ty, dx, dy, tw, th);
+  blit(tex, activeBuffer, tx, ty, dx, dy, tw, th);
 }
 
 

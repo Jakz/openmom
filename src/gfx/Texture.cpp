@@ -248,27 +248,6 @@ Texture Texture::textures[] =
 };
 
 
-
-
-Texture::Texture(TextureID ident, const Texture& source, ColorMap& map) :
-  ident(ident), rows(source.rows), cols(source.cols), w(source.w), h(source.h), ws(source.ws), hs(source.hs), animated(false), animFactor(0)
-{
-  img = Gfx::createSurface(source.img->w, source.img->h);
-  
-  Gfx::lock(img);
-  Gfx::lock(source.img);
-  u32 *sp = static_cast<u32*>(source.img->pixels);
-  u32 *dp = static_cast<u32*>(img->pixels);
-  
-  for (int i = 0; i < w; ++i)
-    for (int j = 0; j < h; ++j)
-      dp[i + j*img->pitch] = map.get(sp[i + j*source.img->pitch]);
-  
-  Gfx::unlock(img);
-  Gfx::unlock(source.img);
-}
-
-
 Color Texture::at(u16 x, u16 y, u16 c, u16 r)
 {
   u16 sx, sy;
@@ -294,12 +273,12 @@ Color Texture::at(u16 x, u16 y, u16 c, u16 r)
 
 
 
-const Texture& Texture::get(TextureID ident) {
-  const Texture& texture = textures[ident];
+const Texture* Texture::get(TextureID ident) {
+  const Texture* texture = &textures[ident];
   
-  if (!texture.img) texture.img = IMG_Load(("data/gfx/"+texture.name).c_str());
+  if (!texture->img) texture->img = IMG_Load(("data/gfx/"+texture->name).c_str());
   
-  return textures[ident];
+  return texture;
 
 }
 
