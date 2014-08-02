@@ -41,6 +41,9 @@ public:
   u16 tw() const override { return data->w; }
   u16 th() const override { return data->h; }
   
+  u16 wn(u16 x = 0) const override { return 0; }
+  u16 hn(u16 y = 0) const override { return 0; }
+  
   void lock() const { SDL_LockSurface(data); }
   void unlock() const { SDL_UnlockSurface(data); }
   
