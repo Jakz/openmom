@@ -76,10 +76,10 @@ class Gfx
     static void alphaBlend(const SDL_Rect& r, Color color);
     static void rect(u16 x, u16 y, u16 w, u16 h, u32 color);
   
-    static void canvasBlit(SpriteSheet* gsrc, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h) { blit(gsrc, canvas, fx, fy, tx, ty, w, h); }
+    static void canvasBlit(SpriteSheet* gsrc, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 c = 0, u16 r = 0) { blit(gsrc, canvas, fx, fy, tx, ty, w, h); }
   
-    static void blit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h) { rawBlit(gsrc,gdst,fx,fy,tx,ty,w,h); }
-    static void rawBlit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h);
+    static void blit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 c = 0, u16 r = 0) { rawBlit(gsrc,gdst,fx,fy,tx,ty,w,h,r,c); }
+    static void rawBlit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 c = 0, u16 r = 0);
   
     static void drawPixel(u32 color, u16 x, u16 y);
     static void drawLine(u32 color, u16 x1, u16 y1, u16 x2, u16 y2);

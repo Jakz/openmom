@@ -357,30 +357,22 @@ void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
 }
 
 #define ALPHA_SHIFT (1)
-void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h)
+void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 c, u16 r)
 {
   lock(gsrc);
   lock(gdst);
-  
-  u32 sw = gsrc->w, dw = gdst->w;
-  u32* sp = static_cast<u32*>(gsrc->pixels), *dp = static_cast<u32*>(gdst->pixels);
-  
-  u32 bs = fy*sw + fx, bd = ty*dw + tx;
-  
+
   for (u32 y = 0; y < h; ++y)
   {
     for (u32 x = 0; x < w; ++x)
     {
-      if (x+tx < dw && y+ty < gdst->th() && x+tx >= 0 && y+ty >= 0)
+      if (x+tx < gdst->tw() && y+ty < gdst->th() && x+tx >= 0 && y+ty >= 0)
       {
-        u32 cs = bs + y*sw + x;
-        u32 cd = bd + y*dw + x;
-        
-        u32 ps = sp[cs];
+        u32 ps = gsrc->at(fx+x, fy+y, c, r);
         
         if (ps == 0xFF00FF00)
         {
-          int pd = dp[cd];
+          Color pd = gdst->at(tx+x,ty+y);
           
           int r = (pd & 0x00FF0000) >> 16;
           int g = (pd & 0x0000FF00) >> 8;
@@ -390,7 +382,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u1
           g >>= ALPHA_SHIFT;
           b >>= ALPHA_SHIFT;
           
-          dp[cd] = 0xFF000000 | (r << 16) | (g << 8) | b;
+          gdst->set(tx+x, ty+y, 0xFF000000 | (r << 16) | (g << 8) | b);
         }
         else
         {
@@ -401,14 +393,14 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u1
           u32 sa = ((ps & 0xFF000000) >> 24);
           
           if (sa == 0xFF)
-            dp[cd] = ps;
+            gdst->set(tx+x, fy+y, ps);
           else if (sa == 0x00)
             continue;
           else
           {
             int da = 256 - sa;
             
-            int pd = dp[cd];
+            Color pd = gdst->at(tx+x, ty+y);
             int r2 = (pd & 0x00FF0000) >> 16;
             int g2 = (pd & 0x0000FF00) >> 8;
             int b2 = (pd & 0x000000FF);
@@ -417,7 +409,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u1
             int g1 = (ps & 0x0000FF00) >> 8;
             int b1 = (ps & 0x000000FF);
             
-            dp[cd] = 0xFF000000 | (((r2*da + r1*sa) >> 8) << 16) | (((g2*da + g1*sa) >> 8) << 8) | ((b2*da + b1*sa) >> 8);
+            gdst->set(tx+x, fy+y,0xFF000000 | (((r2*da + r1*sa) >> 8) << 16) | (((g2*da + g1*sa) >> 8) << 8) | ((b2*da + b1*sa) >> 8));
           }
         }
       }
@@ -582,52 +574,18 @@ void Gfx::draw(TextureID texture, u16 i, u16 x, u16 y)
 void Gfx::draw(TextureID texture, u16 r, u16 c, u16 x, u16 y)
 {
   const Texture* tex = Texture::get(texture);
-  u16 tx = x;
-  u16 ty = y;
-  u16 tw = 0, th = 0;
-  u16 sx = 0, sy = 0;
   
-  if (tex.w != -1)
-  {
-    tw = tex.w;
-    sx = tw*c;
-  }
-  else
-  {
-    if (tex.h != -1)
-    {
-      tw = tex.ws[c];
-      sx = upTo(tex.ws, c);
-    }
-    else
-    {
-      tw = tex.ws[r];
-      sx = tw*c;
-    }
-  }
-  
-  if (tex.h != -1)
-  {
-    th = tex.h;
-    sy = th*r;
-  }
-  else
-  {
-    th = tex.hs[r];
-    sy = upTo(tex.hs, r);
-  }
-  
-  blit(tex.img, activeBuffer, sx, sy, tx, ty, tw, th);
+  blit(teximg, activeBuffer, 0, 0, tx, ty, tw, th, c, r);
 }
 
 void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
 {
-  const Texture& tex = Texture::get(texture);
+  const Texture* tex = Texture::get(texture);
   
-  if (tex.animatedSprites.empty())
-    draw(texture, r, (((offset+fticks)/tex.animFactor)%tex.cols), x, y);
+  if (tex->animatedSprites.empty())
+    draw(texture, r, (((offset+fticks)/tex->animFactor)%tex->cols), x, y);
   else
-    draw(texture, r, (((offset+fticks)/tex.animFactor)%tex.animatedSprites[r]), x, y);
+    draw(texture, r, (((offset+fticks)/tex->animFactor)%tex->animatedSprites[r]), x, y);
 }
 
 void Gfx::draw(const SpriteInfo& info, u16 x, u16 y)
@@ -639,10 +597,10 @@ void Gfx::draw(const SpriteInfo& info, u16 x, u16 y)
 void Gfx::drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color)
 {
   //TODO: sometimes it looks like it fails (like great drake iso with glow)
-  const Texture& tex = Texture::get(texture);
+  const Texture* tex = Texture::get(texture);
 
-  s32 w = tex.w;
-  s32 h = tex.h;
+  s32 w = tex->w;
+  s32 h = tex->h;
   
   resetBuffer((w+2)*2,h+2);
   bindBuffer();
@@ -666,7 +624,7 @@ void Gfx::drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color)
       {
         s16 dx = i+Util::ODIRS[k].x, dy = j+Util::ODIRS[k].y;
         
-        Color pixel = get(buffer,i, j);
+        Color pixel = buffer->at(i,j);
         
         if ((pixel & 0x00FFFFFF) == 0)
         {
