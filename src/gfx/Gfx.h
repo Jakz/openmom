@@ -100,7 +100,7 @@ class Gfx
   
     static void drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color);
     static void drawGlow(TextureID texture, s16 i, s16 x, s16 y, School school);
-    static void drawGlow(const SpriteInfo& info, s16 x, s16 y, School school) { drawGlow(info.texture, info.y, info.x, x, y, school); }
+    static void drawGlow(const SpriteInfo& info, s16 x, s16 y, School school) { drawGlow(info.texture, info.x, info.y, x, y, school); }
     static void drawGrayScale(const SpriteInfo& info, s16 x, s16 y);
     static void drawGrayScale(TextureID texture, u16 r, u16 c, u16 x, u16 y);
     static void draw(const SpriteInfo& info, u16 x, u16 y);

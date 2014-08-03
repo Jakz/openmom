@@ -133,6 +133,10 @@ void MainView::updateBuildButton()
 
 void MainView::draw()
 {
+  /*SpriteInfo si = SpriteInfo(TextureID::UNITS_STATIC_STANDARD, 0, 0);
+  Gfx::drawGlow(si, 100, 100, NATURE);
+  return;*/
+  
   //Fonts::drawString("Antani", FontFace::WHITE_SMALL, 278, 100, ALIGN_CENTER); return;
   
   if (substate != SPELL_CAST && player->getSpellTarget() != Target::NONE)

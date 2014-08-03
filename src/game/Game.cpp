@@ -68,7 +68,8 @@ void Game::dummyInit()
   //WorldGenerator.generate(world, MYRRAN);
 
   Army* a = new Army(player, {
-		new RaceUnit(*UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS)),
+		new FantasticUnit(*UnitSpec::summonSpec(UnitID::GREAT_DRAKE)),
+    new RaceUnit(*UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS)),
 		new RaceUnit(*UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS)),
 		new RaceUnit(*UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS)),
 		new RaceUnit(*UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS)),
@@ -76,6 +77,8 @@ void Game::dummyInit()
 		new RaceUnit(*UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS)),
   });
   
+  SpellCast cast = SpellCast(player, Spells::BLESS);
+  a->get(0)->skills()->add(cast);
   
   //map.get(5, 5, ARCANUS).placeManaNode(mapMechanics.generateManaNode(world, 5, 5, ARCANUS));
   //this.meldNode(a, 5, 5, ARCANUS);
