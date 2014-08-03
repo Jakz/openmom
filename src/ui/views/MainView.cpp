@@ -133,6 +133,9 @@ void MainView::updateBuildButton()
 
 void MainView::draw()
 {
+  //Fonts::drawString("Antani foti sblinda1!", FontFace::TEAL_MEDIUM, 100, 100, ALIGN_LEFT);
+  Fonts::drawStringContext(FontFaces::MEDIUM_TEAL, "Antani foti sblinda!1", 100, 100, ALIGN_LEFT);
+  return;
   /*SpriteInfo si = SpriteInfo(TextureID::UNITS_STATIC_STANDARD, 0, 0);
   Gfx::drawGlow(si, 100, 100, NATURE);
   return;*/

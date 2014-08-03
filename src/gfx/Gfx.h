@@ -109,6 +109,9 @@ class Gfx
     static void draw(TextureID texture, u16 x, u16 y);
     static void draw(TextureID texture, u16 i, u16 x, u16 y);
     static void draw(TextureID texture, u16 r, u16 c, u16 x, u16 y);
+
+    static void draw(const SpriteSheet* sheet, u16 r, u16 c, u16 x, u16 y);
+
   
     static void drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset);
   

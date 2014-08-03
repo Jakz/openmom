@@ -564,6 +564,12 @@ void Gfx::draw(TextureID texture, u16 r, u16 c, u16 x, u16 y)
   blit(tex, activeBuffer, 0, 0, x, y, tex->sw(r,c), tex->sh(r,c), r, c);
 }
 
+void Gfx::draw(const SpriteSheet* sheet, u16 r, u16 c, u16 x, u16 y)
+{
+  blit(sheet, activeBuffer, 0, 0, x, y, sheet->sw(r,c), sheet->sh(r,c), r, c);
+}
+
+
 void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
 {
   const Texture* tex = Texture::get(texture);

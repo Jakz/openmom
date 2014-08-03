@@ -8,6 +8,7 @@
 
 #include "LBX.h"
 
+#include "Font.h"
 #include "Common.h"
 #include "Gfx.h"
 
@@ -22,99 +23,8 @@
 
 using namespace std;
 
-enum FontType
-{
-  FONT_TINY = 0,
-  FONT_SMALL,
-  FONT_MEDIUM,
-  FONT_MEDIUM_THICK,
-  FONT_SERIF,
-  FONT_HUGE,
-  FONT_TINY_CRYPT,
-  FONT_SERIF_CRYPT,
-  
-  FONT_TYPE_COUNT
-};
-
-const u16 GLYPH_COUNT = 96;
 
 
-typedef Color* Palette;
-
-class SpriteRawData
-{
-  
-public:
-  virtual u8* dataAt(u16 x, u16 y) const = 0;
-  virtual u16 rows() const = 0;
-  virtual u16 columns() const = 0;
-  
-  virtual u16 tw() const = 0;
-  
-  virtual u16 w(u16 x = 0) const = 0;
-  virtual u16 h(u16 x = 0) const = 0;
-};
-
-
-class IndexedSpriteSheet : public SpriteSheet
-{
-private:
-  SpriteRawData *rawData;
-  Palette palette;
-  
-public:
-  virtual Color at(u16 x, u16 y, u16 c = 0, u16 r = 0)
-  {
-    const u8* data = rawData->dataAt(c,r);
-    u8 value = data[x + y*rawData->tw()];
-    return palette[value];
-  }
-  
-};
-
-class FontData : public SpriteRawData
-{
-private:
-  u8* data;
-  u8 glyphWidth[GLYPH_COUNT];
-  const u8 width;
-  const u8 height;
-  
-public:
-  FontData(FontType type, u8 height, u8 width) : type(type), height(height), width(width), data(new u8[width*height*GLYPH_COUNT])
-  {
-    
-  }
-  
-  ~FontData()
-  {
-    for (int i = 0; i < GLYPH_COUNT; ++i)
-      delete data;
-  }
-  
-  void setData(u8* data)
-  {
-    this->data = data;
-  }
-  
-  void setGlyphWidth(u8 index, u8 width) {  glyphWidth[index] = width; }
-  
-  u8* dataAt(u16 x = 0, u16 y = 0) const override { return &data[x*width]; }
-  u16 rows() const override { return 1; }
-  u16 columns() const override { return GLYPH_COUNT; }
-  u16 w(u16 x = 0) const override { return width; }
-  u16 h(u16 x = 0) const override { return height; }
-  u16 tw() const override { return width*GLYPH_COUNT; }
-  
-  const FontType type;
-  
-  static constexpr const u8 LIGHT_STROKE_VALUE = 0x01;
-  static constexpr const u8 DARK_STROKE_VALUE = 0x02;
-  
-  static FontData* fonts[FONT_TYPE_COUNT];
-};
-
-FontData* FontData::fonts[FONT_TYPE_COUNT] = {nullptr};
 
 
 
@@ -477,7 +387,6 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
       printf("ERROR!\n");
   }
   
-  
   // position to start of character offsets
   fseek(in, offsets[0] + 0x49A, SEEK_SET);
   
@@ -510,7 +419,7 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
     
     for (int j = 0; j < FONT_CHAR_NUM; ++j)
     {
-      u8* glyph = FontData::fonts[i]->dataAt(j);
+      u8* glyph = FontData::fonts[i]->dataAt(0, j);
 
       printf("      CHAR %d (%c)\n",j,j+32);
       
@@ -563,7 +472,7 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
           for (int k = 0; k < strain; ++k)
           {
             if (color > 0)
-              glyph[bx+x + (by+y)*width] = color;
+              glyph[bx+x + (by+y)*totalWidth] = color;
             ++y;
           }
         }
@@ -582,7 +491,7 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
             int dx = x + dirs[d][0];
             int dy = y + dirs[d][1];
             
-            if (dx >= 0 && dy >= 0 && dx < width && dy < heights[i]+2 && glyph[x + y*width] == 0)
+            if (dx >= 0 && dy >= 0 && dx < width && dy < heights[i]+2 && glyph[x + y*totalWidth] == 0)
             {
               u8 pixel = glyph[dx + dy*totalWidth];
               
@@ -602,7 +511,7 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
           
         }
       
-      FontData::fonts[i]->setGlyphWidth(j, widths[i][j]);
+      FontData::fonts[i]->setGlyphWidth(j, widths[i][j]+2);
     }
   }
   

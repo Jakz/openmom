@@ -12,6 +12,19 @@
 
 using namespace std;
 
+
+FontData* FontData::fonts[FONT_TYPE_COUNT] = {nullptr};
+
+const FontSpriteSheet* FontFaces::MEDIUM_TEAL = nullptr;
+
+void FontFaces::buildFonts()
+{
+  FontData* medium = FontData::fonts[FONT_MEDIUM];
+  MEDIUM_TEAL = new FontSpriteSheet(medium, 5);
+  MEDIUM_TEAL->setPalette({0, RGB(0,124,124), RGB(0,72,72), RGB(0,170,168), RGB(142,242,240)});
+}
+
+
 s16 Fonts::vSpace = 0;
 s16 Fonts::hSpace = 0;
 const ColorMap* Fonts::map = nullptr;
@@ -24,47 +37,49 @@ unordered_map<char, const ColorMap*> Fonts::fontColors = {
 };
 
 Font Fonts::fonts[] = {
-  TinyFont(FONT_TINY, &FontMap::Tiny::WHITE),
-  TinyFont(FONT_TINY, &FontMap::Tiny::WHITE_STROKE),
-  TinyFont(FONT_TINY, &FontMap::Tiny::YELLOW_STROKE),
-  TinyFont(FONT_TINY, &FontMap::Tiny::RED_STROKE),
+  TinyFont(TEXTURE_FONT_TINY, &FontMap::Tiny::WHITE),
+  TinyFont(TEXTURE_FONT_TINY, &FontMap::Tiny::WHITE_STROKE),
+  TinyFont(TEXTURE_FONT_TINY, &FontMap::Tiny::YELLOW_STROKE),
+  TinyFont(TEXTURE_FONT_TINY, &FontMap::Tiny::RED_STROKE),
   
-  TinyCompactFont(FONT_TINY_COMPACT),
+  TinyCompactFont(TEXTURE_FONT_TINY_COMPACT),
   
-  TinyCompactFont(FONT_TINY_COMPACT_CRYPT, &FontMap::Misc::TINY_BROWN_CRYPT),
+  TinyCompactFont(TEXTURE_FONT_TINY_COMPACT_CRYPT, &FontMap::Misc::TINY_BROWN_CRYPT),
   
-  SmallFont(FONT_YELLOW_SMALL),
-  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::WHITE),
-  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::TEAL),
-  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::BROWN),
+  SmallFont(TEXTURE_FONT_YELLOW_SMALL),
+  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::WHITE),
+  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::TEAL),
+  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::BROWN),
   
-  SmallShorterFont(FONT_YELLOW_SMALL),
+  SmallShorterFont(TEXTURE_FONT_YELLOW_SMALL),
   
-  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::GREEN),
-  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::BLUE),
-  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::RED),
-  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::PURPLE),
-  SmallFont(FONT_YELLOW_SMALL, &FontMap::Small::YELLOW),
+  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::GREEN),
+  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::BLUE),
+  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::RED),
+  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::PURPLE),
+  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::YELLOW),
   
-  SerifFont(FONT_SERIF, &FontMap::Serif::TEAL_STROKE),
-  SerifFont(FONT_SERIF, &FontMap::Serif::YELLOW_SHADOW),
-  SerifFont(FONT_SERIF, &FontMap::Serif::GOLD_SHADOW),
-  SerifFont(FONT_SERIF, &FontMap::Serif::SILVER_SHADOW),
-  SerifFont(FONT_SERIF, &FontMap::Serif::WHITE_SURVEY),
-  SerifFont(FONT_SERIF, &FontMap::Serif::BROWN),
-  SerifFont(FONT_SERIF, &FontMap::Serif::DARK_BROWN),
+  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::TEAL_STROKE),
+  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::YELLOW_SHADOW),
+  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::GOLD_SHADOW),
+  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::SILVER_SHADOW),
+  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::WHITE_SURVEY),
+  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::BROWN),
+  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::DARK_BROWN),
   
-  SerifCryptFont(FONT_SERIF_CRYPT, &FontMap::Misc::SERIF_CRYPT_BROWN),
+  SerifCryptFont(TEXTURE_FONT_SERIF_CRYPT, &FontMap::Misc::SERIF_CRYPT_BROWN),
   
-  MediumFont(FONT_TEAL_MEDIUM),
-  MediumFont(FONT_TEAL_MEDIUM, &FontMap::Medium::TEAL_STROKE),
-  MediumFont(FONT_TEAL_MEDIUM, &FontMap::Medium::BLACK),
-  MediumFont(FONT_TEAL_MEDIUM, &FontMap::Medium::TEAL_BRIGHT),
+  MediumFont(TEXTURE_FONT_TEAL_MEDIUM),
+  MediumFont(TEXTURE_FONT_TEAL_MEDIUM, &FontMap::Medium::TEAL_STROKE),
+  MediumFont(TEXTURE_FONT_TEAL_MEDIUM, &FontMap::Medium::BLACK),
+  MediumFont(TEXTURE_FONT_TEAL_MEDIUM, &FontMap::Medium::TEAL_BRIGHT),
   
-  MediumBoldFont(FONT_MEDIUM_BOLD),
+  MediumBoldFont(TEXTURE_FONT_MEDIUM_BOLD),
   
-  HugeSerifFont(FONT_HUGE_SERIF)
+  HugeSerifFont(TEXTURE_FONT_HUGE_SERIF)
 };
+
+
 
 
 Font* Fonts::font = &fonts[0];
@@ -139,6 +154,63 @@ u16 Fonts::drawString(const string string, u16 x, u16 y, TextAlign align)
     
     return w;
   }
+}
+
+u16 Fonts::drawStringContext(const FontSpriteSheet* sheet, const string string, u16 x, u16 y, TextAlign align)
+{
+  s16 sx = align == ALIGN_RIGHT ? 0 : x, sy = y;
+  u16 length = string.length();
+  bool switchingColor = false;
+  
+  for (int i = 0; i < length; ++i)
+  {
+    s8 c = string[align == ALIGN_RIGHT ? length - i - 1: i];
+    
+    if (switchingColor)
+    {
+      if (c == '^')
+      {
+        if (omap)
+        {
+          map = omap;
+          Gfx::bindColorMap(omap);
+        }
+        else
+        {
+          map = nullptr;
+          Gfx::unbindColorMap();
+        }
+      }
+      else
+      {
+        map = fontColors.find(c)->second;
+        Gfx::bindColorMap(map);
+      }
+      
+      switchingColor = false;
+    }
+    else if (c == ' ')
+    {
+      sx += hSpace + sheet->charWidth(' ');
+    }
+    else if (c == '^')
+    {
+      switchingColor = true;
+    }
+    else
+    {
+      s8 cw = sheet->charWidth(c);
+      printf("width %c: %d\n", c, cw);
+      s8 r = c - ' ';
+      s8 d = align == ALIGN_RIGHT ? (s8)ceilf((font->w - cw) / 2.0f) : (font->w - cw) / 2;
+      
+      //sx -= d;
+      Gfx::draw(sheet, 0, r, align == ALIGN_RIGHT ? x - sx : sx, sy);
+      sx += cw; //+ d;
+    }
+  }
+  
+  return sx - 1 - (align == ALIGN_RIGHT ? 0 : x);
 }
 
 u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)

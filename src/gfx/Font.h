@@ -15,6 +15,23 @@
 #include <vector>
 #include <unordered_map>
 
+enum FontType
+{
+  FONT_TINY = 0,
+  FONT_SMALL,
+  FONT_MEDIUM,
+  FONT_MEDIUM_THICK,
+  FONT_SERIF,
+  FONT_HUGE,
+  FONT_TINY_CRYPT,
+  FONT_SERIF_CRYPT,
+  
+  FONT_TYPE_COUNT
+};
+
+
+
+
 enum FontFace : u16
 {
   WHITE_TINY = 0,
@@ -64,6 +81,116 @@ enum TextAlign : u8
   ALIGN_RIGHT = 0,
   ALIGN_CENTER,
   ALIGN_LEFT
+};
+
+
+const u16 GLYPH_COUNT = 96;
+
+
+typedef Color* Palette;
+
+class SpriteRawData
+{
+  
+public:
+  virtual u8* dataAt(u16 x, u16 y) const = 0;
+  virtual u16 rows() const = 0;
+  virtual u16 columns() const = 0;
+  
+  virtual u16 tw() const = 0;
+  
+  virtual u16 w(u16 x = 0) const = 0;
+  virtual u16 h(u16 x = 0) const = 0;
+};
+
+class FontData : public SpriteRawData
+{
+private:
+  u8* data;
+  s8 glyphWidth[GLYPH_COUNT];
+  const u8 width;
+  const u8 height;
+  
+public:
+  FontData(FontType type, u8 height, u8 width) : type(type), height(height), width(width), data(new u8[width*height*GLYPH_COUNT])
+  {
+    
+  }
+  
+  ~FontData()
+  {
+    for (int i = 0; i < GLYPH_COUNT; ++i)
+      delete data;
+  }
+  
+  void setData(u8* data)
+  {
+    this->data = data;
+  }
+  
+  void setGlyphWidth(u8 index, s8 width) {  glyphWidth[index] = width; }
+  s8 getGlyphWidth(u8 index) const { return glyphWidth[index - ' ']; }
+  
+  u8* dataAt(u16 x = 0, u16 y = 0) const override { return &data[y*width]; }
+  u16 rows() const override { return 1; }
+  u16 columns() const override { return GLYPH_COUNT; }
+  u16 w(u16 x = 0) const override { return width; }
+  u16 h(u16 x = 0) const override { return height; }
+  u16 tw() const override { return width*GLYPH_COUNT; }
+  
+  const FontType type;
+  
+  static constexpr const u8 LIGHT_STROKE_VALUE = 0x01;
+  static constexpr const u8 DARK_STROKE_VALUE = 0x02;
+  
+  static FontData* fonts[FONT_TYPE_COUNT];
+};
+
+class FontSpriteSheet : public SpriteSheet
+{
+private:
+  FontData *rawData;
+  Palette palette;
+  
+public:
+  FontSpriteSheet(FontData *data, Color paletteCount) : rawData(data), palette(new Color(paletteCount)) { }
+  ~FontSpriteSheet() { delete [] palette; }
+  
+  void setPalette(color_list colors) const
+  {
+    for (int i = 0; i < colors.size(); ++i)
+      palette[i] = *std::next(colors.begin(), i);
+  }
+  
+  Color at(u16 x, u16 y, u16 r = 0, u16 c = 0) const override
+  {
+    const u8* data = rawData->dataAt(r,c);
+    u8 value = data[x + y*rawData->tw()];
+    
+    //return RGB(255,0,0);
+    
+    return palette[value];
+  }
+  
+  u16 tw() const override { return rawData->tw(); }
+  u16 th() const override { return rawData->h(); }
+  
+  u16 sw(u16 r, u16 c = 0) const override { return rawData->w(); }
+  u16 sh(u16 r, u16 c = 0) const override { return rawData->h(); }
+  
+  
+  
+  const s8 charWidth(s8 c) const { return rawData->getGlyphWidth(c); }
+};
+
+
+
+class FontFaces
+{
+public:
+  const static FontSpriteSheet* MEDIUM_TEAL;
+  
+  static void buildFonts();
 };
 
 class Font
@@ -318,6 +445,9 @@ class Fonts
     static inline void setVerSpace(s16 v) { vSpace = v; }
     static inline void setVerHorSpace(s16 v, s16 h) { vSpace = v; hSpace = h; }
     static inline void setMap(const ColorMap *m) { map = m; omap = m; }
+  
+    static u16 drawStringContext(const FontSpriteSheet* sheet, const std::string string, u16 x, u16 y, TextAlign align);
+
   
     static u16 drawString(const std::string string, u16 x, u16 y, TextAlign align, const ColorMap *map)
     {

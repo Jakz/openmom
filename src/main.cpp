@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "ViewManager.h"
 
+#include "Font.h"
 #include "LBX.h"
 
 /*
@@ -40,6 +41,7 @@ void init()
 int main(int argc, char * arg[])
 {
   LBX::load();
+  FontFaces::buildFonts();
   //return 0;
   
   //const Race &race = Race::race(RACE_BARBARIANS);
