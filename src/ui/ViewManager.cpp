@@ -29,8 +29,6 @@
 using namespace std;
 using namespace anims;
 
-ViewManager ViewManager::gvm;
-
 ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
 {
   views[VIEW_ALCHEMY] = new AlchemyView(this);

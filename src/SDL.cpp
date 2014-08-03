@@ -25,7 +25,7 @@ SDL_Surface* SDL::filter = nullptr;
 
 bool SDL::willQuit = false;
 
-ViewManager* SDL::gvm = new ViewManager();
+ViewManager* SDL::gvm = nullptr;
 
 bool SDL::init()
 {
@@ -52,6 +52,11 @@ bool SDL::init()
 
 
   return true;
+}
+
+void SDL::initGVM()
+{
+  gvm = new ViewManager();
 }
 
 void SDL::loop()

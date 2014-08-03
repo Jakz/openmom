@@ -12,7 +12,7 @@
 
 #include <SDL2/SDL.h>
 
-Texture Texture::textures[] =
+const Texture Texture::textures[] =
 {
   Texture(ARCANUS_TILES,"tile/arcanus/tile_map_1.png",10,10,20,18),
   Texture(ARCANUS_SHORE,"tile/arcanus/tile_map_shore.png",26,10,20,18),
@@ -306,7 +306,7 @@ const Texture* Texture::get(TextureID ident) {
 
 void Texture::load()
 {
-  for (Texture &texture : textures)
+  for (const Texture &texture : textures)
   {
     texture.img = IMG_Load(("data/gfx/"+texture.name).c_str());
   }
@@ -314,7 +314,7 @@ void Texture::load()
 
 void Texture::unload()
 {
-  for (Texture &texture : textures)
+  for (const Texture &texture : textures)
     if (texture.img)
       SDL_FreeSurface(texture.img);
 }

@@ -93,10 +93,10 @@ class Gfx
     static void colorMapBuffer(int w, int h, ColorMap& map);
     static void maskBufferWithImage(TextureID mask, TextureID snd, u16 r, u16 c, u16 r2, u16 c2);
   
-    static inline void drawClippedToWidth(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t);
+    /*static inline void drawClippedToWidth(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t);
     static inline void drawClippedFromWidth(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t);
-    static inline void drawClippedFromHeight(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t);
-    static void drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h);
+    static inline void drawClippedFromHeight(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t);*/
+    static void drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h, u16 r = 0, u16 c = 0);
   
     static void drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color);
     static void drawGlow(TextureID texture, s16 i, s16 x, s16 y, School school);

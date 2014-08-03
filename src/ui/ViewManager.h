@@ -82,8 +82,6 @@ class ViewManager : public EventListener
   ResearchView* researchView();
   SpellBookView* spellBookView();
   UnitDetailView* unitDetailView();
-  
-    static ViewManager gvm;
 };
 
 #endif

@@ -56,6 +56,7 @@ int main(int argc, char * arg[])
   SDL::init();
   Gfx::init();
   Texture::load();
+  SDL::initGVM();
   
   //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
 

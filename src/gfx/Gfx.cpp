@@ -459,8 +459,8 @@ void Gfx::maskBuffer(TextureID texture, int r, int c)
   lock(tex);
   lock(buffer);
 
-  for (int i = 0; i < tex->w; ++i)
-    for (int j = 0; j < tex->h; ++j)
+  for (int i = 0; i < tex->sw(r,c); ++i)
+    for (int j = 0; j < tex->sh(r,c); ++j)
     {
       Color p = tex->at(i,j,c,r);
       
@@ -490,8 +490,8 @@ void Gfx::maskBufferWithImage(TextureID mask, TextureID snd, u16 r, u16 c, u16 r
   lock(tex2);
   lock(buffer);
   
-  for (int i = 0; i < tex1->w; ++i)
-    for (int j = 0; j < tex1->h; ++j)
+  for (int i = 0; i < tex1->sw(r,c); ++i)
+    for (int j = 0; j < tex1->sh(r,c); ++j)
     {
       int p = tex1->at(i,j,c,r);
       
@@ -504,7 +504,7 @@ void Gfx::maskBufferWithImage(TextureID mask, TextureID snd, u16 r, u16 c, u16 r
   unlock(buffer);
 }
 
-
+/*
 
 void Gfx::drawClippedToWidth(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t)
 {
@@ -522,19 +522,19 @@ void Gfx::drawClippedFromHeight(TextureID texture, s16 r, s16 c, s16 x, s16 y, s
 {
   const Texture* tex = Texture::get(texture);
   drawClipped(texture, x, y, r*tex->w, c*tex->h + t, tex->w, tex->h - t);
-}
+}*/
 
-void Gfx::drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h)
+void Gfx::drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h, u16 r, u16 c)
 {
   const Texture* tex = Texture::get(texture);
-  s16 tw = w != 0 ? (w > 0 ? w : tex->w + w - fx) : tex->w - fx;
-  s16 th = h != 0 ? (h > 0 ? h : tex->h + h - fy) : tex->h - fy;
+  s16 tw = w != 0 ? (w > 0 ? w : tex->sw(r,c) + w - fx) : tex->sw(r,c) - fx;
+  s16 th = h != 0 ? (h > 0 ? h : tex->sh(r,c) + h - fy) : tex->sh(r,c) - fy;
   s16 tx = fx;
   s16 ty = fy;
   s16 dx = x;
   s16 dy = y;
   
-  blit(tex, activeBuffer, tx, ty, dx, dy, tw, th);
+  blit(tex, activeBuffer, tx, ty, dx, dy, tw, th, r, c);
 }
 
 
@@ -542,13 +542,13 @@ void Gfx::drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s1
 void Gfx::rawDraw(TextureID texture, u16 r, u16 c, u16 x, u16 y)
 {
   const Texture* tex = Texture::get(texture);
-  blit(tex, canvas, tex->w*c, tex->h*r, x, y, tex->w, tex->h, c, r);
+  blit(tex, canvas, 0, 0, x, y, tex->sw(r,c), tex->sh(r,c), c, r);
 }
 
 void Gfx::draw(TextureID texture, u16 x, u16 y)
 {
   const Texture* tex = Texture::get(texture);
-  blit(tex, activeBuffer, 0, 0, x, y, tex->w, tex->h, 0, 0);
+  blit(tex, activeBuffer, 0, 0, x, y, tex->sw(), tex->sh(), 0, 0);
 }
 
 void Gfx::draw(TextureID texture, u16 i, u16 x, u16 y)
@@ -585,8 +585,8 @@ void Gfx::drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color)
   //TODO: sometimes it looks like it fails (like great drake iso with glow)
   const Texture* tex = Texture::get(texture);
 
-  s32 w = tex->w;
-  s32 h = tex->h;
+  s32 w = tex->sw(r,c);
+  s32 h = tex->sh(r,c);
   
   resetBuffer((w+2)*2,h+2);
   bindBuffer();
@@ -643,22 +643,7 @@ void Gfx::drawGlow(TextureID texture, s16 i, s16 x, s16 y, School school)
 void Gfx::drawGrayScale(TextureID texture, u16 r, u16 c, u16 x, u16 y)
 {
   const Texture* tex = Texture::get(texture);
-  u16 tw = 0, th = 0;
-  
-  if (tex->w != -1)
-    tw = tex->w;
-  else
-  {
-    if (tex->h != -1)
-      tw = tex->ws[c];
-    else
-      tw = tex->ws[r];
-  }
-  
-  if (tex->h != -1)
-    th = tex->h;
-  else
-    th = tex->hs[r];
+  u16 tw = tex->sw(r,c), th = tex->sh(r,c);
   
   resetBuffer(tw,th);
   bindBuffer();

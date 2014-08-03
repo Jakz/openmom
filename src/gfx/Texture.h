@@ -246,15 +246,16 @@ enum TextureID : u16
 class Texture : public SpriteSheet
 {
   private:
-    static Texture textures[];
+    static const Texture textures[];
 
-
+    const s16 w, h;
+  
   public:
     const TextureID ident;
     const std::string name;
     mutable SDL_Surface *img;
     const s16 cols, rows;
-    const s16 w, h;
+
     std::vector<u16> ws, hs;
   
     const bool animated;
@@ -281,8 +282,8 @@ class Texture : public SpriteSheet
     u16 tw() const override { return img->w; }
     u16 th() const override { return img->h; }
   
-    u16 sw(u16 r, u16 c) const override;
-    u16 sh(u16 r, u16 c) const override;
+    u16 sw(u16 r = 0, u16 c = 0) const override;
+    u16 sh(u16 r = 0, u16 c = 0) const override;
   
     Color at(u16 x, u16 y, u16 r, u16 c) const override;
   

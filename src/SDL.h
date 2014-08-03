@@ -34,6 +34,7 @@ class SDL
   
   public:
     static bool init();
+    static void initGVM();
     static void deinit();
     
     static void loop();
