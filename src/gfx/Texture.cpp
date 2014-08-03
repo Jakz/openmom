@@ -248,7 +248,7 @@ Texture Texture::textures[] =
 };
 
 
-Color Texture::at(u16 x, u16 y, u16 c, u16 r) const
+Color Texture::at(u16 x, u16 y, u16 r, u16 c) const
 {
   u16 sx, sy;
   u16 tw = img->w;
@@ -267,6 +267,25 @@ Color Texture::at(u16 x, u16 y, u16 c, u16 r) const
   return static_cast<u32*>(img->pixels)[sx+x + (sy+y)*tw];
 }
 
+u16 Texture::sw(u16 r, u16 c) const
+{
+  if (w != -1)
+    return w;
+  else
+  {
+    if (h != -1)
+      return ws[c];
+    else
+      return ws[r];
+  }
+}
+
+u16 Texture::sh(u16 r, u16 c) const
+{
+  if (h != -1)
+    return h;
+  else return hs[c];
+}
 
 
 

@@ -84,7 +84,7 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
     if (p.building)
       drawBuilding(p.building, p.x, p.y);
     else
-      Gfx::draw(TextureID::CITY_HOUSES, ht, p.house, p.x, p.y - Texture::get(TextureID::CITY_HOUSES).h);
+      Gfx::draw(TextureID::CITY_HOUSES, ht, p.house, p.x, p.y - Texture::get(TextureID::CITY_HOUSES)->h);
   }
   
   if (city->hasPlacement(CITY_BY_SEA))
@@ -102,7 +102,7 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
 
 s16 CityLayout::buildingHeight(const Building *building)
 {
-  return Texture::get(specs[building].info.texture).h;
+  return Texture::get(specs[building].info.texture)->h;
 }
 
 void CityLayout::drawBuilding(const Building *building, s16 x, s16 y)

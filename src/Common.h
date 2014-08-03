@@ -73,8 +73,8 @@ public:
   virtual u16 tw() const = 0;
   virtual u16 th() const = 0;
   
-  virtual u16 wn(u16 x) const = 0;
-  virtual u16 hn(u16 x) const = 0;
+  virtual u16 sw(u16 r, u16 c) const = 0;
+  virtual u16 sh(u16 r, u16 c) const = 0;
   
   virtual void lock() const { }
   virtual void unlock() const { }

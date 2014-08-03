@@ -15,24 +15,22 @@
 #include "Places.h"
 #include "GfxData.h"
 
-MiniMap::MiniMap(const World* world) : world(world), maps{Gfx::createSurface(world->w, world->h), Gfx::createSurface(world->w, world->h)}
+MiniMap::MiniMap(const World* world) : world(world), maps{new SurfaceWrapper(world->w, world->h), new SurfaceWrapper(world->w, world->h)}
 {
   
 }
 
 MiniMap::~MiniMap()
 {
-  SDL_FreeSurface(maps[0]);
-  SDL_FreeSurface(maps[1]);
+  delete maps[0];
+  delete maps[1];
 }
 
 void MiniMap::discover(const Position& position)
 {
   Gfx::lock(maps[position.plane]);
-  u32* pixels = static_cast<u32*>(maps[position.plane]->pixels);
-  
-  Color color = minimapColor(world->get(position));
-  pixels[position.x + position.y*maps[position.plane]->w] = color;
+  maps[position.plane]->set(position.x, position.y,  minimapColor(world->get(position)));
+  Gfx::unlock(maps[position.plane]);
 }
 
 Color MiniMap::minimapColor(const Tile *tile)

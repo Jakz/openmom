@@ -357,7 +357,7 @@ void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
 }
 
 #define ALPHA_SHIFT (1)
-void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 c, u16 r)
+void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 r, u16 c)
 {
   lock(gsrc);
   lock(gdst);
@@ -368,7 +368,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u1
     {
       if (x+tx < gdst->tw() && y+ty < gdst->th() && x+tx >= 0 && y+ty >= 0)
       {
-        u32 ps = gsrc->at(fx+x, fy+y, c, r);
+        u32 ps = gsrc->at(fx+x, fy+y, r, c);
         
         if (ps == 0xFF00FF00)
         {
@@ -393,7 +393,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u1
           u32 sa = ((ps & 0xFF000000) >> 24);
           
           if (sa == 0xFF)
-            gdst->set(tx+x, fy+y, ps);
+            gdst->set(tx+x, ty+y, ps);
           else if (sa == 0x00)
             continue;
           else
@@ -409,7 +409,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u1
             int g1 = (ps & 0x0000FF00) >> 8;
             int b1 = (ps & 0x000000FF);
             
-            gdst->set(tx+x, fy+y,0xFF000000 | (((r2*da + r1*sa) >> 8) << 16) | (((g2*da + g1*sa) >> 8) << 8) | ((b2*da + b1*sa) >> 8));
+            gdst->set(tx+x, ty+y,0xFF000000 | (((r2*da + r1*sa) >> 8) << 16) | (((g2*da + g1*sa) >> 8) << 8) | ((b2*da + b1*sa) >> 8));
           }
         }
       }
@@ -475,7 +475,6 @@ void Gfx::maskBuffer(TextureID texture, int r, int c)
 void Gfx::colorMapBuffer(int w, int h, ColorMap& map)
 {
   lock(buffer);
-  u32* pixels = static_cast<u32*>(buffer->pixels);
   for (int yy = 0; yy < h; ++yy)
     for (int xx = 0; xx < w; ++xx)
       buffer->set(xx, yy, map.get(buffer->at(xx,yy)));
@@ -555,14 +554,14 @@ void Gfx::draw(TextureID texture, u16 x, u16 y)
 void Gfx::draw(TextureID texture, u16 i, u16 x, u16 y)
 {
   const Texture* tex = Texture::get(texture);
-  draw(texture, i % tex->cols, i / tex->cols, x, y);
+  draw(texture, i / tex->cols, i % tex->cols, x, y);
 }
 
 void Gfx::draw(TextureID texture, u16 r, u16 c, u16 x, u16 y)
 {
   const Texture* tex = Texture::get(texture);
   
-  blit(tex, activeBuffer, 0, 0, 0, 0, t->, th, c, r);
+  blit(tex, activeBuffer, 0, 0, x, y, tex->sw(r,c), tex->sh(r,c), r, c);
 }
 
 void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
@@ -577,7 +576,7 @@ void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
 
 void Gfx::draw(const SpriteInfo& info, u16 x, u16 y)
 {
-  draw(info.texture, info.y, info.x, x, y);
+  draw(info.texture, info.x, info.y, x, y);
 }
 
 
@@ -617,7 +616,7 @@ void Gfx::drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color)
         {
           if (dx > 0 && dx < w && dy > 0 && dy < h)
           {
-            if ((get(buffer,dx,dy) & 0x00FFFFFF) != 0)
+            if ((buffer->at(dx,dy) & 0x00FFFFFF) != 0)
             {
               found = true;
               break;
@@ -627,7 +626,7 @@ void Gfx::drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color)
       }
       
       if (found)
-        set(buffer,w+2+i, j, glowColors[(phase+i+j)%glowLength]);
+        buffer->set(w+2+i, j, glowColors[(phase+i+j)%glowLength]);
     }
   }
   
@@ -637,29 +636,29 @@ void Gfx::drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color)
 
 void Gfx::drawGlow(TextureID texture, s16 i, s16 x, s16 y, School school)
 {
-  const Texture& tex = Texture::get(texture);
-  drawGlow(texture, i/tex.cols, i%tex.cols, x, y, school);
+  const Texture* tex = Texture::get(texture);
+  drawGlow(texture, i/tex->cols, i%tex->cols, x, y, school);
 }
 
 void Gfx::drawGrayScale(TextureID texture, u16 r, u16 c, u16 x, u16 y)
 {
-  const Texture& tex = Texture::get(texture);
+  const Texture* tex = Texture::get(texture);
   u16 tw = 0, th = 0;
   
-  if (tex.w != -1)
-    tw = tex.w;
+  if (tex->w != -1)
+    tw = tex->w;
   else
   {
-    if (tex.h != -1)
-      tw = tex.ws[c];
+    if (tex->h != -1)
+      tw = tex->ws[c];
     else
-      tw = tex.ws[r];
+      tw = tex->ws[r];
   }
   
-  if (tex.h != -1)
-    th = tex.h;
+  if (tex->h != -1)
+    th = tex->h;
   else
-    th = tex.hs[r];
+    th = tex->hs[r];
   
   resetBuffer(tw,th);
   bindBuffer();
@@ -669,7 +668,7 @@ void Gfx::drawGrayScale(TextureID texture, u16 r, u16 c, u16 x, u16 y)
   
   for (s16 xx = 0; xx < tw; ++xx)
     for (s16 yy = 0; yy < th; ++yy)
-      set(buffer,xx, yy, MiscMaps::GRAYSCALE.get(get(buffer, xx, yy)));
+      buffer->set(xx, yy, MiscMaps::GRAYSCALE.get(buffer->at(xx, yy)));
   
   unlock(buffer);
   mergeBuffer(0, 0, x, y, tw, th);
@@ -679,5 +678,5 @@ void Gfx::drawGrayScale(TextureID texture, u16 r, u16 c, u16 x, u16 y)
 
 void Gfx::drawGrayScale(const SpriteInfo& info, s16 x, s16 y)
 {
-  drawGrayScale(info.texture, info.y, info.x, x, y);
+  drawGrayScale(info.texture, info.x, info.y, x, y);
 }

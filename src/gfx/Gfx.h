@@ -41,8 +41,8 @@ public:
   u16 tw() const override { return data->w; }
   u16 th() const override { return data->h; }
   
-  u16 wn(u16 x = 0) const override { return 0; }
-  u16 hn(u16 y = 0) const override { return 0; }
+  u16 sw(u16 r = 0, u16 c = 0) const override { return 0; }
+  u16 sh(u16 r = 0, u16 c = 0) const override { return 0; }
   
   void lock() const { SDL_LockSurface(data); }
   void unlock() const { SDL_UnlockSurface(data); }
@@ -81,8 +81,8 @@ class Gfx
   
     static void canvasBlit(SpriteSheet* gsrc, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 c = 0, u16 r = 0) { blit(gsrc, canvas, fx, fy, tx, ty, w, h); }
   
-    static void blit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 c = 0, u16 r = 0) { rawBlit(gsrc,gdst,fx,fy,tx,ty,w,h,r,c); }
-    static void rawBlit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 c = 0, u16 r = 0);
+    static void blit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 r = 0, u16 c = 0) { rawBlit(gsrc,gdst,fx,fy,tx,ty,w,h,r,c); }
+    static void rawBlit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 r = 0, u16 c = 0);
   
     static void drawPixel(u32 color, u16 x, u16 y);
     static void drawLine(u32 color, u16 x1, u16 y1, u16 x2, u16 y2);

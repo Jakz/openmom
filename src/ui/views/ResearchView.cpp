@@ -27,7 +27,7 @@ ResearchView::ResearchView(ViewManager* gvm) : View(gvm), book(new BookView(4))
   buttons.resize(BUTTON_COUNT);
   
   buttons[PREV_PAGE] = new SimpleButton("Prev page", 15, 9, SpriteInfo(TextureID::SPELL_BOOK_CORNERS, 0, 0));
-  buttons[NEXT_PAGE] = new SimpleButton("Next page", 288, 9, SpriteInfo(TextureID::SPELL_BOOK_CORNERS, 1, 0));
+  buttons[NEXT_PAGE] = new SimpleButton("Next page", 288, 9, SpriteInfo(TextureID::SPELL_BOOK_CORNERS, 0, 1));
   
   
   buttons[PREV_PAGE]->setAction([this]() {

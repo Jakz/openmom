@@ -57,13 +57,13 @@ Color GfxData::colorForSchool(const School school)
 }
 
 unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
-  { UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 0, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_SPEARMEN) },
-  { UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 1, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_SWORDSMEN) },
-  { UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 2, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_BOWMEN) },
-  { UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 3, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_CAVALRY) },
-  { UnitSpec::raceSpec(UnitID::SHAMANS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 4, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_SHAMAN) },
-  { UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 8, (u8)RaceID::BARBARIANS), UNIT_BARBARIANS_BERSERKERS) },
-  { UnitSpec::raceSpec(UnitID::SETTLERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 10,(u8)RaceID::BARBARIANS), UNIT_BARBARIANS_SETTLERS) },
+  { UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 0), UNIT_BARBARIANS_SPEARMEN) },
+  { UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 1), UNIT_BARBARIANS_SWORDSMEN) },
+  { UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 2), UNIT_BARBARIANS_BOWMEN) },
+  { UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 3), UNIT_BARBARIANS_CAVALRY) },
+  { UnitSpec::raceSpec(UnitID::SHAMANS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 4), UNIT_BARBARIANS_SHAMAN) },
+  { UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 8), UNIT_BARBARIANS_BERSERKERS) },
+  { UnitSpec::raceSpec(UnitID::SETTLERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 10), UNIT_BARBARIANS_SETTLERS) },
 
   //{ UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 0, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_SPEARMEN) },
   //{ UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 1, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_SWORDSMEN) },
@@ -76,8 +76,8 @@ unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
   
   { UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 0, 0), UNIT_MAGIC_SPIRIT) },
   
-  { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 0, 1), UNIT_HELL_HOUND) },
-  { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 9, 1), UNIT_GREAT_DRAKE, true) }
+  { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 1, 0), UNIT_HELL_HOUND) },
+  { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 1, 9), UNIT_GREAT_DRAKE, true) }
 
 };
 

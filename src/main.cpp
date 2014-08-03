@@ -40,7 +40,7 @@ void init()
 int main(int argc, char * arg[])
 {
   LBX::load();
-  return 0;
+  //return 0;
   
   //const Race &race = Race::race(RACE_BARBARIANS);
   

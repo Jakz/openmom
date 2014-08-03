@@ -30,7 +30,7 @@ SpellBookView::SpellBookView(ViewManager* gvm) : View(gvm), book(new BookView(6)
   buttons.resize(BUTTON_COUNT);
   
   buttons[PREV_PAGE] = new SimpleButton("Prev page", 29, 14, SpriteInfo(TextureID::SPELL_BOOK_CORNERS, 0, 0));
-  buttons[NEXT_PAGE] = new SimpleButton("Next page", 274, 14, SpriteInfo(TextureID::SPELL_BOOK_CORNERS, 1, 0));
+  buttons[NEXT_PAGE] = new SimpleButton("Next page", 274, 14, SpriteInfo(TextureID::SPELL_BOOK_CORNERS, 0, 1));
   
   
   buttons[PREV_PAGE]->setAction([this]() {

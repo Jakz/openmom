@@ -281,7 +281,10 @@ class Texture : public SpriteSheet
     u16 tw() const override { return img->w; }
     u16 th() const override { return img->h; }
   
-    Color at(u16 x, u16 y, u16 c, u16 r) const override;
+    u16 sw(u16 r, u16 c) const override;
+    u16 sh(u16 r, u16 c) const override;
+  
+    Color at(u16 x, u16 y, u16 r, u16 c) const override;
   
     u16 span(u16 i) const { return ws.empty() ? w : ws[i]; }
   

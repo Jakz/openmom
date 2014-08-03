@@ -19,12 +19,12 @@ class MiniMap
 {
 private:
   const World* const world;
-  SDL_Surface* maps[PLANE_COUNT];
+  SpriteSheet* maps[PLANE_COUNT];
 public:
   MiniMap(const World* const world);
   ~MiniMap();
   
-  SDL_Surface* get(Plane plane) const { return maps[plane]; }
+  SpriteSheet* get(Plane plane) const { return maps[plane]; }
   
   void discover(const Position& position);
 

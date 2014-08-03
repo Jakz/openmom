@@ -54,13 +54,13 @@ class Button : public Clickable
     bool pressed, visible;
     SpriteInfo normalCoords;
   
-  public:
     Button(const std::string name, u16 x, u16 y, SpriteInfo info) :
-      Clickable(x,y,Texture::get(info.texture)->span(info.x),Texture::get(info.texture)->h), name(name), pressed(false), visible(true), normalCoords(info)
+    Clickable(x,y,Texture::get(info.texture)->span(info.x),Texture::get(info.texture)->h), name(name), pressed(false), visible(true), normalCoords(info)
     {
-    
+      
     }
   
+  public:
     virtual void draw() = 0;
   
     inline void execute() { if (action) action(); }
@@ -102,14 +102,14 @@ class BistateButton : public Button
 {
   protected:
     SpriteInfo pressedCoords;
+    BistateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Button(name, x, y, normal), pressedCoords(pressed) { }
 
   public:
-    BistateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Button(name, x, y, normal), pressedCoords(pressed) { }
     void draw() override;
   
     static BistateButton* build(const std::string name, u16 x, u16 y, TextureID texture, u16 c)
     {
-      return new BistateButton(name, x, y, SpriteInfo(texture, c, 0), SpriteInfo(texture, c, 1));
+      return new BistateButton(name, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c));
     }
 };
 
@@ -117,7 +117,6 @@ class TristateButton : public BistateButton
 {
   private:
     TristateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : BistateButton(name, x, y, normal, pressed), inactiveCoords(inactive) { }
-
 
   protected:
     SpriteInfo inactiveCoords;
@@ -127,7 +126,7 @@ class TristateButton : public BistateButton
   
     static TristateButton* build(const std::string name, u16 x, u16 y, TextureID texture, u16 c)
     {
-      return new TristateButton(name, x, y, SpriteInfo(texture, c, 0), SpriteInfo(texture, c, 1), SpriteInfo(texture, c, 2));
+      return new TristateButton(name, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c), SpriteInfo(texture, 2, c));
     }
 };
 
@@ -186,10 +185,10 @@ private:
   bool toggled;
   T data;
   
-public:
   RadioButton(const std::string name, T data, RadioButtonGroup<T>* group, int x, int y, SpriteInfo normal, SpriteInfo pressed, u8 offsetX, u8 offsetY) :
-    Button(name, x, y, normal), data(data), toggledOffset{offsetX, offsetY}, pressedCoords(pressed), toggled(false), group(group) { }
+  Button(name, x, y, normal), data(data), toggledOffset{offsetX, offsetY}, pressedCoords(pressed), toggled(false), group(group) { }
   
+public:
   void draw();
   
   const T getData() const { return data; }
@@ -198,7 +197,7 @@ public:
   
   static RadioButton* build(const std::string name, T data, RadioButtonGroup<T>* group, u16 x, u16 y, TextureID texture, u16 c, u8 offsetX, u8 offsetY)
   {
-    return new RadioButton(name, data, group, x, y, SpriteInfo(texture, c, 0), SpriteInfo(texture, c, 1), offsetX, offsetY);
+    return new RadioButton(name, data, group, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c), offsetX, offsetY);
   }
 };
 
