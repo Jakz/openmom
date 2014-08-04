@@ -54,10 +54,6 @@ enum FontFace : u16
   PURPLE_SMALLW,
   YELLOW_SMALLW,
   
-  TEAL_SERIF,
-  YELLOW_SERIF_SHADOW,
-  GOLD_SERIF_SHADOW,
-  SILVER_SERIF_SHADOW,
   SURVEY_SERIF,
   BROWN_SERIF,
   DARK_BROWN_SERIF,
@@ -578,6 +574,8 @@ namespace fnts
     }
     
     static u16 drawStringBounded(const std::string string, int x, int y, int bound, TextAlign align, const Palette* palette = nullptr);
+    
+    static const Palette* paletteFor(char c) { return fontColors[c]; }
     
     static FontFace fontForColor(PlayerColor color)
     {

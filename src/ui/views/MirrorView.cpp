@@ -26,7 +26,7 @@ void MirrorView::draw()
 {
   Gfx::draw(TextureID::MAIN_MIRROR_BACKDROP, 70, 2);
   CommonDraw::drawWizardGem(player, 81, 13);
-  Fonts::drawString(player->name, FontFace::YELLOW_SERIF_SHADOW, 172, 12, ALIGN_CENTER);
+  fnts::Fonts::drawString(player->name, FontFaces::Serif::YELLOW_SHADOW, 171, 12, ALIGN_CENTER);
   
   u16 t = 0;
   u16 tot = player->book()->totalBooks();

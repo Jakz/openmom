@@ -65,13 +65,13 @@ const FontSpriteSheet* buildMedium(color_list colors) { return new FontSpriteShe
 const FontSpriteSheet* buildSerif(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_SERIF], colors, 1, -1); }
 const FontSpriteSheet* buildSerifCrypt(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_SERIF_CRYPT], colors, 1, -3); }
 
-const FontSpriteSheet* buildSmall(BlinkingPalette *palette) { return new FontSpriteSheet(FontData::fonts[FONT_SMALL], palette, 1, 2); }
+const FontSpriteSheet* buildSmall(const Palette *palette) { return new FontSpriteSheet(FontData::fonts[FONT_SMALL], palette, 1, 2); }
 
-
-// tiny change SX = SX - 1 compared to old medium
-// medium should change SX = SX - 1 compared to old medium
-// serif crypt change SX = SX - 1 compared to old medium
-// small SX = SX - 1, SY = SY - 1
+/*
+//              small, tiny, medium, serif, tiny crypt, serif crypt
+s8 xadjust[] = {  -1,   -1,    -1,    0,      -1,         -1};
+s8 yadjust[] = {  -1,    0,     0,    0,       0,          0};
+*/
 
 void FontFaces::buildFonts()
 {
@@ -86,8 +86,8 @@ void FontFaces::buildFonts()
   
   Small::YELLOW = buildSmall({0,0,RGB(81,60,48),RGB(150,109,52),RGB(223,150,28)});
   Small::BLUE_MAGIC = buildSmall({0,0,RGB(40,40,65),RGB(97,97,125),RGB(146,146,166)});
-  Small::WHITE_PALE = buildSmall({0,0,RGB(93,93,121),RGB(142,134,130),RGB(255,255,255)});
-  Small::YELLOW_PALE = buildSmall({0,0,RGB(93,93,121),RGB(142,134,130),RGB(249,232,67)});
+  Small::WHITE_PALE = buildSmall(fnts::Fonts::paletteFor('w'));
+  Small::YELLOW_PALE = buildSmall(fnts::Fonts::paletteFor('y'));
   Small::RED_PALE = buildSmall({0,0,RGB(16,12,32),RGB(81,77,113),RGB(195,178,178)});
   Small::WHITE = buildSmall({0,0,RGB(0,0,0),RGB(143,133,130),RGB(255,255,255)});
   Small::TEAL = buildSmall({0,0,RGB(20,69,69),RGB(85,166,166),RGB(190,239,239)});
@@ -110,7 +110,7 @@ void FontFaces::buildFonts()
   Serif::BROWN = buildSerif({0, 0, 0, RGB(120,74,36), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14)});
   Serif::YELLOW_SHADOW = buildSerif({0, 0, RGB(15,49,56), RGB(115,84,69), RGB(245,161,39), RGB(229,145,31), RGB(213,133,27), RGB(213,133,27)});
   Serif::GOLD_SHADOW = buildSerif({0,  0, RGB(67,43,36),RGB(74,51,44), RGB(213,133,27), RGB(245,161,39), RGB(255,199,103), RGB(255,243,127)});
-  Serif::SILVER_SHADOW = buildSerif({0, 0, RGB(67,43,36), RGB(106,97,93), RGB(159,150,146), RGB(196,186,182), RGB(228,219,215), RGB(255,255,255)});
+  Serif::SILVER_SHADOW = buildSerif({0, 0, RGB(67,43,36), RGB(106,97,93), RGB(159,150,146), RGB(196,186,182), RGB(228,219,215), RGB(255,255,255)});  // TODO: take from fontColors map
   Serif::WHITE_SURVEY = buildSerif({0, 0, RGB(93,93,121), RGB(142,134,130), RGB(255,255,255), RGB(255,255,255), RGB(255,255,215), RGB(255,255,255)});
   Serif::DARK_BROWN = buildSerif({0, 0, 0, RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36)});
   
@@ -153,10 +153,6 @@ Font Fonts::fonts[] = {
   SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::PURPLE),
   SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::YELLOW),
   
-  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::TEAL_STROKE),
-  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::YELLOW_SHADOW),
-  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::GOLD_SHADOW),
-  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::SILVER_SHADOW),
   SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::WHITE_SURVEY),
   SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::BROWN),
   SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::DARK_BROWN),
@@ -360,7 +356,9 @@ const Palette* fnts::Fonts::palette = nullptr;
 const Palette* fnts::Fonts::opalette = nullptr;
 const FontSpriteSheet* fnts::Fonts::font = nullptr;
 unordered_map<char, const Palette*> fnts::Fonts::fontColors = {
-
+  {'s', new IndexedPalette({0, 0, RGB(67,43,36), RGB(106,97,93), RGB(159,150,146), RGB(196,186,182), RGB(228,219,215), RGB(255,255,255)})},
+  {'w', new IndexedPalette({0,0,RGB(93,93,121),RGB(142,134,130),RGB(255,255,255)})},
+  {'y', new IndexedPalette({0,0,RGB(93,93,121),RGB(142,134,130),RGB(249,232,67)})}
 };
 
 

@@ -126,7 +126,7 @@ void CommonDraw::drawUnitProps(const UnitSpec* unit, u16 xx, u16 yy, s16 max)
   int ty = yy;
   for (int i = 0; i < PROPERTY_COUNT; ++i)
   {
-    Fonts::drawString(propDetails[i].name, FontFace::TEAL_SERIF, xx-43, yy - 1, ALIGN_LEFT);
+    fnts::Fonts::drawString(propDetails[i].name, FontFaces::Serif::TEAL, xx-44, yy - 1, ALIGN_LEFT);
     s16 tot = unit->getProperty(propDetails[i].property);
 		
     if (tot > 0)
@@ -165,7 +165,7 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
     int ty = yy;
     for (int i = 0; i < PROPERTY_COUNT; ++i)
     {
-      Fonts::drawString(propDetails[i].name, FontFace::TEAL_SERIF, xx-43, yy - 1, ALIGN_LEFT);
+      fnts::Fonts::drawString(propDetails[i].name, FontFaces::Serif::TEAL, xx-44, yy - 1, ALIGN_LEFT);
       int tot = unit->getBaseProperty(propDetails[i].property)+unit->getBonusProperty(propDetails[i].property);
 			
       if (tot > 0)

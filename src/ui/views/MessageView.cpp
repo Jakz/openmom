@@ -91,7 +91,7 @@ void MessageView::draw()
       Gfx::draw(TextureID::MAGIC_SCHOOL_ICONS, 0, 1, 6, 40);
       CityLayout::drawBuildingCentered(msg->building, 249, 106);
       
-      Fonts::drawStringBounded(msg->getMessage(), FontFace::YELLOW_SERIF_SHADOW, 80, 68, 170, ALIGN_LEFT);
+      fnts::Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::YELLOW_SHADOW, 79, 68, 170, ALIGN_LEFT);
       break;
     }
       
@@ -117,7 +117,7 @@ void MessageView::draw()
       // draw dialog text onto buffer
       Gfx::resetBuffer();
       Gfx::bindBuffer();
-      int h = Fonts::drawStringBounded(msg->getMessage(), FontFace::GOLD_SERIF_SHADOW, 5, 5, 167, ALIGN_LEFT) + 3;
+      int h = fnts::Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::GOLD_SHADOW, 4, 5, 167, ALIGN_LEFT) + 3;
       int y = 200/2 - (h+29)/2;
       Gfx::bindCanvas();
       // draw backdrop of the dialog by using text height
@@ -142,7 +142,7 @@ void MessageView::draw()
       
       Gfx::resetBuffer();
       Gfx::bindBuffer();
-      int h = Fonts::drawStringBounded(msg->getMessage(), FontFace::GOLD_SERIF_SHADOW, 5, 5, 150, ALIGN_CENTER) + 3;
+      int h = fnts::Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::GOLD_SHADOW, 4, 5, 150, ALIGN_CENTER) + 3;
       int y = 200/2 - (h+29)/2;
       Gfx::bindCanvas();
       Gfx::drawClipped(TextureID::MESSAGE_ERROR_BACKDROP, 68, y, 0, 0, 186, h);

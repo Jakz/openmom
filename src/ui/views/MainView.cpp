@@ -133,8 +133,8 @@ void MainView::updateBuildButton()
 
 void MainView::draw()
 {
-  const FontSpriteSheet* sheets[] = {FontFaces::Small::GREENW, FontFaces::Tiny::WHITE_STROKE, FontFaces::Medium::TEAL_BRIGHT, FontFaces::Serif::TEAL, FontFaces::Crypt::TINY_BROWN, FontFaces::Crypt::SERIF_BROWN};
-  const FontFace faces[] = {FontFace::GREEN_SMALLW, FontFace::WHITE_TINY_STROKE, FontFace::BRIGHT_TEAL_MEDIUM, FontFace::TEAL_SERIF, FontFace::TINY_COMPACT_CRYPT_BROWN, FontFace::SERIF_CRYPT_BROWN};
+  /*const FontSpriteSheet* sheets[] = {FontFaces::Small::GREENW, FontFaces::Tiny::WHITE_STROKE, FontFaces::Medium::TEAL_BRIGHT, FontFaces::Crypt::TINY_BROWN, FontFaces::Crypt::SERIF_BROWN};
+  const FontFace faces[] = {FontFace::GREEN_SMALLW, FontFace::WHITE_TINY_STROKE, FontFace::BRIGHT_TEAL_MEDIUM, FontFace::TINY_COMPACT_CRYPT_BROWN, FontFace::SERIF_CRYPT_BROWN};
   
   Gfx::alphaBlend({0,0,200,200}, RGBA(128, 0, 0, 255));
   
@@ -142,12 +142,12 @@ void MainView::draw()
   s8 xadjust[] = {-1,-1,-1,0,-1,-1};
   s8 yadjust[] = {-1,0,0,0,0,0};
   
-  for (int i = 0; i < 6; ++i)
+  for (int i = 0; i < 5; ++i)
   {    //Fonts::setMap(&FontMap::TinyCompact::WHITE_BLUE_BLINK);
-    Fonts::drawString("Antani foti sblinda1", faces[i], 20+ i/3*70, 30+i%3*40, ALIGN_LEFT, &FontMap::TinyCompact::WHITE_BLUE_BLINK);
-    fnts::Fonts::drawString("Antani foti sblinda1", sheets[i], 20 + i/3*70 + xadjust[i], 30+i%3*40 + yadjust[i], ALIGN_LEFT);
-  }
-
+    Fonts::drawStringBounded("Antani foti sblinda1", faces[i], 20+ i/3*70, 30+i%3*40, 50, ALIGN_LEFT, &FontMap::TinyCompact::WHITE_BLUE_BLINK);
+    fnts::Fonts::drawStringBounded("Antani foti sblinda1", sheets[i], 20 + i/3*70 + xadjust[i], 30+i%3*40 + yadjust[i], 50, ALIGN_LEFT);
+  }*/
+  
   return;
   /*SpriteInfo si = SpriteInfo(TextureID::UNITS_STATIC_STANDARD, 0, 0);
   Gfx::drawGlow(si, 100, 100, NATURE);

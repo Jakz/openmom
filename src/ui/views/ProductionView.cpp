@@ -58,10 +58,10 @@ void ProductionView::draw()
     CityLayout::drawBuildingCentered(static_cast<const Building*>(product), 82, 38);
     
     Fonts::drawString(Fonts::format("Cost %u",cost), FontFace::TEAL_SMALL, 129, 34, ALIGN_LEFT);
-    Fonts::drawStringBounded(i18n::s(static_cast<const Building*>(product)->desc), FontFace::TEAL_SERIF, 87, 106, 150, ALIGN_LEFT);
+    fnts::Fonts::drawStringBounded(i18n::s(static_cast<const Building*>(product)->desc), FontFaces::Serif::TEAL, 87, 106, 150, ALIGN_LEFT);
     
-    Fonts::drawString("Maintenance", FontFace::TEAL_SERIF, 86, 46, ALIGN_LEFT);
-    Fonts::drawString("Allows", FontFace::TEAL_SERIF, 86, 46+11, ALIGN_LEFT);
+    fnts::Fonts::drawString("Maintenance", FontFaces::Serif::TEAL, 85, 46, ALIGN_LEFT);
+    fnts::Fonts::drawString("Allows", FontFaces::Serif::TEAL, 85, 46+11, ALIGN_LEFT);
     //TODO: print 0 for housing and trade goods
     CommonDraw::drawUpkeep(product->productionUpkeep(), 167, 49);
     
@@ -86,7 +86,7 @@ void ProductionView::draw()
     SkillDraw::i.draw(spec);
   }
   
-  Fonts::drawString(product->productionName(), FontFace::TEAL_SERIF, 129, 5, ALIGN_LEFT);
+  fnts::Fonts::drawString(product->productionName(), FontFaces::Serif::TEAL, 128, 5, ALIGN_LEFT);
   
   
   int i = 0;

@@ -70,7 +70,7 @@ void UnitDetailView::draw()
   }
   
   // draw unit name
-  Fonts::drawString(unit->name(), FontFace::TEAL_SERIF, 82, 16, ALIGN_LEFT);
+  fnts::Fonts::drawString(unit->name(), FontFaces::Serif::TEAL, 81, 16, ALIGN_LEFT);
   
   // draw skill pane, first check if buttons to change page are needed and display them
   buttons[UP_ARROW]->showIf(SkillDraw::i.showTopArrow());
