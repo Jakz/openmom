@@ -41,8 +41,8 @@ void MirrorView::draw()
     }
   }
   
-  Fonts::drawString(Fonts::format("%u GP",player->totalGoldPool()), FontFace::YELLOW_TINY_STROKE, 96, 76, ALIGN_CENTER);
-  Fonts::drawString(Fonts::format("%u MP",player->totalManaPool()), FontFace::YELLOW_TINY_STROKE, 222, 76, ALIGN_CENTER);
+  fnts::Fonts::drawString(Fonts::format("%u GP",player->totalGoldPool()), FontFaces::Tiny::YELLOW_STROKE, 95, 76, ALIGN_CENTER);
+  fnts::Fonts::drawString(Fonts::format("%u MP",player->totalManaPool()), FontFaces::Tiny::YELLOW_STROKE, 221, 76, ALIGN_CENTER);
 }
 
 void MirrorView::mousePressed(u16 x, u16 y, MouseButton b)

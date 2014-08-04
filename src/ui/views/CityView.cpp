@@ -171,9 +171,9 @@ void CityView::draw()
     
     /* TODO: localize and center align */
     if (production == Building::HOUSING)
-      Fonts::drawStringBounded("Increases population growth rate.", FontFace::WHITE_TINY, 272, 158, 40, ALIGN_LEFT);
+      fnts::Fonts::drawStringBounded("Increases population growth rate.", FontFaces::Tiny::WHITE, 271, 158, 40, ALIGN_LEFT);
     else if (production == Building::TRADE_GOODS)
-      Fonts::drawStringBounded("Convert production to gold.", FontFace::WHITE_TINY, 272, 158, 40, ALIGN_LEFT);
+      fnts::Fonts::drawStringBounded("Convert production to gold.", FontFaces::Tiny::WHITE, 271, 158, 40, ALIGN_LEFT);
     
   }
   else
@@ -217,13 +217,13 @@ void CityView::draw()
   int i = 0;
   for (const SpellCast& cast : city->getSpells())
   {
-    FontFace face = Fonts::fontForColor(cast.player->color);
-    Fonts::drawString(i18n::s(cast.spell->name), face, 139, 51+7*i, ALIGN_LEFT);
+    const FontSpriteSheet* face = fnts::Fonts::fontForColor(cast.player->color);
+    fnts::Fonts::drawString(i18n::s(cast.spell->name), face, 138, 50+7*i, ALIGN_LEFT);
     ++i;
   }
   
   /*for (int i = 0; i < 5; ++i)
    {
-   Fonts::drawString("Dark Rituals", Fonts::fontForColor(Color.values()[i]), 139, 51+7*i, ALIGN_LEFT);
+   fnts::Fonts::drawString("Dark Rituals", fnts::Fonts::fontForColor(Color.values()[i]), 138, 50+7*i, ALIGN_LEFT);
    }*/
 }

@@ -57,7 +57,7 @@ void ProductionView::draw()
   {
     CityLayout::drawBuildingCentered(static_cast<const Building*>(product), 82, 38);
     
-    Fonts::drawString(Fonts::format("Cost %u",cost), FontFace::TEAL_SMALL, 129, 34, ALIGN_LEFT);
+    fnts::Fonts::drawString(Fonts::format("Cost %u",cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
     fnts::Fonts::drawStringBounded(i18n::s(static_cast<const Building*>(product)->desc), FontFaces::Serif::TEAL, 87, 106, 150, ALIGN_LEFT);
     
     fnts::Fonts::drawString("Maintenance", FontFaces::Serif::TEAL, 85, 46, ALIGN_LEFT);
@@ -75,13 +75,13 @@ void ProductionView::draw()
   else
   {
     const UnitSpec* spec = static_cast<const UnitSpec*>(product);
-    Fonts::drawString("Moves", FontFace::TEAL_SMALL, 129, 20, ALIGN_LEFT);
-    Fonts::drawString("Upkeep", FontFace::TEAL_SMALL, 129, 27, ALIGN_LEFT);
+    fnts::Fonts::drawString("Moves", FontFaces::Small::TEAL, 128, 19, ALIGN_LEFT);
+    fnts::Fonts::drawString("Upkeep", FontFaces::Small::TEAL, 128, 26, ALIGN_LEFT);
     CommonDraw::drawMovement(spec->movement, 165, 19, 0);
     CommonDraw::drawUpkeep(spec->upkeep, 164, 26);
     UnitDraw::drawUnitIso(spec, 83, 5, nullptr);
     CommonDraw::drawUnitProps(spec, 128, 47, 10);
-    Fonts::drawString(Fonts::format("Cost %u(%u)", cost, cost), FontFace::TEAL_SMALL, 129, 34, ALIGN_LEFT);
+    fnts::Fonts::drawString(Fonts::format("Cost %u(%u)", cost, cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
     
     SkillDraw::i.draw(spec);
   }

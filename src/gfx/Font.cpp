@@ -141,34 +141,13 @@ unordered_map<char, const ColorMap*> Fonts::fontColors = {
 };
 
 Font Fonts::fonts[] = {
-  TinyFont(TEXTURE_FONT_TINY, &FontMap::Tiny::WHITE),
-  TinyFont(TEXTURE_FONT_TINY, &FontMap::Tiny::WHITE_STROKE),
-  TinyFont(TEXTURE_FONT_TINY, &FontMap::Tiny::YELLOW_STROKE),
-  TinyFont(TEXTURE_FONT_TINY, &FontMap::Tiny::RED_STROKE),
-  
-  TinyCompactFont(TEXTURE_FONT_TINY_COMPACT),
-  
-  TinyCompactFont(TEXTURE_FONT_TINY_COMPACT_CRYPT, &FontMap::Misc::TINY_BROWN_CRYPT),
-  
-  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::TEAL),
-  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::BROWN),
-    
-  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::GREEN),
-  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::BLUE),
-  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::RED),
-  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::PURPLE),
-  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::YELLOW),
-  
-  SerifCryptFont(TEXTURE_FONT_SERIF_CRYPT, &FontMap::Misc::SERIF_CRYPT_BROWN),
-  
+
   MediumFont(TEXTURE_FONT_TEAL_MEDIUM),
   MediumFont(TEXTURE_FONT_TEAL_MEDIUM, &FontMap::Medium::TEAL_STROKE),
   MediumFont(TEXTURE_FONT_TEAL_MEDIUM, &FontMap::Medium::TEAL_BRIGHT),
   MediumFont(TEXTURE_FONT_TEAL_MEDIUM, &FontMap::Medium::BLACK),
   
   MediumBoldFont(TEXTURE_FONT_MEDIUM_BOLD),
-  
-  HugeSerifFont(TEXTURE_FONT_HUGE_SERIF)
 };
 
 

@@ -238,17 +238,17 @@ void MainView::draw()
   {
     int gg = player->goldDelta(), f = player->foodDelta(), m = player->manaDelta();
     
-    Fonts::drawString(Fonts::format("%d Gold",gg), gg > 0 ? FontFace::YELLOW_TINY_STROKE : FontFace::RED_TINY_STROKE, 278, 100, ALIGN_CENTER);
-    Fonts::drawString(Fonts::format("%d Food",f), f > 0 ? FontFace::YELLOW_TINY_STROKE : FontFace::RED_TINY_STROKE, 278, 132, ALIGN_CENTER);
-    Fonts::drawString(Fonts::format("%d Mana",m), m > 0 ? FontFace::YELLOW_TINY_STROKE : FontFace::RED_TINY_STROKE, 278, 164, ALIGN_CENTER);
+    fnts::Fonts::drawString(Fonts::format("%d Gold",gg), gg > 0 ? FontFaces::Tiny::YELLOW_STROKE : FontFaces::Tiny::RED_STROKE, 277, 100, ALIGN_CENTER);
+    fnts::Fonts::drawString(Fonts::format("%d Food",f), f > 0 ? FontFaces::Tiny::YELLOW_STROKE : FontFaces::Tiny::RED_STROKE, 277, 132, ALIGN_CENTER);
+    fnts::Fonts::drawString(Fonts::format("%d Mana",m), m > 0 ? FontFaces::Tiny::YELLOW_STROKE : FontFaces::Tiny::RED_STROKE, 277, 164, ALIGN_CENTER);
   }
   
   if (substate == MAIN || substate == UNIT)
   {
     fnts::Fonts::drawString(Fonts::format("%d",player->totalGoldPool()), FontFaces::Small::WHITE, 258, 67, ALIGN_RIGHT);
-    Fonts::drawString("GP", FontFace::WHITE_TINY, 268, 67, ALIGN_LEFT);
+    fnts::Fonts::drawString("GP", FontFaces::Tiny::WHITE, 267, 67, ALIGN_LEFT);
     fnts::Fonts::drawString(Fonts::format("%d",player->totalManaPool()), FontFaces::Small::WHITE, 298, 67, ALIGN_RIGHT);
-    Fonts::drawString("MP", FontFace::WHITE_TINY, 306, 67, ALIGN_LEFT);
+    fnts::Fonts::drawString("MP", FontFaces::Tiny::WHITE, 305, 67, ALIGN_LEFT);
   }
 }
 

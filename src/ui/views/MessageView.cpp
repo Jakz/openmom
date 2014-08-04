@@ -99,7 +99,7 @@ void MessageView::draw()
     {
       Gfx::resetBuffer();
       Gfx::bindBuffer();
-      int h = Fonts::drawStringBounded(message->getMessage(), FontFace::BROWN_SMALL, 77, 40, 175, ALIGN_LEFT);
+      int h = fnts::Fonts::drawStringBounded(message->getMessage(), FontFaces::Small::BROWN, 76, 40, 175, ALIGN_LEFT);
       Gfx::bindCanvas();
       Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 10, 0, 0, 210, h);
       Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 3+h, 0, 200, 210, 23);
@@ -155,7 +155,7 @@ void MessageView::draw()
     default:
     {
       Gfx::bindBuffer();
-      int h = Fonts::drawStringBounded(message->getMessage(), FontFace::BROWN_SMALL, 77, 40, 175, ALIGN_LEFT);
+      int h = fnts::Fonts::drawStringBounded(message->getMessage(), FontFaces::Small::BROWN, 76, 40, 175, ALIGN_LEFT);
       Gfx::bindCanvas();
       Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 10, 0, 0, 210, h);
       Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 3+h, 0, 200, 210, 23);

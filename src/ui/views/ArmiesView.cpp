@@ -62,7 +62,7 @@ void ArmiesView::draw()
   {
     UnitDraw::drawHeroPortrait(hero, HERO_PORTRAITS[i][0], HERO_PORTRAITS[i][1]);
     // TODO: fixare color map, serve pale red apposita
-    Fonts::drawString(hero->name(), FontFace::WHITE_TINY, 24+265*(i/3), 41+51*(i%3), ALIGN_CENTER);
+    fnts::Fonts::drawString(hero->name(), FontFaces::Tiny::WHITE, 23+265*(i/3), 41+51*(i%3), ALIGN_CENTER);
     ++i;
   }
   

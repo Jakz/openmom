@@ -33,26 +33,7 @@ enum FontType
 
 
 enum FontFace : u16
-{
-  WHITE_TINY = 0,
-  WHITE_TINY_STROKE,
-  YELLOW_TINY_STROKE,
-  RED_TINY_STROKE,
-  
-  TINY_COMPACT,
-  
-  TINY_COMPACT_CRYPT_BROWN,
-  
-  TEAL_SMALL,
-  BROWN_SMALL,
-    
-  GREEN_SMALLW,
-  BLUE_SMALLW,
-  RED_SMALLW,
-  PURPLE_SMALLW,
-  YELLOW_SMALLW,
-  
-  SERIF_CRYPT_BROWN,
+{    
   
   TEAL_MEDIUM,
   TEAL_MEDIUM_STROKE,
@@ -60,8 +41,6 @@ enum FontFace : u16
   BLACK_MEDIUM,
   
   BROWN_MEDIUM_BOLD_SHADOW,
-  
-  HUGE_SERIF
 };
 
 enum TextAlign : u8
@@ -481,19 +460,7 @@ class Fonts
     }
   
     static u16 drawStringBounded(const std::string string, int x, int y, int bound, TextAlign align, const ColorMap* map = nullptr);
-  
-    static FontFace fontForColor(PlayerColor color)
-    {
-      switch (color)
-      {
-        case GREEN: return GREEN_SMALLW;
-        case BLUE: return BLUE_SMALLW;
-        case RED: return RED_SMALLW;
-        case PURPLE: return PURPLE_SMALLW;
-        case YELLOW: return YELLOW_SMALLW;
-        default: return YELLOW_SMALLW;
-      }
-    }
+
   
     static const Font& fontFor(FontFace face) { return fonts[face]; }
 
