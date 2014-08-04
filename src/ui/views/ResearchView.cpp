@@ -69,7 +69,7 @@ void ResearchView::draw()
   
   // prevpage / nextpage buttons
   
-  int sx = 25, sy = 27;
+  int sx = 24, sy = 27;
   int dy = 37, dx = 148;
   
   const BookView::Page* pages[] = { book->current(), book->current(1) };
@@ -93,8 +93,8 @@ void ResearchView::draw()
       int turns = 0;
       int manaCost = 0;
       
-      FontFace fonts[2];
-      const ColorMap* map = &FontMap::TinyCompact::BROWN;
+      const FontSpriteSheet* fonts[2];
+      const Palette* map = nullptr;
       
       if (!status.discovered || page->isResearch())
       {
@@ -102,12 +102,12 @@ void ResearchView::draw()
         
         if (status.spell == player->book()->getCurrentResearch())
         {
-          map = &FontMap::TinyCompact::WHITE_BLUE_BLINK;
+          map = FontFaces::Palettes::BLINK_WHITE_BLUE;
           turns = player->book()->turnsToCompleteResearch();
         }
         else
         {
-          map = &FontMap::TinyCompact::BROWN;
+          map = nullptr;
           turns = player->book()->turnsToCompleteResearch(s);
         }
       }
@@ -119,19 +119,19 @@ void ResearchView::draw()
       
       if (status.discovered)
       {
-        fonts[0] = FontFace::DARK_BROWN_SERIF; fonts[1] = FontFace::TINY_COMPACT;
+        fonts[0] = FontFaces::Serif::DARK_BROWN; fonts[1] = FontFaces::Tiny::BROWN;
       }
       else
       {
-        fonts[0] = FontFace::SERIF_CRYPT_BROWN; fonts[1] = FontFace::TINY_COMPACT_CRYPT_BROWN;
+        fonts[0] = FontFaces::Crypt::SERIF_BROWN; fonts[1] = FontFaces::Crypt::TINY_BROWN;
       }
       
-      Fonts::drawString(i18n::s(s->name), fonts[0], tx, ty, ALIGN_LEFT);
+      fnts::Fonts::drawString(i18n::s(s->name), fonts[0], tx, ty, ALIGN_LEFT);
       
       if (!status.discovered || page->isResearch())
-        Fonts::drawStringBounded(Fonts::format("Research Cost:%d (%d turns)", s->mana.researchCost, turns), fonts[1], tx, ty+11, 125, ALIGN_LEFT, map);
+        fnts::Fonts::drawStringBounded(Fonts::format("Research Cost:%d (%d turns)", s->mana.researchCost, turns), fonts[1], tx, ty+11, 125, ALIGN_LEFT, map);
       else
-        Fonts::drawStringBounded(Fonts::format("Casting Cost:%d (%d turns)", manaCost, turns), fonts[1], tx, ty+11, 125, ALIGN_LEFT, map);
+        fnts::Fonts::drawStringBounded(Fonts::format("Casting Cost:%d (%d turns)", manaCost, turns), fonts[1], tx, ty+11, 125, ALIGN_LEFT, map);
       
       //TODO: real descs
       std::string descs[] = {
@@ -146,7 +146,7 @@ void ResearchView::draw()
       };
       
       
-      Fonts::drawStringBounded(descs[i], FontFace::TINY_COMPACT, tx, ty+11+6, 125, ALIGN_LEFT, map);
+      fnts::Fonts::drawStringBounded(descs[i], FontFaces::Tiny::BROWN, tx, ty+11+6, 125, ALIGN_LEFT, map);
     }
   }
 }

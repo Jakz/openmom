@@ -158,8 +158,8 @@ void CityView::draw()
   }
   
   /* draw city info: race and population */
-  Fonts::drawString(i18n::s(city->race.name), FontFace::YELLOW_SMALL, 6, 19, ALIGN_LEFT);
-  Fonts::drawString(Fonts::format("Population: %,d (+%d)", city->population, city->growthRate), FontFace::YELLOW_SMALL, 202, 19, ALIGN_RIGHT);
+  fnts::Fonts::drawString(i18n::s(city->race.name), FontFaces::Small::YELLOW, 5, 18, ALIGN_LEFT);
+  fnts::Fonts::drawString(Fonts::format("Population: %,d (+%d)", city->population, city->growthRate), FontFaces::Small::YELLOW, 201, 19, ALIGN_RIGHT);
   
   const Productable* production = city->getProductable();
   
@@ -191,7 +191,7 @@ void CityView::draw()
     /* TODO: localize */
     int prodToDo = (production->productionCost() - city->productionPool);
     int turns = prodToDo == 0 ? 1 : (prodToDo/city->work + (prodToDo%city->work == 0 ? 0 : 1));
-    Fonts::drawString(turns+(turns == 1 ? " Turn" : " Turns"), FontFace::YELLOW_SMALL, 310, 140, ALIGN_RIGHT);
+    fnts::Fonts::drawString(turns+(turns == 1 ? " Turn" : " Turns"), FontFaces::Small::YELLOW, 309, 139, ALIGN_RIGHT);
     
     /* draw production coins */
     int max = 10;
@@ -207,10 +207,10 @@ void CityView::draw()
   }
   
   /* TODO: in realtà il font sarebbe obreggiato dall'alto / gestire wrapping nomi lunghi (ship wrights guild etc) */
-  if (Fonts::stringWidth(FontFace::WHITE_SMALL, production->productionName()) < 40)
-    Fonts::drawString(production->productionName(), FontFace::WHITE_SMALL, 236, 177, ALIGN_CENTER);
+  if (fnts::Fonts::stringWidth(FontFaces::Small::WHITE, production->productionName()) < 40)
+    fnts::Fonts::drawString(production->productionName(), FontFaces::Small::WHITE, 235, 176, ALIGN_CENTER);
   else
-    Fonts::drawString(production->productionName(), FontFace::WHITE_TINY, 236, 177, ALIGN_CENTER);
+    fnts::Fonts::drawString(production->productionName(), FontFaces::Tiny::WHITE, 235, 177, ALIGN_CENTER);
   
   
   // print city enchantments

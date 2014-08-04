@@ -91,7 +91,7 @@ void ArmiesView::draw()
     }
   }
   
-  Fonts::setFace(FontFace::YELLOW_SMALL, &FontMap::Small::RED_PALE, 0, 2);
+  fnts::Fonts::setFace(FontFaces::Small::RED_PALE, 0, 1);
   
   if (army)
   {
@@ -105,7 +105,7 @@ void ArmiesView::draw()
     
     // draw unit name
     // TODO: space dello SmallCompactFont è 1 in meno di quanto è nel gioco originale
-    Fonts::drawString(/*unit->name().toUpper()*/"LIZARDMAN SWORDSMEN", 184, 161, ALIGN_CENTER);
+    Fonts::drawString(/*unit->name().toUpper()*/"LIZARDMAN SWORDSMEN", 183, 160, ALIGN_CENTER);
     
   }
   
@@ -116,9 +116,9 @@ void ArmiesView::draw()
     for (auto u : *a)
       upkeep.add(u->upkeep());
   
-  Fonts::drawString(/*to_string(upkeep.gold)+*/"7", 42, 173, ALIGN_CENTER);
-  Fonts::drawString(/*to_string(upkeep.mana+*/"0", 42, 183, ALIGN_CENTER);
-  Fonts::drawString(/*to_string(upkeep.food+*/"11", 42, 192, ALIGN_CENTER);
+  Fonts::drawString(/*to_string(upkeep.gold)+*/"7", 41, 172, ALIGN_CENTER);
+  Fonts::drawString(/*to_string(upkeep.mana+*/"0", 41, 182, ALIGN_CENTER);
+  Fonts::drawString(/*to_string(upkeep.food+*/"11", 41, 191, ALIGN_CENTER);
 }
 
 void ArmiesView::mouseMoved(u16 x, u16 y, MouseButton b)

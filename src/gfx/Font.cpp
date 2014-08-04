@@ -58,6 +58,10 @@ const FontSpriteSheet* FontFaces::Crypt::TINY_BROWN = nullptr;
 
 const BlinkingPalette* FontFaces::Palettes::BLINK_WHITE_BLUE = nullptr;
 
+const Palette* FontFaces::Palettes::SMALL_WHITE_PALE = nullptr;
+const Palette* FontFaces::Palettes::SMALL_YELLOW_PALE = nullptr;
+
+
 const FontSpriteSheet* buildTiny(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_TINY], colors, 1, -2); }
 const FontSpriteSheet* buildTinyCrypt(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_TINY_CRYPT], colors, 1, -1); }
 const FontSpriteSheet* buildSmall(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_SMALL], colors, 1, 2); }
@@ -75,6 +79,10 @@ s8 yadjust[] = {  -1,    0,     0,    0,       0,          0};
 
 void FontFaces::buildFonts()
 {
+  Palettes::SMALL_WHITE_PALE = new IndexedPalette({0,0,RGB(93,93,121),RGB(142,134,130),RGB(255,255,255)});
+  Palettes::SMALL_YELLOW_PALE = new IndexedPalette({0,0,RGB(93,93,121),RGB(142,134,130),RGB(249,232,67)});
+  
+  
   FontData::fonts[FONT_MEDIUM]->setGlyphWidth(' '-' ', 1);
   FontData::fonts[FONT_SERIF_CRYPT]->setGlyphWidth(' '-' ', 3);
 
@@ -86,8 +94,8 @@ void FontFaces::buildFonts()
   
   Small::YELLOW = buildSmall({0,0,RGB(81,60,48),RGB(150,109,52),RGB(223,150,28)});
   Small::BLUE_MAGIC = buildSmall({0,0,RGB(40,40,65),RGB(97,97,125),RGB(146,146,166)});
-  Small::WHITE_PALE = buildSmall(fnts::Fonts::paletteFor('w'));
-  Small::YELLOW_PALE = buildSmall(fnts::Fonts::paletteFor('y'));
+  Small::WHITE_PALE = buildSmall(Palettes::SMALL_WHITE_PALE);
+  Small::YELLOW_PALE = buildSmall(Palettes::SMALL_YELLOW_PALE);
   Small::RED_PALE = buildSmall({0,0,RGB(16,12,32),RGB(81,77,113),RGB(195,178,178)});
   Small::WHITE = buildSmall({0,0,RGB(0,0,0),RGB(143,133,130),RGB(255,255,255)});
   Small::TEAL = buildSmall({0,0,RGB(20,69,69),RGB(85,166,166),RGB(190,239,239)});
@@ -142,8 +150,6 @@ Font Fonts::fonts[] = {
   
   TinyCompactFont(TEXTURE_FONT_TINY_COMPACT_CRYPT, &FontMap::Misc::TINY_BROWN_CRYPT),
   
-  SmallFont(TEXTURE_FONT_YELLOW_SMALL),
-  SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::WHITE),
   SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::TEAL),
   SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::BROWN),
     
@@ -152,10 +158,6 @@ Font Fonts::fonts[] = {
   SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::RED),
   SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::PURPLE),
   SmallFont(TEXTURE_FONT_YELLOW_SMALL, &FontMap::Small::YELLOW),
-  
-  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::WHITE_SURVEY),
-  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::BROWN),
-  SerifFont(TEXTURE_FONT_SERIF, &FontMap::Serif::DARK_BROWN),
   
   SerifCryptFont(TEXTURE_FONT_SERIF_CRYPT, &FontMap::Misc::SERIF_CRYPT_BROWN),
   
@@ -357,8 +359,8 @@ const Palette* fnts::Fonts::opalette = nullptr;
 const FontSpriteSheet* fnts::Fonts::font = nullptr;
 unordered_map<char, const Palette*> fnts::Fonts::fontColors = {
   {'s', new IndexedPalette({0, 0, RGB(67,43,36), RGB(106,97,93), RGB(159,150,146), RGB(196,186,182), RGB(228,219,215), RGB(255,255,255)})},
-  {'w', new IndexedPalette({0,0,RGB(93,93,121),RGB(142,134,130),RGB(255,255,255)})},
-  {'y', new IndexedPalette({0,0,RGB(93,93,121),RGB(142,134,130),RGB(249,232,67)})}
+  {'w', FontFaces::Palettes::SMALL_WHITE_PALE},
+  {'y', FontFaces::Palettes::SMALL_YELLOW_PALE}
 };
 
 
@@ -410,7 +412,10 @@ u16 fnts::Fonts::drawString(const string string, u16 x, u16 y, TextAlign align)
 {
   Gfx::bindPalette(palette);
   
-  if (align != ALIGN_CENTER)
+  if (align == ALIGN_CENTER)
+    x -= font->stringWidth(string, hSpace)/2;
+  
+  //if (align != ALIGN_CENTER)
   {
     u16 w = drawStringContext(string, x, y, align);
     
@@ -418,7 +423,7 @@ u16 fnts::Fonts::drawString(const string string, u16 x, u16 y, TextAlign align)
     
     return w;
   }
-  else
+  /*else
   {
     Gfx::resetBuffer();
     Gfx::bindBuffer();
@@ -429,7 +434,7 @@ u16 fnts::Fonts::drawString(const string string, u16 x, u16 y, TextAlign align)
     if (palette) Gfx::unbindPalette();
     
     return w;
-  }
+  }*/
 }
 
 u16 fnts::Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)

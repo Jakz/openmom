@@ -148,7 +148,7 @@ void MainView::draw()
     fnts::Fonts::drawStringBounded("Antani foti sblinda1", sheets[i], 20 + i/3*70 + xadjust[i], 30+i%3*40 + yadjust[i], 50, ALIGN_LEFT);
   }*/
   
-  return;
+  //return;
   /*SpriteInfo si = SpriteInfo(TextureID::UNITS_STATIC_STANDARD, 0, 0);
   Gfx::drawGlow(si, 100, 100, NATURE);
   return;*/
@@ -192,7 +192,7 @@ void MainView::draw()
     s16 moves = player->selectedAvailMoves();
     if (moves > 0)
     {
-      Fonts::drawString(Fonts::format("Moves: %d%s",moves/2, moves%2 == 0 ? ".5" : "" ), FontFace::WHITE_SMALL, 246, 167, ALIGN_LEFT);
+      fnts::Fonts::drawString(Fonts::format("Moves: %d%s",moves/2, moves%2 == 0 ? ".5" : "" ), FontFaces::Small::WHITE, 245, 166, ALIGN_LEFT);
       auto movement = player->selectedArmyMovementType();
       
       /* TODO: non corporeal symbol in game looks like swimming, not flying */
@@ -215,12 +215,12 @@ void MainView::draw()
   else if (substate == SPELL_CAST)
   {
     Gfx::draw(TextureID::MAIN_RIGHT_BACKDROPS, 0, 2, 240, 76);
-    Fonts::drawString("Casting", FontFace::SURVEY_SERIF, 240+6+8+4, 76+2+1, ALIGN_LEFT);
+    fnts::Fonts::drawString("Casting", FontFaces::Serif::WHITE_SURVEY, 240+6+8+4, 76+2+1, ALIGN_LEFT);
     
     //TODO: colors etc
-    Fonts::setFace(FontFace::YELLOW_SMALL);
-    Fonts::setVerSpace(2);
-    Fonts::drawStringBounded("^wSelect a friendly unit as the target for a ^yBless^^ ^wspell", 120, 50, 64, ALIGN_LEFT);
+    fnts::Fonts::setFace(FontFaces::Small::YELLOW);
+    fnts::Fonts::setVerSpace(2);
+    Fonts::drawStringBounded("^wSelect a friendly unit as the target for a ^yBless^^ ^wspell", 119, 49, 64, ALIGN_LEFT);
   }
   else
     Gfx::draw(TextureID::MAIN_RIGHT_BACKDROPS, 0, 0, 240, 76);
@@ -245,9 +245,9 @@ void MainView::draw()
   
   if (substate == MAIN || substate == UNIT)
   {
-    Fonts::drawString(Fonts::format("%d",player->totalGoldPool()), FontFace::WHITE_SMALL, 259, 68, ALIGN_RIGHT);
+    fnts::Fonts::drawString(Fonts::format("%d",player->totalGoldPool()), FontFaces::Small::WHITE, 258, 67, ALIGN_RIGHT);
     Fonts::drawString("GP", FontFace::WHITE_TINY, 268, 67, ALIGN_LEFT);
-    Fonts::drawString(Fonts::format("%d",player->totalManaPool()), FontFace::WHITE_SMALL, 297, 68, ALIGN_RIGHT);
+    fnts::Fonts::drawString(Fonts::format("%d",player->totalManaPool()), FontFaces::Small::WHITE, 298, 67, ALIGN_RIGHT);
     Fonts::drawString("MP", FontFace::WHITE_TINY, 306, 67, ALIGN_LEFT);
   }
 }
@@ -490,32 +490,33 @@ void MainView::Surveyor::updateInfo(Tile *t)
 
 void MainView::Surveyor::draw()
 {
-  Fonts::drawString("Surveyor", FontFace::SURVEY_SERIF, 240+6+8, 76+2+1, ALIGN_LEFT);
+  fnts::Fonts::drawString("Surveyor", FontFaces::Serif::WHITE_SURVEY, 240+6+8, 76+2+1, ALIGN_LEFT);
   
   if (tile && view.g->currentPlayer()->fog()->get(tile->position))
   {
-    Fonts::setFace(FontFace::YELLOW_SMALL, 0, 2);
+    fnts::Fonts::setFace(FontFaces::Small::YELLOW_PALE, 0, 1);
     
     if (!cityCanBeBuilt)
     {
       const City* city = tile->city;
       
       if (!city)
-        Fonts::drawStringBounded(i18n::s(cityForbidMsg), 246, 143, 68, ALIGN_LEFT, &FontMap::Small::YELLOW_PALE);
+        fnts::Fonts::drawStringBounded(i18n::s(cityForbidMsg), 245, 142, 68, ALIGN_LEFT);
       else
       {
         // draw city name and size
-        Fonts::drawString(i18n::s(i18n::CITY_SIZE_NAMES[city->tileSize()])+" of", 276, 115, ALIGN_CENTER, &FontMap::Small::YELLOW_PALE);
-        Fonts::drawString(city->getName(), 276, 115+7, ALIGN_CENTER, &FontMap::Small::YELLOW_PALE);
+        fnts::Fonts::drawString(i18n::s(i18n::CITY_SIZE_NAMES[city->tileSize()])+" of", 275, 114, ALIGN_CENTER);
+        fnts::Fonts::drawString(city->getName(), 275, 114+7, ALIGN_CENTER);
         
         // draw city specs
-        Fonts::drawString("City Resources", 276, 143, ALIGN_CENTER, &FontMap::Small::YELLOW_PALE);
+        Fonts::drawString("City Resources", 275, 142, ALIGN_CENTER);
         
         const std::string pop = Fonts::format(i18n::s(I18::SURVEYOR_MAX_POPULATION).c_str(), city->getMaxPopulation());
         const std::string prod = Fonts::format(i18n::s(I18::SURVEYOR_MAX_POPULATION).c_str(), (s32)(view.g->cityMechanics.computeProductionBonus(city)*100));
         
-        Fonts::drawString(pop, 276, 150, ALIGN_CENTER, &FontMap::Small::WHITE_PALE);
-        Fonts::drawString(prod, 276, 157, ALIGN_CENTER, &FontMap::Small::WHITE_PALE);
+        fnts::Fonts::setFace(FontFaces::Small::WHITE_PALE, 0, 1);
+        fnts::Fonts::drawString(pop, 275, 149, ALIGN_CENTER);
+        fnts::Fonts::drawString(prod, 275, 156, ALIGN_CENTER);
       }
     }
     
@@ -527,8 +528,8 @@ void MainView::Surveyor::draw()
     {
       for (int i = 0; i < t.size(); ++i)
       {
-        Fonts::setMap(i == 0 ? &FontMap::Small::YELLOW_PALE : &FontMap::Small::WHITE_PALE);
-        Fonts::drawString(t[i], 276, 91+7*i, ALIGN_CENTER);
+        fnts::Fonts::setMap(i == 0 ? FontFaces::Palettes::SMALL_YELLOW_PALE : FontFaces::Palettes::SMALL_WHITE_PALE);
+        fnts::Fonts::drawString(t[i], 276, 90+7*i, ALIGN_CENTER);
       }
     }
   }

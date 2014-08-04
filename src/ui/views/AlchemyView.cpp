@@ -55,7 +55,7 @@ void AlchemyView::draw()
   // draw symbol on amount bar
   Gfx::drawClipped(TextureID::ALCHEMY_BACKDROP,133+(s32)(percent*(49)),91,  0, 77,  7, 7);
   
-  int flx = 96, frx = 198, fy = 91;
+  int flx = 95, frx = 197, fy = 90;
   int gamount = 0, mamount = 0;
   
   // TODO: manage ALCHEMIST trait for wizards
@@ -71,8 +71,8 @@ void AlchemyView::draw()
   }
   
   // TODO: font is not exactly the same, and space is removed otherwise it would go over the box
-  Fonts::drawString(Fonts::format("%dGP",gamount), FontFace::YELLOW_SMALL, flx, fy, ALIGN_LEFT);
-  Fonts::drawString(Fonts::format("%dMP",mamount), FontFace::YELLOW_SMALL, frx, fy, ALIGN_LEFT);
+  fnts::Fonts::drawString(Fonts::format("%dGP",gamount), FontFaces::Small::YELLOW, flx, fy, ALIGN_LEFT);
+  fnts::Fonts::drawString(Fonts::format("%dMP",mamount), FontFaces::Small::YELLOW, frx, fy, ALIGN_LEFT);
   
 }
 

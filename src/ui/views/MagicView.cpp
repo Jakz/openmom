@@ -121,28 +121,27 @@ void MagicView::draw()
   
   // draw misc text info on lower left
   // TODO: font is slightly different: some pixels on edges are missing
-  Fonts::setFace(FontFace::YELLOW_SMALL);
-  Fonts::setHorSpace(1);
-  Fonts::setMap(&FontMap::Small::BLUE_MAGIC);
-  Fonts::drawString("Casting Skill:", 5, 177, ALIGN_LEFT);
-  Fonts::drawString(Fonts::format("%d(%d)", player->castingSkill(), player->castingSkillBase()), 84, 177, ALIGN_RIGHT);
+  fnts::Fonts::setFace(FontFaces::Small::BLUE_MAGIC);
+  fnts::Fonts::setHorSpace(1);
+  fnts::Fonts::drawString("Casting Skill:", 4, 176, ALIGN_LEFT);
+  fnts::Fonts::drawString(Fonts::format("%d(%d)", player->castingSkill(), player->castingSkillBase()), 83, 176, ALIGN_RIGHT);
   
-  Fonts::drawString("Magic Reserve:", 5, 177+8, ALIGN_LEFT);
-  Fonts::drawString(to_string(player->totalManaPool()), 84, 177+8, ALIGN_RIGHT);
+  fnts::Fonts::drawString("Magic Reserve:", 4, 176+8, ALIGN_LEFT);
+  fnts::Fonts::drawString(to_string(player->totalManaPool()), 83, 176+8, ALIGN_RIGHT);
   
-  Fonts::drawString("Power Base:", 5, 177+8*2, ALIGN_LEFT);
-  Fonts::drawString(to_string(player->getManaGain()), 84, 177+8*2, ALIGN_RIGHT);
+  fnts::Fonts::drawString("Power Base:", 4, 176+8*2, ALIGN_LEFT);
+  fnts::Fonts::drawString(to_string(player->getManaGain()), 83, 176+8*2, ALIGN_RIGHT);
   
-  Fonts::drawString("Casting:", 100, 177, ALIGN_LEFT);
-  Fonts::drawString("None", 156, 177, ALIGN_LEFT);
+  fnts::Fonts::drawString("Casting:", 99, 176, ALIGN_LEFT);
+  fnts::Fonts::drawString("None", 155, 176, ALIGN_LEFT);
   
-  Fonts::drawString("Researching:", 100, 177+8, ALIGN_LEFT);
+  fnts::Fonts::drawString("Researching:", 99, 176+8, ALIGN_LEFT);
   const Spell* spell = player->book()->getCurrentResearch();
-  Fonts::drawString(spell ? i18n::s(spell->name) : "None", 156, 177+8, ALIGN_LEFT);
+  fnts::Fonts::drawString(spell ? i18n::s(spell->name) : "None", 155, 176+8, ALIGN_LEFT);
   
-  Fonts::drawString("Summon To:", 100, 177+8*2, ALIGN_LEFT);
+  fnts::Fonts::drawString("Summon To:", 99, 176+8*2, ALIGN_LEFT);
   City* summonCity = player->cityWithSummoningCircle();
-  Fonts::drawString(summonCity ? summonCity->getName() : "None", 156, 177+8*2, ALIGN_LEFT);
+  fnts::Fonts::drawString(summonCity ? summonCity->getName() : "None", 155, 176+8*2, ALIGN_LEFT);
   
   
   /*

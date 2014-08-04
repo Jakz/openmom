@@ -46,7 +46,7 @@ void ArmiesItemsView::draw()
     // TODO: unit names and items
     
     // TODO: real colors
-    Fonts::drawString(hero->name(), FontFace::YELLOW_SMALL, heroPositions[i][0]+36, heroPositions[i][1]-1, ALIGN_LEFT);
+    fnts::Fonts::drawString(hero->name(), FontFaces::Small::YELLOW, heroPositions[i][0]+35, heroPositions[i][1]-2, ALIGN_LEFT);
     
     Gfx::draw(TextureID::UNIT_DETAIL_HERO_BACKDROP, 0, 1, heroPositions[i][0]-1, heroPositions[i][1]-1);
     UnitDraw::drawHeroPortrait(hero, heroPositions[i][0], heroPositions[i][1]);

@@ -43,8 +43,6 @@ enum FontFace : u16
   
   TINY_COMPACT_CRYPT_BROWN,
   
-  YELLOW_SMALL,
-  WHITE_SMALL,
   TEAL_SMALL,
   BROWN_SMALL,
     
@@ -53,10 +51,6 @@ enum FontFace : u16
   RED_SMALLW,
   PURPLE_SMALLW,
   YELLOW_SMALLW,
-  
-  SURVEY_SERIF,
-  BROWN_SERIF,
-  DARK_BROWN_SERIF,
   
   SERIF_CRYPT_BROWN,
   
@@ -211,6 +205,7 @@ public:
   
   class Palettes { public:
     const static BlinkingPalette *BLINK_WHITE_BLUE;
+    const static Palette *SMALL_WHITE_PALE, *SMALL_YELLOW_PALE;
   };
   
   static void buildFonts();
@@ -496,7 +491,7 @@ class Fonts
         case RED: return RED_SMALLW;
         case PURPLE: return PURPLE_SMALLW;
         case YELLOW: return YELLOW_SMALLW;
-        default: return WHITE_SMALL;
+        default: return YELLOW_SMALLW;
       }
     }
   
@@ -577,16 +572,16 @@ namespace fnts
     
     static const Palette* paletteFor(char c) { return fontColors[c]; }
     
-    static FontFace fontForColor(PlayerColor color)
+    static const FontSpriteSheet* fontForColor(PlayerColor color)
     {
       switch (color)
       {
-        case GREEN: return GREEN_SMALLW;
-        case BLUE: return BLUE_SMALLW;
-        case RED: return RED_SMALLW;
-        case PURPLE: return PURPLE_SMALLW;
-        case YELLOW: return YELLOW_SMALLW;
-        default: return WHITE_SMALL;
+        case GREEN: return FontFaces::Small::GREENW;
+        case BLUE: return FontFaces::Small::BLUEW;
+        case RED: return FontFaces::Small::REDW;
+        case PURPLE: return FontFaces::Small::PURPLEW;
+        case YELLOW: return FontFaces::Small::YELLOWW;
+        default: return FontFaces::Small::WHITE;
       }
     }
   };
