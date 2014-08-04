@@ -133,22 +133,19 @@ void MainView::updateBuildButton()
 
 void MainView::draw()
 {
-  Fonts::drawString("Antani foti sblinda1", FontFace::TEAL_SERIF, 10, 40, ALIGN_LEFT);
-  Fonts::drawString("Antani foti sblinda1", FontFace::BROWN_SERIF, 10, 60, ALIGN_LEFT);
-  Fonts::drawString("Antani foti sblinda1", FontFace::YELLOW_SERIF_SHADOW, 10, 80, ALIGN_LEFT);
-  Fonts::drawString("Antani foti sblinda1", FontFace::GOLD_SERIF_SHADOW, 10, 100, ALIGN_LEFT);
-  Fonts::drawString("Antani foti sblinda1", FontFace::SILVER_SERIF_SHADOW, 10, 120, ALIGN_LEFT);
-  Fonts::drawString("Antani foti sblinda1", FontFace::SURVEY_SERIF, 10, 140, ALIGN_LEFT);
-  Fonts::drawString("Antani foti sblinda1", FontFace::DARK_BROWN_SERIF, 10, 160, ALIGN_LEFT);
-
+  const FontSpriteSheet* sheets[] = {FontFaces::TINY_BROWN, FontFaces::TINY_WHITE_STROKE, FontFaces::TINY_YELLOW_STROKE, FontFaces::TINY_RED_STROKE};
+  const FontFace faces[] = {FontFace::TINY_COMPACT, FontFace::WHITE_TINY_STROKE, FontFace::YELLOW_TINY_STROKE, FontFace::RED_TINY_STROKE};
   
-  Fonts::drawStringContext(FontFaces::SERIF_TEAL, "Antani foti sblinda1", 100, 40, ALIGN_LEFT);
-  Fonts::drawStringContext(FontFaces::SERIF_BROWN, "Antani foti sblinda1", 100, 60, ALIGN_LEFT);
-  Fonts::drawStringContext(FontFaces::SERIF_YELLOW_SHADOW, "Antani foti sblinda1", 100, 80, ALIGN_LEFT);
-  Fonts::drawStringContext(FontFaces::SERIF_GOLD_SHADOW, "Antani foti sblinda1", 100, 100, ALIGN_LEFT);
-  Fonts::drawStringContext(FontFaces::SERIF_SILVER_SHADOW, "Antani foti sblinda1", 100, 120, ALIGN_LEFT);
-  Fonts::drawStringContext(FontFaces::SERIF_WHITE_SURVEY, "Antani foti sblinda1", 100, 140, ALIGN_LEFT);
-  Fonts::drawStringContext(FontFaces::SERIF_DARK_BROWN, "Antani foti sblinda1", 100, 160, ALIGN_LEFT);
+  Gfx::alphaBlend({0,0,200,200}, RGBA(128, 0, 0, 255));
+  
+  for (int i = 0; i < 4; ++i)
+  {
+    Fonts::drawString("Amtani foti sblinda1", faces[i], 100, 40+i*20, ALIGN_LEFT, &FontMap::TinyCompact::BROWN);
+    Fonts::drawStringContext(sheets[i], "Amtani foti sblinda1", 99, 50+i*20, ALIGN_LEFT);
+  }
+  
+
+
 
 
   return;

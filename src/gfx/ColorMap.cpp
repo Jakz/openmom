@@ -75,29 +75,29 @@ namespace FontMap
   const HashColorMap Small::YELLOW = buildSmall({RGB(235, 207, 17),RGB(117, 103, 8), RGB(0, 0, 0)});
   const HashColorMap Small::GRAY_ITEM_CRAFT = buildSmall({RGB(158, 150, 146),0x00000000,0x00000000});
   
-  const HashColorMap Tiny::WHITE = buildTiny({RGB(255, 255, 255), RGB(143, 133, 130), 0x00000000});
-  const HashColorMap Tiny::WHITE_STROKE = buildTiny({RGB(255, 255, 255), RGB(143, 133, 130), RGB(0,0,0)});
-  const HashColorMap Tiny::YELLOW_STROKE = buildTiny({RGB(213,133,27), RGB(124,82,36), RGB(0,0,0)});
-  const HashColorMap Tiny::RED_STROKE = buildTiny({RGB(255,0,0), RGB(128,0,0), RGB(0,0,0)});
+  const HashColorMap Tiny::WHITE = buildTiny({RGB(255, 255, 255), RGB(143, 133, 130), 0x00000000}); //
+  const HashColorMap Tiny::WHITE_STROKE = buildTiny({RGB(255, 255, 255), RGB(143, 133, 130), RGB(0,0,0)}); //
+  const HashColorMap Tiny::YELLOW_STROKE = buildTiny({RGB(213,133,27), RGB(124,82,36), RGB(0,0,0)}); //
+  const HashColorMap Tiny::RED_STROKE = buildTiny({RGB(255,0,0), RGB(128,0,0), RGB(0,0,0)}); //
   
   const BlinkMap TinyCompact::WHITE_BLUE_BLINK = BlinkMap({TINY_COMPACT_COLORS.begin()[0],TINY_COMPACT_COLORS.begin()[1]}, 194, 228, 255, 140, 174, 255, 600);
-  const HashColorMap TinyCompact::BROWN = buildTinyCompact({RGB(97,69,36), RGB(121,85,36), 0x00000000, 0x00000000});
+  const HashColorMap TinyCompact::BROWN = buildTinyCompact({RGB(97,69,36), RGB(121,85,36), 0x00000000, 0x00000000}); //
   
-  const HashColorMap Medium::BLUE_MAGIC = buildMedium({RGB(146,146,166),RGB(97,69,36),0x00000000,RGB(81,60,48)});
+  const HashColorMap Medium::BLUE_MAGIC = buildMedium({RGB(146,146,166),RGB(97,69,36),0x00000000,RGB(81,60,48)}); //
   const HashColorMap Medium::TEAL_STROKE = buildMedium({RGB(180, 240, 240),RGB(57, 166, 166),RGB(0, 68, 69),RGB(0, 69, 69)}); //
-  const HashColorMap Medium::TEAL_BRIGHT = buildMedium({RGB(185, 240, 240),RGB(90, 166, 166),0x00000000,RGB(22, 97, 97)});
-  const HashColorMap Medium::BLACK = buildMedium({RGB(6, 2, 2),RGB(6, 69, 69),0x00000000,RGB(90, 155, 154)});
+  const HashColorMap Medium::TEAL_BRIGHT = buildMedium({RGB(185, 240, 240),RGB(90, 166, 166),0x00000000,RGB(22, 97, 97)}); //
+  const HashColorMap Medium::BLACK = buildMedium({RGB(6, 2, 2),RGB(6, 69, 69),0x00000000,RGB(90, 155, 154)}); //
 
-  const HashColorMap Serif::TEAL_STROKE = HashColorMap({SERIF_COLORS.begin()[1], SERIF_COLORS.begin()[5]}, {RGB(24,69,69),RGB(187,238,219)});
-  const HashColorMap Serif::BROWN = buildSerif({0x00000000, 0x00000000, RGB(120,74,36), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14), });
-  const HashColorMap Serif::YELLOW_SHADOW = buildSerif({RGB(15,49,56), 0x00000000, RGB(115,84,69), RGB(213,133,27), RGB(213,133,27), RGB(229,145,31), RGB(245,161,39), });
-  const HashColorMap Serif::GOLD_SHADOW = buildSerif({RGB(67,43,36), 0x00000000, RGB(74,51,44), RGB(255,243,127), RGB(255,199,103), RGB(245,161,39), RGB(213,133,27), });
-  const HashColorMap Serif::SILVER_SHADOW = buildSerif({RGB(67,43,36), 0x00000000, RGB(106,97,93), RGB(255,255,255), RGB(228,219,215), RGB(196,186,182), RGB(159,150,146), });
-  const HashColorMap Serif::WHITE_SURVEY = buildSerif({RGB(93,93,121), 0x00000000, RGB(142,134,130), RGB(255,255,255), RGB(255,255,215), RGB(255,255,255), RGB(255,255,255), });
-  const HashColorMap Serif::DARK_BROWN = buildSerif({0x00000000, 0x00000000, RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), });
+  const HashColorMap Serif::TEAL_STROKE = HashColorMap({SERIF_COLORS.begin()[1], SERIF_COLORS.begin()[5]}, {RGB(24,69,69),RGB(187,238,219)}); //
+  const HashColorMap Serif::BROWN = buildSerif({0x00000000, 0x00000000, RGB(120,74,36), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14), }); //
+  const HashColorMap Serif::YELLOW_SHADOW = buildSerif({RGB(15,49,56), 0x00000000, RGB(115,84,69), RGB(213,133,27), RGB(213,133,27), RGB(229,145,31), RGB(245,161,39), }); //
+  const HashColorMap Serif::GOLD_SHADOW = buildSerif({RGB(67,43,36), 0x00000000, RGB(74,51,44), RGB(255,243,127), RGB(255,199,103), RGB(245,161,39), RGB(213,133,27), }); //
+  const HashColorMap Serif::SILVER_SHADOW = buildSerif({RGB(67,43,36), 0x00000000, RGB(106,97,93), RGB(255,255,255), RGB(228,219,215), RGB(196,186,182), RGB(159,150,146), }); //
+  const HashColorMap Serif::WHITE_SURVEY = buildSerif({RGB(93,93,121), 0x00000000, RGB(142,134,130), RGB(255,255,255), RGB(255,255,215), RGB(255,255,255), RGB(255,255,255), }); //
+  const HashColorMap Serif::DARK_BROWN = buildSerif({0x00000000, 0x00000000, RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), }); //
   
-  const HashColorMap Misc::SERIF_CRYPT_BROWN = HashColorMap({RGB(255, 255, 255), RGB(73, 56, 36)});
-  const HashColorMap Misc::TINY_BROWN_CRYPT = HashColorMap({RGB(91, 91, 91), 0x00000000, RGB(0,0,0), 0x00000000, RGB(255,255,255),RGB(97,69,36), RGB(143,133,130),RGB(121,85,36)});
+  const HashColorMap Misc::SERIF_CRYPT_BROWN = HashColorMap({RGB(255, 255, 255), RGB(73, 56, 36)}); //
+  const HashColorMap Misc::TINY_BROWN_CRYPT = HashColorMap({RGB(91, 91, 91), 0x00000000, RGB(0,0,0), 0x00000000, RGB(255,255,255),RGB(97,69,36), RGB(143,133,130),RGB(121,85,36)}); //
 }
 
 const MiscMaps::GrayscaleMap MiscMaps::GRAYSCALE = MiscMaps::GrayscaleMap();

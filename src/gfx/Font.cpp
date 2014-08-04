@@ -15,10 +15,18 @@ using namespace std;
 
 FontData* FontData::fonts[FONT_TYPE_COUNT] = {nullptr};
 
+const FontSpriteSheet* FontFaces::TINY_WHITE = nullptr;
+const FontSpriteSheet* FontFaces::TINY_WHITE_STROKE = nullptr;
+const FontSpriteSheet* FontFaces::TINY_YELLOW_STROKE = nullptr;
+const FontSpriteSheet* FontFaces::TINY_RED_STROKE = nullptr;
+const FontSpriteSheet* FontFaces::TINY_BROWN = nullptr;
+
 const FontSpriteSheet* FontFaces::MEDIUM_TEAL = nullptr;
 const FontSpriteSheet* FontFaces::MEDIUM_TEAL_STROKE = nullptr;
 const FontSpriteSheet* FontFaces::MEDIUM_TEAL_BRIGHT = nullptr;
 const FontSpriteSheet* FontFaces::MEDIUM_BLACK = nullptr;
+const FontSpriteSheet* FontFaces::MEDIUM_BLUE_MAGIC = nullptr;
+
 
 const FontSpriteSheet* FontFaces::SERIF_TEAL = nullptr;
 const FontSpriteSheet* FontFaces::SERIF_BROWN = nullptr;
@@ -26,30 +34,38 @@ const FontSpriteSheet* FontFaces::SERIF_YELLOW_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::SERIF_GOLD_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::SERIF_SILVER_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::SERIF_WHITE_SURVEY = nullptr;
-const FontSpriteSheet* FontFaces::SERIF_DARK_BROWN= nullptr;
+const FontSpriteSheet* FontFaces::SERIF_DARK_BROWN = nullptr;
+
+const FontSpriteSheet* FontFaces::SERIF_CRYPT_BROWN = nullptr;
+const FontSpriteSheet* FontFaces::TINY_CRYPT_BROWN = nullptr;
 
 
+const FontSpriteSheet* buildTiny(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_TINY], colors, 1, -2); }
+const FontSpriteSheet* buildTinyCrypt(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_TINY_CRYPT], colors, 1, -2); }
+const FontSpriteSheet* buildMedium(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_MEDIUM], colors, 1, 3); }
+const FontSpriteSheet* buildSerif(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_SERIF], colors, 1, -1); }
+const FontSpriteSheet* buildSerifCrypt(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_SERIF_CRYPT], colors, 1, -1); }
 
-const FontSpriteSheet* buildMedium(color_list colors)
-{
-  return new FontSpriteSheet(FontData::fonts[FONT_MEDIUM], colors, 1, 3);
-}
-
-const FontSpriteSheet* buildSerif(color_list colors)
-{
-  return new FontSpriteSheet(FontData::fonts[FONT_SERIF], colors, 1, -1);
-}
-
+// tiny change SX = SX - 1 compared to old medium
 // medium should change SX = SX - 1 compared to old medium
+// serif crypt change SX = SX - 1 compared to old medium
 
 void FontFaces::buildFonts()
 {
   FontData::fonts[FONT_MEDIUM]->setGlyphWidth(' '-' ', 1);
+  FontData::fonts[FONT_SERIF_CRYPT]->setGlyphWidth(' '-' ', 3);
+
+  TINY_WHITE = buildTiny({0, 0, RGB(0,0,0), RGB(143, 133, 130), RGB(255, 255, 255)});
+  TINY_WHITE_STROKE = buildTiny({0, RGB(0,0,0), RGB(0,0,0), RGB(143, 133, 130), RGB(255, 255, 255)});
+  TINY_YELLOW_STROKE = buildTiny({0, RGB(0,0,0), RGB(0,0,0), RGB(124,82,36), RGB(213,133,27)});
+  TINY_RED_STROKE = buildTiny({0, RGB(0,0,0), RGB(0,0,0), RGB(128,0,0), RGB(255,0,0)});
+  TINY_BROWN = buildTiny({0, 0, 0, RGB(121,85,36), RGB(97,69,36)});
   
   MEDIUM_TEAL = buildMedium({0, RGB(0,121,123), RGB(0,68,68), RGB(57,166,166), RGB(180,240,240)});
   MEDIUM_TEAL_STROKE = buildMedium({0, RGB(0,68,68), RGB(0,68,68), RGB(57,166,166), RGB(180,240,240)});
   MEDIUM_TEAL_BRIGHT = buildMedium({0, 0, RGB(22,97,97), RGB(90,166,166), RGB(185,240,240)});
   MEDIUM_BLACK = buildMedium({0, 0, RGB(90,154,154), RGB(6,69,69), RGB(6,2,2)});
+  MEDIUM_BLUE_MAGIC = buildMedium({0, 0, RGB(81,60,48), RGB(97,69,36), RGB(146,146,166)});
   
   SERIF_TEAL = buildSerif({0, RGB(24,68,68), RGB(24,68,68), RGB(58,166,166), RGB(243,235,231), RGB(188,238,218), RGB(197,239,217), RGB(193,239,240)});
   SERIF_BROWN = buildSerif({0, 0, 0, RGB(120,74,36), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14)});
@@ -58,6 +74,9 @@ void FontFaces::buildFonts()
   SERIF_SILVER_SHADOW = buildSerif({0, 0, RGB(67,43,36), RGB(106,97,93), RGB(159,150,146), RGB(196,186,182), RGB(228,219,215), RGB(255,255,255)});
   SERIF_WHITE_SURVEY = buildSerif({0, 0, RGB(93,93,121), RGB(142,134,130), RGB(255,255,255), RGB(255,255,255), RGB(255,255,215), RGB(255,255,255)});
   SERIF_DARK_BROWN = buildSerif({0, 0, 0, RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36)});
+  
+  SERIF_CRYPT_BROWN = buildSerifCrypt({0,0,0,RGB(73, 56, 36), RGB(73, 56, 36)}); // TODO: single pixels are of same brown?
+  TINY_CRYPT_BROWN = buildTinyCrypt({0,0,0,RGB(97,69,36), RGB(97,69,36)}); // TODO: don't kno why main pixels are on second palette index, not first
 }
 
 

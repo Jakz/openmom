@@ -202,8 +202,11 @@ public:
 class FontFaces
 {
 public:
-  const static FontSpriteSheet *MEDIUM_TEAL, *MEDIUM_TEAL_STROKE, *MEDIUM_BLACK, *MEDIUM_TEAL_BRIGHT;
+  const static FontSpriteSheet *TINY_WHITE, *TINY_WHITE_STROKE, *TINY_YELLOW_STROKE, *TINY_RED_STROKE, *TINY_BROWN;
+  const static FontSpriteSheet *MEDIUM_TEAL, *MEDIUM_TEAL_STROKE, *MEDIUM_BLACK, *MEDIUM_TEAL_BRIGHT, *MEDIUM_BLUE_MAGIC;
   const static FontSpriteSheet *SERIF_TEAL, *SERIF_BROWN, *SERIF_YELLOW_SHADOW, *SERIF_GOLD_SHADOW, *SERIF_SILVER_SHADOW, *SERIF_WHITE_SURVEY, *SERIF_DARK_BROWN;
+  
+  const static FontSpriteSheet *SERIF_CRYPT_BROWN, *TINY_CRYPT_BROWN;
   
   static void buildFonts();
 };
@@ -461,9 +464,6 @@ class Fonts
     static inline void setVerHorSpace(s16 v, s16 h) { vSpace = v; hSpace = h; }
     static inline void setMap(const ColorMap *m) { map = m; omap = m; }
   
-    static u16 drawStringContext(const FontSpriteSheet* sheet, const std::string string, u16 x, u16 y, TextAlign align);
-
-  
     static u16 drawString(const std::string string, u16 x, u16 y, TextAlign align, const ColorMap *map)
     {
       setMap(map);
@@ -507,6 +507,9 @@ class Fonts
         default: return WHITE_SMALL;
       }
     }
+  
+    static u16 drawStringContext(const FontSpriteSheet* sheet, const std::string string, u16 x, u16 y, TextAlign align);
+
   
     static const Font& fontFor(FontFace face) { return fonts[face]; }
 
