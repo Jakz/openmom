@@ -453,7 +453,7 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
         else
         {
           printf(">>>>>>>>>>>>>>>>>>>>>>>> LOW %d\n", low);
-          color = low+2;
+          color = low+3;
           strain = high;
           
           if (strain > 0)
@@ -498,8 +498,8 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
               // if neighbour pixel is a real font pixel
               if (pixel > FontData::DARK_STROKE_VALUE)
               {
-                hasLightStroke |= (d == 1 || d == 2 || d == 3 || d == 4 || d == 5 || d == 6);
-                hasDarkStroke |= (d == 0 || ((d == 7 || d == 6) && (pixel > 0)) );
+                hasLightStroke |= (d == 1 || d == 2 || ((d == 3 || d == 5) && (pixel > FontData::DARK_STROKE_VALUE+1)) || d == 4 || d == 6);
+                hasDarkStroke |= (d == 0 || ((d == 7 || d == 6) && (pixel > FontData::DARK_STROKE_VALUE+1)) );
               }
             }
           }
@@ -511,7 +511,7 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
           
         }
       
-      FontData::fonts[i]->setGlyphWidth(j, widths[i][j]+2);
+      FontData::fonts[i]->setGlyphWidth(j, widths[i][j]);
     }
   }
   

@@ -29,7 +29,7 @@ ArmiesView::ArmiesView(ViewManager* gvm) : View(gvm), offset(0), unit(nullptr), 
   buttons.resize(BUTTON_COUNT);
   
   buttons[ITEMS] = TristateButton::build("Items", 273, 163, TextureID::ARMIES_BUTTONS, 0)->setAction([gvm](){ gvm->switchOverview(VIEW_ARMIES_ITEMS); });
-  buttons[OK] = TristateButton::build("Ok", 273, 182, TextureID::ARMIES_BUTTONS, 1)->setAction([gvm](){ gvm->switchOverview(VIEW_MAIN); });
+  buttons[OK] = TristateButton::build("Ok", 273, 182, TextureID::ARMIES_BUTTONS, 1)->setAction([gvm](){ gvm->switchView(VIEW_MAIN); });
   // TODO: arrows buttons
   
   auto lambdaScrollDown = [this](){ scrollDown(); };

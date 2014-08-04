@@ -16,12 +16,48 @@ using namespace std;
 FontData* FontData::fonts[FONT_TYPE_COUNT] = {nullptr};
 
 const FontSpriteSheet* FontFaces::MEDIUM_TEAL = nullptr;
+const FontSpriteSheet* FontFaces::MEDIUM_TEAL_STROKE = nullptr;
+const FontSpriteSheet* FontFaces::MEDIUM_TEAL_BRIGHT = nullptr;
+const FontSpriteSheet* FontFaces::MEDIUM_BLACK = nullptr;
+
+const FontSpriteSheet* FontFaces::SERIF_TEAL = nullptr;
+const FontSpriteSheet* FontFaces::SERIF_BROWN = nullptr;
+const FontSpriteSheet* FontFaces::SERIF_YELLOW_SHADOW = nullptr;
+const FontSpriteSheet* FontFaces::SERIF_GOLD_SHADOW = nullptr;
+const FontSpriteSheet* FontFaces::SERIF_SILVER_SHADOW = nullptr;
+const FontSpriteSheet* FontFaces::SERIF_WHITE_SURVEY = nullptr;
+const FontSpriteSheet* FontFaces::SERIF_DARK_BROWN= nullptr;
+
+
+
+const FontSpriteSheet* buildMedium(color_list colors)
+{
+  return new FontSpriteSheet(FontData::fonts[FONT_MEDIUM], colors, 1, 3);
+}
+
+const FontSpriteSheet* buildSerif(color_list colors)
+{
+  return new FontSpriteSheet(FontData::fonts[FONT_SERIF], colors, 1, -1);
+}
+
+// medium should change SX = SX - 1 compared to old medium
 
 void FontFaces::buildFonts()
 {
-  FontData* medium = FontData::fonts[FONT_MEDIUM];
-  MEDIUM_TEAL = new FontSpriteSheet(medium, 5);
-  MEDIUM_TEAL->setPalette({0, RGB(0,124,124), RGB(0,72,72), RGB(0,170,168), RGB(142,242,240)});
+  FontData::fonts[FONT_MEDIUM]->setGlyphWidth(' '-' ', 1);
+  
+  MEDIUM_TEAL = buildMedium({0, RGB(0,121,123), RGB(0,68,68), RGB(57,166,166), RGB(180,240,240)});
+  MEDIUM_TEAL_STROKE = buildMedium({0, RGB(0,68,68), RGB(0,68,68), RGB(57,166,166), RGB(180,240,240)});
+  MEDIUM_TEAL_BRIGHT = buildMedium({0, 0, RGB(22,97,97), RGB(90,166,166), RGB(185,240,240)});
+  MEDIUM_BLACK = buildMedium({0, 0, RGB(90,154,154), RGB(6,69,69), RGB(6,2,2)});
+  
+  SERIF_TEAL = buildSerif({0, RGB(24,68,68), RGB(24,68,68), RGB(58,166,166), RGB(243,235,231), RGB(188,238,218), RGB(197,239,217), RGB(193,239,240)});
+  SERIF_BROWN = buildSerif({0, 0, 0, RGB(120,74,36), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14)});
+  SERIF_YELLOW_SHADOW = buildSerif({0, 0, RGB(15,49,56), RGB(115,84,69), RGB(245,161,39), RGB(229,145,31), RGB(213,133,27), RGB(213,133,27)});
+  SERIF_GOLD_SHADOW = buildSerif({0,  0, RGB(67,43,36),RGB(74,51,44), RGB(213,133,27), RGB(245,161,39), RGB(255,199,103), RGB(255,243,127)});
+  SERIF_SILVER_SHADOW = buildSerif({0, 0, RGB(67,43,36), RGB(106,97,93), RGB(159,150,146), RGB(196,186,182), RGB(228,219,215), RGB(255,255,255)});
+  SERIF_WHITE_SURVEY = buildSerif({0, 0, RGB(93,93,121), RGB(142,134,130), RGB(255,255,255), RGB(255,255,255), RGB(255,255,215), RGB(255,255,255)});
+  SERIF_DARK_BROWN = buildSerif({0, 0, 0, RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36)});
 }
 
 
@@ -71,8 +107,8 @@ Font Fonts::fonts[] = {
   
   MediumFont(TEXTURE_FONT_TEAL_MEDIUM),
   MediumFont(TEXTURE_FONT_TEAL_MEDIUM, &FontMap::Medium::TEAL_STROKE),
-  MediumFont(TEXTURE_FONT_TEAL_MEDIUM, &FontMap::Medium::BLACK),
   MediumFont(TEXTURE_FONT_TEAL_MEDIUM, &FontMap::Medium::TEAL_BRIGHT),
+  MediumFont(TEXTURE_FONT_TEAL_MEDIUM, &FontMap::Medium::BLACK),
   
   MediumBoldFont(TEXTURE_FONT_MEDIUM_BOLD),
   
@@ -158,13 +194,13 @@ u16 Fonts::drawString(const string string, u16 x, u16 y, TextAlign align)
 
 u16 Fonts::drawStringContext(const FontSpriteSheet* sheet, const string string, u16 x, u16 y, TextAlign align)
 {
-  s16 sx = align == ALIGN_RIGHT ? 0 : x, sy = y;
+  s16 sx = align == ALIGN_RIGHT ? x - sheet->stringWidth(string, sheet->hor) : x, sy = y;
   u16 length = string.length();
   bool switchingColor = false;
   
   for (int i = 0; i < length; ++i)
   {
-    s8 c = string[align == ALIGN_RIGHT ? length - i - 1: i];
+    s8 c = string[i];
     
     if (switchingColor)
     {
@@ -191,7 +227,7 @@ u16 Fonts::drawStringContext(const FontSpriteSheet* sheet, const string string, 
     }
     else if (c == ' ')
     {
-      sx += hSpace + sheet->charWidth(' ');
+      sx += sheet->hor + sheet->charWidth(' ');
     }
     else if (c == '^')
     {
@@ -200,17 +236,13 @@ u16 Fonts::drawStringContext(const FontSpriteSheet* sheet, const string string, 
     else
     {
       s8 cw = sheet->charWidth(c);
-      printf("width %c: %d\n", c, cw);
-      s8 r = c - ' ';
-      s8 d = align == ALIGN_RIGHT ? (s8)ceilf((font->w - cw) / 2.0f) : (font->w - cw) / 2;
-      
-      //sx -= d;
-      Gfx::draw(sheet, 0, r, align == ALIGN_RIGHT ? x - sx : sx, sy);
-      sx += cw; //+ d;
+      s8 r = c - ' ';      
+      Gfx::draw(sheet, 0, r, sx, sy);
+      sx += cw + sheet->hor;
     }
   }
   
-  return sx - 1 - (align == ALIGN_RIGHT ? 0 : x);
+  return sx - 1 - x;
 }
 
 u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)

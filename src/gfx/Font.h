@@ -151,9 +151,11 @@ class FontSpriteSheet : public SpriteSheet
 private:
   FontData *rawData;
   Palette palette;
-  
+
 public:
-  FontSpriteSheet(FontData *data, Color paletteCount) : rawData(data), palette(new Color(paletteCount)) { }
+  FontSpriteSheet(FontData *data, Color paletteCount, s8 hor, s8 ver) : rawData(data), palette(new Color[paletteCount]), hor(hor), ver(ver) { }
+  FontSpriteSheet(FontData *data, color_list palette, s8 hor, s8 ver) : rawData(data), palette(new Color[palette.size()]), hor(hor), ver(ver) { setPalette(palette); }
+
   ~FontSpriteSheet() { delete [] palette; }
   
   void setPalette(color_list colors) const
@@ -178,9 +180,21 @@ public:
   u16 sw(u16 r, u16 c = 0) const override { return rawData->w(); }
   u16 sh(u16 r, u16 c = 0) const override { return rawData->h(); }
   
-  
+  const s8 hor, ver;
   
   const s8 charWidth(s8 c) const { return rawData->getGlyphWidth(c); }
+  
+  u16 stringWidth(const std::string& str, s8 hor) const
+  {
+    u16 l = 0;
+    for (s8 c : str)
+    {
+      if (c == '^') continue;
+      else l += charWidth(c) + hor;
+    }
+    
+    return l;
+  }
 };
 
 
@@ -188,7 +202,8 @@ public:
 class FontFaces
 {
 public:
-  const static FontSpriteSheet* MEDIUM_TEAL;
+  const static FontSpriteSheet *MEDIUM_TEAL, *MEDIUM_TEAL_STROKE, *MEDIUM_BLACK, *MEDIUM_TEAL_BRIGHT;
+  const static FontSpriteSheet *SERIF_TEAL, *SERIF_BROWN, *SERIF_YELLOW_SHADOW, *SERIF_GOLD_SHADOW, *SERIF_SILVER_SHADOW, *SERIF_WHITE_SURVEY, *SERIF_DARK_BROWN;
   
   static void buildFonts();
 };
@@ -421,7 +436,7 @@ class Fonts
   
   public:
     static std::string format(const char* str, ...);
-  
+
     static inline u16 stringWidth(FontFace face, const std::string string) { return fonts[face].stringWidth(string, hSpace); }
     static inline u16 stringHeight() { return 0; }
       

@@ -133,8 +133,24 @@ void MainView::updateBuildButton()
 
 void MainView::draw()
 {
-  //Fonts::drawString("Antani foti sblinda1!", FontFace::TEAL_MEDIUM, 100, 100, ALIGN_LEFT);
-  Fonts::drawStringContext(FontFaces::MEDIUM_TEAL, "Antani foti sblinda!1", 100, 100, ALIGN_LEFT);
+  Fonts::drawString("Antani foti sblinda1", FontFace::TEAL_SERIF, 10, 40, ALIGN_LEFT);
+  Fonts::drawString("Antani foti sblinda1", FontFace::BROWN_SERIF, 10, 60, ALIGN_LEFT);
+  Fonts::drawString("Antani foti sblinda1", FontFace::YELLOW_SERIF_SHADOW, 10, 80, ALIGN_LEFT);
+  Fonts::drawString("Antani foti sblinda1", FontFace::GOLD_SERIF_SHADOW, 10, 100, ALIGN_LEFT);
+  Fonts::drawString("Antani foti sblinda1", FontFace::SILVER_SERIF_SHADOW, 10, 120, ALIGN_LEFT);
+  Fonts::drawString("Antani foti sblinda1", FontFace::SURVEY_SERIF, 10, 140, ALIGN_LEFT);
+  Fonts::drawString("Antani foti sblinda1", FontFace::DARK_BROWN_SERIF, 10, 160, ALIGN_LEFT);
+
+  
+  Fonts::drawStringContext(FontFaces::SERIF_TEAL, "Antani foti sblinda1", 100, 40, ALIGN_LEFT);
+  Fonts::drawStringContext(FontFaces::SERIF_BROWN, "Antani foti sblinda1", 100, 60, ALIGN_LEFT);
+  Fonts::drawStringContext(FontFaces::SERIF_YELLOW_SHADOW, "Antani foti sblinda1", 100, 80, ALIGN_LEFT);
+  Fonts::drawStringContext(FontFaces::SERIF_GOLD_SHADOW, "Antani foti sblinda1", 100, 100, ALIGN_LEFT);
+  Fonts::drawStringContext(FontFaces::SERIF_SILVER_SHADOW, "Antani foti sblinda1", 100, 120, ALIGN_LEFT);
+  Fonts::drawStringContext(FontFaces::SERIF_WHITE_SURVEY, "Antani foti sblinda1", 100, 140, ALIGN_LEFT);
+  Fonts::drawStringContext(FontFaces::SERIF_DARK_BROWN, "Antani foti sblinda1", 100, 160, ALIGN_LEFT);
+
+
   return;
   /*SpriteInfo si = SpriteInfo(TextureID::UNITS_STATIC_STANDARD, 0, 0);
   Gfx::drawGlow(si, 100, 100, NATURE);

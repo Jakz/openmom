@@ -84,7 +84,7 @@ namespace FontMap
   const HashColorMap TinyCompact::BROWN = buildTinyCompact({RGB(97,69,36), RGB(121,85,36), 0x00000000, 0x00000000});
   
   const HashColorMap Medium::BLUE_MAGIC = buildMedium({RGB(146,146,166),RGB(97,69,36),0x00000000,RGB(81,60,48)});
-  const HashColorMap Medium::TEAL_STROKE = buildMedium({RGB(180, 240, 240),RGB(57, 166, 166),RGB(0, 68, 69),RGB(0, 69, 69)});
+  const HashColorMap Medium::TEAL_STROKE = buildMedium({RGB(180, 240, 240),RGB(57, 166, 166),RGB(0, 68, 69),RGB(0, 69, 69)}); //
   const HashColorMap Medium::TEAL_BRIGHT = buildMedium({RGB(185, 240, 240),RGB(90, 166, 166),0x00000000,RGB(22, 97, 97)});
   const HashColorMap Medium::BLACK = buildMedium({RGB(6, 2, 2),RGB(6, 69, 69),0x00000000,RGB(90, 155, 154)});
 
