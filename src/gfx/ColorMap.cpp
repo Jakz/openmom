@@ -61,19 +61,19 @@ namespace FontMap
 
 
   const BlinkMap Small::WHITE_GREY_BLINK = BlinkMap({SMALL_COLORS.begin()[0],SMALL_COLORS.begin()[1]}, 200, 180, 180, 172, 148, 130, 600);
-  const HashColorMap Small::BLUE_MAGIC = buildSmall({RGB(146,146,166),RGB(97,97,125),RGB(40,40,65)});
-  const HashColorMap Small::WHITE_PALE = buildSmall({RGB(255, 255, 255),RGB(142, 134, 130),RGB(93, 93, 121)});
-  const HashColorMap Small::YELLOW_PALE = buildSmall({RGB(249, 232, 67),RGB(142, 134, 130),RGB(93, 93, 121)});
-  const HashColorMap Small::RED_PALE = buildSmall({RGB(195, 178, 178),RGB(81, 77, 113),RGB(16, 12, 32)});
-  const HashColorMap Small::WHITE = buildSmall({RGB(255, 255, 255),RGB(143, 133, 130),RGB(0, 0, 0)});
-  const HashColorMap Small::TEAL = buildSmall({RGB(190, 239, 239),RGB(85, 166, 166), RGB(20, 69, 69)});
-  const HashColorMap Small::BROWN = buildSmall({RGB(51, 40, 26),RGB(119, 85, 23), 0x00000000});
-  const HashColorMap Small::GREEN = buildSmall({RGB(42, 141, 97),RGB(21, 71, 45), RGB(0, 0, 0)});
-  const HashColorMap Small::BLUE = buildSmall({RGB(78, 127, 166),RGB(24, 79, 116), RGB(0, 0, 0)});
-  const HashColorMap Small::RED = buildSmall({RGB(255, 0, 8),RGB(128, 0, 4), RGB(0, 0, 0)});
-  const HashColorMap Small::PURPLE = buildSmall({RGB(145, 59, 141),RGB(95, 20, 92), RGB(0, 0, 0)});
-  const HashColorMap Small::YELLOW = buildSmall({RGB(235, 207, 17),RGB(117, 103, 8), RGB(0, 0, 0)});
-  const HashColorMap Small::GRAY_ITEM_CRAFT = buildSmall({RGB(158, 150, 146),0x00000000,0x00000000});
+  const HashColorMap Small::BLUE_MAGIC = buildSmall({RGB(146,146,166),RGB(97,97,125),RGB(40,40,65)}); //
+  const HashColorMap Small::WHITE_PALE = buildSmall({RGB(255, 255, 255),RGB(142, 134, 130),RGB(93, 93, 121)}); //
+  const HashColorMap Small::YELLOW_PALE = buildSmall({RGB(249, 232, 67),RGB(142, 134, 130),RGB(93, 93, 121)}); //
+  const HashColorMap Small::RED_PALE = buildSmall({RGB(195, 178, 178),RGB(81, 77, 113),RGB(16, 12, 32)}); //
+  const HashColorMap Small::WHITE = buildSmall({RGB(255, 255, 255),RGB(143, 133, 130),RGB(0, 0, 0)}); //
+  const HashColorMap Small::TEAL = buildSmall({RGB(190, 239, 239),RGB(85, 166, 166), RGB(20, 69, 69)}); //
+  const HashColorMap Small::BROWN = buildSmall({RGB(51, 40, 26),RGB(119, 85, 23), 0x00000000}); //
+  const HashColorMap Small::GREEN = buildSmall({RGB(42, 141, 97),RGB(21, 71, 45), RGB(0, 0, 0)}); //
+  const HashColorMap Small::BLUE = buildSmall({RGB(78, 127, 166),RGB(24, 79, 116), RGB(0, 0, 0)}); //
+  const HashColorMap Small::RED = buildSmall({RGB(255, 0, 8),RGB(128, 0, 4), RGB(0, 0, 0)}); //
+  const HashColorMap Small::PURPLE = buildSmall({RGB(145, 59, 141),RGB(95, 20, 92), RGB(0, 0, 0)}); //
+  const HashColorMap Small::YELLOW = buildSmall({RGB(235, 207, 17),RGB(117, 103, 8), RGB(0, 0, 0)}); //
+  const HashColorMap Small::GRAY_ITEM_CRAFT = buildSmall({RGB(158, 150, 146),0x00000000,0x00000000}); //
   
   const HashColorMap Tiny::WHITE = buildTiny({RGB(255, 255, 255), RGB(143, 133, 130), 0x00000000}); //
   const HashColorMap Tiny::WHITE_STROKE = buildTiny({RGB(255, 255, 255), RGB(143, 133, 130), RGB(0,0,0)}); //
@@ -176,3 +176,27 @@ const Color MiscMaps::SCHOOL_GLOW_COLORS[][5] = {
 };
 
 
+Color BlinkingPalette::get(u8 index) const
+{
+  if (indices.find(index) == indices.end()) return 0x00000000;
+  else
+  {
+    s16 phase = Gfx::ticks % ticks;
+    
+    if (updatedForTick != phase)
+    {
+      float progress = phase / (float) ticks;
+      
+      if (progress <= 0.5f) progress *= 2.0f;
+      else progress = (0.5f - (progress - 0.5f)) * 2.0f;
+      
+      u8 red = s[0] + (u8)(d[0]*progress);
+      u8 green = s[1] + (u8)(d[1]*progress);
+      u8 blue = s[2] + (u8)(d[2]*progress);
+      
+      return Gfx::color(red,green,blue);
+    }
+    
+    return 0x00000000;
+  }
+}

@@ -15,6 +15,8 @@
 #include <unordered_set>
 #include <unordered_map>
 
+#include <set>
+
 class ColorMap
 {
   public:
@@ -154,6 +156,49 @@ namespace FontMap
     public: static const HashColorMap SERIF_CRYPT_BROWN;
     static const HashColorMap TINY_BROWN_CRYPT;
   };
+};
+
+class Palette
+{
+public:
+  virtual Color get(u8 index) const = 0;
+  virtual ~Palette() { }
+};
+
+class IndexedPalette : public Palette
+{
+private:
+  Color *colors;
+public:
+  IndexedPalette(color_list colors) : colors(new Color[colors.size()]) { setPalette(colors); }
+  
+  void setPalette(color_list colors) const
+  {
+    for (int i = 0; i < colors.size(); ++i)
+      this->colors[i] = *std::next(colors.begin(), i);
+  }
+  
+  Color get(u8 index) const override { return colors[index]; }
+  
+  ~IndexedPalette() { delete [] colors; }
+};
+
+class BlinkingPalette : public Palette
+{
+private:
+  const s16 s[3];
+  const s16 d[3];
+  const u16 ticks, updatedForTick = -1;
+  
+  std::set<u8> indices;
+  
+public:
+  BlinkingPalette(std::initializer_list<u8> indices, u8 r1, u8 g1, u8 b1, u8 r2, u8 g2, u8 b2, u16 ticks) : indices(indices), s{r1,g1,b1}, d{static_cast<s16>(r2-r1),static_cast<s16>(g2-g1),static_cast<s16>(b2-b1)}, ticks(ticks)
+  {
+
+  }
+
+  Color get(u8 index) const override;
 };
 
 #endif

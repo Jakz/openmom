@@ -63,6 +63,7 @@ struct SpriteInfo
   SpriteInfo(TextureID texture, s16 x, s16 y) : texture(texture), x(x), y(y) { }
 };
 
+class Palette;
 
 class SpriteSheet
 {
@@ -78,6 +79,8 @@ public:
   
   virtual void lock() const { }
   virtual void unlock() const { }
+  
+  virtual const Palette* getPalette() const { return nullptr; }
 };
 
 

@@ -133,20 +133,20 @@ void MainView::updateBuildButton()
 
 void MainView::draw()
 {
-  const FontSpriteSheet* sheets[] = {FontFaces::TINY_BROWN, FontFaces::TINY_WHITE_STROKE, FontFaces::TINY_YELLOW_STROKE, FontFaces::TINY_RED_STROKE};
-  const FontFace faces[] = {FontFace::TINY_COMPACT, FontFace::WHITE_TINY_STROKE, FontFace::YELLOW_TINY_STROKE, FontFace::RED_TINY_STROKE};
+  const FontSpriteSheet* sheets[] = {FontFaces::Small::GREENW, FontFaces::Tiny::WHITE_STROKE, FontFaces::Medium::TEAL_BRIGHT, FontFaces::Serif::TEAL, FontFaces::Crypt::TINY_BROWN, FontFaces::Crypt::SERIF_BROWN};
+  const FontFace faces[] = {FontFace::GREEN_SMALLW, FontFace::WHITE_TINY_STROKE, FontFace::BRIGHT_TEAL_MEDIUM, FontFace::TEAL_SERIF, FontFace::TINY_COMPACT_CRYPT_BROWN, FontFace::SERIF_CRYPT_BROWN};
   
   Gfx::alphaBlend({0,0,200,200}, RGBA(128, 0, 0, 255));
   
-  for (int i = 0; i < 4; ++i)
-  {
-    Fonts::drawString("Amtani foti sblinda1", faces[i], 100, 40+i*20, ALIGN_LEFT, &FontMap::TinyCompact::BROWN);
-    Fonts::drawStringContext(sheets[i], "Amtani foti sblinda1", 99, 50+i*20, ALIGN_LEFT);
-  }
+  // small, tiny, medium, serif, tiny crypt, serif crypt
+  s8 xadjust[] = {-1,-1,-1,0,-1,-1};
+  s8 yadjust[] = {-1,0,0,0,0,0};
   
-
-
-
+  for (int i = 0; i < 6; ++i)
+  {    //Fonts::setMap(&FontMap::TinyCompact::WHITE_BLUE_BLINK);
+    Fonts::drawString("Antani foti sblinda1", faces[i], 20+ i/3*70, 30+i%3*40, ALIGN_LEFT, &FontMap::TinyCompact::WHITE_BLUE_BLINK);
+    fnts::Fonts::drawString("Antani foti sblinda1", sheets[i], 20 + i/3*70 + xadjust[i], 30+i%3*40 + yadjust[i], ALIGN_LEFT);
+  }
 
   return;
   /*SpriteInfo si = SpriteInfo(TextureID::UNITS_STATIC_STANDARD, 0, 0);
@@ -218,7 +218,9 @@ void MainView::draw()
     Fonts::drawString("Casting", FontFace::SURVEY_SERIF, 240+6+8+4, 76+2+1, ALIGN_LEFT);
     
     //TODO: colors etc
-    Fonts::drawStringBounded("^wSelect a friendly unit as the target for a ^yBless^^ ^wspell", FontFace::SMALL_SHORTER, 249, 114, 64, ALIGN_LEFT);
+    Fonts::setFace(FontFace::YELLOW_SMALL);
+    Fonts::setVerSpace(2);
+    Fonts::drawStringBounded("^wSelect a friendly unit as the target for a ^yBless^^ ^wspell", 120, 50, 64, ALIGN_LEFT);
   }
   else
     Gfx::draw(TextureID::MAIN_RIGHT_BACKDROPS, 0, 0, 240, 76);

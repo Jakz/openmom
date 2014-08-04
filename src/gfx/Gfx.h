@@ -58,6 +58,7 @@ class Gfx
     static SurfaceWrapper *buffer, *canvas, *activeBuffer;
   
     static const ColorMap* map;
+    static const Palette* palette;
   
     static Color get(SDL_Surface* surface, u16 x, u16 y) { return static_cast<Color*>(surface->pixels)[x + y*surface->w]; }
     static void set(SDL_Surface* surface, u16 x, u16 y, Color color) { static_cast<Color*>(surface->pixels)[x + y*surface->w] = color; }
@@ -75,6 +76,9 @@ class Gfx
   
     static inline void bindColorMap(const ColorMap *map) { Gfx::map = map; }
     static inline void unbindColorMap() { Gfx::map = nullptr; }
+  
+    static inline void bindPalette(const Palette* palette) { Gfx::palette = palette; }
+    static inline void unbindPalette() { Gfx::palette = nullptr; }
   
     static void alphaBlend(const SDL_Rect& r, Color color);
     static void rect(u16 x, u16 y, u16 w, u16 h, u32 color);

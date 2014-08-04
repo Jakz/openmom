@@ -22,6 +22,7 @@ SurfaceWrapper* Gfx::activeBuffer = nullptr;
 SurfaceWrapper* Gfx::canvas = nullptr;
 
 const ColorMap* Gfx::map = nullptr;
+const Palette* Gfx::palette = nullptr;
 
 const Color Gfx::PALETTE[256] =
 {
@@ -387,6 +388,9 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u1
         else
         {
           // colorMap present
+          if (palette)
+            ps = palette->get(ps);
+          
           if (map)
             ps = map->get(ps);
           

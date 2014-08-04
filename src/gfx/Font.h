@@ -47,9 +47,7 @@ enum FontFace : u16
   WHITE_SMALL,
   TEAL_SMALL,
   BROWN_SMALL,
-  
-  SMALL_SHORTER,
-  
+    
   GREEN_SMALLW,
   BLUE_SMALLW,
   RED_SMALLW,
@@ -85,9 +83,6 @@ enum TextAlign : u8
 
 
 const u16 GLYPH_COUNT = 96;
-
-
-typedef Color* Palette;
 
 class SpriteRawData
 {
@@ -150,19 +145,13 @@ class FontSpriteSheet : public SpriteSheet
 {
 private:
   FontData *rawData;
-  Palette palette;
+  const Palette* palette;
 
 public:
-  FontSpriteSheet(FontData *data, Color paletteCount, s8 hor, s8 ver) : rawData(data), palette(new Color[paletteCount]), hor(hor), ver(ver) { }
-  FontSpriteSheet(FontData *data, color_list palette, s8 hor, s8 ver) : rawData(data), palette(new Color[palette.size()]), hor(hor), ver(ver) { setPalette(palette); }
+  FontSpriteSheet(FontData *data, const Palette* palette, s8 hor, s8 ver) : rawData(data), palette(palette), hor(hor), ver(ver) { }
+  FontSpriteSheet(FontData *data, color_list palette, s8 hor, s8 ver) : rawData(data), palette(new IndexedPalette(palette)), hor(hor), ver(ver) { }
 
   ~FontSpriteSheet() { delete [] palette; }
-  
-  void setPalette(color_list colors) const
-  {
-    for (int i = 0; i < colors.size(); ++i)
-      palette[i] = *std::next(colors.begin(), i);
-  }
   
   Color at(u16 x, u16 y, u16 r = 0, u16 c = 0) const override
   {
@@ -171,14 +160,14 @@ public:
     
     //return RGB(255,0,0);
     
-    return palette[value];
+    return value;
   }
   
   u16 tw() const override { return rawData->tw(); }
   u16 th() const override { return rawData->h(); }
   
   u16 sw(u16 r, u16 c = 0) const override { return rawData->w(); }
-  u16 sh(u16 r, u16 c = 0) const override { return rawData->h(); }
+  u16 sh(u16 r = 0, u16 c = 0) const override { return rawData->h(); }
   
   const s8 hor, ver;
   
@@ -195,6 +184,8 @@ public:
     
     return l;
   }
+  
+  const Palette* getPalette() const override { return palette; }
 };
 
 
@@ -202,11 +193,29 @@ public:
 class FontFaces
 {
 public:
-  const static FontSpriteSheet *TINY_WHITE, *TINY_WHITE_STROKE, *TINY_YELLOW_STROKE, *TINY_RED_STROKE, *TINY_BROWN;
-  const static FontSpriteSheet *MEDIUM_TEAL, *MEDIUM_TEAL_STROKE, *MEDIUM_BLACK, *MEDIUM_TEAL_BRIGHT, *MEDIUM_BLUE_MAGIC;
-  const static FontSpriteSheet *SERIF_TEAL, *SERIF_BROWN, *SERIF_YELLOW_SHADOW, *SERIF_GOLD_SHADOW, *SERIF_SILVER_SHADOW, *SERIF_WHITE_SURVEY, *SERIF_DARK_BROWN;
+  class Tiny { public:
+    const static FontSpriteSheet *WHITE, *WHITE_STROKE, *YELLOW_STROKE, *RED_STROKE, *BROWN;
+  };
   
-  const static FontSpriteSheet *SERIF_CRYPT_BROWN, *TINY_CRYPT_BROWN;
+  class Small { public:
+    const static FontSpriteSheet *YELLOW, *BLUE_MAGIC, *WHITE_PALE, *YELLOW_PALE, *RED_PALE, *WHITE, *TEAL, *BROWN, *GREENW, *BLUEW, *REDW, *PURPLEW, *YELLOWW, *GRAY_ITEM_CRAFT, *BLINK_WHITE_GREY;
+  };
+  
+  class Medium { public:
+    const static FontSpriteSheet *TEAL, *TEAL_STROKE, *BLACK, *TEAL_BRIGHT, *BLUE_MAGIC;
+  };
+  
+  class Serif { public:
+    const static FontSpriteSheet *TEAL, *BROWN, *YELLOW_SHADOW, *GOLD_SHADOW, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
+  };
+  
+  class Crypt { public:
+    const static FontSpriteSheet *SERIF_BROWN, *TINY_BROWN;
+  };
+  
+  class Palettes { public:
+    const static BlinkingPalette *BLINK_WHITE_BLUE;
+  };
   
   static void buildFonts();
 };
@@ -333,19 +342,6 @@ class SmallFont : public Font
 		setWidth("jtfxI+-",3);
 		setWidth("VTMmWYw/",5);		
 		fillWidth(4,4,4);
-  }
-};
-
-class SmallShorterFont : public Font
-{
-  public:
-  SmallShorterFont(TextureID tex, const ColorMap *map = nullptr) : Font(tex, 7, 7, 1, 2, 3, map)
-  {
-    setWidth("il1.:\'", 1);
-    setWidth(",()", 2);
-    setWidth("jtfxI+-", 3);
-    setWidth("VTMmWYw/", 5);
-    fillWidth(4,4,4);
   }
 };
 
@@ -508,11 +504,94 @@ class Fonts
       }
     }
   
-    static u16 drawStringContext(const FontSpriteSheet* sheet, const std::string string, u16 x, u16 y, TextAlign align);
-
-  
     static const Font& fontFor(FontFace face) { return fonts[face]; }
 
 };
+
+namespace fnts
+{
+  class Fonts
+  {
+  private:
+    static const FontSpriteSheet* font;
+    static s16 vSpace, hSpace;
+    static const Palette *palette, *opalette;
+    static std::unordered_map<char, const Palette*> fontColors;
+    
+  public:
+    static std::string format(const char* str, ...);
+    
+    static inline u16 stringWidth(const FontSpriteSheet* face, const std::string string) { return face->stringWidth(string, hSpace); }
+    static inline u16 stringHeight() { return 0; }
+    
+    static inline const std::string join(std::vector<const std::string>& tokens, s16 s, s16 e);
+    static inline void split(std::string string, std::vector<const std::string>& tokens, s8 delim);
+    
+    static inline void setFace(const FontSpriteSheet* face, s16 v, s16 h) { setFace(face); setVerHorSpace(v,h); }
+    static inline void setFace(const FontSpriteSheet* face, const Palette* palette, s16 v, s16 h) { setFace(face,v,h); setMap(palette); }
+    
+    static inline void setFace(const FontSpriteSheet* face)
+    {
+      font = face;
+      hSpace = font->hor;
+      vSpace = font->ver;
+      palette = font->getPalette();
+      opalette = palette;
+    }
+    
+    static inline void setFace(const FontSpriteSheet* face, Palette* palette, s16 v, s16 h) { setFace(face); vSpace = v; hSpace = h; }
+    static inline void setHorSpace(s16 h) { hSpace = h; }
+    static inline void setVerSpace(s16 v) { vSpace = v; }
+    static inline void setVerHorSpace(s16 v, s16 h) { vSpace = v; hSpace = h; }
+    static inline void setMap(const Palette *p) { palette = p; opalette = p; }
+    
+    static u16 drawString(const std::string string, u16 x, u16 y, TextAlign align, const Palette *palette)
+    {
+      setMap(palette);
+      u16 r = drawString(string,x,y,align);
+      return r;
+    }
+    
+    static u16 drawString(const std::string string, const FontSpriteSheet* face, u16 x, u16 y, TextAlign align, const Palette *palette)
+    {
+      setFace(face);
+      return drawString(string, x, y, align, palette);
+    }
+    
+    static u16 drawString(const std::string string, const FontSpriteSheet* face, u16 x, u16 y, TextAlign align)
+    {
+      setFace(face);
+      return drawString(string, x, y, align);
+    }
+    
+    static u16 drawString(const std::string string, u16 x, u16 y, TextAlign align);
+    static u16 drawStringContext(const std::string string, u16 x, u16 y, TextAlign align);
+    
+    static u16 drawStringBounded(const std::string string, const FontSpriteSheet* face, u16 x, u16 y, s16 bound, TextAlign align, const Palette* palette = nullptr)
+    {
+      setFace(face);
+      
+      if (palette)
+        setMap(palette);
+      
+      return drawStringBounded(string, x, y, bound, align);
+    }
+    
+    static u16 drawStringBounded(const std::string string, int x, int y, int bound, TextAlign align, const Palette* palette = nullptr);
+    
+    static FontFace fontForColor(PlayerColor color)
+    {
+      switch (color)
+      {
+        case GREEN: return GREEN_SMALLW;
+        case BLUE: return BLUE_SMALLW;
+        case RED: return RED_SMALLW;
+        case PURPLE: return PURPLE_SMALLW;
+        case YELLOW: return YELLOW_SMALLW;
+        default: return WHITE_SMALL;
+      }
+    }
+  };
+}
 
 #endif
