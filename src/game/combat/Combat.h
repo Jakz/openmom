@@ -97,6 +97,15 @@ struct CombatPosition
   CombatPosition(CombatUnit *unit) : x(unit->x), y(unit->y) { }
 };
 
+namespace std
+{
+  template<>
+  struct hash<CombatPosition>
+  {
+    std::size_t operator()(const CombatPosition& k) const { return static_cast<u16>(k.x<<8 | k.y); }
+  };
+}
+
 typedef std::unordered_map<CombatPosition,s32> position_map;
 
 
