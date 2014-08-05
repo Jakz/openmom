@@ -9,7 +9,7 @@ using namespace std;
 constexpr const I18 i18n::CITY_SIZE_NAMES[];
 constexpr I18 i18n::SPELL_KIND_NAMES[];
 
-unordered_map<I18, const string> i18n::data =
+unordered_map<I18, string> i18n::data =
 {
   {I18::CITY_HAMLET, "Hamlet"},
   {I18::CITY_VILLAGE, "Village"},
@@ -239,7 +239,7 @@ unordered_map<I18, const string> i18n::data =
   {I18::PLACEHOLDER, "Placeholder"},
 };
 
-unordered_map<UnitID, const string> i18n::units =
+unordered_map<UnitID, string> i18n::units =
 {
   {UnitID::SPEARMEN,"Spearmen"},
   {UnitID::SWORDSMEN,"Swordsmen"},
@@ -262,7 +262,7 @@ unordered_map<UnitID, const string> i18n::units =
   {UnitID::GREAT_DRAKE,"Great Drake"},
 };
 
-unordered_map<SkillBase, const string> i18n::skills =
+unordered_map<SkillBase, string> i18n::skills =
 {
   {SkillBase::HERO_AGILITY, "Agility"},
   {SkillBase::HERO_ARCANE_POWER, "Arcane Power"},
@@ -394,11 +394,6 @@ unordered_map<SkillBase, const string> i18n::skills =
   {SkillBase::STATUS_BLACK_SLEEP, "Black Sleep"},
   {SkillBase::STATUS_WEAKNESS, "Weakness"},
   {SkillBase::STATUS_POSESSION, "Posession"}
-};
-
-std::unordered_map<I18, I18> i18n::buildingDescs
-{
-  // TODO
 };
 
 std::unordered_map<TileType, std::vector<std::string> > i18n::surveyorDescs

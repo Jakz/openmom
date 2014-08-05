@@ -59,8 +59,13 @@ static const HeroSpec heroSpecs[] = {
   HeroSpec(UnitID::HERO_ORC_WARRIOR, HeroType::HERO, ItemSlots::Type::WARRIOR, 2, -1,   6, 0, Ranged::NONE, 0,    4, 6, 8, 1,    1, 1,   {Skills::MOUNTAINWALK})
 };
 
+// SummonSpec(UnitID ident, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
 static const SummonSpec summonSpecs[] = {
   SummonSpec(UnitID::MAGIC_SPIRIT, 1, 30,    5, 0, Ranged::NONE, 0,    4, 8, 10, 1,     1, 2,   {Skills::MELD, Skills::NON_CORPOREAL}),
+  
+  SummonSpec(UnitID::GUARDIAN_SPIRIT, 1, 80,    10, 0, Ranged::NONE, 0,    4, 10, 10, 1,     1, 2,   {Skills::MELD, Skills::NON_CORPOREAL, Skills::RESISTANCE_TO_ALL}),
+
+  
   
   SummonSpec(UnitID::HELL_HOUNDS,   1, 40,     3, 0, Ranged::NONE, 0,      2, 6, 4, 4,     2, 1,   {}),
   SummonSpec(UnitID::GREAT_DRAKE, 30, 900,    30, 0, Ranged::NONE, 0,     10,12,30, 1,     2, 2,   {Skills::FLYING, Skills::TO_HIT3, Skills::FIERY_BREATH20})

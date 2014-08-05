@@ -76,6 +76,9 @@ unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
   
   { UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 0, 0), UNIT_MAGIC_SPIRIT) },
   
+  { UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 3, 1), UNIT_MAGIC_SPIRIT) }, // TODO: full figure wrong
+
+  
   { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 1, 0), UNIT_HELL_HOUND) },
   { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 1, 9), UNIT_GREAT_DRAKE, true) }
 

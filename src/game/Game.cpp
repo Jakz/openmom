@@ -106,6 +106,7 @@ void Game::dummyInit()
   
   player->book()->discoverSpell(Spells::BLESS);
   player->book()->discoverSpell(Spells::CORRUPTION);
+  player->book()->discoverSpell(Spells::GUARDIAN_SPIRIT);
   
   new LocalGame(this);
   

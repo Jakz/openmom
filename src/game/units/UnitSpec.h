@@ -81,6 +81,9 @@ enum class UnitID : u16
   
   
   MAGIC_SPIRIT,
+  
+  GUARDIAN_SPIRIT,
+  
   HELL_HOUNDS,
   GREAT_DRAKE,
 

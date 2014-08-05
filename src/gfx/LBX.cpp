@@ -8,6 +8,9 @@
 
 #include "LBX.h"
 
+#include "Buildings.h"
+#include "Localization.h"
+
 #include "Font.h"
 #include "Common.h"
 #include "Gfx.h"
@@ -59,14 +62,10 @@ const vector<string> findFiles(string path, const char *ext)
 
 
 
-struct LBXArray
-{
-  u16 count;
-  u16 size;
-} __attribute__((__packed__));
 
-/*
-void scanArray(LBXOffset offset, LBXArray& info, FILE *in)
+
+
+void LBX::loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter, FILE *in)
 {
   fseek(in, offset, SEEK_SET);
   
@@ -76,11 +75,12 @@ void scanArray(LBXOffset offset, LBXArray& info, FILE *in)
   {
     fread(buffer, 1, info.size, in);
     printf("  > %s\n",buffer);
+    inserter.push(string(buffer));
   }
-}*/
+}
 
-/*
-void scanArrayFile(LBXHeader& header, LBXOffset* offsets, FILE *in)
+
+void LBX::loadArrayFile(LBXHeader& header, offset_list& offsets, std::vector<TextFiller>& inserters, FILE *in)
 {
   LBXArray* arrays = new LBXArray[header.count];
   for (int i = 0; i < header.count; ++i)
@@ -100,10 +100,10 @@ void scanArrayFile(LBXHeader& header, LBXOffset* offsets, FILE *in)
     if (startArrayOffset != nextEntryOffset) cout << "ERROR! OFFSET DIFFERS!" << endl;
     else
     {
-      scanArray(offsets[i]+sizeof(LBXArray), arrays[i], in);
+      loadArray(offsets[i]+sizeof(LBXArray), arrays[i], inserters[i], in);
     }
   }
-}*/
+}
 
 struct LBXFileName
 {
@@ -412,16 +412,10 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
     // allocate storage for all glyphs
     FontData::fonts[i] = new FontData(static_cast<FontType>(i), heights[i]+2, width);  // add 2 pixels by side for precomputed stroke
     u16 totalWidth = FontData::fonts[i]->tw();
-    //SDL_Surface *image = Gfx::createSurface(FONT_CHAR_NUM*(width), heights[i]+2);
-    //Gfx::lock(image);
-    //u32* pixels = static_cast<u32*>(image->pixels);
 
-    
     for (int j = 0; j < FONT_CHAR_NUM; ++j)
     {
       u8* glyph = FontData::fonts[i]->dataAt(0, j);
-
-      printf("      CHAR %d (%c)\n",j,j+32);
       
       fseek(in, offsets[0] + foffsets[i][j], SEEK_SET);
 
@@ -444,22 +438,11 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
         {
           color = 0;
           strain = low;
-          
-          if (strain > 0)
-            printf("%d,%d..%d STRAIN TRANSPARENT\n", x, y, y+strain-1);
-          else
-            printf("%d,%d..%d SKIPPING\n", x, y, heights[i]-1);
         }
         else
         {
-          printf(">>>>>>>>>>>>>>>>>>>>>>>> LOW %d\n", low);
           color = low+3;
           strain = high;
-          
-          if (strain > 0)
-            printf("%d,%d..%d STRAIN %8X\n", x, y, y+strain-1, color);
-          else
-            printf("%d,%d..%d SKIPPING\n", x, y, heights[i]-1);
         }
         
         if (strain == 0)
@@ -514,20 +497,76 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
       FontData::fonts[i]->setGlyphWidth(j, widths[i][j]);
     }
   }
-  
-  
-  
-  /*for (int i = 0; i < FONT_NUM; ++i)
-  {
-    printf("Font %d, height: %d\n  ", i, heights[i]);
-    for (int j = 0; j < 0x5E; ++j)
-      printf("%d(%04X) ", widths[i][j], foffsets[i][j]);
-    printf("\n");
-  }*/
-  
 }
 
+void LBX::load()
+{
+  path = string(getenv("PWD")) + "/OpenMoM.app/Contents/Resources/data/lbx/";
+  
+  {
+    LBXHeader header;
+    offset_list offsets;
+    FILE *in = fopen((path+"fonts.lbx").c_str(), "rb");
+    loadHeader(header, offsets, in);
+    loadFonts(header, offsets, in);
+  }
+  {
+    LBXHeader header;
+    offset_list offsets;
+    FILE *in = fopen((path+"buildesc.lbx").c_str(), "rb");
+    loadHeader(header, offsets, in);
+    
+    vector<TextFiller> inserters = {
+      TextFiller(0, [](u16 index, std::string& str) {
+        static const I18 buildings[] = {
+          I18::BUILDING_DESC_TRADE_GOODS,
+          I18::BUILDING_DESC_HOUSING,
+          I18::BUILDING_DESC_BARRACKS,
+          I18::BUILDING_DESC_ARMORY,
+          I18::BUILDING_DESC_FIGHTERS_GUILD,
+          I18::BUILDING_DESC_ARMORERS_GUILD,
+          I18::BUILDING_DESC_WAR_COLLEGE,
+          I18::BUILDING_DESC_SMITHY,
+          I18::BUILDING_DESC_STABLE,
+          I18::BUILDING_DESC_ANIMISTS_GUILD,
+          I18::BUILDING_DESC_FANTASTIC_STABLE,
+          I18::BUILDING_DESC_SHIP_WRIGHTS_GUILD,
+          I18::BUILDING_DESC_SHIP_YARD,
+          I18::BUILDING_DESC_MARITIME_GUILD,
+          I18::BUILDING_DESC_SAWMILL,
+          I18::BUILDING_DESC_LIBRARY,
+          I18::BUILDING_DESC_SAGES_GUILD,
+          I18::BUILDING_DESC_ORACLE,
+          I18::BUILDING_DESC_ALCHEMISTS_GUILD,
+          I18::BUILDING_DESC_UNIVERSITY,
+          I18::BUILDING_DESC_WIZARDS_GUILD,
+          I18::BUILDING_DESC_SHRINE,
+          I18::BUILDING_DESC_TEMPLE,
+          I18::BUILDING_DESC_PARTHENON,
+          I18::BUILDING_DESC_CATHEDRAL,
+          I18::BUILDING_DESC_MARKETPLACE,
+          I18::BUILDING_DESC_BANK,
+          I18::BUILDING_DESC_MERCHANTS_GUILD,
+          I18::BUILDING_DESC_GRANARY,
+          I18::BUILDING_DESC_FARMERS_MARKET,
+          I18::BUILDING_DESC_FORESTERS_GUILD,
+          I18::BUILDING_DESC_BUILDERS_HALL,
+          I18::BUILDING_DESC_MECHANICIANS_GUILD,
+          I18::BUILDING_DESC_MINERS_GUILD,
+          I18::BUILDING_DESC_CITY_WALLS
+        };
+        
+        if (index > 0)
+          i18n::data[buildings[index-1]] = str;
+      })
+    };
+    
+    loadArrayFile(header, offsets, inserters, in);
 
+  }
+}
+
+/*
 void LBX::load()
 {
   path = string(getenv("PWD")) + "/OpenMoM.app/Contents/Resources/data/lbx/";
@@ -553,5 +592,5 @@ void LBX::load()
   }
   
   
-}
+}*/
 

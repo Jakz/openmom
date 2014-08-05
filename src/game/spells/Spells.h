@@ -222,7 +222,7 @@ public:
   static const std::vector<const SpellKind>& spellKinds(bool combat);
   static spell_list& spellsByRarityAndSchool(SpellRarity rarity, School school);
   
-  static const Spell *BLESS, *ENDURANCE;
+  static const Spell *BLESS, *ENDURANCE, *GUARDIAN_SPIRIT;
   
   
   

@@ -279,7 +279,7 @@ class Skills
 public:
   static const Skill *MELD, *CREATE_OUTPOST, *CREATE_ROAD, *WALL_CRUSHING, *PURIFY;
   
-  static const Skill *LUCKY;
+  static const Skill *LUCKY, *RESISTANCE_TO_ALL;
   
   static const Skill *LARGE_SHIELD, *FIRST_STRIKE, *NEGATE_FIRST_STRIKE, *ARMOR_PIERCING, *LONG_RANGE, *ILLUSIONARY_ATTACK;
   

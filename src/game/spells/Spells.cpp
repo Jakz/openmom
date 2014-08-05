@@ -11,7 +11,7 @@ namespace spellimpl
   /* LIFE - COMMON */
   static UnitSpell BLESS = UnitSpell(I18::SPELL_BLESS, RARITY_COMMON, LIFE, COMBAT_CONTINUOUS, 20, 25, 5, 1, Skills::SPELL_BLESS);
   static UnitSpell ENDURANCE = UnitSpell(I18::SPELL_ENDURANCE, RARITY_COMMON, LIFE, CONTINUOUS, 60, 30, -1, 1, Skills::SPELL_ENDURANCE);
-  //TODO static SummonSpell GUARDIAN_SPIRIT = SummonSpell(I18::SPELL_GUARDIAN_SPIRIT, RARITY_COMMON, LIFE, 220, 80, -1, )    no way to obtain constant summon spec
+  static SummonSpell GUARDIAN_SPIRIT = SummonSpell(I18::SPELL_GUARDIAN_SPIRIT, RARITY_COMMON, LIFE, 220, 80, -1, UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT)); // TODO: summon spec is not ready when initialized
   
   
   
@@ -32,6 +32,7 @@ const vector<const SpellKind>& Spells::spellKinds(bool combat)
 
 const Spell* Spells::BLESS = &spellimpl::BLESS;
 const Spell* Spells::ENDURANCE = &spellimpl::ENDURANCE;
+const Spell* Spells::GUARDIAN_SPIRIT = &spellimpl::GUARDIAN_SPIRIT;
 
 const Spell* Spells::CORRUPTION = &spellimpl::CORRUPTION;
 const Spell* Spells::CHANGE_TERRAIN = &spellimpl::CHANGE_TERRAIN;

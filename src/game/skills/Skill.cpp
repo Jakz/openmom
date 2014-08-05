@@ -121,6 +121,8 @@ namespace skillimpl
   const ConcreteSkill LUCKY = ConcreteSkill(SkillBase::LUCKY, UnitBonus::build({Property::TO_HIT, Property::TO_DEFEND, Property::RESIST}, 1));
   
   const ConcreteSkill LARGE_SHIELD = ConcreteSkill(SkillBase::LARGE_SHIELD, {new UnitBonus(Property::SHIELDS_RANGED,2)} );
+  const ConcreteSkill RESISTANCE_TO_ALL = ConcreteSkill(SkillBase::RESISTANCE_TO_ALL, {new UnitBonus(Property::RESIST,1)});
+  
   const ConcreteSkill FIRST_STRIKE = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::FIRST_STRIKE)} );
   const ConcreteSkill NEGATE_FIRST_STRIKE = ConcreteSkill(SkillBase::NEGATE_FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::NEGATE_FIRST_STRIKE)} );
   const ConcreteSkill ARMOR_PIERCING = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::ARMOR_PIERCING)} );
@@ -238,6 +240,7 @@ const Skill* Skills::WALL_CRUSHING = &skillimpl::WALL_CRUSHING; // maybe should 
 const Skill* Skills::PURIFY = &skillimpl::PURIFY;
 
 const Skill* Skills::LUCKY = &skillimpl::LUCKY;
+const Skill* Skills::RESISTANCE_TO_ALL = &skillimpl::RESISTANCE_TO_ALL;
 
 const Skill* Skills::LARGE_SHIELD = &skillimpl::LARGE_SHIELD;
 const Skill* Skills::FIRST_STRIKE = &skillimpl::FIRST_STRIKE;

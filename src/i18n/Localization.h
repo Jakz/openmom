@@ -280,10 +280,9 @@ namespace std
 class i18n
 {
   private:
-    static std::unordered_map<I18, const std::string> data;
-    static std::unordered_map<UnitID, const std::string> units;
-    static std::unordered_map<SkillBase, const std::string> skills;
-    static std::unordered_map<I18, I18> buildingDescs;
+    static std::unordered_map<I18, std::string> data;
+    static std::unordered_map<UnitID, std::string> units;
+    static std::unordered_map<SkillBase, std::string> skills;
     static std::unordered_map<TileType, std::vector<std::string> > surveyorDescs;
   
   public:
@@ -291,12 +290,12 @@ class i18n
     static const std::string& s(UnitID unit) { return units[unit]; }
     static const std::string& s(SkillBase skill) { return skills[skill]; }
   
-    static I18 buildingDesc(I18 b) { return buildingDescs[b]; }
     static const std::vector<std::string> surveyorDesc(TileType type) { return surveyorDescs[type]; }
 
     static constexpr const I18 CITY_SIZE_NAMES[] { I18::CITY_HAMLET, I18::CITY_VILLAGE, I18::CITY_TOWN, I18::CITY_CITY, I18::CITY_CAPITOL };
     static constexpr I18 SPELL_KIND_NAMES[] = { I18::SPELL_KIND_SUMMONING, I18::SPELL_KIND_SPECIAL, I18::SPELL_KIND_CITY, I18::SPELL_KIND_ENCHANTMENT, I18::SPELL_KIND_UNIT_SPELL, I18::SPELL_KIND_COMBAT_SPELL };
-
+  
+  friend class LBX;
 };
 
 
