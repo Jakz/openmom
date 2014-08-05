@@ -184,32 +184,7 @@ const Texture Texture::textures[] =
   Texture(ITEM_CRAFT_ARROWS,"magic/view/item-craft-arrows.png",2,2,9,7),
   Texture(ITEMS,"units/items.png",8,16,17,17),
   
-  
-  Texture(FONT_HELP,"font/font-help.png",3,32,5,6),
-  
-  Texture(TEXTURE_FONT_TINY,"font/font-tiny.png",3,32,7,8),
-  
-  Texture(TEXTURE_FONT_TINY_COMPACT,"font/font-tiny-compact.png",3,32,7,8),
-  
-  Texture(TEXTURE_FONT_TINY_COMPACT_CRYPT,"font/font-tiny-compact-crypt.png",3,32,7,8),
 
-  
-  Texture(TEXTURE_FONT_SERIF_CRYPT,"font/font-serif-crypt.png",3,32,10,10),
-
-
-  
-  Texture(TEXTURE_FONT_YELLOW_SMALL,"font/font-yellow-small.png",3,32,7,7),
-
-  
-  Texture(TEXTURE_FONT_SERIF,"font/font-serif.png",3,32,11,12),
-  
-  Texture(TEXTURE_FONT_TEAL_MEDIUM,"font/font-medium.png",3,32,9,11),
-  
-  Texture(TEXTURE_FONT_MEDIUM_BOLD,"font/font-medium-bold.png",3,32,10,10),
-  
-  Texture(TEXTURE_FONT_HUGE_SERIF,"font/font-huge-serif.png",3,32,17,17),
-  
-  
   Texture(UNIT_MAGIC_SPIRIT,"units/figures/magic-spirit.png",4,8,28,30),
   
   Texture(UNIT_GREAT_DRAKE,"units/figures/great-drake.png",4,8,28,30),

@@ -62,6 +62,7 @@ const BlinkingPalette* FontFaces::Palettes::BLINK_WHITE_BLUE = nullptr;
 
 const Palette* FontFaces::Palettes::SMALL_WHITE_PALE = nullptr;
 const Palette* FontFaces::Palettes::SMALL_YELLOW_PALE = nullptr;
+const Palette* FontFaces::Palettes::WHITE_PRODUCTION = nullptr;
 
 
 const FontSpriteSheet* buildTiny(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_TINY], colors, 1, -2); }
@@ -85,7 +86,7 @@ void FontFaces::buildFonts()
 {
   Palettes::SMALL_WHITE_PALE = new IndexedPalette({0,0,RGB(93,93,121),RGB(142,134,130),RGB(255,255,255)});
   Palettes::SMALL_YELLOW_PALE = new IndexedPalette({0,0,RGB(93,93,121),RGB(142,134,130),RGB(249,232,67)});
-  
+  Palettes::WHITE_PRODUCTION = new IndexedPalette({0, /*RGB(73,65,60)*/0, 0, RGB(121,93,77), RGB(255,255,255)}); // TODO: bugged, stroke is different
   
   FontData::fonts[FONT_MEDIUM]->setGlyphWidth(' '-' ', 1);
   FontData::fonts[FONT_SERIF_CRYPT]->setGlyphWidth(' '-' ', 3);
@@ -137,6 +138,7 @@ void FontFaces::buildFonts()
 
 s16 Fonts::vSpace = 0;
 s16 Fonts::hSpace = 0;
+s16 Fonts::spaceCharAdj = 0;
 const Palette* Fonts::palette = nullptr;
 const Palette* Fonts::opalette = nullptr;
 const FontSpriteSheet* Fonts::font = nullptr;
@@ -196,7 +198,7 @@ u16 Fonts::drawString(const string string, u16 x, u16 y, TextAlign align)
   Gfx::bindPalette(palette);
   
   if (align == ALIGN_CENTER)
-    x -= font->stringWidth(string, hSpace)/2;
+    x -= stringWidth(font,string)/2;
   
   //if (align != ALIGN_CENTER)
   {
@@ -222,7 +224,8 @@ u16 Fonts::drawString(const string string, u16 x, u16 y, TextAlign align)
 
 u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)
 {
-  s16 sx = align == ALIGN_RIGHT ? x - font->stringWidth(string, hSpace) : x, sy = y;
+  u16 plength = stringWidth(font, string);
+  s16 sx = align == ALIGN_RIGHT ? x - plength : x, sy = y;
   u16 length = string.length();
   bool switchingColor = false;
   
@@ -255,7 +258,7 @@ u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)
     }
     else if (c == ' ')
     {
-      sx += font->hor + font->charWidth(' ');
+      sx += font->hor + font->charWidth(' ') + spaceCharAdj;
     }
     else if (c == '^')
     {
@@ -270,7 +273,7 @@ u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)
     }
   }
   
-  return sx - 1 - x;
+  return plength;
 }
 
 u16 Fonts::drawStringBounded(const string str, int x, int y, int bound, TextAlign align, const Palette* palette)
@@ -305,7 +308,7 @@ u16 Fonts::drawStringBounded(const string str, int x, int y, int bound, TextAlig
     while (e < words.size() - 1)
     {
       ++e;
-      int w = font->stringWidth(join(words,s,e),hSpace);
+      int w = stringWidth(font,join(words,s,e));
       
       if (w > bound)
       {

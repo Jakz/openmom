@@ -159,7 +159,7 @@ void CityView::draw()
   
   /* draw city info: race and population */
   Fonts::drawString(i18n::s(city->race.name), FontFaces::Small::YELLOW, 5, 18, ALIGN_LEFT);
-  Fonts::drawString(Fonts::format("Population: %,d (+%d)", city->population, city->growthRate), FontFaces::Small::YELLOW, 201, 19, ALIGN_RIGHT);
+  Fonts::drawString(Fonts::format("Population: %,d (+%d)", city->population, city->growthRate), FontFaces::Small::YELLOW, 209, 18, ALIGN_RIGHT);
   
   const Productable* production = city->getProductable();
   
@@ -171,9 +171,9 @@ void CityView::draw()
     
     /* TODO: localize and center align */
     if (production == Building::HOUSING)
-      Fonts::drawStringBounded("Increases population growth rate.", FontFaces::Tiny::WHITE, 271, 158, 40, ALIGN_LEFT);
+      Fonts::drawStringBounded("Increases population growth rate.", FontFaces::Tiny::WHITE, 286, 158, 50, ALIGN_CENTER);
     else if (production == Building::TRADE_GOODS)
-      Fonts::drawStringBounded("Convert production to gold.", FontFaces::Tiny::WHITE, 271, 158, 40, ALIGN_LEFT);
+      Fonts::drawStringBounded("Convert production to gold.", FontFaces::Tiny::WHITE, 286, 158, 40, ALIGN_CENTER);
     
   }
   else
@@ -191,7 +191,7 @@ void CityView::draw()
     /* TODO: localize */
     int prodToDo = (production->productionCost() - city->productionPool);
     int turns = prodToDo == 0 ? 1 : (prodToDo/city->work + (prodToDo%city->work == 0 ? 0 : 1));
-    Fonts::drawString(turns+(turns == 1 ? " Turn" : " Turns"), FontFaces::Small::YELLOW, 309, 139, ALIGN_RIGHT);
+    Fonts::drawString(Fonts::format("%d Turn%s", turns, (turns == 1 ? "" : "s")), FontFaces::Small::YELLOW, 316, 139, ALIGN_RIGHT);
     
     /* draw production coins */
     int max = 10;
@@ -208,7 +208,7 @@ void CityView::draw()
   
   /* TODO: in realtà il font sarebbe obreggiato dall'alto / gestire wrapping nomi lunghi (ship wrights guild etc) */
   if (Fonts::stringWidth(FontFaces::Small::WHITE, production->productionName()) < 40)
-    Fonts::drawString(production->productionName(), FontFaces::Small::WHITE, 235, 176, ALIGN_CENTER);
+    Fonts::drawString(production->productionName(), FontFaces::Small::WHITE, 237, 178, ALIGN_CENTER);
   else
     Fonts::drawString(production->productionName(), FontFaces::Tiny::WHITE, 235, 177, ALIGN_CENTER);
   

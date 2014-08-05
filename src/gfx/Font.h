@@ -129,12 +129,13 @@ public:
   
   const s8 charWidth(s8 c) const { return rawData->getGlyphWidth(c); }
   
-  u16 stringWidth(const std::string& str, s8 hor) const
+  u16 stringWidth(const std::string& str, s8 hor, s8 spaceAdj) const
   {
     u16 l = 0;
     for (s8 c : str)
     {
       if (c == '^') continue;
+      else if (c == ' ') l += charWidth(c) + hor - spaceAdj;
       else l += charWidth(c) + hor;
     }
     
@@ -176,6 +177,7 @@ public:
   class Palettes { public:
     const static BlinkingPalette *BLINK_WHITE_BLUE;
     const static Palette *SMALL_WHITE_PALE, *SMALL_YELLOW_PALE;
+    const static Palette *WHITE_PRODUCTION;
   };
   
   static void buildFonts();
@@ -186,13 +188,14 @@ class Fonts
 private:
   static const FontSpriteSheet* font;
   static s16 vSpace, hSpace;
+  static s16 spaceCharAdj;
   static const Palette *palette, *opalette;
   static std::unordered_map<char, const Palette*> fontColors;
   
 public:
   static std::string format(const char* str, ...);
   
-  static inline u16 stringWidth(const FontSpriteSheet* face, const std::string string) { return face->stringWidth(string, hSpace); }
+  static inline u16 stringWidth(const FontSpriteSheet* face, const std::string string) { return face->stringWidth(string, hSpace, spaceCharAdj); }
   static inline u16 stringHeight() { return 0; }
   
   static inline const std::string join(std::vector<const std::string>& tokens, s16 s, s16 e);
@@ -208,11 +211,13 @@ public:
     vSpace = font->ver;
     palette = font->getPalette();
     opalette = palette;
+    spaceCharAdj = 0;
   }
   
   static inline void setFace(const FontSpriteSheet* face, Palette* palette, s16 v, s16 h) { setFace(face); vSpace = v; hSpace = h; }
   static inline void setHorSpace(s16 h) { hSpace = h; }
   static inline void setVerSpace(s16 v) { vSpace = v; }
+  static inline void setSpaceAdj(s16 s) { spaceCharAdj = s; }
   static inline void setVerHorSpace(s16 v, s16 h) { vSpace = v; hSpace = h; }
   static inline void setMap(const Palette *p) { palette = p; opalette = p; }
   

@@ -142,7 +142,7 @@ void MessageView::draw()
       
       Gfx::resetBuffer();
       Gfx::bindBuffer();
-      int h = Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::GOLD_SHADOW, 4, 5, 150, ALIGN_CENTER) + 3;
+      int h = Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::GOLD_SHADOW, 4, 5, 150, ALIGN_CENTER) + 3; // TODO: check align with new font management
       int y = 200/2 - (h+29)/2;
       Gfx::bindCanvas();
       Gfx::drawClipped(TextureID::MESSAGE_ERROR_BACKDROP, 68, y, 0, 0, 186, h);

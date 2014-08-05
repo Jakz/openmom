@@ -223,9 +223,9 @@ void MainView::draw()
   
   if (substate == MAIN || substate == UNIT)
   {
-    Fonts::drawString(Fonts::format("%d",player->totalGoldPool()), FontFaces::Small::WHITE, 258, 67, ALIGN_RIGHT);
+    Fonts::drawString(Fonts::format("%d",player->totalGoldPool()), FontFaces::Small::WHITE, 266, 67, ALIGN_RIGHT);
     Fonts::drawString("GP", FontFaces::Tiny::WHITE, 267, 67, ALIGN_LEFT);
-    Fonts::drawString(Fonts::format("%d",player->totalManaPool()), FontFaces::Small::WHITE, 298, 67, ALIGN_RIGHT);
+    Fonts::drawString(Fonts::format("%d",player->totalManaPool()), FontFaces::Small::WHITE, 304, 67, ALIGN_RIGHT);
     Fonts::drawString("MP", FontFaces::Tiny::WHITE, 305, 67, ALIGN_LEFT);
   }
 }
@@ -468,18 +468,22 @@ void MainView::Surveyor::updateInfo(Tile *t)
 
 void MainView::Surveyor::draw()
 {
-  Fonts::drawString("Surveyor", FontFaces::Serif::WHITE_SURVEY, 240+6+8, 76+2+1, ALIGN_LEFT);
+  Fonts::drawString("Surveyor", FontFaces::Serif::WHITE_SURVEY, 240+6+7, 76+2+1, ALIGN_LEFT);
+  Fonts::setFace(FontFaces::Small::YELLOW_PALE, 0, 0);
+
   
   if (tile && view.g->currentPlayer()->fog()->get(tile->position))
   {
-    Fonts::setFace(FontFaces::Small::YELLOW_PALE, 0, 1);
-    
     if (!cityCanBeBuilt)
     {
       const City* city = tile->city;
       
       if (!city)
-        Fonts::drawStringBounded(i18n::s(cityForbidMsg), 245, 142, 68, ALIGN_LEFT);
+      {
+        Fonts::setFace(FontFaces::Small::YELLOW_PALE, -1, 0);
+        Fonts::setSpaceAdj(-2);
+        Fonts::drawStringBounded(i18n::s(cityForbidMsg), 245, 142, 60, ALIGN_LEFT);
+      }
       else
       {
         // draw city name and size
@@ -487,14 +491,14 @@ void MainView::Surveyor::draw()
         Fonts::drawString(city->getName(), 275, 114+7, ALIGN_CENTER);
         
         // draw city specs
-        Fonts::drawString("City Resources", 275, 142, ALIGN_CENTER);
+        Fonts::drawString("City Resources", 272, 142, ALIGN_CENTER);
         
         const std::string pop = Fonts::format(i18n::s(I18::SURVEYOR_MAX_POPULATION).c_str(), city->getMaxPopulation());
         const std::string prod = Fonts::format(i18n::s(I18::SURVEYOR_MAX_POPULATION).c_str(), (s32)(view.g->cityMechanics.computeProductionBonus(city)*100));
         
-        Fonts::setFace(FontFaces::Small::WHITE_PALE, 0, 1);
-        Fonts::drawString(pop, 275, 149, ALIGN_CENTER);
-        Fonts::drawString(prod, 275, 156, ALIGN_CENTER);
+        Fonts::setFace(FontFaces::Small::WHITE_PALE, 0, 0);
+        Fonts::drawString(pop, 244, 149, ALIGN_LEFT);
+        Fonts::drawString(prod, 244, 156, ALIGN_LEFT);
       }
     }
     
@@ -504,10 +508,11 @@ void MainView::Surveyor::draw()
     
     if (!t.empty())
     {
+      Fonts::setFace(FontFaces::Small::WHITE_PALE, 0, 0);
       for (int i = 0; i < t.size(); ++i)
       {
         Fonts::setMap(i == 0 ? FontFaces::Palettes::SMALL_YELLOW_PALE : FontFaces::Palettes::SMALL_WHITE_PALE);
-        Fonts::drawString(t[i], 276, 90+7*i, ALIGN_CENTER);
+        Fonts::drawString(t[i], 274, 90+7*i, ALIGN_CENTER);
       }
     }
   }

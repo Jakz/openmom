@@ -83,7 +83,7 @@ void SpellBookView::drawPage(u16 index)
   if (!page)
     return;
   
-  Fonts::drawString(i18n::s(page->getTitle()), FontFaces::Serif::BROWN, topLeftX[index]+52, topLeftY[index]-16, ALIGN_CENTER);
+  Fonts::drawString(i18n::s(page->getTitle()), FontFaces::Serif::BROWN, topLeftX[index]+60, topLeftY[index]-16, ALIGN_CENTER);
   
   for (int i = 0; i < 6; ++i)
   {
@@ -95,20 +95,20 @@ void SpellBookView::drawPage(u16 index)
       
       int curY = topLeftY[index]+ROW_HEIGHT*i;
       
-      int clip, clip2;
+      u16 clip, clip2;
       
       if (spell != player->book()->getCurrentCast())
       {
         clip = Fonts::drawString(i18n::s(spell->name), FontFaces::Small::BROWN, topLeftX[index]-1, curY-1, ALIGN_LEFT);
-        clip2 = Fonts::drawString(Fonts::format("%d MP",g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BROWN, topLeftX[index]+ROW_WIDTH-1, curY-1, ALIGN_RIGHT);
+        clip2 = Fonts::drawString(Fonts::format("%d MP",g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BROWN, topLeftX[index]+ROW_WIDTH+7, curY-1, ALIGN_RIGHT);
       }
       else
       {
         clip = Fonts::drawString(i18n::s(spell->name), FontFaces::Small::BLINK_WHITE_GREY, topLeftX[index]-1, curY-1, ALIGN_LEFT);
-        clip2 = Fonts::drawString(Fonts::format("%d MP",g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BLINK_WHITE_GREY, topLeftX[index]+ROW_WIDTH-1, curY-1, ALIGN_RIGHT);
+        clip2 = Fonts::drawString(Fonts::format("%d MP",g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BLINK_WHITE_GREY, topLeftX[index]+ROW_WIDTH+7, curY-1, ALIGN_RIGHT);
       }
       
-      Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+clip+4, curY, clip+4, ROW_HEIGHT*i, -4-clip2, 6);
+      Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+clip+3, curY, clip+3, ROW_HEIGHT*i, -3-clip2, 6);
       
       
       s16 turns;

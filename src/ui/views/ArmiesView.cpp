@@ -62,7 +62,7 @@ void ArmiesView::draw()
   {
     UnitDraw::drawHeroPortrait(hero, HERO_PORTRAITS[i][0], HERO_PORTRAITS[i][1]);
     // TODO: fixare color map, serve pale red apposita
-    Fonts::drawString(hero->name(), FontFaces::Tiny::WHITE, 23+265*(i/3), 41+51*(i%3), ALIGN_CENTER);
+    Fonts::drawString(hero->name(), FontFaces::Tiny::WHITE, 27+265*(i/3), 41+51*(i%3), ALIGN_CENTER);
     ++i;
   }
   
@@ -105,20 +105,20 @@ void ArmiesView::draw()
     
     // draw unit name
     // TODO: space dello SmallCompactFont è 1 in meno di quanto è nel gioco originale
-    Fonts::drawString(/*unit->name().toUpper()*/"LIZARDMAN SWORDSMEN", 183, 160, ALIGN_CENTER);
+    Fonts::drawString(/*unit->name().toUpper()*/"LIZARDMAN SWORDSMEN", 187, 160, ALIGN_CENTER);
     
   }
   
   // draw upkeep
-  Fonts::drawString("UPKEEP", 27, 162, ALIGN_CENTER);
+  Fonts::drawString("UPKEEP", 30, 161, ALIGN_CENTER);
   Upkeep upkeep;
   for (auto a : player->getArmies())
     for (auto u : *a)
       upkeep.add(u->upkeep());
   
-  Fonts::drawString(/*to_string(upkeep.gold)+*/"7", 41, 172, ALIGN_CENTER);
-  Fonts::drawString(/*to_string(upkeep.mana+*/"0", 41, 182, ALIGN_CENTER);
-  Fonts::drawString(/*to_string(upkeep.food+*/"11", 41, 191, ALIGN_CENTER);
+  Fonts::drawString(/*to_string(upkeep.gold)+*/"7", 44, 172, ALIGN_CENTER);
+  Fonts::drawString(/*to_string(upkeep.mana+*/"0", 44, 182, ALIGN_CENTER);
+  Fonts::drawString(/*to_string(upkeep.food+*/"11", 45, 191, ALIGN_CENTER);
 }
 
 void ArmiesView::mouseMoved(u16 x, u16 y, MouseButton b)

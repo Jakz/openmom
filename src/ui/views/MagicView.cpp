@@ -104,32 +104,36 @@ void MagicView::draw()
   // TODO: check if alignment is correct from right
   Fonts::setFace(FontFaces::Medium::BLUE_MAGIC);
   
-  Fonts::drawString("MP", 45, 159, ALIGN_RIGHT);
-  Fonts::drawString(to_string(player->manaRatio(0)), 45-14, 159, ALIGN_RIGHT);
+  s16 baseX = 55;
+  
+  Fonts::drawString("MP", baseX, 159, ALIGN_RIGHT);
+  Fonts::drawString(to_string(player->manaRatio(0)), baseX-14, 159, ALIGN_RIGHT);
   
   if (player->book()->getCurrentResearch())
   {
-    Fonts::drawString(to_string(player->researchPoints()), 45+47-14, 159, ALIGN_RIGHT);
-    Fonts::drawString("RP", 45+47, 159, ALIGN_RIGHT);
+    Fonts::drawString(to_string(player->researchPoints()), baseX+47-14, 159, ALIGN_RIGHT);
+    Fonts::drawString("RP", baseX+47, 159, ALIGN_RIGHT);
   }
   else
-    Fonts::drawString("No Spell", 45+47-3, 159, ALIGN_RIGHT);
+    Fonts::drawString("No Spell", baseX+47-3, 159, ALIGN_RIGHT);
   
-  Fonts::drawString("SP", 45+47*2, 159, ALIGN_RIGHT);
-  Fonts::drawString(to_string(player->manaRatio(2)), 45+47*2-14, 159, ALIGN_RIGHT);
+  Fonts::drawString("SP", baseX+47*2, 159, ALIGN_RIGHT);
+  Fonts::drawString(to_string(player->manaRatio(2)), baseX+47*2-14, 159, ALIGN_RIGHT);
   
   // draw misc text info on lower left
   // TODO: font is slightly different: some pixels on edges are missing
+  baseX = 91;
+  
   Fonts::setFace(FontFaces::Small::BLUE_MAGIC);
   Fonts::setHorSpace(1);
   Fonts::drawString("Casting Skill:", 4, 176, ALIGN_LEFT);
-  Fonts::drawString(Fonts::format("%d(%d)", player->castingSkill(), player->castingSkillBase()), 83, 176, ALIGN_RIGHT);
+  Fonts::drawString(Fonts::format("%d(%d)", player->castingSkill(), player->castingSkillBase()), baseX, 176, ALIGN_RIGHT);
   
   Fonts::drawString("Magic Reserve:", 4, 176+8, ALIGN_LEFT);
-  Fonts::drawString(to_string(player->totalManaPool()), 83, 176+8, ALIGN_RIGHT);
+  Fonts::drawString(to_string(player->totalManaPool()), baseX, 176+8, ALIGN_RIGHT);
   
   Fonts::drawString("Power Base:", 4, 176+8*2, ALIGN_LEFT);
-  Fonts::drawString(to_string(player->getManaGain()), 83, 176+8*2, ALIGN_RIGHT);
+  Fonts::drawString(to_string(player->getManaGain()), baseX, 176+8*2, ALIGN_RIGHT);
   
   Fonts::drawString("Casting:", 99, 176, ALIGN_LEFT);
   Fonts::drawString("None", 155, 176, ALIGN_LEFT);
