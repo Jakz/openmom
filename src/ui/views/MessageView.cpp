@@ -91,7 +91,7 @@ void MessageView::draw()
       Gfx::draw(TextureID::MAGIC_SCHOOL_ICONS, 0, 1, 6, 40);
       CityLayout::drawBuildingCentered(msg->building, 249, 106);
       
-      fnts::Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::YELLOW_SHADOW, 79, 68, 170, ALIGN_LEFT);
+      Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::YELLOW_SHADOW, 79, 68, 170, ALIGN_LEFT);
       break;
     }
       
@@ -99,7 +99,7 @@ void MessageView::draw()
     {
       Gfx::resetBuffer();
       Gfx::bindBuffer();
-      int h = fnts::Fonts::drawStringBounded(message->getMessage(), FontFaces::Small::BROWN, 76, 40, 175, ALIGN_LEFT);
+      int h = Fonts::drawStringBounded(message->getMessage(), FontFaces::Small::BROWN, 76, 40, 175, ALIGN_LEFT);
       Gfx::bindCanvas();
       Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 10, 0, 0, 210, h);
       Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 3+h, 0, 200, 210, 23);
@@ -117,7 +117,7 @@ void MessageView::draw()
       // draw dialog text onto buffer
       Gfx::resetBuffer();
       Gfx::bindBuffer();
-      int h = fnts::Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::GOLD_SHADOW, 4, 5, 167, ALIGN_LEFT) + 3;
+      int h = Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::GOLD_SHADOW, 4, 5, 167, ALIGN_LEFT) + 3;
       int y = 200/2 - (h+29)/2;
       Gfx::bindCanvas();
       // draw backdrop of the dialog by using text height
@@ -142,7 +142,7 @@ void MessageView::draw()
       
       Gfx::resetBuffer();
       Gfx::bindBuffer();
-      int h = fnts::Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::GOLD_SHADOW, 4, 5, 150, ALIGN_CENTER) + 3;
+      int h = Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::GOLD_SHADOW, 4, 5, 150, ALIGN_CENTER) + 3;
       int y = 200/2 - (h+29)/2;
       Gfx::bindCanvas();
       Gfx::drawClipped(TextureID::MESSAGE_ERROR_BACKDROP, 68, y, 0, 0, 186, h);
@@ -155,7 +155,7 @@ void MessageView::draw()
     default:
     {
       Gfx::bindBuffer();
-      int h = fnts::Fonts::drawStringBounded(message->getMessage(), FontFaces::Small::BROWN, 76, 40, 175, ALIGN_LEFT);
+      int h = Fonts::drawStringBounded(message->getMessage(), FontFaces::Small::BROWN, 76, 40, 175, ALIGN_LEFT);
       Gfx::bindCanvas();
       Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 10, 0, 0, 210, h);
       Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 3+h, 0, 200, 210, 23);

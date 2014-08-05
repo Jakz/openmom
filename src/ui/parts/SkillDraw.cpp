@@ -23,7 +23,7 @@ void SkillDraw::drawSkill(s16 index, s16 sprite, const std::string& text, s16 sx
   s16 y = spY(index,sy);
   
   Gfx::draw(TextureID::UNIT_SKILL_ICONS, sprite, x, y);
-  Fonts::drawString(text, FontFace::TEAL_MEDIUM_STROKE, x+19, y+4, ALIGN_LEFT);
+  Fonts::drawString(text, FontFaces::Medium::TEAL_STROKE, x+18, y+4, ALIGN_LEFT);
 }
 
 void SkillDraw::draw(const Unit* unit)

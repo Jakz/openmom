@@ -126,12 +126,12 @@ void ResearchView::draw()
         fonts[0] = FontFaces::Crypt::SERIF_BROWN; fonts[1] = FontFaces::Crypt::TINY_BROWN;
       }
       
-      fnts::Fonts::drawString(i18n::s(s->name), fonts[0], tx, ty, ALIGN_LEFT);
+      Fonts::drawString(i18n::s(s->name), fonts[0], tx, ty, ALIGN_LEFT);
       
       if (!status.discovered || page->isResearch())
-        fnts::Fonts::drawStringBounded(Fonts::format("Research Cost:%d (%d turns)", s->mana.researchCost, turns), fonts[1], tx, ty+11, 125, ALIGN_LEFT, map);
+        Fonts::drawStringBounded(Fonts::format("Research Cost:%d (%d turns)", s->mana.researchCost, turns), fonts[1], tx, ty+11, 125, ALIGN_LEFT, map);
       else
-        fnts::Fonts::drawStringBounded(Fonts::format("Casting Cost:%d (%d turns)", manaCost, turns), fonts[1], tx, ty+11, 125, ALIGN_LEFT, map);
+        Fonts::drawStringBounded(Fonts::format("Casting Cost:%d (%d turns)", manaCost, turns), fonts[1], tx, ty+11, 125, ALIGN_LEFT, map);
       
       //TODO: real descs
       std::string descs[] = {
@@ -146,7 +146,7 @@ void ResearchView::draw()
       };
       
       
-      fnts::Fonts::drawStringBounded(descs[i], FontFaces::Tiny::BROWN, tx, ty+11+6, 125, ALIGN_LEFT, map);
+      Fonts::drawStringBounded(descs[i], FontFaces::Tiny::BROWN, tx, ty+11+6, 125, ALIGN_LEFT, map);
     }
   }
 }

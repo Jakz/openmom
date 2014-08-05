@@ -74,7 +74,7 @@ void MagicView::draw()
   s16 yy = 60;
   for (auto cast : player->getSpells())
   {
-    Fonts::drawString(i18n::s(cast.spell->name), FontFace::BLACK_MEDIUM, 170, yy, ALIGN_LEFT);
+    Fonts::drawString(i18n::s(cast.spell->name), FontFaces::Medium::BLACK, 169, yy, ALIGN_LEFT);
     yy += 8;
   }
   
@@ -102,46 +102,45 @@ void MagicView::draw()
   
   // draw ratio values
   // TODO: check if alignment is correct from right
-  Fonts::setFace(FontFace::TEAL_MEDIUM);
-  Fonts::setMap(&FontMap::Medium::BLUE_MAGIC);
+  Fonts::setFace(FontFaces::Medium::BLUE_MAGIC);
   
-  Fonts::drawString("MP", 46, 159, ALIGN_RIGHT);
-  Fonts::drawString(to_string(player->manaRatio(0)), 46-14, 159, ALIGN_RIGHT);
+  Fonts::drawString("MP", 45, 159, ALIGN_RIGHT);
+  Fonts::drawString(to_string(player->manaRatio(0)), 45-14, 159, ALIGN_RIGHT);
   
   if (player->book()->getCurrentResearch())
   {
-    Fonts::drawString(to_string(player->researchPoints()), 46+47-14, 159, ALIGN_RIGHT);
-    Fonts::drawString("RP", 46+47, 159, ALIGN_RIGHT);
+    Fonts::drawString(to_string(player->researchPoints()), 45+47-14, 159, ALIGN_RIGHT);
+    Fonts::drawString("RP", 45+47, 159, ALIGN_RIGHT);
   }
   else
-    Fonts::drawString("No Spell", 46+47-3, 159, ALIGN_RIGHT);
+    Fonts::drawString("No Spell", 45+47-3, 159, ALIGN_RIGHT);
   
-  Fonts::drawString("SP", 46+47*2, 159, ALIGN_RIGHT);
-  Fonts::drawString(to_string(player->manaRatio(2)), 46+47*2-14, 159, ALIGN_RIGHT);
+  Fonts::drawString("SP", 45+47*2, 159, ALIGN_RIGHT);
+  Fonts::drawString(to_string(player->manaRatio(2)), 45+47*2-14, 159, ALIGN_RIGHT);
   
   // draw misc text info on lower left
   // TODO: font is slightly different: some pixels on edges are missing
-  fnts::Fonts::setFace(FontFaces::Small::BLUE_MAGIC);
-  fnts::Fonts::setHorSpace(1);
-  fnts::Fonts::drawString("Casting Skill:", 4, 176, ALIGN_LEFT);
-  fnts::Fonts::drawString(Fonts::format("%d(%d)", player->castingSkill(), player->castingSkillBase()), 83, 176, ALIGN_RIGHT);
+  Fonts::setFace(FontFaces::Small::BLUE_MAGIC);
+  Fonts::setHorSpace(1);
+  Fonts::drawString("Casting Skill:", 4, 176, ALIGN_LEFT);
+  Fonts::drawString(Fonts::format("%d(%d)", player->castingSkill(), player->castingSkillBase()), 83, 176, ALIGN_RIGHT);
   
-  fnts::Fonts::drawString("Magic Reserve:", 4, 176+8, ALIGN_LEFT);
-  fnts::Fonts::drawString(to_string(player->totalManaPool()), 83, 176+8, ALIGN_RIGHT);
+  Fonts::drawString("Magic Reserve:", 4, 176+8, ALIGN_LEFT);
+  Fonts::drawString(to_string(player->totalManaPool()), 83, 176+8, ALIGN_RIGHT);
   
-  fnts::Fonts::drawString("Power Base:", 4, 176+8*2, ALIGN_LEFT);
-  fnts::Fonts::drawString(to_string(player->getManaGain()), 83, 176+8*2, ALIGN_RIGHT);
+  Fonts::drawString("Power Base:", 4, 176+8*2, ALIGN_LEFT);
+  Fonts::drawString(to_string(player->getManaGain()), 83, 176+8*2, ALIGN_RIGHT);
   
-  fnts::Fonts::drawString("Casting:", 99, 176, ALIGN_LEFT);
-  fnts::Fonts::drawString("None", 155, 176, ALIGN_LEFT);
+  Fonts::drawString("Casting:", 99, 176, ALIGN_LEFT);
+  Fonts::drawString("None", 155, 176, ALIGN_LEFT);
   
-  fnts::Fonts::drawString("Researching:", 99, 176+8, ALIGN_LEFT);
+  Fonts::drawString("Researching:", 99, 176+8, ALIGN_LEFT);
   const Spell* spell = player->book()->getCurrentResearch();
-  fnts::Fonts::drawString(spell ? i18n::s(spell->name) : "None", 155, 176+8, ALIGN_LEFT);
+  Fonts::drawString(spell ? i18n::s(spell->name) : "None", 155, 176+8, ALIGN_LEFT);
   
-  fnts::Fonts::drawString("Summon To:", 99, 176+8*2, ALIGN_LEFT);
+  Fonts::drawString("Summon To:", 99, 176+8*2, ALIGN_LEFT);
   City* summonCity = player->cityWithSummoningCircle();
-  fnts::Fonts::drawString(summonCity ? summonCity->getName() : "None", 155, 176+8*2, ALIGN_LEFT);
+  Fonts::drawString(summonCity ? summonCity->getName() : "None", 155, 176+8*2, ALIGN_LEFT);
   
   
   /*

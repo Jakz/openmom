@@ -17,7 +17,7 @@
 #include <vector>
 #include <SDL2/SDL.h>
 
-enum FontFace : u16;
+class FontSpriteSheet;
 
 typedef std::function<void()> Action;
 
@@ -135,10 +135,10 @@ class LabeledSimpleButton : public OffsetButton
   protected:
     std::string label;
     u16 textX, textY;
-    FontFace font;
+    const FontSpriteSheet* font;
   
   public:
-    LabeledSimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, FontFace font);
+    LabeledSimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, const FontSpriteSheet* font);
     void setLabel(std::string label) { this->label = label; }
     void draw() override;
 };

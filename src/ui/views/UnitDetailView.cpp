@@ -52,8 +52,8 @@ void UnitDetailView::draw()
   Gfx::draw(TextureID::UNIT_DETAIL_BACKDROP, 31, 6);
   Gfx::draw(TextureID::UNIT_DETAIL_BACKDROP_BUTTONS, 244, 139);
   
-  fnts::Fonts::drawString("Moves", FontFaces::Small::TEAL, 81, 32, ALIGN_LEFT);
-  fnts::Fonts::drawString("Upkeep", FontFaces::Small::TEAL, 81, 39, ALIGN_LEFT);
+  Fonts::drawString("Moves", FontFaces::Small::TEAL, 81, 32, ALIGN_LEFT);
+  Fonts::drawString("Upkeep", FontFaces::Small::TEAL, 81, 39, ALIGN_LEFT);
   
   /* TODO: per ora non gestisce i modificatori dell'unità tipo xp o vari spell, va gestito con un metodo diverso visto che drawUnitProps usa solo la spec
    * e viene usato anche dal production view
@@ -70,7 +70,7 @@ void UnitDetailView::draw()
   }
   
   // draw unit name
-  fnts::Fonts::drawString(unit->name(), FontFaces::Serif::TEAL, 81, 16, ALIGN_LEFT);
+  Fonts::drawString(unit->name(), FontFaces::Serif::TEAL, 81, 16, ALIGN_LEFT);
   
   // draw skill pane, first check if buttons to change page are needed and display them
   buttons[UP_ARROW]->showIf(SkillDraw::i.showTopArrow());

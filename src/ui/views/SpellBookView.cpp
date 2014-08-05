@@ -83,7 +83,7 @@ void SpellBookView::drawPage(u16 index)
   if (!page)
     return;
   
-  fnts::Fonts::drawString(i18n::s(page->getTitle()), FontFaces::Serif::BROWN, topLeftX[index]+52, topLeftY[index]-16, ALIGN_CENTER);
+  Fonts::drawString(i18n::s(page->getTitle()), FontFaces::Serif::BROWN, topLeftX[index]+52, topLeftY[index]-16, ALIGN_CENTER);
   
   for (int i = 0; i < 6; ++i)
   {
@@ -99,13 +99,13 @@ void SpellBookView::drawPage(u16 index)
       
       if (spell != player->book()->getCurrentCast())
       {
-        clip = fnts::Fonts::drawString(i18n::s(spell->name), FontFaces::Small::BROWN, topLeftX[index]-1, curY-1, ALIGN_LEFT);
-        clip2 = fnts::Fonts::drawString(Fonts::format("%d MP",g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BROWN, topLeftX[index]+ROW_WIDTH-1, curY-1, ALIGN_RIGHT);
+        clip = Fonts::drawString(i18n::s(spell->name), FontFaces::Small::BROWN, topLeftX[index]-1, curY-1, ALIGN_LEFT);
+        clip2 = Fonts::drawString(Fonts::format("%d MP",g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BROWN, topLeftX[index]+ROW_WIDTH-1, curY-1, ALIGN_RIGHT);
       }
       else
       {
-        clip = fnts::Fonts::drawString(i18n::s(spell->name), FontFaces::Small::BLINK_WHITE_GREY, topLeftX[index]-1, curY-1, ALIGN_LEFT);
-        clip2 = fnts::Fonts::drawString(Fonts::format("%d MP",g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BLINK_WHITE_GREY, topLeftX[index]+ROW_WIDTH-1, curY-1, ALIGN_RIGHT);
+        clip = Fonts::drawString(i18n::s(spell->name), FontFaces::Small::BLINK_WHITE_GREY, topLeftX[index]-1, curY-1, ALIGN_LEFT);
+        clip2 = Fonts::drawString(Fonts::format("%d MP",g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BLINK_WHITE_GREY, topLeftX[index]+ROW_WIDTH-1, curY-1, ALIGN_RIGHT);
       }
       
       Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+clip+4, curY, clip+4, ROW_HEIGHT*i, -4-clip2, 6);
@@ -160,7 +160,7 @@ void SpellBookView::drawPage(u16 index)
         // TODO: localize
         int w = 0;
         if (!combatMode)
-          w = fnts::Fonts::drawString("Instant", FontFaces::Small::BROWN, topLeftX[index]+8, curY+6, ALIGN_LEFT);
+          w = Fonts::drawString("Instant", FontFaces::Small::BROWN, topLeftX[index]+8, curY+6, ALIGN_LEFT);
         Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+9+w+4, curY+6, 9+w+4, ROW_HEIGHT*i+6, 0, 6);
         Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index], curY+12, 0, ROW_HEIGHT*i+6, 0, 6);
       }

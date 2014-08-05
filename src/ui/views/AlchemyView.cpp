@@ -71,8 +71,8 @@ void AlchemyView::draw()
   }
   
   // TODO: font is not exactly the same, and space is removed otherwise it would go over the box
-  fnts::Fonts::drawString(Fonts::format("%dGP",gamount), FontFaces::Small::YELLOW, flx, fy, ALIGN_LEFT);
-  fnts::Fonts::drawString(Fonts::format("%dMP",mamount), FontFaces::Small::YELLOW, frx, fy, ALIGN_LEFT);
+  Fonts::drawString(Fonts::format("%dGP",gamount), FontFaces::Small::YELLOW, flx, fy, ALIGN_LEFT);
+  Fonts::drawString(Fonts::format("%dMP",mamount), FontFaces::Small::YELLOW, frx, fy, ALIGN_LEFT);
   
 }
 

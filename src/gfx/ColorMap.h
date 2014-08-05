@@ -120,44 +120,6 @@ public:
   static const GrayscaleMap GRAYSCALE;
 };
 
-namespace FontMap
-{
-  class Small
-  {
-    public:
-      static const BlinkMap WHITE_GREY_BLINK;
-      static const HashColorMap BLUE_MAGIC, WHITE_PALE, YELLOW_PALE, RED_PALE, WHITE, TEAL, BROWN, GREEN, BLUE, RED, PURPLE, YELLOW;
-      static const HashColorMap GRAY_ITEM_CRAFT;
-  };
-  
-  class Tiny
-  {
-    public: static const HashColorMap WHITE, WHITE_STROKE, YELLOW_STROKE, RED_STROKE;
-  };
-  
-  class TinyCompact
-  {
-    public: static const HashColorMap BROWN;
-    static const BlinkMap WHITE_BLUE_BLINK;
-  };
-  
-  class Medium
-  {
-    public: static const HashColorMap BLUE_MAGIC, TEAL_STROKE, TEAL_BRIGHT, BLACK;
-  };
-  
-  class Serif
-  {
-    public: static const HashColorMap TEAL_STROKE, BROWN, YELLOW_SHADOW, GOLD_SHADOW, SILVER_SHADOW, WHITE_SURVEY, DARK_BROWN;
-  };
-  
-  class Misc
-  {
-    public: static const HashColorMap SERIF_CRYPT_BROWN;
-    static const HashColorMap TINY_BROWN_CRYPT;
-  };
-};
-
 class Palette
 {
 public:

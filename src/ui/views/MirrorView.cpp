@@ -26,7 +26,7 @@ void MirrorView::draw()
 {
   Gfx::draw(TextureID::MAIN_MIRROR_BACKDROP, 70, 2);
   CommonDraw::drawWizardGem(player, 81, 13);
-  fnts::Fonts::drawString(player->name, FontFaces::Serif::YELLOW_SHADOW, 171, 12, ALIGN_CENTER);
+  Fonts::drawString(player->name, FontFaces::Serif::YELLOW_SHADOW, 171, 12, ALIGN_CENTER);
   
   u16 t = 0;
   u16 tot = player->book()->totalBooks();
@@ -41,8 +41,8 @@ void MirrorView::draw()
     }
   }
   
-  fnts::Fonts::drawString(Fonts::format("%u GP",player->totalGoldPool()), FontFaces::Tiny::YELLOW_STROKE, 95, 76, ALIGN_CENTER);
-  fnts::Fonts::drawString(Fonts::format("%u MP",player->totalManaPool()), FontFaces::Tiny::YELLOW_STROKE, 221, 76, ALIGN_CENTER);
+  Fonts::drawString(Fonts::format("%u GP",player->totalGoldPool()), FontFaces::Tiny::YELLOW_STROKE, 95, 76, ALIGN_CENTER);
+  Fonts::drawString(Fonts::format("%u MP",player->totalManaPool()), FontFaces::Tiny::YELLOW_STROKE, 221, 76, ALIGN_CENTER);
 }
 
 void MirrorView::mousePressed(u16 x, u16 y, MouseButton b)

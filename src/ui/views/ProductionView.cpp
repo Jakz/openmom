@@ -57,50 +57,50 @@ void ProductionView::draw()
   {
     CityLayout::drawBuildingCentered(static_cast<const Building*>(product), 82, 38);
     
-    fnts::Fonts::drawString(Fonts::format("Cost %u",cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
-    fnts::Fonts::drawStringBounded(i18n::s(static_cast<const Building*>(product)->desc), FontFaces::Serif::TEAL, 87, 106, 150, ALIGN_LEFT);
+    Fonts::drawString(Fonts::format("Cost %u",cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
+    Fonts::drawStringBounded(i18n::s(static_cast<const Building*>(product)->desc), FontFaces::Serif::TEAL, 87, 106, 150, ALIGN_LEFT);
     
-    fnts::Fonts::drawString("Maintenance", FontFaces::Serif::TEAL, 85, 46, ALIGN_LEFT);
-    fnts::Fonts::drawString("Allows", FontFaces::Serif::TEAL, 85, 46+11, ALIGN_LEFT);
+    Fonts::drawString("Maintenance", FontFaces::Serif::TEAL, 85, 46, ALIGN_LEFT);
+    Fonts::drawString("Allows", FontFaces::Serif::TEAL, 85, 46+11, ALIGN_LEFT);
     //TODO: print 0 for housing and trade goods
     CommonDraw::drawUpkeep(product->productionUpkeep(), 167, 49);
     
     if (unlockedProductableString != "")
     {
-      Fonts::setFace(FontFace::TEAL_MEDIUM_STROKE);
+      Fonts::setFace(FontFaces::Medium::TEAL_STROKE);
       Fonts::setVerSpace(-1);
-      Fonts::drawStringBounded(unlockedProductableString, 86+52, 46+12, 100, ALIGN_LEFT);
+      Fonts::drawStringBounded(unlockedProductableString, 85+52, 46+12, 100, ALIGN_LEFT);
     }
   }
   else
   {
     const UnitSpec* spec = static_cast<const UnitSpec*>(product);
-    fnts::Fonts::drawString("Moves", FontFaces::Small::TEAL, 128, 19, ALIGN_LEFT);
-    fnts::Fonts::drawString("Upkeep", FontFaces::Small::TEAL, 128, 26, ALIGN_LEFT);
+    Fonts::drawString("Moves", FontFaces::Small::TEAL, 128, 19, ALIGN_LEFT);
+    Fonts::drawString("Upkeep", FontFaces::Small::TEAL, 128, 26, ALIGN_LEFT);
     CommonDraw::drawMovement(spec->movement, 165, 19, 0);
     CommonDraw::drawUpkeep(spec->upkeep, 164, 26);
     UnitDraw::drawUnitIso(spec, 83, 5, nullptr);
     CommonDraw::drawUnitProps(spec, 128, 47, 10);
-    fnts::Fonts::drawString(Fonts::format("Cost %u(%u)", cost, cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
+    Fonts::drawString(Fonts::format("Cost %u(%u)", cost, cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
     
     SkillDraw::i.draw(spec);
   }
   
-  fnts::Fonts::drawString(product->productionName(), FontFaces::Serif::TEAL, 128, 5, ALIGN_LEFT);
+  Fonts::drawString(product->productionName(), FontFaces::Serif::TEAL, 128, 5, ALIGN_LEFT);
   
   
   int i = 0;
   for (const Productable* p : left)
   {
     Gfx::draw(TextureID::CITY_PRODUCTION_ITEMS, 0, 0, 0, 4 + 14*i);
-    Fonts::drawString(p->productionName(), i == selected && which == SIDE_LEFT ? FontFace::BRIGHT_TEAL_MEDIUM : FontFace::BLACK_MEDIUM, 2, 4 + 14*i, ALIGN_LEFT);
+    Fonts::drawString(p->productionName(), i == selected && which == SIDE_LEFT ? FontFaces::Medium::TEAL_BRIGHT : FontFaces::Medium::BLACK, 1, 4 + 14*i, ALIGN_LEFT);
     ++i;
   }
   i = 0;
   for (const Productable* p : right)
   {
     Gfx::draw(TextureID::CITY_PRODUCTION_ITEMS, 1, 0, 320 - 80, 4 + 14*i);
-    Fonts::drawString(p->productionName(), i == selected && which == SIDE_RIGHT ? FontFace::BRIGHT_TEAL_MEDIUM : FontFace::BLACK_MEDIUM, 320 - 80 + 3, 4 + 14*i, ALIGN_LEFT);
+    Fonts::drawString(p->productionName(), i == selected && which == SIDE_RIGHT ? FontFaces::Medium::TEAL_BRIGHT : FontFaces::Medium::BLACK, 320 - 81 + 3, 4 + 14*i, ALIGN_LEFT);
     
     ++i;
   }

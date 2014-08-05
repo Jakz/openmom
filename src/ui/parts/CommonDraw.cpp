@@ -126,7 +126,7 @@ void CommonDraw::drawUnitProps(const UnitSpec* unit, u16 xx, u16 yy, s16 max)
   int ty = yy;
   for (int i = 0; i < PROPERTY_COUNT; ++i)
   {
-    fnts::Fonts::drawString(propDetails[i].name, FontFaces::Serif::TEAL, xx-44, yy - 1, ALIGN_LEFT);
+    Fonts::drawString(propDetails[i].name, FontFaces::Serif::TEAL, xx-44, yy - 1, ALIGN_LEFT);
     s16 tot = unit->getProperty(propDetails[i].property);
 		
     if (tot > 0)
@@ -165,7 +165,7 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
     int ty = yy;
     for (int i = 0; i < PROPERTY_COUNT; ++i)
     {
-      fnts::Fonts::drawString(propDetails[i].name, FontFaces::Serif::TEAL, xx-44, yy - 1, ALIGN_LEFT);
+      Fonts::drawString(propDetails[i].name, FontFaces::Serif::TEAL, xx-44, yy - 1, ALIGN_LEFT);
       int tot = unit->getBaseProperty(propDetails[i].property)+unit->getBonusProperty(propDetails[i].property);
 			
       if (tot > 0)
@@ -204,7 +204,7 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
     int tx = xx;
     
     Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, 0, xx-43, yy-1);
-    fnts::Fonts::drawString(Fonts::format("Melee: %d",unit->getProperty(Property::MELEE)), FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
+    Fonts::drawString(Fonts::format("Melee: %d",unit->getProperty(Property::MELEE)), FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
     yy += 10;
     
     
@@ -216,58 +216,55 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
       else
         Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, GfxData::rangedGfxIndex(rtype), xx-43, yy-1);
       
-      fnts::Fonts::drawString(Fonts::format("Ranged: %d",unit->getProperty(Property::RANGED)), FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
+      Fonts::drawString(Fonts::format("Ranged: %d",unit->getProperty(Property::RANGED)), FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
     }
     yy += 10;
-    //TextureID::draw(TextureID::UNIT_DETAIL_PROPS, 0, 4, xx-43, yy-1);
-    
-    //Fonts::drawString("Ranged: "+unit->getProperty(Property::RANGED), FontFace::TEAL_SMALL, xx - 30, yy + 1, ALIGN_LEFT);
+
     Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, 9, xx-43, yy-1);
-    fnts::Fonts::drawString("Armor", FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
+    Fonts::drawString("Armor", FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
     xx += 45;
     static Property pp1[] = {Property::SHIELDS, Property::SHIELDS_RANGED,Property::SHIELDS_CHAOS,Property::SHIELDS_DEATH,Property::SHIELDS_LIFE,Property::SHIELDS_NATURE,Property::SHIELDS_SORCERY};
     Property* pp = pp1;
     for (int i = 0; i < 7; ++i)
     {
       Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, GfxData::propertyGfxIndex(pp[i]), xx-43, yy-1);
-      fnts::Fonts::drawString(Fonts::format("%d",unit->getProperty(pp[i])), FontFaces::Small::TEAL, xx - 33, yy, ALIGN_LEFT);
+      Fonts::drawString(Fonts::format("%d",unit->getProperty(pp[i])), FontFaces::Small::TEAL, xx - 33, yy, ALIGN_LEFT);
       xx += 22;
     }
     xx = tx;
-    //Fonts::drawString("Armor: "+unit->getProperty(Property::ARMOR), FontFace::TEAL_SMALL, xx - 30, yy + 1, ALIGN_LEFT);
     yy += 10;
     Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, 11, xx-43, yy-1);
-    fnts::Fonts::drawString("Resist", FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
+    Fonts::drawString("Resist", FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
     xx += 60;
     static Property pp2[] = {Property::RESIST_CHAOS,Property::RESIST_DEATH,Property::RESIST_LIFE,Property::RESIST_NATURE,Property::RESIST_SORCERY};
     pp = pp2;
     for (int i = 0; i < 5; ++i)
     {
       Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, 14+i, xx-43, yy-1);
-      fnts::Fonts::drawString(Fonts::format("%d",unit->getProperty(pp[i])), FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
+      Fonts::drawString(Fonts::format("%d",unit->getProperty(pp[i])), FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
       xx += 26;
     }
     xx = tx;
     yy += 10;
     Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, 10, xx-43, yy-1);
-    fnts::Fonts::drawString(Fonts::format("Hits: %d",unit->getProperty(Property::HIT_POINTS)), FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
+    Fonts::drawString(Fonts::format("Hits: %d",unit->getProperty(Property::HIT_POINTS)), FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
     yy = ty;
     Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, 12, xx+50, yy-1);
-    fnts::Fonts::drawString(Fonts::format("%d%% Hit",unit->getProperty(Property::TO_HIT)), FontFaces::Small::TEAL, xx+62, yy, ALIGN_LEFT);
+    Fonts::drawString(Fonts::format("%d%% Hit",unit->getProperty(Property::TO_HIT)), FontFaces::Small::TEAL, xx+62, yy, ALIGN_LEFT);
     xx += 50;
     Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, 20, xx+50, yy-1);
-    fnts::Fonts::drawString(Fonts::format("%d% Def",unit->getProperty(Property::TO_DEFEND)), FontFaces::Small::TEAL, xx+62, yy, ALIGN_LEFT);
+    Fonts::drawString(Fonts::format("%d% Def",unit->getProperty(Property::TO_DEFEND)), FontFaces::Small::TEAL, xx+62, yy, ALIGN_LEFT);
     xx = tx;
     yy += 10;
     if (unit->getProperty(Property::RANGED) > 0)
     {
       Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, GfxData::rangedGfxIndex(static_cast<Ranged>(unit->getProperty(Property::RANGED_TYPE))), xx+59, yy-2);
-      fnts::Fonts::drawString(Fonts::format("Ammo: %d",unit->getProperty(Property::AMMO)), FontFaces::Small::TEAL, xx+72, yy, ALIGN_LEFT);
+      Fonts::drawString(Fonts::format("Ammo: %d",unit->getProperty(Property::AMMO)), FontFaces::Small::TEAL, xx+72, yy, ALIGN_LEFT);
     }
     yy += 10;
     yy += 10;
     yy += 10;
     Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, 19, xx+60, yy-1);
-    fnts::Fonts::drawString(Fonts::format("Figures: %d",unit->getProperty(Property::FIGURES)), FontFaces::Small::TEAL, xx+72, yy, ALIGN_LEFT);
+    Fonts::drawString(Fonts::format("Figures: %d",unit->getProperty(Property::FIGURES)), FontFaces::Small::TEAL, xx+72, yy, ALIGN_LEFT);
   }
 }
