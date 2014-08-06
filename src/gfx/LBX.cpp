@@ -74,7 +74,7 @@ void LBX::loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter
   for (int i = 0; i < info.count; ++i)
   {
     fread(buffer, 1, info.size, in);
-    printf("  > %s\n",buffer);
+    //printf("  > %s\n",buffer);
     inserter.push(string(buffer));
   }
 }
@@ -94,8 +94,8 @@ void LBX::loadArrayFile(LBXHeader& header, offset_list& offsets, std::vector<Tex
     LBXOffset startArrayOffset = offsets[i]+arrays[i].size*(arrays[i].count)+sizeof(LBXArray);
     u32 nextEntryOffset = offsets[i+1];
     
-    printf("Array at 0x%08X, %4d elements, %4d size, ends at 0x%08X (next at: 0x%08X)\n",
-           offsets[i],arrays[i].count,arrays[i].size,startArrayOffset,nextEntryOffset);
+    /*printf("Array at 0x%08X, %4d elements, %4d size, ends at 0x%08X (next at: 0x%08X)\n",
+           offsets[i],arrays[i].count,arrays[i].size,startArrayOffset,nextEntryOffset);*/
     
     if (startArrayOffset != nextEntryOffset) cout << "ERROR! OFFSET DIFFERS!" << endl;
     else
@@ -105,13 +105,7 @@ void LBX::loadArrayFile(LBXHeader& header, offset_list& offsets, std::vector<Tex
   }
 }
 
-struct LBXFileName
-{
-  char folder[8];
-  char padding;
-  char name[22];
-  char padding2;
-} __attribute__((__packed__));
+
 
 struct LBXGfxHeader
 {
@@ -324,13 +318,12 @@ void LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
   delete [] palette;
 }
 
-void LBX::scanFileNames(LBXHeader& header, offset_list& offsets, FILE *in)
+void LBX::scanFileNames(LBXHeader& header, offset_list& offsets, string_list& names, FILE *in)
 {
   fseek(in, offsets[0] - sizeof(LBXFileName)*header.count, SEEK_SET);
   
-  LBXFileName *names = new LBXFileName[header.count];
-  
-  fread(names, sizeof(LBXFileName), header.count, in);
+  names.resize(header.count);
+  fread(&names[0], sizeof(LBXFileName), header.count, in);
   
   //int i = 25;
   for (int i = 0; i < header.count; ++i)
@@ -340,7 +333,7 @@ void LBX::scanFileNames(LBXHeader& header, offset_list& offsets, FILE *in)
   }
 }
 
-static std::string path;
+static std::string path = string(getenv("PWD")) + "/OpenMoM.app/Contents/Resources/data/lbx/";
 
 bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
@@ -501,8 +494,6 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 
 void LBX::load()
 {
-  path = string(getenv("PWD")) + "/OpenMoM.app/Contents/Resources/data/lbx/";
-  
   {
     LBXHeader header;
     offset_list offsets;
@@ -593,4 +584,54 @@ void LBX::load()
   
   
 }*/
+
+#include "ViewManager.h"
+
+vector<string> files = {
+  "armylist",
+  "backgrnd"
+};
+
+
+LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(-1)
+{
+  
+}
+
+void LBXView::draw()
+{
+  for (int i = 0; i < files.size(); ++i)
+    Fonts::drawString(files[i], selectedLBX == i ? FontFaces::Small::REDW : FontFaces::Small::WHITE, 5, 5+i*8, ALIGN_LEFT);
+}
+
+void LBXView::mouseReleased(u16 x, u16 y, MouseButton b)
+{
+  if (x >= 0 && y > 5 && y < HEIGHT)
+  {
+    x -= 5;
+    y -= 5;
+    
+    y /= 8;
+    
+    if (y < files.size() && x < Fonts::stringWidth(FontFaces::Small::WHITE, files[y]) + 10)
+    {
+      selectedLBX = y;
+      selectLBX(files[y]);
+    }
+  }
+}
+
+void LBXView::selectLBX(std::string filename)
+{
+  string name = path + filename + ".lbx";
+  
+  LBXHeader header;
+  offset_list offsets;
+  
+  FILE *in = fopen(name.c_str(), "rb");
+  
+  LBX::loadHeader(header, offsets, in);
+  
+  fclose(in);
+}
 

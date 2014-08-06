@@ -26,6 +26,8 @@
 #include "SpellBookView.h"
 #include "UnitDetailView.h"
 
+#include "LBX.h"
+
 using namespace std;
 using namespace anims;
 
@@ -48,6 +50,8 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_RESEARCH] = new ResearchView(this);
   views[VIEW_SPELL_BOOK] = new SpellBookView(this);
   views[VIEW_UNIT] = new UnitDetailView(this);
+  
+  views[VIEW_LBX] = new LBXView(this);
 }
 
 AlchemyView* ViewManager::alchemyView() { return static_cast<AlchemyView*>(views[VIEW_ALCHEMY]); }

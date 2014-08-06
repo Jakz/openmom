@@ -121,6 +121,8 @@ enum ViewID
   VIEW_OUTPOST,
   VIEW_NEW_GAME,
   
+  VIEW_LBX,
+  
   VIEW_COUNT
 };
 

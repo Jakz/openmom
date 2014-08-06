@@ -268,7 +268,7 @@ u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)
     {
       s8 cw = font->charWidth(c);
       s8 r = c - ' ';
-      Gfx::draw(font, 0, r, sx, sy);
+      Gfx::draw(font, sx, sy, 0, r);
       sx += cw + font->hor;
     }
   }
