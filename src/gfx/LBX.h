@@ -60,7 +60,7 @@ private:
   static void loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter, FILE *in);
   static void loadArrayFile(LBXHeader& header, offset_list& offsets, std::vector<TextFiller>& inserters, FILE *in);
   
-  static void scanGfx(LBXHeader& header, LBXOffset offset, FILE *in);
+  static SDL_Surface* scanGfx(LBXHeader& header, LBXOffset offset, FILE *in);
   static void scanFileNames(LBXHeader& header, offset_list& offsets, string_list& names, FILE *in);
 
   static void loadText(LBXHeader& header, offset_list& offsets, FILE *in);
@@ -78,13 +78,12 @@ public:
 
 class ViewManager;
 
-typedef std::vector<std::string>::const_iterator file_content_iterator;
 
 class LBXView : public View
 {
 private:
-  file_content_iterator selectedLBX;
-  string_list::const_iterator selectedContent;
+  s16 selectedLBX;
+  s16 selectedContent;
   
   s16 lbxOffset;
   s16 contentOffset;
@@ -92,7 +91,11 @@ private:
   bool hasNextFile, hasPrevFile;
   bool hasNextContent, hasPrevContent;
   
-  std::map<file_content_iterator, string_list> filesForLBX;
+  std::vector<offset_list> foffsets;
+  std::vector<LBXHeader> headers;
+  
+  std::map<std::string, string_list> filesForLBX;
+  std::map<std::string, std::vector<SDL_Surface*> > gfxForLBX;
   
   void updateContentButtons();
   
@@ -107,6 +110,7 @@ public:
   
   void mouseReleased(u16 x, u16 y, MouseButton b) override;
   void selectLBX();
+  void selectGFX();
 };
 
 #endif

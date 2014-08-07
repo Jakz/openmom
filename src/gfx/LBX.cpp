@@ -245,7 +245,7 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
   
 }
 
-void LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
+SDL_Surface* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
 {
   fseek(in, offset, SEEK_SET);
   LBXGfxHeader gfxHeader;
@@ -307,15 +307,17 @@ void LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
     scanGfxFrame(gfxHeader, paletteHeader, i, palette, static_cast<Color*>(image->pixels), data, dataSize);
     
     SDL_UnlockSurface(image);
-    SDL_SaveBMP(image, (to_string(offset)+" "+to_string(i)+".bmp").c_str());
+    //SDL_SaveBMP(image, (to_string(offset)+" "+to_string(i)+".bmp").c_str());
     
     
     delete [] data;
   }
   
-  SDL_FreeSurface(image);
+  //SDL_FreeSurface(image);
   
   delete [] palette;
+  
+  return image;
 }
 
 void LBX::scanFileNames(LBXHeader& header, offset_list& offsets, string_list& names, FILE *in)
@@ -592,12 +594,15 @@ const u16 MAX_PER_PAGE = 23;
 
 static const vector<string> files = {
   "armylist",
-  "backgrnd"
+  "backgrnd",
+  "units1",
+  "units2",
+  "specfx"
 };
 
 static offset_list offsets;
 
-LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(files.end()), lbxOffset(0), contentOffset(0)
+LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(-1), lbxOffset(0), contentOffset(0), selectedContent(-1)
 {
   buttons.resize(4);
   buttons[0] = TristateButton::build("prev lbx", 5, 5+23*8, TextureID::ARMIES_ARROWS, 0)->setAction([this](){  });
@@ -613,6 +618,9 @@ LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(files.end()), lbxOff
   hasNextFile = files.size() > MAX_PER_PAGE;
   hasPrevFile = 0;
   
+  //offsets.resize(files.size());
+  //headers.resize(files.size());
+  
   for (auto it = files.begin(); it != files.end(); ++it)
   {
     string name = path + *it + ".lbx";
@@ -626,7 +634,11 @@ LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(files.end()), lbxOff
     LBX::loadHeader(header, offsets, in);
     
     LBX::scanFileNames(header, offsets, names, in);
-    filesForLBX[it] = names;
+    filesForLBX[*it] = names;
+    gfxForLBX[*it] = vector<SDL_Surface*>(header.count);
+    
+    headers.push_back(header);
+    foffsets.push_back(offsets);
     
     fclose(in);
   }
@@ -634,26 +646,33 @@ LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(files.end()), lbxOff
 
 void LBXView::draw()
 {
-  for (int i = 0; i < files.size(); ++i)
-    Fonts::drawString(files[i], selectedLBX == (files.begin()+i) ? FontFaces::Small::REDW : FontFaces::Small::WHITE, 5, 5+i*8, ALIGN_LEFT);
-  
-  map<file_content_iterator, string_list>::iterator it = filesForLBX.find(selectedLBX);
-  
-  if (it != filesForLBX.end())
+  if (selectedContent != -1)
   {
-    for (int i = 0; i < MAX_PER_PAGE; ++i)
+    SDL_Surface* s = gfxForLBX[files[selectedLBX]][selectedContent];
+    SDL_BlitSurface(s, NULL, Gfx::getCanvas(), NULL);
+  }
+  
+  
+  for (int i = 0; i < files.size(); ++i)
+    Fonts::drawString(files[i], selectedLBX == i+lbxOffset ? FontFaces::Small::REDW : FontFaces::Small::WHITE, 5, 5+i*8, ALIGN_LEFT);
+  
+  if (selectedLBX != -1)
+  {
+    map<string, string_list>::iterator it = filesForLBX.find(files[selectedLBX]);
+    
+    if (it != filesForLBX.end())
     {
-      if (i + contentOffset < it->second.size())
+      for (int i = 0; i < MAX_PER_PAGE; ++i)
       {
-        auto &el = it->second[i+contentOffset];
-        Fonts::drawString(string(el.folder)+"/"+el.name, FontFaces::Small::WHITE, 50, 5+i*8, ALIGN_LEFT);
+        if (i + contentOffset < it->second.size())
+        {
+          auto &el = it->second[i+contentOffset];
+          Fonts::drawString(string(el.folder)+"/"+el.name, selectedContent == i+contentOffset ? FontFaces::Small::REDW : FontFaces::Small::WHITE, 50, 5+i*8, ALIGN_LEFT);
+        }
       }
     }
   }
-  /*
-  if (hasPrevContent)
-  if (hasNextContent)
-    Gfx::draw(TextureID::ARMIES_ARROWS, 0, 1, 50, 5+23*8);*/
+  
 
 }
 
@@ -666,22 +685,43 @@ void LBXView::mouseReleased(u16 x, u16 y, MouseButton b)
     
     y /= 8;
     
-    if (y < files.size() && x < Fonts::stringWidth(FontFaces::Small::WHITE, files[y]) + 10)
+    if (y < MAX_PER_PAGE)
     {
-      selectedLBX = files.begin()+y;
-      selectLBX();
+      if (y+lbxOffset < files.size() && x < Fonts::stringWidth(FontFaces::Small::WHITE, files[y]) + 10)
+      {
+        selectedLBX = y+lbxOffset;
+        selectedContent = -1;
+        selectLBX();
+      }
+      else if (y+contentOffset < filesForLBX[files[selectedLBX]].size() && x > 50 && x <= 100)
+      {
+        selectedContent = y+contentOffset;
+        selectGFX();
+      }
     }
   }
 }
 
 void LBXView::updateContentButtons()
 {
-  buttons[3]->showIf(contentOffset + MAX_PER_PAGE < filesForLBX[selectedLBX].size());
+  buttons[3]->showIf(contentOffset + MAX_PER_PAGE < filesForLBX[files[selectedLBX]].size());
   buttons[2]->showIf(contentOffset > 0);
 }
 
 void LBXView::selectLBX()
 {
   updateContentButtons();
+}
+
+void LBXView::selectGFX()
+{
+  if (!gfxForLBX[files[selectedLBX]][selectedContent])
+  {
+    string name = path + files[selectedLBX] + ".lbx";
+    FILE *in = fopen(name.c_str(), "rb");
+    gfxForLBX[files[selectedLBX]][selectedContent] = LBX::scanGfx(headers[selectedLBX], this->foffsets[selectedLBX][selectedContent], in);
+    fclose(in);
+  }
+  
 }
 
