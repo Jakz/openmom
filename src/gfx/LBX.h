@@ -74,12 +74,27 @@ public:
 
 #include "View.h"
 
+#include <map>
+
 class ViewManager;
+
+typedef std::vector<std::string>::const_iterator file_content_iterator;
 
 class LBXView : public View
 {
 private:
-  s16 selectedLBX;
+  file_content_iterator selectedLBX;
+  string_list::const_iterator selectedContent;
+  
+  s16 lbxOffset;
+  s16 contentOffset;
+  
+  bool hasNextFile, hasPrevFile;
+  bool hasNextContent, hasPrevContent;
+  
+  std::map<file_content_iterator, string_list> filesForLBX;
+  
+  void updateContentButtons();
   
   void draw() override;
   void drawPost() override { }
@@ -91,7 +106,7 @@ public:
   void deactivate() override { }
   
   void mouseReleased(u16 x, u16 y, MouseButton b) override;
-  void selectLBX(std::string filename);
+  void selectLBX();
 };
 
 #endif

@@ -586,22 +586,75 @@ void LBX::load()
 }*/
 
 #include "ViewManager.h"
+#include "Buttons.h"
 
-vector<string> files = {
+const u16 MAX_PER_PAGE = 23;
+
+static const vector<string> files = {
   "armylist",
   "backgrnd"
 };
 
+static offset_list offsets;
 
-LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(-1)
+LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(files.end()), lbxOffset(0), contentOffset(0)
 {
+  buttons.resize(4);
+  buttons[0] = TristateButton::build("prev lbx", 5, 5+23*8, TextureID::ARMIES_ARROWS, 0)->setAction([this](){  });
+  buttons[1] = TristateButton::build("next lbx", 15, 5+23*8, TextureID::ARMIES_ARROWS, 1)->setAction([this](){  });
+
+  buttons[2] = TristateButton::build("prev content", 50, 5+23*8, TextureID::ARMIES_ARROWS, 0)->setAction([this](){ --contentOffset; updateContentButtons(); });
+  buttons[3] = TristateButton::build("next nextcontent", 60, 5+23*8, TextureID::ARMIES_ARROWS, 1)->setAction([this](){ ++contentOffset; updateContentButtons(); });
   
+  for (auto &b : buttons) b->hide();
+  
+  hasNextContent = false;
+  hasPrevContent = false;
+  hasNextFile = files.size() > MAX_PER_PAGE;
+  hasPrevFile = 0;
+  
+  for (auto it = files.begin(); it != files.end(); ++it)
+  {
+    string name = path + *it + ".lbx";
+    
+    LBXHeader header;
+    offsets.clear();
+    string_list names;
+    
+    FILE *in = fopen(name.c_str(), "rb");
+    
+    LBX::loadHeader(header, offsets, in);
+    
+    LBX::scanFileNames(header, offsets, names, in);
+    filesForLBX[it] = names;
+    
+    fclose(in);
+  }
 }
 
 void LBXView::draw()
 {
   for (int i = 0; i < files.size(); ++i)
-    Fonts::drawString(files[i], selectedLBX == i ? FontFaces::Small::REDW : FontFaces::Small::WHITE, 5, 5+i*8, ALIGN_LEFT);
+    Fonts::drawString(files[i], selectedLBX == (files.begin()+i) ? FontFaces::Small::REDW : FontFaces::Small::WHITE, 5, 5+i*8, ALIGN_LEFT);
+  
+  map<file_content_iterator, string_list>::iterator it = filesForLBX.find(selectedLBX);
+  
+  if (it != filesForLBX.end())
+  {
+    for (int i = 0; i < MAX_PER_PAGE; ++i)
+    {
+      if (i + contentOffset < it->second.size())
+      {
+        auto &el = it->second[i+contentOffset];
+        Fonts::drawString(string(el.folder)+"/"+el.name, FontFaces::Small::WHITE, 50, 5+i*8, ALIGN_LEFT);
+      }
+    }
+  }
+  /*
+  if (hasPrevContent)
+  if (hasNextContent)
+    Gfx::draw(TextureID::ARMIES_ARROWS, 0, 1, 50, 5+23*8);*/
+
 }
 
 void LBXView::mouseReleased(u16 x, u16 y, MouseButton b)
@@ -615,23 +668,20 @@ void LBXView::mouseReleased(u16 x, u16 y, MouseButton b)
     
     if (y < files.size() && x < Fonts::stringWidth(FontFaces::Small::WHITE, files[y]) + 10)
     {
-      selectedLBX = y;
-      selectLBX(files[y]);
+      selectedLBX = files.begin()+y;
+      selectLBX();
     }
   }
 }
 
-void LBXView::selectLBX(std::string filename)
+void LBXView::updateContentButtons()
 {
-  string name = path + filename + ".lbx";
-  
-  LBXHeader header;
-  offset_list offsets;
-  
-  FILE *in = fopen(name.c_str(), "rb");
-  
-  LBX::loadHeader(header, offsets, in);
-  
-  fclose(in);
+  buttons[3]->showIf(contentOffset + MAX_PER_PAGE < filesForLBX[selectedLBX].size());
+  buttons[2]->showIf(contentOffset > 0);
+}
+
+void LBXView::selectLBX()
+{
+  updateContentButtons();
 }
 
