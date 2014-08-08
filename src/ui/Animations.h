@@ -105,12 +105,14 @@ namespace anims
     bool hasFinished() override;
   };
 
+  // TODO
   class CombatAttack : public ContinuousAnimation
   {
   private:
     
   public:
-    CombatAttack(const Unit* unit) : ContinuousAnimation(300) { }
+    CombatAttack(const CombatUnit* unit) : ContinuousAnimation(300) { }
+    void step() override { }
   };
   
   class CombatMovement : public ContinuousAnimation
@@ -118,7 +120,8 @@ namespace anims
   private:
     
   public:
-    CombatMovement(const Unit* unit) : ContinuousAnimation(500) { }
+    CombatMovement(const CombatUnit* unit) : ContinuousAnimation(500) { }
+    void step() override { }
   };
   /*
   class CombatUnitAttackAnimation

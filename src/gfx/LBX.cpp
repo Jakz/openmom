@@ -621,7 +621,7 @@ LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(-1), lbxOffset(0), c
   //offsets.resize(files.size());
   //headers.resize(files.size());
   
-  for (auto it = files.begin(); it != files.end(); ++it)
+  /*for (auto it = files.begin(); it != files.end(); ++it)
   {
     string name = path + *it + ".lbx";
     
@@ -641,7 +641,7 @@ LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(-1), lbxOffset(0), c
     foffsets.push_back(offsets);
     
     fclose(in);
-  }
+  }*/
 }
 
 void LBXView::draw()

@@ -59,13 +59,15 @@ enum class CombatModifier : u8
 class CombatUnit
 {
 private:
-  Unit& unit;
-  const Player* player;
+  Unit* unit;
+  Player* player;
   
 public:
-  CombatUnit(Unit& unit) : unit(unit), player(unit.getArmy()->getOwner()), moves(unit.getProperty(Property::MOVEMENT)), selected(false) { }
+  CombatUnit(Unit* unit) : unit(unit), player(unit->getArmy()->getOwner()), moves(unit->getProperty(Property::MOVEMENT)), selected(false) { }
   
-  void resetMoves() { moves = unit.getProperty(Property::MOVEMENT); }
+  Player* const getOwner() { return player; }
+  
+  void resetMoves() { moves = unit->getProperty(Property::MOVEMENT); }
   
   void setPosition(u16 x, u16 y) { this-> x = x; this->y = y; }
   void setPosition(u16 x, u16 y, u16 facing) { setPosition(x,y); this->facing = facing; }
@@ -73,7 +75,7 @@ public:
   friend bool operator<(const CombatUnit &c1, const CombatUnit &c2);
   
   u16 x, y;
-  u16 facing;
+  s16 facing;
   u16 moves;
   bool selected;
 };
@@ -106,7 +108,7 @@ namespace std
   };
 }
 
-typedef std::unordered_map<CombatPosition,s32> position_map;
+typedef std::unordered_map<CombatPosition,CombatPosition> position_map;
 
 
 class Combat
@@ -117,7 +119,8 @@ private:
   
   cast_list spells;
   Player* players[2];
-  std::list<CombatUnit*> funits, eunits;
+  std::list<CombatUnit*> allUnits;
+  std::list<CombatUnit*> units[2];
   
   CombatUnit* selectedUnit;
   Player* current;
@@ -131,15 +134,15 @@ public:
   
   void endTurn();
   
-  Unit* unitAtTile(u16 x, u16 y);
-  bool isTileEmpty(u16 x, u16 y);
+  CombatUnit* unitAtTile(u16 x, u16 y);
+  bool isTileEmpty(u16 x, u16 y) { return !unitAtTile(x, y); }
   
-  const std::list<CombatUnit*>& enemyUnits(Player* player) { return eunits; }
-  const std::list<CombatUnit*>& friendlyUnits(Player* player) { return funits; }
+  const std::list<CombatUnit*>& enemyUnits(Player* player) { return player == players[0] ? units[1] : units[0]; }
+  const std::list<CombatUnit*>& friendlyUnits(Player* player) { return player == players[1] ? units[0] : units[1]; }
   
   void attack(CombatUnit *u1, CombatUnit *u2);
   
-  void relativeFacing(CombatUnit *u1, CombatUnit *u2);
+  s16 relativeFacing(CombatUnit *u1, CombatUnit *u2);
   
   void moveUnit(CombatUnit *unit, u16 x, u16 y);
   
@@ -165,6 +168,25 @@ public:
   
   const cast_list& getSpells() const { return spells; }
   
+  
+  
+  static constexpr const s16 DIRS[12][2] = {{0,-2},{0,-1},{1,-1},{1,0},{0,1},{1,1},{0,2},{-1,1},{0,1},{-1,0},{-1,-1},{0,-1}};
+  static constexpr const u16 DIRS_LENGTH = std::extent<decltype(DIRS)>::value;
+  
+  static const s16* dirs(s8 dir, bool even)
+  {
+    switch (dir) {
+			case 0: return DIRS[0];
+			case 1: return even ? DIRS[1] : DIRS[2];
+			case 2: return DIRS[3];
+			case 3: return even ? DIRS[4] : DIRS[5];
+			case 4: return DIRS[6];
+			case 5: return even ? DIRS[7] : DIRS[8];
+			case 6: return DIRS[9];
+			case 7: return even ? DIRS[10] : DIRS[11];
+			default: return nullptr;
+		}
+  }
 };
 
 
