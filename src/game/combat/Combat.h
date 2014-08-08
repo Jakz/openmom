@@ -95,8 +95,10 @@ public:
 struct CombatPosition
 {
   s8 x, y;
+  s8 f;
   
-  CombatPosition(CombatUnit *unit) : x(unit->x), y(unit->y) { }
+  CombatPosition(CombatUnit *unit) : x(unit->x), y(unit->y), f(-1) { }
+  CombatPosition(s8 x = -1, s8 y = -1, s8 f = -1) : x(x), y(x), f(x) { }
 };
 
 namespace std
