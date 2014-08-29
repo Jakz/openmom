@@ -343,7 +343,7 @@ bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
   
   if (header.magic == 0x0000FEAD)
   {
-    offsets.resize(header.count);
+    offsets.resize(header.count+1);
     fread(&offsets[0], sizeof(LBXOffset), header.count+1, in);
     
     return true;
@@ -597,10 +597,9 @@ static const vector<string> files = {
   "backgrnd",
   "units1",
   "units2",
-  "specfx"
+  "mainscrn",
+  "main"
 };
-
-static offset_list offsets;
 
 LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(-1), lbxOffset(0), contentOffset(0), selectedContent(-1)
 {
@@ -621,12 +620,12 @@ LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(-1), lbxOffset(0), c
   //offsets.resize(files.size());
   //headers.resize(files.size());
   
-  /*for (auto it = files.begin(); it != files.end(); ++it)
+  for (auto it = files.begin(); it != files.end(); ++it)
   {
     string name = path + *it + ".lbx";
     
     LBXHeader header;
-    offsets.clear();
+    offset_list offsets;
     string_list names;
     
     FILE *in = fopen(name.c_str(), "rb");
@@ -641,7 +640,7 @@ LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(-1), lbxOffset(0), c
     foffsets.push_back(offsets);
     
     fclose(in);
-  }*/
+  }
 }
 
 void LBXView::draw()

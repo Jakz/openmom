@@ -23,6 +23,9 @@ bool operator<(const CombatUnit &c1, const CombatUnit &c2)
   else return false;
 }
 
+constexpr const s16 Combat::DIRS[12][2];
+constexpr const u16 Combat::DIRS_LENGTH;
+
 Combat::Combat(Army* a1, Army* a2) : players{a1->getOwner(),a2->getOwner()}, selectedUnit(nullptr), current(a1->getOwner())
 {
   for (auto u1 : a1->getUnits())
@@ -84,9 +87,14 @@ s16 Combat::relativeFacing(CombatUnit *u1, CombatUnit *u2)
   return -1;
 }
 
+void Combat::deployUnits()
+{
+  // TODO
+}
+
 const position_map& Combat::reachable(CombatUnit *unit)
 {
-  visited.clear();
+  /*visited.clear();
   currents.clear();
   incoming.clear();
   
@@ -118,16 +126,16 @@ const position_map& Combat::reachable(CombatUnit *unit)
           
           auto lambda = [&](const pair<CombatPosition,CombatPosition> &p) { return p.first.x == nx && p.first.y == ny; };
           
-          if (find(visited.begin(), visited.end(), lambda) == visited.end() && find(currents.begin(), currents.end(), lambda) == currents.end())
+          if (find_if(visited.begin(), visited.end(), lambda) == visited.end() && find_if(currents.begin(), currents.end(), lambda) == currents.end())
           {
             CombatPosition np = CombatPosition(e.first);
             np.f = i;
             incoming.emplace(CombatPosition(nx,ny), np);
           }
-          /*else if (v != null && ((v.intValue() & 0xFF000000) >> 24) % 2 == 0)
-           incoming.put(buildPosition(nx,ny), (i << 24) | c.getKey());
-           else if (o != null && ((o.intValue() & 0xFF000000) >> 24) % 2 == 0)
-           incoming.put(buildPosition(nx,ny), (i << 24) | c.getKey());*/
+          //else if (v != null && ((v.intValue() & 0xFF000000) >> 24) % 2 == 0)
+          // incoming.put(buildPosition(nx,ny), (i << 24) | c.getKey());
+          // else if (o != null && ((o.intValue() & 0xFF000000) >> 24) % 2 == 0)
+          // incoming.put(buildPosition(nx,ny), (i << 24) | c.getKey());
         }
         
         
@@ -137,7 +145,7 @@ const position_map& Combat::reachable(CombatUnit *unit)
       --moves;
     }
   }
-  
+  */
   return visited;
 }
 
