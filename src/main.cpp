@@ -40,6 +40,7 @@ void init()
 
 int main(int argc, char * arg[])
 {
+  LBXRepository::init();
   LBX::load();
   FontFaces::buildFonts();
   //return 0;
@@ -62,8 +63,8 @@ int main(int argc, char * arg[])
   
   //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
 
-  SDL::gvm->switchView(VIEW_MAIN);
-  //SDL::gvm->switchView(VIEW_LBX);
+  //SDL::gvm->switchView(VIEW_MAIN);
+  SDL::gvm->switchView(VIEW_LBX);
   
   SDL::loop();
   

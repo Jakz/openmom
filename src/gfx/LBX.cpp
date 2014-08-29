@@ -592,7 +592,7 @@ void LBX::load()
 
 const u16 MAX_PER_PAGE = 23;
 
-static const vector<string> files = {
+const vector<string> LBXRepository::fileNames = {
   "armylist",
   "backgrnd",
   "units1",
@@ -614,13 +614,13 @@ LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(-1), lbxOffset(0), c
   
   hasNextContent = false;
   hasPrevContent = false;
-  hasNextFile = files.size() > MAX_PER_PAGE;
+  hasNextFile = LBX_COUNT > MAX_PER_PAGE;
   hasPrevFile = 0;
   
   //offsets.resize(files.size());
   //headers.resize(files.size());
   
-  for (auto it = files.begin(); it != files.end(); ++it)
+  for (auto it = LBXRepository::fileNames.begin(); it != LBXRepository::fileNames.end(); ++it)
   {
     string name = path + *it + ".lbx";
     
@@ -647,17 +647,17 @@ void LBXView::draw()
 {
   if (selectedContent != -1)
   {
-    SDL_Surface* s = gfxForLBX[files[selectedLBX]][selectedContent];
+    SDL_Surface* s = gfxForLBX[LBXRepository::fileNames[selectedLBX]][selectedContent];
     SDL_BlitSurface(s, NULL, Gfx::getCanvas(), NULL);
   }
   
   
-  for (int i = 0; i < files.size(); ++i)
-    Fonts::drawString(files[i], selectedLBX == i+lbxOffset ? FontFaces::Small::REDW : FontFaces::Small::WHITE, 5, 5+i*8, ALIGN_LEFT);
+  for (int i = 0; i < LBX_COUNT; ++i)
+    Fonts::drawString(LBXRepository::fileNames[i], selectedLBX == i+lbxOffset ? FontFaces::Small::REDW : FontFaces::Small::WHITE, 5, 5+i*8, ALIGN_LEFT);
   
   if (selectedLBX != -1)
   {
-    map<string, string_list>::iterator it = filesForLBX.find(files[selectedLBX]);
+    map<string, string_list>::iterator it = filesForLBX.find(LBXRepository::fileNames[selectedLBX]);
     
     if (it != filesForLBX.end())
     {
@@ -686,13 +686,13 @@ void LBXView::mouseReleased(u16 x, u16 y, MouseButton b)
     
     if (y < MAX_PER_PAGE)
     {
-      if (y+lbxOffset < files.size() && x < Fonts::stringWidth(FontFaces::Small::WHITE, files[y]) + 10)
+      if (y+lbxOffset < LBX_COUNT && x < Fonts::stringWidth(FontFaces::Small::WHITE, LBXRepository::fileNames[y]) + 10)
       {
         selectedLBX = y+lbxOffset;
         selectedContent = -1;
         selectLBX();
       }
-      else if (y+contentOffset < filesForLBX[files[selectedLBX]].size() && x > 50 && x <= 100)
+      else if (y+contentOffset < filesForLBX[LBXRepository::fileNames[selectedLBX]].size() && x > 50 && x <= 100)
       {
         selectedContent = y+contentOffset;
         selectGFX();
@@ -703,7 +703,7 @@ void LBXView::mouseReleased(u16 x, u16 y, MouseButton b)
 
 void LBXView::updateContentButtons()
 {
-  buttons[3]->showIf(contentOffset + MAX_PER_PAGE < filesForLBX[files[selectedLBX]].size());
+  buttons[3]->showIf(contentOffset + MAX_PER_PAGE < filesForLBX[LBXRepository::fileNames[selectedLBX]].size());
   buttons[2]->showIf(contentOffset > 0);
 }
 
@@ -714,11 +714,11 @@ void LBXView::selectLBX()
 
 void LBXView::selectGFX()
 {
-  if (!gfxForLBX[files[selectedLBX]][selectedContent])
+  if (!gfxForLBX[LBXRepository::fileNames[selectedLBX]][selectedContent])
   {
-    string name = path + files[selectedLBX] + ".lbx";
+    string name = path + LBXRepository::fileNames[selectedLBX] + ".lbx";
     FILE *in = fopen(name.c_str(), "rb");
-    gfxForLBX[files[selectedLBX]][selectedContent] = LBX::scanGfx(headers[selectedLBX], this->foffsets[selectedLBX][selectedContent], in);
+    gfxForLBX[LBXRepository::fileNames[selectedLBX]][selectedContent] = LBX::scanGfx(headers[selectedLBX], this->foffsets[selectedLBX][selectedContent], in);
     fclose(in);
   }
   

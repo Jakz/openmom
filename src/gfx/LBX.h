@@ -40,6 +40,71 @@ typedef u32 LBXOffset;
 typedef std::vector<LBXOffset> offset_list;
 typedef std::vector<LBXFileName> string_list;
 
+enum LBXFileID : u8
+{
+  LBX_ARMYLIST,
+  LBX_BACKGRND,
+  LBX_UNITS1,
+  LBX_UNITS2,
+  LBX_MAINSCRN,
+  LBX_MAIN,
+  
+  LBX_COUNT
+};
+
+struct LBXSpriteInfo
+{
+  LBXFileID lbx;
+  u16 index;
+};
+
+class LBXSprite
+{
+  
+};
+
+class LBXRepository
+{
+private:
+  static std::string* fileNames;
+  static offset_list* offsets;
+  static LBXSprite ***sprites;
+  
+public:
+
+  static void init()
+  {
+    fileNames = new std::string[LBX_COUNT];
+    
+    std::string names[] = {"armylist",
+    "backgrnd",
+    "units1",
+    "units2",
+    "mainscrn",
+    "main"
+    };
+    
+    for (int i = 0; i < LBX_COUNT; ++i)
+      fileNames[i] = names[i];
+    
+    offsets = new offset_list[LBX_COUNT];
+    sprites = new LBXSprite**[LBX_COUNT];
+    
+    for (int i = 0; i < LBX_COUNT; ++i)
+      sprites[i] = nullptr;
+  }
+  
+  static bool shouldAllocateLBX(LBXFileID ident) { return sprites[ident] == nullptr; }
+  static void loadLBX(LBXFileID ident);
+  
+  static bool shouldAllocateSprite(LBXSpriteInfo& info) { return sprites[info.lbx][info.index] == nullptr; }
+  static void loadLBXSprite(LBXSpriteInfo& info);
+  
+  static LBXSprite* spriteFor(LBXSpriteInfo& info) { return sprites[info.lbx][info.index]; }
+  
+  friend class LBXView;
+};
+
 class LBX
 {
 private:
