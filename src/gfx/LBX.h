@@ -60,22 +60,32 @@ struct LBXSpriteInfo
 
 class LBXSprite
 {
+public:
+  SDL_Surface *surface;
+};
+
+struct LBXHolder
+{
+  std::string fileName;
+  LBXHeader header;
+  offset_list offsets;
+  LBXSprite **sprites;
   
+  LBXHolder() : sprites(nullptr) { }
+  LBXHolder(std::string fileName) : fileName(fileName), sprites(nullptr) { }
+  
+  const u16 size() const { return header.count; }
 };
 
 class LBXRepository
 {
 private:
-  static std::string* fileNames;
-  static offset_list* offsets;
-  static LBXSprite ***sprites;
+  static LBXHolder data[LBX_COUNT];
   
 public:
 
   static void init()
-  {
-    fileNames = new std::string[LBX_COUNT];
-    
+  {    
     std::string names[] = {"armylist",
     "backgrnd",
     "units1",
@@ -85,22 +95,16 @@ public:
     };
     
     for (int i = 0; i < LBX_COUNT; ++i)
-      fileNames[i] = names[i];
-    
-    offsets = new offset_list[LBX_COUNT];
-    sprites = new LBXSprite**[LBX_COUNT];
-    
-    for (int i = 0; i < LBX_COUNT; ++i)
-      sprites[i] = nullptr;
+      data[i] = LBXHolder(names[i]);
   }
   
-  static bool shouldAllocateLBX(LBXFileID ident) { return sprites[ident] == nullptr; }
+  static bool shouldAllocateLBX(LBXFileID ident) { return data[ident].sprites == nullptr; }
   static void loadLBX(LBXFileID ident);
   
-  static bool shouldAllocateSprite(LBXSpriteInfo& info) { return sprites[info.lbx][info.index] == nullptr; }
+  static bool shouldAllocateSprite(LBXSpriteInfo& info) { return data[info.lbx].sprites[info.index] == nullptr; }
   static void loadLBXSprite(LBXSpriteInfo& info);
   
-  static LBXSprite* spriteFor(LBXSpriteInfo& info) { return sprites[info.lbx][info.index]; }
+  static LBXSprite* spriteFor(LBXSpriteInfo& info) { return data[info.lbx].sprites[info.index]; }
   
   friend class LBXView;
 };
@@ -135,6 +139,7 @@ public:
   static void load();
   
   friend class LBXView;
+  friend class LBXRepository;
 };
 
 #include "View.h"
@@ -156,11 +161,9 @@ private:
   bool hasNextFile, hasPrevFile;
   bool hasNextContent, hasPrevContent;
   
-  std::vector<offset_list> foffsets;
   std::vector<LBXHeader> headers;
   
   std::map<std::string, string_list> filesForLBX;
-  std::map<std::string, std::vector<SDL_Surface*> > gfxForLBX;
   
   void updateContentButtons();
   

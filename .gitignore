@@ -3,3 +3,4 @@ OpenMoM.xcodeproj/project.xcworkspace/xcuserdata/
 OpenMoM.xcodeproj/xcuserdata/
 .DS_Store
 *.lbx
+data/lbx/*
