@@ -11,6 +11,8 @@
 
 #include "Common.h"
 
+#include "ColorMap.h"
+
 #include <string>
 #include <vector>
 #include <functional>
@@ -48,6 +50,7 @@ enum LBXFileID : u8
   LBX_UNITS2,
   LBX_MAINSCRN,
   LBX_MAIN,
+  LBX_SPECFX,
   
   LBX_COUNT
 };
@@ -60,7 +63,35 @@ struct LBXSpriteInfo
 
 class LBXSprite
 {
+private:
+  u8 **data;
+  Palette* palette;
+  const u16 count;
+  const u16 width;
+  const u16 height;
+
 public:
+  LBXSprite(Palette* palette, u16 count, u16 width, u16 height) : palette(palette), count(count), width(width), height(height)
+  {
+    data = new u8*[count];
+    for (u16 i = 0; i < count; ++i)
+      data[i] = new u8[width*height];
+  }
+  
+  virtual Color at(u16 x, u16 y, u16 c = 0, u16 r = 0) const { return data[r][y*width+x]; }
+  virtual void set(u16 x, u16 y, Color c) { }
+
+  virtual u16 tw() const { return width*count; }
+  virtual u16 th() const { return height; }
+  
+  virtual u16 sw(u16 r, u16 c) { return width; }
+  virtual u16 sh(u16 r, u16 c) { return height; }
+  
+  virtual void lock() const { }
+  virtual void unlock() const { }
+  
+  virtual const Palette* getPalette() const { return palette; }
+  
   SDL_Surface *surface;
 };
 
@@ -91,7 +122,8 @@ public:
     "units1",
     "units2",
     "mainscrn",
-    "main"
+    "main",
+    "specfx"
     };
     
     for (int i = 0; i < LBX_COUNT; ++i)
@@ -129,7 +161,7 @@ private:
   static void loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter, FILE *in);
   static void loadArrayFile(LBXHeader& header, offset_list& offsets, std::vector<TextFiller>& inserters, FILE *in);
   
-  static SDL_Surface* scanGfx(LBXHeader& header, LBXOffset offset, FILE *in);
+  static LBXSprite* scanGfx(LBXHeader& header, LBXOffset offset, FILE *in);
   static void scanFileNames(LBXHeader& header, offset_list& offsets, string_list& names, FILE *in);
 
   static void loadText(LBXHeader& header, offset_list& offsets, FILE *in);
@@ -160,10 +192,8 @@ private:
   
   bool hasNextFile, hasPrevFile;
   bool hasNextContent, hasPrevContent;
-  
-  std::vector<LBXHeader> headers;
-  
-  std::map<std::string, string_list> filesForLBX;
+    
+  std::map<LBXFileID, string_list> filesForLBX;
   
   void updateContentButtons();
   

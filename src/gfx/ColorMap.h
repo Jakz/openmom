@@ -132,6 +132,9 @@ class IndexedPalette : public Palette
 private:
   Color *colors;
 public:
+  IndexedPalette(Color* colors) : colors(colors) { }
+  IndexedPalette(u8 size) : colors(new Color[size]) { }
+  
   IndexedPalette(color_list colors) : colors(new Color[colors.size()]) { setPalette(colors); }
   
   void setPalette(color_list colors) const
@@ -140,6 +143,7 @@ public:
       this->colors[i] = *std::next(colors.begin(), i);
   }
   
+  void set(u8 index, Color color) { colors[index] = color; }
   Color get(u8 index) const override { return colors[index]; }
   
   ~IndexedPalette() { delete [] colors; }
