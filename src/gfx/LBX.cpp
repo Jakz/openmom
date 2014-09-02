@@ -106,35 +106,7 @@ void LBX::loadArrayFile(LBXHeader& header, offset_list& offsets, std::vector<Tex
 }
 
 
-
-struct LBXGfxHeader
-{
-  u16 width;
-  u16 height;
-  u16 unknown1;
-  u16 count;
-  u16 unknown2[3];
-  u16 paletteOffset;
-  u16 unknown3;
-} __attribute__((__packed__));
-
-struct LBXPaletteHeader
-{
-  u16 offset;
-  u16 firstIndex;
-  u16 count;
-  u16 unknown;
-  
-} __attribute__((__packed__));
-
-struct LBXPaletteEntry
-{
-  u8 r;
-  u8 g;
-  u8 b;
-} __attribute__((__packed__));
-
-void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Color* palette, Color* image, u8* data, u32 dataLength)
+void LBX::scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, u8* image, u8* data, u32 dataLength)
 {
   s32 i = 0, x = 0;
   const u32 w = header.width, h = header.height;
@@ -146,7 +118,7 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
   {
     //printf("CLEARING FRAME %d\n", index);
     for (int k = 0; k < header.width*header.height; ++k)
-      static_cast<u32*>(image)[k] = TRANSPARENT;
+      image[k] = 0;
   }
   
   ++i;
@@ -200,7 +172,7 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
             {
               if (x >= 0 && x < w && y >= 0 && y < h)
               {
-                image[x + y*w] = palette[data[lastPos]];
+                image[x + y*w] = data[lastPos];
               }
               //else printf("RLE OVERRUN: %d,%d\n",x,y);
               
@@ -214,7 +186,7 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
           {
             if (x >= 0 && x < w && y >= 0 && y < h)
             {
-              image[x + y*w] = palette[data[n_r]];
+              image[x + y*w] = data[n_r];
               //printf("%d,%d SINGLE -> %d\n", x, y, data[n_r]);
 
             }
@@ -245,7 +217,7 @@ void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, Co
   
 }
 
-LBXSprite* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
+LBXSpriteData* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
 {
   fseek(in, offset, SEEK_SET);
   LBXGfxHeader gfxHeader;
@@ -260,7 +232,7 @@ LBXSprite* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
   Color* palette = new Color[PALETTE_SIZE];
   memcpy(palette, Gfx::PALETTE, sizeof(Color)*PALETTE_SIZE);
   
-  LBXSprite *sprite = new LBXSprite(new IndexedPalette(palette), gfxHeader.count, gfxHeader.width, gfxHeader.height);
+  LBXSpriteData *sprite = new LBXSpriteData(new IndexedPalette(palette), gfxHeader.count, gfxHeader.width, gfxHeader.height);
 
 
   LBXPaletteHeader paletteHeader = {0,0,256};
@@ -295,6 +267,7 @@ LBXSprite* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
   SDL_Surface *image = Gfx::createSurface(gfxHeader.width, gfxHeader.height);
   SDL_LockSurface(image);
   SDL_FillRect(image, nullptr, TRANSPARENT);
+  sprite->surface = image;
   
   for (int i = 0; i < gfxHeader.count; ++i)
   {
@@ -307,7 +280,11 @@ LBXSprite* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
     printf("      FRAME %d AT OFFSET %d (SIZE: %d)\n", i, frameOffsets[i], dataSize);
     
     
-    scanGfxFrame(gfxHeader, paletteHeader, i, palette, static_cast<Color*>(image->pixels), data, dataSize);
+    scanGfxFrame(gfxHeader, paletteHeader, i, sprite->data[i], data, dataSize);
+    
+    for (int ww = 0; ww < sprite->width; ++ww)
+      for (int hh = 0; hh < sprite->height; ++hh)
+        static_cast<Color*>(sprite->surface->pixels)[ww+sprite->width*hh] = sprite->palette->get(sprite->data[i][ww+sprite->width*hh]);
     
     SDL_UnlockSurface(image);
     //SDL_SaveBMP(image, (to_string(offset)+" "+to_string(i)+".bmp").c_str());
@@ -319,7 +296,6 @@ LBXSprite* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
   //SDL_FreeSurface(image);
   //delete [] palette;
   
-  sprite->surface = image;
   
   return sprite;
 }
@@ -604,13 +580,13 @@ void LBXRepository::loadLBX(LBXFileID ident)
   FILE *in = fopen(name.c_str(), "rb");
   LBX::loadHeader(lbx.header, lbx.offsets, in);
   
-  lbx.sprites = new LBXSprite*[lbx.size()];
+  lbx.sprites = new LBXSpriteData*[lbx.size()];
   for (int i = 0; i < lbx.size(); ++i) lbx.sprites[i] = nullptr;
 
   fclose(in);
 }
 
-void LBXRepository::loadLBXSprite(LBXSpriteInfo &info)
+void LBXRepository::loadLBXSpriteData(LBXSpriteDataInfo &info)
 {
   LBXHolder& lbx = data[info.lbx];
   
@@ -732,11 +708,11 @@ void LBXView::selectLBX()
 
 void LBXView::selectGFX()
 {
-  LBXSpriteInfo info;
+  LBXSpriteDataInfo info;
   info.index = selectedContent;
   info.lbx = static_cast<LBXFileID>(selectedLBX);
   
   if (LBXRepository::shouldAllocateSprite(info))
-    LBXRepository::loadLBXSprite(info);  
+    LBXRepository::loadLBXSpriteData(info);  
 }
 
