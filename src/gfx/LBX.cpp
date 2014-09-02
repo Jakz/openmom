@@ -266,11 +266,12 @@ LBXSpriteData* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
   
   SDL_Surface *image = Gfx::createSurface(gfxHeader.width, gfxHeader.height);
   SDL_LockSurface(image);
-  SDL_FillRect(image, nullptr, TRANSPARENT);
   sprite->surface = image;
   
   for (int i = 0; i < gfxHeader.count; ++i)
   {
+    SDL_FillRect(image, nullptr, TRANSPARENT);
+    
     u32 dataSize = frameOffsets[i+1] - frameOffsets[i];
     //Color* image = new Color[gfxHeader.width*gfxHeader.height];
     
