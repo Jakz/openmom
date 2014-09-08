@@ -97,7 +97,10 @@ public:
   LBXSpriteData(const Palette* palette, u16 count, u16 width, u16 height) : palette(palette), count(count), width(width), height(height), data(new u8*[count])
   {
     for (u16 i = 0; i < count; ++i)
+    {
       data[i] = new u8[width*height];
+      memset(data[i], 0, sizeof(u8)*width*height);
+    }
   }
 
   u8 **data;
