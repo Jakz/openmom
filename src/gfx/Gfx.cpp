@@ -385,6 +385,8 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u1
           
           gdst->set(tx+x, ty+y, 0xFF000000 | (r << 16) | (g << 8) | b);
         }
+        else if (ps == 0xFFFF00FF)
+          continue;
         else
         {
           // colorMap present

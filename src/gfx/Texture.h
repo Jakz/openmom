@@ -17,6 +17,7 @@
 #include <initializer_list>
 
 class SDL_Surface;
+struct LBXSpriteDataInfo;
 
 enum TextureID : u16
 {
@@ -235,20 +236,20 @@ class Texture : public SpriteSheet
   private:
     static const Texture textures[];
 
-    const s16 w, h;
+    mutable s16 w, h;
   
   public:
     const TextureID ident;
     const std::string name;
     mutable SDL_Surface *img;
-    const s16 cols, rows;
+    mutable s16 cols, rows;
 
     std::vector<u16> ws, hs;
   
-    const bool animated;
-    std::vector<u16> animatedSprites;
+    mutable bool animated;
+    mutable std::vector<u16> animatedSprites;
   
-    const u16 animFactor;
+    mutable u16 animFactor;
   
     Texture(TextureID ident, std::string name, u16 rows, u16 cols, u16 w, u16 h) : Texture(ident, name, rows, cols, w, h, false, 0) { }
     Texture(TextureID ident, std::string name, u16 w, u16 h) : Texture(ident, name, 1, 1, w, h, false, 0) { }
@@ -265,7 +266,7 @@ class Texture : public SpriteSheet
   
     Texture(TextureID ident, std::string name, u16 rows, u16 cols, std::initializer_list<u16> ws, std::initializer_list<u16> hs, bool animated, u16 animFactor) :
       img(nullptr), ident(ident), name(name), rows(rows), cols(cols), w(-1), h(-1), ws(ws), hs(hs), animated(animated), animFactor(animFactor) { }
-  
+
     u16 tw() const override { return img->w; }
     u16 th() const override { return img->h; }
   

@@ -31,6 +31,9 @@
 
 #include "ProductionView.h"
 
+#include "Lbx.h"
+
+
 CityView::CityView(ViewManager* gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
@@ -105,8 +108,10 @@ void CityView::draw()
   /* draw minimap */
   Viewport::drawCityViewport(player, g->world, city->getPosition());
   
+  Gfx::draw(LBXRepository::spriteFor(LBXSpriteDataInfo(LBX_BACKGRND, 6)), 0, 0);
   
-  Gfx::draw(TextureID::CITY_VIEW_BACKDROP, 0, 0);
+  
+  //Gfx::draw(TextureID::CITY_VIEW_BACKDROP, 0, 0);
   
   int popX = 4, reqFarmers = city->reservedPopulation;
   for (int i = 0; i < (city->population / 1000); ++i)

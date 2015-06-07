@@ -264,13 +264,14 @@ LBXSpriteData* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
       palette[i] = TRANSPARENT; //palette[i] = 0x00000000;
   }
   
-  SDL_Surface *image = Gfx::createSurface(gfxHeader.width, gfxHeader.height);
-  SDL_LockSurface(image);
-  sprite->surface = image;
+  
+  //SDL_Surface *image = Gfx::createSurface(gfxHeader.width, gfxHeader.height);
+  //SDL_LockSurface(image);
+  //sprite->surface = image;
   
   for (int i = 0; i < gfxHeader.count; ++i)
   {
-    SDL_FillRect(image, nullptr, TRANSPARENT);
+    //SDL_FillRect(image, nullptr, TRANSPARENT);
     
     u32 dataSize = frameOffsets[i+1] - frameOffsets[i];
     //Color* image = new Color[gfxHeader.width*gfxHeader.height];
@@ -283,15 +284,16 @@ LBXSpriteData* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
     
     scanGfxFrame(gfxHeader, paletteHeader, i, sprite->data[i], data, dataSize);
     
-    for (int ww = 0; ww < sprite->width; ++ww)
+    /*for (int ww = 0; ww < sprite->width; ++ww)
       for (int hh = 0; hh < sprite->height; ++hh)
-        static_cast<Color*>(sprite->surface->pixels)[ww+sprite->width*hh] = sprite->palette->get(sprite->data[i][ww+sprite->width*hh]);
+        static_cast<Color*>(sprite->surface->pixels)[ww+sprite->width*hh] = sprite->palette->get(sprite->data[i][ww+sprite->width*hh]);*/
     
-    SDL_UnlockSurface(image);
+    //SDL_UnlockSurface(image);
     //SDL_SaveBMP(image, (to_string(offset)+" "+to_string(i)+".bmp").c_str());
     
     
     delete [] data;
+   
   }
   
   //SDL_FreeSurface(image);
@@ -587,16 +589,20 @@ void LBXRepository::loadLBX(LBXFileID ident)
   fclose(in);
 }
 
-void LBXRepository::loadLBXSpriteData(LBXSpriteDataInfo &info)
+const LBXSpriteData* LBXRepository::loadLBXSpriteData(const LBXSpriteDataInfo &info)
 {
   LBXHolder& lbx = data[info.lbx];
   
   string name = path + lbx.fileName + ".lbx";
   FILE *in = fopen(name.c_str(), "rb");
+  
+  LBXSpriteData* spriteData = LBX::scanGfx(lbx.header, lbx.offsets[info.index], in);
 
-  lbx.sprites[info.index] = LBX::scanGfx(lbx.header, lbx.offsets[info.index], in);;
+  lbx.sprites[info.index] = spriteData;
   
   fclose(in);
+  
+  return spriteData;
 }
 
 #include "ViewManager.h"
@@ -628,8 +634,8 @@ void LBXView::draw()
 {
   if (selectedContent != -1)
   {
-    SDL_Surface* s = LBXRepository::data[selectedLBX].sprites[selectedContent]->surface;
-    SDL_BlitSurface(s, NULL, Gfx::getCanvas(), NULL);
+    LBXSpriteData* s = LBXRepository::data[selectedLBX].sprites[selectedContent];
+    Gfx::draw(s, 0, 0);
   }
   
   
@@ -709,10 +715,8 @@ void LBXView::selectLBX()
 
 void LBXView::selectGFX()
 {
-  LBXSpriteDataInfo info;
-  info.index = selectedContent;
-  info.lbx = static_cast<LBXFileID>(selectedLBX);
-  
+  LBXSpriteDataInfo info = LBXSpriteDataInfo(static_cast<LBXFileID>(selectedLBX), selectedContent);
+
   if (LBXRepository::shouldAllocateSprite(info))
     LBXRepository::loadLBXSpriteData(info);  
 }

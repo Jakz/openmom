@@ -33,6 +33,14 @@ enum MouseButton : u8
   BUTTON_MIDDLE = SDL_BUTTON_MIDDLE
 };
 
+enum LBXFileID : u8;
+struct LBXSpriteDataInfo
+{
+  LBXFileID lbx;
+  u16 index;
+  LBXSpriteDataInfo(LBXFileID lbx, u16 index) : lbx(lbx), index(index) { }
+};
+
 typedef SDL_Scancode KeyboardKey;
 typedef SDL_Keymod KeyboardMod;
 
@@ -82,7 +90,6 @@ public:
   
   virtual const Palette* getPalette() const { return nullptr; }
 };
-
 
 class Upkeep
 {

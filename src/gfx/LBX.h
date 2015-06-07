@@ -12,6 +12,7 @@
 #include "Common.h"
 
 #include "ColorMap.h"
+#include "Gfx.h"
 
 #include <string>
 #include <vector>
@@ -69,26 +70,7 @@ typedef u32 LBXOffset;
 typedef std::vector<LBXOffset> offset_list;
 typedef std::vector<LBXFileName> string_list;
 
-enum LBXFileID : u8
-{
-  LBX_ARMYLIST,
-  LBX_BACKGRND,
-  LBX_UNITS1,
-  LBX_UNITS2,
-  LBX_MAINSCRN,
-  LBX_MAIN,
-  LBX_SPECFX,
-  
-  LBX_COUNT
-};
-
-struct LBXSpriteDataInfo
-{
-  LBXFileID lbx;
-  u16 index;
-};
-
-class LBXSpriteData
+class LBXSpriteData : public SpriteSheet
 {
 private:
 
@@ -110,6 +92,16 @@ public:
   const u16 height;
   
   SDL_Surface *surface;
+  
+  Color at(u16 x, u16 y, u16 c, u16 r) const override { return palette->get(data[c+r][x+y*width]); }
+
+  u16 tw() const override { return count*width; }
+  u16 th() const override { return height; }
+
+  u16 sw(u16,u16) const override { return width; }
+  u16 sh(u16,u16) const override { return height; }
+  
+  const Palette* getPalette() const { return palette; }
 };
 
 struct LBXHolder
@@ -134,7 +126,8 @@ public:
 
   static void init()
   {    
-    std::string names[] = {"armylist",
+    std::string names[] = {
+    "armylist",
     "backgrnd",
     "units1",
     "units2",
@@ -151,9 +144,16 @@ public:
   static void loadLBX(LBXFileID ident);
   
   static bool shouldAllocateSprite(LBXSpriteDataInfo& info) { return data[info.lbx].sprites[info.index] == nullptr; }
-  static void loadLBXSpriteData(LBXSpriteDataInfo& info);
+  static const LBXSpriteData* loadLBXSpriteData(const LBXSpriteDataInfo& info);
   
-  static LBXSpriteData* spriteFor(LBXSpriteDataInfo& info) { return data[info.lbx].sprites[info.index]; }
+  static const LBXSpriteData* spriteFor(const LBXSpriteDataInfo& info) {
+    const LBXSpriteData* sprite = data[info.lbx].sprites[info.index];
+    
+    if (!sprite)
+      sprite = loadLBXSpriteData(info);
+      
+    return sprite;
+  }
   
   friend class LBXView;
 };

@@ -9,6 +9,7 @@
 #include "Texture.h"
 
 #include "Gfx.h"
+#include "LBX.h"
 
 #include <SDL2/SDL.h>
 
@@ -222,7 +223,6 @@ const Texture Texture::textures[] =
   Texture(NEW_GAME_BUTTONS1,"newgame/buttons1.png",1,6,{63,63,64,64,64,64},15)
 };
 
-
 Color Texture::at(u16 x, u16 y, u16 r, u16 c) const
 {
   u16 sx, sy;
@@ -270,7 +270,10 @@ u16 Texture::sh(u16 r, u16 c) const
 const Texture* Texture::get(TextureID ident) {
   const Texture* texture = &textures[ident];
   
-  if (!texture->img) texture->img = IMG_Load(("data/gfx/"+texture->name).c_str());
+  if (!texture->img)
+  {
+    texture->img = IMG_Load(("data/gfx/"+texture->name).c_str());
+  }
   
   return texture;
 
@@ -282,9 +285,7 @@ const Texture* Texture::get(TextureID ident) {
 void Texture::load()
 {
   for (const Texture &texture : textures)
-  {
-    texture.img = IMG_Load(("data/gfx/"+texture.name).c_str());
-  }
+    get(texture.ident);
 }
 
 void Texture::unload()
