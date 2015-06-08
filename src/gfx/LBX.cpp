@@ -318,7 +318,7 @@ void LBX::scanFileNames(LBXHeader& header, offset_list& offsets, string_list& na
   }
 }
 
-static std::string path = string(getenv("PWD")) + "/OpenMoM.app/Contents/Resources/data/lbx/";
+static std::string path = string(getenv("PWD")) + "/LBXManager.app/Contents/Resources/data/lbx/";
 
 bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
@@ -573,7 +573,7 @@ void LBX::load()
 LBXHolder LBXRepository::data[LBX_COUNT];
 
 
-void LBXRepository::loadLBX(LBXFileID ident)
+const LBXHolder& LBXRepository::loadLBX(LBXFileID ident)
 {
   LBXHolder& lbx = data[ident];
   
@@ -587,6 +587,8 @@ void LBXRepository::loadLBX(LBXFileID ident)
   for (int i = 0; i < lbx.size(); ++i) lbx.sprites[i] = nullptr;
 
   fclose(in);
+  
+  return lbx;
 }
 
 const LBXSpriteData* LBXRepository::loadLBXSpriteData(const LBXSpriteDataInfo &info)

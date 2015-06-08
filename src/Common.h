@@ -41,6 +41,19 @@ struct LBXSpriteDataInfo
   LBXSpriteDataInfo(LBXFileID lbx, u16 index) : lbx(lbx), index(index) { }
 };
 
+enum LBXFileID : u8
+{
+  LBX_ARMYLIST = 0,
+  LBX_BACKGRND,
+  LBX_UNITS1,
+  LBX_UNITS2,
+  LBX_MAINSCRN,
+  LBX_MAIN,
+  LBX_SPECFX,
+  
+  LBX_COUNT
+};
+
 typedef SDL_Scancode KeyboardKey;
 typedef SDL_Keymod KeyboardMod;
 

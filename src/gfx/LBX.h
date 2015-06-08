@@ -12,7 +12,7 @@
 #include "Common.h"
 
 #include "ColorMap.h"
-#include "Gfx.h"
+//#include "Gfx.h"
 
 #include <string>
 #include <vector>
@@ -69,6 +69,8 @@ struct LBXPaletteEntry
 typedef u32 LBXOffset;
 typedef std::vector<LBXOffset> offset_list;
 typedef std::vector<LBXFileName> string_list;
+
+class SDL_Surface;
 
 class LBXSpriteData : public SpriteSheet
 {
@@ -141,7 +143,8 @@ public:
   }
   
   static bool shouldAllocateLBX(LBXFileID ident) { return data[ident].sprites == nullptr; }
-  static void loadLBX(LBXFileID ident);
+  static const LBXHolder& loadLBX(LBXFileID ident);
+  static const LBXHolder& holderForID(LBXFileID ident) { return data[ident]; }
   
   static bool shouldAllocateSprite(LBXSpriteDataInfo& info) { return data[info.lbx].sprites[info.index] == nullptr; }
   static const LBXSpriteData* loadLBXSpriteData(const LBXSpriteDataInfo& info);

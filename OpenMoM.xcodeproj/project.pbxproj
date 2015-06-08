@@ -81,8 +81,21 @@
 		048E08BC1982B20A009AED0A /* WorldGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08BA1982B20A009AED0A /* WorldGenerator.cpp */; };
 		04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B11983286E00291B82 /* Viewport.cpp */; };
 		04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B419833C1E00291B82 /* UnitDraw.cpp */; };
-		04C1F4521B25288F00F7688A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04C1F47F1B25290C00F7688A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C1F44B1B25270300F7688A /* main.cpp */; };
+		04C1F4841B25358200F7688A /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
+		04C1F4851B25359D00F7688A /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D2197990B900A5B5FC /* Font.cpp */; };
+		04C1F4861B2535A800F7688A /* Gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D4197990B900A5B5FC /* Gfx.cpp */; };
+		04C1F4871B2535C000F7688A /* Buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E41979EA6700A5B5FC /* Buttons.cpp */; };
+		04C1F4881B2535C900F7688A /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037622197B550F00A5B5FC /* Util.cpp */; };
+		04C1F4891B2535D100F7688A /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D9197990B900A5B5FC /* Localization.cpp */; };
+		04C1F48A1B2535DB00F7688A /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D6197990B900A5B5FC /* Texture.cpp */; };
+		04C1F48B1B2535F100F7688A /* ColorMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D0197990B900A5B5FC /* ColorMap.cpp */; };
+		04C1F48C1B25366D00F7688A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
+		04C1F48D1B25367800F7688A /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
+		04C1F48E1B25367C00F7688A /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
+		04C1F4901B25373000F7688A /* SDL2_image.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
+		04C1F4911B25373000F7688A /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
+		04C1F4921B25374F00F7688A /* data in Resources */ = {isa = PBXBuildFile; fileRef = 040375C21979905100A5B5FC /* data */; };
 		04C729C119853F4E002F16E6 /* MainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729BF19853F4E002F16E6 /* MainView.cpp */; };
 		04C729C41985F1B1002F16E6 /* BookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729C21985F1B1002F16E6 /* BookView.cpp */; };
 		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
@@ -100,6 +113,17 @@
 			files = (
 				04879A7C1978391F00313BC7 /* SDL2_image.framework in CopyFiles */,
 				04879A7D1978391F00313BC7 /* SDL2.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04C1F48F1B25372600F7688A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				04C1F4901B25373000F7688A /* SDL2_image.framework in CopyFiles */,
+				04C1F4911B25373000F7688A /* SDL2.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,7 +310,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04C1F4521B25288F00F7688A /* Cocoa.framework in Frameworks */,
+				04C1F48C1B25366D00F7688A /* Cocoa.framework in Frameworks */,
+				04C1F48D1B25367800F7688A /* SDL2.framework in Frameworks */,
+				04C1F48E1B25367C00F7688A /* SDL2_image.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,6 +697,7 @@
 				04C1F44D1B25288F00F7688A /* Sources */,
 				04C1F44E1B25288F00F7688A /* Frameworks */,
 				04C1F44F1B25288F00F7688A /* Resources */,
+				04C1F48F1B25372600F7688A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -722,6 +749,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C1F4921B25374F00F7688A /* data in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -814,6 +842,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				04C1F47F1B25290C00F7688A /* main.cpp in Sources */,
+				04C1F4841B25358200F7688A /* LBX.cpp in Sources */,
+				04C1F4851B25359D00F7688A /* Font.cpp in Sources */,
+				04C1F4861B2535A800F7688A /* Gfx.cpp in Sources */,
+				04C1F4871B2535C000F7688A /* Buttons.cpp in Sources */,
+				04C1F4881B2535C900F7688A /* Util.cpp in Sources */,
+				04C1F4891B2535D100F7688A /* Localization.cpp in Sources */,
+				04C1F48B1B2535F100F7688A /* ColorMap.cpp in Sources */,
+				04C1F48A1B2535DB00F7688A /* Texture.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -951,6 +987,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -961,6 +1001,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/Cellar/fltk/1.3.3/include,
 				);
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-L/usr/local/Cellar/fltk/1.3.3/lib",
 					"-lfltk",
@@ -979,12 +1020,17 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/Cellar/fltk/1.3.3/include,
 				);
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-L/usr/local/Cellar/fltk/1.3.3/lib",
 					"-lfltk",

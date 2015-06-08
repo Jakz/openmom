@@ -18,19 +18,6 @@
 
 enum TextureID : u16;
 
-enum LBXFileID : u8
-{
-  LBX_ARMYLIST,
-  LBX_BACKGRND,
-  LBX_UNITS1,
-  LBX_UNITS2,
-  LBX_MAINSCRN,
-  LBX_MAIN,
-  LBX_SPECFX,
-  
-  LBX_COUNT
-};
-
 #define WIDTH (320)
 #define HEIGHT (200)
 
