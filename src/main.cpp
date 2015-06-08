@@ -64,13 +64,10 @@ int main(int argc, char * arg[])
   
   //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
 
-  SDL::gvm->switchView(VIEW_LBX);
+  SDL::gvm->switchView(VIEW_COMBAT);
   //SDL::gvm->switchView(VIEW_LBX);
   
   SDL::loop();
-  
-  
-  // wait 5 secs
   
   // clean up
   Texture::unload();

@@ -12,6 +12,8 @@
 #include "View.h"
 
 class ViewManager;
+class CombatUnit;
+class Combat;
 
 class CombatView : public View
 {
@@ -28,14 +30,32 @@ private:
     BUTTON_COUNT
   };
   
-  void draw() override { };
+  enum class SubState
+  {
+    COMBAT,
+    SPELL_CAST
+  };
+  
+  void draw() override;
   void drawPost() override { }
+  
+  void drawUnitProps(CombatUnit* unit, bool onTheLeft);
+  
+  Coord hover;
+  
+  Combat* combat;
   
 public:
   CombatView(ViewManager* gvm);
   
   void activate() override { }
   void deactivate() override { }
+  
+  ScreenCoord coordsForTile(u16 x, u16 y);
+
+  void mouseReleased(u16 x, u16 y, MouseButton b) override;
+  void mouseMoved(u16 x, u16 y, MouseButton b) override;
+  
 };
 
 #endif 

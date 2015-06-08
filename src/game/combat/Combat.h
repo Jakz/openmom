@@ -69,8 +69,12 @@ public:
   
   void resetMoves() { moves = unit->getProperty(Property::MOVEMENT); }
   
+  Unit* getUnit() const { return unit; }
+  
   void setPosition(u16 x, u16 y) { this-> x = x; this->y = y; }
   void setPosition(u16 x, u16 y, u16 facing) { setPosition(x,y); this->facing = facing; }
+  
+  bool hasMoves() const { return moves > 0; }
   
   friend bool operator<(const CombatUnit &c1, const CombatUnit &c2);
   

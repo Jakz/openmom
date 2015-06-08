@@ -71,6 +71,16 @@ struct SpriteInfo
   SpriteInfo(TextureID texture, s16 x, s16 y) : texture(texture), x(x), y(y) { }
 };
 
+struct ScreenCoord
+{
+  s16 x;
+  s16 y;
+  
+  ScreenCoord(s16 x, s16 y) : x(x), y(y) { }
+};
+
+using Coord = ScreenCoord;
+
 class Palette;
 
 class SpriteSheet
