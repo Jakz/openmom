@@ -637,7 +637,11 @@ void LBXView::draw()
   if (selectedContent != -1)
   {
     LBXSpriteData* s = LBXRepository::data[selectedLBX].sprites[selectedContent];
-    Gfx::draw(s, 0, 0);
+    
+    for (int i = 0; i < s->count; ++i)
+    {
+      Gfx::draw(s, 0, i*s->height, i);
+    }
   }
   
   

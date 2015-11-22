@@ -164,11 +164,11 @@ void SDL::render()
   SDL_UpdateTexture(screen, nullptr, canvas->pixels, canvas->pitch);  
 #else
   SDL_Surface *canvas = Gfx::getCanvas();
-  Gfx::lock(canvas);
-  Gfx::lock(filter);
+  //Gfx::lock(canvas);
+  //Gfx::lock(filter);
   hq2x_32(static_cast<u32*>(canvas->pixels), static_cast<u32*>(filter->pixels), WIDTH, HEIGHT);
-  Gfx::unlock(canvas);
-  Gfx::unlock(filter);
+  //Gfx::unlock(canvas);
+  //Gfx::unlock(filter);
   SDL_UpdateTexture(screen, nullptr, filter->pixels, filter->pitch);
   
 #endif

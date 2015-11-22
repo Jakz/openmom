@@ -17,8 +17,9 @@ typedef int32_t s32;
 typedef int64_t s64;
 
 typedef u32 Color;
-#define RGB(r,g,b) (0xFF000000 | (r << 16) | (g << 8) | b)  // Gfx::color(r,g,b)
-#define RGBA(r,g,b,a) ((a << 24) | (r << 16) | (g << 8) | b) //Gfx::colora(r,g,b,a)
+
+constexpr Color RGB(u32 r, u32 g, u32 b) { return 0xFF000000 | (r << 16) | (g << 8) | b; }
+constexpr Color RGBA(u32 r, u32 g, u32 b, u32 a) { return (a << 24) | (r << 16) | (g << 8) | b; }
 
 enum class I18 : u16;
 enum TextureID : u16;

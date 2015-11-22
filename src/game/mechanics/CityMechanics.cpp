@@ -160,8 +160,6 @@ const std::multimap<RaceID, const Building*> CityMechanics::disallowedBuildingsB
 
 bool CityMechanics::isBuildingAllowed(const City* city, const Building* building)
 {
-  auto it = buildingDependsOn.equal_range(building);
-  
   if (!isBuildingAllowedForRace(city, building) || !isBuildingAllowedForTerrain(city, building))
     return false;
   
@@ -169,6 +167,8 @@ bool CityMechanics::isBuildingAllowed(const City* city, const Building* building
     return false;
   else
   {
+    auto it = buildingDependsOn.equal_range(building);
+    
     for (auto iit = it.first; iit != it.second; ++iit)
       if (city->hasBuilding(iit->second))
         return false;
