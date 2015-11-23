@@ -20,6 +20,9 @@ typedef u32 Color;
 
 constexpr Color RGB(u32 r, u32 g, u32 b) { return 0xFF000000 | (r << 16) | (g << 8) | b; }
 constexpr Color RGBA(u32 r, u32 g, u32 b, u32 a) { return (a << 24) | (r << 16) | (g << 8) | b; }
+constexpr u8 GET_RED(Color color) { return (color & 0x00FF0000) >> 16; }
+constexpr u8 GET_GREEN(Color color) { return (color & 0x0000FF00) >> 8; }
+constexpr u8 GET_BLUE(Color color) { return (color & 0x000000FF); }
 
 enum class I18 : u16;
 enum TextureID : u16;

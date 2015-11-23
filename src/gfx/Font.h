@@ -221,29 +221,29 @@ public:
   static inline void setVerHorSpace(s16 v, s16 h) { vSpace = v; hSpace = h; }
   static inline void setMap(const Palette *p) { palette = p; opalette = p; }
   
-  static u16 drawString(const std::string string, u16 x, u16 y, TextAlign align, const Palette *palette)
+  static u16 drawString(const std::string& string, u16 x, u16 y, TextAlign align, const Palette *palette)
   {
     setMap(palette);
     u16 r = drawString(string,x,y,align);
     return r;
   }
   
-  static u16 drawString(const std::string string, const FontSpriteSheet* face, u16 x, u16 y, TextAlign align, const Palette *palette)
+  static u16 drawString(const std::string& string, const FontSpriteSheet* face, u16 x, u16 y, TextAlign align, const Palette *palette)
   {
     setFace(face);
     return drawString(string, x, y, align, palette);
   }
   
-  static u16 drawString(const std::string string, const FontSpriteSheet* face, u16 x, u16 y, TextAlign align)
+  static u16 drawString(const std::string& string, const FontSpriteSheet* face, u16 x, u16 y, TextAlign align)
   {
     setFace(face);
     return drawString(string, x, y, align);
   }
   
-  static u16 drawString(const std::string string, u16 x, u16 y, TextAlign align);
-  static u16 drawStringContext(const std::string string, u16 x, u16 y, TextAlign align);
+  static u16 drawString(const std::string& string, u16 x, u16 y, TextAlign align);
+  static u16 drawStringContext(const std::string& string, u16 x, u16 y, TextAlign align);
   
-  static u16 drawStringBounded(const std::string string, const FontSpriteSheet* face, u16 x, u16 y, s16 bound, TextAlign align, const Palette* palette = nullptr)
+  static u16 drawStringBounded(const std::string& string, const FontSpriteSheet* face, u16 x, u16 y, s16 bound, TextAlign align, const Palette* palette = nullptr)
   {
     setFace(face);
     
@@ -253,7 +253,7 @@ public:
     return drawStringBounded(string, x, y, bound, align);
   }
   
-  static u16 drawStringBounded(const std::string string, int x, int y, int bound, TextAlign align, const Palette* palette = nullptr);
+  static u16 drawStringBounded(const std::string& string, int x, int y, int bound, TextAlign align, const Palette* palette = nullptr);
   
   static const Palette* paletteFor(char c) { return fontColors[c]; }
   

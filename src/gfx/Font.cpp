@@ -193,7 +193,7 @@ void Fonts::split(string s, vector<const std::string>& tokens, s8 delim)
   tokens.push_back(s);
 }
 
-u16 Fonts::drawString(const string string, u16 x, u16 y, TextAlign align)
+u16 Fonts::drawString(const string& string, u16 x, u16 y, TextAlign align)
 {
   Gfx::bindPalette(palette);
   
@@ -222,7 +222,7 @@ u16 Fonts::drawString(const string string, u16 x, u16 y, TextAlign align)
   }*/
 }
 
-u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)
+u16 Fonts::drawStringContext(const string& string, u16 x, u16 y, TextAlign align)
 {
   u16 plength = stringWidth(font, string);
   s16 sx = align == ALIGN_RIGHT ? x - plength : x, sy = y;
@@ -276,7 +276,7 @@ u16 Fonts::drawStringContext(const string string, u16 x, u16 y, TextAlign align)
   return plength;
 }
 
-u16 Fonts::drawStringBounded(const string str, int x, int y, int bound, TextAlign align, const Palette* palette)
+u16 Fonts::drawStringBounded(const string& str, int x, int y, int bound, TextAlign align, const Palette* palette)
 {
   if (palette)
     setMap(palette);

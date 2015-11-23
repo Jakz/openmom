@@ -106,15 +106,16 @@ public:
   const Palette* getPalette() const { return palette; }
 };
 
-struct LBXHolder
+struct LBXFile
 {
+  LBXFileID ident;
   std::string fileName;
   LBXHeader header;
   offset_list offsets;
   LBXSpriteData **sprites;
   
-  LBXHolder() : sprites(nullptr) { }
-  LBXHolder(std::string fileName) : fileName(fileName), sprites(nullptr) { }
+  LBXFile() : sprites(nullptr) { }
+  LBXFile(LBXFileID ident, std::string fileName) : ident(ident), fileName(fileName), sprites(nullptr) { }
   
   const u16 size() const { return header.count; }
 };
@@ -122,7 +123,7 @@ struct LBXHolder
 class LBXRepository
 {
 private:
-  static LBXHolder data[LBX_COUNT];
+  static LBXFile data[LBX_COUNT];
   
 public:
 
@@ -139,12 +140,12 @@ public:
     };
     
     for (int i = 0; i < LBX_COUNT; ++i)
-      data[i] = LBXHolder(names[i]);
+      data[i] = LBXFile(static_cast<LBXFileID>(i), names[i]);
   }
   
   static bool shouldAllocateLBX(LBXFileID ident) { return data[ident].sprites == nullptr; }
-  static const LBXHolder& loadLBX(LBXFileID ident);
-  static const LBXHolder& holderForID(LBXFileID ident) { return data[ident]; }
+  static const LBXFile& loadLBX(LBXFileID ident);
+  static const LBXFile& holderForID(LBXFileID ident) { return data[ident]; }
   
   static bool shouldAllocateSprite(LBXSpriteDataInfo& info) { return data[info.lbx].sprites[info.index] == nullptr; }
   static const LBXSpriteData* loadLBXSpriteData(const LBXSpriteDataInfo& info);

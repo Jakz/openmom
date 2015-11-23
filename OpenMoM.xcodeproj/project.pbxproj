@@ -98,6 +98,8 @@
 		04C1F4921B25374F00F7688A /* data in Resources */ = {isa = PBXBuildFile; fileRef = 040375C21979905100A5B5FC /* data */; };
 		04C729C119853F4E002F16E6 /* MainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729BF19853F4E002F16E6 /* MainView.cpp */; };
 		04C729C41985F1B1002F16E6 /* BookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729C21985F1B1002F16E6 /* BookView.cpp */; };
+		04E218861C02A386005784E1 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04E218841C02A386005784E1 /* format.cc */; };
+		04E218871C02A386005784E1 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04E218841C02A386005784E1 /* format.cc */; };
 		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
 		04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
 		04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4592197C9D7A00EA0CC0 /* Items.cpp */; };
@@ -285,6 +287,8 @@
 		04C729C019853F4E002F16E6 /* MainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainView.h; path = src/ui/views/MainView.h; sourceTree = SOURCE_ROOT; };
 		04C729C21985F1B1002F16E6 /* BookView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BookView.cpp; path = src/ui/parts/BookView.cpp; sourceTree = SOURCE_ROOT; };
 		04C729C31985F1B1002F16E6 /* BookView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BookView.h; path = src/ui/parts/BookView.h; sourceTree = SOURCE_ROOT; };
+		04E218841C02A386005784E1 /* format.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = format.cc; path = src/common/format.cc; sourceTree = SOURCE_ROOT; };
+		04E218851C02A386005784E1 /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = format.h; path = src/common/format.h; sourceTree = SOURCE_ROOT; };
 		04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnitSpec.cpp; path = src/game/units/UnitSpec.cpp; sourceTree = SOURCE_ROOT; };
 		04EE458D197C85C000EA0CC0 /* UnitSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitSpec.h; path = src/game/units/UnitSpec.h; sourceTree = SOURCE_ROOT; };
 		04EE458F197C92C400EA0CC0 /* GfxData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GfxData.cpp; path = src/ui/GfxData.cpp; sourceTree = SOURCE_ROOT; };
@@ -322,6 +326,7 @@
 		040375C7197990B900A5B5FC /* src */ = {
 			isa = PBXGroup;
 			children = (
+				040375CA197990B900A5B5FC /* common */,
 				040375C9197990B900A5B5FC /* game */,
 				040375CF197990B900A5B5FC /* gfx */,
 				040375E31979E82900A5B5FC /* ui */,
@@ -338,7 +343,6 @@
 		040375C9197990B900A5B5FC /* game */ = {
 			isa = PBXGroup;
 			children = (
-				040375CA197990B900A5B5FC /* common */,
 				04205398197DCDA800B4C2CA /* mechanics */,
 				040375CC197990B900A5B5FC /* players */,
 				04037607197ACFD300A5B5FC /* cities */,
@@ -358,12 +362,15 @@
 		040375CA197990B900A5B5FC /* common */ = {
 			isa = PBXGroup;
 			children = (
+				04E218841C02A386005784E1 /* format.cc */,
+				04E218851C02A386005784E1 /* format.h */,
 				04037622197B550F00A5B5FC /* Util.cpp */,
 				04037623197B550F00A5B5FC /* Util.h */,
 				0439E9B11986A3A60009BFF7 /* GUISettings.cpp */,
 				0439E9B21986A3A60009BFF7 /* GUISettings.h */,
 			);
-			path = common;
+			name = common;
+			path = game/common;
 			sourceTree = "<group>";
 		};
 		040375CC197990B900A5B5FC /* players */ = {
@@ -802,6 +809,7 @@
 				040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */,
 				0439E99B1986903A0009BFF7 /* MessageView.cpp in Sources */,
 				040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */,
+				04E218861C02A386005784E1 /* format.cc in Sources */,
 				040375F8197AB04700A5B5FC /* LocalPlayer.cpp in Sources */,
 				0439E9A4198690DB0009BFF7 /* ProductionView.cpp in Sources */,
 				040375FB197AB09000A5B5FC /* Game.cpp in Sources */,
@@ -843,6 +851,7 @@
 			files = (
 				04C1F47F1B25290C00F7688A /* main.cpp in Sources */,
 				04C1F4841B25358200F7688A /* LBX.cpp in Sources */,
+				04E218871C02A386005784E1 /* format.cc in Sources */,
 				04C1F4851B25359D00F7688A /* Font.cpp in Sources */,
 				04C1F4861B2535A800F7688A /* Gfx.cpp in Sources */,
 				04C1F4871B2535C000F7688A /* Buttons.cpp in Sources */,
@@ -1071,6 +1080,7 @@
 				04C1F47B1B25289000F7688A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

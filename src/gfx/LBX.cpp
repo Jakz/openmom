@@ -570,12 +570,12 @@ void LBX::load()
   
 }*/
 
-LBXHolder LBXRepository::data[LBX_COUNT];
+LBXFile LBXRepository::data[LBX_COUNT];
 
 
-const LBXHolder& LBXRepository::loadLBX(LBXFileID ident)
+const LBXFile& LBXRepository::loadLBX(LBXFileID ident)
 {
-  LBXHolder& lbx = data[ident];
+  LBXFile& lbx = data[ident];
   
   printf("Request to load %s\n", lbx.fileName.c_str());
   string name = path + lbx.fileName + ".lbx";
@@ -593,7 +593,7 @@ const LBXHolder& LBXRepository::loadLBX(LBXFileID ident)
 
 const LBXSpriteData* LBXRepository::loadLBXSpriteData(const LBXSpriteDataInfo &info)
 {
-  LBXHolder& lbx = data[info.lbx];
+  LBXFile& lbx = data[info.lbx];
   
   string name = path + lbx.fileName + ".lbx";
   FILE *in = fopen(name.c_str(), "rb");
@@ -706,7 +706,7 @@ void LBXView::selectLBX()
   {
     LBXRepository::loadLBX(static_cast<LBXFileID>(selectedLBX));
    
-    LBXHolder &lbx = LBXRepository::data[selectedLBX];
+    LBXFile &lbx = LBXRepository::data[selectedLBX];
     string_list fileNames;
     
     string name = path + lbx.fileName + ".lbx";
