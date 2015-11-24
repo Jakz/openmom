@@ -47,10 +47,10 @@ public:
 struct UnitGfxSpec
 {
   const SpriteInfo still;
-  const TextureID fullFigure;
+  const LBXSpriteDataInfo fullFigure;
   const bool isFlyingFigure;
   
-  UnitGfxSpec(SpriteInfo still, TextureID fullFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), isFlyingFigure(isFlyingFigure) { }
+  UnitGfxSpec(SpriteInfo still, LBXSpriteDataInfo fullFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), isFlyingFigure(isFlyingFigure) { }
 };
 
 

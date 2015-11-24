@@ -43,6 +43,8 @@ struct LBXSpriteDataInfo
   LBXFileID lbx;
   u16 index;
   LBXSpriteDataInfo(LBXFileID lbx, u16 index) : lbx(lbx), index(index) { }
+  
+  LBXSpriteDataInfo relative(s16 delta) const { return LBXSpriteDataInfo(lbx, index+delta); }
 };
 
 enum LBXFileID : u8
@@ -54,6 +56,18 @@ enum LBXFileID : u8
   LBX_MAINSCRN,
   LBX_MAIN,
   LBX_SPECFX,
+  LBX_FIGURE1,
+  LBX_FIGURE2,
+  LBX_FIGURE3,
+  LBX_FIGURE4,
+  LBX_FIGURE5,
+  LBX_FIGURE6,
+  LBX_FIGURE7,
+  LBX_FIGURE8,
+  LBX_FIGURE9,
+  LBX_FIGURE10,
+  LBX_FIGURE11,
+  LBX_FIGURE12,
   
   LBX_COUNT
 };

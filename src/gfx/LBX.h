@@ -136,7 +136,19 @@ public:
     "units2",
     "mainscrn",
     "main",
-    "specfx"
+    "specfx",
+    "figures1",
+    "figures2",
+    "figures3",
+    "figures4",
+    "figures5",
+    "figures6",
+    "figures7",
+    "figures8",
+    "figures9",
+    "figure10",
+    "figure11",
+    "figure12"
     };
     
     for (int i = 0; i < LBX_COUNT; ++i)

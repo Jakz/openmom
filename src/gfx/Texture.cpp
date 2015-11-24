@@ -185,22 +185,13 @@ const Texture Texture::textures[] =
   Texture(ITEM_CRAFT_ARROWS,"magic/view/item-craft-arrows.png",2,2,9,7),
   Texture(ITEMS,"units/items.png",8,16,17,17),
   
-
-  Texture(UNIT_MAGIC_SPIRIT,"units/figures/magic-spirit.png",4,8,28,30),
-  
-  Texture(UNIT_GREAT_DRAKE,"units/figures/great-drake.png",4,8,28,30),
-  Texture(UNIT_HELL_HOUND,"units/figures/hell-hound.png",4,8,28,30),
-  
   Texture(UNIT_BARBARIANS_SPEARMEN,"units/figures/barbarians/spearmen.png",4,8,28,30),
   Texture(UNIT_BARBARIANS_SWORDSMEN,"units/figures/barbarians/swordsmen.png",4,8,28,30),
   Texture(UNIT_BARBARIANS_BOWMEN,"units/figures/barbarians/bowmen.png",4,8,28,30),
   Texture(UNIT_BARBARIANS_CAVALRY,"units/figures/barbarians/cavalry.png",4,8,28,30),
   Texture(UNIT_BARBARIANS_SHAMAN,"units/figures/barbarians/shamans.png",4,8,28,30),
-  Texture(UNIT_BARBARIANS_BERSERKERS,"units/figures/barbarians/berserkers.png",4,8,28,30),
   Texture(UNIT_BARBARIANS_SETTLERS,"units/figures/barbarians/settlers.png",4,8,28,30),
-  
-  Texture(UNIT_HERO_DWARF,"units/figures/heroes/dwarf.png",4,8,28,30),
-  
+    
   /* altezza max help: 200 + 23 pezzo di chiusura da sovrapporre */
   Texture(HELP_BACKDROP,"static/help-backdrop.png",1,1,217,223),
   

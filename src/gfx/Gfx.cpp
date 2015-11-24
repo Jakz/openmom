@@ -13,6 +13,8 @@
 #include "Util.h"
 #include "SDL.h"
 
+#include "LBX.h"
+
 u32 Gfx::ticks = 0;
 u32 Gfx::fticks = 0;
 u32 Gfx::fticksr = 0;
@@ -573,6 +575,11 @@ void Gfx::draw(TextureID texture, u16 r, u16 c, s16 x, s16 y)
 void Gfx::draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r, u16 c)
 {
   blit(sheet, activeBuffer, 0, 0, x, y, sheet->sw(r,c), sheet->sh(r,c), r, c);
+}
+
+void Gfx::draw(const LBXSpriteDataInfo& info, s16 x, s16 y, u16 r, u16 c)
+{
+  draw(LBXRepository::spriteFor(info), x, y, r, c);
 }
 
 
