@@ -38,13 +38,13 @@ enum MouseButton : u8
 };
 
 enum LBXFileID : u8;
-struct LBXSpriteDataInfo
+struct LBXSpriteInfo
 {
   LBXFileID lbx;
   u16 index;
-  LBXSpriteDataInfo(LBXFileID lbx, u16 index) : lbx(lbx), index(index) { }
+  LBXSpriteInfo(LBXFileID lbx, u16 index) : lbx(lbx), index(index) { }
   
-  LBXSpriteDataInfo relative(s16 delta) const { return LBXSpriteDataInfo(lbx, index+delta); }
+  LBXSpriteInfo relative(s16 delta) const { return LBXSpriteInfo(lbx, index+delta); }
 };
 
 enum LBXFileID : u8

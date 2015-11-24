@@ -159,10 +159,10 @@ public:
   static const LBXFile& loadLBX(LBXFileID ident);
   static const LBXFile& holderForID(LBXFileID ident) { return data[ident]; }
   
-  static bool shouldAllocateSprite(LBXSpriteDataInfo& info) { return data[info.lbx].sprites[info.index] == nullptr; }
-  static const LBXSpriteData* loadLBXSpriteData(const LBXSpriteDataInfo& info);
+  static bool shouldAllocateSprite(LBXSpriteInfo& info) { return data[info.lbx].sprites[info.index] == nullptr; }
+  static const LBXSpriteData* loadLBXSpriteData(const LBXSpriteInfo& info);
   
-  static const LBXSpriteData* spriteFor(const LBXSpriteDataInfo& info) {
+  static const LBXSpriteData* spriteFor(const LBXSpriteInfo& info) {
     const LBXSpriteData* sprite = data[info.lbx].sprites[info.index];
     
     if (!sprite)

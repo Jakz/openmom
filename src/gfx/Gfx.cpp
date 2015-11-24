@@ -577,7 +577,7 @@ void Gfx::draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r, u16 c)
   blit(sheet, activeBuffer, 0, 0, x, y, sheet->sw(r,c), sheet->sh(r,c), r, c);
 }
 
-void Gfx::draw(const LBXSpriteDataInfo& info, s16 x, s16 y, u16 r, u16 c)
+void Gfx::draw(const LBXSpriteInfo& info, s16 x, s16 y, u16 r, u16 c)
 {
   draw(LBXRepository::spriteFor(info), x, y, r, c);
 }

@@ -591,7 +591,7 @@ const LBXFile& LBXRepository::loadLBX(LBXFileID ident)
   return lbx;
 }
 
-const LBXSpriteData* LBXRepository::loadLBXSpriteData(const LBXSpriteDataInfo &info)
+const LBXSpriteData* LBXRepository::loadLBXSpriteData(const LBXSpriteInfo &info)
 {
   LBXFile& lbx = data[info.lbx];
   
@@ -721,7 +721,7 @@ void LBXView::selectLBX()
 
 void LBXView::selectGFX()
 {
-  LBXSpriteDataInfo info = LBXSpriteDataInfo(static_cast<LBXFileID>(selectedLBX), selectedContent);
+  LBXSpriteInfo info = LBXSpriteInfo(static_cast<LBXFileID>(selectedLBX), selectedContent);
 
   if (LBXRepository::shouldAllocateSprite(info))
     LBXRepository::loadLBXSpriteData(info);  

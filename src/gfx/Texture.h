@@ -17,7 +17,7 @@
 #include <initializer_list>
 
 class SDL_Surface;
-struct LBXSpriteDataInfo;
+struct LBXSpriteInfo;
 
 enum TextureID : u16
 {

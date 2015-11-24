@@ -108,7 +108,7 @@ void CityView::draw()
   /* draw minimap */
   Viewport::drawCityViewport(player, g->world, city->getPosition());
   
-  Gfx::draw(LBXRepository::spriteFor(LBXSpriteDataInfo(LBX_BACKGRND, 6)), 0, 0);
+  Gfx::draw(LBXRepository::spriteFor(LBXSpriteInfo(LBX_BACKGRND, 6)), 0, 0);
   
   
   //Gfx::draw(TextureID::CITY_VIEW_BACKDROP, 0, 0);

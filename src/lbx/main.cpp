@@ -256,7 +256,7 @@ public:
       
       if (!currentLBX->sprites[selection])
       {
-        LBXRepository::loadLBXSpriteData(LBXSpriteDataInfo(currentLBX->ident, selection));
+        LBXRepository::loadLBXSpriteData(LBXSpriteInfo(currentLBX->ident, selection));
       }
       
       mywindow->setData(currentLBX->sprites[selection]);

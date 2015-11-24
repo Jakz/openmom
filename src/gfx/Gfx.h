@@ -116,7 +116,7 @@ public:
   static void draw(TextureID texture, u16 r, u16 c, s16 x, s16 y);
 
   static void draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r = 0, u16 c = 0);
-  static void draw(const LBXSpriteDataInfo& info, s16 x, s16 y, u16 r = 0, u16 c = 0);
+  static void draw(const LBXSpriteInfo& info, s16 x, s16 y, u16 r = 0, u16 c = 0);
 
 
   static void drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset);
