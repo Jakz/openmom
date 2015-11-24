@@ -16,13 +16,6 @@
 
 using namespace std;
 
-bool operator<(const CombatUnit &c1, const CombatUnit &c2)
-{
-  if (c1.y < c2.y) return true;
-  else if (c1.x < c2.x) return true;
-  else return false;
-}
-
 constexpr const s16 Combat::DIRS[12][2];
 constexpr const u16 Combat::DIRS_LENGTH;
 
@@ -78,18 +71,40 @@ void Combat::attack(CombatUnit *u1, CombatUnit *u2)
   u2->getOwner()->push(new anims::CombatAttack(u2));
 }
 
-s16 Combat::relativeFacing(CombatUnit *u1, CombatUnit *u2)
+Facing Combat::relativeFacing(CombatUnit *u1, CombatUnit *u2)
 {
   for (int i = 0; i < 8; ++i)
     if (u1->x+dirs(i,u1->y%2 == 0)[0] == u2->x && u1->y+dirs(i,u1->y%2 == 0)[1] == u2->y)
-      return i;
+      return static_cast<Facing>(i);
   
-  return -1;
+  return Facing::NORTH;
+}
+
+void Combat::sortUnits()
+{
+  sort(begin(allUnits), end(allUnits), [](const CombatUnit* u1, const CombatUnit* u2) { return *u1 < *u2; });
 }
 
 void Combat::deployUnits()
 {
   // TODO
+  int x = 2, y = 3;
+  
+  for (auto* unit : allUnits)
+  {
+    unit->x = x;
+    unit->y = y;
+    ++y;
+    
+    if (unit == *allUnits.begin())
+    {
+      unit->x = 0; unit->y = 0;
+    }
+  }
+  
+  
+  
+  sortUnits();
 }
 
 const position_map& Combat::reachable(CombatUnit *unit)

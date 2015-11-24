@@ -17,11 +17,12 @@
 #include "ViewManager.h"
 #include "Gfx.h"
 #include "Texture.h"
+#include "UnitDraw.h"
 
 constexpr u16 W = 10;
-constexpr u16 H = 19;
-constexpr u16 OX = 1;
-constexpr u16 OY = 2;
+constexpr u16 H = 20;
+constexpr u16 OX = 0;
+constexpr u16 OY = 8;
 const int dirs[][2] = {{0,-2},{0,-1},{1,-1},{1,0},{0,1},{1,1},{0,2},{-1,1},{0,1},{-1,0},{-1,-1},{0,-1}};
 
 
@@ -31,6 +32,14 @@ CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1))
 }
 
 ScreenCoord CombatView::coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
+
+void CombatView::activate()
+{
+  Player* p1 = *g->getPlayers().begin();
+  Player* p2 = *std::next(g->getPlayers().begin());
+  
+  this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin());
+}
 
 
 void CombatView::draw()
@@ -89,6 +98,7 @@ void CombatView::draw()
         Gfx.draw(Texture.COMBAT_MISC_TILES, 0, 2, x, y);
     }
   }
+   
   
   Collections.sort(player.combat.units);
   for (CombatUnit cunit : player.combat.units)
@@ -111,6 +121,22 @@ void CombatView::draw()
   if (player.spellTarget() != null && player.spellTarget() != Target.NONE)
     Fonts.drawString("Spell", Fonts.Face.TEAL_MEDIUM, 20, 20, Align.LEFT);
   */
+  
+  const auto& allUnits = combat->getUnits();
+  
+  for (CombatUnit* unit : allUnits)
+  {
+    ScreenCoord coords = coordsForTile(unit->x, unit->y);
+    
+    if (unit->selected)
+    {
+      Gfx::draw(SpriteInfo(TextureID::COMBAT_MISC_TILES, 0, 1), coords.x, coords.y);
+    }
+    
+    //if (player->shouldDrawSelectedArmy() || player->)
+    UnitDraw::drawUnitIsoCombat(unit->getUnit(), coords.x, coords.y - 17, Facing::EAST, UnitDraw::CombatAction::STAY);
+  }
+  
   
   Gfx::drawClipped(TextureID::COMBAT_BACKDROP, 0, 200-36, 0, 0, 320, 36);
 
@@ -267,7 +293,9 @@ void CombatView::mouseMoved(u16 x, u16 y, MouseButton b)
       }
     }
     
-    if (hover.x < 0 || hover.y < 0 || hover.y > 18 || (hover.y%2 == 1 && hover.x == 9))
+    if (hover.x < 0 || hover.y < 0 || hover.y > H-1 || (hover.y%2 == 1 && hover.x == 9))
       hover.x = -1;
+    
+    //printf("HOVER: %d %d\n", hover.x, hover.y);
   }
 }

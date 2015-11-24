@@ -9,6 +9,18 @@
 
 class HitPoints;
 
+enum class Facing
+{
+  NORTH = 0,
+  NORTH_EAST,
+  EAST,
+  SOUTH_EAST,
+  SOUTH,
+  SOUTH_WEST,
+  WEST,
+  NORTH_WEST
+};
+
 class Damage
 {
 public:
@@ -63,7 +75,7 @@ private:
   Player* player;
   
 public:
-  CombatUnit(Unit* unit) : unit(unit), player(unit->getArmy()->getOwner()), moves(unit->getProperty(Property::MOVEMENT)), selected(false) { }
+  CombatUnit(Unit* unit) : unit(unit), player(unit->getArmy()->getOwner()), moves(unit->getProperty(Property::MOVEMENT)), selected(false), facing(Facing::NORTH) { }
   
   Player* const getOwner() { return player; }
   
@@ -72,14 +84,19 @@ public:
   Unit* getUnit() const { return unit; }
   
   void setPosition(u16 x, u16 y) { this-> x = x; this->y = y; }
-  void setPosition(u16 x, u16 y, u16 facing) { setPosition(x,y); this->facing = facing; }
+  void setPosition(u16 x, u16 y, Facing facing) { setPosition(x,y); this->facing = facing; }
   
   bool hasMoves() const { return moves > 0; }
   
-  friend bool operator<(const CombatUnit &c1, const CombatUnit &c2);
+  bool operator<(const CombatUnit &c2) const
+  {
+    if (x < c2.x) return true;
+    else if (y < c2.y) return true;
+    return false;
+  }
   
   u16 x, y;
-  s16 facing;
+  Facing facing;
   u16 moves;
   bool selected;
 };
@@ -125,7 +142,7 @@ private:
   
   cast_list spells;
   Player* players[2];
-  std::list<CombatUnit*> allUnits;
+  std::vector<CombatUnit*> allUnits;
   std::list<CombatUnit*> units[2];
   
   CombatUnit* selectedUnit;
@@ -148,7 +165,7 @@ public:
   
   void attack(CombatUnit *u1, CombatUnit *u2);
   
-  s16 relativeFacing(CombatUnit *u1, CombatUnit *u2);
+  Facing relativeFacing(CombatUnit *u1, CombatUnit *u2);
   
   void moveUnit(CombatUnit *unit, u16 x, u16 y);
   
@@ -157,7 +174,10 @@ public:
   const position_map& reachable(CombatUnit* unit);
   
   void deployUnits();
+  void sortUnits();
   
+  const std::vector<CombatUnit*>& getUnits() { return allUnits; }
+
   void deselect()
   {
     selectedUnit->selected = false;

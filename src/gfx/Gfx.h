@@ -86,7 +86,7 @@ public:
   static void canvasBlit(SpriteSheet* gsrc, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 c = 0, u16 r = 0) { blit(gsrc, canvas, fx, fy, tx, ty, w, h); }
 
   static void blit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 r = 0, u16 c = 0) { rawBlit(gsrc,gdst,fx,fy,tx,ty,w,h,r,c); }
-  static void rawBlit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 r = 0, u16 c = 0);
+  static void rawBlit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, s16 tx, s16 ty, u16 w, u16 h, u16 r = 0, u16 c = 0);
 
   static void drawPixel(u32 color, u16 x, u16 y);
   static void drawLine(u32 color, u16 x1, u16 y1, u16 x2, u16 y2);
@@ -112,7 +112,7 @@ public:
   static void rawDraw(TextureID texture, u16 r, u16 c, u16 x, u16 y);
   static void draw(TextureID texture, u16 x, u16 y);
   static void draw(TextureID texture, u16 i, u16 x, u16 y);
-  static void draw(TextureID texture, u16 r, u16 c, u16 x, u16 y);
+  static void draw(TextureID texture, u16 r, u16 c, s16 x, s16 y);
 
   static void draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r = 0, u16 c = 0);
 

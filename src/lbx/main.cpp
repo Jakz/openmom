@@ -56,13 +56,7 @@ public:
     Fl::add_timeout(0.25, Timer_CB, (void*)this);
 
   }
-  
-  struct Antani
-  {
-    int width = 80;
-    int height = 100;
-  };
-  
+
   void setData(const LBXSpriteData* sprite) { this->sprite = sprite; }
   
   void draw() override

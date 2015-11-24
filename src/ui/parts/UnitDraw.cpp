@@ -19,7 +19,7 @@
 #include "LocalPlayer.h"
 #include "Game.h"
 
-void UnitDraw::drawStatic(const Army *army, u16 x, u16 y)
+void UnitDraw::drawStatic(const Army *army, s16 x, s16 y)
 {
   if ((army != LocalGame::i->currentPlayer()->getSelectedArmy()) || (Gfx::fticks % 6) < 3)
   {
@@ -55,7 +55,7 @@ void UnitDraw::drawStatic(const Army *army, u16 x, u16 y)
   }
 }
 
-void UnitDraw::drawStatic(const Unit *unit, u16 x, u16 y, bool backdrop, bool grayScale)
+void UnitDraw::drawStatic(const Unit *unit, s16 x, s16 y, bool backdrop, bool grayScale)
 {
   if (backdrop)
     Gfx::draw(TextureID::UNITS_COLOR_BACKDROP, 0, unit->getArmy()->getOwner()->color, x, y);
@@ -76,7 +76,7 @@ void UnitDraw::drawStatic(const Unit *unit, u16 x, u16 y, bool backdrop, bool gr
   Gfx::unbindColorMap();
 }
 
-void UnitDraw::rawDrawStatic(const Army *army, u16 x, u16 y)
+void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
 {
   Gfx::rawDraw(TextureID::UNITS_COLOR_BACKDROP, 0, army->getOwner()->color, x, y);
   const Unit* first = army->get(0);
@@ -93,7 +93,7 @@ void UnitDraw::rawDrawStatic(const Army *army, u16 x, u16 y)
   Gfx::unbindColorMap();
 }
 
-void UnitDraw::drawHeroPortrait(const Hero *unit, u16 x, u16 y)
+void UnitDraw::drawHeroPortrait(const Hero *unit, s16 x, s16 y)
 {
   // TODO: we need a mapping from HeroSpec* -> u8 in GfxData
 }
@@ -106,7 +106,7 @@ static const IsoOffset ISO_4FIGURES[] = {{+2,-4},{+11,+1},{-8,+1},{+2,+6}};
 static const IsoOffset ISO_6FIGURES[] = {{+1,-5},{+4,-1},{+10,+2},{-10,0},{-3,+3},{+1,+7}};
 static const IsoOffset ISO_8FIGURES[] = {{+1,-5},{+7,-2},{+11,0},{-2,-1},{+4,+1},{-10,0},{-4,+3},{+2,+6}};
 
-void UnitDraw::drawUnitIso(const UnitSpec *unit, u16 x, u16 y, const Unit *realUnit)
+void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realUnit)
 {
   Gfx::drawClipped(TextureID::UNIT_DETAIL_SPECIAL_THINGS, x, y, 0, 0, 40, 33);
   x += 6;
@@ -152,7 +152,7 @@ static const IsoOffset ISOC_4FIGURES[] = {{2,-4},{11,1},{-8,1,},{2,6}};
 static const IsoOffset ISOC_6FIGURES[] = {{1,-5},{4,-1},{10,2},{-10,0},{-3,3},{1,7}};
 static const IsoOffset ISOC_8FIGURES[] = {{1,-5},{7,-2},{11,0},{-2,-1},{4,1},{-10,0},{-4,3},{2,6}};
 
-void UnitDraw::drawUnitIsoCombat(const Unit *unit, u16 x, u16 y, s16 facing, CombatAction caction)
+void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Facing facing, CombatAction caction)
 {
   int action = 1;
   
@@ -177,22 +177,24 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, u16 x, u16 y, s16 facing, Com
 
   TextureID texture = GfxData::unitGfxSpec(&unit->spec).fullFigure;
   
+  u8 ifacing = static_cast<u8>(facing);
+  
   switch (unit->spec.figures)
   {
     case 1:
-      Gfx::draw(texture, action, facing, x+1, y+2);
+      Gfx::draw(texture, action, ifacing, x+1, y+2);
       break;
     case 4:
       for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
-        Gfx::draw(texture, action, facing, x+ISOC_4FIGURES[i].x, y+ISOC_4FIGURES[i].y);
+        Gfx::draw(texture, action, ifacing, x+ISOC_4FIGURES[i].x, y+ISOC_4FIGURES[i].y);
       break;
     case 6:
       for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
-        Gfx::draw(texture, action, facing, x+ISOC_6FIGURES[i].x, y+ISOC_6FIGURES[i].y);
+        Gfx::draw(texture, action, ifacing, x+ISOC_6FIGURES[i].x, y+ISOC_6FIGURES[i].y);
       break;
     case 8:
       for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
-        Gfx::draw(texture, action, facing, x+ISOC_8FIGURES[i].x, y+ISOC_8FIGURES[i].y);
+        Gfx::draw(texture, action, ifacing, x+ISOC_8FIGURES[i].x, y+ISOC_8FIGURES[i].y);
       break;
     default: break;
       

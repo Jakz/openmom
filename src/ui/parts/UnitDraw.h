@@ -16,6 +16,8 @@ class Unit;
 class UnitSpec;
 class Hero;
 
+enum class Facing;
+
 class UnitDraw
 {
 public:
@@ -26,13 +28,13 @@ public:
     ATTACK
   };
   
-  static void drawStatic(const Army* army, u16 x, u16 y);
-  static void drawStatic(const Unit* unit, u16 x, u16 y, bool backdrop, bool grayScale);
-  static void rawDrawStatic(const Army* army, u16 x, u16 y);
-  static void drawUnitIso(const UnitSpec* unit, u16 x, u16 y, const Unit* realUnit);
-	static void drawHeroPortrait(const Hero* unit, u16 x, u16 y);
+  static void drawStatic(const Army* army, s16 x, s16 y);
+  static void drawStatic(const Unit* unit, s16 x, s16 y, bool backdrop, bool grayScale);
+  static void rawDrawStatic(const Army* army, s16 x, s16 y);
+  static void drawUnitIso(const UnitSpec* unit, s16 x, s16 y, const Unit* realUnit);
+	static void drawHeroPortrait(const Hero* unit, s16 x, s16 y);
 
-  static void drawUnitIsoCombat(const Unit* unit, u16 x, u16 y, s16 facing, CombatAction caction);
+  static void drawUnitIsoCombat(const Unit* unit, s16 x, s16 y, Facing facing, CombatAction caction);
 
 };
 

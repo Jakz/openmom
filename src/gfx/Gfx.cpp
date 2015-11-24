@@ -328,9 +328,9 @@ void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
   u8 g = (color & 0x0000FF00) >> 8;
   u8 b = (color & 0x000000FF);
   
-  for (u32 y = 0; y < rect.h; ++y)
+  for (s32 y = 0; y < rect.h; ++y)
   {
-    for (u32 x = 0; x < rect.w; ++x)
+    for (s32 x = 0; x < rect.w; ++x)
     {
       if (x+rect.x < canvas->tw() && y+rect.y < canvas->th() && x+rect.x >= 0 && y+rect.y >= 0)
       {
@@ -358,14 +358,14 @@ void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
 }
 
 #define ALPHA_SHIFT (1)
-void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 r, u16 c)
+void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s16 tx, s16 ty, u16 w, u16 h, u16 r, u16 c)
 {
   lock(gsrc);
   lock(gdst);
 
-  for (u32 y = 0; y < h; ++y)
+  for (s32 y = 0; y < h; ++y)
   {
-    for (u32 x = 0; x < w; ++x)
+    for (s32 x = 0; x < w; ++x)
     {
       if (x+tx < gdst->tw() && y+ty < gdst->th() && x+tx >= 0 && y+ty >= 0)
       {
@@ -563,7 +563,7 @@ void Gfx::draw(TextureID texture, u16 i, u16 x, u16 y)
   draw(texture, i / tex->cols, i % tex->cols, x, y);
 }
 
-void Gfx::draw(TextureID texture, u16 r, u16 c, u16 x, u16 y)
+void Gfx::draw(TextureID texture, u16 r, u16 c, s16 x, s16 y)
 {
   const Texture* tex = Texture::get(texture);
   

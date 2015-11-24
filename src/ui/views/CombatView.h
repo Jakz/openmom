@@ -48,7 +48,7 @@ private:
 public:
   CombatView(ViewManager* gvm);
   
-  void activate() override { }
+  void activate() override;
   void deactivate() override { }
   
   ScreenCoord coordsForTile(u16 x, u16 y);

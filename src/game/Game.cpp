@@ -41,7 +41,18 @@ void Game::init()
 void Game::dummyInit()
 {
   LocalPlayer *player = new LocalPlayer(this, "Kali", Data::wizard(KALI), GREEN, Race::race(RaceID::BARBARIANS), 60, 40);
+  LocalPlayer *player2 = new LocalPlayer(this, "Antani", Data::wizard(MERLIN), BLUE, Race::race(RaceID::BARBARIANS), 60, 40);
+
+  
+  Army* army2 = new Army(player2, {
+		new FantasticUnit(*UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT)),
+    new RaceUnit(*UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS)),
+  });
+  
+  player2->add(army2);
+  
   players.push_back(player);
+  players.push_back(player2);
   current = players.begin();
   
   world->fill(TILE_WATER, ARCANUS);
