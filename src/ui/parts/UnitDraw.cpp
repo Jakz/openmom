@@ -140,11 +140,11 @@ void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realU
   
   for (int i = 0; i < unit->figures; ++i)
   {    
-    Gfx::draw(GfxData::unitGfxSpec(unit).fullFigure, 2, 2, x+o[i].x, y+o[i].y);
+    Gfx::draw(GfxData::unitGfxSpec(unit).fullFigure.relative(2), x+o[i].x, y+o[i].y, 2);
     
     //FIXME: commented to test lbx
     /*if (glow != NO_SCHOOL)
-      Gfx::drawGlow(GfxData::unitGfxSpec(unit).fullFigure, 2, 2, x+o[i].x, y+o[i].y, glow);*
+      Gfx::drawGlow(GfxData::unitGfxSpec(unit).fullFigure, x+o[i].x, y+o[i].y, 2, 2, glow);*
      */
   }
 }
@@ -179,26 +179,23 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Facing facing, 
 
   const LBXSpriteInfo& sprite = GfxData::unitGfxSpec(&unit->spec).fullFigure.relative(static_cast<u8>(facing));
   
-  switch (unit->spec.figures)
-  {
-    case 1:
-      Gfx::draw(sprite, x+1, y+2, action);
-      break;
-    case 4:
-      for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
-        Gfx::draw(sprite, x+ISOC_4FIGURES[i].x, y+ISOC_4FIGURES[i].y, action);
-      break;
-    case 6:
-      for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
-        Gfx::draw(sprite, x+ISOC_6FIGURES[i].x, y+ISOC_6FIGURES[i].y, action);
-      break;
-    case 8:
-      for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
-        Gfx::draw(sprite, x+ISOC_8FIGURES[i].x, y+ISOC_8FIGURES[i].y, action);
-      break;
-    default: break;
-      
+  School glow = unit->glow();
+  
+  const IsoOffset* offsets = nullptr;
+  
+  switch (unit->spec.figures) {
+    case 1: offsets = ISOC_1FIGURES; break;
+    case 4: offsets = ISOC_4FIGURES; break;
+    case 6: offsets = ISOC_6FIGURES; break;
+    case 8: offsets = ISOC_8FIGURES; break;
   }
   
+  for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
+  {
+    Gfx::draw(sprite, x + offsets[i].x, y + offsets[i].y, action);
+    if (glow != School::NO_SCHOOL)
+      Gfx::drawGlow(sprite, x + offsets[i].x, y + offsets[i].y, action, 0, glow); // TODO: 0 (col) shouldn't be needed with LBX management
+  }
+
   Gfx::unbindColorMap();
 }

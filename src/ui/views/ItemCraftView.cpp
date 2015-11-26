@@ -62,7 +62,7 @@ void ItemCraftView::draw()
 {
   Gfx::draw(TextureID::ITEM_CRAFT_BACKDROP, 0, 0);
   Gfx::draw(TextureID::ITEMS, Item::typeForItem(currentType)->startOffset + currentItemGfx, 7, 6);
-  Gfx::drawGlow(TextureID::ITEMS, Item::typeForItem(currentType)->startOffset + currentItemGfx, 7, 6, school);
+  Gfx::drawGlow(TextureID::ITEMS, 7, 6, Item::typeForItem(currentType)->startOffset + currentItemGfx, school);
   
   Fonts::drawString(itemName, FontFaces::Small::GRAY_ITEM_CRAFT, 29, 12, ALIGN_LEFT);
 

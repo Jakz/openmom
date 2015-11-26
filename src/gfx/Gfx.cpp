@@ -598,18 +598,23 @@ void Gfx::draw(const SpriteInfo& info, u16 x, u16 y)
   draw(info.texture, info.x, info.y, x, y);
 }
 
+void Gfx::drawGlow(const SpriteInfo& info, s16 x, s16 y, School school) { drawGlow(Texture::get(info.texture), x, y, info.x, info.y, school); }
 
-void Gfx::drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color)
+void Gfx::drawGlow(const LBXSpriteInfo& info, s16 x, s16 y, s16 r, s16 c, School color)
+{
+  drawGlow(LBXRepository::spriteFor(info), x, y, r, c, color);
+}
+
+void Gfx::drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School color)
 {
   //TODO: sometimes it looks like it fails (like great drake iso with glow)
-  const Texture* tex = Texture::get(texture);
 
-  s32 w = tex->sw(r,c);
-  s32 h = tex->sh(r,c);
+  s32 w = sprite->sw(r,c);
+  s32 h = sprite->sh(r,c);
   
   resetBuffer((w+2)*2,h+2);
   bindBuffer();
-  draw(texture,r,c,1,1);
+  draw(sprite,1,1,r,c);
   bindCanvas();
   
   lock(buffer);
@@ -653,10 +658,10 @@ void Gfx::drawGlow(TextureID texture, s16 r, s16 c, s16 x, s16 y, School color)
   mergeBuffer(w+2, 0, x-1, y-1, w+2, h+2);
 }
 
-void Gfx::drawGlow(TextureID texture, s16 i, s16 x, s16 y, School school)
+void Gfx::drawGlow(TextureID texture, s16 x, s16 y, s16 i, School school)
 {
   const Texture* tex = Texture::get(texture);
-  drawGlow(texture, i/tex->cols, i%tex->cols, x, y, school);
+  drawGlow(tex, x, y, i/tex->cols, i%tex->cols, school);
 }
 
 void Gfx::drawGrayScale(TextureID texture, u16 r, u16 c, u16 x, u16 y)

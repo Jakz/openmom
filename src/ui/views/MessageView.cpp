@@ -25,7 +25,7 @@ MessageView::MessageView(ViewManager* gvm) : View(gvm), message(nullptr)
   buttons.resize(BUTTON_COUNT);
   
   buttons[NO] = TristateButton::build("No", 0, 0, TextureID::MESSAGE_CONFIRM_BUTTONS, 0)->setAction([this]() { discardMessage(); });
-  buttons[YES] = TristateButton::build("Yes", 30, 0, TextureID::MESSAGE_CONFIRM_BUTTONS, 0);
+  buttons[YES] = TristateButton::build("Yes", 30, 0, TextureID::MESSAGE_CONFIRM_BUTTONS, 1);
 }
 
 void MessageView::handleMessage()
@@ -38,7 +38,7 @@ void MessageView::handleMessage()
     
     if (message->type == msgs::Message::Type::CONFIRM)
     {
-      buttons[YES]->setAction([this](){ (buttons[YES]->getAction())(); discardMessage(); });
+      buttons[YES]->setAction([this](){ (buttons[YES]->getAction())(); discardMessage(); }); // FIXME: understand behavior and fix because now it's a stackoverflow
 
       buttons[NO]->show();
       buttons[YES]->show();

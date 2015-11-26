@@ -12,20 +12,12 @@
 #include <string>
 #include <functional>
 
+#include "Gfx.h"
+
 #define MAX_ROWS 100
 #define MAX_COLS 100
 
 using namespace std;
-
-std::string names[] = {
-  "armylist",
-  "backgrnd",
-  "units1",
-  "units2",
-  "mainscrn",
-  "main",
-  "specfx"
-};
 
 constexpr int FIRST_TABLE_WIDTH = 150;
 constexpr int SECOND_TABLE_WIDTH = 320;
@@ -51,7 +43,7 @@ private:
   const LBXSpriteData* sprite;
 
 public:
-  MyWindow() : Fl_Double_Window(WINDOW_WIDTH, WINDOW_HEIGHT), sprite(nullptr)
+  MyWindow() : Fl_Double_Window(WINDOW_WIDTH, WINDOW_HEIGHT, "LBX Explorer 0.1"), sprite(nullptr)
   {
     Fl::add_timeout(0.25, Timer_CB, (void*)this);
 
@@ -67,7 +59,7 @@ public:
 
     if (sprite)
     {
-      int sx = 302+322+50;
+      int sx = FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+50;
       int sy = 50;
       
       for (int i = 0; i < sprite->count; ++i)
@@ -83,7 +75,21 @@ public:
         {
           for (size_t y = 0; y < h; ++y)
           {
-            Color pixel = sprite->palette->get(sprite->data[i][x + y*w]);
+            u8 index = sprite->data[i][x + y*w];
+            
+            Color pixel;
+            
+            /*constexpr int DELTA = 256 - 32;
+            if (index < DELTA)*/
+            {
+              pixel = sprite->palette->get(index);
+            }
+            /*else
+            {
+              int delta = 32 - (index - DELTA);
+              pixel = RGB((7 + delta*2) << 2, (4 + (delta/2)) << 2, (2 + (delta/2)) << 2);
+            }*/
+            
             u8 r = GET_RED(pixel), g = GET_GREEN(pixel), b = GET_BLUE(pixel);
             
             tdata[x*S*3 + y*w*3*S*S] = r; tdata[x*S*3 + 1 + y*w*3*S*S] = g; tdata[x*S*3 + 2 + y*w*3*S*S] = b;
@@ -96,13 +102,50 @@ public:
           }
         }
         
-        fl_draw_image(tdata, sx, sy+(h+2)*S*i, w*S, h*S);
+        if (sy+h*S >= WINDOW_HEIGHT)
+        {
+          sy = 50;
+          sx += w*S+2;
+        }
+  
+        fl_draw_image(tdata, sx, sy, w*S, h*S);
+        
+        sy += h*S+2;
+        
+
         
         delete [] tdata;
       }
       
+      // draw palette
       
-
+      const int PW = 10;
+      
+      for (int p = 0; p < 2; ++p)
+      {
+        u8 *palette = new u8[3*768*PW];
+        
+        for (size_t i = 0; i < 256; ++i)
+        {
+          u8* base = palette+(PW*3*3)*i;
+          Color pixel = p == 0 ? Gfx::PALETTE[i] : sprite->palette->get(i);
+          u8 r = GET_RED(pixel), g = GET_GREEN(pixel), b = GET_BLUE(pixel);
+          
+          for (size_t x = 0; x < PW; ++x)
+          {
+            for (size_t y = 0; y < 3; ++y)
+            {
+              base[0+x*3+y*(PW*3)] = r;
+              base[1+x*3+y*(PW*3)] = g;
+              base[2+x*3+y*(PW*3)] = b;
+            }
+          }
+        }
+        
+        fl_draw_image(palette, FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+16*p, 0, PW, 768);
+        
+        delete[] palette;
+      }
     }
   }
   
@@ -123,7 +166,7 @@ private:
 public:
   LBXTable() : Fl_Table(0,0,FIRST_TABLE_WIDTH,800), selection(-1)
   {
-    rows(extent<decltype(names)>::value);             // how many rows
+    rows(LBX_COUNT);             // how many rows
     row_height_all(20);         // default height of rows
     row_resize(0);              // disable row resizing
     // Cols
@@ -150,7 +193,9 @@ public:
       selection = callback_row();
       
       if (holder(selection).sprites == nullptr)
+      {
         LBXRepository::loadLBX(static_cast<LBXFileID>(selection));
+      }
       
       currentLBX = &holder(selection);
       
@@ -235,6 +280,7 @@ public:
     cols(4);             // how many columns
     col_header(1);              // enable column headers (along top)
     col_width_all(SECOND_TABLE_WIDTH/4);          // default width of columns
+    col_width(0, 30);
     when(FL_WHEN_RELEASE);
     callback(mycallback, this);
     end();
@@ -281,7 +327,7 @@ public:
         return;
       case CONTEXT_COL_HEADER:
       {
-        static const char* columnNames[] = {"Sprite Name", "Size", "#", "Palette?"};
+        static const char* columnNames[] = {"#", "Sprite Name", "Spec", "Palette?"};
         DrawHeader(columnNames[COL], X, Y, W, H);
         return;
       }
@@ -296,21 +342,23 @@ public:
         
         LBXSpriteData* sprite = currentLBX->sprites[ROW];
         
-        if (sprite)
-        {
-          if (COL == 1)
-            fl_draw(fmt::sprintf("%ux%u", sprite->width, sprite->height).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
-          else if (COL == 2)
-            fl_draw(fmt::sprintf("%u", sprite->count).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
-          
-          //window->redraw();
-        }
+        if (COL == 0)
+          fl_draw(fmt::sprintf("%u", ROW).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
         else
         {
-          if (COL == 0)
-            fl_draw("NOT LOADED", X, Y, W, H, FL_ALIGN_CENTER);
+          if (sprite)
+          {
+            if (COL == 2)
+              fl_draw(fmt::sprintf("%ux%u (%u)", sprite->width, sprite->height, sprite->count).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+            
+            //window->redraw();
+          }
+          else
+          {
+            if (COL == 1)
+              fl_draw("NOT LOADED", X, Y, W, H, FL_ALIGN_CENTER);
+          }
         }
-
 
         return;
       }

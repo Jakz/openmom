@@ -24,12 +24,21 @@
 
 #include <SDL2/SDL.h>
 
+/* FORMAT */
+
+/* HEADER
+ 
+ 2 bytes element count
+ 4 bytes magic number (0x0000FEAD)
+ 2 bytes type
+
+*/
+
+
+
+
+
 using namespace std;
-
-
-
-
-
 
 const Color BLACK_ALPHA = RGB(0, 255, 0);
 const Color TRANSPARENT = RGB(255, 0, 255);
@@ -263,42 +272,24 @@ LBXSpriteData* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
     else if (i == 0)
       palette[i] = TRANSPARENT; //palette[i] = 0x00000000;
   }
-  
-  
-  //SDL_Surface *image = Gfx::createSurface(gfxHeader.width, gfxHeader.height);
-  //SDL_LockSurface(image);
-  //sprite->surface = image;
-  
+
   for (int i = 0; i < gfxHeader.count; ++i)
   {
-    //SDL_FillRect(image, nullptr, TRANSPARENT);
-    
     u32 dataSize = frameOffsets[i+1] - frameOffsets[i];
-    //Color* image = new Color[gfxHeader.width*gfxHeader.height];
     
     fseek(in, offset+frameOffsets[i], SEEK_SET);
     u8* data = new u8[dataSize];
     fread(data, sizeof(u8), dataSize, in);
     printf("      FRAME %d AT OFFSET %d (SIZE: %d)\n", i, frameOffsets[i], dataSize);
     
+    // copy previous frame into current
+    if (i > 0)
+      std::copy(sprite->data[i-1], sprite->data[i-1]+(sprite->width*sprite->height), sprite->data[i]);
     
     scanGfxFrame(gfxHeader, paletteHeader, i, sprite->data[i], data, dataSize);
-    
-    /*for (int ww = 0; ww < sprite->width; ++ww)
-      for (int hh = 0; hh < sprite->height; ++hh)
-        static_cast<Color*>(sprite->surface->pixels)[ww+sprite->width*hh] = sprite->palette->get(sprite->data[i][ww+sprite->width*hh]);*/
-    
-    //SDL_UnlockSurface(image);
-    //SDL_SaveBMP(image, (to_string(offset)+" "+to_string(i)+".bmp").c_str());
-    
-    
+
     delete [] data;
-   
   }
-  
-  //SDL_FreeSurface(image);
-  //delete [] palette;
-  
   
   return sprite;
 }

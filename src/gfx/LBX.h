@@ -148,7 +148,8 @@ public:
     "figures9",
     "figure10",
     "figure11",
-    "figure12"
+    "figure12",
+    "spellscr"
     };
     
     for (int i = 0; i < LBX_COUNT; ++i)
