@@ -294,7 +294,7 @@ LBXSpriteData* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
   return sprite;
 }
 
-void LBX::scanFileNames(LBXHeader& header, offset_list& offsets, string_list& names, FILE *in)
+void LBX::scanFileNames(const LBXHeader& header, const offset_list& offsets, string_list& names, FILE *in)
 {
   fseek(in, offsets[0] - sizeof(LBXFileName)*header.count, SEEK_SET);
   
@@ -468,6 +468,13 @@ void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
   }
 }
 
+FILE* LBX::getDescriptor(const LBXFile& lbx)
+{
+  printf("Request to load %s\n", lbx.fileName.c_str());
+  string name = path + lbx.fileName + ".lbx";
+  return fopen(name.c_str(), "rb");
+}
+
 void LBX::load()
 {
   {
@@ -563,15 +570,11 @@ void LBX::load()
 
 LBXFile LBXRepository::data[LBX_COUNT];
 
-
 const LBXFile& LBXRepository::loadLBX(LBXFileID ident)
 {
   LBXFile& lbx = data[ident];
-  
-  printf("Request to load %s\n", lbx.fileName.c_str());
-  string name = path + lbx.fileName + ".lbx";
-  
-  FILE *in = fopen(name.c_str(), "rb");
+    
+  FILE *in = LBX::getDescriptor(lbx);
   LBX::loadHeader(lbx.header, lbx.offsets, in);
   
   lbx.sprites = new LBXSpriteData*[lbx.size()];

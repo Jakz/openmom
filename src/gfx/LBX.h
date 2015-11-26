@@ -177,7 +177,7 @@ public:
 
 class LBX
 {
-private:
+public:
   static void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, u8* image, u8* data, u32 dataLength);
 
   
@@ -199,10 +199,13 @@ private:
   static void loadArrayFile(LBXHeader& header, offset_list& offsets, std::vector<TextFiller>& inserters, FILE *in);
   
   static LBXSpriteData* scanGfx(LBXHeader& header, LBXOffset offset, FILE *in);
-  static void scanFileNames(LBXHeader& header, offset_list& offsets, string_list& names, FILE *in);
+  static void scanFileNames(const LBXHeader& header, const offset_list& offsets, string_list& names, FILE *in);
 
   static void loadText(LBXHeader& header, offset_list& offsets, FILE *in);
   static void loadFonts(LBXHeader& header, offset_list& offsets, FILE *in);
+    
+  static FILE* getDescriptor(const LBXFile& ident);
+
   
 public:
   static void load();

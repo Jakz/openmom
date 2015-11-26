@@ -11,6 +11,7 @@
 
 #include <string>
 #include <functional>
+#include <unordered_map>
 
 #include "Gfx.h"
 
@@ -32,6 +33,20 @@ class PreviewWidget;
 MyWindow *mywindow = nullptr;
 LBXTable *tableLbx;
 Fl_Table *tableSprites;
+
+namespace std
+{
+  template<>
+  struct hash<LBXFileID>
+  {
+    size_t operator()(const LBXFileID& entry) const
+    {
+      return static_cast<size_t>(entry);
+    }
+  };
+}
+
+unordered_map<LBXFileID, vector<LBXFileName>> assetNames;
 
 PreviewWidget* preview = nullptr;
 
@@ -192,9 +207,12 @@ public:
     {
       selection = callback_row();
       
-      if (holder(selection).sprites == nullptr)
+      const auto& entry = holder(selection);
+      
+      if (entry.sprites == nullptr)
       {
-        LBXRepository::loadLBX(static_cast<LBXFileID>(selection));
+        LBXRepository::loadLBX(entry.ident);
+        LBX::scanFileNames(entry.header, entry.offsets, assetNames[entry.ident], LBX::getDescriptor(entry));
       }
       
       currentLBX = &holder(selection);
@@ -281,6 +299,8 @@ public:
     col_header(1);              // enable column headers (along top)
     col_width_all(SECOND_TABLE_WIDTH/4);          // default width of columns
     col_width(0, 30);
+    col_width(1, 140);
+    col_width(3, 20);
     when(FL_WHEN_RELEASE);
     callback(mycallback, this);
     end();
@@ -327,7 +347,7 @@ public:
         return;
       case CONTEXT_COL_HEADER:
       {
-        static const char* columnNames[] = {"#", "Sprite Name", "Spec", "Palette?"};
+        static const char* columnNames[] = {"#", "Sprite Name", "Spec", "P"};
         DrawHeader(columnNames[COL], X, Y, W, H);
         return;
       }
@@ -338,12 +358,22 @@ public:
         int fgcol = selection == ROW ? FL_RED : FL_BLACK;
         int bgcol = FL_WHITE;
         fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, bgcol);
-        fl_color(fgcol);
         
         LBXSpriteData* sprite = currentLBX->sprites[ROW];
         
+        if (!sprite)
+          fgcol = fl_rgb_color(180, 180, 180);
+        
+        fl_color(fgcol);
+
+        
         if (COL == 0)
           fl_draw(fmt::sprintf("%u", ROW).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+        else if (COL == 1)
+        {
+          const LBXFileName& entry = assetNames[currentLBX->ident][ROW];
+          fl_draw(fmt::sprintf("%s/%s",entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
+        }
         else
         {
           if (sprite)
@@ -355,8 +385,7 @@ public:
           }
           else
           {
-            if (COL == 1)
-              fl_draw("NOT LOADED", X, Y, W, H, FL_ALIGN_CENTER);
+  
           }
         }
 
