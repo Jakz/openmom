@@ -4,23 +4,23 @@
 
 const Race Race::races[] = {
   {
-    RaceID::BARBARIANS,I18::RACE_NAME_BARBARIANS, I18::UNIT_NAME_BARBARIANS, HOUSE_MUD, 20, 0.15f,
+    RaceID::BARBARIANS,I18::RACE_NAME_BARBARIANS, I18::UNIT_NAME_BARBARIANS, HOUSE_NORMAL, 20, 0.15f,
     {"Norport","Bradenburg","Bromburg","Bamburg","Burglitz","Deventor","Danzig","Freiburg","Flensburg","Hamburg","Hannover","Konstanz","Kufstein","Linz","Strassburg","Rostock","Schleswig","Stettin","Zwolle","Soest"}
   },
   {
-    RaceID::BEASTMEN,I18::RACE_NAME_BEASTMEN, I18::UNIT_NAME_BEASTMEN, HOUSE_MUD, 0, 0.05f,
+    RaceID::BEASTMEN,I18::RACE_NAME_BEASTMEN, I18::UNIT_NAME_BEASTMEN, HOUSE_NORMAL, 0, 0.05f,
     {"Kempen","Bantanu","Saradash","Tanquil","Jagan","Panjang","Mourndar","Turlock","Tetrehahn","Fortalle","Tier","Raban","Kraang","Amondon","Carn Sul","Mijnduin","Durwrath","Lorn","Caradas","Rastenford"}
   },
   {
-    RaceID::DARK_ELVES,I18::RACE_NAME_DARK_ELVES, I18::UNIT_NAME_DARK_ELVES, HOUSE_MUD, -20, 0.02f,
+    RaceID::DARK_ELVES,I18::RACE_NAME_DARK_ELVES, I18::UNIT_NAME_DARK_ELVES, HOUSE_TREE, -20, 0.02f,
     {"Leer","Nightwath","Tyrlinith","Blademarsh","Bloodrock","Darkhold","Darkmoor","Hellgate","Bladewater","Tombstone","Midnight","Jet","Ebony","Fellwood","Ashwall","Thanelorn","Anamarathor","Deathford","Blackstone","Adderax"}
   },
   {
-    RaceID::DRACONIANS,I18::RACE_NAME_DRACONIANS, I18::UNIT_NAME_DRACONIANS, HOUSE_MUD, -10, 0.05f,
+    RaceID::DRACONIANS,I18::RACE_NAME_DRACONIANS, I18::UNIT_NAME_DRACONIANS, HOUSE_NORMAL, -10, 0.05f,
     {"Vallis","Minnlow","Mishran","Alairium","Dragon Pass","Doomcastle","Solanar","Farmist","Dragonfall","Parch","Arie","Wynd","Firepeak","Azurtfall","Fangrock","High Top","Hillfang","Sorin","Straatus","Icetop"}
   },
   {
-    RaceID::DWARVES,I18::RACE_NAME_DWARVES, I18::UNIT_NAME_DWARVES, HOUSE_MUD, -20, 0.07f,
+    RaceID::DWARVES,I18::RACE_NAME_DWARVES, I18::UNIT_NAME_DWARVES, HOUSE_NORMAL, -20, 0.07f,
     {"Ebonsway","Ultigar","Pyre","Asengard","Stonegate","Blade Stone","Rockwedge","Abanax","Ailearth","Fire Keep","Asbraun","Axhome","Iron Wall","Raug Wall","Stonehome","Finnrock","Southold","Stony Peak","Crag Keep","Hearth"}
   },
   {
@@ -28,15 +28,15 @@ const Race Race::races[] = {
     {"Basel","Aachen","Braunweig","Breslau","Brunn","Dortmond","Maimz","Nymax","Ozenwall","Posen","Speger","Steyr","Trier","Vordinax","Jogrin","Geras","Megamoria","Melegok","Tiamut","Creymona"}
   },
   {
-    RaceID::HALFLINGS,I18::RACE_NAME_HALFLINGS, I18::UNIT_NAME_HALFLINGS, HOUSE_MUD, 0, 0.15f,
+    RaceID::HALFLINGS,I18::RACE_NAME_HALFLINGS, I18::UNIT_NAME_HALFLINGS, HOUSE_NORMAL, 0, 0.15f,
     {"Miroban","Eastway","Palaor","Elyndendale","Cornwell","Jollyville","Hickorydale","Hialanth","Ethridge","Myrean","Mirndale","Honeypool","Eventon","Sunnydale","Bremen","Sacred Vale","Medowdale","Cornberry","Hillshire","Torwell"}
   },
   {
-    RaceID::HIGH_ELVES,I18::RACE_NAME_HIGH_ELVES, I18::UNIT_NAME_HIGH_ELVES, HOUSE_MUD, -20, 0.05f,
+    RaceID::HIGH_ELVES,I18::RACE_NAME_HIGH_ELVES, I18::UNIT_NAME_HIGH_ELVES, HOUSE_TREE, -20, 0.05f,
     {"Silverdale","Esterwood","Rivendale","Alm","Arissawood","Karsol","Prose","Fairwall","Arairia","Lylros","Lanerell","Venagreen","Rosewood","Ashenwood","Wooddale","Avalon","Elmwood","Glendale","Timberland","Gatewood"}
   },
   {
-    RaceID::HIGH_MEN,I18::RACE_NAME_HIGH_MEN, I18::UNIT_NAME_HIGH_MEN, HOUSE_MUD, 0, 0.10f,
+    RaceID::HIGH_MEN,I18::RACE_NAME_HIGH_MEN, I18::UNIT_NAME_HIGH_MEN, HOUSE_NORMAL, 0, 0.10f,
     {"Coventry","York","Nottingham","Birmingham","Dover","Liverpool","Brighton","Oxford","Reading","Exeter","Cambridge","Hastings","Cantebury","Banbury","Newcastle","Haven","New Haven","Bremen","Denislin","Newland"}
   },
   {
@@ -48,11 +48,11 @@ const Race Race::races[] = {
     {"South Wash","Thorn","Ulm","Ulna","Lizard Caves","Longrift","Lizardmarch","Nar","Mudspray","Sawtooth","Gore","Dirage","Sludgehome","Sedge","Rashem","Hob","Shatterod","Scacrest","Shellford","Hornbrant"}
   },
   {
-    RaceID::NOMADS,I18::RACE_NAME_NOMADS, I18::UNIT_NAME_NOMADS, HOUSE_MUD, -10, 0.10f,
+    RaceID::NOMADS,I18::RACE_NAME_NOMADS, I18::UNIT_NAME_NOMADS, HOUSE_NORMAL, -10, 0.10f,
     {"Mecca","Naples","Sidon","Tyre","Tarsus","Issus","Cunaxa","Cremona","Cannae","Capua","Torin","Genoa","Utica","Damascus","Verona","Salamis","Blake","Harold","Isseme","Doraat"}
   },
   {
-    RaceID::ORCS,I18::RACE_NAME_ORCS, I18::UNIT_NAME_ORCS, HOUSE_MUD, 0, 0.10f,
+    RaceID::ORCS,I18::RACE_NAME_ORCS, I18::UNIT_NAME_ORCS, HOUSE_NORMAL, 0, 0.10f,
     {"Robenaar","Wrrmwood","Xanten","Charack","Largut","Bangaak","Darkpool","Golcanar","Skulltop","Gotartop","Zuul","Craagpool","Krong","Krag Pool","Fell Gorge","Gronk","Torogaar","Oxenaak","Zom","Rife"}
   },
   {

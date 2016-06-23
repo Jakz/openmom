@@ -67,13 +67,15 @@ struct SettingGroup
 
 struct Settings
 {
-  private:
-    std::vector<SettingGroup> settings;
+private:
+  std::vector<SettingGroup> settings;
+
+public:
+  Settings();
+
+  SettingGroup &group(SettingGroupID ident) { return *std::find_if(settings.begin(), settings.end(), [&](SettingGroup &group) { return group.ident == ident; });  }
   
-  public:
-    Settings();
-  
-    SettingGroup &group(SettingGroupID ident) { return *std::find_if(settings.begin(), settings.end(), [&](SettingGroup &group) { return group.ident == ident; });  }
+  SettingID magicPower() { return group(SETTING_MAGIC_POWER).value(); }
 };
 
 

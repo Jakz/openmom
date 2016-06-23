@@ -17,6 +17,7 @@
 #include "PlayerMechanics.h"
 #include "CombatMechanics.h"
 #include "LairMechanics.h"
+#include "ValuesMechanics.h"
 
 #include <list>
 #include <string>
@@ -110,6 +111,7 @@ public:
   
   Settings settings;
   
+  ValuesMechanics values;
   MapMechanics mapMechanics;
   SpellMechanics spellMechanics;
   EventMechanics eventMechanics;

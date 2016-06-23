@@ -68,6 +68,7 @@
 		0464E11719818239009C91ED /* PlayerMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11519818239009C91ED /* PlayerMechanics.cpp */; };
 		0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E1181981D1EF009C91ED /* CityScape.cpp */; };
 		0464E11D19820301009C91ED /* Hqx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11B19820301009C91ED /* Hqx.cpp */; };
+		04797BEF1C1DCB830026C153 /* ValuesMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04797BED1C1DCB830026C153 /* ValuesMechanics.cpp */; };
 		0482049F19885DA900D4B699 /* Diplomacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0482049D19885DA900D4B699 /* Diplomacy.cpp */; };
 		048204A219888E5C00D4B699 /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
 		048204A5198893BA00D4B699 /* CombatMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A3198893BA00D4B699 /* CombatMechanics.cpp */; };
@@ -253,6 +254,8 @@
 		0464E1191981D1EF009C91ED /* CityScape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CityScape.h; path = src/ui/parts/CityScape.h; sourceTree = SOURCE_ROOT; };
 		0464E11B19820301009C91ED /* Hqx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Hqx.cpp; path = src/gfx/Hqx.cpp; sourceTree = SOURCE_ROOT; };
 		0464E11C19820301009C91ED /* Hqx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hqx.h; path = src/gfx/Hqx.h; sourceTree = SOURCE_ROOT; };
+		04797BED1C1DCB830026C153 /* ValuesMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ValuesMechanics.cpp; sourceTree = "<group>"; };
+		04797BEE1C1DCB830026C153 /* ValuesMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValuesMechanics.h; sourceTree = "<group>"; };
 		0482049D19885DA900D4B699 /* Diplomacy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Diplomacy.cpp; path = src/game/players/Diplomacy.cpp; sourceTree = SOURCE_ROOT; };
 		0482049E19885DA900D4B699 /* Diplomacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Diplomacy.h; path = src/game/players/Diplomacy.h; sourceTree = SOURCE_ROOT; };
 		048204A019888E5C00D4B699 /* LBX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LBX.cpp; sourceTree = "<group>"; };
@@ -563,6 +566,8 @@
 		04205398197DCDA800B4C2CA /* mechanics */ = {
 			isa = PBXGroup;
 			children = (
+				04797BED1C1DCB830026C153 /* ValuesMechanics.cpp */,
+				04797BEE1C1DCB830026C153 /* ValuesMechanics.h */,
 				0442470D1980A04800A8D7CC /* SpellMechanics.cpp */,
 				0442470E1980A04800A8D7CC /* SpellMechanics.h */,
 				04205399197DCDB300B4C2CA /* MapMechanics.cpp */,
@@ -770,6 +775,7 @@
 				04037624197B550F00A5B5FC /* Util.cpp in Sources */,
 				0439E9B019869F6D0009BFF7 /* CommonDraw.cpp in Sources */,
 				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
+				04797BEF1C1DCB830026C153 /* ValuesMechanics.cpp in Sources */,
 				0439E998198690150009BFF7 /* MagicView.cpp in Sources */,
 				040375FE197ABA9100A5B5FC /* ViewManager.cpp in Sources */,
 				04037611197AE1FF00A5B5FC /* Spells.cpp in Sources */,

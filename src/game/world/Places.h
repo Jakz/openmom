@@ -10,26 +10,34 @@ class Army;
 
 class ManaNode
 {
-  public:
-    const School school;
-    s16 mana;
+private:
+  s16 mana;
+  bool warped;
+  bool meldGuardianSpirit;
+
+public:
+  const School school;
+
+  Player* owner;
+  std::vector<Position> auras;
+
+  Army* guards;
+
+  ManaNode(School school, s16 mana = 0) : school(school), owner(nullptr), guards(nullptr), mana(mana), warped(false), meldGuardianSpirit(false) { }
   
-    Player* owner;
-    std::vector<Position> auras;
-  
-    Army* guards;
-  
-    ManaNode(School school, s16 mana = 0) : school(school), owner(nullptr), guards(nullptr), mana(mana) { }
+  s16 getMana() const { return mana; }
+  bool isWarped() const { return warped; }
+  bool isMeldByGuardianSprit() const { return meldGuardianSpirit; }
 };
 
 class Place
 {
-  public:
-    PlaceType type;
-    Army *army;
-    bool isWeak;
-  
-    Place(PlaceType type, bool isWeak) : type(type), isWeak(isWeak), army(nullptr) { }
+public:
+  PlaceType type;
+  Army *army;
+  bool isWeak;
+
+  Place(PlaceType type, bool isWeak) : type(type), isWeak(isWeak), army(nullptr) { }
 };
 
 

@@ -179,7 +179,6 @@ enum ViewID
 
 #include <vector>
 
-
 enum School : s8
 {
   ARCANE = 0,

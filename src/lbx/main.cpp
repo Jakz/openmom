@@ -399,10 +399,11 @@ public:
 };
 
 int main(int argc, char **argv) {
+
   LBXRepository::init();
   
   Fl::visual(FL_RGB);
-  
+    
   mywindow = new MyWindow();
   
   tableLbx = new LBXTable();

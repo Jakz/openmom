@@ -18,7 +18,7 @@
 
 using namespace std;
 
-Game::Game() : world(new World(this, 60,40)), mapMechanics(*this), lairMechanics(this), spellMechanics(*this), eventMechanics(*this), cityMechanics(this), playerMechanics(*this), combatMechanics(*this), firstTurn(true), turnCounter(0)
+Game::Game() : world(new World(this, 60,40)), values(this), mapMechanics(*this), lairMechanics(this), spellMechanics(*this), eventMechanics(*this), cityMechanics(this), playerMechanics(*this), combatMechanics(*this), firstTurn(true), turnCounter(0)
 {
   
 }
