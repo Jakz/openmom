@@ -101,6 +101,7 @@
 		04C729C41985F1B1002F16E6 /* BookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729C21985F1B1002F16E6 /* BookView.cpp */; };
 		04E218861C02A386005784E1 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04E218841C02A386005784E1 /* format.cc */; };
 		04E218871C02A386005784E1 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04E218841C02A386005784E1 /* format.cc */; };
+		04E2829C1E01A7DB00DD673D /* OriginalSave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */; };
 		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
 		04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
 		04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4592197C9D7A00EA0CC0 /* Items.cpp */; };
@@ -292,6 +293,8 @@
 		04C729C31985F1B1002F16E6 /* BookView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BookView.h; path = src/ui/parts/BookView.h; sourceTree = SOURCE_ROOT; };
 		04E218841C02A386005784E1 /* format.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = format.cc; path = src/common/format.cc; sourceTree = SOURCE_ROOT; };
 		04E218851C02A386005784E1 /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = format.h; path = src/common/format.h; sourceTree = SOURCE_ROOT; };
+		04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OriginalSave.cpp; sourceTree = "<group>"; };
+		04E2829B1E01A7DB00DD673D /* OriginalSave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OriginalSave.h; sourceTree = "<group>"; };
 		04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnitSpec.cpp; path = src/game/units/UnitSpec.cpp; sourceTree = SOURCE_ROOT; };
 		04EE458D197C85C000EA0CC0 /* UnitSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitSpec.h; path = src/game/units/UnitSpec.h; sourceTree = SOURCE_ROOT; };
 		04EE458F197C92C400EA0CC0 /* GfxData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GfxData.cpp; path = src/ui/GfxData.cpp; sourceTree = SOURCE_ROOT; };
@@ -329,6 +332,7 @@
 		040375C7197990B900A5B5FC /* src */ = {
 			isa = PBXGroup;
 			children = (
+				04E282991E01A7DB00DD673D /* save */,
 				040375CA197990B900A5B5FC /* common */,
 				040375C9197990B900A5B5FC /* game */,
 				040375CF197990B900A5B5FC /* gfx */,
@@ -681,6 +685,15 @@
 			name = lbx;
 			sourceTree = "<group>";
 		};
+		04E282991E01A7DB00DD673D /* save */ = {
+			isa = PBXGroup;
+			children = (
+				04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */,
+				04E2829B1E01A7DB00DD673D /* OriginalSave.h */,
+			);
+			path = save;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -815,6 +828,7 @@
 				040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */,
 				0439E99B1986903A0009BFF7 /* MessageView.cpp in Sources */,
 				040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */,
+				04E2829C1E01A7DB00DD673D /* OriginalSave.cpp in Sources */,
 				04E218861C02A386005784E1 /* format.cc in Sources */,
 				040375F8197AB04700A5B5FC /* LocalPlayer.cpp in Sources */,
 				0439E9A4198690DB0009BFF7 /* ProductionView.cpp in Sources */,
@@ -973,6 +987,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libs",
 				);
+				HEADER_SEARCH_PATHS = "${SRCROOT}/src";
 				INFOPLIST_FILE = "misc/OpenMoM-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -989,6 +1004,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libs",
 				);
+				HEADER_SEARCH_PATHS = "${SRCROOT}/src";
 				INFOPLIST_FILE = "misc/OpenMoM-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
