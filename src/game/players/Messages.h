@@ -66,7 +66,7 @@ public:
 class HelpSkill : public Message
 {
 public:
-  HelpSkill(std::string string, const Skill* skill) : Message(message, HELP_SKILL), skill(skill) { }
+  HelpSkill(std::string message, const Skill* skill) : Message(message, HELP_SKILL), skill(skill) { }
   
   const Skill* skill;
 };

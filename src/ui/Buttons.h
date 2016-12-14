@@ -189,7 +189,7 @@ private:
   Button(name, x, y, normal), data(data), toggledOffset{offsetX, offsetY}, pressedCoords(pressed), toggled(false), group(group) { }
   
 public:
-  void draw();
+  void draw() override;
   
   const T getData() const { return data; }
   

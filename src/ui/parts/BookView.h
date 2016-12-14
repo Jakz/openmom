@@ -52,7 +52,7 @@ public:
 
   void populate(const Player* player, SpellBook::Type type);
   
-  bool hasNextPage() const { return currentPage < bookPages.size() - 1; }
+  bool hasNextPage() const { return currentPage < bookPages.size() - 2; }
   bool hasPrevPage() const { return currentPage > 0; }
   
   void nextPage() { currentPage += 2; }

@@ -133,23 +133,24 @@ void SpellBookView::drawPage(u16 index)
         // TODO: real calculation of spell skill
         turns = 100 / g->spellMechanics.actualManaCost(player, spell, combatMode);
       }
-      
-      
-      
+            
       // draw mana symbols on spell entry
       if (!instant)
       {
         s16 toDo = std::min((int)turns, 20);
         for (int j = 0; j < toDo; ++j)
           Gfx::draw(TextureID::SPELL_BOOK_SCHOOL_ICONS, 0, spell->school, topLeftX[index]+1+6*j, curY+6+1);
-        Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+1+toDo*6+4, curY+6, 1+toDo*6+4, ROW_HEIGHT*i+6, 0, 6);
+        if (toDo < 20)
+          Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+1+toDo*6+4, curY+6, 1+toDo*6+4, ROW_HEIGHT*i+6, 0, 6);
         
         if (turns > 20)
         {
           toDo = std::min(turns-20, 20);
           for (int j = 0; j < toDo; ++j)
             Gfx::draw(TextureID::SPELL_BOOK_SCHOOL_ICONS, 0, spell->school, topLeftX[index]+1+6*j, curY+12+1);
-          Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+1+toDo*6+4, curY+12, 1+toDo*6+4, ROW_HEIGHT*i+6, 0, 6);
+          
+          if (toDo < 20)
+            Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+1+toDo*6+4, curY+12, 1+toDo*6+4, ROW_HEIGHT*i+6, 0, 6);
         }
         else
           Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index], curY+12, 0, ROW_HEIGHT*i+6, 0, 6);

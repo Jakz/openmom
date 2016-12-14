@@ -44,8 +44,8 @@ public:
   u16 sw(u16 r = 0, u16 c = 0) const override { return 0; }
   u16 sh(u16 r = 0, u16 c = 0) const override { return 0; }
   
-  void lock() const { SDL_LockSurface(data); }
-  void unlock() const { SDL_UnlockSurface(data); }
+  void lock() const override { SDL_LockSurface(data); }
+  void unlock() const override { SDL_UnlockSurface(data); }
   
   Color at(u16 x, u16 y, u16 c = 0, u16 r = 0) const override { return pixels[x + y*data->w]; }
   void set(u16 x, u16 y, Color c) override { pixels[x + y*data->w] = c; }

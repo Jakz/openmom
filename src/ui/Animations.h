@@ -61,7 +61,7 @@ namespace anims
     public:
       ContinuousAnimation(u32 duration) : start(Gfx::ticks), duration(duration) { }
     
-      void reset() { start = Gfx::ticks; }
+      void reset() override { start = Gfx::ticks; }
     
       float position() {
         return std::min(1.0f, (Gfx::ticks - start) / (float)duration);

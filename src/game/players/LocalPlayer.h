@@ -70,18 +70,18 @@ public:
   bool shouldDrawSelectedArmy() const { return drawSelectedArmy; }
   void setDrawSelectedArmy(bool v) { drawSelectedArmy = v; }
   
-  void setSpellTarget(Target target) { this->target = target; }
+  void setSpellTarget(Target target) override { this->target = target; }
   Target getSpellTarget() const { return target; }
   
-  void moveCombatUnit(CombatUnit* unit) { combatSelectedUnit = unit; }
+  void moveCombatUnit(CombatUnit* unit) override { combatSelectedUnit = unit; }
   
   void selectUnit(Unit* unit);
   void deselectUnit(Unit* unit);
   bool isSelectedUnit(Unit* unit);
 
   
-  void combatTurnBegun() { combatCurrentlyPlaying = true; }
-  void combatTurnEnded() { combatCurrentlyPlaying = false; }
+  void combatTurnBegun() override { combatCurrentlyPlaying = true; }
+  void combatTurnEnded() override { combatCurrentlyPlaying = false; }
   
   const MiniMap* miniMap() const { return &map; }
   void discoverTile(const Position& position) override { map.discover(position); }

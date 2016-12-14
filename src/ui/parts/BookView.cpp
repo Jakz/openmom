@@ -75,5 +75,6 @@ void BookView::populate(const Player *player, SpellBook::Type type)
     bookPages.push_back(*page);
   }
 
-  currentPage = bookPages.size()-2;
+  currentPage = 0; //bookPages.size()-2;
+  assert(bookPages.size() % 2 == 0);
 }
