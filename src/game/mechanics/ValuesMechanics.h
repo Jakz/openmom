@@ -24,7 +24,7 @@ enum class Value
 class ValuesMechanics
 {
 private:
-  Game* game;
+  Game* const game;
 
 public:
   ValuesMechanics(Game* game) : game(game) { }

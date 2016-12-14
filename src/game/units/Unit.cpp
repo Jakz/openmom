@@ -68,7 +68,7 @@ void HitPoints::killFigures(const std::vector<bool>& indices)
 
 void Unit::removeSpell(const Spell* spell)
 {
-  skills_.remove(spell);
+  _skills.remove(spell);
   army->getOwner()->game()->playerMechanics.updateGlobalGains(army->getOwner());
 }
 
@@ -77,7 +77,7 @@ s16 Unit::getBaseProperty(Property property) const
 {
   switch (property) {
     case Property::ALIVE_FIGURES:
-      return health_.aliveCount();
+      return _health.aliveCount();
     case Property::XP:
       return 1;
     case Property::RESIST_CHAOS:
@@ -138,7 +138,7 @@ s16 Unit::getBonusProperty(Property property) const
     default: break;
   }
   
-  bonus += skills_.bonusForProperty(property);
+  bonus += _skills.bonusForProperty(property);
   
   // if army is in combat then apply every possible global buff / debuff
   // TODO: use better check to see if it's in combat

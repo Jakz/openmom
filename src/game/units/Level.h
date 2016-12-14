@@ -27,7 +27,7 @@ enum class HeroLevelID : u8
   DEMIGOD
 };
 
-typedef std::array<s16,5> level_bonuses;
+using level_bonuses = std::array<s16,5>;
 
 class Level
 {

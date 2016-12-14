@@ -105,7 +105,7 @@ public:
   
   void addSpell(const SpellCast spell) { spells.push_back(spell); }
   bool hasSpell(const CitySpell* spell) const {
-    return std::find_if(spells.begin(), spells.end(), [&](const SpellCast cast) { return cast.spell == spell; }) != spells.end();
+    return std::find_if(spells.begin(), spells.end(), [spell](const SpellCast& cast) { return cast.spell == spell; }) != spells.end();
   }
   void removeSpell(const SpellCast& cast) {
     for (auto it = spells.begin(); it != spells.end(); ++it) if (&cast == &(*it)) spells.erase(it);

@@ -52,14 +52,14 @@ private:
   Army* army;
 
 protected:
-  Unit(const UnitSpec& spec, const Level* level) : spec(spec), army(nullptr), skills_(*this), health_(*this), xp(0), selected(true), level(level)
+  Unit(const UnitSpec& spec, const Level* level) : spec(spec), army(nullptr), _skills(*this), _health(*this), xp(0), selected(true), level(level)
   {
     resetMoves();
-    health_.healAll();
+    _health.healAll();
   }
   
-  SkillSet skills_;
-  HitPoints health_;
+  SkillSet _skills;
+  HitPoints _health;
 
   
   bool selected;
@@ -89,7 +89,7 @@ public:
   void unselect() { selected = false; }
   
   Upkeep upkeep() const { Upkeep u = spec.upkeep; u.add(speelUpkeep()); return u; }
-  Upkeep speelUpkeep() const { return Upkeep(0, skills_.spellsUpkeep(), 0); }
+  Upkeep speelUpkeep() const { return Upkeep(0, _skills.spellsUpkeep(), 0); }
   void removeSpell(const Spell* spell);
   
   void turnBegin() {
@@ -101,13 +101,14 @@ public:
   const Level* level;
   const School school() const { return CHAOS; } // TODO
   
-  SkillSet* skills() { return &skills_; }
-  HitPoints* health() { return &health_; }
-  const SkillSet* skills() const { return &skills_; }
-  const HitPoints* health() const { return &health_; }
+  SkillSet* skills() { return &_skills; }
+  const SkillSet* skills() const { return &_skills; }
+
+  HitPoints* health() { return &_health; }
+  const HitPoints* health() const { return &_health; }
   
   virtual const std::string name() const { return spec.productionName(); }
-  School glow() const { return skills_.glowEffect(); }
+  School glow() const { return _skills.glowEffect(); }
 };
 
 class Hero : public Unit

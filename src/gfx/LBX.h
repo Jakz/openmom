@@ -66,9 +66,9 @@ struct LBXPaletteEntry
   u8 b;
 } __attribute__((__packed__));
 
-typedef u32 LBXOffset;
-typedef std::vector<LBXOffset> offset_list;
-typedef std::vector<LBXFileName> string_list;
+using LBXOffset = u32;
+using offset_list = std::vector<LBXOffset>;
+using string_list = std::vector<LBXFileName>;
 
 class SDL_Surface;
 
@@ -103,7 +103,7 @@ public:
   u16 sw(u16,u16) const override { return width; }
   u16 sh(u16,u16) const override { return height; }
   
-  const Palette* getPalette() const { return palette; }
+  const Palette* getPalette() const override { return palette; }
 };
 
 struct LBXFile
@@ -115,7 +115,7 @@ struct LBXFile
   LBXSpriteData **sprites;
   
   LBXFile() : sprites(nullptr) { }
-  LBXFile(LBXFileID ident, std::string fileName) : ident(ident), fileName(fileName), sprites(nullptr) { }
+  LBXFile(LBXFileID ident, const std::string& fileName) : ident(ident), fileName(fileName), sprites(nullptr) { }
   
   const u16 size() const { return header.count; }
 };
@@ -160,7 +160,7 @@ public:
   static const LBXFile& loadLBX(LBXFileID ident);
   static const LBXFile& holderForID(LBXFileID ident) { return data[ident]; }
   
-  static bool shouldAllocateSprite(LBXSpriteInfo& info) { return data[info.lbx].sprites[info.index] == nullptr; }
+  static bool shouldAllocateSprite(const LBXSpriteInfo& info) { return data[info.lbx].sprites[info.index] == nullptr; }
   static const LBXSpriteData* loadLBXSpriteData(const LBXSpriteInfo& info);
   
   static const LBXSpriteData* spriteFor(const LBXSpriteInfo& info) {
@@ -178,7 +178,7 @@ public:
 class LBX
 {
 public:
-  static void scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, u8* image, u8* data, u32 dataLength);
+  static void scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader& pheader, u16 index, u8* image, u8* data, u32 dataLength);
 
   
   class TextFiller
@@ -196,13 +196,13 @@ public:
   static bool loadHeader(LBXHeader& header, offset_list& offsets, FILE *in);
   
   static void loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter, FILE *in);
-  static void loadArrayFile(LBXHeader& header, offset_list& offsets, std::vector<TextFiller>& inserters, FILE *in);
+  static void loadArrayFile(const LBXHeader& header, offset_list& offsets, std::vector<TextFiller>& inserters, FILE *in);
   
-  static LBXSpriteData* scanGfx(LBXHeader& header, LBXOffset offset, FILE *in);
+  static LBXSpriteData* scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in);
   static void scanFileNames(const LBXHeader& header, const offset_list& offsets, string_list& names, FILE *in);
 
-  static void loadText(LBXHeader& header, offset_list& offsets, FILE *in);
-  static void loadFonts(LBXHeader& header, offset_list& offsets, FILE *in);
+  static void loadText(const LBXHeader& header, offset_list& offsets, FILE *in);
+  static void loadFonts(const LBXHeader& header, offset_list& offsets, FILE *in);
     
   static FILE* getDescriptor(const LBXFile& ident);
 

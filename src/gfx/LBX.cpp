@@ -89,7 +89,7 @@ void LBX::loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter
 }
 
 
-void LBX::loadArrayFile(LBXHeader& header, offset_list& offsets, std::vector<TextFiller>& inserters, FILE *in)
+void LBX::loadArrayFile(const LBXHeader& header, offset_list& offsets, std::vector<TextFiller>& inserters, FILE *in)
 {
   LBXArray* arrays = new LBXArray[header.count];
   for (int i = 0; i < header.count; ++i)
@@ -115,7 +115,7 @@ void LBX::loadArrayFile(LBXHeader& header, offset_list& offsets, std::vector<Tex
 }
 
 
-void LBX::scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 index, u8* image, u8* data, u32 dataLength)
+void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader &pheader, u16 index, u8* image, u8* data, u32 dataLength)
 {
   s32 i = 0, x = 0;
   const u32 w = header.width, h = header.height;
@@ -226,7 +226,7 @@ void LBX::scanGfxFrame(LBXGfxHeader& header, LBXPaletteHeader &pheader, u16 inde
   
 }
 
-LBXSpriteData* LBX::scanGfx(LBXHeader& header, LBXOffset offset, FILE *in)
+LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
 {
   fseek(in, offset, SEEK_SET);
   LBXGfxHeader gfxHeader;
@@ -298,7 +298,7 @@ void LBX::scanFileNames(const LBXHeader& header, const offset_list& offsets, str
 {
   fseek(in, offsets[0] - sizeof(LBXFileName)*header.count, SEEK_SET);
   
-  names.resize(header.count);
+  names.reserve(header.count);
   fread(&names[0], sizeof(LBXFileName), header.count, in);
   
   //int i = 25;
@@ -309,7 +309,7 @@ void LBX::scanFileNames(const LBXHeader& header, const offset_list& offsets, str
   }
 }
 
-static std::string path = string(getenv("PWD")) + "/LBXManager.app/Contents/Resources/data/lbx/";
+static std::string path = string(getenv("PWD")) + "/OpenMoM.app/Contents/Resources/data/lbx/";
 
 bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
@@ -317,7 +317,7 @@ bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
   
   if (header.magic == 0x0000FEAD)
   {
-    offsets.resize(header.count+1);
+    offsets.reserve(header.count+1);
     fread(&offsets[0], sizeof(LBXOffset), header.count+1, in);
     
     return true;
@@ -329,7 +329,7 @@ bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 static const u16 FONT_NUM = 8;
 static const u16 FONT_CHAR_NUM = 0x5E;
 
-void LBX::loadFonts(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
+void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
   // position to start of character heights resource
   fseek(in, offsets[0] + 0x16A, SEEK_SET);
