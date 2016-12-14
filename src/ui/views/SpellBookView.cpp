@@ -80,7 +80,7 @@ void SpellBookView::drawPage(u16 index)
 {
   const BookView::Page* page = book->current(index);
   
-  if (!page)
+  if (!page || page->actualSize() == 0)
     return;
   
   Fonts::drawString(i18n::s(page->getTitle()), FontFaces::Serif::BROWN, topLeftX[index]+60, topLeftY[index]-16, ALIGN_CENTER);

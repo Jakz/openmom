@@ -286,6 +286,7 @@ class i18n
     static std::unordered_map<TileType, std::vector<std::string> > surveyorDescs;
   
   public:
+    static const char* c(I18 ident) { return data[ident].c_str(); }
     static const std::string& s(I18 ident) { return data[ident]; }
     static const std::string& s(UnitID unit) { return units[unit]; }
     static const std::string& s(SkillBase skill) { return skills[skill]; }

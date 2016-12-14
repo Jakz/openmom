@@ -8,15 +8,17 @@ using namespace std;
 
 void BookView::populate(const Player *player, SpellBook::Type type)
 {
+  bookPages.clear();
+  
   auto totalPool = player->book()->bookSpells(type);
   
-  vector<vector<ResearchStatus> > spellsByKind;
+  vector<vector<ResearchStatus>> spellsByKind;
   spellsByKind.resize(KIND_COUNT, vector<ResearchStatus>());
   
   for (auto s : totalPool)
     spellsByKind[s.spell->kind].push_back(s);
   
-  Page* page = nullptr; // TODO: should be done avoiding heap allocations
+  std::unique_ptr<Page> page = nullptr; // TODO: should be done avoiding heap allocations
   
   for (s16 i = 0; i < KIND_COUNT; ++i)
   {
@@ -27,31 +29,30 @@ void BookView::populate(const Player *player, SpellBook::Type type)
       {
         if (page && page->actualSize() > 0)
         {
+          printf("Pushing page %s\n", i18n::c(i18n::SPELL_KIND_NAMES[i]));
           bookPages.push_back(*page);
-          delete page;
 
           // if new page is of different kind we must specify the name so that it will be printed
           if (page->getTitle() != i18n::SPELL_KIND_NAMES[i])
           {
-            page = new Page(pageSize, i18n::SPELL_KIND_NAMES[i]);
+            page.reset(new Page(pageSize, i18n::SPELL_KIND_NAMES[i]));
           }
           else
-            page = new Page(pageSize, I18::EMPTY);
+            page.reset(new Page(pageSize, I18::EMPTY));
         }
         else if (!page)
-          page = new Page(pageSize, i18n::SPELL_KIND_NAMES[i]);
+          page.reset(new Page(pageSize, i18n::SPELL_KIND_NAMES[i]));
       }
       
       page->put(s);
     }
   }
   
-  if (page) bookPages.push_back(*page);
+  if (page && page->actualSize() > 0) bookPages.push_back(*page);
   
   if (bookPages.size() % 2 != 0) bookPages.push_back(Page(pageSize, I18::EMPTY));
   
-  delete page;
-  page = nullptr;
+  page.reset(nullptr);
   
   if (type == SpellBook::Type::RESEARCH)
   {
@@ -64,8 +65,7 @@ void BookView::populate(const Player *player, SpellBook::Type type)
       if (i % pageSize == 0)
       {
         if (page) bookPages.push_back(*page);
-        delete page;
-        page = new Page(pageSize, names[i/pageSize], true);
+        page.reset(new Page(pageSize, names[i/pageSize], true));
       }
       
       if (i < availableForResearch.size())
@@ -74,7 +74,6 @@ void BookView::populate(const Player *player, SpellBook::Type type)
     
     bookPages.push_back(*page);
   }
-  
-  delete page;
+
   currentPage = bookPages.size()-2;
 }
