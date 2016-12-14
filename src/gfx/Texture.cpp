@@ -230,7 +230,7 @@ Color Texture::at(u16 x, u16 y, u16 r, u16 c) const
   else
     sy = upTo(hs, r);
   
-  return static_cast<u32*>(img->pixels)[sx+x + (sy+y)*tw];
+  return static_cast<u32*>(img->pixels)[sx+x + (sy+y)*img->w];
 }
 
 u16 Texture::sw(u16 r, u16 c) const
@@ -262,12 +262,9 @@ const Texture* Texture::get(TextureID ident) {
   const Texture* texture = &textures[ident];
   
   if (!texture->img)
-  {
     texture->img = IMG_Load(("data/gfx/"+texture->name).c_str());
-  }
   
   return texture;
-
 }
 
 

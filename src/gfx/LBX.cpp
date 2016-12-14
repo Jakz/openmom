@@ -403,11 +403,15 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
         u8 color;
         u8 strain = 0;
         
+        /* if data is 0x8N then N is strain length, if N is 0 then we just skip the column,
+           else we have a strain of N transparent pixels */
         if (high == 0x08)
         {
           color = 0;
           strain = low;
         }
+        /* otherwise for data 0xMN then N is the color and M is the strain length, 
+           as before is N is 0 we skip the column, otherwise we have a strain of N pixels of color M */
         else
         {
           color = low+3;
@@ -429,8 +433,8 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
           }
         }
       }
-
-      s8 dirs[8][2] = {{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1}};
+      
+      static const s8 dirs[8][2] = {{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1}};
       
       // precompute font stroke
       for (int x = 0; x < width; ++x)

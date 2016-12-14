@@ -50,7 +50,7 @@ class View : public EventListener
     void doActivate(LocalPlayer* player);
     void doDeactivate() { deactivate(); }
   
-    void doDraw()
+    virtual void doDraw()
     {
       draw();
       drawButtons();

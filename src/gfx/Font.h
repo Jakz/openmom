@@ -54,6 +54,11 @@ public:
   virtual u16 h(u16 x = 0) const = 0;
 };
 
+/* glyph data is stored in a monodimensional array in which all glyphs are stored contiguously, eg
+   XXXYYYZZZ
+   XXXYYYZZZ becomes XXXYYYZZZXXXYYYZZZXXXYYYZZZ
+   XXXYYYZZZ
+ */
 class FontData : public SpriteRawData
 {
 private:
@@ -65,20 +70,14 @@ private:
 public:
   FontData(FontType type, u8 height, u8 width) : type(type), height(height), width(width), data(new u8[width*height*GLYPH_COUNT])
   {
-    
+    std::fill(data, data + width*height*GLYPH_COUNT, 0);
   }
   
   ~FontData()
   {
-    for (int i = 0; i < GLYPH_COUNT; ++i)
-      delete data;
+    delete [] data;
   }
-  
-  void setData(u8* data)
-  {
-    this->data = data;
-  }
-  
+
   void setGlyphWidth(u8 index, s8 width) {  glyphWidth[index] = width; }
   s8 getGlyphWidth(u8 index) const { return glyphWidth[index - ' ']; }
   
@@ -102,12 +101,14 @@ class FontSpriteSheet : public SpriteSheet
 private:
   FontData *rawData;
   const Palette* palette;
+  
+  FontSpriteSheet(const FontSpriteSheet&) = delete;
 
 public:
   FontSpriteSheet(FontData *data, const Palette* palette, s8 hor, s8 ver) : rawData(data), palette(palette), hor(hor), ver(ver) { }
   FontSpriteSheet(FontData *data, color_list palette, s8 hor, s8 ver) : rawData(data), palette(new IndexedPalette(palette)), hor(hor), ver(ver) { }
 
-  ~FontSpriteSheet() { delete [] palette; }
+  ~FontSpriteSheet() { delete palette; }
   
   Color at(u16 x, u16 y, u16 r = 0, u16 c = 0) const override
   {

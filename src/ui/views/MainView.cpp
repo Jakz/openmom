@@ -139,7 +139,7 @@ void MainView::draw()
     switchToNormalState();
   
   Gfx::draw(TextureID::MAIN_BACKDROP, 0, 0);
-  
+    
   const Army* army = player->getSelectedArmy();
   if (army)
   {
