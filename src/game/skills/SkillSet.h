@@ -23,7 +23,8 @@ public:
   SkillSet(Unit& unit);
 
   size_t size() const;
-  const Skill* get(int index) const;
+  const Skill* get(size_t index) const;
+  const Skill* operator[](size_t index) const { return get(index); }
   
   void add(const Skill& skill) { additionalSkills.push_back(&skill); }
   void add(const SpellCast& cast) { spells.push_back(cast); }
@@ -45,35 +46,35 @@ public:
   School glowEffect() const;
   
   template<typename Skill>
-  class myiterator //: public /*std::iterator<std::forward_iterator_tag, Skill>/*, std::iterator_traits<iterator<Skill>>,*/
+  class iterator //: public /*std::iterator<std::forward_iterator_tag, Skill>/*, std::iterator_traits<iterator<Skill>>,*/
   {
   public:
 
-    myiterator(const SkillSet& parent, s16 current = 0) : parent(parent), current(current), size(parent.size()) { }
-    myiterator(const myiterator<Skill> &other) = default;
-    ~myiterator() { }
+    iterator(const SkillSet& parent, s16 current = 0) : parent(parent), current(current), size(parent.size()) { }
+    iterator(const iterator<Skill> &other) = default;
+    ~iterator() { }
     
-    bool operator==(const myiterator<Skill> o) const { return &parent == &o.parent && current == o.current; }
-    bool operator!=(const myiterator<Skill> o) const { return &parent != &o.parent || current != o.current; }
+    bool operator==(const iterator<Skill> o) const { return &parent == &o.parent && current == o.current; }
+    bool operator!=(const iterator<Skill> o) const { return &parent != &o.parent || current != o.current; }
     
-    myiterator<Skill>& operator+=(const s16& offset) { current += offset; return (*this); }
-    myiterator<Skill>& operator-=(const s16& offset) { current -= offset; return (*this); }
-    myiterator<Skill>& operator++() { ++current; return (*this); }
-    myiterator<Skill>& operator--() { --current; return (*this); }
-    myiterator<Skill> operator++(int) { auto tmp(*this); ++current; return tmp; }
-    myiterator<Skill> operator--(int) { auto tmp(*this); --current; return tmp; }
+    iterator<Skill>& operator+=(const s16& offset) { current += offset; return (*this); }
+    iterator<Skill>& operator-=(const s16& offset) { current -= offset; return (*this); }
+    iterator<Skill>& operator++() { ++current; return (*this); }
+    iterator<Skill>& operator--() { --current; return (*this); }
+    iterator<Skill> operator++(int) { auto tmp(*this); ++current; return tmp; }
+    iterator<Skill> operator--(int) { auto tmp(*this); --current; return tmp; }
     
-    myiterator<Skill>(const s16& offset) { auto old = current; current += offset; auto tmp(*this); current = old; return tmp; }
+    iterator<Skill>(const s16& offset) { auto old = current; current += offset; auto tmp(*this); current = old; return tmp; }
 
     Skill operator*() { return parent.get(current); }
     const Skill operator*() const { return parent.get(current); }
     //const Skill* operator->() { return parent.get(current); }
     
-    typedef s16 difference_type; //almost always ptrdif_t
-    typedef Skill* value_type; //almost always T
-    typedef const Skill& reference; //almost always T& or const T&
-    typedef const Skill* pointer; //almost always T* or const T*
-    typedef std::forward_iterator_tag iterator_category;  //usually std::forward_iterator_tag or similar
+    using difference_type = ptrdiff_t;
+    using value_type = Skill*;
+    using reference = const Skill&;
+    using pointer = const Skill*;
+    using iterator_category = std::random_access_iterator_tag;
     
     protected:
       const SkillSet& parent;
@@ -81,7 +82,7 @@ public:
       const s16 size;
   };
     
-  typedef myiterator<const Skill*> const_iterator;
+  using const_iterator = iterator<const Skill*>;
 
   const_iterator begin() const { return const_iterator(*this); }
   const_iterator end() const { return const_iterator(*this, size()); }

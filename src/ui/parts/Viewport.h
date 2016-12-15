@@ -29,6 +29,7 @@ public:
   static void drawCityViewport(const LocalPlayer* player, const World* map, const Position& p) { drawViewport(map, player, p, 215, 3, 5, 5, true); }
   static void drawMainViewport(const LocalPlayer* player, const World* map);
 
+  static void drawMicroMap(const LocalPlayer* player, s16 dx, s16 dy, s16 w, s16 h, s16 vx, s16 vy, Plane plane, Color fillColor);
   static void drawMicroMap(const LocalPlayer* player, s16 dx, s16 dy, s16 w, s16 h, s16 vx, s16 vy, Plane plane);
 
   static const u16 viewportW = 12, viewportH = 10;

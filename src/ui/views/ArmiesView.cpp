@@ -54,7 +54,7 @@ static const u16 HERO_PORTRAITS[][2] = {{12,5},{12,56},{12,107},{277,5},{277,56}
 
 void ArmiesView::draw()
 {
-  Gfx::draw(TextureID::ARMIES_BACKDROP, 0, 0);
+  Gfx::draw(LBXSpriteInfo(LBX_ARMYLIST, 0), 0, 0);
   
   // draw heroes portraits
   auto heroes = player->getHeroes(); u8 i = 0;
@@ -92,6 +92,9 @@ void ArmiesView::draw()
   }
   
   Fonts::setFace(FontFaces::Small::RED_PALE, 0, 1);
+  
+  /* fill minimap background */
+  Gfx::fillRect(86, 164, 48, 32, RGB16(2,1,1));
   
   if (army)
   {

@@ -302,6 +302,11 @@ void Gfx::deinit()
   delete canvas;
 }
 
+void Gfx::fillRect(u16 x, u16 y, u16 w, u16 h, u32 color)
+{
+  const SDL_Rect rect { x, y, w, h };
+  SDL_FillRect(canvas->data, &rect, color);
+}
 
 void Gfx::rect(u16 x, u16 y, u16 w, u16 h, u32 color)
 {

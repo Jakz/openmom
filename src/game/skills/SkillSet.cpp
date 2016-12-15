@@ -15,7 +15,7 @@ size_t SkillSet::size() const {
   return nativeSkills.size() + additionalSkills.size() + spells.size() + (army ? army->getOwner()->globalSkillSpellsCount(&unit) : 0);
 }
 
-const Skill* SkillSet::get(int index) const
+const Skill* SkillSet::get(size_t index) const
 {
   size_t native = nativeSkills.size(), additional = additionalSkills.size(), armyc = unit.getArmy() ? unit.getArmy()->getOwner()->globalSkillSpellsCount(&unit) : 0;
   

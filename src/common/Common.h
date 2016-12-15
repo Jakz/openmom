@@ -20,6 +20,7 @@ typedef int64_t s64;
 typedef u32 Color;
 
 constexpr Color RGB(u32 r, u32 g, u32 b) { return 0xFF000000 | (r << 16) | (g << 8) | b; }
+constexpr Color RGB16(u32 r, u32 g, u32 b) { return RGB(r<<2, g<<2, b<<2); }
 constexpr Color RGBA(u32 r, u32 g, u32 b, u32 a) { return (a << 24) | (r << 16) | (g << 8) | b; }
 constexpr u8 GET_RED(Color color) { return (color & 0x00FF0000) >> 16; }
 constexpr u8 GET_GREEN(Color color) { return (color & 0x0000FF00) >> 8; }

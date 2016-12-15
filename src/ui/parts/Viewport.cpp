@@ -293,6 +293,12 @@ void Viewport::drawMainViewport(const LocalPlayer* player, const World* map)
   drawViewport(map, player, player->getViewport(), baseX, baseY, viewportW, viewportH, false);
 }
 
+void Viewport::drawMicroMap(const LocalPlayer* player, s16 dx, s16 dy, s16 w, s16 h, s16 vx, s16 vy, Plane plane, Color fillColor)
+{
+  Gfx::fillRect(dx, dy, w, h, fillColor);
+  drawMicroMap(player, dx, dy, w, h, vx, vy, plane);
+}
+
 void Viewport::drawMicroMap(const LocalPlayer* player, s16 dx, s16 dy, s16 w, s16 h, s16 vx, s16 vy, Plane plane)
 {
   s16 lw = w/2, rw = w - lw;

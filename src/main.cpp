@@ -41,6 +41,7 @@ void init()
 int main(int argc, char * arg[])
 {
   lbx::Repository::init();
+  lbx::Repository::loadLBX(LBX_ARMYLIST);
   lbx::Repository::loadLBX(LBX_BACKGRND);
   lbx::Repository::loadLBX(LBX_FIGURE4);
   lbx::Repository::loadLBX(LBX_FIGURE10);

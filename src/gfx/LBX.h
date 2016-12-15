@@ -12,15 +12,10 @@
 #include "Common.h"
 
 #include "ColorMap.h"
-//#include "Gfx.h"
 
 #include <string>
 #include <vector>
 #include <functional>
-#include <map>
-
-#include "View.h"
-
 
 namespace lbx
 {
@@ -220,38 +215,6 @@ namespace lbx
     friend class LBXView;
     friend class Repository;
   };
-
-class LBXView : public View
-{
-private:
-  s16 selectedLBX;
-  s16 selectedContent;
-  
-  s16 lbxOffset;
-  s16 contentOffset;
-  
-  bool hasNextFile, hasPrevFile;
-  bool hasNextContent, hasPrevContent;
-    
-  std::map<LBXFileID, lbx::string_list> filesForLBX;
-  
-  void updateContentButtons();
-  
-  void draw() override;
-  void drawPost() override { }
-  
-public:
-  LBXView(ViewManager* gvm);
-  
-  void activate() override { }
-  void deactivate() override { }
-  
-  void mouseReleased(u16 x, u16 y, MouseButton b) override;
-  void selectLBX();
-  void selectGFX();
-};
-  
-  
 }
 
 #endif

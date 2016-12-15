@@ -26,7 +26,7 @@
 #include "SpellBookView.h"
 #include "UnitDetailView.h"
 
-#include "LBX.h"
+#include "LBXView.h"
 
 using namespace std;
 using namespace anims;
