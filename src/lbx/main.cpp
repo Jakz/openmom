@@ -19,6 +19,7 @@
 #define MAX_COLS 100
 
 using namespace std;
+using namespace lbx;
 
 constexpr int FIRST_TABLE_WIDTH = 150;
 constexpr int SECOND_TABLE_WIDTH = 320;

@@ -1,8 +1,8 @@
 #ifndef _VIEW_MANAGER_H_
 #define _VIEW_MANAGER_H_
 
-#include "Common.h"
-#include "EventListener.h"
+#include "common/Common.h"
+#include "ui/EventListener.h"
 
 #include <list>
 

@@ -11,7 +11,7 @@
 #include "Texture.h"
 #include "GfxData.h"
 #include "Util.h"
-#include "SDL.h"
+#include "SDLHelper.h"
 
 #include "LBX.h"
 

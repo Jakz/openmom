@@ -1,14 +1,14 @@
 #include "CommonDraw.h"
 
-#include "Player.h"
-#include "UnitSpec.h"
-#include "Unit.h"
+#include "game/players/Player.h"
+#include "game/units/UnitSpec.h"
+#include "game/units/Unit.h"
 
-#include "GUISettings.h"
-#include "Texture.h"
-#include "GfxData.h"
-#include "Gfx.h"
-#include "Font.h"
+#include "gfx/GUISettings.h"
+#include "gfx/Texture.h"
+#include "ui/GfxData.h"
+#include "gfx/Gfx.h"
+#include "gfx/Font.h"
 
 void CommonDraw::drawMovement(u16 v, u16 x, u16 y, u16 c)
 {

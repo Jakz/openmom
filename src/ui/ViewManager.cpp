@@ -4,7 +4,7 @@
 #include "Game.h"
 #include "Animations.h"
 #include "View.h"
-#include "SDL.h"
+#include "SDLHelper.h"
 #include "Texture.h"
 #include "Gfx.h"
 

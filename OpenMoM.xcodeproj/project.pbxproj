@@ -16,9 +16,7 @@
 		040375E1197990B900A5B5FC /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D9197990B900A5B5FC /* Localization.cpp */; };
 		040375E2197990B900A5B5FC /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375DB197990B900A5B5FC /* main.cpp */; };
 		040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E41979EA6700A5B5FC /* Buttons.cpp */; };
-		040375E8197A775300A5B5FC /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E7197A775300A5B5FC /* Common.cpp */; };
 		040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E9197A9ABC00A5B5FC /* Animations.cpp */; };
-		040375EE197A9DD600A5B5FC /* SDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375EC197A9DD600A5B5FC /* SDL.cpp */; };
 		040375F2197AAF7B00A5B5FC /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F0197AAF7B00A5B5FC /* View.cpp */; };
 		040375F5197AB04100A5B5FC /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F3197AB04100A5B5FC /* Player.cpp */; };
 		040375F8197AB04700A5B5FC /* LocalPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F6197AB04700A5B5FC /* LocalPlayer.cpp */; };
@@ -34,7 +32,6 @@
 		0403761B197B46DA00A5B5FC /* City.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037619197B46DA00A5B5FC /* City.cpp */; };
 		0403761E197B52F800A5B5FC /* Unit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403761C197B52F800A5B5FC /* Unit.cpp */; };
 		04037621197B539400A5B5FC /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403761F197B539400A5B5FC /* Tile.cpp */; };
-		04037624197B550F00A5B5FC /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037622197B550F00A5B5FC /* Util.cpp */; };
 		04037627197B58C900A5B5FC /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037625197B58C900A5B5FC /* World.cpp */; };
 		0420538D197DA9D700B4C2CA /* SkillSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0420538B197DA9D700B4C2CA /* SkillSet.cpp */; };
 		04205392197DA9E900B4C2CA /* Effects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0420538E197DA9E900B4C2CA /* Effects.cpp */; };
@@ -60,7 +57,6 @@
 		0439E9AA1986912D0009BFF7 /* SpellBookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9A81986912D0009BFF7 /* SpellBookView.cpp */; };
 		0439E9AD198691530009BFF7 /* UnitDetailView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9AB198691530009BFF7 /* UnitDetailView.cpp */; };
 		0439E9B019869F6D0009BFF7 /* CommonDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9AE19869F6D0009BFF7 /* CommonDraw.cpp */; };
-		0439E9B31986A3A60009BFF7 /* GUISettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9B11986A3A60009BFF7 /* GUISettings.cpp */; };
 		0442470F1980A04800A8D7CC /* SpellMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0442470D1980A04800A8D7CC /* SpellMechanics.cpp */; };
 		044247121980B97900A8D7CC /* EventMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044247101980B97900A8D7CC /* EventMechanics.cpp */; };
 		044E466D1980202D00E396AD /* MiniMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044E466B1980202D00E396AD /* MiniMap.cpp */; };
@@ -87,7 +83,6 @@
 		04C1F4851B25359D00F7688A /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D2197990B900A5B5FC /* Font.cpp */; };
 		04C1F4861B2535A800F7688A /* Gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D4197990B900A5B5FC /* Gfx.cpp */; };
 		04C1F4871B2535C000F7688A /* Buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E41979EA6700A5B5FC /* Buttons.cpp */; };
-		04C1F4881B2535C900F7688A /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037622197B550F00A5B5FC /* Util.cpp */; };
 		04C1F4891B2535D100F7688A /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D9197990B900A5B5FC /* Localization.cpp */; };
 		04C1F48A1B2535DB00F7688A /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D6197990B900A5B5FC /* Texture.cpp */; };
 		04C1F48B1B2535F100F7688A /* ColorMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D0197990B900A5B5FC /* ColorMap.cpp */; };
@@ -109,6 +104,12 @@
 		04E282B21E021D8F00DD673D /* Gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D4197990B900A5B5FC /* Gfx.cpp */; };
 		04E282B31E021D9700DD673D /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
 		04E282B41E021DA100DD673D /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F0197AAF7B00A5B5FC /* View.cpp */; };
+		04E282BB1E02278700DD673D /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E282B91E02278700DD673D /* Common.cpp */; };
+		04E282BC1E02278700DD673D /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E282B91E02278700DD673D /* Common.cpp */; };
+		04E282BF1E0227CF00DD673D /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E282BD1E0227CF00DD673D /* Util.cpp */; };
+		04E282C01E0227CF00DD673D /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E282BD1E0227CF00DD673D /* Util.cpp */; };
+		04E282C31E0227DE00DD673D /* GUISettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E282C11E0227DE00DD673D /* GUISettings.cpp */; };
+		04E282C61E02343E00DD673D /* SDLHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E282C41E02343E00DD673D /* SDLHelper.cpp */; };
 		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
 		04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
 		04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4592197C9D7A00EA0CC0 /* Items.cpp */; };
@@ -151,7 +152,6 @@
 
 /* Begin PBXFileReference section */
 		040375C21979905100A5B5FC /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
-		040375C8197990B900A5B5FC /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = src/Common.h; sourceTree = SOURCE_ROOT; };
 		040375CD197990B900A5B5FC /* Race.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Race.cpp; path = src/game/players/Race.cpp; sourceTree = SOURCE_ROOT; };
 		040375CE197990B900A5B5FC /* Race.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Race.h; path = src/game/players/Race.h; sourceTree = SOURCE_ROOT; };
 		040375D0197990B900A5B5FC /* ColorMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorMap.cpp; path = src/gfx/ColorMap.cpp; sourceTree = SOURCE_ROOT; };
@@ -167,11 +167,8 @@
 		040375DB197990B900A5B5FC /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		040375E41979EA6700A5B5FC /* Buttons.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Buttons.cpp; path = src/ui/Buttons.cpp; sourceTree = SOURCE_ROOT; };
 		040375E51979EA6700A5B5FC /* Buttons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Buttons.h; path = src/ui/Buttons.h; sourceTree = SOURCE_ROOT; };
-		040375E7197A775300A5B5FC /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = src/Common.cpp; sourceTree = SOURCE_ROOT; };
 		040375E9197A9ABC00A5B5FC /* Animations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Animations.cpp; path = src/ui/Animations.cpp; sourceTree = SOURCE_ROOT; };
 		040375EA197A9ABC00A5B5FC /* Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Animations.h; path = src/ui/Animations.h; sourceTree = SOURCE_ROOT; };
-		040375EC197A9DD600A5B5FC /* SDL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDL.cpp; path = src/SDL.cpp; sourceTree = SOURCE_ROOT; };
-		040375ED197A9DD600A5B5FC /* SDL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDL.h; path = src/SDL.h; sourceTree = SOURCE_ROOT; };
 		040375EF197AAC1800A5B5FC /* EventListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventListener.h; path = src/ui/EventListener.h; sourceTree = SOURCE_ROOT; };
 		040375F0197AAF7B00A5B5FC /* View.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = View.cpp; path = src/ui/View.cpp; sourceTree = SOURCE_ROOT; };
 		040375F1197AAF7B00A5B5FC /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = View.h; path = src/ui/View.h; sourceTree = SOURCE_ROOT; };
@@ -203,8 +200,6 @@
 		0403761D197B52F800A5B5FC /* Unit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Unit.h; path = src/game/units/Unit.h; sourceTree = SOURCE_ROOT; };
 		0403761F197B539400A5B5FC /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tile.cpp; path = src/game/world/Tile.cpp; sourceTree = SOURCE_ROOT; };
 		04037620197B539400A5B5FC /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tile.h; path = src/game/world/Tile.h; sourceTree = SOURCE_ROOT; };
-		04037622197B550F00A5B5FC /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Util.cpp; path = src/game/world/Util.cpp; sourceTree = SOURCE_ROOT; };
-		04037623197B550F00A5B5FC /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = src/game/world/Util.h; sourceTree = SOURCE_ROOT; };
 		04037625197B58C900A5B5FC /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = World.cpp; path = src/game/world/World.cpp; sourceTree = SOURCE_ROOT; };
 		04037626197B58C900A5B5FC /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = World.h; path = src/game/world/World.h; sourceTree = SOURCE_ROOT; };
 		0420538B197DA9D700B4C2CA /* SkillSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SkillSet.cpp; path = src/game/spells/SkillSet.cpp; sourceTree = SOURCE_ROOT; };
@@ -255,8 +250,6 @@
 		0439E9AC198691530009BFF7 /* UnitDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitDetailView.h; path = src/ui/views/UnitDetailView.h; sourceTree = SOURCE_ROOT; };
 		0439E9AE19869F6D0009BFF7 /* CommonDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommonDraw.cpp; sourceTree = "<group>"; };
 		0439E9AF19869F6D0009BFF7 /* CommonDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonDraw.h; sourceTree = "<group>"; };
-		0439E9B11986A3A60009BFF7 /* GUISettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GUISettings.cpp; sourceTree = SOURCE_ROOT; };
-		0439E9B21986A3A60009BFF7 /* GUISettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUISettings.h; sourceTree = SOURCE_ROOT; };
 		0442470D1980A04800A8D7CC /* SpellMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpellMechanics.cpp; path = src/game/mechanics/SpellMechanics.cpp; sourceTree = SOURCE_ROOT; };
 		0442470E1980A04800A8D7CC /* SpellMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpellMechanics.h; path = src/game/mechanics/SpellMechanics.h; sourceTree = SOURCE_ROOT; };
 		044247101980B97900A8D7CC /* EventMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventMechanics.cpp; path = src/game/mechanics/EventMechanics.cpp; sourceTree = SOURCE_ROOT; };
@@ -314,6 +307,14 @@
 		04E282A11E021C0600DD673D /* catch.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch.hpp; sourceTree = "<group>"; };
 		04E282A21E021C0600DD673D /* tests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tests.cpp; sourceTree = "<group>"; };
 		04E282A71E021C3300DD673D /* Tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Tests; sourceTree = BUILT_PRODUCTS_DIR; };
+		04E282B91E02278700DD673D /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = src/common/Common.cpp; sourceTree = SOURCE_ROOT; };
+		04E282BA1E02278700DD673D /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = src/common/Common.h; sourceTree = SOURCE_ROOT; };
+		04E282BD1E0227CF00DD673D /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Util.cpp; path = src/common/Util.cpp; sourceTree = SOURCE_ROOT; };
+		04E282BE1E0227CF00DD673D /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = src/common/Util.h; sourceTree = SOURCE_ROOT; };
+		04E282C11E0227DE00DD673D /* GUISettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GUISettings.cpp; sourceTree = "<group>"; };
+		04E282C21E0227DE00DD673D /* GUISettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUISettings.h; sourceTree = "<group>"; };
+		04E282C41E02343E00DD673D /* SDLHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SDLHelper.cpp; sourceTree = "<group>"; };
+		04E282C51E02343E00DD673D /* SDLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLHelper.h; sourceTree = "<group>"; };
 		04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnitSpec.cpp; path = src/game/units/UnitSpec.cpp; sourceTree = SOURCE_ROOT; };
 		04EE458D197C85C000EA0CC0 /* UnitSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitSpec.h; path = src/game/units/UnitSpec.h; sourceTree = SOURCE_ROOT; };
 		04EE458F197C92C400EA0CC0 /* GfxData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GfxData.cpp; path = src/ui/GfxData.cpp; sourceTree = SOURCE_ROOT; };
@@ -367,10 +368,6 @@
 				040375E31979E82900A5B5FC /* ui */,
 				040375D8197990B900A5B5FC /* i18n */,
 				04E282A01E021C0600DD673D /* tests */,
-				040375E7197A775300A5B5FC /* Common.cpp */,
-				040375C8197990B900A5B5FC /* Common.h */,
-				040375EC197A9DD600A5B5FC /* SDL.cpp */,
-				040375ED197A9DD600A5B5FC /* SDL.h */,
 				040375DB197990B900A5B5FC /* main.cpp */,
 			);
 			path = src;
@@ -398,12 +395,12 @@
 		040375CA197990B900A5B5FC /* common */ = {
 			isa = PBXGroup;
 			children = (
+				04E282BD1E0227CF00DD673D /* Util.cpp */,
+				04E282BE1E0227CF00DD673D /* Util.h */,
+				04E282B91E02278700DD673D /* Common.cpp */,
+				04E282BA1E02278700DD673D /* Common.h */,
 				04E218841C02A386005784E1 /* format.cc */,
 				04E218851C02A386005784E1 /* format.h */,
-				04037622197B550F00A5B5FC /* Util.cpp */,
-				04037623197B550F00A5B5FC /* Util.h */,
-				0439E9B11986A3A60009BFF7 /* GUISettings.cpp */,
-				0439E9B21986A3A60009BFF7 /* GUISettings.h */,
 			);
 			name = common;
 			path = game/common;
@@ -430,6 +427,8 @@
 		040375CF197990B900A5B5FC /* gfx */ = {
 			isa = PBXGroup;
 			children = (
+				04E282C11E0227DE00DD673D /* GUISettings.cpp */,
+				04E282C21E0227DE00DD673D /* GUISettings.h */,
 				040375D0197990B900A5B5FC /* ColorMap.cpp */,
 				040375D1197990B900A5B5FC /* ColorMap.h */,
 				040375D2197990B900A5B5FC /* Font.cpp */,
@@ -442,6 +441,8 @@
 				0464E11C19820301009C91ED /* Hqx.h */,
 				048204A019888E5C00D4B699 /* LBX.cpp */,
 				048204A119888E5C00D4B699 /* LBX.h */,
+				04E282C41E02343E00DD673D /* SDLHelper.cpp */,
+				04E282C51E02343E00DD673D /* SDLHelper.h */,
 			);
 			name = gfx;
 			path = src/gfx;
@@ -848,7 +849,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04037624197B550F00A5B5FC /* Util.cpp in Sources */,
 				0439E9B019869F6D0009BFF7 /* CommonDraw.cpp in Sources */,
 				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
 				04797BEF1C1DCB830026C153 /* ValuesMechanics.cpp in Sources */,
@@ -860,6 +860,7 @@
 				0439E99E198690580009BFF7 /* MirrorView.cpp in Sources */,
 				04205392197DA9E900B4C2CA /* Effects.cpp in Sources */,
 				040375F2197AAF7B00A5B5FC /* View.cpp in Sources */,
+				04E282BF1E0227CF00DD673D /* Util.cpp in Sources */,
 				040375E0197990B900A5B5FC /* Texture.cpp in Sources */,
 				0439E98F19868FAD0009BFF7 /* CityView.cpp in Sources */,
 				04243F2E197EE9E700E8A716 /* SpellBook.cpp in Sources */,
@@ -875,16 +876,15 @@
 				04205396197DAA3C00B4C2CA /* Pathfind.cpp in Sources */,
 				0439E9A7198691070009BFF7 /* ResearchView.cpp in Sources */,
 				04037614197AF68700A5B5FC /* Settings.cpp in Sources */,
-				040375E8197A775300A5B5FC /* Common.cpp in Sources */,
 				042C4810198B3E75009C7E22 /* LairMechanics.cpp in Sources */,
 				04C729C41985F1B1002F16E6 /* BookView.cpp in Sources */,
 				0439E98919868F6D0009BFF7 /* ArmiesView.cpp in Sources */,
 				0439E9A1198690B70009BFF7 /* OutpostView.cpp in Sources */,
+				04E282C61E02343E00DD673D /* SDLHelper.cpp in Sources */,
 				0403760D197AE16100A5B5FC /* Level.cpp in Sources */,
+				04E282C31E0227DE00DD673D /* GUISettings.cpp in Sources */,
 				048204A219888E5C00D4B699 /* LBX.cpp in Sources */,
-				040375EE197A9DD600A5B5FC /* SDL.cpp in Sources */,
 				040375DF197990B900A5B5FC /* Gfx.cpp in Sources */,
-				0439E9B31986A3A60009BFF7 /* GUISettings.cpp in Sources */,
 				0482049F19885DA900D4B699 /* Diplomacy.cpp in Sources */,
 				04037618197AF93600A5B5FC /* NewGameView.cpp in Sources */,
 				04205393197DA9E900B4C2CA /* Skill.cpp in Sources */,
@@ -903,6 +903,7 @@
 				040375F5197AB04100A5B5FC /* Player.cpp in Sources */,
 				0403761B197B46DA00A5B5FC /* City.cpp in Sources */,
 				04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */,
+				04E282BB1E02278700DD673D /* Common.cpp in Sources */,
 				04C729C119853F4E002F16E6 /* MainView.cpp in Sources */,
 				0403761E197B52F800A5B5FC /* Unit.cpp in Sources */,
 				0487516D197F612400009661 /* Messages.cpp in Sources */,
@@ -938,10 +939,11 @@
 				04C1F4851B25359D00F7688A /* Font.cpp in Sources */,
 				04C1F4861B2535A800F7688A /* Gfx.cpp in Sources */,
 				04C1F4871B2535C000F7688A /* Buttons.cpp in Sources */,
-				04C1F4881B2535C900F7688A /* Util.cpp in Sources */,
+				04E282C01E0227CF00DD673D /* Util.cpp in Sources */,
 				04C1F4891B2535D100F7688A /* Localization.cpp in Sources */,
 				04C1F48B1B2535F100F7688A /* ColorMap.cpp in Sources */,
 				04C1F48A1B2535DB00F7688A /* Texture.cpp in Sources */,
+				04E282BC1E02278700DD673D /* Common.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1233,6 +1235,7 @@
 				04E282AD1E021C3300DD673D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

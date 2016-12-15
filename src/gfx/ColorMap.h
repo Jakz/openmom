@@ -9,7 +9,7 @@
 #ifndef _COLOR_MAP_H_
 #define _COLOR_MAP_H_
 
-#include "Common.h"
+#include "common/Common.h"
 
 #include <initializer_list>
 #include <unordered_set>

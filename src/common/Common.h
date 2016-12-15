@@ -38,7 +38,7 @@ enum MouseButton : u8
   BUTTON_MIDDLE = SDL_BUTTON_MIDDLE
 };
 
-enum LBXFileID : u8;
+enum LBXFileID : u16;
 struct LBXSpriteInfo
 {
   LBXFileID lbx;
@@ -48,7 +48,7 @@ struct LBXSpriteInfo
   LBXSpriteInfo relative(s16 delta) const { return LBXSpriteInfo(lbx, index+delta); }
 };
 
-enum LBXFileID : u8
+enum LBXFileID : u16
 {
   LBX_ARMYLIST = 0,
   LBX_BACKGRND,

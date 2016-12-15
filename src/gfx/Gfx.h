@@ -9,7 +9,7 @@
 #ifndef _GFX_H_
 #define _GFX_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "ColorMap.h"
 
 #include <vector>

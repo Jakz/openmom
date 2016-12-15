@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "SDL.h"
+#include "SDLHelper.h"
 
 #include "Font.h"
 #include "Gfx.h"

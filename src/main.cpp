@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "SDL.h"
+#include "SDLHelper.h"
 #include "Gfx.h"
 #include "Texture.h"
 #include "Game.h"

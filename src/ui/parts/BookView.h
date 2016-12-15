@@ -1,9 +1,9 @@
 #ifndef _BOOK_VIEW_H_
 #define _BOOK_VIEW_H_
 
-#include "Common.h"
-#include "Spells.h"
-#include "SpellBook.h"
+#include "common/Common.h"
+#include "game/spells/Spells.h"
+#include "game/spells/SpellBook.h"
 
 #include <numeric>
 #include <vector>

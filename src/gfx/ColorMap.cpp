@@ -9,7 +9,7 @@
 #include "ColorMap.h"
 
 #include "Gfx.h"
-#include "SDL.h"
+#include "SDLHelper.h"
 
 using namespace std;
 

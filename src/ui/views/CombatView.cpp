@@ -12,7 +12,7 @@
 #include "LocalPlayer.h"
 #include "Combat.h"
 
-#include "SDL.h"
+#include "SDLHelper.h"
 #include "UnitDetailView.h"
 #include "ViewManager.h"
 #include "Gfx.h"

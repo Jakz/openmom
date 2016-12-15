@@ -8,7 +8,7 @@
 
 #include "ValuesMechanics.h"
 
-#include "Game.h"
+#include "game/Game.h"
 
 template<> float ValuesMechanics::get<float>(Value value)
 {
