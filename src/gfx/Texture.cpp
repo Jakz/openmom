@@ -11,7 +11,7 @@
 #include "Gfx.h"
 #include "LBX.h"
 
-#include <SDL2/SDL.h>
+#include "SDL.h"
 
 const Texture Texture::textures[] =
 {

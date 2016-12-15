@@ -3,7 +3,7 @@
 
 #include <cassert>
 #include <cstdint>
-#include <SDL2/SDL.h>
+#include "SDL.h"
 
 #define WIDTH (320)
 #define HEIGHT (200)

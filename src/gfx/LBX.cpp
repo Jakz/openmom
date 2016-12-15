@@ -22,7 +22,7 @@
 #include <dirent.h>
 #include <vector>
 
-#include <SDL2/SDL.h>
+#include "SDL.h"
 
 /* FORMAT */
 
@@ -310,7 +310,7 @@ void LBX::scanFileNames(const LBXHeader& header, const offset_list& offsets, str
   }
 }
 
-static std::string path = string(getenv("PWD")) + "/LBXManager.app/Contents/Resources/data/lbx/";
+static std::string path = string(getenv("PWD")) + "/OpenMoM.app/Contents/Resources/data/lbx/";
 
 bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {

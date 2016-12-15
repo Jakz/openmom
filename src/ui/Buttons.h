@@ -9,13 +9,13 @@
 #ifndef _BUTTONS_H_
 #define _BUTTONS_H_
 
+#include "SDL.h"
 #include "Common.h"
 #include "Texture.h"
 
 #include <string>
 #include <functional>
 #include <vector>
-#include <SDL2/SDL.h>
 
 class FontSpriteSheet;
 

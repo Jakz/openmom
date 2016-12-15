@@ -1,0 +1,8 @@
+FRAMEWORK_SEARCH_PATHS = $(PROJECT_DIR)/../../Libs
+HEADER_SEARCH_PATHS = ${SRCROOT}/../../src ${SRCROOT}/../../libs/SDL2.framework/Headers ${SRCROOT}/../../libs/SDL2_image.framework/Headers
+
+PRODUCT_NAME = $(TARGET_NAME)
+
+LD_RUNPATH_SEARCH_PATHS = @executable_path/../Frameworks
+
+INFOPLIST_FILE = $(PROJECT_DIR)/OpenMoM-Info.plist
