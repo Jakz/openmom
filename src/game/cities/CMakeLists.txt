@@ -1,0 +1,2 @@
+file(GLOB CITIES_SOURCE *.cpp)
+add_library(CITIES_LIB ${CITIES_SOURCE})

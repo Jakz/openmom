@@ -1,0 +1,2 @@
+file(GLOB PLAYERS_SOURCE *.cpp)
+add_library(PLAYERS_LIB ${PLAYERS_SOURCE})

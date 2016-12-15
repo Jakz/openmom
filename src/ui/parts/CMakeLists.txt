@@ -1,0 +1,2 @@
+file(GLOB UI_PARTS_SOURCE *.cpp)
+add_library(UI_PARTS_LIB ${UI_PARTS_SOURCE})

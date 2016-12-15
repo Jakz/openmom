@@ -1,2 +1,2 @@
-file(GLOB common_source *.cpp)
-add_library(commonlib ${common_source})
+file(GLOB COMMON_SOURCE *.cpp)
+add_library(COMMON_LIB ${COMMON_SOURCE})

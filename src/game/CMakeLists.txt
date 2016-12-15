@@ -1,0 +1,11 @@
+file(GLOB GAME_SOURCE *.cpp)
+add_library(GAME_LIB ${GAME_SOURCE})
+
+add_subdirectory(cities)
+add_subdirectory(combat)
+add_subdirectory(mechanics)
+add_subdirectory(players)
+add_subdirectory(skills)
+add_subdirectory(spells)
+add_subdirectory(units)
+add_subdirectory(world)

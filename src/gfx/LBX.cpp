@@ -479,8 +479,8 @@ std::string LBX::getLBXPath(const std::string& name)
 
 FILE* LBX::getDescriptor(const LBXFile& lbx)
 {
-  printf("Request to load %s\n", lbx.fileName.c_str());
   string name = getLBXPath(lbx.fileName);
+  printf("Request to load %s from %s\n", lbx.fileName.c_str(), name.c_str());
   return fopen(name.c_str(), "rb");
 }
 

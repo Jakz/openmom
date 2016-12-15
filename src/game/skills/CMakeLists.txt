@@ -1,0 +1,2 @@
+file(GLOB SKILLS_SOURCE *.cpp)
+add_library(SKILLS_LIB ${SKILLS_SOURCE})

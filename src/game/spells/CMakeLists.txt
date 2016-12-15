@@ -1,0 +1,2 @@
+file(GLOB SPELLS_SOURCE *.cpp)
+add_library(SPELLS_LIB ${SPELLS_SOURCE})

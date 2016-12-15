@@ -1,0 +1,2 @@
+file(GLOB COMBAT_SOURCE *.cpp)
+add_library(COMBAT_LIB ${COMBAT_SOURCE})
