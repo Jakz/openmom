@@ -39,6 +39,7 @@
 
 
 using namespace std;
+using namespace lbx;
 
 const Color BLACK_ALPHA = RGB(0, 255, 0);
 const Color TRANSPARENT = RGB(255, 0, 255);
@@ -309,7 +310,7 @@ void LBX::scanFileNames(const LBXHeader& header, const offset_list& offsets, str
   }
 }
 
-static std::string path = string(getenv("PWD")) + "/OpenMoM.app/Contents/Resources/data/lbx/";
+static std::string path = string(getenv("PWD")) + "/LBXManager.app/Contents/Resources/data/lbx/";
 
 bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
@@ -572,9 +573,9 @@ void LBX::load()
   
 }*/
 
-LBXFile LBXRepository::data[LBX_COUNT];
+LBXFile Repository::data[LBX_COUNT];
 
-const LBXFile& LBXRepository::loadLBX(LBXFileID ident)
+const LBXFile& Repository::loadLBX(LBXFileID ident)
 {
   LBXFile& lbx = data[ident];
     
@@ -589,7 +590,7 @@ const LBXFile& LBXRepository::loadLBX(LBXFileID ident)
   return lbx;
 }
 
-const LBXSpriteData* LBXRepository::loadLBXSpriteData(const LBXSpriteInfo &info)
+const LBXSpriteData* Repository::loadLBXSpriteData(const LBXSpriteInfo &info)
 {
   LBXFile& lbx = data[info.lbx];
   
@@ -604,6 +605,8 @@ const LBXSpriteData* LBXRepository::loadLBXSpriteData(const LBXSpriteInfo &info)
   
   return spriteData;
 }
+
+
 
 #include "ViewManager.h"
 #include "Buttons.h"
@@ -634,7 +637,7 @@ void LBXView::draw()
 {
   if (selectedContent != -1)
   {
-    LBXSpriteData* s = LBXRepository::data[selectedLBX].sprites[selectedContent];
+    LBXSpriteData* s = Repository::data[selectedLBX].sprites[selectedContent];
     
     for (int i = 0; i < s->count; ++i)
     {
@@ -644,7 +647,7 @@ void LBXView::draw()
   
   
   for (int i = 0; i < LBX_COUNT; ++i)
-    Fonts::drawString(LBXRepository::data[i].fileName, selectedLBX == i+lbxOffset ? FontFaces::Small::REDW : FontFaces::Small::WHITE, 5, 5+i*8, ALIGN_LEFT);
+    Fonts::drawString(Repository::data[i].fileName, selectedLBX == i+lbxOffset ? FontFaces::Small::REDW : FontFaces::Small::WHITE, 5, 5+i*8, ALIGN_LEFT);
   
   if (selectedLBX != -1)
   {
@@ -677,7 +680,7 @@ void LBXView::mouseReleased(u16 x, u16 y, MouseButton b)
     
     if (y < MAX_PER_PAGE)
     {
-      if (y+lbxOffset < LBX_COUNT && x < Fonts::stringWidth(FontFaces::Small::WHITE, LBXRepository::data[y].fileName) + 10)
+      if (y+lbxOffset < LBX_COUNT && x < Fonts::stringWidth(FontFaces::Small::WHITE, Repository::data[y].fileName) + 10)
       {
         selectedLBX = y+lbxOffset;
         selectedContent = -1;
@@ -700,11 +703,11 @@ void LBXView::updateContentButtons()
 
 void LBXView::selectLBX()
 {
-  if (LBXRepository::shouldAllocateLBX(static_cast<LBXFileID>(selectedLBX)))
+  if (Repository::shouldAllocateLBX(static_cast<LBXFileID>(selectedLBX)))
   {
-    LBXRepository::loadLBX(static_cast<LBXFileID>(selectedLBX));
+    Repository::loadLBX(static_cast<LBXFileID>(selectedLBX));
    
-    LBXFile &lbx = LBXRepository::data[selectedLBX];
+    LBXFile &lbx = Repository::data[selectedLBX];
     string_list fileNames;
     
     string name = path + lbx.fileName + ".lbx";
@@ -721,7 +724,8 @@ void LBXView::selectGFX()
 {
   LBXSpriteInfo info = LBXSpriteInfo(static_cast<LBXFileID>(selectedLBX), selectedContent);
 
-  if (LBXRepository::shouldAllocateSprite(info))
-    LBXRepository::loadLBXSpriteData(info);  
+  if (Repository::shouldAllocateSprite(info))
+    Repository::loadLBXSpriteData(info);  
 }
+
 

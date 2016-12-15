@@ -173,10 +173,31 @@ string Fonts::format(const char *fmt_str, ...) {
 
 const string Fonts::join(vector<const string>& tokens, s16 s, s16 e)
 {
+  //TODO: use sstream to optimize
   string result = tokens[s];
   
   for (int i = s+1; i <= e; ++i)
     result += " "+tokens[i];
+  
+  return result;
+}
+
+std::string Fonts::groupDigits(u32 value)
+{
+  constexpr char separator = ',';
+  
+  //TODO: utf8 support?
+  std::string str = std::to_string(value);
+  
+  assert(str.length() > 0);
+  size_t separators = (str.length() - 1) / 3;
+  
+  std::string result = std::string(str.length() + separators, separator);
+  
+  for (size_t i = 0; i < str.length(); ++i)
+  {
+    result[(result.length() - 1) - (i + (i/3))] = str[str.length()-1-i];
+  }
   
   return result;
 }

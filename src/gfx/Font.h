@@ -258,6 +258,8 @@ public:
   
   static const Palette* paletteFor(char c) { return fontColors[c]; }
   
+  static std::string groupDigits(u32 value);
+  
   static const FontSpriteSheet* fontForColor(PlayerColor color)
   {
     switch (color)

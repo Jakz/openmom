@@ -40,13 +40,13 @@ void init()
 
 int main(int argc, char * arg[])
 {
-  LBXRepository::init();
-  LBXRepository::loadLBX(LBX_BACKGRND);
-  LBXRepository::loadLBX(LBX_FIGURE4);
-  LBXRepository::loadLBX(LBX_FIGURE10);
-  LBXRepository::loadLBX(LBX_FIGURE11);
-  LBXRepository::loadLBX(LBX_FIGURE12);
-  LBX::load();
+  lbx::Repository::init();
+  lbx::Repository::loadLBX(LBX_BACKGRND);
+  lbx::Repository::loadLBX(LBX_FIGURE4);
+  lbx::Repository::loadLBX(LBX_FIGURE10);
+  lbx::Repository::loadLBX(LBX_FIGURE11);
+  lbx::Repository::loadLBX(LBX_FIGURE12);
+  lbx::LBX::load();
   FontFaces::buildFonts();
   //return 0;
   

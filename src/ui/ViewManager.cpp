@@ -51,7 +51,7 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_SPELL_BOOK] = new SpellBookView(this);
   views[VIEW_UNIT] = new UnitDetailView(this);
   
-  views[VIEW_LBX] = new LBXView(this);
+  views[VIEW_LBX] = new lbx::LBXView(this);
 }
 
 AlchemyView* ViewManager::alchemyView() { return static_cast<AlchemyView*>(views[VIEW_ALCHEMY]); }

@@ -108,7 +108,7 @@ void CityView::draw()
   /* draw minimap */
   Viewport::drawCityViewport(player, g->world, city->getPosition());
   
-  Gfx::draw(LBXRepository::spriteFor(LBXSpriteInfo(LBX_BACKGRND, 6)), 0, 0);
+  Gfx::draw(lbx::Repository::spriteFor(LBXSpriteInfo(LBX_BACKGRND, 6)), 0, 0);
   
   
   //Gfx::draw(TextureID::CITY_VIEW_BACKDROP, 0, 0);
@@ -164,7 +164,8 @@ void CityView::draw()
   
   /* draw city info: race and population */
   Fonts::drawString(i18n::s(city->race.name), FontFaces::Small::YELLOW, 5, 18, ALIGN_LEFT);
-  Fonts::drawString(Fonts::format("Population: %,d (+%d)", city->population, city->growthRate), FontFaces::Small::YELLOW, 209, 18, ALIGN_RIGHT);
+  //TODO: localize digits
+  Fonts::drawString(Fonts::format("Population: %s (+%d)", Fonts::groupDigits(city->population).c_str(), city->growthRate), FontFaces::Small::YELLOW, 209, 18, ALIGN_RIGHT);
   
   const Productable* production = city->getProductable();
   

@@ -176,7 +176,7 @@ class LBXTable : public Fl_Table
 private:
   int selection;
   
-  const LBXFile& holder(int index) { return LBXRepository::holderForID(static_cast<LBXFileID>(index)); }
+  const LBXFile& holder(int index) { return Repository::holderForID(static_cast<LBXFileID>(index)); }
   
 public:
   LBXTable() : Fl_Table(0,0,FIRST_TABLE_WIDTH,800), selection(-1)
@@ -211,7 +211,7 @@ public:
       
       if (entry.sprites == nullptr)
       {
-        LBXRepository::loadLBX(entry.ident);
+        Repository::loadLBX(entry.ident);
         LBX::scanFileNames(entry.header, entry.offsets, assetNames[entry.ident], LBX::getDescriptor(entry));
       }
       
@@ -322,7 +322,7 @@ public:
       
       if (!currentLBX->sprites[selection])
       {
-        LBXRepository::loadLBXSpriteData(LBXSpriteInfo(currentLBX->ident, selection));
+        Repository::loadLBXSpriteData(LBXSpriteInfo(currentLBX->ident, selection));
       }
       
       mywindow->setData(currentLBX->sprites[selection]);
@@ -400,7 +400,7 @@ public:
 
 int main(int argc, char **argv) {
 
-  LBXRepository::init();
+  Repository::init();
   
   Fl::visual(FL_RGB);
     
