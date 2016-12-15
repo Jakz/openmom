@@ -8,8 +8,8 @@
 #include "LocalPlayer.h"
 #include "World.h"
 #include "ColorMap.h"
-#include "City.h"
-#include "Army.h"
+#include "game/cities/City.h"
+#include "game/units/Army.h"
 #include "Util.h"
 #include "game/Game.h"
 

@@ -8,14 +8,14 @@
 
 #include "CityView.h"
 
-#include "City.h"
+#include "game/cities/City.h"
 #include "CityScape.h"
 #include "LocalPlayer.h"
 #include "game/Game.h"
-#include "Army.h"
+#include "game/units/Army.h"
 #include "World.h"
 #include "Tile.h"
-#include "CityMechanics.h"
+#include "game/mechanics/CityMechanics.h"
 #include "Viewport.h"
 
 #include "Localization.h"

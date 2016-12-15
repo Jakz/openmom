@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "LairMechanics.h"
+#include "game/mechanics/LairMechanics.h"
 
 #include "game/Game.h"
 #include "Places.h"

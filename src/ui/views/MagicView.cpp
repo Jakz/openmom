@@ -10,7 +10,7 @@
 
 #include "LocalPlayer.h"
 #include "Diplomacy.h"
-#include "City.h"
+#include "game/cities/City.h"
 
 #include "gfx/Gfx.h"
 #include "gfx/Texture.h"

@@ -15,7 +15,7 @@
 
 #include "ViewManager.h"
 
-#include "City.h"
+#include "game/cities/City.h"
 
 OutpostView::OutpostView(ViewManager* gvm) : View(gvm)
 {

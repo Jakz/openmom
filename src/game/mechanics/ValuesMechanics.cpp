@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "ValuesMechanics.h"
+#include "game/mechanics/ValuesMechanics.h"
 
 #include "game/Game.h"
 

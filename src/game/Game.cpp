@@ -11,7 +11,7 @@
 #include "World.h"
 #include "LocalPlayer.h"
 
-#include "Army.h"
+#include "game/units/Army.h"
 #include "Unit.h"
 
 #include "Messages.h"

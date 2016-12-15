@@ -12,7 +12,7 @@
 #include "GfxData.h"
 #include "ColorMap.h"
 #include "gfx/Texture.h"
-#include "Army.h"
+#include "game/units/Army.h"
 #include "Unit.h"
 #include "Player.h"
 

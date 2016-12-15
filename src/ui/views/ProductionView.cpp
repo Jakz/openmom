@@ -13,7 +13,7 @@
 
 #include "game/Game.h"
 #include "Player.h"
-#include "City.h"
+#include "game/cities/City.h"
 #include "UnitSpec.h"
 
 #include "Localization.h"

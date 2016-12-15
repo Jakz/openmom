@@ -8,9 +8,9 @@
 
 #include "Player.h"
 
-#include "Army.h"
+#include "game/units/Army.h"
 #include "Util.h"
-#include "City.h"
+#include "game/cities/City.h"
 #include "Buildings.h"
 #include "Unit.h"
 #include "game/Game.h"

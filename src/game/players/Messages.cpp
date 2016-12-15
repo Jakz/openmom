@@ -8,7 +8,7 @@
 
 #include "Messages.h"
 
-#include "City.h"
+#include "game/cities/City.h"
 #include "Buildings.h"
 
 //using namespace messages;

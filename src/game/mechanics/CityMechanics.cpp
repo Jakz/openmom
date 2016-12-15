@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "CityMechanics.h"
+#include "game/mechanics/CityMechanics.h"
 
 #include "Player.h"
 #include "game/Game.h"

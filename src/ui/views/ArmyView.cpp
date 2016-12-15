@@ -9,7 +9,7 @@
 #include "ArmyView.h"
 
 #include "game/Game.h"
-#include "Army.h"
+#include "game/units/Army.h"
 #include "LocalPlayer.h"
 
 #include "gfx/Gfx.h"

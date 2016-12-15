@@ -10,7 +10,7 @@
 #include "World.h"
 #include "gfx/Gfx.h"
 #include "Tile.h"
-#include "City.h"
+#include "game/cities/City.h"
 #include "Player.h"
 #include "Places.h"
 #include "GfxData.h"

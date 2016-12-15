@@ -2,7 +2,7 @@
 
 #include "Unit.h"
 #include "Player.h"
-#include "Army.h"
+#include "game/units/Army.h"
 
 #include <numeric>
 

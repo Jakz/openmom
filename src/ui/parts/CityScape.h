@@ -11,7 +11,7 @@
 
 #include "common/Common.h"
 #include "gfx/Texture.h"
-#include "City.h"
+#include "game/cities/City.h"
 
 #include <unordered_map>
 #include <map>

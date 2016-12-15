@@ -2,7 +2,7 @@
 
 #include "gfx/Texture.h"
 #include "Buildings.h"
-#include "City.h"
+#include "game/cities/City.h"
 #include "gfx/Gfx.h"
 #include "Util.h"
 

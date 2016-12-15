@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "MapMechanics.h"
+#include "game/mechanics/MapMechanics.h"
 
 #include "Util.h"
 #include "game/Game.h"

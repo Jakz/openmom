@@ -1,7 +1,7 @@
 #include "Tile.h"
 
 #include "World.h"
-#include "City.h"
+#include "game/cities/City.h"
 
 #include "LocalPlayer.h"
 #include "game/Game.h"

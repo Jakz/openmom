@@ -12,7 +12,7 @@
 #include "common/Common.h"
 
 #include "Spells.h"
-#include "Army.h"
+#include "game/units/Army.h"
 #include "Player.h"
 
 #include "Messages.h"

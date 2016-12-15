@@ -1,7 +1,7 @@
 #include "SpellBook.h"
 
 #include "Player.h"
-#include "SpellMechanics.h"
+#include "game/mechanics/SpellMechanics.h"
 #include "game/Game.h"
 
 #include <random>

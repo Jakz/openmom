@@ -2,7 +2,7 @@
 #define _PATHFIND_H_
 
 #include "common/Common.h"
-#include "Army.h"
+#include "game/units/Army.h"
 
 #include <unordered_set>
 #include <list>

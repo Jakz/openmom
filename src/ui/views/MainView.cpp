@@ -10,10 +10,10 @@
 #include "game/Game.h"
 #include "World.h"
 #include "LocalPlayer.h"
-#include "Army.h"
+#include "game/units/Army.h"
 #include "Unit.h"
 #include "Tile.h"
-#include "City.h"
+#include "game/cities/City.h"
 
 #include "ViewManager.h"
 

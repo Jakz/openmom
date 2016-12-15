@@ -1,4 +1,4 @@
-#include "SpellMechanics.h"
+#include "game/mechanics/SpellMechanics.h"
 
 #include "Spells.h"
 #include "SpellBook.h"

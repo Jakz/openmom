@@ -10,14 +10,14 @@
 #define _GAME_H_
 
 #include "Settings.h"
-#include "MapMechanics.h"
-#include "SpellMechanics.h"
-#include "EventMechanics.h"
-#include "CityMechanics.h"
-#include "PlayerMechanics.h"
-#include "CombatMechanics.h"
-#include "LairMechanics.h"
-#include "ValuesMechanics.h"
+#include "game/mechanics/MapMechanics.h"
+#include "game/mechanics/SpellMechanics.h"
+#include "game/mechanics/EventMechanics.h"
+#include "game/mechanics/CityMechanics.h"
+#include "game/mechanics/PlayerMechanics.h"
+#include "game/combat/CombatMechanics.h"
+#include "game/mechanics/LairMechanics.h"
+#include "game/mechanics/ValuesMechanics.h"
 
 #include <list>
 #include <string>

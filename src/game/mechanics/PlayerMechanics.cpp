@@ -1,8 +1,8 @@
-#include "PlayerMechanics.h"
+#include "game/mechanics/PlayerMechanics.h"
 
 #include "Player.h"
-#include "City.h"
-#include "Army.h"
+#include "game/cities/City.h"
+#include "game/units/Army.h"
 #include "Unit.h"
 #include "Places.h"
 #include "SpellBook.h"
