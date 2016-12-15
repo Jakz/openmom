@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "Tile.h"
 #include "Unit.h"
-#include "Game.h"
+#include "game/Game.h"
 #include "World.h"
 
 #include <list>

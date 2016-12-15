@@ -8,8 +8,8 @@
 
 #include "OutpostView.h"
 
-#include "Gfx.h"
-#include "Texture.h"
+#include "gfx/Gfx.h"
+#include "gfx/Texture.h"
 #include "Font.h"
 #include "Localization.h"
 

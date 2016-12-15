@@ -1,4 +1,4 @@
-#include "Common.h"
+#include "common/Common.h"
 
 #include "i18n/Localization.h"
 #include "gfx/Gfx.h"

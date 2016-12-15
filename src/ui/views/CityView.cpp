@@ -11,7 +11,7 @@
 #include "City.h"
 #include "CityScape.h"
 #include "LocalPlayer.h"
-#include "Game.h"
+#include "game/Game.h"
 #include "Army.h"
 #include "World.h"
 #include "Tile.h"
@@ -22,8 +22,8 @@
 
 #include "ViewManager.h"
 
-#include "Gfx.h"
-#include "Texture.h"
+#include "gfx/Gfx.h"
+#include "gfx/Texture.h"
 #include "Font.h"
 #include "Buttons.h"
 #include "Messages.h"

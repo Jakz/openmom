@@ -2,7 +2,7 @@
 
 #include "Localization.h"
 
-#include "Game.h"
+#include "game/Game.h"
 #include "Army.h"
 
 using namespace std;

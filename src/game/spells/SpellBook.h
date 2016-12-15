@@ -1,7 +1,7 @@
 #ifndef _SPELLBOOK_H_
 #define _SPELLBOOK_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Spells.h"
 
 #include <map>

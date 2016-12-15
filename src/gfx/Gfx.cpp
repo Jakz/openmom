@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "Gfx.h"
+#include "gfx/Gfx.h"
 
-#include "Texture.h"
+#include "gfx/Texture.h"
 #include "GfxData.h"
 #include "Util.h"
-#include "SDLHelper.h"
+#include "gfx/SDLHelper.h"
 
 #include "LBX.h"
 

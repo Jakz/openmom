@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "SDLHelper.h"
+#include "gfx/SDLHelper.h"
 
 #include "Font.h"
-#include "Gfx.h"
+#include "gfx/Gfx.h"
 
 #include "Hqx.h"
 

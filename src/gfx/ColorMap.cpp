@@ -8,8 +8,8 @@
 
 #include "ColorMap.h"
 
-#include "Gfx.h"
-#include "SDLHelper.h"
+#include "gfx/Gfx.h"
+#include "gfx/SDLHelper.h"
 
 using namespace std;
 

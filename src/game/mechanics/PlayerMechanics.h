@@ -1,7 +1,7 @@
 #ifndef _PLAYER_MECHANICS_
 #define _PLAYER_MECHANICS_
 
-#include "Common.h"
+#include "common/Common.h"
 
 class Game;
 class Player;

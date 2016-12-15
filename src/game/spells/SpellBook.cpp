@@ -2,7 +2,7 @@
 
 #include "Player.h"
 #include "SpellMechanics.h"
-#include "Game.h"
+#include "game/Game.h"
 
 #include <random>
 

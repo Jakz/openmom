@@ -8,7 +8,7 @@
 
 #include "LairMechanics.h"
 
-#include "Game.h"
+#include "game/Game.h"
 #include "Places.h"
 #include "tile.h"
 

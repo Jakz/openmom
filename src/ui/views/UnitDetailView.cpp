@@ -13,8 +13,8 @@
 #include "CommonDraw.h"
 #include "SkillDraw.h"
 #include "UnitDraw.h"
-#include "Gfx.h"
-#include "Texture.h"
+#include "gfx/Gfx.h"
+#include "gfx/Texture.h"
 #include "Font.h"
 #include "Buttons.h"
 

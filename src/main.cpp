@@ -2,10 +2,10 @@
 
 #include "SDL.h"
 
-#include "SDLHelper.h"
-#include "Gfx.h"
-#include "Texture.h"
-#include "Game.h"
+#include "gfx/SDLHelper.h"
+#include "gfx/Gfx.h"
+#include "gfx/Texture.h"
+#include "game/Game.h"
 #include "ViewManager.h"
 
 #include "Font.h"

@@ -7,7 +7,7 @@
 #include "Places.h"
 #include "SpellBook.h"
 #include "World.h"
-#include "Game.h"
+#include "game/Game.h"
 #include "Spells.h"
 #include "Tile.h"
 #include "Animations.h"

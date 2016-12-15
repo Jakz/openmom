@@ -1,7 +1,7 @@
 
 #include "ProductionView.h"
 
-#include "Gfx.h"
+#include "gfx/Gfx.h"
 #include "Font.h"
 #include "ViewManager.h"
 #include "CityView.h"
@@ -11,7 +11,7 @@
 #include "CommonDraw.h"
 #include "Buttons.h"
 
-#include "Game.h"
+#include "game/Game.h"
 #include "Player.h"
 #include "City.h"
 #include "UnitSpec.h"

@@ -4,7 +4,7 @@
 #include "City.h"
 
 #include "LocalPlayer.h"
-#include "Game.h"
+#include "game/Game.h"
 
 void Tile::settleCity(City* city)
 {

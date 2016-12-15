@@ -12,8 +12,8 @@
 #include "Localization.h"
 
 #include "Font.h"
-#include "Common.h"
-#include "Gfx.h"
+#include "common/Common.h"
+#include "gfx/Gfx.h"
 
 #include <iostream>
 
@@ -23,6 +23,7 @@
 #include <vector>
 
 #include "SDL.h"
+#include "platform/platform.h"
 
 /* FORMAT */
 
@@ -310,8 +311,6 @@ void LBX::scanFileNames(const LBXHeader& header, const offset_list& offsets, str
   }
 }
 
-static std::string path = string(getenv("PWD")) + "/OpenMoM.app/Contents/Resources/data/lbx/";
-
 bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
   fread(&header, sizeof(header), 1, in);
@@ -473,10 +472,15 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
   }
 }
 
+std::string LBX::getLBXPath(const std::string& name)
+{
+  return Platform::instance()->getResourcePath() + "/data/lbx/" + name + ".lbx";
+}
+
 FILE* LBX::getDescriptor(const LBXFile& lbx)
 {
   printf("Request to load %s\n", lbx.fileName.c_str());
-  string name = path + lbx.fileName + ".lbx";
+  string name = getLBXPath(lbx.fileName);
   return fopen(name.c_str(), "rb");
 }
 
@@ -485,14 +489,14 @@ void LBX::load()
   {
     LBXHeader header;
     offset_list offsets;
-    FILE *in = fopen((path+"fonts.lbx").c_str(), "rb");
+    FILE *in = fopen(getLBXPath("fonts").c_str(), "rb");
     loadHeader(header, offsets, in);
     loadFonts(header, offsets, in);
   }
   {
     LBXHeader header;
     offset_list offsets;
-    FILE *in = fopen((path+"buildesc.lbx").c_str(), "rb");
+    FILE *in = fopen(getLBXPath("buildesc").c_str(), "rb");
     loadHeader(header, offsets, in);
     
     vector<TextFiller> inserters = {
@@ -594,7 +598,7 @@ const LBXSpriteData* Repository::loadLBXSpriteData(const LBXSpriteInfo &info)
 {
   LBXFile& lbx = data[info.lbx];
   
-  string name = path + lbx.fileName + ".lbx";
+  string name = LBX::getLBXPath(lbx.fileName);
   FILE *in = fopen(name.c_str(), "rb");
   
   LBXSpriteData* spriteData = LBX::scanGfx(lbx.header, lbx.offsets[info.index], in);
@@ -710,7 +714,7 @@ void LBXView::selectLBX()
     LBXFile &lbx = Repository::data[selectedLBX];
     string_list fileNames;
     
-    string name = path + lbx.fileName + ".lbx";
+    string name = LBX::getLBXPath(lbx.fileName);
     FILE *in = fopen(name.c_str(),"rb");
     LBX::scanFileNames(lbx.header, lbx.offsets, fileNames, in);
     fclose(in);

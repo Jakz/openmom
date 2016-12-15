@@ -9,10 +9,10 @@
 #ifndef _LBX_H_
 #define _LBX_H_
 
-#include "Common.h"
+#include "common/Common.h"
 
 #include "ColorMap.h"
-//#include "Gfx.h"
+//#include "gfx/Gfx.h"
 
 #include <string>
 #include <vector>
@@ -212,6 +212,7 @@ namespace lbx
       
     static FILE* getDescriptor(const LBXFile& ident);
 
+    static std::string getLBXPath(const std::string& ident);
     
   public:
     static void load();

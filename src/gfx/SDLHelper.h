@@ -9,7 +9,7 @@
 #ifndef _SDL_H_
 #define _SDL_H_
 
-#include "Common.h"
+#include "common/Common.h"
 
 #include "SDL.h"
 

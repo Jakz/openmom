@@ -9,10 +9,10 @@
 #ifndef _ANIMATIONS_H_
 #define _ANIMATIONS_H_
 
-#include "Common.h"
+#include "common/Common.h"
 
 #include "PathFind.h"
-#include "Gfx.h"
+#include "gfx/Gfx.h"
 
 #include <list>
 

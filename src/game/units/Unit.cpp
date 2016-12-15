@@ -3,7 +3,7 @@
 #include "Combat.h"
 #include "Localization.h"
 #include "Player.h"
-#include "Game.h"
+#include "game/Game.h"
 
 #include <numeric>
 

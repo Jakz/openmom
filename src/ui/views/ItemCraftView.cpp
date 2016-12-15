@@ -10,8 +10,8 @@
 
 #include "Font.h"
 #include "Buttons.h"
-#include "Texture.h"
-#include "Gfx.h"
+#include "gfx/Texture.h"
+#include "gfx/Gfx.h"
 #include "ColorMap.h"
 
 #include "Util.h"

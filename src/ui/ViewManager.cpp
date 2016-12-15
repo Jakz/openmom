@@ -1,12 +1,12 @@
 #include "ViewManager.h"
 
 #include "LocalPlayer.h"
-#include "Game.h"
+#include "game/Game.h"
 #include "Animations.h"
 #include "View.h"
-#include "SDLHelper.h"
-#include "Texture.h"
-#include "Gfx.h"
+#include "gfx/SDLHelper.h"
+#include "gfx/Texture.h"
+#include "gfx/Gfx.h"
 
 #include "AlchemyView.h"
 #include "ArmiesItemsView.h"

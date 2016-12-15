@@ -11,8 +11,8 @@
 #include "LocalPlayer.h"
 
 #include "Font.h"
-#include "Gfx.h"
-#include "Texture.h"
+#include "gfx/Gfx.h"
+#include "gfx/Texture.h"
 #include "CommonDraw.h"
 #include "View.h"
 #include "ViewManager.h"

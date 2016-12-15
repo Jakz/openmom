@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "Texture.h"
+#include "gfx/Texture.h"
 
-#include "Gfx.h"
+#include "gfx/Gfx.h"
 #include "LBX.h"
 
 #include "SDL.h"

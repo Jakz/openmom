@@ -8,7 +8,7 @@
 
 #include "Animations.h"
 
-#include "Gfx.h"
+#include "gfx/Gfx.h"
 #include "Viewport.h"
 #include "UnitDraw.h"
 #include "LocalPlayer.h"

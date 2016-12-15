@@ -9,7 +9,7 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Diplomacy.h"
 #include "Spells.h"
 #include "SpellBook.h"

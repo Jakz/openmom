@@ -2,7 +2,7 @@
 
 #include "Unit.h"
 #include "Player.h"
-#include "Game.h"
+#include "game/Game.h"
 #include "Pathfind.h"
 
 using namespace std;

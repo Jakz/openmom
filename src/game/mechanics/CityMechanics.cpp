@@ -9,7 +9,7 @@
 #include "CityMechanics.h"
 
 #include "Player.h"
-#include "Game.h"
+#include "game/Game.h"
 #include "Race.h"
 #include "Unit.h"
 #include "UnitSpec.h"

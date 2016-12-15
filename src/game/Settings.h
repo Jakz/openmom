@@ -1,7 +1,7 @@
 #ifndef _SETTINGS_H_
 #define _SETTINGS_H_
 
-#include "Common.h"
+#include "common/Common.h"
 
 
 #include <vector>

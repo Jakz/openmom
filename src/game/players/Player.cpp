@@ -13,7 +13,7 @@
 #include "City.h"
 #include "Buildings.h"
 #include "Unit.h"
-#include "Game.h"
+#include "game/Game.h"
 
 using namespace std;
 

@@ -15,8 +15,8 @@
 #include "Items.h"
 
 #include "Buttons.h"
-#include "Gfx.h"
-#include "Texture.h"
+#include "gfx/Gfx.h"
+#include "gfx/Texture.h"
 
 #include "UnitDraw.h"
 

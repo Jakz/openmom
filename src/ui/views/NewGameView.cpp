@@ -2,7 +2,7 @@
 
 #include "Font.h"
 #include "Buttons.h"
-#include "Gfx.h"
+#include "gfx/Gfx.h"
 
 #include "GfxData.h"
 #include "UnitSpec.h"

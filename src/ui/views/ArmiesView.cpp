@@ -8,12 +8,12 @@
 
 #include "ArmiesView.h"
 
-#include "Game.h"
+#include "game/Game.h"
 #include "Army.h"
 #include "LocalPlayer.h"
 
-#include "Gfx.h"
-#include "Texture.h"
+#include "gfx/Gfx.h"
+#include "gfx/Texture.h"
 #include "Buttons.h"
 #include "Font.h"
 #include "Unit.h"

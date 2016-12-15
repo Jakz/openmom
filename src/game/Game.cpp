@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "Game.h"
+#include "game/Game.h"
 
 #include "World.h"
 #include "LocalPlayer.h"

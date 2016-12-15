@@ -9,7 +9,7 @@
 #ifndef _MINI_MAP_H_
 #define _MINI_MAP_H_
 
-#include "Common.h"
+#include "common/Common.h"
 
 class World;
 class Tile;

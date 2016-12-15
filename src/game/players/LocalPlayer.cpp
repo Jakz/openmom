@@ -11,7 +11,7 @@
 #include "Util.h"
 #include "World.h"
 #include "Unit.h"
-#include "Game.h"
+#include "game/Game.h"
 
 using namespace std;
 

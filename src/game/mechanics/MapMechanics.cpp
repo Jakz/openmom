@@ -9,7 +9,7 @@
 #include "MapMechanics.h"
 
 #include "Util.h"
-#include "Game.h"
+#include "game/Game.h"
 #include "Places.h"
 #include "Skill.h"
 #include "World.h"
