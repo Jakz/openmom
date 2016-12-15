@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "game/Game.h"
+#include "Game.h"
 
 #include "World.h"
 #include "LocalPlayer.h"
 
-#include "game/units/Army.h"
+#include "Army.h"
 #include "Unit.h"
 
 #include "Messages.h"

@@ -4,7 +4,7 @@
 #include "Unit.h"
 #include "World.h"
 #include "Player.h"
-#include "game/Game.h"
+#include "Game.h"
 
 using namespace std;
 

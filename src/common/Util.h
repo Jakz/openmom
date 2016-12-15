@@ -9,7 +9,7 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 #include <random>
 

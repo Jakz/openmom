@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "game/mechanics/ValuesMechanics.h"
+#include "ValuesMechanics.h"
 
-#include "game/Game.h"
+#include "Game.h"
 
 template<> float ValuesMechanics::get<float>(Value value)
 {

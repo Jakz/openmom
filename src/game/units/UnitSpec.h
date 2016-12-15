@@ -9,11 +9,11 @@
 #ifndef _UNIT_SPEC_H_
 #define _UNIT_SPEC_H_
 
-#include "common/Common.h"
-#include "game/cities/Buildings.h"
-#include "game/skills/Skill.h"
-#include "game/players/Race.h"
-#include "game/units/Items.h"
+#include "Common.h"
+#include "Buildings.h"
+#include "Skill.h"
+#include "Race.h"
+#include "Items.h"
 
 #include <vector>
 

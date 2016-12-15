@@ -9,8 +9,8 @@
 #ifndef _ITEM_CRAFT_VIEW_H_
 #define _ITEM_CRAFT_VIEW_H_
 
-#include "ui/View.h"
-#include "game/units/Items.h"
+#include "View.h"
+#include "Items.h"
 
 #include <string>
 

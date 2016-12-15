@@ -1,7 +1,7 @@
 #ifndef _BUILDINGS_H_
 #define _BUILDINGS_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 #include <string>
 

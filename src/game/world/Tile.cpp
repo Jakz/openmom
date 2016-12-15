@@ -1,10 +1,10 @@
 #include "Tile.h"
 
 #include "World.h"
-#include "game/cities/City.h"
+#include "City.h"
 
 #include "LocalPlayer.h"
-#include "game/Game.h"
+#include "Game.h"
 
 void Tile::settleCity(City* city)
 {

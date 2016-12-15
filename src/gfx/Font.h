@@ -9,7 +9,7 @@
 #ifndef _FONT_H_
 #define _FONT_H_
 
-#include "gfx/Texture.h"
+#include "Texture.h"
 
 #include <string>
 #include <vector>

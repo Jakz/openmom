@@ -8,14 +8,14 @@
 
 #include "OutpostView.h"
 
-#include "gfx/Gfx.h"
-#include "gfx/Texture.h"
+#include "Gfx.h"
+#include "Texture.h"
 #include "Font.h"
 #include "Localization.h"
 
 #include "ViewManager.h"
 
-#include "game/cities/City.h"
+#include "City.h"
 
 OutpostView::OutpostView(ViewManager* gvm) : View(gvm)
 {

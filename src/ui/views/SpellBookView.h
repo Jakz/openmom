@@ -9,8 +9,8 @@
 #ifndef _SPELL_BOOK_VIEW_H_
 #define _SPELL_BOOK_VIEW_H_
 
-#include "ui/View.h"
-#include "ui/parts/BookView.h"
+#include "View.h"
+#include "BookView.h"
 
 enum SpellKind : u8;
 

@@ -1,7 +1,7 @@
 #ifndef _CITY_H_
 #define _CITY_H_
 
-#include "common/Common.h"
+#include "Common.h"
 #include "Spells.h"
 
 #include <string>

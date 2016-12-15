@@ -13,7 +13,7 @@
 #include <functional>
 #include <unordered_map>
 
-#include "gfx/Gfx.h"
+#include "Gfx.h"
 
 #define MAX_ROWS 100
 #define MAX_COLS 100

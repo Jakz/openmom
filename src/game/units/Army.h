@@ -1,7 +1,7 @@
 #ifndef _ARMY_H_
 #define _ARMY_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 #include <list>
 #include <unordered_set>

@@ -9,10 +9,10 @@
 #ifndef _LBX_H_
 #define _LBX_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 #include "ColorMap.h"
-//#include "gfx/Gfx.h"
+//#include "Gfx.h"
 
 #include <string>
 #include <vector>

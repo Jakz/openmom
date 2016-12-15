@@ -1,8 +1,8 @@
-#include "game/units/Army.h"
+#include "Army.h"
 
 #include "Unit.h"
 #include "Player.h"
-#include "game/Game.h"
+#include "Game.h"
 #include "Pathfind.h"
 
 using namespace std;

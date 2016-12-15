@@ -9,7 +9,7 @@
 #ifndef _GFX_DATA_H_
 #define _GFX_DATA_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 #include <unordered_map>
 

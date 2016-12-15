@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "tests/catch.hpp"
 
-#include "gfx/Font.h"
+#include "Font.h"
 
 #include <iostream>
 

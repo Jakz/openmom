@@ -1,7 +1,7 @@
 #ifndef _SKILL_H_
 #define _SKILL_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 #include "Effects.h"
 

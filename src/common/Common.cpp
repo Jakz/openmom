@@ -1,8 +1,8 @@
-#include "common/Common.h"
+#include "Common.h"
 
 #include "i18n/Localization.h"
-#include "gfx/Gfx.h"
-#include "game/spells/Spells.h"
+#include "Gfx.h"
+#include "Spells.h"
 
 using namespace std;
 

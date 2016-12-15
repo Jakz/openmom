@@ -1,7 +1,7 @@
 #ifndef _TILE_H_
 #define _TILE_H_
 
-#include "common/Common.h"
+#include "Common.h"
 #include "Places.h"
 #include "Spells.h"
 

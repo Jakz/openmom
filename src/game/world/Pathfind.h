@@ -1,8 +1,8 @@
 #ifndef _PATHFIND_H_
 #define _PATHFIND_H_
 
-#include "common/Common.h"
-#include "game/units/Army.h"
+#include "Common.h"
+#include "Army.h"
 
 #include <unordered_set>
 #include <list>

@@ -8,9 +8,9 @@
 
 #include "MiniMap.h"
 #include "World.h"
-#include "gfx/Gfx.h"
+#include "Gfx.h"
 #include "Tile.h"
-#include "game/cities/City.h"
+#include "City.h"
 #include "Player.h"
 #include "Places.h"
 #include "GfxData.h"

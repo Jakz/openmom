@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "gfx/SDLHelper.h"
+#include "SDLHelper.h"
 
 #include "Font.h"
-#include "gfx/Gfx.h"
+#include "Gfx.h"
 
 #include "Hqx.h"
 
@@ -166,7 +166,7 @@ void SDL::render()
   SDL_Surface *canvas = Gfx::getCanvas();
   //Gfx::lock(canvas);
   //Gfx::lock(filter);
-  hq2x_32(static_cast<u32*>(canvas->pixels), static_cast<u32*>(filter->pixels), WIDTH, HEIGHT);
+  hq4x_32(static_cast<u32*>(canvas->pixels), static_cast<u32*>(filter->pixels), WIDTH, HEIGHT);
   //Gfx::unlock(canvas);
   //Gfx::unlock(filter);
   SDL_UpdateTexture(screen, nullptr, filter->pixels, filter->pitch);

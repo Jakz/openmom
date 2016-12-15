@@ -1,4 +1,4 @@
-#include "game/cities/City.h"
+#include "City.h"
 
 #include "Player.h"
 #include "Buildings.h"

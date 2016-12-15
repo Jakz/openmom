@@ -6,4 +6,4 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "game/combat/CombatMechanics.h"
+#include "CombatMechanics.h"

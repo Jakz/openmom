@@ -9,7 +9,7 @@
 #ifndef _MAGIC_VIEW_H_
 #define _MAGIC_VIEW_H_
 
-#include "ui/View.h"
+#include "View.h"
 
 class ViewManager;
 

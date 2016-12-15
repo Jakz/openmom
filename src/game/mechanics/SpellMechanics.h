@@ -1,7 +1,7 @@
 #ifndef _SPELL_MECHANICS_H_
 #define _SPELL_MECHANICS_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 class Player;
 class Spell;

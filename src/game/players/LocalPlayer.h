@@ -9,10 +9,10 @@
 #ifndef _LOCAL_PLAYER_H_
 #define _LOCAL_PLAYER_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 #include "Spells.h"
-#include "game/units/Army.h"
+#include "Army.h"
 #include "Player.h"
 
 #include "Messages.h"

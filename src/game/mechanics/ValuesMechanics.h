@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "common/Common.h"
+#include "Common.h"
 
 class Game;
 

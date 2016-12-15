@@ -94,7 +94,7 @@ HQX_API void HQX_CALLCONV hq4x_32_rb( uint32_t * src, uint32_t src_rowBytes, uin
 #define trV   0x00000006
 
 /* RGB to YUV lookup table */
-extern uint32_t RGBtoYUV[16777216];
+//extern uint32_t RGBtoYUV[16777216];
 
 static inline uint32_t rgb_to_yuv(uint32_t c)
 {
@@ -148,65 +148,45 @@ static inline uint32_t Interpolate_3(uint32_t c1, int w1, uint32_t c2, int w2, u
   ((((c1 & MASK_13) * w1 + (c2 & MASK_13) * w2 + (c3 & MASK_13) * w3) >> s) & MASK_13);
 }
 
-static inline void Interp1(uint32_t * pc, uint32_t c1, uint32_t c2)
-{
-  //*pc = (c1*3+c2) >> 2;
-  *pc = Interpolate_2(c1, 3, c2, 1, 2);
-}
+//*pc = (c1*3+c2) >> 2;
+static inline uint32_t Interp1(uint32_t c1, uint32_t c2) { return Interpolate_2(c1, 3, c2, 1, 2); }
+static inline void Interp1(uint32_t * pc, uint32_t c1, uint32_t c2) { *pc = Interp1(c1, c2); }
 
-static inline void Interp2(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3)
-{
-  //*pc = (c1*2+c2+c3) >> 2;
-  *pc = Interpolate_3(c1, 2, c2, 1, c3, 1, 2);
-}
+//*pc = (c1*2+c2+c3) >> 2;
+static inline uint32_t Interp2(uint32_t c1, uint32_t c2, uint32_t c3) { return Interpolate_3(c1, 2, c2, 1, c3, 1, 2); }
+static inline void Interp2(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3) { *pc = Interp2(c1, c2, c3); }
 
-static inline void Interp3(uint32_t * pc, uint32_t c1, uint32_t c2)
-{
-  //*pc = (c1*7+c2)/8;
-  *pc = Interpolate_2(c1, 7, c2, 1, 3);
-}
+//*pc = (c1*7+c2)/8;
+static inline uint32_t Interp3(uint32_t c1, uint32_t c2) { return Interpolate_2(c1, 7, c2, 1, 3); }
+static inline void Interp3(uint32_t * pc, uint32_t c1, uint32_t c2) { *pc = Interp3(c1, c2); }
 
-static inline void Interp4(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3)
-{
-  //*pc = (c1*2+(c2+c3)*7)/16;
-  *pc = Interpolate_3(c1, 2, c2, 7, c3, 7, 4);
-}
+//*pc = (c1*2+(c2+c3)*7)/16;
+static inline uint32_t Interp4(uint32_t c1, uint32_t c2, uint32_t c3) { return Interpolate_3(c1, 2, c2, 7, c3, 7, 4); }
+static inline void Interp4(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3) { *pc = Interp4(c1, c2, c3); }
 
-static inline void Interp5(uint32_t * pc, uint32_t c1, uint32_t c2)
-{
-  //*pc = (c1+c2) >> 1;
-  *pc = Interpolate_2(c1, 1, c2, 1, 1);
-}
+//*pc = (c1+c2) >> 1;
+static inline uint32_t Interp5(uint32_t c1, uint32_t c2) { return Interpolate_2(c1, 1, c2, 1, 1); }
+static inline void Interp5(uint32_t * pc, uint32_t c1, uint32_t c2) { *pc = Interp5(c1, c2); }
 
-static inline void Interp6(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3)
-{
-  //*pc = (c1*5+c2*2+c3)/8;
-  *pc = Interpolate_3(c1, 5, c2, 2, c3, 1, 3);
-}
+//*pc = (c1*5+c2*2+c3)/8;
+static inline uint32_t Interp6(uint32_t c1, uint32_t c2, uint32_t c3) { return Interpolate_3(c1, 5, c2, 2, c3, 1, 3); }
+static inline void Interp6(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3) { *pc = Interpolate_3(c1, 5, c2, 2, c3, 1, 3); }
 
-static inline void Interp7(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3)
-{
-  //*pc = (c1*6+c2+c3)/8;
-  *pc = Interpolate_3(c1, 6, c2, 1, c3, 1, 3);
-}
+//*pc = (c1*6+c2+c3)/8;
+static inline uint32_t Interp7(uint32_t c1, uint32_t c2, uint32_t c3) { return Interpolate_3(c1, 6, c2, 1, c3, 1, 3); }
+static inline void Interp7(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3) { *pc = Interp7(c1, c2, c3); }
 
-static inline void Interp8(uint32_t * pc, uint32_t c1, uint32_t c2)
-{
-  //*pc = (c1*5+c2*3)/8;
-  *pc = Interpolate_2(c1, 5, c2, 3, 3);
-}
+//*pc = (c1*5+c2*3)/8;
+static inline uint32_t Interp8(uint32_t c1, uint32_t c2) { return Interpolate_2(c1, 5, c2, 3, 3); }
+static inline void Interp8(uint32_t * pc, uint32_t c1, uint32_t c2) { *pc = Interp8(c1, c2); }
 
-static inline void Interp9(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3)
-{
-  //*pc = (c1*2+(c2+c3)*3)/8;
-  *pc = Interpolate_3(c1, 2, c2, 3, c3, 3, 3);
-}
+//*pc = (c1*2+(c2+c3)*3)/8;
+static inline uint32_t Interp9(uint32_t c1, uint32_t c2, uint32_t c3) { return Interpolate_3(c1, 2, c2, 3, c3, 3, 3); }
+static inline void Interp9(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3) { *pc = Interp9(c1, c2, c3); }
 
-static inline void Interp10(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3)
-{
-  //*pc = (c1*14+c2+c3)/16;
-  *pc = Interpolate_3(c1, 14, c2, 1, c3, 1, 4);
-}
+//*pc = (c1*14+c2+c3)/16;
+static inline uint32_t Interp10(uint32_t c1, uint32_t c2, uint32_t c3) { return Interpolate_3(c1, 14, c2, 1, c3, 1, 4); }
+static inline void Interp10(uint32_t * pc, uint32_t c1, uint32_t c2, uint32_t c3) { *pc = Interp10(c1, c2, c3); }
 
 #endif
 

@@ -1,9 +1,9 @@
-#include "game/mechanics/EventMechanics.h"
+#include "EventMechanics.h"
 
 #include "Localization.h"
 
-#include "game/Game.h"
-#include "game/units/Army.h"
+#include "Game.h"
+#include "Army.h"
 
 using namespace std;
 

@@ -9,9 +9,9 @@
 #ifndef _CITY_SCAPE_H_
 #define _CITY_SCAPE_H_
 
-#include "common/Common.h"
-#include "gfx/Texture.h"
-#include "game/cities/City.h"
+#include "Common.h"
+#include "Texture.h"
+#include "City.h"
 
 #include <unordered_map>
 #include <map>

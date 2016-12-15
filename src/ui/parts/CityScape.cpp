@@ -1,9 +1,9 @@
 #include "CityScape.h"
 
-#include "gfx/Texture.h"
+#include "Texture.h"
 #include "Buildings.h"
-#include "game/cities/City.h"
-#include "gfx/Gfx.h"
+#include "City.h"
+#include "Gfx.h"
 #include "Util.h"
 
 #include <set>

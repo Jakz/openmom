@@ -8,7 +8,7 @@
 
 #include "Buttons.h"
 
-#include "gfx/Gfx.h"
+#include "Gfx.h"
 #include "Font.h"
 
 void Clickable::draw()

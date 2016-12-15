@@ -1,8 +1,8 @@
 #include "SpellBook.h"
 
 #include "Player.h"
-#include "game/mechanics/SpellMechanics.h"
-#include "game/Game.h"
+#include "SpellMechanics.h"
+#include "Game.h"
 
 #include <random>
 

@@ -12,8 +12,8 @@
 #include "Localization.h"
 
 #include "Font.h"
-#include "common/Common.h"
-#include "gfx/Gfx.h"
+#include "Common.h"
+#include "Gfx.h"
 
 #include <iostream>
 
@@ -23,7 +23,7 @@
 #include <vector>
 
 #include "SDL.h"
-#include "platform/platform.h"
+#include "platform.h"
 
 /* FORMAT */
 

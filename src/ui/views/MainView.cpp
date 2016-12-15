@@ -1,19 +1,19 @@
 #include "MainView.h"
 
 #include "Buttons.h"
-#include "gfx/Gfx.h"
+#include "Gfx.h"
 #include "Font.h"
 #include "Viewport.h"
 #include "UnitDraw.h"
 #include "Animations.h"
 
-#include "game/Game.h"
+#include "Game.h"
 #include "World.h"
 #include "LocalPlayer.h"
-#include "game/units/Army.h"
+#include "Army.h"
 #include "Unit.h"
 #include "Tile.h"
-#include "game/cities/City.h"
+#include "City.h"
 
 #include "ViewManager.h"
 

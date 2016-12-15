@@ -8,16 +8,16 @@
 
 #include "UnitDraw.h"
 
-#include "gfx/Gfx.h"
+#include "Gfx.h"
 #include "GfxData.h"
 #include "ColorMap.h"
-#include "gfx/Texture.h"
-#include "game/units/Army.h"
+#include "Texture.h"
+#include "Army.h"
 #include "Unit.h"
 #include "Player.h"
 
 #include "LocalPlayer.h"
-#include "game/Game.h"
+#include "Game.h"
 
 void UnitDraw::drawStatic(const Army *army, s16 x, s16 y)
 {

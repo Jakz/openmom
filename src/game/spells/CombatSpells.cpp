@@ -1,7 +1,7 @@
 #include "CombatSpells.h"
 
 #include "Spells.h"
-#include "game/units/Army.h"
+#include "Army.h"
 #include "Unit.h"
 
 

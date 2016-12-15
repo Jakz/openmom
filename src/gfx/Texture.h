@@ -9,7 +9,7 @@
 #ifndef _TEXTURE_H_
 #define _TEXTURE_H_
 
-#include "common/Common.h"
+#include "Common.h"
 #include "ColorMap.h"
 
 #include <string>

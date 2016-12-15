@@ -9,7 +9,7 @@
 #ifndef _COMBAT_MECHANICS_H_
 #define _COMBAT_MECHANICS_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 enum class CombatModifier : u8;
 

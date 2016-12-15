@@ -9,7 +9,7 @@
 #ifndef _GFX_H_
 #define _GFX_H_
 
-#include "common/Common.h"
+#include "Common.h"
 #include "ColorMap.h"
 
 #include <vector>
@@ -28,9 +28,10 @@ private:
   u32* pixels;
  
 public:
-  SurfaceWrapper(u16 w, u16 h) : data(SDL_CreateRGBSurface(0, w, h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000))
+  SurfaceWrapper(u16 w, u16 h) :
+  data(SDL_CreateRGBSurface(0, w, h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000)),
+  pixels(static_cast<u32*>(data->pixels))
   {
-    pixels = static_cast<u32*>(data->pixels);
   }
   
   ~SurfaceWrapper()

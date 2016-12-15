@@ -9,7 +9,7 @@
 #ifndef _RACE_H_
 #define _RACE_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 enum class RaceID : u8
 {

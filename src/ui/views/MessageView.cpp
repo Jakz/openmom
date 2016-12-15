@@ -9,8 +9,8 @@
 #include "MessageView.h"
 
 #include "Font.h"
-#include "gfx/Gfx.h"
-#include "gfx/Texture.h"
+#include "Gfx.h"
+#include "Texture.h"
 #include "Messages.h"
 #include "Buttons.h"
 #include "ViewManager.h"

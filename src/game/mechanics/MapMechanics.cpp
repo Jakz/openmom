@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "game/mechanics/MapMechanics.h"
+#include "MapMechanics.h"
 
 #include "Util.h"
-#include "game/Game.h"
+#include "Game.h"
 #include "Places.h"
 #include "Skill.h"
 #include "World.h"

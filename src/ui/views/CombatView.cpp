@@ -8,15 +8,15 @@
 
 #include "CombatView.h"
 
-#include "game/Game.h"
+#include "Game.h"
 #include "LocalPlayer.h"
 #include "Combat.h"
 
-#include "gfx/SDLHelper.h"
+#include "SDLHelper.h"
 #include "UnitDetailView.h"
 #include "ViewManager.h"
-#include "gfx/Gfx.h"
-#include "gfx/Texture.h"
+#include "Gfx.h"
+#include "Texture.h"
 #include "UnitDraw.h"
 
 constexpr u16 W = 10;

@@ -1,9 +1,9 @@
 #ifndef _COMBAT_H_
 #define _COMBAT_H_
 
-#include "common/Common.h"
+#include "Common.h"
 #include "Unit.h"
-#include "game/units/Army.h"
+#include "Army.h"
 
 #include <unordered_map>
 

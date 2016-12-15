@@ -1,8 +1,8 @@
 #ifndef _CITY_MECHANICS_H_
 #define _CITY_MECHANICS_H_
 
-#include "game/cities/City.h"
-#include "common/Common.h"
+#include "City.h"
+#include "Common.h"
 
 #include <map>
 

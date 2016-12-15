@@ -9,7 +9,7 @@
 #ifndef _COMMON_DRAW_H_
 #define _COMMON_DRAW_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 class UnitSpec;
 class Unit;

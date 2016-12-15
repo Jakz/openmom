@@ -1,6 +1,6 @@
 #include "SkillDraw.h"
 
-#include "gfx/Gfx.h"
+#include "Gfx.h"
 #include "Font.h"
 #include "Localization.h"
 #include "Items.h"

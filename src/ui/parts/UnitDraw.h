@@ -9,7 +9,7 @@
 #ifndef _UNIT_DRAW_H_
 #define _UNIT_DRAW_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 class Army;
 class Unit;

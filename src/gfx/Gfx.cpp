@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "gfx/Gfx.h"
+#include "Gfx.h"
 
-#include "gfx/Texture.h"
+#include "Texture.h"
 #include "GfxData.h"
 #include "Util.h"
-#include "gfx/SDLHelper.h"
+#include "SDLHelper.h"
 
 #include "LBX.h"
 
@@ -292,6 +292,7 @@ void Gfx::init()
 {
   buffer = new SurfaceWrapper(320, 200);
   canvas = new SurfaceWrapper(320, 200);
+    
   activeBuffer = canvas;
 }
 

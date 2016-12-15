@@ -1,11 +1,11 @@
-#include "game/mechanics/SpellMechanics.h"
+#include "SpellMechanics.h"
 
 #include "Spells.h"
 #include "SpellBook.h"
 #include "Player.h"
 #include "Tile.h"
 #include "Unit.h"
-#include "game/Game.h"
+#include "Game.h"
 #include "World.h"
 
 #include <list>

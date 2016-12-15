@@ -8,9 +8,9 @@
 
 #include "GfxData.h"
 
-#include "gfx/Gfx.h"
+#include "Gfx.h"
 #include "UnitSpec.h"
-#include "gfx/Texture.h"
+#include "Texture.h"
 #include "Spells.h"
 
 using namespace std;

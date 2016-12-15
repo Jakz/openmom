@@ -8,7 +8,7 @@
 
 #include "Diplomacy.h"
 
-#include "game/Game.h"
+#include "Game.h"
 
 #include "Localization.h"
 

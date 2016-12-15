@@ -8,12 +8,12 @@
 
 #include "Player.h"
 
-#include "game/units/Army.h"
+#include "Army.h"
 #include "Util.h"
-#include "game/cities/City.h"
+#include "City.h"
 #include "Buildings.h"
 #include "Unit.h"
-#include "game/Game.h"
+#include "Game.h"
 
 using namespace std;
 

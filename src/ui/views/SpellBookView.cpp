@@ -8,15 +8,15 @@
 
 #include "SpellBookView.h"
 
-#include "gfx/Gfx.h"
-#include "gfx/Texture.h"
+#include "Gfx.h"
+#include "Texture.h"
 #include "Buttons.h"
 #include "Font.h"
 
 #include "BookView.h"
 #include "Spells.h"
 #include "LocalPlayer.h"
-#include "game/Game.h"
+#include "Game.h"
 
 #include "Localization.h"
 

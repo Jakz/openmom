@@ -8,7 +8,7 @@
 
 #include "Font.h"
 
-#include "gfx/Gfx.h"
+#include "Gfx.h"
 
 using namespace std;
 

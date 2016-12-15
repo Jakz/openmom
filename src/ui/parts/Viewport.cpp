@@ -1,19 +1,19 @@
 #include "Viewport.h"
 
-#include "gfx/Texture.h"
+#include "Texture.h"
 #include "Tile.h"
-#include "gfx/Gfx.h"
+#include "Gfx.h"
 #include "GfxData.h"
 #include "UnitDraw.h"
 #include "LocalPlayer.h"
 #include "World.h"
 #include "ColorMap.h"
-#include "game/cities/City.h"
-#include "game/units/Army.h"
+#include "City.h"
+#include "Army.h"
 #include "Util.h"
-#include "game/Game.h"
+#include "Game.h"
 
-#include "game/Game.h"
+#include "Game.h"
 
 std::unordered_map<u8,u8> Viewport::waterMap = {
   {0, 0},

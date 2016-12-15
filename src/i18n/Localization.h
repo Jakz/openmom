@@ -9,7 +9,7 @@
 #ifndef _LOCALIZATION_H_
 #define _LOCALIZATION_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 #include <unordered_map>
 #include <string>

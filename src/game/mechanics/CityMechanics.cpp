@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#include "game/mechanics/CityMechanics.h"
+#include "CityMechanics.h"
 
 #include "Player.h"
-#include "game/Game.h"
+#include "Game.h"
 #include "Race.h"
 #include "Unit.h"
 #include "UnitSpec.h"

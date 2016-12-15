@@ -9,7 +9,7 @@
 #ifndef _SKILL_EFFECTS_H_
 #define _SKILL_EFFECTS_H_
 
-#include "common/Common.h"
+#include "Common.h"
 
 #include <vector>
 
