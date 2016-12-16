@@ -39,7 +39,7 @@ private:
   };
   
   ManaDest dests[3] = {{0.0f,false,0},{0.0f,false,1},{0.0f,false,2}};
-  const u8 DESTS = 3;
+  static constexpr size_t DESTS = 3;
   
   void draw() override;
   void drawPost() override { }

@@ -579,9 +579,9 @@ void LBX::load()
 
 LBXFile Repository::data[LBX_COUNT];
 
-const LBXFile& Repository::loadLBX(LBXFileID ident)
+const LBXFile& Repository::loadLBX(LBXID ident)
 {
-  LBXFile& lbx = data[ident];
+  LBXFile& lbx = file(ident);
     
   FILE *in = LBX::getDescriptor(lbx);
   LBX::loadHeader(lbx.header, lbx.offsets, in);
@@ -596,7 +596,7 @@ const LBXFile& Repository::loadLBX(LBXFileID ident)
 
 const LBXSpriteData* Repository::loadLBXSpriteData(const LBXSpriteInfo &info)
 {
-  LBXFile& lbx = data[info.lbx];
+  LBXFile& lbx = file(info.lbx);
   
   string name = LBX::getLBXPath(lbx.fileName);
   FILE *in = fopen(name.c_str(), "rb");

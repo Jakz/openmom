@@ -28,7 +28,7 @@ namespace lbx
     bool hasNextFile, hasPrevFile;
     bool hasNextContent, hasPrevContent;
     
-    std::map<LBXFileID, lbx::string_list> filesForLBX;
+    std::map<LBXID, lbx::string_list> filesForLBX;
     
     void updateContentButtons();
     

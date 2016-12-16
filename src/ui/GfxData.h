@@ -16,6 +16,7 @@
 enum class Ranged : u8;
 enum class Property : u8;
 
+class HeroSpec;
 class UnitSpec;
 class Spell;
 
@@ -58,6 +59,8 @@ class GfxData
 {
 private:
   static std::unordered_map<const UnitSpec*, UnitGfxSpec> unitSpecs;
+  static std::unordered_map<const HeroSpec*, LBXSpriteInfo> heroPortraits;
+  
   static const TileGfxSpec specs[];
   static constexpr s8 RANGED_INDEX[] = {-1,6,5,6,14,15,16,17,18};
   static constexpr s8 PROPERTY_INDEX[] = {-1,-1,-1,-1,9,22,14,15,16,17,18};
@@ -71,6 +74,7 @@ public:
   static s8 propertyGfxIndex(Property property) { return PROPERTY_INDEX[static_cast<u8>(property)]; }
   
   static const UnitGfxSpec& unitGfxSpec(const UnitSpec* spec);
+  static const LBXSpriteInfo& heroGfxSpec(const HeroSpec* spec);
   
   static s16 specialSpellGfxEffect(const Spell* spell);
 };

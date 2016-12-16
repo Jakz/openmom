@@ -109,14 +109,14 @@ namespace lbx
 
   struct LBXFile
   {
-    LBXFileID ident;
+    LBXID ident;
     std::string fileName;
     LBXHeader header;
     offset_list offsets;
     LBXSpriteData **sprites;
     
     LBXFile() : sprites(nullptr) { }
-    LBXFile(LBXFileID ident, const std::string& fileName) : ident(ident), fileName(fileName), sprites(nullptr) { }
+    LBXFile(LBXID ident, const std::string& fileName) : ident(ident), fileName(fileName), sprites(nullptr) { }
     
     const u16 size() const { return header.count; }
   };
@@ -125,47 +125,73 @@ namespace lbx
   {
   private:
     static LBXFile data[LBX_COUNT];
+    static LBXFile& file(LBXID ident) { return data[static_cast<size_t>(ident)]; }
     
   public:
 
     static void init()
     {    
       std::string names[] = {
-      "armylist",
-      "backgrnd",
-      "units1",
-      "units2",
-      "mainscrn",
-      "main",
-      "specfx",
-      "figures1",
-      "figures2",
-      "figures3",
-      "figures4",
-      "figures5",
-      "figures6",
-      "figures7",
-      "figures8",
-      "figures9",
-      "figure10",
-      "figure11",
-      "figure12",
-      "spellscr"
+        "armylist",
+        "backgrnd",
+        "book",
+        "chriver",
+        "cityscap",
+        "citywall",
+        "cmbdesrc",
+        "cmbdesrt",
+        "cmbgrasc",
+        "cmbgrass",
+        "cmbmagic",
+        "cmbmounc",
+        "cmbmount",
+        "cmbtcity",
+        "cmbtfx",
+        "cmbtundc",
+        "cmbtundr",
+        "cmbtwall",
+        "combat",
+        "compix",
+        "conquest",
+        "halofam",
+        "units1",
+        "units2",
+        "mainscrn",
+        "main",
+        "specfx",
+        "figures1",
+        "figures2",
+        "figures3",
+        "figures4",
+        "figures5",
+        "figures6",
+        "figures7",
+        "figures8",
+        "figures9",
+        "figure10",
+        "figure11",
+        "figure12",
+        "figure13",
+        "figure14",
+        "figure15",
+        "figure16",
+        "lilwiz",
+        "spellscr"
       };
       
       for (int i = 0; i < LBX_COUNT; ++i)
-        data[i] = LBXFile(static_cast<LBXFileID>(i), names[i]);
+        data[i] = LBXFile(static_cast<LBXID>(i), names[i]);
     }
     
-    static bool shouldAllocateLBX(LBXFileID ident) { return data[ident].sprites == nullptr; }
-    static const LBXFile& loadLBX(LBXFileID ident);
-    static const LBXFile& holderForID(LBXFileID ident) { return data[ident]; }
+    static bool shouldAllocateLBX(LBXID ident) { return file(ident).sprites == nullptr; }
+    static const LBXFile& loadLBX(LBXID ident);
+    static const LBXFile& holderForID(LBXID ident) { return file(ident); }
     
-    static bool shouldAllocateSprite(const LBXSpriteInfo& info) { return data[info.lbx].sprites[info.index] == nullptr; }
+    static bool shouldAllocateSprite(const LBXSpriteInfo& info) { return file(info.lbx).sprites[info.index] == nullptr; }
     static const LBXSpriteData* loadLBXSpriteData(const LBXSpriteInfo& info);
     
     static const LBXSpriteData* spriteFor(const LBXSpriteInfo& info) {
-      const LBXSpriteData* sprite = data[info.lbx].sprites[info.index];
+      const LBXSpriteData* sprite = file(info.lbx).sprites[info.index];
       
       if (!sprite)
         sprite = loadLBXSpriteData(info);

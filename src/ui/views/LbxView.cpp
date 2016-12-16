@@ -56,7 +56,7 @@ void LBXView::draw()
   
   if (selectedLBX != -1)
   {
-    std::map<LBXFileID, string_list>::iterator it = filesForLBX.find(static_cast<LBXFileID>(selectedLBX));
+    std::map<LBXID, string_list>::iterator it = filesForLBX.find(static_cast<LBXID>(selectedLBX));
     
     if (it != filesForLBX.end())
     {
@@ -91,7 +91,7 @@ void LBXView::mouseReleased(u16 x, u16 y, MouseButton b)
         selectedContent = -1;
         selectLBX();
       }
-      else if (y+contentOffset < filesForLBX[static_cast<LBXFileID>(selectedLBX)].size() && x > 50 && x <= 100)
+      else if (y+contentOffset < filesForLBX[static_cast<LBXID>(selectedLBX)].size() && x > 50 && x <= 100)
       {
         selectedContent = y+contentOffset;
         selectGFX();
@@ -102,15 +102,15 @@ void LBXView::mouseReleased(u16 x, u16 y, MouseButton b)
 
 void LBXView::updateContentButtons()
 {
-  buttons[3]->showIf(contentOffset + MAX_PER_PAGE < filesForLBX[static_cast<LBXFileID>(selectedLBX)].size());
+  buttons[3]->showIf(contentOffset + MAX_PER_PAGE < filesForLBX[static_cast<LBXID>(selectedLBX)].size());
   buttons[2]->showIf(contentOffset > 0);
 }
 
 void LBXView::selectLBX()
 {
-  if (Repository::shouldAllocateLBX(static_cast<LBXFileID>(selectedLBX)))
+  if (Repository::shouldAllocateLBX(static_cast<LBXID>(selectedLBX)))
   {
-    Repository::loadLBX(static_cast<LBXFileID>(selectedLBX));
+    Repository::loadLBX(static_cast<LBXID>(selectedLBX));
     
     LBXFile &lbx = Repository::data[selectedLBX];
     string_list fileNames;
@@ -119,7 +119,7 @@ void LBXView::selectLBX()
     FILE *in = fopen(name.c_str(),"rb");
     LBX::scanFileNames(lbx.header, lbx.offsets, fileNames, in);
     fclose(in);
-    filesForLBX[static_cast<LBXFileID>(selectedLBX)] = fileNames;
+    filesForLBX[static_cast<LBXID>(selectedLBX)] = fileNames;
   }
   
   updateContentButtons();
@@ -127,7 +127,7 @@ void LBXView::selectLBX()
 
 void LBXView::selectGFX()
 {
-  LBXSpriteInfo info = LBXSpriteInfo(static_cast<LBXFileID>(selectedLBX), selectedContent);
+  LBXSpriteInfo info = LBXSpriteInfo(static_cast<LBXID>(selectedLBX), selectedContent);
   
   if (Repository::shouldAllocateSprite(info))
     Repository::loadLBXSpriteData(info);

@@ -131,7 +131,7 @@ public:
   s32 castingSkillBase() const;
   s32 castingSkill() const;
   s32 castingSkillGained() const { return castingSkillGained_; }
-  s32 manaRatio(u8 index) const { return manaRatios[index]; }
+  s32 manaRatio(size_t index) const { return manaRatios[index]; }
   s32 getAvailableMana() const { return availableMana; }
   s32 getManaGain() const { return manaGain; }
   

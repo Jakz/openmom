@@ -21,10 +21,10 @@
 using namespace std;
 using namespace lbx;
 
-constexpr int FIRST_TABLE_WIDTH = 150;
+constexpr int FIRST_TABLE_WIDTH = 250;
 constexpr int SECOND_TABLE_WIDTH = 320;
 constexpr int WINDOW_HEIGHT = 800;
-constexpr int WINDOW_WIDTH = 1440;
+constexpr int WINDOW_WIDTH = 1920;
 
 class MyWindow;
 class LBXTable;
@@ -38,16 +38,16 @@ Fl_Table *tableSprites;
 namespace std
 {
   template<>
-  struct hash<LBXFileID>
+  struct hash<LBXID>
   {
-    size_t operator()(const LBXFileID& entry) const
+    size_t operator()(const LBXID& entry) const
     {
       return static_cast<size_t>(entry);
     }
   };
 }
 
-unordered_map<LBXFileID, vector<LBXFileName>> assetNames;
+unordered_map<LBXID, vector<LBXFileName>> assetNames;
 
 PreviewWidget* preview = nullptr;
 
@@ -177,7 +177,7 @@ class LBXTable : public Fl_Table
 private:
   int selection;
   
-  const LBXFile& holder(int index) { return Repository::holderForID(static_cast<LBXFileID>(index)); }
+  const LBXFile& holder(int index) { return Repository::holderForID(static_cast<LBXID>(index)); }
   
 public:
   LBXTable() : Fl_Table(0,0,FIRST_TABLE_WIDTH,800), selection(-1)

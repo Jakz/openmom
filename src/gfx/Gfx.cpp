@@ -309,7 +309,7 @@ void Gfx::fillRect(u16 x, u16 y, u16 w, u16 h, u32 color)
 }
 
 void Gfx::rect(u16 x, u16 y, u16 w, u16 h, u32 color)
-{
+{  
   lock(canvas);
 
   for (int i = 0; i < w; ++i)

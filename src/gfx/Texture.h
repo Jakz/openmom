@@ -258,8 +258,8 @@ class Texture : public SpriteSheet
     Texture(TextureID ident, std::string name, u16 rows, u16 cols, std::initializer_list<u16> ws, std::initializer_list<u16> hs, bool animated, u16 animFactor) :
       img(nullptr), ident(ident), name(name), rows(rows), cols(cols), w(-1), h(-1), ws(ws), hs(hs), animated(animated), animFactor(animFactor) { }
 
-    u16 tw() const override { return img->w; }
-    u16 th() const override { return img->h; }
+    u16 tw() const override { return static_cast<u16>(img->w); }
+    u16 th() const override { return static_cast<u16>(img->h); }
   
     u16 sw(u16 r = 0, u16 c = 0) const override;
     u16 sh(u16 r = 0, u16 c = 0) const override;

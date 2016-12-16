@@ -39,45 +39,71 @@ enum MouseButton : u8
   BUTTON_MIDDLE = SDL_BUTTON_MIDDLE
 };
 
-enum LBXFileID : u16;
+enum class LBXID : u16;
 struct LBXSpriteInfo
 {
-  LBXFileID lbx;
+  LBXID lbx;
   u16 index;
-  LBXSpriteInfo(LBXFileID lbx, u16 index) : lbx(lbx), index(index) { }
+  LBXSpriteInfo(LBXID lbx, u16 index) : lbx(lbx), index(index) { }
   
   LBXSpriteInfo relative(s16 delta) const { return LBXSpriteInfo(lbx, index+delta); }
 };
 
-enum LBXFileID : u16
+enum class LBXID : u16
 {
-  LBX_ARMYLIST = 0,
-  LBX_BACKGRND,
-  LBX_UNITS1,
-  LBX_UNITS2,
-  LBX_MAINSCRN,
-  LBX_MAIN,
-  LBX_SPECFX,
-  LBX_FIGURE1,
-  LBX_FIGURE2,
-  LBX_FIGURE3,
-  LBX_FIGURE4,
-  LBX_FIGURE5,
-  LBX_FIGURE6,
-  LBX_FIGURE7,
-  LBX_FIGURE8,
-  LBX_FIGURE9,
-  LBX_FIGURE10,
-  LBX_FIGURE11,
-  LBX_FIGURE12,
-  LBX_SPELLSCR,
+  ARMYLIST = 0,
+  BACKGRND,
+  BOOK,
+  CHRIVER,
+  CITYSCAP,
+  CITYWALL,
+  CMBDESRC,
+  CMBDESRT,
+  CMBGRASC,
+  CMBGRASS,
+  CMBMAGIC,
+  CMBMOUNC,
+  CMBMOUNT,
+  CMBTCITY,
+  CMBTFX,
+  CMBTUNDC,
+  CMBTUNDR,
+  CMBTWALL,
+  COMBAT,
+  COMPIX,
+  CONQUEST,
+  HALOFAM,
+  UNITS1,
+  UNITS2,
+  MAINSCRN,
+  MAIN,
+  SPECFX,
+  FIGURE1,
+  FIGURE2,
+  FIGURE3,
+  FIGURE4,
+  FIGURE5,
+  FIGURE6,
+  FIGURE7,
+  FIGURE8,
+  FIGURE9,
+  FIGURE10,
+  FIGURE11,
+  FIGURE12,
+  FIGURE13,
+  FIGURE14,
+  FIGURE15,
+  FIGURE16,
+  LILWIZ,
+  SPELLSCR,
   
-  LBX_COUNT
+  COUNT
 };
 
-typedef SDL_Scancode KeyboardKey;
-typedef SDL_Keymod KeyboardMod;
+constexpr size_t LBX_COUNT = static_cast<size_t>(LBXID::COUNT);
 
+using KeyboardKey = SDL_Scancode;
+using KeyboardMod = SDL_Keymod;
 
 struct Position
 {
@@ -99,10 +125,10 @@ struct PositionOffset
 struct SpriteInfo
 {
   TextureID texture;
-  s16 x;
-  s16 y;
+  s8 x;
+  s8 y;
   
-  SpriteInfo(TextureID texture, s16 x, s16 y) : texture(texture), x(x), y(y) { }
+  SpriteInfo(TextureID texture, u8 x, u8 y) : texture(texture), x(x), y(y) { }
 };
 
 struct ScreenCoord

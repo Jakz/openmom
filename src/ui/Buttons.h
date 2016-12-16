@@ -185,7 +185,7 @@ private:
   bool toggled;
   T data;
   
-  RadioButton(const std::string name, T data, RadioButtonGroup<T>* group, int x, int y, SpriteInfo normal, SpriteInfo pressed, u8 offsetX, u8 offsetY) :
+  RadioButton(const std::string name, T data, RadioButtonGroup<T>* group, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, u8 offsetX, u8 offsetY) :
   Button(name, x, y, normal), data(data), toggledOffset{offsetX, offsetY}, pressedCoords(pressed), toggled(false), group(group) { }
   
 public:
@@ -195,7 +195,7 @@ public:
   
   void click() override { group->click(this); }
   
-  static RadioButton* build(const std::string name, T data, RadioButtonGroup<T>* group, u16 x, u16 y, TextureID texture, u16 c, u8 offsetX, u8 offsetY)
+  static RadioButton* build(const std::string name, T data, RadioButtonGroup<T>* group, u16 x, u16 y, TextureID texture, u8 c, u8 offsetX, u8 offsetY)
   {
     return new RadioButton(name, data, group, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c), offsetX, offsetY);
   }

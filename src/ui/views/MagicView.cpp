@@ -36,7 +36,7 @@ void MagicView::activate()
 {
   float total = player->getManaGain();
   
-  for (int i = 0; i < DESTS; ++i)
+  for (size_t i = 0; i < DESTS; ++i)
     dests[i].v = player->manaRatio(i) / total;
 }
 

@@ -17,7 +17,7 @@ class Util
 {
 private:
   static std::mt19937 rng;
-  static std::uniform_real_distribution<> real;
+  static std::uniform_real_distribution<float> real;
   static std::uniform_int_distribution<> integer;
 
 
