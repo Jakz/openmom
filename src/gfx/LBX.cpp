@@ -32,8 +32,8 @@
  2 bytes element count
  4 bytes magic number (0x0000FEAD)
  2 bytes type
-
-*/
+ 
+ */
 
 
 
@@ -73,14 +73,27 @@ const vector<string> findFiles(string path, const char *ext)
 
 
 
+LBXArrayData* LBX::loadArray(LBXOffset offset, FILE *in)
+{
+  LBXArray arrayHeader;
+  
+  fseek(in, offset, SEEK_SET);
+  fread(&arrayHeader, sizeof(LBXArray), 1, in);
+ 
+  LBXArrayData* data = new LBXArrayData(arrayHeader.count, arrayHeader.size);
+  
+  for (size_t i = 0; i < data->count; ++i)
+    fread(data->data[i], 1, data->size, in);
 
+  return data;
+}
 
 
 void LBX::loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter, FILE *in)
 {
   fseek(in, offset, SEEK_SET);
   
-  char *buffer = new char[info.size];
+  char* buffer = new char[info.size];
   
   for (int i = 0; i < info.count; ++i)
   {
@@ -88,11 +101,16 @@ void LBX::loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter
     //printf("  > %s\n",buffer);
     inserter.push(string(buffer));
   }
+  
+  delete [] buffer;
 }
 
 
-void LBX::loadArrayFile(const LBXHeader& header, offset_list& offsets, std::vector<TextFiller>& inserters, FILE *in)
+void LBX::loadArrayFile(const FileInfo& info, std::vector<TextFiller>& inserters, FILE *in)
 {
+  const auto& header = info.header;
+  const auto& offsets = info.offsets;
+  
   LBXArray* arrays = new LBXArray[header.count];
   for (int i = 0; i < header.count; ++i)
   {
@@ -102,18 +120,20 @@ void LBX::loadArrayFile(const LBXHeader& header, offset_list& offsets, std::vect
   
   for (int i = 0; i < header.count; ++i)
   {
-    LBXOffset startArrayOffset = offsets[i]+arrays[i].size*(arrays[i].count)+sizeof(LBXArray);
+    LBXOffset computedNextArrayOffset = offsets[i]+arrays[i].size*(arrays[i].count)+sizeof(LBXArray);
     u32 nextEntryOffset = offsets[i+1];
     
     /*printf("Array at 0x%08X, %4d elements, %4d size, ends at 0x%08X (next at: 0x%08X)\n",
-           offsets[i],arrays[i].count,arrays[i].size,startArrayOffset,nextEntryOffset);*/
+     offsets[i],arrays[i].count,arrays[i].size,startArrayOffset,nextEntryOffset);*/
     
-    if (startArrayOffset != nextEntryOffset) cout << "ERROR! OFFSET DIFFERS!" << endl;
+    if (computedNextArrayOffset != nextEntryOffset) cout << "ERROR! OFFSET DIFFERS!" << endl;
     else
     {
       loadArray(offsets[i]+sizeof(LBXArray), arrays[i], inserters[i], in);
     }
   }
+  
+  delete [] arrays;
 }
 
 
@@ -172,7 +192,7 @@ void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader &phead
         {
           if (data[n_r] >= RLE_val)
           {
-
+            
             lastPos = n_r + 1;
             rleLength = data[n_r] - RLE_val + 1;
             rleCounter = 0;
@@ -190,7 +210,7 @@ void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader &phead
               ++y;
               ++rleCounter;
             }
-
+            
             n_r += 2;
           }
           else
@@ -199,7 +219,7 @@ void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader &phead
             {
               image[x + y*w] = data[n_r];
               //printf("%d,%d SINGLE -> %d\n", x, y, data[n_r]);
-
+              
             }
             
             ++n_r;
@@ -221,7 +241,7 @@ void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader &phead
     }
     
     /*if (y != h)
-      printf("%d,%d..%d -> EMPTY COLUMN\n", x, y, h-1);*/
+     printf("%d,%d..%d -> EMPTY COLUMN\n", x, y, h-1);*/
     
     ++x;
   }
@@ -243,9 +263,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
   Color* palette = new Color[PALETTE_SIZE];
   memcpy(palette, Gfx::PALETTE, sizeof(Color)*PALETTE_SIZE);
   
-  LBXSpriteData *sprite = new LBXSpriteData(new IndexedPalette(palette), gfxHeader.count, gfxHeader.width, gfxHeader.height);
-
-
+  LBXSpriteData *sprite = new LBXSpriteData(new IndexedPalette(palette), gfxHeader.count, gfxHeader.width, gfxHeader.height, gfxHeader.paletteOffset > 0);
   LBXPaletteHeader paletteHeader = {0,0,256};
   
   // there is a palette
@@ -255,7 +273,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
     
     fread(&paletteHeader, sizeof(LBXPaletteHeader), 1, in);
     printf("    PALETTE AT OFFSET %d, COUNT %d STARTING AT %d\n", paletteHeader.offset, paletteHeader.count, paletteHeader.firstIndex);
-
+    
     fseek(in, offset+paletteHeader.offset, SEEK_SET);
     for (int i = 0; i < paletteHeader.count; ++i)
     {
@@ -274,7 +292,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
     else if (i == 0)
       palette[i] = TRANSPARENT; //palette[i] = 0x00000000;
   }
-
+  
   for (int i = 0; i < gfxHeader.count; ++i)
   {
     u32 dataSize = frameOffsets[i+1] - frameOffsets[i];
@@ -289,15 +307,18 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
       std::copy(sprite->data[i-1], sprite->data[i-1]+(sprite->width*sprite->height), sprite->data[i]);
     
     scanGfxFrame(gfxHeader, paletteHeader, i, sprite->data[i], data, dataSize);
-
+    
     delete [] data;
   }
   
   return sprite;
 }
 
-void LBX::scanFileNames(const LBXHeader& header, const offset_list& offsets, string_list& names, FILE *in)
+void LBX::scanFileNames(const FileInfo& info, string_list& names, FILE *in)
 {
+  const LBXHeader& header = info.header;
+  const offset_list& offsets = info.offsets;
+  
   fseek(in, offsets[0] - sizeof(LBXFileName)*header.count, SEEK_SET);
   
   names.reserve(header.count);
@@ -311,14 +332,14 @@ void LBX::scanFileNames(const LBXHeader& header, const offset_list& offsets, str
   }
 }
 
-bool LBX::loadHeader(LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
+bool LBX::loadHeader(FileInfo& info, FILE *in)
 {
-  fread(&header, sizeof(header), 1, in);
+  fread(&info.header, sizeof(LBXHeader), 1, in);
   
-  if (header.magic == 0x0000FEAD)
+  if (info.header.magic == 0x0000FEAD)
   {
-    offsets.reserve(header.count+1);
-    fread(&offsets[0], sizeof(LBXOffset), header.count+1, in);
+    info.offsets.resize(info.header.count+1);
+    fread(&info.offsets[0], sizeof(LBXOffset), info.header.count+1, in);
     
     return true;
   }
@@ -333,7 +354,7 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
 {
   // position to start of character heights resource
   fseek(in, offsets[0] + 0x16A, SEEK_SET);
-
+  
   u16 *heights = new u16[8];
   fread(heights, FONT_NUM, sizeof(u16), in);
   
@@ -348,7 +369,7 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
     // read 5E bytes for widths of current font
     widths[i] = new u8[FONT_CHAR_NUM]; // 94
     fread(widths[i], 1, FONT_CHAR_NUM, in);
-
+    
     // skip 2 control characters
     u8 padding[2];
     fread(padding, 1, 2, in);
@@ -381,13 +402,13 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
     // allocate storage for all glyphs
     FontData::fonts[i] = new FontData(static_cast<FontType>(i), heights[i]+2, width);  // add 2 pixels by side for precomputed stroke
     u16 totalWidth = FontData::fonts[i]->tw();
-
+    
     for (int j = 0; j < FONT_CHAR_NUM; ++j)
     {
       u8* glyph = FontData::fonts[i]->dataAt(0, j);
       
       fseek(in, offsets[0] + foffsets[i][j], SEEK_SET);
-
+      
       u16 bx = 1;
       u16 by = 1;
       u16 x = 0, y = 0;
@@ -404,14 +425,14 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
         u8 strain = 0;
         
         /* if data is 0x8N then N is strain length, if N is 0 then we just skip the column,
-           else we have a strain of N transparent pixels */
+         else we have a strain of N transparent pixels */
         if (high == 0x08)
         {
           color = 0;
           strain = low;
         }
-        /* otherwise for data 0xMN then N is the color and M is the strain length, 
-           as before is N is 0 we skip the column, otherwise we have a strain of N pixels of color M */
+        /* otherwise for data 0xMN then N is the color and M is the strain length,
+         as before is N is 0 we skip the column, otherwise we have a strain of N pixels of color M */
         else
         {
           color = low+3;
@@ -487,17 +508,15 @@ FILE* LBX::getDescriptor(const LBXFile& lbx)
 void LBX::load()
 {
   {
-    LBXHeader header;
-    offset_list offsets;
+    FileInfo info;
     FILE *in = fopen(getLBXPath("fonts").c_str(), "rb");
-    loadHeader(header, offsets, in);
-    loadFonts(header, offsets, in);
+    loadHeader(info, in);
+    loadFonts(info.header, info.offsets, in);
   }
   {
-    LBXHeader header;
-    offset_list offsets;
+    FileInfo info;
     FILE *in = fopen(getLBXPath("buildesc").c_str(), "rb");
-    loadHeader(header, offsets, in);
+    loadHeader(info, in);
     
     vector<TextFiller> inserters = {
       TextFiller(0, [](u16 index, std::string& str) {
@@ -544,51 +563,61 @@ void LBX::load()
       })
     };
     
-    loadArrayFile(header, offsets, inserters, in);
-
+    loadArrayFile(info, inserters, in);
+    
   }
 }
 
 /*
-void LBX::load()
-{
-  path = string(getenv("PWD")) + "/OpenMoM.app/Contents/Resources/data/lbx/";
-  
-  auto files = findFiles(path, ".lbx");
-  
-  for (auto f : files)
-  {
-    if (f == "fonts.lbx")
-    {
-      auto filePath = path + f;
-      
-      LBXHeader header;
-      offset_list offsets;
-      
-      FILE *in = fopen(filePath.c_str(), "rb");
-      
-      loadHeader(header, offsets, in);
-      loadFonts(header, offsets, in);
-      
-      fclose(in);
-    }
-  }
-  
-  
-}*/
+ void LBX::load()
+ {
+ path = string(getenv("PWD")) + "/OpenMoM.app/Contents/Resources/data/lbx/";
+ 
+ auto files = findFiles(path, ".lbx");
+ 
+ for (auto f : files)
+ {
+ if (f == "fonts.lbx")
+ {
+ auto filePath = path + f;
+ 
+ LBXHeader header;
+ offset_list offsets;
+ 
+ FILE *in = fopen(filePath.c_str(), "rb");
+ 
+ loadHeader(header, offsets, in);
+ loadFonts(header, offsets, in);
+ 
+ fclose(in);
+ }
+ }
+ 
+ 
+ }*/
 
 LBXFile Repository::data[LBX_COUNT];
 
 const LBXFile& Repository::loadLBX(LBXID ident)
 {
   LBXFile& lbx = file(ident);
-    
-  FILE *in = LBX::getDescriptor(lbx);
-  LBX::loadHeader(lbx.header, lbx.offsets, in);
   
-  lbx.sprites = new LBXSpriteData*[lbx.size()];
-  for (int i = 0; i < lbx.size(); ++i) lbx.sprites[i] = nullptr;
-
+  FILE *in = LBX::getDescriptor(lbx);
+  LBX::loadHeader(lbx.info, in);
+  
+  printf("SIZE: %zu\n", lbx.info.offsets.size());
+  
+  if (lbx.info.header.type == LBXFileType::GRAPHICS)
+  {
+    lbx.sprites = new LBXSpriteData*[lbx.size()];
+    std::fill(lbx.sprites, lbx.sprites+lbx.size(), nullptr);
+  }
+  else if (lbx.info.header.type == LBXFileType::DATA_ARRAY)
+  {
+    lbx.arrays = new LBXArrayData*[lbx.size()];
+    std::fill(lbx.arrays, lbx.arrays+lbx.size(), nullptr);
+  }
+  
   fclose(in);
   
   return lbx;
@@ -601,11 +630,134 @@ const LBXSpriteData* Repository::loadLBXSpriteData(const LBXSpriteInfo &info)
   string name = LBX::getLBXPath(lbx.fileName);
   FILE *in = fopen(name.c_str(), "rb");
   
-  LBXSpriteData* spriteData = LBX::scanGfx(lbx.header, lbx.offsets[info.index], in);
-
+  LBXSpriteData* spriteData = LBX::scanGfx(lbx.info.header, lbx.info.offsets[info.index], in);
+  
   lbx.sprites[info.index] = spriteData;
   
   fclose(in);
   
   return spriteData;
+}
+
+const LBXArrayData* Repository::loadLBXArrayData(const LBXFile& lbx, size_t index)
+{
+  string name = LBX::getLBXPath(lbx.fileName);
+  FILE *in = fopen(name.c_str(), "rb");
+
+  LBXArrayData* arrayData = LBX::loadArray(lbx.info.offsets[index], in);
+  lbx.arrays[index] = arrayData;
+  
+  fclose(in);
+  
+  return arrayData;
+}
+
+void Repository::init()
+{
+  static const char* names[] = {
+    "armylist",
+    "backgrnd",
+    "book",
+    "builddat",
+    "buildesc",
+    "chriver",
+    "cityname",
+    "cityscap",
+    "citywall",
+    "cmbdesrc",
+    "cmbdesrt",
+    "cmbgrasc",
+    "cmbgrass",
+    "cmbmagic",
+    "cmbmounc",
+    "cmbmount",
+    "cmbtcity",
+    "cmbtfx",
+    "cmbtsnd",
+    "cmbtundc",
+    "cmbtundr",
+    "cmbtwall",
+    "combat",
+    "compix",
+    "conquest",
+    "desc",
+    "desert",
+    "diplomac",
+    "diplomsg",
+    "eventmsg",
+    "events",
+    "figures1",
+    "figures2",
+    "figures3",
+    "figures4",
+    "figures5",
+    "figures6",
+    "figures7",
+    "figures8",
+    "figures9",
+    "figure10",
+    "figure11",
+    "figure12",
+    "figure13",
+    "figure14",
+    "figure15",
+    "figure16",
+    "fonts",
+    "halofam",
+    "help",
+    "herodata",
+    "hire",
+    "hlpentry",
+    "intro",
+    "introsfx",
+    "introsnd",
+    "itemdata",
+    "itemisc",
+    "itempow",
+    "items",
+    "lilwiz",
+    "listdat",
+    "load",
+    "lose",
+    "magic",
+    "main",
+    "mainscrn",
+    "mapback",
+    "message",
+    "monster",
+    "moodwiz",
+    "music",
+    "names",
+    "newgame",
+    "newsound",
+    "portrait",
+    "reload",
+    "resource",
+    "scroll",
+    "snddrv",
+    "soundfx",
+    "specfx",
+    "special",
+    "special2",
+    "spelldat",
+    "spellose",
+    "spells",
+    "spellscr",
+    "splmastr",
+    "terrain",
+    "terrstat",
+    "terrtype",
+    "tundra",
+    "units1",
+    "units2",
+    "unitview",
+    "vortex",
+    "wallrise",
+    "win",
+    "wizards",
+    "wizlab"
+  };
+  
+  for (int i = 0; i < LBX_COUNT; ++i)
+    data[i] = LBXFile(static_cast<LBXID>(i), names[i]);
 }

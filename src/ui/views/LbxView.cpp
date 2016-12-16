@@ -117,7 +117,7 @@ void LBXView::selectLBX()
     
     std::string name = LBX::getLBXPath(lbx.fileName);
     FILE *in = fopen(name.c_str(),"rb");
-    LBX::scanFileNames(lbx.header, lbx.offsets, fileNames, in);
+    LBX::scanFileNames(lbx.info, fileNames, in);
     fclose(in);
     filesForLBX[static_cast<LBXID>(selectedLBX)] = fileNames;
   }

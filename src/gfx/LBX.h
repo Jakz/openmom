@@ -19,11 +19,17 @@
 
 namespace lbx
 {
+  enum LBXFileType : u16
+  {
+    GRAPHICS = 0,
+    DATA_ARRAY = 5
+  };
+  
   struct LBXHeader
   {
     u16 count;
     u32 magic;
-    u16 type;
+    LBXFileType type;
   } __attribute__((__packed__));
 
   struct LBXArray
@@ -70,6 +76,12 @@ namespace lbx
   using LBXOffset = u32;
   using offset_list = std::vector<LBXOffset>;
   using string_list = std::vector<LBXFileName>;
+  
+  struct FileInfo
+  {
+    LBXHeader header;
+    offset_list offsets;
+  };
 
   class SDL_Surface;
 
@@ -79,7 +91,7 @@ namespace lbx
 
 
   public:
-    LBXSpriteData(const Palette* palette, u16 count, u16 width, u16 height) : palette(palette), count(count), width(width), height(height), data(new u8*[count])
+    LBXSpriteData(const Palette* palette, u16 count, u16 width, u16 height, bool hasCustomPalette) : palette(palette), count(count), width(width), height(height), data(new u8*[count]), hasCustomPalette(hasCustomPalette)
     {
       for (u16 i = 0; i < count; ++i)
       {
@@ -87,14 +99,20 @@ namespace lbx
         memset(data[i], 0, sizeof(u8)*width*height);
       }
     }
+    
+    ~LBXSpriteData()
+    {
+      delete [] palette;
+      std::for_each(data, data+count, [](const u8* sprite) { delete sprite; });
+      delete [] data;
+    }
 
     u8 **data;
+    const bool hasCustomPalette;
     const Palette* palette;
     const u16 count;
     const u16 width;
     const u16 height;
-    
-    SDL_Surface *surface;
     
     Color at(u16 x, u16 y, u16 c, u16 r) const override { return palette->get(data[c+r][x+y*width]); }
 
@@ -106,19 +124,45 @@ namespace lbx
     
     const Palette* getPalette() const override { return palette; }
   };
+  
+  struct LBXArrayData
+  {
+    u16 count;
+    u16 size;
+    u8** data;
+    
+    LBXArrayData(u16 count, u16 size) : count(count), size(size), data(new u8*[count])
+    {
+      for (size_t i = 0; i < count; ++i)
+      {
+        data[i] = new u8[size];
+        std::fill(data[i], data[i]+size, 0);
+      }
+    }
+    
+    ~LBXArrayData()
+    {
+      std::for_each(data, data+count, [](u8* data) { delete [] data; });
+      delete [] data;
+    }
+  };
 
   struct LBXFile
   {
     LBXID ident;
     std::string fileName;
-    LBXHeader header;
-    offset_list offsets;
-    LBXSpriteData **sprites;
+    FileInfo info;
+    
+    union
+    {
+      LBXSpriteData** sprites;
+      LBXArrayData** arrays;
+    };
     
     LBXFile() : sprites(nullptr) { }
     LBXFile(LBXID ident, const std::string& fileName) : ident(ident), fileName(fileName), sprites(nullptr) { }
     
-    const u16 size() const { return header.count; }
+    const u16 size() const { return info.header.count; }
   };
 
   class Repository
@@ -128,67 +172,17 @@ namespace lbx
     static LBXFile& file(LBXID ident) { return data[static_cast<size_t>(ident)]; }
     
   public:
-
-    static void init()
-    {    
-      std::string names[] = {
-        "armylist",
-        "backgrnd",
-        "book",
-        "chriver",
-        "cityscap",
-        "citywall",
-        "cmbdesrc",
-        "cmbdesrt",
-        "cmbgrasc",
-        "cmbgrass",
-        "cmbmagic",
-        "cmbmounc",
-        "cmbmount",
-        "cmbtcity",
-        "cmbtfx",
-        "cmbtundc",
-        "cmbtundr",
-        "cmbtwall",
-        "combat",
-        "compix",
-        "conquest",
-        "halofam",
-        "units1",
-        "units2",
-        "mainscrn",
-        "main",
-        "specfx",
-        "figures1",
-        "figures2",
-        "figures3",
-        "figures4",
-        "figures5",
-        "figures6",
-        "figures7",
-        "figures8",
-        "figures9",
-        "figure10",
-        "figure11",
-        "figure12",
-        "figure13",
-        "figure14",
-        "figure15",
-        "figure16",
-        "lilwiz",
-        "spellscr"
-      };
-      
-      for (int i = 0; i < LBX_COUNT; ++i)
-        data[i] = LBXFile(static_cast<LBXID>(i), names[i]);
-    }
+    static void init();
     
     static bool shouldAllocateLBX(LBXID ident) { return file(ident).sprites == nullptr; }
+    
     static const LBXFile& loadLBX(LBXID ident);
     static const LBXFile& holderForID(LBXID ident) { return file(ident); }
     
     static bool shouldAllocateSprite(const LBXSpriteInfo& info) { return file(info.lbx).sprites[info.index] == nullptr; }
+    
     static const LBXSpriteData* loadLBXSpriteData(const LBXSpriteInfo& info);
+    static const LBXArrayData* loadLBXArrayData(const LBXFile& lbx, size_t index);
     
     static const LBXSpriteData* spriteFor(const LBXSpriteInfo& info) {
       const LBXSpriteData* sprite = file(info.lbx).sprites[info.index];
@@ -220,13 +214,16 @@ namespace lbx
         void push(std::string str) const { lambda(index, str); ++index; }
     };
     
-    static bool loadHeader(LBXHeader& header, offset_list& offsets, FILE *in);
+    static bool loadHeader(FileInfo& offsets, FILE *in);
     
     static void loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter, FILE *in);
-    static void loadArrayFile(const LBXHeader& header, offset_list& offsets, std::vector<TextFiller>& inserters, FILE *in);
+    static void loadArrayFile(const FileInfo& info, std::vector<TextFiller>& inserters, FILE *in);
+    
+    static LBXArrayData* loadArray(LBXOffset offset, FILE *in);
+    
     
     static LBXSpriteData* scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in);
-    static void scanFileNames(const LBXHeader& header, const offset_list& offsets, string_list& names, FILE *in);
+    static void scanFileNames(const FileInfo& info, string_list& names, FILE *in);
 
     static void loadText(const LBXHeader& header, offset_list& offsets, FILE *in);
     static void loadFonts(const LBXHeader& header, offset_list& offsets, FILE *in);
