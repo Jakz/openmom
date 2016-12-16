@@ -71,6 +71,82 @@
 		048616591E02E758004B62B7 /* hqx_init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048616551E02E758004B62B7 /* hqx_init.cpp */; };
 		0486165D1E031609004B62B7 /* LbxView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0486165B1E031609004B62B7 /* LbxView.cpp */; };
 		0486165E1E031743004B62B7 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 04E282CD1E023BEB00DD673D /* data */; };
+		0486165F1E038086004B62B7 /* OriginalSave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */; };
+		048616601E038086004B62B7 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E282BD1E0227CF00DD673D /* Util.cpp */; };
+		048616611E038086004B62B7 /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E282B91E02278700DD673D /* Common.cpp */; };
+		048616621E038086004B62B7 /* ValuesMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04797BED1C1DCB830026C153 /* ValuesMechanics.cpp */; };
+		048616631E038086004B62B7 /* SpellMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0442470D1980A04800A8D7CC /* SpellMechanics.cpp */; };
+		048616641E038086004B62B7 /* MapMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04205399197DCDB300B4C2CA /* MapMechanics.cpp */; };
+		048616651E038086004B62B7 /* EventMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044247101980B97900A8D7CC /* EventMechanics.cpp */; };
+		048616661E038086004B62B7 /* CityMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11219813E1A009C91ED /* CityMechanics.cpp */; };
+		048616671E038086004B62B7 /* PlayerMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11519818239009C91ED /* PlayerMechanics.cpp */; };
+		048616681E038086004B62B7 /* LairMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 042C480E198B3E75009C7E22 /* LairMechanics.cpp */; };
+		048616691E038086004B62B7 /* Race.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375CD197990B900A5B5FC /* Race.cpp */; };
+		0486166A1E038086004B62B7 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F3197AB04100A5B5FC /* Player.cpp */; };
+		0486166B1E038086004B62B7 /* LocalPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F6197AB04700A5B5FC /* LocalPlayer.cpp */; };
+		0486166C1E038086004B62B7 /* Messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0487516B197F612400009661 /* Messages.cpp */; };
+		0486166D1E038086004B62B7 /* Diplomacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0482049D19885DA900D4B699 /* Diplomacy.cpp */; };
+		0486166E1E038086004B62B7 /* Buildings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037608197AD00800A5B5FC /* Buildings.cpp */; };
+		0486166F1E038086004B62B7 /* City.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037619197B46DA00A5B5FC /* City.cpp */; };
+		048616701E038086004B62B7 /* Unit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403761C197B52F800A5B5FC /* Unit.cpp */; };
+		048616711E038086004B62B7 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
+		048616721E038086004B62B7 /* Army.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037604197AC92200A5B5FC /* Army.cpp */; };
+		048616731E038086004B62B7 /* Level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403760B197AE16100A5B5FC /* Level.cpp */; };
+		048616741E038086004B62B7 /* Items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4592197C9D7A00EA0CC0 /* Items.cpp */; };
+		048616751E038086004B62B7 /* Effects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0420538E197DA9E900B4C2CA /* Effects.cpp */; };
+		048616761E038086004B62B7 /* Skill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04205390197DA9E900B4C2CA /* Skill.cpp */; };
+		048616771E038086004B62B7 /* SkillSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0420538B197DA9D700B4C2CA /* SkillSet.cpp */; };
+		048616781E038086004B62B7 /* Spells.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403760F197AE1FF00A5B5FC /* Spells.cpp */; };
+		048616791E038086004B62B7 /* SpellBook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04243F2C197EE9E700E8A716 /* SpellBook.cpp */; };
+		0486167A1E038086004B62B7 /* CombatSpells.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F00C85197E0CB000293EE0 /* CombatSpells.cpp */; };
+		0486167B1E038086004B62B7 /* Combat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04243F29197ED3F500E8A716 /* Combat.cpp */; };
+		0486167C1E038086004B62B7 /* CombatMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A3198893BA00D4B699 /* CombatMechanics.cpp */; };
+		0486167D1E038086004B62B7 /* Places.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037601197AC90900A5B5FC /* Places.cpp */; };
+		0486167E1E038086004B62B7 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403761F197B539400A5B5FC /* Tile.cpp */; };
+		0486167F1E038086004B62B7 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037625197B58C900A5B5FC /* World.cpp */; };
+		048616801E038086004B62B7 /* Pathfind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04205394197DAA3C00B4C2CA /* Pathfind.cpp */; };
+		048616811E038086004B62B7 /* WorldGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08BA1982B20A009AED0A /* WorldGenerator.cpp */; };
+		048616821E038086004B62B7 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F9197AB09000A5B5FC /* Game.cpp */; };
+		048616831E038086004B62B7 /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037613197AF68700A5B5FC /* Settings.cpp */; };
+		048616841E038086004B62B7 /* hq2x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048616511E02E758004B62B7 /* hq2x.cpp */; };
+		048616851E038086004B62B7 /* hq3x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048616521E02E758004B62B7 /* hq3x.cpp */; };
+		048616861E038086004B62B7 /* hq4x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048616531E02E758004B62B7 /* hq4x.cpp */; };
+		048616871E038086004B62B7 /* hqx_init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048616551E02E758004B62B7 /* hqx_init.cpp */; };
+		048616881E038086004B62B7 /* GUISettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E282C11E0227DE00DD673D /* GUISettings.cpp */; };
+		048616891E038086004B62B7 /* ColorMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D0197990B900A5B5FC /* ColorMap.cpp */; };
+		0486168A1E038086004B62B7 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D6197990B900A5B5FC /* Texture.cpp */; };
+		0486168B1E038086004B62B7 /* SDLHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E282C41E02343E00DD673D /* SDLHelper.cpp */; };
+		0486168C1E038086004B62B7 /* MiniMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044E466B1980202D00E396AD /* MiniMap.cpp */; };
+		0486168D1E038086004B62B7 /* CityScape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E1181981D1EF009C91ED /* CityScape.cpp */; };
+		0486168E1E038086004B62B7 /* SkillDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08B719829C6D009AED0A /* SkillDraw.cpp */; };
+		0486168F1E038086004B62B7 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B11983286E00291B82 /* Viewport.cpp */; };
+		048616901E038086004B62B7 /* UnitDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B419833C1E00291B82 /* UnitDraw.cpp */; };
+		048616911E038086004B62B7 /* BookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729C21985F1B1002F16E6 /* BookView.cpp */; };
+		048616921E038086004B62B7 /* CommonDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9AE19869F6D0009BFF7 /* CommonDraw.cpp */; };
+		048616931E038086004B62B7 /* AlchemyView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E98119868F1B0009BFF7 /* AlchemyView.cpp */; };
+		048616941E038086004B62B7 /* ArmiesItemsView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E98419868F400009BFF7 /* ArmiesItemsView.cpp */; };
+		048616951E038086004B62B7 /* ArmiesView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E98719868F6D0009BFF7 /* ArmiesView.cpp */; };
+		048616961E038086004B62B7 /* ArmyView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E98A19868F8A0009BFF7 /* ArmyView.cpp */; };
+		048616971E038086004B62B7 /* CityView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E98D19868FAD0009BFF7 /* CityView.cpp */; };
+		048616981E038086004B62B7 /* CombatView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E99019868FCB0009BFF7 /* CombatView.cpp */; };
+		048616991E038086004B62B7 /* ItemCraftView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E99319868FF60009BFF7 /* ItemCraftView.cpp */; };
+		0486169A1E038086004B62B7 /* MagicView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E996198690150009BFF7 /* MagicView.cpp */; };
+		0486169B1E038086004B62B7 /* MainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729BF19853F4E002F16E6 /* MainView.cpp */; };
+		0486169C1E038086004B62B7 /* MessageView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9991986903A0009BFF7 /* MessageView.cpp */; };
+		0486169D1E038086004B62B7 /* MirrorView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E99C198690580009BFF7 /* MirrorView.cpp */; };
+		0486169E1E038086004B62B7 /* NewGameView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037616197AF93600A5B5FC /* NewGameView.cpp */; };
+		0486169F1E038086004B62B7 /* OutpostView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E99F198690B70009BFF7 /* OutpostView.cpp */; };
+		048616A01E038086004B62B7 /* ProductionView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9A2198690DB0009BFF7 /* ProductionView.cpp */; };
+		048616A11E038086004B62B7 /* ResearchView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9A5198691070009BFF7 /* ResearchView.cpp */; };
+		048616A21E038086004B62B7 /* SpellBookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9A81986912D0009BFF7 /* SpellBookView.cpp */; };
+		048616A31E038086004B62B7 /* UnitDetailView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9AB198691530009BFF7 /* UnitDetailView.cpp */; };
+		048616A41E038086004B62B7 /* LbxView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0486165B1E031609004B62B7 /* LbxView.cpp */; };
+		048616A51E038086004B62B7 /* ViewManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375FC197ABA9100A5B5FC /* ViewManager.cpp */; };
+		048616A61E038086004B62B7 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
+		048616A71E038086004B62B7 /* Buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E41979EA6700A5B5FC /* Buttons.cpp */; };
+		048616A81E038086004B62B7 /* Animations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E9197A9ABC00A5B5FC /* Animations.cpp */; };
+		048616A91E038086004B62B7 /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D9197990B900A5B5FC /* Localization.cpp */; };
+		048616AA1E0380A4004B62B7 /* osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04E282D41E0242C000DD673D /* osx.mm */; };
 		0487516D197F612400009661 /* Messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0487516B197F612400009661 /* Messages.cpp */; };
 		04879A411978374100313BC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
@@ -975,6 +1051,82 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				048616AA1E0380A4004B62B7 /* osx.mm in Sources */,
+				0486165F1E038086004B62B7 /* OriginalSave.cpp in Sources */,
+				048616601E038086004B62B7 /* Util.cpp in Sources */,
+				048616611E038086004B62B7 /* Common.cpp in Sources */,
+				048616621E038086004B62B7 /* ValuesMechanics.cpp in Sources */,
+				048616631E038086004B62B7 /* SpellMechanics.cpp in Sources */,
+				048616641E038086004B62B7 /* MapMechanics.cpp in Sources */,
+				048616651E038086004B62B7 /* EventMechanics.cpp in Sources */,
+				048616661E038086004B62B7 /* CityMechanics.cpp in Sources */,
+				048616671E038086004B62B7 /* PlayerMechanics.cpp in Sources */,
+				048616681E038086004B62B7 /* LairMechanics.cpp in Sources */,
+				048616691E038086004B62B7 /* Race.cpp in Sources */,
+				0486166A1E038086004B62B7 /* Player.cpp in Sources */,
+				0486166B1E038086004B62B7 /* LocalPlayer.cpp in Sources */,
+				0486166C1E038086004B62B7 /* Messages.cpp in Sources */,
+				0486166D1E038086004B62B7 /* Diplomacy.cpp in Sources */,
+				0486166E1E038086004B62B7 /* Buildings.cpp in Sources */,
+				0486166F1E038086004B62B7 /* City.cpp in Sources */,
+				048616701E038086004B62B7 /* Unit.cpp in Sources */,
+				048616711E038086004B62B7 /* UnitSpec.cpp in Sources */,
+				048616721E038086004B62B7 /* Army.cpp in Sources */,
+				048616731E038086004B62B7 /* Level.cpp in Sources */,
+				048616741E038086004B62B7 /* Items.cpp in Sources */,
+				048616751E038086004B62B7 /* Effects.cpp in Sources */,
+				048616761E038086004B62B7 /* Skill.cpp in Sources */,
+				048616771E038086004B62B7 /* SkillSet.cpp in Sources */,
+				048616781E038086004B62B7 /* Spells.cpp in Sources */,
+				048616791E038086004B62B7 /* SpellBook.cpp in Sources */,
+				0486167A1E038086004B62B7 /* CombatSpells.cpp in Sources */,
+				0486167B1E038086004B62B7 /* Combat.cpp in Sources */,
+				0486167C1E038086004B62B7 /* CombatMechanics.cpp in Sources */,
+				0486167D1E038086004B62B7 /* Places.cpp in Sources */,
+				0486167E1E038086004B62B7 /* Tile.cpp in Sources */,
+				0486167F1E038086004B62B7 /* World.cpp in Sources */,
+				048616801E038086004B62B7 /* Pathfind.cpp in Sources */,
+				048616811E038086004B62B7 /* WorldGenerator.cpp in Sources */,
+				048616821E038086004B62B7 /* Game.cpp in Sources */,
+				048616831E038086004B62B7 /* Settings.cpp in Sources */,
+				048616841E038086004B62B7 /* hq2x.cpp in Sources */,
+				048616851E038086004B62B7 /* hq3x.cpp in Sources */,
+				048616861E038086004B62B7 /* hq4x.cpp in Sources */,
+				048616871E038086004B62B7 /* hqx_init.cpp in Sources */,
+				048616881E038086004B62B7 /* GUISettings.cpp in Sources */,
+				048616891E038086004B62B7 /* ColorMap.cpp in Sources */,
+				0486168A1E038086004B62B7 /* Texture.cpp in Sources */,
+				0486168B1E038086004B62B7 /* SDLHelper.cpp in Sources */,
+				0486168C1E038086004B62B7 /* MiniMap.cpp in Sources */,
+				0486168D1E038086004B62B7 /* CityScape.cpp in Sources */,
+				0486168E1E038086004B62B7 /* SkillDraw.cpp in Sources */,
+				0486168F1E038086004B62B7 /* Viewport.cpp in Sources */,
+				048616901E038086004B62B7 /* UnitDraw.cpp in Sources */,
+				048616911E038086004B62B7 /* BookView.cpp in Sources */,
+				048616921E038086004B62B7 /* CommonDraw.cpp in Sources */,
+				048616931E038086004B62B7 /* AlchemyView.cpp in Sources */,
+				048616941E038086004B62B7 /* ArmiesItemsView.cpp in Sources */,
+				048616951E038086004B62B7 /* ArmiesView.cpp in Sources */,
+				048616961E038086004B62B7 /* ArmyView.cpp in Sources */,
+				048616971E038086004B62B7 /* CityView.cpp in Sources */,
+				048616981E038086004B62B7 /* CombatView.cpp in Sources */,
+				048616991E038086004B62B7 /* ItemCraftView.cpp in Sources */,
+				0486169A1E038086004B62B7 /* MagicView.cpp in Sources */,
+				0486169B1E038086004B62B7 /* MainView.cpp in Sources */,
+				0486169C1E038086004B62B7 /* MessageView.cpp in Sources */,
+				0486169D1E038086004B62B7 /* MirrorView.cpp in Sources */,
+				0486169E1E038086004B62B7 /* NewGameView.cpp in Sources */,
+				0486169F1E038086004B62B7 /* OutpostView.cpp in Sources */,
+				048616A01E038086004B62B7 /* ProductionView.cpp in Sources */,
+				048616A11E038086004B62B7 /* ResearchView.cpp in Sources */,
+				048616A21E038086004B62B7 /* SpellBookView.cpp in Sources */,
+				048616A31E038086004B62B7 /* UnitDetailView.cpp in Sources */,
+				048616A41E038086004B62B7 /* LbxView.cpp in Sources */,
+				048616A51E038086004B62B7 /* ViewManager.cpp in Sources */,
+				048616A61E038086004B62B7 /* GfxData.cpp in Sources */,
+				048616A71E038086004B62B7 /* Buttons.cpp in Sources */,
+				048616A81E038086004B62B7 /* Animations.cpp in Sources */,
+				048616A91E038086004B62B7 /* Localization.cpp in Sources */,
 				04E282B41E021DA100DD673D /* View.cpp in Sources */,
 				04E282B31E021D9700DD673D /* LBX.cpp in Sources */,
 				04E282B21E021D8F00DD673D /* Gfx.cpp in Sources */,
@@ -1130,6 +1282,7 @@
 		};
 		04E282AC1E021C3300DD673D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 04E282CA1E023AF200DD673D /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1140,12 +1293,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/libs",
-				);
 				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = "${SRCROOT}/src";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1154,6 +1302,7 @@
 		};
 		04E282AD1E021C3300DD673D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 04E282CA1E023AF200DD673D /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1163,12 +1312,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/libs",
-				);
 				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = "${SRCROOT}/src";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";

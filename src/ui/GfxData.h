@@ -67,8 +67,8 @@ private:
 public:
   static Color colorForSchool(School school);
   static const TileGfxSpec& tileGfxSpec(TileType type) { return specs[type]; }
-  static const s8 rangedGfxIndex(Ranged ranged) { return RANGED_INDEX[static_cast<u8>(ranged)]; }
-  static const s8 propertyGfxIndex(Property property) { return PROPERTY_INDEX[static_cast<u8>(property)]; }
+  static s8 rangedGfxIndex(Ranged ranged) { return RANGED_INDEX[static_cast<u8>(ranged)]; }
+  static s8 propertyGfxIndex(Property property) { return PROPERTY_INDEX[static_cast<u8>(property)]; }
   
   static const UnitGfxSpec& unitGfxSpec(const UnitSpec* spec);
   

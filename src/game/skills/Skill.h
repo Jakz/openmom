@@ -267,9 +267,37 @@ public:
   bool is(SkillBase) const override { return this->base == base || existingSkill.base == base; }
 };
 
+using skill_init_list = std::initializer_list<const Skill*>;
 
-typedef std::vector<const Skill*> skill_list;
-typedef std::initializer_list<const Skill*> skill_init_list;
+struct skill_list
+{
+private:
+  std::vector<const Skill*> skills;
+  
+public:
+  using iterator = decltype(skills)::iterator;
+  using const_iterator = decltype(skills)::const_iterator;
+  
+  skill_list() : skills() { }
+  skill_list(const skill_init_list& skills) : skills(skills) { }
+  
+  void push_back(const Skill* skill) { skills.push_back(skill); }
+  
+  size_t size() const { return skills.size(); }
+  const Skill* operator[](size_t index) const { return skills[index]; }
+  
+  iterator begin() { return skills.begin(); }
+  iterator end() { return skills.end(); }
+  
+  const_iterator begin() const { return skills.begin(); }
+  const_iterator end() const { return skills.end(); }
+
+  bool hasSkill(SkillBase base) const
+  {
+    return std::find_if(skills.begin(), skills.end(), [&](const Skill* c) { return c->base == base; }) != skills.end();
+  }
+};
+
 
 
 // ([A-Z_]+)\(([0-9+\-]+)\),   $1 = $2
