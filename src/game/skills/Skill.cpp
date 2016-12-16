@@ -120,7 +120,7 @@ namespace skillimpl
   
   static const ConcreteSkill LUCKY = ConcreteSkill(SkillBase::LUCKY, UnitBonus::build({Property::TO_HIT, Property::TO_DEFEND, Property::RESIST}, 1));
   
-  static const ConcreteSkill LARGE_SHIELD = ConcreteSkill(SkillBase::LARGE_SHIELD, {new UnitBonus(Property::SHIELDS_RANGED,2)} );
+  static const ConcreteSkill LARGE_SHIELD = ConcreteSkill(SkillBase::LARGE_SHIELD, {new UnitBonus(Property::SHIELDS_RANGED,2), new UnitBonus(Property::SHIELDS_CHAOS,2), new UnitBonus(Property::SHIELDS_LIFE,2), new UnitBonus(Property::SHIELDS_DEATH,2), new UnitBonus(Property::SHIELDS_NATURE,2), new UnitBonus(Property::SHIELDS_SORCERY,2)} );
   static const ConcreteSkill RESISTANCE_TO_ALL = ConcreteSkill(SkillBase::RESISTANCE_TO_ALL, {new UnitBonus(Property::RESIST,1)});
   
   static const ConcreteSkill FIRST_STRIKE = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::FIRST_STRIKE)} );
@@ -227,7 +227,7 @@ namespace skillimpl
   static const ConcreteSkill SPELL_ENDURANCE = ConcreteSkill(SkillBase::SPELL_ENDURANCE, {new UnitBonus(Property::MOVEMENT,1)} );
   static const WrapSkill SPELL_HEROISM = WrapSkill(SkillBase::SPELL_HEROISM, FLYING); // TODO
   static const ConcreteSkill SPELL_HOLY_ARMOR = ConcreteSkill(SkillBase::SPELL_HOLY_ARMOR, {new UnitBonus(Property::SHIELDS,2)}); // TODO: should be correct
-  static const ConcreteSkill SPELL_HOLY_WEAPON = ConcreteSkill(SkillBase::SPELL_HOLY_WEAPON, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,1)});
+  static const ConcreteSkill SPELL_HOLY_WEAPON = ConcreteSkill(SkillBase::SPELL_HOLY_WEAPON, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::TO_HIT,1)});
   static const WrapSkill SPELL_PLANAR_TRAVEL = WrapSkill(SkillBase::SPELL_PLANAR_TRAVEL, PLANAR_TRAVEL);
   static const WrapSkill SPELL_TRUE_SIGHT = WrapSkill(SkillBase::SPELL_TRUE_SIGHT, IMMUNITY_ILLUSIONS);
 

@@ -27,7 +27,7 @@ constexpr u8 GET_GREEN(Color color) { return (color & 0x0000FF00) >> 8; }
 constexpr u8 GET_BLUE(Color color) { return (color & 0x000000FF); }
 
 enum class I18 : u16;
-enum TextureID : u16;
+enum class TextureID : u16;
 enum Plane : u8;
 
 enum SpellKind : u8;

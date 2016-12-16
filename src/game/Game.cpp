@@ -321,7 +321,7 @@ void Game::cancelCast(Player* player)
 
 void Game::addSkill(Unit* unit, const Skill* skill)
 {
-  unit->skills()->add(*skill);
+  unit->skills()->add(skill);
 }
 
 bool Game::consumeMovement(Army* army)

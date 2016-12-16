@@ -126,7 +126,7 @@ void ViewManager::draw()
   
   if (isThereOverview())
   {
-    Gfx::draw(DARKNER, 0, 0);
+    Gfx::draw(TextureID::DARKNER, 0, 0);
     
     for (View *v : overviews)
       v->doDraw();

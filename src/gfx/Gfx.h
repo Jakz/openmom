@@ -16,7 +16,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
-enum TextureID : u16;
+enum class TextureID : u16;
 
 #define WIDTH (320)
 #define HEIGHT (200)

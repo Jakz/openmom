@@ -26,7 +26,7 @@ public:
   const Skill* get(size_t index) const;
   const Skill* operator[](size_t index) const { return get(index); }
   
-  void add(const Skill& skill) { additionalSkills.push_back(&skill); }
+  void add(const Skill* skill) { additionalSkills.push_back(skill); }
   void add(const SpellCast& cast) { spells.push_back(cast); }
   
   void remove(const Spell* spell);

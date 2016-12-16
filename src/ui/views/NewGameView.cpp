@@ -12,13 +12,13 @@ NewGameView::NewGameView(ViewManager * gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[OPTIONS_OK] = new OffsetButton("Ok", 252, 179, SpriteInfo(NEW_GAME_BUTTONS1, 0, 0));
-  buttons[OPTIONS_CANCEL] = new OffsetButton("Cancel", 171, 179, SpriteInfo(NEW_GAME_BUTTONS1, 0, 1));
+  buttons[OPTIONS_OK] = new OffsetButton("Ok", 252, 179, SpriteInfo(TextureID::NEW_GAME_BUTTONS1, 0, 0));
+  buttons[OPTIONS_CANCEL] = new OffsetButton("Cancel", 171, 179, SpriteInfo(TextureID::NEW_GAME_BUTTONS1, 0, 1));
   
-  buttons[OPTIONS_DIFFICULTY] = new LabeledSimpleButton("Difficulty", 251, 39, SpriteInfo(NEW_GAME_BUTTONS1, 0, 2), "", FontFaces::MediumBold::BROWN_START);
-  buttons[OPTIONS_OPPONENTS] = new LabeledSimpleButton("Opponents", 251, 66, SpriteInfo(NEW_GAME_BUTTONS1, 0, 3), "", FontFaces::MediumBold::BROWN_START);
-  buttons[OPTIONS_LAND_SIZE] = new LabeledSimpleButton("Land Size", 251, 93, SpriteInfo(NEW_GAME_BUTTONS1, 0, 4), "", FontFaces::MediumBold::BROWN_START);
-  buttons[OPTIONS_MAGIC] = new LabeledSimpleButton("Magic", 251, 120, SpriteInfo(NEW_GAME_BUTTONS1, 0, 5), "", FontFaces::MediumBold::BROWN_START);
+  buttons[OPTIONS_DIFFICULTY] = new LabeledSimpleButton("Difficulty", 251, 39, SpriteInfo(TextureID::NEW_GAME_BUTTONS1, 0, 2), "", FontFaces::MediumBold::BROWN_START);
+  buttons[OPTIONS_OPPONENTS] = new LabeledSimpleButton("Opponents", 251, 66, SpriteInfo(TextureID::NEW_GAME_BUTTONS1, 0, 3), "", FontFaces::MediumBold::BROWN_START);
+  buttons[OPTIONS_LAND_SIZE] = new LabeledSimpleButton("Land Size", 251, 93, SpriteInfo(TextureID::NEW_GAME_BUTTONS1, 0, 4), "", FontFaces::MediumBold::BROWN_START);
+  buttons[OPTIONS_MAGIC] = new LabeledSimpleButton("Magic", 251, 120, SpriteInfo(TextureID::NEW_GAME_BUTTONS1, 0, 5), "", FontFaces::MediumBold::BROWN_START);
   
   buttons[OPTIONS_DIFFICULTY]->setAction([&](){ settings.group(SETTING_DIFFICULTY).next(); updateLabelsOptions(); });
   buttons[OPTIONS_OPPONENTS]->setAction([&](){ settings.group(SETTING_OPPONENTS).next(); updateLabelsOptions(); });
@@ -38,8 +38,8 @@ void NewGameView::updateLabelsOptions()
 
 void NewGameView::draw()
 {
-  Gfx::draw(NEW_GAME_BACKDROP, 0, 0);
-  Gfx::draw(NEW_GAME_PARTIALS, 0, 0, 165, 0);
+  Gfx::draw(TextureID::NEW_GAME_BACKDROP, 0, 0);
+  Gfx::draw(TextureID::NEW_GAME_PARTIALS, 0, 0, 165, 0);
 
   /*Gfx::drawGrayScale(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30);
   Gfx::drawGlow(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30, CHAOS);*/

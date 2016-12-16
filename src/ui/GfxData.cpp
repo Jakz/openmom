@@ -57,30 +57,30 @@ Color GfxData::colorForSchool(const School school)
 }
 
 unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
-  { UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 0), LBXSpriteInfo(LBX_FIGURE11, 112)) },
-  { UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 1), LBXSpriteInfo(LBX_FIGURE11, 112)) },
-  { UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 2), LBXSpriteInfo(LBX_FIGURE11, 112)) },
-  { UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 3), LBXSpriteInfo(LBX_FIGURE11, 112)) },
-  { UnitSpec::raceSpec(UnitID::SHAMANS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 4), LBXSpriteInfo(LBX_FIGURE11, 112)) },
-  { UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 8), LBXSpriteInfo(LBX_FIGURE4, 0)) },
-  { UnitSpec::raceSpec(UnitID::SETTLERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 10), LBXSpriteInfo(LBX_FIGURE11, 112)) },
+  { UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 0), LBXSpriteInfo(LBX_FIGURE11, 112)) },
+  { UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 1), LBXSpriteInfo(LBX_FIGURE11, 112)) },
+  { UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 2), LBXSpriteInfo(LBX_FIGURE11, 112)) },
+  { UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 3), LBXSpriteInfo(LBX_FIGURE11, 112)) },
+  { UnitSpec::raceSpec(UnitID::SHAMANS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 4), LBXSpriteInfo(LBX_FIGURE11, 112)) },
+  { UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 8), LBXSpriteInfo(LBX_FIGURE4, 0)) },
+  { UnitSpec::raceSpec(UnitID::SETTLERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 10), LBXSpriteInfo(LBX_FIGURE11, 112)) },
 
   //{ UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 0, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_SPEARMEN) },
   //{ UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 1, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_SWORDSMEN) },
   //{ UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 2, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_BOWMEN) }
   
   
-  { UnitSpec::heroSpec(UnitID::HERO_DWARF), UnitGfxSpec(SpriteInfo(UNITS_HEROES, 0, 0), LBXSpriteInfo(LBX_FIGURE1, 0)) },
+  { UnitSpec::heroSpec(UnitID::HERO_DWARF), UnitGfxSpec(SpriteInfo(TextureID::UNITS_HEROES, 0, 0), LBXSpriteInfo(LBX_FIGURE1, 0)) },
   //{ UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), UnitGfxSpec(SpriteInfo(UNITS_HEROES, 6, 0), UNIT_HERO_ORC_WARRIOR) }
   
   
-  { UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 0, 0), LBXSpriteInfo(LBX_FIGURE11, 32)) },
+  { UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT), UnitGfxSpec(SpriteInfo(TextureID::UNITS_FANTASTIC, 0, 0), LBXSpriteInfo(LBX_FIGURE11, 32)) },
   
-  { UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 3, 1), LBXSpriteInfo(LBX_FIGURE12, 88)) }, // TODO: full figure wrong
+  { UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT), UnitGfxSpec(SpriteInfo(TextureID::UNITS_FANTASTIC, 3, 1), LBXSpriteInfo(LBX_FIGURE12, 88)) }, // TODO: full figure wrong
 
   
-  { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 1, 0), LBXSpriteInfo(LBX_FIGURE11, 40)) },
-  { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(SpriteInfo(UNITS_FANTASTIC, 1, 9), LBXSpriteInfo(LBX_FIGURE11, 112), true) }
+  { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_FANTASTIC, 1, 0), LBXSpriteInfo(LBX_FIGURE11, 40)) },
+  { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(SpriteInfo(TextureID::UNITS_FANTASTIC, 1, 9), LBXSpriteInfo(LBX_FIGURE11, 112), true) }
 
 };
 

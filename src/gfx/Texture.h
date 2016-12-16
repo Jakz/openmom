@@ -19,7 +19,7 @@
 class SDL_Surface;
 struct LBXSpriteInfo;
 
-enum TextureID : u16
+enum class TextureID : u16
 {
   ARCANUS_TILES,
   ARCANUS_SHORE,
