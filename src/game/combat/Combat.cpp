@@ -19,7 +19,7 @@ using namespace std;
 constexpr const s16 Combat::DIRS[12][2];
 constexpr const u16 Combat::DIRS_LENGTH;
 
-Combat::Combat(Army* a1, Army* a2) : players{a1->getOwner(),a2->getOwner()}, selectedUnit(nullptr), current(a1->getOwner())
+Combat::Combat(Army* a1, Army* a2, CombatMechanics* mechanics) : players{a1->getOwner(),a2->getOwner()}, selectedUnit(nullptr), current(a1->getOwner()), mechanics(mechanics)
 {
   for (auto u1 : a1->getUnits())
   {

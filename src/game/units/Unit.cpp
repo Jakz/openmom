@@ -19,16 +19,6 @@ void HitPoints::healAll()
   data.assign(unit.getProperty(Property::FIGURES), unit.getProperty(Property::HIT_POINTS));
 }
 
-void HitPoints::applyDamage(const Damage& damage)
-{
-  switch (damage.type) {
-    case Damage::Type::SINGLE: applyDamage(static_cast<const DamageSingle&>(damage).amount); break;
-    case Damage::Type::EACH_SAME: applySameDamageToEachFigure(static_cast<const DamageEachSame&>(damage).amount); break;
-    case Damage::Type::EACH_DIFFERENT: applyDifferentDamageToEachFigure(static_cast<const DamageEachDifferent&>(damage).amounts); break;
-    case Damage::Type::EACH_FATAL: killFigures(static_cast<const DamageEachFatal&>(damage).amounts); break;
-  }
-}
-
 void HitPoints::applyDamage(s16 dmg)
 {
   while (dmg > 0 && isAlive())
@@ -60,7 +50,7 @@ void HitPoints::applyDifferentDamageToEachFigure(const hit_points& dmgs)
   remove_if(data.begin(), data.end(), [](s16& hp) { return hp <= 0; });
 }
 
-void HitPoints::killFigures(const std::vector<bool>& indices)
+void HitPoints::killFigures(const unit_figure_flag& indices)
 {
   s16 current = 0;
   remove_if(data.begin(), data.end(), [&](s16& hp) { return indices[current++]; });

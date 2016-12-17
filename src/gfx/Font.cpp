@@ -58,6 +58,8 @@ const FontSpriteSheet* FontFaces::Serif::DARK_BROWN = nullptr;
 const FontSpriteSheet* FontFaces::Crypt::SERIF_BROWN = nullptr;
 const FontSpriteSheet* FontFaces::Crypt::TINY_BROWN = nullptr;
 
+const FontSpriteSheet* FontFaces::Huge::GOLD = nullptr;
+
 const BlinkingPalette* FontFaces::Palettes::BLINK_WHITE_BLUE = nullptr;
 
 const Palette* FontFaces::Palettes::SMALL_WHITE_PALE = nullptr;
@@ -131,6 +133,24 @@ void FontFaces::buildFonts()
   
   Crypt::SERIF_BROWN = buildSerifCrypt({0,0,0,RGB(73, 56, 36), RGB(73, 56, 36)}); // TODO: single pixels are of same brown?
   Crypt::TINY_BROWN = buildTinyCrypt({0,0,0,RGB(97,69,36), RGB(97,69,36)}); // TODO: don't kno why main pixels are on second palette index, not first
+  
+  color_list hugeGoldPalette = {
+    0, 0, RGB(0,0,0), 0,
+    RGB(215,182,154),
+    RGB(255,203,101),
+    RGB(255,203,36),
+    RGB(239,166,36),
+    RGB(223,159,28),
+    RGB(166,125,85),
+    RGB(207,138,24),
+    RGB(166,109,28),
+    RGB(121,85,36),
+    RGB(97,69,36),
+    RGB(101,89,0),
+    RGB(73,56,36)
+  };
+  
+  Huge::GOLD = new FontSpriteSheet(FontData::fonts[FONT_HUGE], hugeGoldPalette, 1, 0);
   
   Palettes::BLINK_WHITE_BLUE = new BlinkingPalette({3,4}, 194, 228, 255, 140, 174, 255, 600);
 }

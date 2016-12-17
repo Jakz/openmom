@@ -32,6 +32,7 @@
 #include "ProductionView.h"
 
 #include "Lbx.h"
+#include "format.h"
 
 CityView::CityView(ViewManager* gvm) : View(gvm)
 {
@@ -109,8 +110,10 @@ void CityView::draw()
   
   Gfx::draw(lbx::Repository::spriteFor(LBXSpriteInfo(LBXID::BACKGRND, 6)), 0, 0);
   
+  /* city name*/
+  std::string cityName = fmt::sprintf("%s of %s", i18n::c(i18n::CITY_SIZE_NAMES[city->tileSize()]), city->getName().c_str());
   
-  //Gfx::draw(TextureID::CITY_VIEW_BACKDROP, 0, 0);
+  Fonts::drawString(cityName, FontFaces::Huge::GOLD, 104, 2, ALIGN_CENTER);
   
   int popX = 4, reqFarmers = city->reservedPopulation;
   for (int i = 0; i < (city->population / 1000); ++i)

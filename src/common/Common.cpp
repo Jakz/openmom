@@ -6,6 +6,15 @@
 
 using namespace std;
 
+static char buffer[512];
+void debugprintf(const char* str, ...)
+{
+  va_list args;
+  va_start (args, str);
+  vsnprintf (buffer, 512, str, args);
+  printf("%s\n", buffer);
+}
+
 static const Trait traitInfo[] = {
   {TraitID::ALCHEMY,1,NO_SCHOOL},
   {TraitID::WARLORD,2,NO_SCHOOL},

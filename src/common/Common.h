@@ -5,6 +5,13 @@
 #include <cstdint>
 #include "SDL.h"
 
+#ifdef DEBUG
+extern void debugprintf(const char* str, ...);
+#define LOGD(...) debugprintf(__VA_ARGS__);
+#else
+#define LOGD(...) do { } while (false); 
+#endif
+
 #define WIDTH (320)
 #define HEIGHT (200)
 

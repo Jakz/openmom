@@ -137,14 +137,6 @@ enum class Property : u8
   THROWN_ATTACK //TODO: implement to get it from skills
 };
 
-enum class AttackType : u8
-{
-  NORMAL,
-  MAGIC,
-  MITHRIL,
-  ADAMANTIUM
-};
-
 enum class HeroType : u8
 {
   HERO,

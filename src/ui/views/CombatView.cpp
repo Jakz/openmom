@@ -38,7 +38,7 @@ void CombatView::activate()
   Player* p1 = *g->getPlayers().begin();
   Player* p2 = *std::next(g->getPlayers().begin());
   
-  this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin());
+  this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin(), &g->combatMechanics);
 }
 
 

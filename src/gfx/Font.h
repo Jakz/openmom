@@ -151,31 +151,44 @@ public:
 class FontFaces
 {
 public:
-  class Tiny { public:
+  class Tiny {
+  public:
     const static FontSpriteSheet *WHITE, *WHITE_STROKE, *YELLOW_STROKE, *RED_STROKE, *BROWN;
   };
   
-  class Small { public:
+  class Small {
+  public:
     const static FontSpriteSheet *YELLOW, *BLUE_MAGIC, *WHITE_PALE, *YELLOW_PALE, *RED_PALE, *WHITE, *TEAL, *BROWN, *GREENW, *BLUEW, *REDW, *PURPLEW, *YELLOWW, *GRAY_ITEM_CRAFT, *BLINK_WHITE_GREY;
   };
   
-  class Medium { public:
+  class Medium {
+  public:
     const static FontSpriteSheet *TEAL, *TEAL_STROKE, *BLACK, *TEAL_BRIGHT, *BLUE_MAGIC;
   };
   
-  class MediumBold { public:
+  class MediumBold {
+  public:
     const static FontSpriteSheet *BROWN_START;
   };
   
-  class Serif { public:
+  class Serif {
+  public:
     const static FontSpriteSheet *TEAL, *BROWN, *YELLOW_SHADOW, *GOLD_SHADOW, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
   };
   
-  class Crypt { public:
+  class Crypt {
+  public:
     const static FontSpriteSheet *SERIF_BROWN, *TINY_BROWN;
   };
   
-  class Palettes { public:
+  class Huge {
+  public:
+    const static FontSpriteSheet *GOLD;
+  };
+  
+  
+  class Palettes {
+  public:
     const static BlinkingPalette *BLINK_WHITE_BLUE;
     const static Palette *SMALL_WHITE_PALE, *SMALL_YELLOW_PALE;
     const static Palette *WHITE_PRODUCTION;

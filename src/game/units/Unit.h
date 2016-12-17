@@ -14,7 +14,8 @@ class Army;
 class SkillSet;
 class Damage;
 
-typedef std::vector<s16> hit_points;
+using hit_points = std::vector<s16>;
+using unit_figure_flag = std::vector<bool>;
 
 class HitPoints
 {
@@ -36,11 +37,10 @@ public:
   
   void healAll();
   
-  void applyDamage(const Damage& damage);
   void applyDamage(s16 dmg);
   void applySameDamageToEachFigure(s16 dmg);
   void applyDifferentDamageToEachFigure(const hit_points& dmgs);
-  void killFigures(const std::vector<bool>& indices);
+  void killFigures(const unit_figure_flag& indices);
 };
 
 class Unit

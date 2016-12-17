@@ -23,8 +23,8 @@ class ColorMap
     virtual u32 get(u32 k) const = 0;
 };
 
-typedef std::initializer_list<Color> color_list;
-typedef std::unordered_map<Color, Color> color_map;
+using color_list = std::initializer_list<Color>;
+using color_map = std::unordered_map<Color, Color>;
 
 class BlinkMap : public ColorMap
 {

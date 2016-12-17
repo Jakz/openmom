@@ -352,6 +352,8 @@ static const u16 FONT_CHAR_NUM = 0x5E;
 
 void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
+  LOGD("Loading %u fonts from fonts.lbx", FONT_NUM)
+  
   // position to start of character heights resource
   fseek(in, offsets[0] + 0x16A, SEEK_SET);
   
@@ -395,9 +397,15 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
   //int i = 0;
   for (int i = 0; i < FONT_NUM; ++i)
   {
+
+
     u8 width = 0;
     for (int j = 0; j < FONT_CHAR_NUM; ++j) width = std::max(widths[i][j], width);
     width += 2;
+    
+#if DEBUG
+    u8 maxColor = 0;
+#endif
     
     // allocate storage for all glyphs
     FontData::fonts[i] = new FontData(static_cast<FontType>(i), heights[i]+2, width);  // add 2 pixels by side for precomputed stroke
@@ -436,6 +444,7 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
         else
         {
           color = low+3;
+          maxColor = std::max(low, maxColor);
           strain = high;
         }
         
@@ -490,6 +499,8 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
       
       FontData::fonts[i]->setGlyphWidth(j, widths[i][j]);
     }
+    
+    LOGD("Loading font %u, size: %ux%u, colors: %u", i, width-2, heights[i], maxColor)
   }
 }
 
