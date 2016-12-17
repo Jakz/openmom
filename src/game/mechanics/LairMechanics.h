@@ -25,7 +25,7 @@ struct Range
 class LairMechanics
 {
 private:
-  Game* game;
+  Game* const game;
   
   const Range& budgetForPlace(Place* place, Plane plane);
 

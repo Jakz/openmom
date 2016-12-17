@@ -38,7 +38,7 @@ public:
 class EventMechanics
 {
 private:
-  Game& g;
+  Game* const g;
   s16 turnStreak;
   
   void resetStreak() { turnStreak = 0; }
@@ -63,7 +63,7 @@ private:
   }
 
 public:
-  EventMechanics(Game& game) : g(game), turnStreak(0) { }
+  EventMechanics(Game* game) : g(game), turnStreak(0) { }
   
   Army* tryMercenaryOffer(const Player* player);
   

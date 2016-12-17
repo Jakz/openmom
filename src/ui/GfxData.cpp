@@ -84,8 +84,9 @@ std::unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
 
 };
 
-std::unordered_map<const HeroSpec*, LBXSpriteInfo> GfxData::heroPortraits = {
-  
+std::unordered_map<const UnitSpec*, LBXSpriteInfo> GfxData::heroPortraits = {
+  { UnitSpec::heroSpec(UnitID::HERO_DWARF), LBXSpriteInfo(LBXID::PORTRAIT, 10) },
+  { UnitSpec::heroSpec(UnitID::HERO_DWARF), LBXSpriteInfo(LBXID::PORTRAIT, 6) }
 };
 
 const UnitGfxSpec& GfxData::unitGfxSpec(const UnitSpec* spec)
@@ -94,8 +95,9 @@ const UnitGfxSpec& GfxData::unitGfxSpec(const UnitSpec* spec)
   return gspec;
 }
 
-const LBXSpriteInfo& GfxData::heroGfxSpec(const HeroSpec *spec)
+const LBXSpriteInfo& GfxData::heroGfxSpec(const UnitSpec *spec)
 {
+  assert(heroPortraits.find(spec) != heroPortraits.end());
   return heroPortraits.find(spec)->second;
 }
 

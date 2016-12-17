@@ -16,10 +16,10 @@ class UnitSpell;
 class SpellMechanics
 {
 private:
-  Game& g;
+  Game* const g;
   
 public:
-  SpellMechanics(Game& game) : g(game) { }
+  SpellMechanics(Game* game) : g(game) { }
   
   bool isGlobalAllowed(const Player* player, const Spell* spell);
   bool isTileAllowed(const Player* player, const Spell* spell, const Tile* tile);

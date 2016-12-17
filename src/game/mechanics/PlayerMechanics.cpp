@@ -107,19 +107,19 @@ s32 PlayerMechanics::computeManaFromNodes(const Player *player)
     /* if node is warped then no mana is generated but instead a malus is subtracted */
     if (node->isWarped())
     {
-      mana -= g.values.get<s32>(Value::WARPED_NODE_POWER_MALUS);
+      mana -= g->values.get<s32>(Value::WARPED_NODE_POWER_MALUS);
     }
     else
     {
       s32 nmana = node->getMana();
       
       if (player->hasMastery(node->school))
-        nmana *= g.values.get<float>(Value::SCHOOL_MASTERY_MANA_NODE_MULTIPLIER);
+        nmana *= g->values.get<float>(Value::SCHOOL_MASTERY_MANA_NODE_MULTIPLIER);
       
       if (player->hasTrait(TraitID::NODE_MASTERY))
-        nmana *= g.values.get<float>(Value::NODE_MASTERY_MANA_MULTIPLIER);
+        nmana *= g->values.get<float>(Value::NODE_MASTERY_MANA_MULTIPLIER);
       
-      nmana *= g.values.get<float>(Value::DIFFICULTY_MANA_NODE_MULTIPLIER);
+      nmana *= g->values.get<float>(Value::DIFFICULTY_MANA_NODE_MULTIPLIER);
     }
   }
   
@@ -153,7 +153,7 @@ void PlayerMechanics::castSpell(Player* player, const Spell* spell)
   if (spell->type == SpellType::SUMMON)
   {
     City* where = player->cityWithSummoningCircle();
-    Tile* tile = g.world->get(where->getPosition());
+    Tile* tile = g->world->get(where->getPosition());
     
     // add unit to city army or as new army
     // TODO: move units from full army to make room for summon
@@ -168,7 +168,7 @@ void PlayerMechanics::castSpell(Player* player, const Spell* spell)
   }
   else if (spell->type == SpellType::GLOBAL || spell->type == SpellType::GLOBAL_SKILL)
   {
-    g.castSpell(static_cast<const GlobalSpell*>(spell), player);
+    g->castSpell(static_cast<const GlobalSpell*>(spell), player);
     updateGlobalGains(player);
   }
   else if (spell->target != Target::NONE)
@@ -187,7 +187,7 @@ void PlayerMechanics::updateSpellCast(Player *player)
   
   if (spell)
   {
-    s32 manaAvailable = std::min(player->availableMana, std::min(g.spellMechanics.actualManaCost(player, spell, false), player->manaPool));
+    s32 manaAvailable = std::min(player->availableMana, std::min(g->spellMechanics.actualManaCost(player, spell, false), player->manaPool));
 
     if (player->spellBook.spendManaForCast(manaAvailable))
     {

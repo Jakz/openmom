@@ -213,6 +213,8 @@ public:
           u8 u = array->data[i][kk];
           if (u == 0x00)
             continue;
+          else if (u == '\n')
+            str += "<\\n>";
           else if (u <= 128)
             str += (char)u;
           else

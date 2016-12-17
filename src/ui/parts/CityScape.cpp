@@ -55,7 +55,8 @@ unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
 
 map<const City*, CityLayout*> CityLayout::layouts;
 
-static constexpr s16 river_and_ocean_tiles[2][2] = { {3, 4}, {115, 116} };
+
+static constexpr s16 river_and_ocean_tiles[2][PLANE_COUNT] = { {3, 4}, {115, 116} };
 
 
 void CityLayout::draw(const City *city, LocalPlayer *player)
@@ -91,13 +92,9 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
   }
   
   if (city->hasPlacement(CITY_BY_SEA))
-  {
     Gfx::drawAnimated(LBXSpriteInfo(LBXID::CITYSCAP, river_and_ocean_tiles[city->getPosition().plane][1]), 4, 100);
-  }
   else if (!city->hasPlacement(CITY_BY_SEA) && city->hasPlacement(CITY_BY_RIVER))
-  {
-      Gfx::drawAnimated(LBXSpriteInfo(LBXID::CITYSCAP, river_and_ocean_tiles[city->getPosition().plane][0]), 4, 100, 0, 5);
-  }
+    Gfx::drawAnimated(LBXSpriteInfo(LBXID::CITYSCAP, river_and_ocean_tiles[city->getPosition().plane][0]), 4, 100, 0, 5);
   
   //draw walls
   //TODO: other kinds of walls + city wall spell

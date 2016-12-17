@@ -24,10 +24,10 @@ class Tile;
 class MapMechanics
 {
 private:
-  Game& g;
+  Game* const g;
   
 public:
-  MapMechanics(Game& g) : g(g) { }
+  MapMechanics(Game* g) : g(g) { }
   
   float chanceResourceForTile(TileType type, Plane which) const;
   Resource generateResourceForTile(TileType type, Plane which) const;

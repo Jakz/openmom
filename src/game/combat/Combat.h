@@ -82,6 +82,7 @@ public:
   void resetMoves() { moves = unit->getProperty(Property::MOVEMENT); }
   
   Unit* getUnit() const { return unit; }
+  s16 getProperty(Property property) const { return unit->getProperty(property); }
   
   void setPosition(u16 x, u16 y) { this-> x = x; this->y = y; }
   void setPosition(u16 x, u16 y, Facing facing) { setPosition(x,y); this->facing = facing; }
@@ -253,6 +254,12 @@ enum class AttackPriority : s8
   TOUCH_ATTACK = 4,
   
   NOT_AVAILABLE = -1
+};
+
+struct AttackInfo
+{
+  const CombatUnit* attacker;
+  const CombatUnit* defender;
 };
 
 class Attack

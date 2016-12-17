@@ -84,9 +84,9 @@ ManaNode* MapMechanics::generateManaNode(World* world, const Position position, 
 {
   float mana = Util::randomIntUpTo(position.plane == ARCANUS ? 10 : 20);
   
-  if (g.settings.group(SETTING_MAGIC_POWER).value() == MAGIC_POWER_POWERFUL)
+  if (g->settings.group(SETTING_MAGIC_POWER).value() == MAGIC_POWER_POWERFUL)
     mana += mana*0.5;
-  if (g.settings.group(SETTING_MAGIC_POWER).value() == MAGIC_POWER_WEAK)
+  if (g->settings.group(SETTING_MAGIC_POWER).value() == MAGIC_POWER_WEAK)
     mana /= 2;
   
   /* TODO: handle aura */

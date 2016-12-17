@@ -93,7 +93,7 @@ const Event* EventMechanics::pickRandomEvent() const
     e = events[r];
     
     // two events cannot occur before turn 150
-    if ((e == Events::DIPLOMATIC_MARRIAGE || e == Events::GREAT_METEOR)  && g.getTurnCount() < 150)
+    if ((e == Events::DIPLOMATIC_MARRIAGE || e == Events::GREAT_METEOR)  && g->getTurnCount() < 150)
       continue;
     else
     {

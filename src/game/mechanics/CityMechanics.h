@@ -28,7 +28,7 @@ private:
   static const std::multimap<UnitID, const Building*> unitDependsOn;
   static const std::multimap<RaceID, const Building*> disallowedBuildingsByRace;
   
-  Game* game;
+  Game* const game;
 public:
   CityMechanics(Game* game) : game(game) { }
   

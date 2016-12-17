@@ -95,7 +95,7 @@ void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
 
 void UnitDraw::drawHeroPortrait(const Hero *unit, s16 x, s16 y)
 {
-  // TODO: we need a mapping from HeroSpec* -> u8 in GfxData
+  Gfx::draw(GfxData::heroGfxSpec(&unit->spec), x, y);
 }
 
 

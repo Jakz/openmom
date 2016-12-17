@@ -10,10 +10,10 @@ class Spell;
 class PlayerMechanics
 {
 private:
-  Game &g;
+  Game* const g;
   
 public:
-  PlayerMechanics(Game& game) : g(game) { }
+  PlayerMechanics(Game* game) : g(game) { }
   
   Upkeep computeGain(const Player* player);
   Upkeep computeUpkeep(const Player* player);

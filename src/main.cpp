@@ -48,6 +48,7 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::FIGURE10);
   lbx::Repository::loadLBX(LBXID::FIGURE11);
   lbx::Repository::loadLBX(LBXID::FIGURE12);
+  lbx::Repository::loadLBX(LBXID::PORTRAIT);
   lbx::LBX::load();
   FontFaces::buildFonts();
   //return 0;

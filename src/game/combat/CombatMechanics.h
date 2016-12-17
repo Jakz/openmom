@@ -14,13 +14,19 @@
 enum class CombatModifier : u8;
 
 class Game;
+struct AttackInfo;
 
 class CombatMechanics
 {
 private:
-  Game &game;
+  Game* const game;
 public:
-  CombatMechanics(Game &game) : game(game) { }
+  CombatMechanics(Game* game) : game(game) { }
+  
+  virtual u32 totalMeleeHitsThatLandOnTarget(const AttackInfo& info);
+  
+  virtual u32 hitsThatReachTarget(const AttackInfo& info, u32 total);
+  virtual u32 hitsDefendedByTarget(const AttackInfo& info, u32 total);
 };
 
 #endif
