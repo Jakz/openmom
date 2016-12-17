@@ -62,7 +62,7 @@ std::unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
   { UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 2), LBXSpriteInfo(LBXID::FIGURE11, 112)) },
   { UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 3), LBXSpriteInfo(LBXID::FIGURE11, 112)) },
   { UnitSpec::raceSpec(UnitID::SHAMANS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 4), LBXSpriteInfo(LBXID::FIGURE11, 112)) },
-  { UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 8), LBXSpriteInfo(LBXID::FIGURE4, 0)) },
+  { UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 8), LBXSpriteInfo(LBXID::FIGURES4, 0)) },
   { UnitSpec::raceSpec(UnitID::SETTLERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 10), LBXSpriteInfo(LBXID::FIGURE11, 112)) },
 
   //{ UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 0, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_SPEARMEN) },
@@ -70,7 +70,7 @@ std::unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
   //{ UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 2, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_BOWMEN) }
   
   
-  { UnitSpec::heroSpec(UnitID::HERO_DWARF), UnitGfxSpec(SpriteInfo(TextureID::UNITS_HEROES, 0, 0), LBXSpriteInfo(LBXID::FIGURE1, 0)) },
+  { UnitSpec::heroSpec(UnitID::HERO_DWARF), UnitGfxSpec(SpriteInfo(TextureID::UNITS_HEROES, 0, 0), LBXSpriteInfo(LBXID::FIGURES1, 0)) },
   //{ UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), UnitGfxSpec(SpriteInfo(UNITS_HEROES, 6, 0), UNIT_HERO_ORC_WARRIOR) }
   
   

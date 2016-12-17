@@ -33,7 +33,6 @@
 
 #include "Lbx.h"
 
-
 CityView::CityView(ViewManager* gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);

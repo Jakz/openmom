@@ -583,12 +583,6 @@ void Gfx::draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r, u16 c)
   blit(sheet, activeBuffer, 0, 0, x, y, sheet->sw(r,c), sheet->sh(r,c), r, c);
 }
 
-void Gfx::draw(const LBXSpriteInfo& info, s16 x, s16 y, u16 r, u16 c)
-{
-  draw(lbx::Repository::spriteFor(info), x, y, r, c);
-}
-
-
 void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
 {
   const Texture* tex = Texture::get(texture);
@@ -599,17 +593,28 @@ void Gfx::drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset)
     draw(texture, r, (((offset+fticks)/tex->animFactor)%tex->animatedSprites[r]), x, y);
 }
 
+void Gfx::drawAnimated(LBXSpriteInfo info, u16 x, u16 y, s16 offset, s16 animFactor)
+{
+  const lbx::LBXSpriteData* sprite = lbx::Repository::spriteFor(info);
+  draw(sprite, x, y, ((offset+fticks)/animFactor) % sprite->count, 0);
+}
+
 void Gfx::draw(const SpriteInfo& info, u16 x, u16 y)
 {
   draw(info.texture, info.x, info.y, x, y);
 }
 
-void Gfx::drawGlow(const SpriteInfo& info, s16 x, s16 y, School school) { drawGlow(Texture::get(info.texture), x, y, info.x, info.y, school); }
+void Gfx::draw(const LBXSpriteInfo& info, s16 x, s16 y, u16 r, u16 c)
+{
+  draw(lbx::Repository::spriteFor(info), x, y, r, c);
+}
 
 void Gfx::drawGlow(const LBXSpriteInfo& info, s16 x, s16 y, s16 r, s16 c, School color)
 {
   drawGlow(lbx::Repository::spriteFor(info), x, y, r, c, color);
 }
+
+void Gfx::drawGlow(const SpriteInfo& info, s16 x, s16 y, School school) { drawGlow(Texture::get(info.texture), x, y, info.x, info.y, school); }
 
 void Gfx::drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School color)
 {

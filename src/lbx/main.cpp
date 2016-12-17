@@ -205,7 +205,20 @@ public:
       double maxw = 0.0;
       for (int i = 0; i < array->count; ++i)
       {
-        string str = fmt::sprintf("%d: %s", i, (const char*)array->data[i]);
+        string str = to_string(i) + ": ";
+        str.reserve(array->size);
+        
+        for (size_t kk = 0; kk < array->size; ++kk)
+        {
+          u8 u = array->data[i][kk];
+          if (u == 0x00)
+            continue;
+          else if (u <= 128)
+            str += (char)u;
+          else
+            str += fmt::sprintf("<%02X>", u);
+        }
+        
         maxw = std::max(maxw, fl_width(str.c_str()));
         
         fl_draw(str.c_str(), x, y);
@@ -429,7 +442,7 @@ public:
         fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, bgcol);
         
         LBXFileType type = currentLBX->info.header.type;
-        bool isLoaded = currentLBX->sprites[ROW] != nullptr;
+        bool isLoaded = currentLBX->isLoaded();
         
         if (!isLoaded)
           fgcol = fl_rgb_color(180, 180, 180);

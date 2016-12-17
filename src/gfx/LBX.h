@@ -159,6 +159,8 @@ namespace lbx
       LBXArrayData** arrays;
     };
     
+    bool isLoaded() const { return (info.header.type == LBXFileType::GRAPHICS && sprites) || (info.header.type == LBXFileType::DATA_ARRAY && arrays); }
+    
     LBXFile() : sprites(nullptr) { }
     LBXFile(LBXID ident, const std::string& fileName) : ident(ident), fileName(fileName), sprites(nullptr) { }
     

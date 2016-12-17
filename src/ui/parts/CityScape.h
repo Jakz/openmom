@@ -98,7 +98,7 @@ public:
   {
     CityLayout* layout = new CityLayout(city);
     layouts.emplace(city, layout);
-    layout->deploy();
+    //layout->deploy();
   }
   
   static void updateLayout(const City* city)

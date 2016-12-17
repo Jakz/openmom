@@ -118,7 +118,7 @@ public:
   static void draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r = 0, u16 c = 0);
   static void draw(const LBXSpriteInfo& info, s16 x, s16 y, u16 r = 0, u16 c = 0);
 
-
+  static void drawAnimated(LBXSpriteInfo info, u16 x, u16 y, s16 offset = 0, s16 animFactor = 1);
   static void drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset);
 
   static u16 upTo(const std::vector<u16>& ws, u16 i) { u16 r = 0; for (u16 j = 0; j < i; ++j) r += ws[j]; return r; }

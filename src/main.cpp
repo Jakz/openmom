@@ -43,7 +43,8 @@ int main(int argc, char * arg[])
   lbx::Repository::init();
   lbx::Repository::loadLBX(LBXID::ARMYLIST);
   lbx::Repository::loadLBX(LBXID::BACKGRND);
-  lbx::Repository::loadLBX(LBXID::FIGURE4);
+  lbx::Repository::loadLBX(LBXID::CITYSCAP);
+  lbx::Repository::loadLBX(LBXID::FIGURES4);
   lbx::Repository::loadLBX(LBXID::FIGURE10);
   lbx::Repository::loadLBX(LBXID::FIGURE11);
   lbx::Repository::loadLBX(LBXID::FIGURE12);

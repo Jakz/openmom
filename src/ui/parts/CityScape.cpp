@@ -10,6 +10,7 @@
 
 using namespace std;
 
+
 unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
   {Building::MAGE_FORTRESS,      BuildingSpecs(SpriteInfo(TextureID::CITY_FORTRESS,    0, -1),  0, 2, 3)},
   {Building::BUILDERS_HALL,      BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1, 0,  0), 27, 2, 3)},
@@ -54,6 +55,8 @@ unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
 
 map<const City*, CityLayout*> CityLayout::layouts;
 
+static constexpr s16 river_and_ocean_tiles[2][2] = { {3, 4}, {115, 116} };
+
 
 void CityLayout::draw(const City *city, LocalPlayer *player)
 {
@@ -88,9 +91,13 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
   }
   
   if (city->hasPlacement(CITY_BY_SEA))
-    Gfx::drawAnimated(TextureID::CITY_WATER, 0+2*city->getPosition().plane, 3, 100, 0);
+  {
+    Gfx::drawAnimated(LBXSpriteInfo(LBXID::CITYSCAP, river_and_ocean_tiles[city->getPosition().plane][1]), 4, 100);
+  }
   else if (!city->hasPlacement(CITY_BY_SEA) && city->hasPlacement(CITY_BY_RIVER))
-    Gfx::drawAnimated(TextureID::CITY_WATER, 1+2*city->getPosition().plane, 3, 100, 0);
+  {
+      Gfx::drawAnimated(LBXSpriteInfo(LBXID::CITYSCAP, river_and_ocean_tiles[city->getPosition().plane][0]), 4, 100, 0, 5);
+  }
   
   //draw walls
   //TODO: other kinds of walls + city wall spell
