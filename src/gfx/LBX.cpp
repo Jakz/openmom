@@ -253,7 +253,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
   fseek(in, offset, SEEK_SET);
   LBXGfxHeader gfxHeader;
   fread(&gfxHeader, sizeof(LBXGfxHeader), 1, in);
-  LOGD("[lbx]  WxH: %dx%d, COUNT: %d, PALETTE: %d", gfxHeader.width, gfxHeader.height, gfxHeader.count, gfxHeader.paletteOffset);
+  LOGD("[lbx]   WxH: %dx%d, frames: %d, palette: %c", gfxHeader.width, gfxHeader.height, gfxHeader.count, gfxHeader.paletteOffset ? 'y' : 'n');
   
   LBXOffset *frameOffsets = new LBXOffset[gfxHeader.count+1];
   fread(frameOffsets, sizeof(LBXOffset), gfxHeader.count+1, in);
@@ -272,7 +272,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
     fseek(in, offset+gfxHeader.paletteOffset, SEEK_SET);
     
     fread(&paletteHeader, sizeof(LBXPaletteHeader), 1, in);
-    LOGD("[lbx]  PALETTE AT OFFSET %d, COUNT %d STARTING AT %d", paletteHeader.offset, paletteHeader.count, paletteHeader.firstIndex);
+    LOGD("[lbx]     palette at offset %d, count %d starting at %d", paletteHeader.offset, paletteHeader.count, paletteHeader.firstIndex);
     
     fseek(in, offset+paletteHeader.offset, SEEK_SET);
     for (int i = 0; i < paletteHeader.count; ++i)
@@ -300,7 +300,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
     fseek(in, offset+frameOffsets[i], SEEK_SET);
     u8* data = new u8[dataSize];
     fread(data, sizeof(u8), dataSize, in);
-    LOGD("[lbx]    FRAME %d AT OFFSET %d (SIZE: %d)", i, frameOffsets[i], dataSize);
+    LOGD("[lbx]     frame %d at offset %d (size %d bytes)", i, frameOffsets[i], dataSize);
     
     // copy previous frame into current
     if (i > 0)
@@ -641,7 +641,7 @@ const LBXSpriteData* Repository::loadLBXSpriteData(const LBXSpriteInfo &info)
   string name = LBX::getLBXPath(lbx.fileName);
   FILE *in = fopen(name.c_str(), "rb");
   
-  LOGD("Loading frame %u from %s", info.index, file(info.lbx).fileName.c_str());
+  LOGD("[lbx] loading gfx entry %u from %s", info.index, file(info.lbx).fileName.c_str());
   LBXSpriteData* spriteData = LBX::scanGfx(lbx.info.header, lbx.info.offsets[info.index], in);
   
   lbx.sprites[info.index] = spriteData;

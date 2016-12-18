@@ -101,4 +101,23 @@ const LBXSpriteInfo& GfxData::heroGfxSpec(const UnitSpec *spec)
   return heroPortraits.find(spec)->second;
 }
 
+LBXSpriteInfo GfxData::itemGfxSpec(Item::TypeID type, int index)
+{
+  using ID = Item::TypeID;
+  switch (type)
+  {
+    case ID::SWORD: return LSI(ITEMS, 0).relative(index);
+    case ID::MACE: return LSI(ITEMS, 9).relative(index);
+    case ID::AXE: return LSI(ITEMS, 20).relative(index);
+    case ID::BOW: return LSI(ITEMS, 29).relative(index);
+    case ID::STAFF: return LSI(ITEMS, 38).relative(index);
+    case ID::CHAIN: return LSI(ITEMS, 47).relative(index);
+    case ID::PLATE: return LSI(ITEMS, 55).relative(index);
+    case ID::SHIELD: return LSI(ITEMS, 62).relative(index);
+    case ID::MISC: return LSI(ITEMS, 72).relative(index);
+    case ID::WAND: return LSI(ITEMS, 107).relative(index);
+  }
+  assert(false);
+}
+
 s16 GfxData::specialSpellGfxEffect(const Spell *spell) { return specialSpellGfxEffects[spell]; }

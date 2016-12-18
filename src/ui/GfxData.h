@@ -11,6 +11,8 @@
 
 #include "Common.h"
 
+#include "Items.h"
+
 #include <unordered_map>
 
 enum class Ranged : u8;
@@ -72,6 +74,8 @@ public:
   static const TileGfxSpec& tileGfxSpec(TileType type) { return specs[type]; }
   static s8 rangedGfxIndex(Ranged ranged) { return RANGED_INDEX[static_cast<u8>(ranged)]; }
   static s8 propertyGfxIndex(Property property) { return PROPERTY_INDEX[static_cast<u8>(property)]; }
+  
+  static LBXSpriteInfo itemGfxSpec(Item::TypeID type, int index);
   
   static const UnitGfxSpec& unitGfxSpec(const UnitSpec* spec);
   static const LBXSpriteInfo& heroGfxSpec(const UnitSpec* spec);

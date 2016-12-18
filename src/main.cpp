@@ -48,6 +48,8 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::FIGURE10);
   lbx::Repository::loadLBX(LBXID::FIGURE11);
   lbx::Repository::loadLBX(LBXID::FIGURE12);
+  lbx::Repository::loadLBX(LBXID::ITEMS);
+  lbx::Repository::loadLBX(LBXID::MAGIC);
   lbx::Repository::loadLBX(LBXID::PORTRAIT);
   lbx::LBX::load();
   FontFaces::buildFonts();
@@ -72,6 +74,8 @@ int main(int argc, char * arg[])
   //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
 
   SDL::gvm->switchView(VIEW_MAIN);
+
+  //SDL::gvm->switchView(VIEW_ITEM_CRAFT);
   //SDL::gvm->switchView(VIEW_COMBAT);
   //SDL::gvm->switchView(VIEW_LBX);
   

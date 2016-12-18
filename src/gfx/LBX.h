@@ -186,7 +186,7 @@ namespace lbx
     static const LBXSpriteData* loadLBXSpriteData(const LBXSpriteInfo& info);
     static const LBXArrayData* loadLBXArrayData(const LBXFile& lbx, size_t index);
     
-    static const LBXSpriteData* spriteFor(const LBXSpriteInfo& info) {
+    static const LBXSpriteData* spriteFor(const LBXSpriteInfo& info) {   
       const LBXSpriteData* sprite = file(info.lbx).sprites[info.index];
       
       if (!sprite)

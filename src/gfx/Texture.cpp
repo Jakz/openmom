@@ -128,7 +128,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::OUTPOST_VIEW_BACKDROP,"static/backdrop-outpost.png",1,1,262,103),
   Texture(TextureID::OUTPOST_HOUSES,"city/outpost-houses.png",2,3,12,13),
   
-  Texture(TextureID::MAGIC_BACKDROP,"magic/view/backdrop.png",1,1,320,200),
   Texture(TextureID::MAGIC_BUTTONS,"magic/view/buttons.png",2,2, {58,26},15),
   Texture(TextureID::MAGIC_GEMS,"magic/view/gems.png",1,7,42,45),
   Texture(TextureID::MAGIC_PORTRAITS,"magic/view/portraits.png",1,14,33,35),
@@ -182,7 +181,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::ITEM_CRAFT_BACKDROP,"static/backdrop-itemcraft.png",320,200),
   Texture(TextureID::ITEM_CRAFT_BUTTONS,"magic/view/item-craft-buttons.png",4,10,31,13),
   Texture(TextureID::ITEM_CRAFT_ARROWS,"magic/view/item-craft-arrows.png",2,2,9,7),
-  Texture(TextureID::ITEMS,"units/items.png",8,16,17,17),
   
   Texture(TextureID::UNIT_BARBARIANS_SPEARMEN,"units/figures/barbarians/spearmen.png",4,8,28,30),
   Texture(TextureID::UNIT_BARBARIANS_SWORDSMEN,"units/figures/barbarians/swordsmen.png",4,8,28,30),

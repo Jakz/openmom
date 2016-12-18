@@ -12,16 +12,16 @@ using namespace ItemEnchant;
 
 
 static Item::Type types[] = {
-  Item::Type(Item::TypeID::SWORD, Item::Class::MELEE, 0, { {I18::ITEM_SWORD, 9} }),
-  Item::Type(Item::TypeID::MACE, Item::Class::MELEE, 9, { {I18::ITEM_MACE, 11} }),
-  Item::Type(Item::TypeID::AXE, Item::Class::MELEE, 20, { {I18::ITEM_AXE, 9} }),
-  Item::Type(Item::TypeID::BOW, Item::Class::RANGED, 29, { {I18::ITEM_BOW, 9} }),
-  Item::Type(Item::TypeID::STAFF, Item::Class::STAFF_WAND, 38, { {I18::ITEM_STAFF, 9} }),
-  Item::Type(Item::TypeID::WAND, Item::Class::STAFF_WAND, 107, { {I18::ITEM_WAND, 9} }),
-  Item::Type(Item::TypeID::MISC, Item::Class::MISC, 72, { {I18::ITEM_AMULET, 6}, {I18::ITEM_RING, 6}, {I18::ITEM_CLOAK, 6}, {I18::ITEM_GAUNTLET, 4}, {I18::ITEM_HELM, 7}, {I18::ITEM_ORB, 6} }),
-  Item::Type(Item::TypeID::SHIELD, Item::Class::ARMOR, 62, { {I18::ITEM_SHIELD, 10} }),
-  Item::Type(Item::TypeID::CHAIN, Item::Class::ARMOR, 47, { {I18::ITEM_CHAIN_MAIL, 8} }),
-  Item::Type(Item::TypeID::PLATE, Item::Class::ARMOR, 55, { {I18::ITEM_PLATE_MAIL, 7} }),
+  Item::Type(Item::TypeID::SWORD, Item::Class::MELEE, { {I18::ITEM_SWORD, 9} }),
+  Item::Type(Item::TypeID::MACE, Item::Class::MELEE, { {I18::ITEM_MACE, 11} }),
+  Item::Type(Item::TypeID::AXE, Item::Class::MELEE, { {I18::ITEM_AXE, 9} }),
+  Item::Type(Item::TypeID::BOW, Item::Class::RANGED, { {I18::ITEM_BOW, 9} }),
+  Item::Type(Item::TypeID::STAFF, Item::Class::STAFF_WAND, { {I18::ITEM_STAFF, 9} }),
+  Item::Type(Item::TypeID::WAND, Item::Class::STAFF_WAND, { {I18::ITEM_WAND, 9} }),
+  Item::Type(Item::TypeID::MISC, Item::Class::MISC, { {I18::ITEM_AMULET, 6}, {I18::ITEM_RING, 6}, {I18::ITEM_CLOAK, 6}, {I18::ITEM_GAUNTLET, 4}, {I18::ITEM_HELM, 7}, {I18::ITEM_ORB, 6} }),
+  Item::Type(Item::TypeID::SHIELD, Item::Class::ARMOR, { {I18::ITEM_SHIELD, 10} }),
+  Item::Type(Item::TypeID::CHAIN, Item::Class::ARMOR, { {I18::ITEM_CHAIN_MAIL, 8} }),
+  Item::Type(Item::TypeID::PLATE, Item::Class::ARMOR, { {I18::ITEM_PLATE_MAIL, 7} }),
 };
 
 const Item::Type* Item::typeForItem(Item::TypeID type)

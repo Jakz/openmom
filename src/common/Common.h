@@ -171,6 +171,8 @@ enum class LBXID : u16
   COUNT
 };
 
+#define LSI(x, y) LBXSpriteInfo(LBXID::x, y)
+
 constexpr size_t LBX_COUNT = static_cast<size_t>(LBXID::COUNT);
 
 using KeyboardKey = SDL_Scancode;

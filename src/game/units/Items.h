@@ -66,9 +66,8 @@ public:
     const TypeID type;
     const Class iclass;
     const std::vector<TypeGroup> groups;
-    const u16 startOffset;
     
-    Type(TypeID type, Class iclass, u16 startOffset, std::initializer_list<TypeGroup> groups) : type(type), iclass(iclass), groups(groups), startOffset(startOffset) { }
+    Type(TypeID type, Class iclass, std::initializer_list<TypeGroup> groups) : type(type), iclass(iclass), groups(groups) { }
     
     u16 count() const { return std::accumulate(groups.begin(), groups.end(), 0, [](s16 a, const TypeGroup& g) { return a + g.size; }); }
     

@@ -12,6 +12,7 @@
 #include "Buttons.h"
 #include "Texture.h"
 #include "Gfx.h"
+#include "GfxData.h"
 #include "ColorMap.h"
 
 #include "Util.h"
@@ -61,8 +62,11 @@ void ItemCraftView::updateItemName()
 void ItemCraftView::draw()
 {
   Gfx::draw(TextureID::ITEM_CRAFT_BACKDROP, 0, 0);
-  Gfx::draw(TextureID::ITEMS, Item::typeForItem(currentType)->startOffset + currentItemGfx, 7, 6);
-  Gfx::drawGlow(TextureID::ITEMS, 7, 6, Item::typeForItem(currentType)->startOffset + currentItemGfx, school);
+  
+  const auto itemGfx = GfxData::itemGfxSpec(currentType, currentItemGfx);
+  
+  Gfx::draw(itemGfx, 7, 6);
+  Gfx::drawGlow(itemGfx, 7, 6, school);
   
   Fonts::drawString(itemName, FontFaces::Small::GRAY_ITEM_CRAFT, 29, 12, ALIGN_LEFT);
 

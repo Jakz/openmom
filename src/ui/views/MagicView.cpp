@@ -42,7 +42,7 @@ void MagicView::activate()
 
 void MagicView::draw()
 {
-  Gfx::draw(TextureID::MAGIC_BACKDROP, 0, 0);
+  Gfx::draw(LSI(MAGIC, 0), 0, 0);
   
   //draw gems of enemy wizards
   s16 c = 0;
