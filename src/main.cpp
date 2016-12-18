@@ -44,6 +44,7 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::ARMYLIST);
   lbx::Repository::loadLBX(LBXID::BACKGRND);
   lbx::Repository::loadLBX(LBXID::CITYSCAP);
+  lbx::Repository::loadLBX(LBXID::FIGURES3);
   lbx::Repository::loadLBX(LBXID::FIGURES4);
   lbx::Repository::loadLBX(LBXID::FIGURE10);
   lbx::Repository::loadLBX(LBXID::FIGURE11);
@@ -73,10 +74,10 @@ int main(int argc, char * arg[])
   
   //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
 
-  SDL::gvm->switchView(VIEW_MAIN);
+  //SDL::gvm->switchView(VIEW_MAIN);
 
   //SDL::gvm->switchView(VIEW_ITEM_CRAFT);
-  //SDL::gvm->switchView(VIEW_COMBAT);
+  SDL::gvm->switchView(VIEW_COMBAT);
   //SDL::gvm->switchView(VIEW_LBX);
   
   SDL::loop();

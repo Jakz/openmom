@@ -129,6 +129,8 @@ class RaceUnit : public Unit
 {
 public:
   RaceUnit(const RaceUnitSpec& spec) : Unit(spec, &UnitLevel::RECRUIT) { } //TODO: starting level may change (according to buildings e wizard traits
+  
+  const std::string name() const override;
 };
 
 class FantasticUnit : public Unit

@@ -15,6 +15,7 @@
 #include <string>
 
 enum class UnitID : u16;
+enum class RaceID : u8;
 enum class SkillBase : u16;
 
 enum class I18 : u16
@@ -33,36 +34,6 @@ enum class I18 : u16
   SURVEYOR_CITY_FORBID_WATER,
   SURVEYOR_MAX_POPULATION,
   SURVEYOR_PRODUCTION_BONUS,
-  
-  RACE_NAME_BARBARIANS,
-  RACE_NAME_BEASTMEN,
-  RACE_NAME_DARK_ELVES,
-  RACE_NAME_DRACONIANS,
-  RACE_NAME_DWARVES,
-  RACE_NAME_GNOLLS,
-  RACE_NAME_HALFLINGS,
-  RACE_NAME_HIGH_ELVES,
-  RACE_NAME_HIGH_MEN,
-  RACE_NAME_KLACKONS,
-  RACE_NAME_LIZARDMEN,
-  RACE_NAME_NOMADS,
-  RACE_NAME_ORCS,
-  RACE_NAME_TROLLS,
-  
-  UNIT_NAME_BARBARIANS,
-  UNIT_NAME_BEASTMEN,
-  UNIT_NAME_DARK_ELVES,
-  UNIT_NAME_DRACONIANS,
-  UNIT_NAME_DWARVES,
-  UNIT_NAME_GNOLLS,
-  UNIT_NAME_HALFLINGS,
-  UNIT_NAME_HIGH_ELVES,
-  UNIT_NAME_HIGH_MEN,
-  UNIT_NAME_KLACKONS,
-  UNIT_NAME_LIZARDMEN,
-  UNIT_NAME_NOMADS,
-  UNIT_NAME_ORCS,
-  UNIT_NAME_TROLLS,
   
   WIZARD_NAME_MERLIN,
   WIZARD_NAME_RAVEN,
@@ -250,47 +221,40 @@ enum class I18 : u16
   PLACEHOLDER
 };
 
-namespace std
+struct enum_hash
 {
-  template<>
-  struct hash<I18>
+  template <typename T>
+  inline
+  typename std::enable_if<std::is_enum<T>::value, size_t>::type
+  operator ()(T const value) const
   {
-    std::size_t operator()(const I18& k) const { return static_cast<u16>(k); }
-  };
-  
-  template<>
-  struct hash<UnitID>
-  {
-    std::size_t operator()(const UnitID& k) const { return static_cast<u16>(k); }
-  };
-  
-  template<>
-  struct hash<SkillBase>
-  {
-    std::size_t operator()(const SkillBase& k) const { return static_cast<u16>(k); }
-  };
-  
-  template<>
-  struct hash<TileType>
-  {
-    std::size_t operator()(const TileType& k) const { return static_cast<u16>(k); }
-  };
-}
+    return static_cast<size_t>(static_cast<size_t>(value));
+  }
+};
 
 namespace lbx { class LBX; }
 
 class i18n
 {
+public:
+  struct race_names
+  {
+    std::string name;
+    std::string unitName;
+  };
+
   private:
-    static std::unordered_map<I18, std::string> data;
-    static std::unordered_map<UnitID, std::string> units;
-    static std::unordered_map<SkillBase, std::string> skills;
-    static std::unordered_map<TileType, std::vector<std::string> > surveyorDescs;
+    static std::unordered_map<I18, std::string, enum_hash> data;
+    static std::unordered_map<UnitID, std::string, enum_hash> units;
+    static std::unordered_map<RaceID, race_names, enum_hash> races;
+    static std::unordered_map<SkillBase, std::string, enum_hash> skills;
+    static std::unordered_map<TileType, std::vector<std::string>, enum_hash> surveyorDescs;
   
   public:
     static const char* c(I18 ident) { return data[ident].c_str(); }
     static const std::string& s(I18 ident) { return data[ident]; }
     static const std::string& s(UnitID unit) { return units[unit]; }
+    static const race_names& s(RaceID race) { return races[race]; }
     static const std::string& s(SkillBase skill) { return skills[skill]; }
   
     static const std::vector<std::string> surveyorDesc(TileType type) { return surveyorDescs[type]; }

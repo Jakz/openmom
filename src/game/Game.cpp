@@ -25,10 +25,10 @@ Game::Game() : world(new World(this, 60,40)), values(this), mapMechanics(this), 
 
 void Game::init()
 {
-  for (auto &c : cities)
+  for (auto* c : cities)
     cityMechanics.updateValues(c);
   
-  for (auto *p : players)
+  for (auto* p : players)
   {
     playerMechanics.updateGlobalGains(p);
     playerMechanics.setInitialManaRatios(p);

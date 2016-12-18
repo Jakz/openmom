@@ -19,6 +19,12 @@ using namespace std;
 constexpr const s16 Combat::DIRS[12][2];
 constexpr const u16 Combat::DIRS_LENGTH;
 
+CombatTile CombatTile::neighbour(Facing facing) const
+{
+  const s16* offsets = Combat::dirs(facing, this->y % 2 == 0);
+  return CombatTile(this->x + offsets[0], this->y + offsets[1]);
+}
+
 Combat::Combat(Army* a1, Army* a2, CombatMechanics* mechanics) : players{a1->getOwner(),a2->getOwner()}, selectedUnit(nullptr), current(a1->getOwner()), mechanics(mechanics)
 {
   for (auto u1 : a1->getUnits())
@@ -57,14 +63,14 @@ void Combat::endTurn()
 
 CombatUnit* Combat::unitAtTile(u16 x, u16 y)
 {
-  auto it = std::find_if(allUnits.begin(), allUnits.end(), [&](const CombatUnit* unit) { return unit->x == x && unit->y == y; });
+  auto it = std::find_if(allUnits.begin(), allUnits.end(), [&](const CombatUnit* unit) { return unit->x() == x && unit->y() == y; });
   return it != allUnits.end() ? *it : nullptr;
 }
 
 void Combat::attack(CombatUnit *u1, CombatUnit *u2)
 {
-  u1->facing = relativeFacing(u1, u2);
-  u2->facing = relativeFacing(u2, u1);
+  u1->setFacing(relativeFacing(u1, u2));
+  u2->setFacing(relativeFacing(u2, u1));
   
   //TODO: probably both animations should be pushed on both players
   u1->getOwner()->push(new anims::CombatAttack(u1));
@@ -74,7 +80,7 @@ void Combat::attack(CombatUnit *u1, CombatUnit *u2)
 Facing Combat::relativeFacing(CombatUnit *u1, CombatUnit *u2)
 {
   for (int i = 0; i < 8; ++i)
-    if (u1->x+dirs(i,u1->y%2 == 0)[0] == u2->x && u1->y+dirs(i,u1->y%2 == 0)[1] == u2->y)
+    if (u1->x()+dirs(i,u1->y()%2 == 0)[0] == u2->x() && u1->y()+dirs(i,u1->y()%2 == 0)[1] == u2->y())
       return static_cast<Facing>(i);
   
   return Facing::NORTH;
@@ -88,18 +94,12 @@ void Combat::sortUnits()
 void Combat::deployUnits()
 {
   // TODO
-  int x = 2, y = 3;
+  CombatTile tile = CombatTile(2, 3);
   
   for (auto* unit : allUnits)
   {
-    unit->x = x;
-    unit->y = y;
-    ++y;
-    
-    if (unit == *allUnits.begin())
-    {
-      unit->x = 0; unit->y = 0;
-    }
+    unit->setPosition(tile);
+    tile = tile.neighbour(Facing::SOUTH_EAST);
   }
   
   
@@ -169,7 +169,7 @@ void Combat::moveUnit(CombatUnit *unit, u16 x, u16 y)
   if (unit && unit != selectedUnit)
     select(unit);
   
-  CombatPosition pos = CombatPosition(unit);
+  CombatPosition pos = CombatPosition(unit->x(), unit->y());
   
   //           auto lambda = [&](const pair<CombatPosition,CombatPosition> &p) { return p.first.x == nx && p.first.y == ny; };
 

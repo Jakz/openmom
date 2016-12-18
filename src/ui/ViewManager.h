@@ -29,41 +29,41 @@ class UnitDetailView;
 
 class ViewManager : public EventListener
 {
-  private:
-    View* views[VIEW_COUNT];
-    View* current;
-    std::list<View*> overviews;
+private:
+  View* views[VIEW_COUNT];
+  View* current;
+  std::list<View*> overviews;
   
-    std::list<anims::Animation*> animations;
-    bool animating;
+  std::list<anims::Animation*> animations;
+  bool animating;
   
-  public:
-    ViewManager();
+public:
+  ViewManager();
   
-    void push(anims::Animation* animation)
-    {
-      animating = true;
-      animations.push_back(animation);
-    }
+  void push(anims::Animation* animation)
+  {
+    animating = true;
+    animations.push_back(animation);
+  }
   
-    void switchView(ViewID type);
-    void switchOverview(ViewID type);
-    void closeOverview();
+  void switchView(ViewID type);
+  void switchOverview(ViewID type);
+  void closeOverview();
   
-    void draw();
+  void draw();
   
-    void mousePressed(u16 x, u16 y, MouseButton b) override;
-    void mouseClicked(u16 x, u16 y, MouseButton b) override;
-    void mouseReleased(u16 x, u16 y, MouseButton b) override;
-    void mouseMoved(u16 x, u16 y, MouseButton b) override;
-    void mouseDragged(u16 x, u16 y, MouseButton b) override;
-    
-    void keyPressed(KeyboardKey key, KeyboardMod mod) override;
-    void keyReleased(KeyboardKey key, KeyboardMod mod) override;
+  void mousePressed(u16 x, u16 y, MouseButton b) override;
+  void mouseClicked(u16 x, u16 y, MouseButton b) override;
+  void mouseReleased(u16 x, u16 y, MouseButton b) override;
+  void mouseMoved(u16 x, u16 y, MouseButton b) override;
+  void mouseDragged(u16 x, u16 y, MouseButton b) override;
   
-    inline bool isThereOverview() { return !overviews.empty(); }
-    inline View* firstOverview() { return isThereOverview() ? overviews.front() : nullptr; }
-    inline View* respondingView() { return isThereOverview() ? overviews.front() : current; }
+  void keyPressed(KeyboardKey key, KeyboardMod mod) override;
+  void keyReleased(KeyboardKey key, KeyboardMod mod) override;
+  
+  inline bool isThereOverview() { return !overviews.empty(); }
+  inline View* firstOverview() { return isThereOverview() ? overviews.front() : nullptr; }
+  inline View* respondingView() { return isThereOverview() ? overviews.front() : current; }
   
   AlchemyView* alchemyView();
   ArmiesItemsView* armiesItemsView();

@@ -52,6 +52,7 @@ void UnitDetailView::draw()
   Gfx::draw(TextureID::UNIT_DETAIL_BACKDROP, 31, 6);
   Gfx::draw(TextureID::UNIT_DETAIL_BACKDROP_BUTTONS, 244, 139);
   
+  //TODO: localize
   Fonts::drawString("Moves", FontFaces::Small::TEAL, 81, 32, ALIGN_LEFT);
   Fonts::drawString("Upkeep", FontFaces::Small::TEAL, 81, 39, ALIGN_LEFT);
   

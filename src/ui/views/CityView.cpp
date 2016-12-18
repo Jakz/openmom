@@ -164,7 +164,7 @@ void CityView::draw()
   }
   
   /* draw city info: race and population */
-  Fonts::drawString(i18n::s(city->race.name), FontFaces::Small::YELLOW, 5, 18, ALIGN_LEFT);
+  Fonts::drawString(i18n::s(city->race.ident).name, FontFaces::Small::YELLOW, 5, 18, ALIGN_LEFT);
   //TODO: localize digits
   Fonts::drawString(Fonts::format("Population: %s (+%d)", Fonts::groupDigits(city->population).c_str(), city->growthRate), FontFaces::Small::YELLOW, 209, 18, ALIGN_RIGHT);
   

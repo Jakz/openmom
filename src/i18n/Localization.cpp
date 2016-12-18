@@ -9,7 +9,7 @@ using namespace std;
 constexpr const I18 i18n::CITY_SIZE_NAMES[];
 constexpr I18 i18n::SPELL_KIND_NAMES[];
 
-unordered_map<I18, string> i18n::data =
+unordered_map<I18, string, enum_hash> i18n::data =
 {
   {I18::CITY_HAMLET, "Hamlet"},
   {I18::CITY_VILLAGE, "Village"},
@@ -24,36 +24,6 @@ unordered_map<I18, string> i18n::data =
   {I18::SURVEYOR_CITY_FORBID_WATER, "Cities cannot be built on water."},
   {I18::SURVEYOR_MAX_POPULATION, "Maximum Pop %u"},
   {I18::SURVEYOR_PRODUCTION_BONUS, "Prod Bonus +%u%%"},
-  
-  {I18::RACE_NAME_BARBARIANS, "Barbarians"},
-  {I18::RACE_NAME_BEASTMEN, "Beastmen"},
-  {I18::RACE_NAME_DARK_ELVES, "Dark Elves"},
-  {I18::RACE_NAME_DRACONIANS, "Draconians"},
-  {I18::RACE_NAME_DWARVES, "Dwarves"},
-  {I18::RACE_NAME_GNOLLS, "Gnolls"},
-  {I18::RACE_NAME_HALFLINGS, "Halflings"},
-  {I18::RACE_NAME_HIGH_ELVES, "High Elves"},
-  {I18::RACE_NAME_HIGH_MEN, "High Men"},
-  {I18::RACE_NAME_KLACKONS, "Klackons"},
-  {I18::RACE_NAME_LIZARDMEN, "Lizardmen"},
-  {I18::RACE_NAME_NOMADS, "Nomads"},
-  {I18::RACE_NAME_ORCS, "Orcs"},
-  {I18::RACE_NAME_TROLLS, "Trolls"},
-  
-  {I18::UNIT_NAME_BARBARIANS, "Barbarian"},
-  {I18::UNIT_NAME_BEASTMEN, "Beastman"},
-  {I18::UNIT_NAME_DARK_ELVES, "Dark Elf"},
-  {I18::UNIT_NAME_DRACONIANS, "Draconian"},
-  {I18::UNIT_NAME_DWARVES, "Dwarven"},
-  {I18::UNIT_NAME_GNOLLS, "Gnoll"},
-  {I18::UNIT_NAME_HALFLINGS, "Halfling"},
-  {I18::UNIT_NAME_HIGH_ELVES, "High Elf"},
-  {I18::UNIT_NAME_HIGH_MEN, "High Man"},
-  {I18::UNIT_NAME_KLACKONS, "Klackon"},
-  {I18::UNIT_NAME_LIZARDMEN, "Lizardman"},
-  {I18::UNIT_NAME_NOMADS, "Nomad"},
-  {I18::UNIT_NAME_ORCS, "Orc"},
-  {I18::UNIT_NAME_TROLLS, "Troll"},
   
   {I18::WIZARD_NAME_MERLIN, "Merlin"},
   {I18::WIZARD_NAME_RAVEN, "Raven"},
@@ -239,7 +209,25 @@ unordered_map<I18, string> i18n::data =
   {I18::PLACEHOLDER, "Placeholder"},
 };
 
-unordered_map<UnitID, string> i18n::units =
+unordered_map<RaceID, i18n::race_names, enum_hash> i18n::races =
+{
+  {RaceID::BARBARIANS, { "Barbarians", "Barbarian"} },
+  {RaceID::BEASTMEN, { "Beastmen", "Beastman"} },
+  {RaceID::DARK_ELVES, { "Dark Elves", "Dark Elf"} },
+  {RaceID::DRACONIANS, { "Draconians", "Draconian"} },
+  {RaceID::DWARVES, { "Dwarves", "Dwarven"} },
+  {RaceID::GNOLLS, { "Gnolls", "Gnoll"} },
+  {RaceID::HALFLINGS, { "Halflings", "Halfling"} },
+  {RaceID::HIGH_ELVES, { "High Elves", "High Elf" } },
+  {RaceID::HIGH_MEN, { "High Men", "High Man"} },
+  {RaceID::KLACKONS, { "Klackons", "Klackon"} },
+  {RaceID::LIZARDMEN, { "Lizardmen", "Lizardman"} },
+  {RaceID::NOMADS, { "Nomads", "Nomad"} },
+  {RaceID::ORCS, { "Orcs", "Orc" } },
+  {RaceID::TROLLS, { "Trolls", "Troll"} }
+};
+
+unordered_map<UnitID, string, enum_hash> i18n::units =
 {
   {UnitID::SPEARMEN,"Spearmen"},
   {UnitID::SWORDSMEN,"Swordsmen"},
@@ -262,7 +250,7 @@ unordered_map<UnitID, string> i18n::units =
   {UnitID::GREAT_DRAKE,"Great Drake"},
 };
 
-unordered_map<SkillBase, string> i18n::skills =
+unordered_map<SkillBase, string, enum_hash> i18n::skills =
 {
   {SkillBase::HERO_AGILITY, "Agility"},
   {SkillBase::HERO_ARCANE_POWER, "Arcane Power"},
@@ -396,7 +384,7 @@ unordered_map<SkillBase, string> i18n::skills =
   {SkillBase::STATUS_POSESSION, "Posession"}
 };
 
-std::unordered_map<TileType, std::vector<std::string> > i18n::surveyorDescs
+std::unordered_map<TileType, std::vector<std::string>, enum_hash> i18n::surveyorDescs
 {
   {TILE_FOREST, {"Forest", "1/2 production", "+3% production"} },
   {TILE_MOUNTAIN, {"Mountain", "+5% production"} },

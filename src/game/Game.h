@@ -145,6 +145,8 @@ public:
     
     if (current == players.end())
       current = players.begin();
+    
+    game->nextTurn();
   }
 
   Game* getGame() { return game; }

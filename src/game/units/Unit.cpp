@@ -158,6 +158,11 @@ s16 Unit::getBonusProperty(Property property) const
 }
 
 
+const std::string RaceUnit::name() const {
+  const RaceUnitSpec& rspec = static_cast<const RaceUnitSpec&>(spec);
+  return i18n::s(rspec.race.ident).unitName + " " + spec.productionName();
+}
+
 
 
 const std::string Hero::title() const

@@ -127,7 +127,7 @@ void CombatView::draw()
   
   for (CombatUnit* unit : allUnits)
   {
-    ScreenCoord coords = coordsForTile(unit->x, unit->y);
+    ScreenCoord coords = coordsForTile(unit->x(), unit->y());
     
     if (unit->selected)
     {

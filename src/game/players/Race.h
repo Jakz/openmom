@@ -44,8 +44,6 @@ class Race
   
   public:
     const RaceID ident;
-    const I18 name;
-    const I18 uname;
     const HouseType houseType;
     const s16 growthBonus;
     const float outpostGrowthChance;

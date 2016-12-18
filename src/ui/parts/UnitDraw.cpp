@@ -193,8 +193,8 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Facing facing, 
   for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
   {
     Gfx::draw(sprite, x + offsets[i].x, y + offsets[i].y, action);
-    if (glow != School::NO_SCHOOL)
-      Gfx::drawGlow(sprite.relative(action), x + offsets[i].x, y + offsets[i].y, glow); // TODO: check if it works with new management
+    //if (glow != School::NO_SCHOOL)
+    //  Gfx::drawGlow(sprite.relative(action), x + offsets[i].x, y + offsets[i].y, glow); // TODO: check if it works with new management
   }
 
   Gfx::unbindColorMap();
