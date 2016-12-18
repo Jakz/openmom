@@ -190,7 +190,7 @@ void CityLayout::deploy()
   }
   
   // TODO: lower when building amount increases
-  int houses = 20 + Util::randomIntUpTo(10);
+  int houses = 50 + Util::randomIntUpTo(10);
   for (int i = 0; i < houses; ++i)
   {
     zone_iterator zone = Util::randomElementIterator(zones);
@@ -233,17 +233,17 @@ void CityLayout::placeAndSplit(const Building *b, zone_iterator it)
        XXZ ->   U
        XXZ      U
      */
-    zones.push_back(LayoutZone(z.x + bw * U*2, z.y, z.w - bw, bh));
-    zones.push_back(LayoutZone(z.x - bh * U, z.y + bh * U, z.w, z.h - bh));
-    zones.push_back(LayoutZone(z.x + bw * U*2 - bh * U, z.y + bh * U, z.w - bw, z.h - bh));
+    zones.emplace_back(z.x + bw * U*2, z.y, z.w - bw, bh);
+    zones.emplace_back(z.x - bh * U, z.y + bh * U, z.w, z.h - bh);
+    zones.emplace_back(z.x + bw * U*2 - bh * U, z.y + bh * U, z.w - bw, z.h - bh);
   }
   else if (z.w > bw)
   {
-    zones.push_back(LayoutZone(z.x + bw*U*2, z.y, z.w - bw, z.h));
+    zones.emplace_back(z.x + bw*U*2, z.y, z.w - bw, z.h);
   }
   else if (z.y > bh)
   {
-    zones.push_back(LayoutZone(z.x + bw*U*2 - bh*U, z.y + bh*U, z.h, z.h - bh));
+    zones.emplace_back(z.x + bw*U*2 - bh*U, z.y + bh*U, z.h, z.h - bh);
   }
 }
 

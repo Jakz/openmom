@@ -253,7 +253,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
   fseek(in, offset, SEEK_SET);
   LBXGfxHeader gfxHeader;
   fread(&gfxHeader, sizeof(LBXGfxHeader), 1, in);
-  printf("    WxH: %dx%d, COUNT: %d, PALETTE: %d\n", gfxHeader.width, gfxHeader.height, gfxHeader.count, gfxHeader.paletteOffset);
+  LOGD("  WxH: %dx%d, COUNT: %d, PALETTE: %d", gfxHeader.width, gfxHeader.height, gfxHeader.count, gfxHeader.paletteOffset);
   
   LBXOffset *frameOffsets = new LBXOffset[gfxHeader.count+1];
   fread(frameOffsets, sizeof(LBXOffset), gfxHeader.count+1, in);
@@ -272,7 +272,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
     fseek(in, offset+gfxHeader.paletteOffset, SEEK_SET);
     
     fread(&paletteHeader, sizeof(LBXPaletteHeader), 1, in);
-    printf("    PALETTE AT OFFSET %d, COUNT %d STARTING AT %d\n", paletteHeader.offset, paletteHeader.count, paletteHeader.firstIndex);
+    LOGD("  PALETTE AT OFFSET %d, COUNT %d STARTING AT %d", paletteHeader.offset, paletteHeader.count, paletteHeader.firstIndex);
     
     fseek(in, offset+paletteHeader.offset, SEEK_SET);
     for (int i = 0; i < paletteHeader.count; ++i)
@@ -300,7 +300,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
     fseek(in, offset+frameOffsets[i], SEEK_SET);
     u8* data = new u8[dataSize];
     fread(data, sizeof(u8), dataSize, in);
-    printf("      FRAME %d AT OFFSET %d (SIZE: %d)\n", i, frameOffsets[i], dataSize);
+    LOGD("    FRAME %d AT OFFSET %d (SIZE: %d)", i, frameOffsets[i], dataSize);
     
     // copy previous frame into current
     if (i > 0)
@@ -641,6 +641,7 @@ const LBXSpriteData* Repository::loadLBXSpriteData(const LBXSpriteInfo &info)
   string name = LBX::getLBXPath(lbx.fileName);
   FILE *in = fopen(name.c_str(), "rb");
   
+  LOGD("Loading frame %u from %s", info.index, file(info.lbx).fileName.c_str());
   LBXSpriteData* spriteData = LBX::scanGfx(lbx.info.header, lbx.info.offsets[info.index], in);
   
   lbx.sprites[info.index] = spriteData;
