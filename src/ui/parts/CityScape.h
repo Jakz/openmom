@@ -43,7 +43,7 @@ private:
 
   
   static struct {
-    bool operator()(const Building *b1, const Building* b2)
+    bool operator()(const Building *b1, const Building* b2) const
     {
       const BuildingSpecs& s1 = specs[b1];
       const BuildingSpecs& s2 = specs[b2];
@@ -79,12 +79,17 @@ public:
     LayoutZone() { }
     LayoutZone(s16 x, s16 y, s16 w, s16 h, bool central = false, bool seaside = false) : x(x), y(y), w(w), h(h), central(central), seaside(seaside) { }
     
-    friend bool operator==(const LayoutZone& z1, const LayoutZone& z2);
+    bool operator==(const LayoutZone& z2) const
+    {
+      return w == z2.w && h == z2.h && y == z2.y && y == z2.y;
+    }
+    
   };
   
 private:
   std::vector<LayoutPosition> positions;
   std::vector<LayoutZone> zones;
+  using zone_iterator = decltype(zones)::const_iterator;
   
   const City* city;
 
@@ -98,7 +103,7 @@ public:
   {
     CityLayout* layout = new CityLayout(city);
     layouts.emplace(city, layout);
-    //layout->deploy();
+    layout->deploy();
   }
   
   static void updateLayout(const City* city)
@@ -115,35 +120,37 @@ public:
   void deploy();
   
   private:
-    LayoutPosition createPosition(LayoutZone& zone, s16 ox, s16 oy, const Building* building);
+    LayoutPosition createPosition(const LayoutZone& zone, s16 ox, s16 oy, const Building* building);
     const std::vector<LayoutZone> findSuitable(const Building* building);
-    void placeAndSplit(const Building* building, LayoutZone& zone);
+    void placeAndSplit(const Building* building, zone_iterator zone);
   
+
     const std::vector<LayoutZone> getZones() {
      return
       {
-        LayoutZone(50-20,129,4,4),
-        LayoutZone(98-20,129,4,4),
-        LayoutZone(146-20,129,3,4),
-        LayoutZone(184-20,129,4,4),
+        /*
+           4x4  4x4  3x4  4x4
+           2x3s 4x3  3x3c 4x3  2x2
+                4x4  3x4  4x4  3x4
+         */
         
-        LayoutZone(47-20,152,2,3,false,true),
-        LayoutZone(75-20,152,4,3),
-        LayoutZone(123-20,152,3,3,true,false),
-        LayoutZone(161-20,152,4,3),
-        LayoutZone(205-20,157,2,2),
+        LayoutZone(30,129,4,4),
+        LayoutZone(78,129,4,4),
+        LayoutZone(126,129,3,4),
+        LayoutZone(164,129,4,4),
         
-        LayoutZone(57-20,170,4,4),
-        LayoutZone(105-20,170,3,4),
-        LayoutZone(143-20,170,4,4),
-        LayoutZone(192-20,170,3,4),
+        LayoutZone(27,152,2,3,false,true),
+        LayoutZone(55,152,4,3),
+        LayoutZone(103,152,3,3,true,false),
+        LayoutZone(141,152,4,3),
+        LayoutZone(185,157,2,2),
+        
+        LayoutZone(37,170,4,4),
+        LayoutZone(85,170,3,4),
+        LayoutZone(123,170,4,4),
+        LayoutZone(172,170,3,4),
       };
     }
 };
-
-inline bool operator==(const CityLayout::LayoutZone& z1, const CityLayout::LayoutZone& z2)
-{
-  return z1.w == z2.w && z1.h == z2.h && z1.y == z2.y && z1.y == z2.y;
-}
 
 #endif

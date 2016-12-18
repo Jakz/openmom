@@ -155,22 +155,24 @@ void CityLayout::deploy()
   if (buildings.find(Building::SHIP_WRIGHTS_GUILD) != buildings.end())
   {
     positions.push_back(createPosition(zones[4], 0, 0, Building::SHIP_WRIGHTS_GUILD));
-    zones.erase(zones.begin()+6);
+    zones.erase(zones.begin()+4);
   }
   else if (buildings.find(Building::MARITIME_GUILD) != buildings.end())
   {
     positions.push_back(createPosition(zones[4], 0, 0, Building::MARITIME_GUILD));
-    zones.erase(zones.begin()+6);
+    zones.erase(zones.begin()+4);
   }
   if (buildings.find(Building::SHIP_YARD) != buildings.end())
   {
     positions.push_back(createPosition(zones[4], 0, 0, Building::SHIP_YARD));
-    zones.erase(zones.begin()+6);
+    zones.erase(zones.begin()+4);
   }
   
   vector<const Building*> vbuildings;
-  for_each(buildings.begin(), buildings.end(), [&](const Building* b) { vbuildings.push_back(b); });
-  sort(vbuildings.begin(), vbuildings.end(), GFX_COMPARATOR);
+  vbuildings.reserve(buildings.size());
+  
+  std::copy(buildings.begin(), buildings.end(), std::back_inserter(vbuildings));
+  std::sort(vbuildings.begin(), vbuildings.end(), GFX_COMPARATOR);
   
   for (auto b : vbuildings)
   {
@@ -182,21 +184,23 @@ void CityLayout::deploy()
       return;
     }
     
-    LayoutZone zone = suitable[Util::randomIntUpTo(static_cast<u32>(suitable.size()))];
-    placeAndSplit(b, zone);
+    const LayoutZone& zone = Util::randomElement(suitable);
+    auto it = std::find(zones.begin(), zones.end(), zone);
+    placeAndSplit(b, it);
   }
   
   // TODO: lower when building amount increases
   int houses = 20 + Util::randomIntUpTo(10);
   for (int i = 0; i < houses; ++i)
   {
-    placeAndSplit(nullptr, zones[Util::randomIntUpTo(static_cast<u32>(zones.size()))]);
+    zone_iterator zone = Util::randomElementIterator(zones);
+    placeAndSplit(nullptr, zone);
   }
 
   sort(positions.begin(), positions.end());
 }
 
-CityLayout::LayoutPosition CityLayout::createPosition(LayoutZone &zone, s16 ox, s16 oy, const Building *building)
+CityLayout::LayoutPosition CityLayout::createPosition(const LayoutZone& zone, s16 ox, s16 oy, const Building *building)
 {
   if (building)
     return LayoutPosition(zone.x + ox*U*2 - oy*U - (specs[building].depth-1)*U, zone.y + oy*U + (specs[building].depth-1)*U, building);
@@ -204,41 +208,43 @@ CityLayout::LayoutPosition CityLayout::createPosition(LayoutZone &zone, s16 ox, 
     return LayoutPosition(zone.x + ox*U*2 - oy*U, zone.y + oy*U, Util::randomIntUpTo(5));
 }
 
-const vector<CityLayout::LayoutZone> CityLayout::findSuitable(const Building *building)
+const vector<CityLayout::LayoutZone> CityLayout::findSuitable(const Building* building)
 {
   vector<LayoutZone> zn;
   copy_if(zones.begin(), zones.end(), back_inserter(zn), [&](const LayoutZone& z) { return z.w >= specs[building].width && z.h >= specs[building].depth; });
   return zn;
 }
 
-void CityLayout::placeAndSplit(const Building *b, CityLayout::LayoutZone &z)
+void CityLayout::placeAndSplit(const Building *b, zone_iterator it)
 {
   s16 bw = b ? specs[b].width : 1;
   s16 bh = b ? specs[b].depth : 1;
+  
+  LayoutZone z = *it;
+  zones.erase(it);
+  positions.push_back(createPosition(z,0,0,b));
 
   if (bw == z.w && bh == z.h)
-    positions.push_back(createPosition(z,0,0,b));
-  else
+    /* do nothing, there's no need to split */;
+  else if (z.w > bw && z.h > bh)
   {
-    if (z.w > bw && z.h > bh)
-    {
-      positions.push_back(createPosition(z,0,0,b));
-      zones.push_back(LayoutZone(z.x + bw*U*2, z.y, z.w - bw, bh, false, false));
-      zones.push_back(LayoutZone(z.x - bh*U, z.y + bh*U, z.w, z.h - bh, false, false));
-    }
-    else if (z.w > bw)
-    {
-      positions.push_back(createPosition(z,0,0,b));
-      zones.push_back(LayoutZone(z.x + bw*U*2, z.y, z.w - bw, z.h, false, false));
-    }
-    else
-    {
-      positions.push_back(createPosition(z,0,0,b));
-      zones.push_back(LayoutZone(z.x + bw*U*2 - bh*U, z.y + bh*U, z.h, z.h - bh, false, false));
-    }
+    /* split in 3 zones
+       ZZZ    KKY
+       XXZ ->   U
+       XXZ      U
+     */
+    zones.push_back(LayoutZone(z.x + bw * U*2, z.y, z.w - bw, bh));
+    zones.push_back(LayoutZone(z.x - bh * U, z.y + bh * U, z.w, z.h - bh));
+    zones.push_back(LayoutZone(z.x + bw * U*2 - bh * U, z.y + bh * U, z.w - bw, z.h - bh));
   }
-  
-  zones.erase(find(zones.begin(), zones.end(), z)); // TODO who knows if it works
+  else if (z.w > bw)
+  {
+    zones.push_back(LayoutZone(z.x + bw*U*2, z.y, z.w - bw, z.h));
+  }
+  else if (z.y > bh)
+  {
+    zones.push_back(LayoutZone(z.x + bw*U*2 - bh*U, z.y + bh*U, z.h, z.h - bh));
+  }
 }
 
 
