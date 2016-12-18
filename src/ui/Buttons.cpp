@@ -53,8 +53,8 @@ void TristateButton::draw()
 
 LabeledSimpleButton::LabeledSimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, const FontSpriteSheet* font) : OffsetButton(name,x,y,info), label(label), font(font)
 {
-  textX = x + Texture::get(info.texture)->sw(info.x,info.y)/2 - 5;
-  textY = y + Texture::get(info.texture)->sh(info.x,info.y)/2 - font->sh()/2;
+  textX = x + info.sw()/2 - 5;
+  textY = y + info.sh()/2 - font->sh()/2;
 }
 
 void LabeledSimpleButton::draw()
@@ -76,7 +76,8 @@ void RadioButton<T>::draw()
     
     if (group->getCurrent() == this)
     {
-      SpriteInfo info2 = SpriteInfo(info.texture, info.x+toggledOffset[0], info.y+toggledOffset[1]);
+      //TODO: not generic for lbx/non lbx
+      SpriteInfo info2 = SpriteInfo(info.texture(), info.x()+toggledOffset[0], info.y()+toggledOffset[1]);
       Gfx::draw(info2, x, y);
     }
 		else

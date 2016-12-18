@@ -50,10 +50,10 @@ public:
 struct UnitGfxSpec
 {
   const SpriteInfo still;
-  const LBXSpriteInfo fullFigure;
+  const SpriteInfo fullFigure;
   const bool isFlyingFigure;
   
-  UnitGfxSpec(SpriteInfo still, LBXSpriteInfo fullFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), isFlyingFigure(isFlyingFigure) { }
+  UnitGfxSpec(SpriteInfo still, SpriteInfo fullFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), isFlyingFigure(isFlyingFigure) { }
 };
 
 
@@ -61,7 +61,7 @@ class GfxData
 {
 private:
   static std::unordered_map<const UnitSpec*, UnitGfxSpec> unitSpecs;
-  static std::unordered_map<const UnitSpec*, LBXSpriteInfo> heroPortraits;
+  static std::unordered_map<const UnitSpec*, SpriteInfo> heroPortraits;
   
   static const TileGfxSpec specs[];
   static constexpr s8 RANGED_INDEX[] = {-1,6,5,6,14,15,16,17,18};
@@ -75,10 +75,10 @@ public:
   static s8 rangedGfxIndex(Ranged ranged) { return RANGED_INDEX[static_cast<u8>(ranged)]; }
   static s8 propertyGfxIndex(Property property) { return PROPERTY_INDEX[static_cast<u8>(property)]; }
   
-  static LBXSpriteInfo itemGfxSpec(Item::TypeID type, int index);
+  static SpriteInfo itemGfxSpec(Item::TypeID type, int index);
   
   static const UnitGfxSpec& unitGfxSpec(const UnitSpec* spec);
-  static const LBXSpriteInfo& heroGfxSpec(const UnitSpec* spec);
+  static SpriteInfo heroGfxSpec(const UnitSpec* spec);
   
   static s16 specialSpellGfxEffect(const Spell* spell);
 };

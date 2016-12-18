@@ -50,6 +50,7 @@ void Game::dummyInit()
   });
   
   player2->add(army2);
+  placeArmy(army2, Position(2, 2, ARCANUS));
   
   players.push_back(player);
   players.push_back(player2);
@@ -75,6 +76,8 @@ void Game::dummyInit()
   world->set(TILE_DESERT, 9,9, ARCANUS);
   world->set(TILE_DESERT, 10,9, ARCANUS);
   
+  world->get(7, 8, ARCANUS)->placeManaNode(new ManaNode(School::SORCERY, 0));
+    
   //WorldGenerator.generate(world, ARCANUS);
   //WorldGenerator.generate(world, MYRRAN);
 
@@ -101,10 +104,10 @@ void Game::dummyInit()
   //map.rect(TILE_GRASS, 2, 2, 6, 3);
   //map.rect(TILE_GRASS, 8, 4, 1, 1);
   world->get(3,4,ARCANUS)->placeRoad(true);
-  world->get(3,5,ARCANUS)->placeRoad(false);
+  world->get(3,5,ARCANUS)->placeRoad(true);
   world->get(4,5,ARCANUS)->placeRoad(true);
   world->get(5,5,ARCANUS)->placeRoad(true);
-  world->get(7,5,ARCANUS)->placeRoad(true);
+
   world->set(TILE_VOLCANO, 0, 0, ARCANUS);
   world->set(TILE_VOLCANO, 59, 0, ARCANUS);
   world->set(TILE_VOLCANO, 0, 39, ARCANUS);
@@ -132,6 +135,7 @@ void Game::dummyInit()
   florence->addBuilding(Building::BARRACKS);
   florence->addBuilding(Building::FIGHTERS_GUILD);
   florence->addBuilding(Building::SUMMONING_CIRCLE);
+  florence->addBuilding(Building::ALCHEMISTS_GUILD);
   settleCity(florence);
   
   world->get(7,6,ARCANUS)->placePlace(new Place(PLACE_TOWER_OF_WIZARDRY, false));

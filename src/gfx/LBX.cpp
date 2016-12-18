@@ -634,17 +634,17 @@ const LBXFile& Repository::loadLBX(LBXID ident)
   return lbx;
 }
 
-const LBXSpriteData* Repository::loadLBXSpriteData(const LBXSpriteInfo &info)
+const LBXSpriteData* Repository::loadLBXSpriteData(SpriteInfo info)
 {
-  LBXFile& lbx = file(info.lbx);
+  LBXFile& lbx = file(info.lbx());
   
   string name = LBX::getLBXPath(lbx.fileName);
   FILE *in = fopen(name.c_str(), "rb");
   
-  LOGD("[lbx] loading gfx entry %u from %s", info.index, file(info.lbx).fileName.c_str());
-  LBXSpriteData* spriteData = LBX::scanGfx(lbx.info.header, lbx.info.offsets[info.index], in);
+  LOGD("[lbx] loading gfx entry %u from %s", info.index(), file(info.lbx()).fileName.c_str());
+  LBXSpriteData* spriteData = LBX::scanGfx(lbx.info.header, lbx.info.offsets[info.index()], in);
   
-  lbx.sprites[info.index] = spriteData;
+  lbx.sprites[info.index()] = spriteData;
   
   fclose(in);
   

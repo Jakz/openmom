@@ -4,6 +4,9 @@
 #include "Gfx.h"
 #include "Spells.h"
 
+#include "LBX.h"
+#include "Texture.h"
+
 using namespace std;
 
 static char buffer[512];
@@ -13,6 +16,16 @@ void debugprintf(const char* str, ...)
   va_start (args, str);
   vsnprintf (buffer, 512, str, args);
   printf("%s\n", buffer);
+}
+
+SpriteInfo::SpriteInfo(TextureID texture, u16 i) : SpriteInfo(texture, i / Texture::get(texture)->cols, i % Texture::get(texture)->cols)
+{
+  static_assert(sizeof(SpriteInfo) == sizeof(u32), "");
+}
+
+const SpriteSheet* SpriteInfo::sheet() const
+{
+  return isLBX() ? static_cast<const SpriteSheet*>(lbx::Repository::spriteFor(*this)) : Texture::get(texture());
 }
 
 static const Trait traitInfo[] = {
@@ -62,3 +75,4 @@ const Wizard& Data::wizard(const WizardID wizard)
 {
   return wizardInfo[wizard];
 }
+

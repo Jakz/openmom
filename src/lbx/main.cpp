@@ -397,7 +397,7 @@ public:
       if (currentLBX->info.header.type == LBXFileType::GRAPHICS)
       {
         if (!currentLBX->sprites[selection])
-          Repository::loadLBXSpriteData(LBXSpriteInfo(currentLBX->ident, selection));
+          Repository::loadLBXSpriteData(SpriteInfo(currentLBX->ident, selection));
         
         mywindow->setData(currentLBX->sprites[selection]);
       }

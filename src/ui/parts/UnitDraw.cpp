@@ -177,7 +177,7 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Facing facing, 
   
   Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[unit->getArmy()->getOwner()->color]);
 
-  const LBXSpriteInfo& sprite = GfxData::unitGfxSpec(&unit->spec).fullFigure.relative(static_cast<u8>(facing));
+  SpriteInfo sprite = GfxData::unitGfxSpec(&unit->spec).fullFigure.relative(static_cast<u8>(facing));
   
   School glow = unit->glow();
   
@@ -194,7 +194,7 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Facing facing, 
   {
     Gfx::draw(sprite, x + offsets[i].x, y + offsets[i].y, action);
     if (glow != School::NO_SCHOOL)
-      Gfx::drawGlow(sprite, x + offsets[i].x, y + offsets[i].y, action, 0, glow); // TODO: 0 (col) shouldn't be needed with LBX management
+      Gfx::drawGlow(sprite.relative(action), x + offsets[i].x, y + offsets[i].y, glow); // TODO: check if it works with new management
   }
 
   Gfx::unbindColorMap();

@@ -78,7 +78,8 @@ void CombatView::draw()
   if (hover.x != -1)
   {
     ScreenCoord hoverCoords = coordsForTile(hover.x, hover.y);
-    Gfx::drawAnimated(TextureID::COMBAT_MISC_TILES, 1, hoverCoords.x, hoverCoords.y,0);
+    //TODO: working?
+    Gfx::drawAnimated(TSI(COMBAT_MISC_TILES, 0, 1), hoverCoords.x, hoverCoords.y,0);
   }
   
   /*

@@ -107,7 +107,7 @@ void CityView::draw()
   /* draw minimap */
   Viewport::drawCityViewport(player, g->world, city->getPosition());
   
-  Gfx::draw(lbx::Repository::spriteFor(LBXSpriteInfo(LBXID::BACKGRND, 6)), 0, 0);
+  Gfx::draw(lbx::Repository::spriteFor(LSI(BACKGRND, 6)), 0, 0);
   
   /* city name*/
   std::string cityName = Fonts::format("%s of %s", i18n::c(i18n::CITY_SIZE_NAMES[city->tileSize()]), city->getName().c_str());

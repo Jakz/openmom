@@ -32,8 +32,8 @@ private:
     s16 width, depth;
     s16 pixelWidth;
     
-    BuildingSpecs() : info(SpriteInfo(TextureID::CITY_FORTRESS,-1,-1)) { }
-    BuildingSpecs(SpriteInfo&& info, s16 pixelWidth, s16 width, s16 depth) : info(info), pixelWidth(pixelWidth), width(width), depth(depth), animated(info.y == -1) { }
+    BuildingSpecs() : info(SpriteInfo(TextureID::CITY_FORTRESS,0,0)) { }
+    BuildingSpecs(SpriteInfo info, s16 pixelWidth, s16 width, s16 depth, bool animated = false) : info(info), pixelWidth(pixelWidth), width(width), depth(depth), animated(animated) { }
   };
   
   static std::unordered_map<const Building*, BuildingSpecs> specs;
@@ -98,7 +98,6 @@ private:
 
 public:
   static void draw(const City* city, LocalPlayer* player);
-  static s16 buildingHeight(const Building* building);
   static void drawBuilding(const Building* building, s16 x, s16 y);
   static void drawBuildingCentered(const Building* building, s16 x, s16 y);
   

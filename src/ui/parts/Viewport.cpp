@@ -79,14 +79,14 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
     u16 index = 0;
     if (t->node->school == NATURE) index = 1;
     else if (t->node->school == CHAOS) index = 2;
-    Gfx::drawAnimated(tx[NODES], index, x, y, t->animationOffset);
+    Gfx::drawAnimated(SpriteInfo(tx[NODES], index), x, y, t->animationOffset);
   }
   else
   {
     if (t->type == TILE_WATER || t->type == TILE_SHORE)
     {
       if (waterMap.find(t->subtype) != waterMap.end() && (t->subtype != 0 || t->tileGfxType == TILE_GFX_ANIMATED))
-        Gfx::drawAnimated(tx[ANIMATED], waterMap[t->subtype], x, y, t->animationOffset);
+        Gfx::drawAnimated(SpriteInfo(tx[ANIMATED], waterMap[t->subtype]), x, y, t->animationOffset);
       /*else if (waterMap.contains(t->subtype))
        TextureID::drawAnimated(animated, waterMap.get(t->subtype), x, y, t->animationOffset());*/
       else if (t->tileGfxType == TILE_GFX_BORDER)
@@ -109,7 +109,7 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
     else if (t->type == TILE_MOUNTAIN)
       Gfx::draw(tx[MOUNTAINS], 0, t->subtype, x, y);
     else if (t->type == TILE_VOLCANO)
-      Gfx::drawAnimated(tx[ANIMATED], 1, x, y, t->animationOffset);
+      Gfx::drawAnimated(SpriteInfo(tx[ANIMATED], 1), x, y, t->animationOffset);
     else if (t->type == TILE_HILL)
       Gfx::draw(tx[MOUNTAINS], 1, t->subtype, x, y);
     else if (t->type == TILE_GRASS || t->type == TILE_SWAMP || t->type == TILE_FOREST || t->type == TILE_DESERT || t->type == TILE_TUNDRA)
@@ -136,7 +136,7 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
         if ((t->roads & (1<<i)) == 1<<i)
         {
           if (t->hasEnchantedRoad)
-            Gfx::drawAnimated(TextureID::TILE_ROADS_ENCHANTED, 1+i, x, y, 0/*t->animationOffset()*/);
+            Gfx::drawAnimated(SpriteInfo(TextureID::TILE_ROADS_ENCHANTED, 1+i), x, y, 0/*t->animationOffset()*/);
           else
             Gfx::draw(TextureID::TILE_ROADS, 0, 1+i, x, y);
         }
@@ -219,7 +219,7 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
           /* draw node auras */
           if (t->node && t->node->owner)
           {
-            Gfx::drawAnimated(TextureID::TILE_NODE_AURAS, t->node->owner->color, sx, sy, t->animationOffset);
+            Gfx::drawAnimated(SpriteInfo(TextureID::TILE_NODE_AURAS, t->node->owner->color), sx, sy, t->animationOffset);
             for (auto aura : t->node->auras)
             {
               int tx = x + aura.x;
@@ -229,7 +229,7 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
               {
                 tx = sx + aura.x*tileWidth;
                 ty = sy + aura.y*tileHeight;
-                Gfx::drawAnimated(TextureID::TILE_NODE_AURAS, t->node->owner->color, tx, ty, animationOffset);
+                Gfx::drawAnimated(SpriteInfo(TextureID::TILE_NODE_AURAS, t->node->owner->color), tx, ty, animationOffset);
               }
             }
           }

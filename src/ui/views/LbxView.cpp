@@ -127,7 +127,7 @@ void LBXView::selectLBX()
 
 void LBXView::selectGFX()
 {
-  LBXSpriteInfo info = LBXSpriteInfo(static_cast<LBXID>(selectedLBX), selectedContent);
+  SpriteInfo info = SpriteInfo(static_cast<LBXID>(selectedLBX), selectedContent);
   
   if (Repository::shouldAllocateSprite(info))
     Repository::loadLBXSpriteData(info);

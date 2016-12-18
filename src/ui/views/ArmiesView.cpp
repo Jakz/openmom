@@ -54,7 +54,7 @@ static const u16 HERO_PORTRAITS[][2] = {{12,5},{12,56},{12,107},{277,5},{277,56}
 
 void ArmiesView::draw()
 {
-  Gfx::draw(LBXSpriteInfo(LBXID::ARMYLIST, 0), 0, 0);
+  Gfx::draw(LSI(ARMYLIST, 0), 0, 0);
   
   // draw heroes portraits
   auto heroes = player->getHeroes(); u8 i = 0;

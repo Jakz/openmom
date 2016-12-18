@@ -55,14 +55,6 @@ enum MouseButton : u8
 };
 
 enum class LBXID : u16;
-struct LBXSpriteInfo
-{
-  LBXID lbx;
-  u16 index;
-  LBXSpriteInfo(LBXID lbx, u16 index) : lbx(lbx), index(index) { }
-  
-  LBXSpriteInfo relative(s16 delta) const { return LBXSpriteInfo(lbx, index+delta); }
-};
 
 enum class LBXID : u16
 {
@@ -171,7 +163,10 @@ enum class LBXID : u16
   COUNT
 };
 
-#define LSI(x, y) LBXSpriteInfo(LBXID::x, y)
+#define LSI(x, y) SpriteInfo(LBXID::x, y)
+#define TSI(x, y, z) SpriteInfo(TextureID::x, y, z)
+#define TSIS(x, y) SpriteInfo(TextureID::x, y)
+
 
 constexpr size_t LBX_COUNT = static_cast<size_t>(LBXID::COUNT);
 
@@ -195,26 +190,6 @@ struct PositionOffset
   s8 y;
 };
 
-struct SpriteInfo
-{
-  TextureID texture;
-  s8 x;
-  s8 y;
-  
-  SpriteInfo(TextureID texture, u8 x, u8 y) : texture(texture), x(x), y(y) { }
-};
-
-struct ScreenCoord
-{
-  s16 x;
-  s16 y;
-  
-  ScreenCoord(s16 x, s16 y) : x(x), y(y) { }
-  bool operator==(const ScreenCoord& o) const { return x == o.x && y == o.y; }
-};
-
-using Coord = ScreenCoord;
-
 class Palette;
 
 class SpriteSheet
@@ -234,6 +209,70 @@ public:
   
   virtual const Palette* getPalette() const { return nullptr; }
 };
+
+struct SpriteInfo
+{
+private:
+  enum : u32
+  {
+    lbx_flag_mask   = 0x80000000,
+    lbx_id_mask     = 0x7FFF0000,
+    lbx_index_mask  = 0x0000FFFF,
+    
+    texture_id_mask = lbx_id_mask,
+    texture_x_mask  = 0x000000FF,
+    texture_y_mask  = 0x0000FF00,
+    
+    lbx_id_shift     = 16,
+    texture_id_shift = 16,
+
+    lbx_index_shift = 0,
+    
+    texture_x_shift = 0,
+    texture_y_shift = 8,
+  };
+
+  union
+  {
+    u32 data;
+    struct { u16 _index : 16; LBXID _lbx : 15; bool __is_lbx : 1; } as_lbx;
+    struct { u16 _y : 8; u16 _x : 8; TextureID _tex : 15; bool _is_lbx : 1; } as_texture;
+  };
+  
+public:
+  explicit SpriteInfo(TextureID texture, s8 x, s8 y) : data((static_cast<u32>(texture) << texture_id_shift) | (x << texture_x_shift) | (y << texture_y_shift)) { assert(x >= 0 && y >= 0); }
+  explicit SpriteInfo(TextureID texture, u16 i);
+  
+  explicit SpriteInfo(LBXID lbx, u16 index) : data(lbx_flag_mask | (static_cast<u32>(lbx) << lbx_id_shift) | (index << lbx_index_shift)) { }
+  
+  bool isLBX() const { return data & lbx_flag_mask; }
+  
+  TextureID texture() const { return static_cast<TextureID>((data & texture_id_mask) >> texture_id_shift); }
+  
+  u16 x() const { return isLBX() ? 0 : (data & texture_x_mask) >> texture_x_shift; }
+  u16 y() const { return isLBX() ? 0 : (data & texture_y_mask) >> texture_y_shift; }
+  
+  LBXID lbx() const { return static_cast<LBXID>((data & lbx_id_mask) >> lbx_id_shift); }
+  u16 index() const { return (data & lbx_index_mask) >> lbx_index_shift; }
+  
+  u16 sw() const { return sheet()->sw(x(), y()); }
+  u16 sh() const { return sheet()->sh(x(), y()); }
+  
+  SpriteInfo relative(s16 offset) const { return SpriteInfo(lbx(), index()+offset); }
+  
+  const SpriteSheet* sheet() const;
+};
+
+struct ScreenCoord
+{
+  s16 x;
+  s16 y;
+  
+  ScreenCoord(s16 x, s16 y) : x(x), y(y) { }
+  bool operator==(const ScreenCoord& o) const { return x == o.x && y == o.y; }
+};
+
+using Coord = ScreenCoord;
 
 class Upkeep
 {

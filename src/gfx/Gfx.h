@@ -64,6 +64,7 @@ class Gfx
   static Color get(SDL_Surface* surface, u16 x, u16 y) { return static_cast<Color*>(surface->pixels)[x + y*surface->w]; }
   static void set(SDL_Surface* surface, u16 x, u16 y, Color color) { static_cast<Color*>(surface->pixels)[x + y*surface->w] = color; }
 
+  static const SpriteSheet* sheet(SpriteInfo info);
 
 public:
   static void init();
@@ -101,26 +102,21 @@ public:
 
   static void drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h, u16 r = 0, u16 c = 0);
 
-  static void drawGlow(const LBXSpriteInfo& sprite, s16 x, s16 y, s16 r, s16 c, School color);
-  static void drawGlow(const LBXSpriteInfo& sprite, s16 x, s16 y, School color) { drawGlow(sprite, x, y, 0, 0, color); }
-  static void drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School color);
-  static void drawGlow(TextureID texture, s16 x, s16 y, s16 i, School school);
-  static void drawGlow(const SpriteInfo& info, s16 x, s16 y, School school);
+  static void draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r = 0, u16 c = 0);
+  static void draw(SpriteInfo info, s16 x, s16 y, u16 r = 0, u16 c = 0) { draw(info.sheet(), x, y, info.x(), info.y()); }
   
-  static void drawGrayScale(const SpriteInfo& info, s16 x, s16 y);
-  static void drawGrayScale(TextureID texture, u16 r, u16 c, u16 x, u16 y);
-  static void draw(const SpriteInfo& info, u16 x, u16 y);
-
+  static void drawGlow(SpriteInfo info, s16 x, s16 y, School color) { drawGlow(info.sheet(), x, y, info.x(), info.y(), color); }
+  static void drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School color);
+  
+  static void drawGrayScale(SpriteInfo info, s16 x, s16 y) { drawGrayScale(info.sheet(), info.x(), info.y(), x, y); }
+  static void drawGrayScale(const SpriteSheet* src, u16 r, u16 c, u16 x, u16 y);
+  
+  static void drawAnimated(SpriteInfo info, u16 x, u16 y, s16 offset = 0, s16 animFactor = 1);
+  
   static void rawDraw(TextureID texture, u16 r, u16 c, u16 x, u16 y);
   static void draw(TextureID texture, u16 x, u16 y);
   static void draw(TextureID texture, u16 i, u16 x, u16 y);
   static void draw(TextureID texture, u16 r, u16 c, s16 x, s16 y);
-
-  static void draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r = 0, u16 c = 0);
-  static void draw(const LBXSpriteInfo& info, s16 x, s16 y, u16 r = 0, u16 c = 0);
-
-  static void drawAnimated(LBXSpriteInfo info, u16 x, u16 y, s16 offset = 0, s16 animFactor = 1);
-  static void drawAnimated(TextureID texture, u16 r, u16 x, u16 y, s16 offset);
 
   static u16 upTo(const std::vector<u16>& ws, u16 i) { u16 r = 0; for (u16 j = 0; j < i; ++j) r += ws[j]; return r; }
 

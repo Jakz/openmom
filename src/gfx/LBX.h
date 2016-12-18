@@ -181,13 +181,15 @@ namespace lbx
     static const LBXFile& loadLBX(LBXID ident);
     static const LBXFile& holderForID(LBXID ident) { return file(ident); }
     
-    static bool shouldAllocateSprite(const LBXSpriteInfo& info) { return file(info.lbx).sprites[info.index] == nullptr; }
+    static bool shouldAllocateSprite(SpriteInfo info) { return file(info.lbx()).sprites[info.index()] == nullptr; }
     
-    static const LBXSpriteData* loadLBXSpriteData(const LBXSpriteInfo& info);
+    static const LBXSpriteData* loadLBXSpriteData(SpriteInfo info);
     static const LBXArrayData* loadLBXArrayData(const LBXFile& lbx, size_t index);
     
-    static const LBXSpriteData* spriteFor(const LBXSpriteInfo& info) {   
-      const LBXSpriteData* sprite = file(info.lbx).sprites[info.index];
+    static const LBXSpriteData* spriteFor(SpriteInfo info) {
+      assert(static_cast<u32>(info.lbx()) < LBX_COUNT);
+      
+      const LBXSpriteData* sprite = file(info.lbx()).sprites[info.index()];
       
       if (!sprite)
         sprite = loadLBXSpriteData(info);
