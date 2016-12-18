@@ -55,9 +55,39 @@ unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
 
 map<const City*, CityLayout*> CityLayout::layouts;
 
+/*
+ 4x4  4x4  3x4  4x4
+ 2x3s 4x3  3x3c 4x3  2x2
+ 4x4  3x4  4x4  3x4
+ */
+static const CityLayout::LayoutZone zone_coords[] = {
 
-static constexpr s16 river_and_ocean_tiles[2][PLANE_COUNT] = { {3, 4}, {115, 116} };
+  CityLayout::LayoutZone( 30, 129, 4, 4),
+  CityLayout::LayoutZone( 78, 129, 4, 4),
+  CityLayout::LayoutZone(126, 129, 3, 4),
+  CityLayout::LayoutZone(164, 129, 4, 4),
+  
+  CityLayout::LayoutZone( 27, 152, 2, 3, false, true),
+  CityLayout::LayoutZone( 55, 152, 4, 3),
+  CityLayout::LayoutZone(103, 152, 3, 3, true, false),
+  CityLayout::LayoutZone(141, 152, 4, 3),
+  CityLayout::LayoutZone(185, 157, 2, 2),
+  
+  CityLayout::LayoutZone( 37, 170, 4, 4),
+  CityLayout::LayoutZone( 85, 170, 3, 4),
+  CityLayout::LayoutZone(123, 170, 4, 4),
+  CityLayout::LayoutZone(172, 170, 3, 4)
+};
 
+//static constexpr size_t total_zones = 4*4 + 4*4 + 3*4 + 4*4 + 2*3 + 4*3 + 3*3 + 4*3 + 2*2 + 4*4 + 3*4 + 4*4 + 3*4;
+
+/* TODO: zones change according to city size as a smaller city doesn't have some road intersections */
+const std::vector<CityLayout::LayoutZone> CityLayout::getZones(const City* city)
+{
+  return std::vector<CityLayout::LayoutZone>(begin(zone_coords), end(zone_coords));
+}
+
+static constexpr lbx_index river_and_ocean_tiles[2][PLANE_COUNT] = { {3, 4}, {115, 116} };
 
 void CityLayout::draw(const City *city, LocalPlayer *player)
 {
@@ -83,14 +113,6 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
   
   const CityLayout* layout = layouts[city];
   
-  for (auto &p : layout->positions)
-  {
-    if (p.building)
-      drawBuilding(p.building, p.x, p.y);
-    else
-      Gfx::draw(TextureID::CITY_HOUSES, ht, p.house, p.x, p.y - Texture::get(TextureID::CITY_HOUSES)->sh());
-  }
-  
   if (city->hasPlacement(CITY_BY_SEA))
     Gfx::drawAnimated(LBXSpriteInfo(LBXID::CITYSCAP, river_and_ocean_tiles[city->getPosition().plane][1]), 4, 100);
   else if (!city->hasPlacement(CITY_BY_SEA) && city->hasPlacement(CITY_BY_RIVER))
@@ -102,6 +124,14 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
     Gfx::drawAnimated(TextureID::CITY_WALLS, 0, 3, 183, 0);
   /*if (c->hasSpell(Spells::WALL_OF_DARKNESS))   TODO MISSING SPELL
   Gfx::drawAnimated(TextureID::CITY_WALLS, 3, 3, 183, 0);*/
+  
+  for (auto &p : layout->positions)
+  {
+    if (p.building)
+      drawBuilding(p.building, p.x, p.y);
+    else
+      Gfx::draw(TextureID::CITY_HOUSES, ht, p.house, p.x, p.y - Texture::get(TextureID::CITY_HOUSES)->sh());
+  }
 }
 
 s16 CityLayout::buildingHeight(const Building *building)
@@ -138,7 +168,7 @@ void CityLayout::drawBuildingCentered(const Building *building, s16 x, s16 y)
 void CityLayout::deploy()
 {
   positions.clear();
-  zones = getZones();
+  zones = getZones(city);
   
   set<const Building*> buildings;
   
@@ -190,7 +220,7 @@ void CityLayout::deploy()
   }
   
   // TODO: lower when building amount increases
-  int houses = 50 + Util::randomIntUpTo(10);
+  int houses = 20 + Util::randomIntUpTo(10);
   for (int i = 0; i < houses; ++i)
   {
     zone_iterator zone = Util::randomElementIterator(zones);
@@ -202,10 +232,16 @@ void CityLayout::deploy()
 
 CityLayout::LayoutPosition CityLayout::createPosition(const LayoutZone& zone, s16 ox, s16 oy, const Building *building)
 {
+  int sx = zone.x + ox;
+  int sy = zone.y + oy + (building ? (specs[building].depth) - 1 : 0);
+  
+  int fx = zone.coords.x + sx*U*2 - sy*U;
+  int fy = zone.coords.y + sy*U;
+  
   if (building)
-    return LayoutPosition(zone.x + ox*U*2 - oy*U - (specs[building].depth-1)*U, zone.y + oy*U + (specs[building].depth-1)*U, building);
+    return LayoutPosition(fx, fy, building);
   else
-    return LayoutPosition(zone.x + ox*U*2 - oy*U, zone.y + oy*U, Util::randomIntUpTo(5));
+    return LayoutPosition(fx, fy, Util::randomIntUpTo(5));
 }
 
 const vector<CityLayout::LayoutZone> CityLayout::findSuitable(const Building* building)
@@ -221,8 +257,11 @@ void CityLayout::placeAndSplit(const Building *b, zone_iterator it)
   s16 bh = b ? specs[b].depth : 1;
   
   LayoutZone z = *it;
-  zones.erase(it);
   positions.push_back(createPosition(z,0,0,b));
+  zones.erase(it);
+  
+  LOGD2("[city-scape] placing at (%u,%u), size (%u,%u)", z.x, z.y, bw, bh);
+  LOGD2("[city-scape]   splitting zone at (%u,%u), offset: (%u,%u), size: (%u,%u)", z.coords.x, z.coords.y, z.x, z.y, z.w, z.h);
 
   if (bw == z.w && bh == z.h)
     /* do nothing, there's no need to split */;
@@ -233,18 +272,27 @@ void CityLayout::placeAndSplit(const Building *b, zone_iterator it)
        XXZ ->   U
        XXZ      U
      */
-    zones.emplace_back(z.x + bw * U*2, z.y, z.w - bw, bh);
-    zones.emplace_back(z.x - bh * U, z.y + bh * U, z.w, z.h - bh);
-    zones.emplace_back(z.x + bw * U*2 - bh * U, z.y + bh * U, z.w - bw, z.h - bh);
+    LOGD2("[city-scape]    into offset: (%u,%u), size: (%u,%u)", z.x + bw, z.y, z.w - bw, bh);
+    LOGD2("[city-scape]         offset: (%u,%u), size: (%u,%u)", z.x, z.y + bh, bw, z.h - bh);
+    LOGD2("[city-scape]         offset: (%u,%u), size: (%u,%u)", z.x + bw, z.y + bh, z.w - bw, z.h - bh);
+
+    
+    zones.emplace_back(z.coords, z.x + bw, z.y, z.w - bw, bh);
+    zones.emplace_back(z.coords, z.x, z.y + bh, bw, z.h - bh);
+    zones.emplace_back(z.coords, z.x + bw, z.y + bh, z.w - bw, z.h - bh);
   }
   else if (z.w > bw)
   {
-    zones.emplace_back(z.x + bw*U*2, z.y, z.w - bw, z.h);
+    LOGD2("[city-scape]    into offset: (%u,%u), size: (%u,%u)", z.x + bw, z.y, z.w - bw, z.h);
+    zones.emplace_back(z.coords, z.x + bw, z.y, z.w - bw, z.h);
   }
-  else if (z.y > bh)
+  else if (z.h > bh)
   {
-    zones.emplace_back(z.x + bw*U*2 - bh*U, z.y + bh*U, z.h, z.h - bh);
+    LOGD2("[city-scape]    into offset: (%u,%u), size: (%u,%u)", z.x, z.y + bh , z.w, z.h - bh);
+    zones.emplace_back(z.coords, z.x, z.y + bh, z.w, z.h - bh);
   }
+  
+  LOGD2("[city-scape] free zones: %zu", zones.size())
 }
 
 

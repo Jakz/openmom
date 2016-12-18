@@ -6,10 +6,16 @@
 #include "SDL.h"
 
 #ifdef DEBUG
-extern void debugprintf(const char* str, ...);
-#define LOGD(...) debugprintf(__VA_ARGS__);
+  extern void debugprintf(const char* str, ...);
+  #define LOGD(...) debugprintf(__VA_ARGS__);
+
+  #if DEBUG == 2
+    #define LOGD2(...) debugprintf(__VA_ARGS__);
+  #else
+    #define LOGD2(...) do { } while (false);
+  #endif
 #else
-#define LOGD(...) do { } while (false); 
+  #define LOGD(...) do { } while (false);
 #endif
 
 #define WIDTH (320)
@@ -25,6 +31,8 @@ typedef int32_t s32;
 typedef int64_t s64;
 
 typedef u32 Color;
+
+using lbx_index = s16;
 
 constexpr Color RGB(u32 r, u32 g, u32 b) { return 0xFF000000 | (r << 16) | (g << 8) | b; }
 constexpr Color RGB16(u32 r, u32 g, u32 b) { return RGB(r<<2, g<<2, b<<2); }
@@ -200,6 +208,7 @@ struct ScreenCoord
   s16 y;
   
   ScreenCoord(s16 x, s16 y) : x(x), y(y) { }
+  bool operator==(const ScreenCoord& o) const { return x == o.x && y == o.y; }
 };
 
 using Coord = ScreenCoord;

@@ -65,23 +65,26 @@ private:
     LayoutPosition(s16 x, s16 y, const Building* building) : x(x), y(y), building(building) { }
     LayoutPosition(s16 x, s16 y, u8 house) : x(x), y(y), house(house), building(nullptr) { }
     
-    bool operator<(const LayoutPosition &rhs) const { return y < rhs.y; }
-
+    bool operator==(const LayoutPosition& rhs) const { return y == rhs.y && x == rhs.x; }
+    bool operator<(const LayoutPosition& rhs) const { return y == rhs.y ? (x < rhs.x) : (y < rhs.y); }
   };
 
 public:
   struct LayoutZone
   {
-    s16 w, h;
+    ScreenCoord coords;
     s16 x, y;
+    s16 w, h;
+    
     bool central, seaside;
     
-    LayoutZone() { }
-    LayoutZone(s16 x, s16 y, s16 w, s16 h, bool central = false, bool seaside = false) : x(x), y(y), w(w), h(h), central(central), seaside(seaside) { }
+    LayoutZone() : coords(0,0) { }
+    LayoutZone(ScreenCoord coords, s16 x, s16 y, s16 w, s16 h, bool central = false, bool seaside = false) : coords(coords), x(x), y(y), w(w), h(h), central(central), seaside(seaside) { }
+    LayoutZone(s16 x, s16 y, s16 w, s16 h, bool central = false, bool seaside = false) : coords(x,y), x(0), y(0), w(w), h(h), central(central), seaside(seaside) { }
     
     bool operator==(const LayoutZone& z2) const
     {
-      return w == z2.w && h == z2.h && y == z2.y && y == z2.y;
+      return coords == z2.coords && w == z2.w && h == z2.h && x == z2.x && y == z2.y;
     }
     
   };
@@ -119,38 +122,11 @@ public:
   
   void deploy();
   
-  private:
-    LayoutPosition createPosition(const LayoutZone& zone, s16 ox, s16 oy, const Building* building);
-    const std::vector<LayoutZone> findSuitable(const Building* building);
-    void placeAndSplit(const Building* building, zone_iterator zone);
-  
-
-    const std::vector<LayoutZone> getZones() {
-     return
-      {
-        /*
-           4x4  4x4  3x4  4x4
-           2x3s 4x3  3x3c 4x3  2x2
-                4x4  3x4  4x4  3x4
-         */
-        
-        LayoutZone(30,129,4,4),
-        LayoutZone(78,129,4,4),
-        LayoutZone(126,129,3,4),
-        LayoutZone(164,129,4,4),
-        
-        LayoutZone(27,152,2,3,false,true),
-        LayoutZone(55,152,4,3),
-        LayoutZone(103,152,3,3,true,false),
-        LayoutZone(141,152,4,3),
-        LayoutZone(185,157,2,2),
-        
-        LayoutZone(37,170,4,4),
-        LayoutZone(85,170,3,4),
-        LayoutZone(123,170,4,4),
-        LayoutZone(172,170,3,4),
-      };
-    }
+private:
+  LayoutPosition createPosition(const LayoutZone& zone, s16 ox, s16 oy, const Building* building);
+  const std::vector<LayoutZone> findSuitable(const Building* building);
+  void placeAndSplit(const Building* building, zone_iterator zone);
+  const std::vector<LayoutZone> getZones(const City* city);
 };
 
 #endif

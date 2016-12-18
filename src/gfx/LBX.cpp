@@ -253,7 +253,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
   fseek(in, offset, SEEK_SET);
   LBXGfxHeader gfxHeader;
   fread(&gfxHeader, sizeof(LBXGfxHeader), 1, in);
-  LOGD("  WxH: %dx%d, COUNT: %d, PALETTE: %d", gfxHeader.width, gfxHeader.height, gfxHeader.count, gfxHeader.paletteOffset);
+  LOGD("[lbx]  WxH: %dx%d, COUNT: %d, PALETTE: %d", gfxHeader.width, gfxHeader.height, gfxHeader.count, gfxHeader.paletteOffset);
   
   LBXOffset *frameOffsets = new LBXOffset[gfxHeader.count+1];
   fread(frameOffsets, sizeof(LBXOffset), gfxHeader.count+1, in);
@@ -272,7 +272,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
     fseek(in, offset+gfxHeader.paletteOffset, SEEK_SET);
     
     fread(&paletteHeader, sizeof(LBXPaletteHeader), 1, in);
-    LOGD("  PALETTE AT OFFSET %d, COUNT %d STARTING AT %d", paletteHeader.offset, paletteHeader.count, paletteHeader.firstIndex);
+    LOGD("[lbx]  PALETTE AT OFFSET %d, COUNT %d STARTING AT %d", paletteHeader.offset, paletteHeader.count, paletteHeader.firstIndex);
     
     fseek(in, offset+paletteHeader.offset, SEEK_SET);
     for (int i = 0; i < paletteHeader.count; ++i)
@@ -300,7 +300,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
     fseek(in, offset+frameOffsets[i], SEEK_SET);
     u8* data = new u8[dataSize];
     fread(data, sizeof(u8), dataSize, in);
-    LOGD("    FRAME %d AT OFFSET %d (SIZE: %d)", i, frameOffsets[i], dataSize);
+    LOGD("[lbx]    FRAME %d AT OFFSET %d (SIZE: %d)", i, frameOffsets[i], dataSize);
     
     // copy previous frame into current
     if (i > 0)
@@ -327,7 +327,7 @@ void LBX::scanFileNames(const FileInfo& info, string_list& names, FILE *in)
   //int i = 25;
   for (int i = 0; i < header.count; ++i)
   {
-    printf("> (%d) %s/%s (%u %08X)\n", i, names[i].folder, names[i].name, offsets[i], offsets[i]);
+    printf("[lbx]   > (%d) %s/%s (%u %08X)\n", i, names[i].folder, names[i].name, offsets[i], offsets[i]);
     //scanGfx(header, offsets[i], in);
   }
 }
@@ -352,7 +352,7 @@ static const u16 FONT_CHAR_NUM = 0x5E;
 
 void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
-  LOGD("Loading %u fonts from fonts.lbx", FONT_NUM)
+  LOGD("[lbx] loading %u fonts from fonts.lbx", FONT_NUM)
   
   // position to start of character heights resource
   fseek(in, offsets[0] + 0x16A, SEEK_SET);
@@ -500,7 +500,7 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
       FontData::fonts[i]->setGlyphWidth(j, widths[i][j]);
     }
     
-    LOGD("Loading font %u, size: %ux%u, colors: %u", i, width-2, heights[i], maxColor)
+    LOGD("[lbx] loading font %u, size: %ux%u, colors: %u", i, width-2, heights[i], maxColor)
   }
 }
 
