@@ -163,6 +163,8 @@ enum class LBXID : u16
   COUNT
 };
 
+#define LBXI(x, y) (0x80000000 | (static_cast<u32>(LBXID::x) << 16) | (y))
+#define LBXU(x) SpriteInfo(x)
 #define LSI(x, y) SpriteInfo(LBXID::x, y)
 #define TSI(x, y, z) SpriteInfo(TextureID::x, y, z)
 #define TSIS(x, y) SpriteInfo(TextureID::x, y)
@@ -240,6 +242,8 @@ private:
   };
   
 public:
+  SpriteInfo(decltype(data) data) : data(data) { }
+  
   explicit SpriteInfo(TextureID texture, s8 x, s8 y) : data((static_cast<u32>(texture) << texture_id_shift) | (x << texture_x_shift) | (y << texture_y_shift)) { assert(x >= 0 && y >= 0); }
   explicit SpriteInfo(TextureID texture, u16 i);
   

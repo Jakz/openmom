@@ -21,15 +21,25 @@
 #include "UnitSpec.h"
 #include "Unit.h"
 
-UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr)
+static const ScreenCoord normalBaseCoords = ScreenCoord(31, 6);
+
+enum lbx_indices
+{
+  full_unit_backdrop = LBXI(UNITVIEW, 1),
+  buttons_backdrop = LBXI(UNITVIEW, 2),
+  
+  hero_portrait_border = LBXI(UNITVIEW, 33)
+};
+
+UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mode(Mode::NORMAL), c(normalBaseCoords)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[DISMISS] = TristateButton::build("Dismiss", 253, 149, TextureID::UNIT_DETAIL_BUTTONS, 0); // TODO: action
-  buttons[OK] = TristateButton::build("Ok", 253, 168, TextureID::UNIT_DETAIL_BUTTONS, 1)->setAction([gvm](){gvm->closeOverview();});
+  buttons[DISMISS] = TristateButton::build("Dismiss", 0, 0, TextureID::UNIT_DETAIL_BUTTONS, 0); // TODO: action
+  buttons[OK] = TristateButton::build("Ok", 0, 0, TextureID::UNIT_DETAIL_BUTTONS, 1)->setAction([gvm](){gvm->closeOverview();});
   
-  buttons[UP_ARROW] = TristateButton::build("Up", 235, 110, TextureID::UNIT_DETAIL_SKILL_ARROWS, 0)->setAction([](){SkillDraw::i.prevPage();});
-  buttons[DOWN_ARROW] = TristateButton::build("Down", 235, 174, TextureID::UNIT_DETAIL_SKILL_ARROWS, 1)->setAction([](){SkillDraw::i.nextPage();});
+  buttons[UP_ARROW] = TristateButton::build("Up", 0, 0, TextureID::UNIT_DETAIL_SKILL_ARROWS, 0)->setAction([this](){skillDraw.prevPage();});
+  buttons[DOWN_ARROW] = TristateButton::build("Down", 0, 0, TextureID::UNIT_DETAIL_SKILL_ARROWS, 1)->setAction([this](){skillDraw.nextPage();});
   
   /*for (int i = 0; i < 8; ++i)
    {
@@ -47,50 +57,71 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr)
    areas.get(7).setAction(new Action() { public void execute() { SkillDraw.openHelpForSkill(unit, 7); } });*/
 }
 
+void UnitDetailView::switchMode(Mode mode)
+{
+  this->mode = mode;
+  this->c = normalBaseCoords;
+  
+  /* adjust button positions according to mode */
+  buttons[DISMISS]->setPosition(c.x + 222, c.y + 143);
+  buttons[OK]->setPosition(c.x + 222, c.y + 162);
+  buttons[UP_ARROW]->setPosition(c.x + 205, c.y + 104);
+  buttons[DOWN_ARROW]->setPosition(c.x + 205, c.y + 168);
+}
+
 void UnitDetailView::draw()
 {
-  Gfx::draw(TextureID::UNIT_DETAIL_BACKDROP, 31, 6);
-  Gfx::draw(TextureID::UNIT_DETAIL_BACKDROP_BUTTONS, 244, 139);
+  Gfx::draw(full_unit_backdrop, c.x, c.y);
+  Gfx::draw(buttons_backdrop, c.x + 213, c.y + 133);
   
-  //TODO: localize
-  Fonts::drawString("Moves", FontFaces::Small::TEAL, 81, 32, ALIGN_LEFT);
-  Fonts::drawString("Upkeep", FontFaces::Small::TEAL, 81, 39, ALIGN_LEFT);
+  //TODO: font has full teal stroke
+  Fonts::drawString(i18n::s(I18::UI_UNIT_DETAIL_MOVES), FontFaces::Small::TEAL, c.x + 50, c.y +26, ALIGN_LEFT);
+  Fonts::drawString(i18n::s(I18::UI_UNIT_DETAIL_UPKEEP), FontFaces::Small::TEAL, c. x +50, c.y + 33, ALIGN_LEFT);
   
   /* TODO: per ora non gestisce i modificatori dell'unità tipo xp o vari spell, va gestito con un metodo diverso visto che drawUnitProps usa solo la spec
    * e viene usato anche dal production view
    */
-  CommonDraw::drawUnitPropsComplete(unit, 82, 53, 15);
+  CommonDraw::drawUnitPropsComplete(unit, c.x + 51, c.y + 47, 15);
   
   // draw isometric version of the unit, if it's an hero use its portrait
   if (unit->type() != Productable::Type::HERO)
-    UnitDraw::drawUnitIso(&unit->spec, 36, 11, unit);
+    UnitDraw::drawUnitIso(&unit->spec, c.x + 6, c.y + 5, unit);
   else
   {
-    Gfx::draw(TextureID::UNIT_DETAIL_HERO_BACKDROP, 0, 0, 39, 12);
-    UnitDraw::drawHeroPortrait(static_cast<Hero*>(unit), 40, 13);
+    Gfx::draw(hero_portrait_border, c.x + 8, c.y + 6);
+    UnitDraw::drawHeroPortrait(static_cast<Hero*>(unit), c.x + 9, c.y + 7);
   }
   
   // draw unit name
-  Fonts::drawString(unit->name(), FontFaces::Serif::TEAL, 81, 16, ALIGN_LEFT);
+  Fonts::drawString(unit->name(), FontFaces::Serif::TEAL, c.x + 50, c.y + 10, ALIGN_LEFT);
   
   // draw skill pane, first check if buttons to change page are needed and display them
-  buttons[UP_ARROW]->showIf(SkillDraw::i.showTopArrow());
-  buttons[DOWN_ARROW]->showIf(SkillDraw::i.showBottomArrow());
+  buttons[UP_ARROW]->showIf(skillDraw.showTopArrow());
+  buttons[DOWN_ARROW]->showIf(skillDraw.showBottomArrow());
   
   // then draw currently visible skills
-  SkillDraw::i.draw(unit);
+  skillDraw.draw(unit);
   
   // draw upkeep cost of the unit and movement
   Upkeep uk = unit->upkeep();
   
   /* TODO: cambiare immagine in base al tipo di movimento */
   // TODO: should it be getProperty and not getBaseProperty?
-  CommonDraw::drawMovement(unit->getBaseProperty(Property::MOVEMENT), 118, 32, 0);
-  CommonDraw::drawUpkeep(uk, 117, 39);
+  CommonDraw::drawMovement(unit->getBaseProperty(Property::MOVEMENT), c.x + 87, c.y + 26, 0);
+  CommonDraw::drawUpkeep(uk, c.x + 86, c.y + 33);
+}
+
+void UnitDetailView::setHeroHire(Hero* hero, u32 cost)
+{
+  this->hireCost = cost;
+  this->unit = hero;
+  switchMode(Mode::HERO_HIRE);
+  skillDraw.reset(unit);
 }
 
 void UnitDetailView::setUnit(Unit *unit)
 {
   this->unit = unit;
-  SkillDraw::i.reset(unit);
+  switchMode(Mode::NORMAL);
+  skillDraw.reset(unit);
 }

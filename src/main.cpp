@@ -11,6 +11,11 @@
 #include "Font.h"
 #include "LBX.h"
 
+#include "UnitDetailView.h"
+
+//#include "Platform.h"
+//#include "yaml-cpp/yaml.h"
+
 /*
  Combat
  CombatAIThread
@@ -40,6 +45,16 @@ void init()
 
 int main(int argc, char * arg[])
 {
+  /*YAML::Node file = YAML::LoadFile(Platform::instance()->getResourcePath()+"/data/yaml/test.yaml");
+  
+  auto skills = file["skills"];
+  
+  for (auto skill : skills)
+  {
+    std::cout << skill["name"] << std::endl;
+  }*/
+  
+  
   lbx::Repository::init();
   lbx::Repository::loadLBX(LBXID::ARMYLIST);
   lbx::Repository::loadLBX(LBXID::BACKGRND);
@@ -53,6 +68,7 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::ITEMS);
   lbx::Repository::loadLBX(LBXID::MAGIC);
   lbx::Repository::loadLBX(LBXID::PORTRAIT);
+  lbx::Repository::loadLBX(LBXID::UNITVIEW);
   lbx::LBX::load();
   FontFaces::buildFonts();
   //return 0;
@@ -75,10 +91,15 @@ int main(int argc, char * arg[])
   
   //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
 
-  //SDL::gvm->switchView(VIEW_MAIN);
+  SDL::gvm->switchView(VIEW_MAIN);
 
   //SDL::gvm->switchView(VIEW_ITEM_CRAFT);
-  SDL::gvm->switchView(VIEW_COMBAT);
+  
+  Unit* unit = new Hero(*UnitSpec::heroSpec(UnitID::HERO_DWARF));
+  SDL::gvm->unitDetailView()->setUnit(unit);
+  SDL::gvm->switchOverview(VIEW_UNIT);
+  
+  //SDL::gvm->switchView(VIEW_COMBAT);
   //SDL::gvm->switchView(VIEW_LBX);
   
   SDL::loop();

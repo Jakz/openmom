@@ -155,13 +155,10 @@ const Texture Texture::textures[] =
   
   // units ,not combat related sprites)
   
-  Texture(TextureID::UNIT_DETAIL_BACKDROP,"units/static/detail-backdrop.png",1,1,218,183),
-  Texture(TextureID::UNIT_DETAIL_BACKDROP_BUTTONS,"units/static/detail-buttons-backdrop.png",1,1,68,50),
   Texture(TextureID::UNIT_DETAIL_SKILL_ARROWS,"units/static/skill-pane-arrows.png",2,2,9,10),
   Texture(TextureID::UNIT_DETAIL_BUTTONS,"units/static/detail-buttons.png",2,3, {49,49,49},12),
   Texture(TextureID::UNIT_DETAIL_SPECIAL_THINGS,"units/special-things.png",1,1,73,33), // contiene anche mirino minimap
   Texture(TextureID::UNIT_DETAIL_TARGET,"units/static/target-backdrop.png",1,1,238,200),
-  Texture(TextureID::UNIT_DETAIL_HERO_BACKDROP,"units/static/hero-detail-background.png",1,2,34,34),
   Texture(TextureID::UNIT_DETAIL_MOVEMENT,"units/movement.png",1,3,7,6),
   Texture(TextureID::UNIT_DETAIL_PROPS,"units/props.png",2,12,9,8),
   Texture(TextureID::UNIT_DETAIL_PROPS_EMPTY,"units/props-empty.png",1,12,9,8),

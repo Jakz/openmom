@@ -284,15 +284,6 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
     }
   }
   
-  // fix palette colors
-  for (int i = 0; i < 256; ++i)
-  {
-    if (palette[i] == 0xFFA0A0B4 || palette[i] == 0xFF8888A4)
-      palette[i] = BLACK_ALPHA; //palette[i] = 0x80000000;
-    else if (i == 0)
-      palette[i] = TRANSPARENT; //palette[i] = 0x00000000;
-  }
-  
   for (int i = 0; i < gfxHeader.count; ++i)
   {
     u32 dataSize = frameOffsets[i+1] - frameOffsets[i];
@@ -309,6 +300,16 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
     scanGfxFrame(gfxHeader, paletteHeader, i, sprite->data[i], data, dataSize);
     
     delete [] data;
+  }
+  
+  // fix palette colors
+  //TODO: if frame doesn't have transparent pixel then use defaul palette without override
+  for (int i = 0; i < 256; ++i)
+  {
+    if (palette[i] == 0xFFA0A0B4 || palette[i] == 0xFF8888A4)
+      palette[i] = BLACK_ALPHA; //palette[i] = 0x80000000;
+    else if (i == 0)
+      palette[i] = TRANSPARENT; //palette[i] = 0x00000000;
   }
   
   return sprite;

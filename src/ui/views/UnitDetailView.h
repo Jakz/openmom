@@ -10,6 +10,7 @@
 #define _UNIT_DETAIL_VIEW_H_
 
 #include "View.h"
+#include "SkillDraw.h"
 
 class ViewManager;
 
@@ -20,18 +21,35 @@ class UnitDetailView : public View
 private:
   enum Button
   {
-    DISMISS,
-    OK,
+
     UP_ARROW,
     DOWN_ARROW,
+    
+    HERO_HIRE,
+    HERO_REJECT,
+    
+    DISMISS,
+    OK,
     
     BUTTON_COUNT
   };
   
+  enum class Mode
+  {
+    NORMAL,
+    HERO_HIRE
+  } mode;
+  
+  SkillDraw skillDraw;
+  ScreenCoord c;
+  
   Unit* unit;
+  u32 hireCost;
   
   void draw() override;
   void drawPost() override { }
+  
+  void switchMode(Mode mode);
   
 public:
   UnitDetailView(ViewManager* gvm);
@@ -39,6 +57,7 @@ public:
   void activate() override { }
   void deactivate() override { }
   
+  void setHeroHire(Hero* hero, u32 cost);
   void setUnit(Unit* unit);
 };
 

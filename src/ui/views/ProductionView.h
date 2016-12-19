@@ -10,6 +10,7 @@
 #define _PRODUCTION_VIEW_H_
 
 #include "View.h"
+#include "SkillDraw.h"
 
 #include <list>
 #include <string>
@@ -25,12 +26,13 @@ private:
   
   enum Side : u8 { SIDE_LEFT, SIDE_RIGHT };
   
+  
   City* city;
   std::list<const Productable*> left, right;
   s16 selected;
   Side which;
   std::string unlockedProductableString;
-  
+  SkillDraw skillDraw;
   
   void draw() override;
   void drawPost() override { }

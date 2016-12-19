@@ -5,8 +5,6 @@
 #include "Localization.h"
 #include "Items.h"
 
-SkillDraw SkillDraw::i;
-
 void SkillDraw::openHelpForSkill(const Unit* unit, int i)
 {
   // TODO

@@ -22,6 +22,11 @@
 
 using namespace std;
 
+enum lbx_indices
+{
+  hero_gold_portrait = LBXI(ARMYLIST, 6)
+};
+
 ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
@@ -48,7 +53,7 @@ void ArmiesItemsView::draw()
     // TODO: real colors
     Fonts::drawString(hero->name(), FontFaces::Small::YELLOW, heroPositions[i][0]+35, heroPositions[i][1]-2, ALIGN_LEFT);
     
-    Gfx::draw(TextureID::UNIT_DETAIL_HERO_BACKDROP, 0, 1, heroPositions[i][0]-1, heroPositions[i][1]-1);
+    Gfx::draw(hero_gold_portrait, heroPositions[i][0]-1, heroPositions[i][1]-1);
     UnitDraw::drawHeroPortrait(hero, heroPositions[i][0], heroPositions[i][1]);
     
     for (int j = 0; j < Item::MAX_SLOTS; ++j)

@@ -27,18 +27,20 @@ constexpr int FIRST_TABLE_WIDTH = 200;
 constexpr int NUMERIC_COLUMN_WIDTH = 40;
 constexpr int SECOND_TABLE_WIDTH = 320;
 constexpr int WINDOW_HEIGHT = 800;
-constexpr int WINDOW_WIDTH = 1920;
+constexpr int WINDOW_WIDTH = 1024;
 constexpr int ROW_HEIGHT = 12;
 
 class MyWindow;
 class LBXTable;
-class AnimatedCheckbox;
+class MyCheckbox;
 class SpriteTable;
 class PreviewWidget;
 
 MyWindow *mywindow = nullptr;
 LBXTable *tableLbx;
-AnimatedCheckbox *animatedCheckbox;
+MyCheckbox *animatedCheckbox;
+MyCheckbox* defaultPaletteCheckbox;
+MyCheckbox* doubleScaleCheckbox;
 Fl_Table *tableSprites;
 
 size_t ticks = 0;
@@ -62,12 +64,12 @@ PreviewWidget* preview = nullptr;
 const LBXFile* currentLBX = nullptr;
 
 
-class AnimatedCheckbox : public Fl_Check_Button
+class MyCheckbox : public Fl_Check_Button
 {
 private:
   
 public:
-  AnimatedCheckbox() : Fl_Check_Button(FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+5, WINDOW_HEIGHT - 20, 100, 20, "animated") { }
+  MyCheckbox(const char* label, int x, int y) : Fl_Check_Button(x, y, 100, 20, label) { }
   
   int handle(int event) override
   {
@@ -115,7 +117,7 @@ public:
       {
         const size_t spriteIndex = isAnimated ? ((ticks/5)%sprite->count) : i;
         const int w = sprite->width, h = sprite->height;
-        constexpr int S = 2;
+        int S = doubleScaleCheckbox->isToggled ? 2 : 2;
         
         //printf("DRAW %d %d\n", w, h);
         
@@ -134,7 +136,7 @@ public:
             /*constexpr int DELTA = 256 - 32;
             if (index < DELTA)*/
             {
-              pixel = sprite->palette->get(index);
+              pixel = defaultPaletteCheckbox->isToggled ? Gfx::PALETTE[index] : sprite->palette->get(index);
             }
             /*else
             {
@@ -511,7 +513,10 @@ int main(int argc, char **argv) {
   
   tableLbx = new LBXTable();
   tableSprites = new SpriteTable();
-  animatedCheckbox = new AnimatedCheckbox();
+  doubleScaleCheckbox = new MyCheckbox("double scale", FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+5, WINDOW_HEIGHT - 20);
+  animatedCheckbox = new MyCheckbox("animated", FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+5 + 100, WINDOW_HEIGHT - 20);
+  defaultPaletteCheckbox = new MyCheckbox("default palette", FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+5 + 200, WINDOW_HEIGHT - 20);
+
   
   mywindow->end();
   mywindow->show(argc, argv);

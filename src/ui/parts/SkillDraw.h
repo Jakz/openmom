@@ -45,8 +45,6 @@ public:
   void drawSkill(s16 index, s16 sprite, const std::string& text, s16 sx, s16 sy);
   void draw(const Unit* unit);
   void draw(const UnitSpec* spec);
-  
-  static SkillDraw i;
 };
 
 #endif

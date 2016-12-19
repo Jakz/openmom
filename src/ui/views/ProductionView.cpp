@@ -83,7 +83,7 @@ void ProductionView::draw()
     CommonDraw::drawUnitProps(spec, 128, 47, 10);
     Fonts::drawString(Fonts::format("Cost %u(%u)", cost, cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
     
-    SkillDraw::i.draw(spec);
+    skillDraw.draw(spec);
   }
   
   Fonts::drawString(product->productionName(), FontFaces::Serif::TEAL, 128, 5, ALIGN_LEFT);

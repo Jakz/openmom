@@ -205,6 +205,9 @@ unordered_map<I18, string, enum_hash> i18n::data =
   {I18::RELATION_FRIENDLY, "Friendly"},
   {I18::RELATION_HARMONY, "Harmony"},
   
+  {I18::UI_UNIT_DETAIL_MOVES, "Moves"},
+  {I18::UI_UNIT_DETAIL_UPKEEP, "Upkeep"},
+  
   {I18::EMPTY, ""},
   {I18::PLACEHOLDER, "Placeholder"},
 };
