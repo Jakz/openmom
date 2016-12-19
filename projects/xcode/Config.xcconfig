@@ -1,5 +1,11 @@
+
+LIBS_PATH = ${PROJECT_DIR}/../../libs
+
 FRAMEWORK_SEARCH_PATHS = ${inherited} $(PROJECT_DIR)/../../Libs
-HEADER_SEARCH_PATHS = ${inherited} ${SRCROOT}/../../src ${SRCROOT}/../../libs/SDL2.framework/Headers ${SRCROOT}/../../libs/SDL2_image.framework/Headers
+LIBRARY_SEARCH_PATHS = ${PROJECT_DIR}/../../libs/yaml/lib/osx
+
+
+HEADER_SEARCH_PATHS = ${inherited} ${SRCROOT}/../../src ${LIBS_PATH}/SDL2.framework/Headers ${LIBS_PATH}/SDL2_image.framework/Headers ${LIBS_PATH}/yaml/include
 
 PRODUCT_NAME = $(TARGET_NAME)
 

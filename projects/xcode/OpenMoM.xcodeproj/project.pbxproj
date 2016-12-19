@@ -192,6 +192,7 @@
 		04E282CF1E023C0B00DD673D /* data in Resources */ = {isa = PBXBuildFile; fileRef = 04E282CD1E023BEB00DD673D /* data */; };
 		04E282D61E0242C000DD673D /* osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04E282D41E0242C000DD673D /* osx.mm */; };
 		04E282D71E0242C000DD673D /* osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04E282D41E0242C000DD673D /* osx.mm */; };
+		04EDF9341E0819C100739E86 /* libyaml-cpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04EDF9331E0819C100739E86 /* libyaml-cpp.a */; };
 		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
 		04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
 		04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE4592197C9D7A00EA0CC0 /* Items.cpp */; };
@@ -401,6 +402,7 @@
 		04E282CD1E023BEB00DD673D /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = ../../data; sourceTree = "<group>"; };
 		04E282D41E0242C000DD673D /* osx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = osx.mm; sourceTree = "<group>"; };
 		04E282D51E0242C000DD673D /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
+		04EDF9331E0819C100739E86 /* libyaml-cpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libyaml-cpp.a"; path = "../../libs/yaml/lib/osx/libyaml-cpp.a"; sourceTree = "<group>"; };
 		04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitSpec.cpp; sourceTree = "<group>"; };
 		04EE458D197C85C000EA0CC0 /* UnitSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitSpec.h; sourceTree = "<group>"; };
 		04EE458F197C92C400EA0CC0 /* GfxData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = GfxData.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -416,6 +418,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04EDF9341E0819C100739E86 /* libyaml-cpp.a in Frameworks */,
 				04879A781978385800313BC7 /* SDL2.framework in Frameworks */,
 				04879A411978374100313BC7 /* Cocoa.framework in Frameworks */,
 				04879A771978385800313BC7 /* SDL2_image.framework in Frameworks */,
@@ -765,6 +768,7 @@
 		04879A3F1978374100313BC7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04EDF9331E0819C100739E86 /* libyaml-cpp.a */,
 				04879A751978385800313BC7 /* SDL2_image.framework */,
 				04879A761978385800313BC7 /* SDL2.framework */,
 				04879A401978374100313BC7 /* Cocoa.framework */,
