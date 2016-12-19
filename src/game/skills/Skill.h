@@ -214,10 +214,10 @@ enum class SkillBase : u16
 
 class Skill
 {
-public:
+protected:
   Skill(SkillBase base) : base(base) { }
   
-  
+public:
   const SkillBase base;
 
   virtual const std::string name() const;
@@ -297,10 +297,6 @@ public:
     return std::find_if(skills.begin(), skills.end(), [&](const Skill* c) { return c->base == base; }) != skills.end();
   }
 };
-
-
-
-// ([A-Z_]+)\(([0-9+\-]+)\),   $1 = $2
 
 class Skills
 {
