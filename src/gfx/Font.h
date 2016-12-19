@@ -173,7 +173,7 @@ public:
   
   class Serif {
   public:
-    const static FontSpriteSheet *TEAL, *BROWN, *YELLOW_SHADOW, *GOLD_SHADOW, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
+    const static FontSpriteSheet *TEAL, *BROWN, *YELLOW_SHADOW, *GOLD_SHADOW, *GOLD, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
   };
   
   class Crypt {

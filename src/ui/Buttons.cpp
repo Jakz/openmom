@@ -37,7 +37,7 @@ void BistateButton::draw()
 {
   if (isVisible())
   {
-    const SpriteInfo &info = pressed ? pressedCoords : normalCoords;
+    SpriteInfo info = pressed ? pressedCoords : normalCoords;
     Gfx::draw(info, x, y);
   }
 }
@@ -46,7 +46,7 @@ void TristateButton::draw()
 {
   if (isVisible())
   {
-    const SpriteInfo &info = active ? (pressed ? pressedCoords : normalCoords) : inactiveCoords;
+    SpriteInfo info = active ? (pressed ? pressedCoords : normalCoords) : inactiveCoords;
     Gfx::draw(info, x, y);
   }
 }

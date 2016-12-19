@@ -312,6 +312,8 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
       palette[i] = TRANSPARENT; //palette[i] = 0x00000000;
   }
   
+  delete [] frameOffsets;
+  
   return sprite;
 }
 
@@ -445,7 +447,9 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
         else
         {
           color = low+3;
+#if DEBUG
           maxColor = std::max(low, maxColor);
+#endif
           strain = high;
         }
         
@@ -503,6 +507,14 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
     
     LOGD("[lbx] loading font %u, size: %ux%u, colors: %u", i, width-2, heights[i], maxColor)
   }
+  
+  for_each(widths, widths+FONT_NUM, [](u8* ww) { delete [] ww; });
+  for_each(foffsets, foffsets+FONT_NUM, [](u16* ww) { delete [] ww; });
+
+  
+  delete [] foffsets;
+  delete [] heights;
+  delete [] widths;
 }
 
 std::string LBX::getLBXPath(const std::string& name)

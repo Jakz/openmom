@@ -82,7 +82,7 @@ public:
   };
   
   static const Item::Type* typeForItem(TypeID type);
-  const static u32 MAX_SLOTS = 3;
+  constexpr static u32 MAX_SLOTS = 3;
 };
 
 class ItemSlots

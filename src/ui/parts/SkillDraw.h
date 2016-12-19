@@ -10,11 +10,7 @@
 class SkillDraw
 {
 private:
-  static const u16 SKILLPANE_X = 39;
-  static const u16 SKILLPANE_Y = 114;
-  
-  static const u16 SKILLPANE_PROD_X = 85;
-  static const u16 SKILLPANE_PROD_Y = 107;
+  ScreenCoord base;
   
   u16 page;
   u16 totalPages;
@@ -23,7 +19,7 @@ private:
   u16 spY(s16 i, s16 sy) { return sy + (17*(i%4)); }
   
 public:
-  SkillDraw() : page(0), totalPages(0) { }
+  SkillDraw(ScreenCoord coord = ScreenCoord(0,0)) : page(0), totalPages(0), base(coord) { }
   
   void reset(const Unit* unit)
   {
@@ -32,15 +28,15 @@ public:
     totalPages = a/8 + (a%8 == 0 ? 0 : 1) + (unit->type() == Productable::Type::HERO ? 1 : 0);
   }
   
+  void setPosition(u16 x, u16 y) { base = ScreenCoord(x,y); }
+  
   u16 pages() { return totalPages; }
   bool showTopArrow() { return page > 0; }
   bool showBottomArrow() { return totalPages > 0 && page < totalPages - 1;}
   void nextPage() { ++page; }
   void prevPage() { --page; }
   bool isFirst() { return page == 0; }
-  
-  Clickable* clickableForIndex(s16 i) { return new Clickable(spX(i,SKILLPANE_X),spY(i,SKILLPANE_Y),96,16,BUTTON_RIGHT); }
-  
+    
   void openHelpForSkill(const Unit* unit, int i);
   void drawSkill(s16 index, s16 sprite, const std::string& text, s16 sx, s16 sy);
   void draw(const Unit* unit);

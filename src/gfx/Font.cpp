@@ -51,6 +51,7 @@ const FontSpriteSheet* FontFaces::Serif::TEAL = nullptr;
 const FontSpriteSheet* FontFaces::Serif::BROWN = nullptr;
 const FontSpriteSheet* FontFaces::Serif::YELLOW_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::GOLD_SHADOW = nullptr;
+const FontSpriteSheet* FontFaces::Serif::GOLD = nullptr;
 const FontSpriteSheet* FontFaces::Serif::SILVER_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::WHITE_SURVEY = nullptr;
 const FontSpriteSheet* FontFaces::Serif::DARK_BROWN = nullptr;
@@ -127,6 +128,7 @@ void FontFaces::buildFonts()
   Serif::BROWN = buildSerif({0, 0, 0, RGB(120,74,36), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14)});
   Serif::YELLOW_SHADOW = buildSerif({0, 0, RGB(15,49,56), RGB(115,84,69), RGB(245,161,39), RGB(229,145,31), RGB(213,133,27), RGB(213,133,27)});
   Serif::GOLD_SHADOW = buildSerif({0,  0, RGB(67,43,36),RGB(74,51,44), RGB(213,133,27), RGB(245,161,39), RGB(255,199,103), RGB(255,243,127)});
+  Serif::GOLD = buildSerif({0, 0, 0, RGB(255,174,12), RGB(213,133,27), RGB(245,161,39), RGB(255,199,103), RGB(255,243,127)});
   Serif::SILVER_SHADOW = buildSerif({0, 0, RGB(67,43,36), RGB(106,97,93), RGB(159,150,146), RGB(196,186,182), RGB(228,219,215), RGB(255,255,255)});  // TODO: take from fontColors map
   Serif::WHITE_SURVEY = buildSerif({0, 0, RGB(93,93,121), RGB(142,134,130), RGB(255,255,255), RGB(255,255,255), RGB(255,255,215), RGB(255,255,255)});
   Serif::DARK_BROWN = buildSerif({0, 0, 0, RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36)});

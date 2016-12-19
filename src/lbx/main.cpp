@@ -117,7 +117,7 @@ public:
       {
         const size_t spriteIndex = isAnimated ? ((ticks/5)%sprite->count) : i;
         const int w = sprite->width, h = sprite->height;
-        int S = doubleScaleCheckbox->isToggled ? 2 : 2;
+        int S = doubleScaleCheckbox->isToggled ? 4 : 2;
         
         //printf("DRAW %d %d\n", w, h);
         
@@ -146,11 +146,21 @@ public:
             
             u8 r = GET_RED(pixel), g = GET_GREEN(pixel), b = GET_BLUE(pixel);
             
-            tdata[x*S*3 + y*w*3*S*S] = r; tdata[x*S*3 + 1 + y*w*3*S*S] = g; tdata[x*S*3 + 2 + y*w*3*S*S] = b;
+            for (size_t ix = 0; ix < S; ++ix)
+              for (size_t iy = 0; iy < S; ++iy)
+              {
+                u8* base = &tdata[(x*S+ix)*3 + (y*S+iy)*w*3*S];
+                base[0] = r;
+                base[1] = g;
+                base[2] = b;
+              }
+            
+            
+            /*tdata[x*S*3 + y*w*3*S*S] = r; tdata[x*S*3 + 1 + y*w*3*S*S] = g; tdata[x*S*3 + 2 + y*w*3*S*S] = b;
             tdata[(x*S+1)*3 + y*w*3*S*S] = r; tdata[(x*S+1)*3 + 1 + y*w*3*S*S] = g; tdata[(x*S+1)*3 + 2 + y*w*3*S*S] = b;
             
             tdata[x*S*3 + y*w*3*S*S + w*3*S] = r; tdata[x*S*3 + 1 + y*w*3*S*S + w*3*S ] = g; tdata[x*S*3 + 2 + y*w*3*S*S + w*3*S] = b;
-            tdata[(x*S+1)*3 + y*w*3*S*S + w*3*S] = r; tdata[(x*S+1)*3 + 1 + y*w*3*S*S + w*3*S] = g; tdata[(x*S+1)*3 + 2 + y*w*3*S*S + w*3*S] = b;
+            tdata[(x*S+1)*3 + y*w*3*S*S + w*3*S] = r; tdata[(x*S+1)*3 + 1 + y*w*3*S*S + w*3*S] = g; tdata[(x*S+1)*3 + 2 + y*w*3*S*S + w*3*S] = b;*/
             
             //tdata[(i*S+w*S)*3] = r; tdata[(i*S+w*S)*3 + 1] = g; tdata[(i*S+w*S)*3 + 2] = b;
           }

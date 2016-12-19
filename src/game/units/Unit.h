@@ -114,10 +114,10 @@ public:
 class Hero : public Unit
 {
 protected:
-  Item* items[Item::MAX_SLOTS];
+  std::array<Item*, 3> items;
   
 public:
-  Hero(const HeroSpec& spec) : Unit(spec, &HeroLevel::HERO) { }
+  Hero(const HeroSpec& spec) : Unit(spec, &HeroLevel::HERO), items({nullptr}) { }
   
   // const std::string name() const; TODO: name management
   const std::string title() const;

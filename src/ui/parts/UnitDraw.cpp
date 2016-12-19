@@ -140,7 +140,7 @@ void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realU
   
   for (int i = 0; i < unit->figures; ++i)
   {    
-    Gfx::draw(GfxData::unitGfxSpec(unit).fullFigure.relative(2), x+o[i].x, y+o[i].y, 2);
+    Gfx::draw(GfxData::unitGfxSpec(unit).fullFigure.frame(2, 2), x+o[i].x, y+o[i].y);
     
     //FIXME: commented to test lbx
     /*if (glow != NO_SCHOOL)
@@ -192,7 +192,7 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Facing facing, 
   
   for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
   {
-    Gfx::draw(sprite, x + offsets[i].x, y + offsets[i].y, action);
+    Gfx::draw(sprite.frame(action), x + offsets[i].x, y + offsets[i].y);
     //if (glow != School::NO_SCHOOL)
     //  Gfx::drawGlow(sprite.relative(action), x + offsets[i].x, y + offsets[i].y, glow); // TODO: check if it works with new management
   }

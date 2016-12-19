@@ -16,6 +16,7 @@
   #endif
 #else
   #define LOGD(...) do { } while (false);
+  #define LOGD2(...) do { } while (false);
 #endif
 
 #define WIDTH (320)
@@ -54,9 +55,7 @@ enum MouseButton : u8
   BUTTON_MIDDLE = SDL_BUTTON_MIDDLE
 };
 
-enum class LBXID : u16;
-
-enum class LBXID : u16
+enum class LBXID : u8
 {
   ARMYLIST = 0,
   BACKGRND,
@@ -218,7 +217,8 @@ private:
   enum : u32
   {
     lbx_flag_mask   = 0x80000000,
-    lbx_id_mask     = 0x7FFF0000,
+    lbx_id_mask     = 0x00FF0000,
+    lbx_frame_mask  = 0x7F000000,
     lbx_index_mask  = 0x0000FFFF,
     
     texture_id_mask = lbx_id_mask,
@@ -226,6 +226,7 @@ private:
     texture_y_mask  = 0x0000FF00,
     
     lbx_id_shift     = 16,
+    lbx_frame_shift  = 24,
     texture_id_shift = 16,
 
     lbx_index_shift = 0,
@@ -237,7 +238,7 @@ private:
   union
   {
     u32 data;
-    struct { u16 _index : 16; LBXID _lbx : 15; bool __is_lbx : 1; } as_lbx;
+    struct { u16 _index : 16; LBXID _lbx : 8; u8 _frame : 7; bool __is_lbx : 1; } as_lbx;
     struct { u16 _y : 8; u16 _x : 8; TextureID _tex : 15; bool _is_lbx : 1; } as_texture;
   };
   
@@ -248,21 +249,26 @@ public:
   explicit SpriteInfo(TextureID texture, u16 i);
   
   explicit SpriteInfo(LBXID lbx, u16 index) : data(lbx_flag_mask | (static_cast<u32>(lbx) << lbx_id_shift) | (index << lbx_index_shift)) { }
+  explicit SpriteInfo(LBXID lbx, u16 index, u8 frame) : data(lbx_flag_mask | (frame << lbx_frame_shift) | (static_cast<u32>(lbx) << lbx_id_shift) | (index << lbx_index_shift)) { assert(frame <= 128); }
+
   
   bool isLBX() const { return data & lbx_flag_mask; }
   
   TextureID texture() const { return static_cast<TextureID>((data & texture_id_mask) >> texture_id_shift); }
   
   u16 x() const { return isLBX() ? 0 : (data & texture_x_mask) >> texture_x_shift; }
-  u16 y() const { return isLBX() ? 0 : (data & texture_y_mask) >> texture_y_shift; }
+  u16 y() const { return isLBX() ? frame() : (data & texture_y_mask) >> texture_y_shift; }
   
   LBXID lbx() const { return static_cast<LBXID>((data & lbx_id_mask) >> lbx_id_shift); }
   u16 index() const { return (data & lbx_index_mask) >> lbx_index_shift; }
+  u8 frame() const { return (data & lbx_frame_mask) >> lbx_frame_shift; }
   
   u16 sw() const { return sheet()->sw(x(), y()); }
   u16 sh() const { return sheet()->sh(x(), y()); }
   
   SpriteInfo relative(s16 offset) const { return SpriteInfo(lbx(), index()+offset); }
+  SpriteInfo frame(s16 offset, u8 f) const { return SpriteInfo(lbx(), index()+offset, f); }
+  SpriteInfo frame(u8 f) const { return SpriteInfo(lbx(), index(), f); }
   
   const SpriteSheet* sheet() const;
 };

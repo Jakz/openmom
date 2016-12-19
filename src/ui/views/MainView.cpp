@@ -22,25 +22,30 @@
 #include "ArmyView.h"
 #include "UnitDetailView.h"
 
+enum lbx_indices
+{
+  main_backdrop = LBXI(MAIN,0)
+};
+
 MainView::MainView(ViewManager *gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[GAME] = TristateButton::build("Game", 7, 4, TextureID::UPPER_MENU, 0);
-  buttons[SPELLS] = TristateButton::build("Spells", 47, 4, TextureID::UPPER_MENU, 1);
-  buttons[ARMIES] = TristateButton::build("Armies", 89, 4, TextureID::UPPER_MENU, 2);
-  buttons[CITIES] = TristateButton::build("Cities", 140, 4, TextureID::UPPER_MENU, 3);
-  buttons[MAGIC] = TristateButton::build("Magic", 184, 4, TextureID::UPPER_MENU, 4);
-  buttons[INFO] = TristateButton::build("Info", 226, 4, TextureID::UPPER_MENU, 5);
-  buttons[PLANE] = TristateButton::build("Plane", 270, 4, TextureID::UPPER_MENU, 6);
+  buttons[GAME] = BistateButton::buildLBX("Game", 7, 4, LSI(MAIN, 1));
+  buttons[SPELLS] = BistateButton::buildLBX("Spells", 47, 4, LSI(MAIN, 2));
+  buttons[ARMIES] = BistateButton::buildLBX("Armies", 89, 4, LSI(MAIN, 3));
+  buttons[CITIES] = BistateButton::buildLBX("Cities", 140, 4, LSI(MAIN, 4));
+  buttons[MAGIC] = BistateButton::buildLBX("Magic", 184, 4, LSI(MAIN, 5));
+  buttons[INFO] = BistateButton::buildLBX("Info", 226, 4, LSI(MAIN, 6));
+  buttons[PLANE] = BistateButton::buildLBX("Plane", 270, 4, LSI(MAIN, 7));
   
   buttons[NEXT] = TristateButton::build("Next", 240, 173, TextureID::MAIN_LOW_BUTTONS, 0);
   buttons[CANCEL_SURVEYOR] = TristateButton::build("Cancel", 240, 173, TextureID::MAIN_LOW_BUTTONS, 1);
 
-  buttons[DONE] = TristateButton::build("Done", 246, 176, TextureID::MAIN_SMALL_BUTTONS, 0);
-  buttons[PATROL] = TristateButton::build("Patrol", 280, 176, TextureID::MAIN_SMALL_BUTTONS, 1);
-  buttons[WAIT] = TristateButton::build("Wait", 246, 186, TextureID::MAIN_SMALL_BUTTONS, 2);
-  buttons[BUILD] = TristateButton::build("Build", 280, 186, TextureID::MAIN_SMALL_BUTTONS, 3);
+  buttons[DONE] = TristateButton::buildLBX("Done", 246, 176, LSI(MAIN, 8), LSI(MAIN,12));
+  buttons[PATROL] = TristateButton::buildLBX("Patrol", 280, 176, LSI(MAIN, 9), LSI(MAIN,13));
+  buttons[WAIT] = TristateButton::buildLBX("Wait", 246, 186, LSI(MAIN, 10), LSI(MAIN,14));
+  buttons[BUILD] = TristateButton::buildLBX("Build", 280, 186, LSI(MAIN, 11), LSI(MAIN,15));
   // CANCEL BUTTON MISSING
   
   buttons[SPELLS]->setAction([gvm](){ gvm->switchOverview(VIEW_SPELL_BOOK); });
@@ -138,7 +143,7 @@ void MainView::draw()
   else if (substate == SPELL_CAST && player->getSpellTarget() == Target::NONE)
     switchToNormalState();
   
-  Gfx::draw(TextureID::MAIN_BACKDROP, 0, 0);
+  Gfx::draw(main_backdrop, 0, 0);
     
   const Army* army = player->getSelectedArmy();
   if (army)
@@ -148,7 +153,7 @@ void MainView::draw()
       Unit *unit = army->get(j);
       
       int x = 246+23*(j%3), y = 78+29*(j/3);
-      Gfx::draw(TextureID::MAIN_UNITS_RIGHT_BACKDROP, 0, (j/3)*3+(j%3), x, y);
+      Gfx::draw(LSI(MAIN,24).relative(j), x, y);
       
       UnitDraw::drawStatic(unit, x+1, y+1, player->isSelectedUnit(unit), false);
       

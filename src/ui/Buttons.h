@@ -23,124 +23,138 @@ typedef std::function<void()> Action;
 
 class Clickable
 {
-  protected:
-    u16 x, y, w, h;
-    const MouseButton button;
-    Action action;
-    bool active;
+protected:
+  u16 x, y, w, h;
+  const MouseButton button;
+  Action action;
+  bool active;
   
-  public:
-    Clickable(u16 x, u16 y, u16 w, u16 h, MouseButton b = BUTTON_LEFT) : x(x), y(y), w(w), h(h), button(b), active(true) { }
-
-    bool isCorrectButton(MouseButton b) { return b == button; }
-    bool isInside(u16 x, u16 y) { return x >= this->x && x <= this->x+w && y >= this->y && y <= this->y+h; }
-    virtual bool isActive() { return active; }
-    inline void activate() { active = true; }
-    inline void deactivate() { active = false; }
-    inline void activateIf(bool condition) { active = condition; }
+public:
+  Clickable(u16 x, u16 y, u16 w, u16 h, MouseButton b = BUTTON_LEFT) : x(x), y(y), w(w), h(h), button(b), active(true) { }
   
-    void setPosition(u16 x, u16 y) { this->x = x; this->y = y; }
+  bool isCorrectButton(MouseButton b) { return b == button; }
+  bool isInside(u16 x, u16 y) { return x >= this->x && x <= this->x+w && y >= this->y && y <= this->y+h; }
+  virtual bool isActive() { return active; }
+  inline void activate() { active = true; }
+  inline void deactivate() { active = false; }
+  inline void activateIf(bool condition) { active = condition; }
   
-    virtual inline Clickable* setAction(Action action) { this->action = action; return this; }
-    inline Action getAction() { return action; }
+  void setPosition(u16 x, u16 y) { this->x = x; this->y = y; }
   
-    void draw();
+  virtual inline Clickable* setAction(Action action) { this->action = action; return this; }
+  inline Action getAction() { return action; }
+  
+  void draw();
 };
 
 class Button : public Clickable
 {
-  protected:
-    const std::string name;
-    bool pressed, visible;
-    SpriteInfo normalCoords;
+protected:
+  const std::string name;
+  bool pressed, visible;
+  SpriteInfo normalCoords;
   
-    Button(const std::string name, u16 x, u16 y, SpriteInfo info) :
-    Clickable(x, y, info.sw(), info.sh()), name(name), pressed(false), visible(true), normalCoords(info)
-    {
-      
-    }
-  
-  public:
-    virtual void draw() = 0;
-  
-    inline void execute() { if (action) action(); }
-  
-    inline void showIf(bool condition) { visible = condition;}
-    inline Button* hide() { visible = false; return this; }
-    inline Button* show() { visible = true; return this; }
-    inline bool isVisible() { return visible;}
-  
-    bool isActive() override { return active && visible; }
-
-    inline Button* setAction(Action action) override { this->action = action; return this; }
-
-  
-    inline void press() { pressed = true;}
-    inline void release() { pressed = false; }
+  Button(const std::string name, u16 x, u16 y, SpriteInfo info) :
+  Clickable(x, y, info.sw(), info.sh()), name(name), pressed(false), visible(true), normalCoords(info)
+  {
     
-    virtual void click() {
-      //TODO log clicked
-      execute();
-    }
+  }
+  
+public:
+  virtual void draw() = 0;
+  
+  inline void execute() { if (action) action(); }
+  
+  inline void showIf(bool condition) { visible = condition;}
+  inline Button* hide() { visible = false; return this; }
+  inline Button* show() { visible = true; return this; }
+  inline bool isVisible() { return visible;}
+  
+  bool isActive() override { return active && visible; }
+  
+  inline Button* setAction(Action action) override { this->action = action; return this; }
+  
+  
+  inline void press() { pressed = true;}
+  inline void release() { pressed = false; }
+  
+  virtual void click() {
+    //TODO log clicked
+    execute();
+  }
 };
 
 class SimpleButton : public Button
 {
-  public:
-    SimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info) : Button(name, x, y, info) { }
-    void draw() override;
+public:
+  SimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info) : Button(name, x, y, info) { }
+  void draw() override;
 };
 
 class OffsetButton : public Button
 {
-  public:
-    OffsetButton(const std::string name, u16 x, u16 y, SpriteInfo info) : Button(name, x, y, info) { }
-    void draw() override;
+public:
+  OffsetButton(const std::string name, u16 x, u16 y, SpriteInfo info) : Button(name, x, y, info) { }
+  void draw() override;
 };
 
 class BistateButton : public Button
 {
-  protected:
-    SpriteInfo pressedCoords;
-    BistateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Button(name, x, y, normal), pressedCoords(pressed) { }
-
-  public:
-    void draw() override;
+protected:
+  SpriteInfo pressedCoords;
+  BistateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Button(name, x, y, normal), pressedCoords(pressed) { }
   
-    static BistateButton* build(const std::string name, u16 x, u16 y, TextureID texture, u16 c)
-    {
-      return new BistateButton(name, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c));
-    }
+public:
+  void draw() override;
+  
+  static BistateButton* build(const std::string name, u16 x, u16 y, TextureID texture, u16 c)
+  {
+    return new BistateButton(name, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c));
+  }
+  
+  static BistateButton* buildLBX(const std::string name, u16 x, u16 y, SpriteInfo info)
+  {
+    assert(info.isLBX());
+    return new BistateButton(name, x, y, info, info.frame(1));
+  }
+  
+  
 };
 
 class TristateButton : public BistateButton
 {
-  private:
-    TristateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : BistateButton(name, x, y, normal, pressed), inactiveCoords(inactive) { }
-
-  protected:
-    SpriteInfo inactiveCoords;
-    
-  public:
-    void draw() override;
+private:
+  TristateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : BistateButton(name, x, y, normal, pressed), inactiveCoords(inactive) { }
   
-    static TristateButton* build(const std::string name, u16 x, u16 y, TextureID texture, u16 c)
-    {
-      return new TristateButton(name, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c), SpriteInfo(texture, 2, c));
-    }
+protected:
+  SpriteInfo inactiveCoords;
+  
+public:
+  void draw() override;
+  
+  static TristateButton* build(const std::string name, u16 x, u16 y, TextureID texture, u16 c)
+  {
+    return new TristateButton(name, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c), SpriteInfo(texture, 2, c));
+  }
+  
+  static BistateButton* buildLBX(const std::string name, u16 x, u16 y, SpriteInfo info, SpriteInfo disabled)
+  {
+    assert(info.isLBX());
+    return new TristateButton(name, x, y, info, info.frame(1), disabled);
+  }
 };
 
 class LabeledSimpleButton : public OffsetButton
 {
-  protected:
-    std::string label;
-    u16 textX, textY;
-    const FontSpriteSheet* font;
+protected:
+  std::string label;
+  u16 textX, textY;
+  const FontSpriteSheet* font;
   
-  public:
-    LabeledSimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, const FontSpriteSheet* font);
-    void setLabel(std::string label) { this->label = label; }
-    void draw() override;
+public:
+  LabeledSimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, const FontSpriteSheet* font);
+  void setLabel(std::string label) { this->label = label; }
+  void draw() override;
 };
 
 template<typename T>

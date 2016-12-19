@@ -20,10 +20,16 @@
 
 #include <sstream>
 
+enum lbx_indices
+{
+  backdrop = LBXI(UNITVIEW, 0),
+  left_entry_bg = LBXI(UNITVIEW, 31),
+  right_entry_bg = LBXI(UNITVIEW, 32)
+};
 
 using namespace std;
 
-ProductionView::ProductionView(ViewManager *gvm) : View(gvm), city(nullptr), selected(0), which(SIDE_LEFT), unlockedProductableString("")
+ProductionView::ProductionView(ViewManager *gvm) : View(gvm), city(nullptr), selected(0), which(SIDE_LEFT), unlockedProductableString(""), skillDraw(ScreenCoord(85,107))
 {
   buttons.resize(BUTTON_COUNT);
   
@@ -48,7 +54,7 @@ ProductionView::ProductionView(ViewManager *gvm) : View(gvm), city(nullptr), sel
 
 void ProductionView::draw()
 {
-  Gfx::draw(TextureID::CITY_PRODUCTION_BACKDROP, 160 - 172/2, 0);
+  Gfx::draw(backdrop, 160 - 172/2, 0);
   
   const Productable* product = which == SIDE_LEFT ? *next(left.begin(),selected) : *next(right.begin(),selected);
   u16 cost = product->productionCost();
@@ -74,6 +80,8 @@ void ProductionView::draw()
   }
   else
   {
+    //TODO: check if it still works correctly
+    
     const UnitSpec* spec = static_cast<const UnitSpec*>(product);
     Fonts::drawString("Moves", FontFaces::Small::TEAL, 128, 19, ALIGN_LEFT);
     Fonts::drawString("Upkeep", FontFaces::Small::TEAL, 128, 26, ALIGN_LEFT);
@@ -92,14 +100,14 @@ void ProductionView::draw()
   int i = 0;
   for (const Productable* p : left)
   {
-    Gfx::draw(TextureID::CITY_PRODUCTION_ITEMS, 0, 0, 0, 4 + 14*i);
+    Gfx::draw(left_entry_bg, 0, 4 + 14*i);
     Fonts::drawString(p->productionName(), i == selected && which == SIDE_LEFT ? FontFaces::Medium::TEAL_BRIGHT : FontFaces::Medium::BLACK, 1, 4 + 14*i, ALIGN_LEFT);
     ++i;
   }
   i = 0;
   for (const Productable* p : right)
   {
-    Gfx::draw(TextureID::CITY_PRODUCTION_ITEMS, 1, 0, 320 - 80, 4 + 14*i);
+    Gfx::draw(right_entry_bg, 320 - 80, 4 + 14*i);
     Fonts::drawString(p->productionName(), i == selected && which == SIDE_RIGHT ? FontFaces::Medium::TEAL_BRIGHT : FontFaces::Medium::BLACK, 320 - 81 + 3, 4 + 14*i, ALIGN_LEFT);
     
     ++i;

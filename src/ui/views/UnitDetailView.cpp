@@ -22,12 +22,15 @@
 #include "Unit.h"
 
 static const ScreenCoord normalBaseCoords = ScreenCoord(31, 6);
+static const ScreenCoord heroHireCoords = ScreenCoord(25, 17);
+
 
 enum lbx_indices
 {
   full_unit_backdrop = LBXI(UNITVIEW, 1),
   buttons_backdrop = LBXI(UNITVIEW, 2),
   
+  hero_hire_banner = LBXI(HIRE, 0),
   hero_portrait_border = LBXI(UNITVIEW, 33)
 };
 
@@ -60,19 +63,27 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
 void UnitDetailView::switchMode(Mode mode)
 {
   this->mode = mode;
-  this->c = normalBaseCoords;
+  this->c = mode == Mode::NORMAL ? normalBaseCoords: heroHireCoords;
   
   /* adjust button positions according to mode */
   buttons[DISMISS]->setPosition(c.x + 222, c.y + 143);
   buttons[OK]->setPosition(c.x + 222, c.y + 162);
   buttons[UP_ARROW]->setPosition(c.x + 205, c.y + 104);
   buttons[DOWN_ARROW]->setPosition(c.x + 205, c.y + 168);
+  
+  skillDraw.setPosition(c.x + 8, c.y + 108);
 }
 
 void UnitDetailView::draw()
 {
   Gfx::draw(full_unit_backdrop, c.x, c.y);
   Gfx::draw(buttons_backdrop, c.x + 213, c.y + 133);
+  
+  if (mode == Mode::HERO_HIRE)
+  {
+    Gfx::draw(hero_hire_banner, 0,0);
+    Fonts::drawString(Fonts::format("Hero for Hire: %u gold", hireCost), FontFaces::Serif::GOLD, 128, 5, ALIGN_CENTER);
+  }
   
   //TODO: font has full teal stroke
   Fonts::drawString(i18n::s(I18::UI_UNIT_DETAIL_MOVES), FontFaces::Small::TEAL, c.x + 50, c.y +26, ALIGN_LEFT);

@@ -48,13 +48,10 @@ const Texture Texture::textures[] =
   
   
   Texture(TextureID::MAIN_CURSORS,"main/cursors.png",1,5,16,16),
-  Texture(TextureID::MAIN_BACKDROP,"static/backdrop.png",1,1,320,200),
   Texture(TextureID::MAIN_MIRROR_BACKDROP,"static/mirror-backdrop.png",1,1,180,196),
   Texture(TextureID::MAIN_MIRROR,"static/mirror.png",1,17,128,129),
   Texture(TextureID::MAIN_RIGHT_BACKDROPS,"main/right-backdrops.png",1,2,80,98),
   Texture(TextureID::MAIN_LOW_BUTTONS,"main/next-turn.png",2,2,80,27),
-  Texture(TextureID::MAIN_SMALL_BUTTONS,"main/small-buttons.png",3,8,33,9),
-  Texture(TextureID::MAIN_UNITS_RIGHT_BACKDROP,"main/units-right-backdrop.png",1,9,22,28),
   
   Texture(TextureID::MAGIC_GLOBAL_SPELLS,"magic/global-spells.png",2,13,110,113),
   Texture(TextureID::MAGIC_SPELL_EFFECTS,"magic/spell-effects.png",4,{12,6,18,12,12,12,28,24,20,17,37,21,17},60,54,true,1),
@@ -103,13 +100,10 @@ const Texture Texture::textures[] =
   Texture(TextureID::SPELL_BOOK_DUMMY_TEXT,"spellbook/dummy-text.png",0,0,122,128),
   
   Texture(TextureID::RIGHT_BACKDROP,"static/right_backdrop.gif",2,1,80,124),
-  Texture(TextureID::UPPER_MENU,"static/upper_menu.png",2,7,{39,41,50,43,41,43,43},12),
   
   Texture(TextureID::CITY_MAP_TILE,"city/city-map-tiles.png",2,5,32,30),
   
   Texture(TextureID::CITY_TRADE_HOUSING_BACKDROP,"city/tradegoods-housing-backdrop.png",1,1,53,33),
-  Texture(TextureID::CITY_PRODUCTION_BACKDROP,"city/production-backdrop.png",1,1,172,200),
-  Texture(TextureID::CITY_PRODUCTION_ITEMS,"city/production-item.png",2,1,80,13),
   Texture(TextureID::CITY_VIEW_BACKDROP,"static/backdrop-city.png",1,1,320,200),
   Texture(TextureID::CITY_VIEW_BUTTONS,"city/city-buttons-1.png",3,3,{30,36,30},10),
   Texture(TextureID::CITY_BACKGROUND,"city/city-background.png",5,1, 205, 96),

@@ -66,7 +66,9 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::FIGURE11);
   lbx::Repository::loadLBX(LBXID::FIGURE12);
   lbx::Repository::loadLBX(LBXID::ITEMS);
+  lbx::Repository::loadLBX(LBXID::HIRE);
   lbx::Repository::loadLBX(LBXID::MAGIC);
+  lbx::Repository::loadLBX(LBXID::MAIN);
   lbx::Repository::loadLBX(LBXID::PORTRAIT);
   lbx::Repository::loadLBX(LBXID::UNITVIEW);
   lbx::LBX::load();
@@ -76,7 +78,6 @@ int main(int argc, char * arg[])
   //const Race &race = Race::race(RACE_BARBARIANS);
   
   //std::unordered_map<const void*, SpriteInfo> map;
-  //map[reinterpret_cast<const Race *>(&race)] = {MAIN_BACKDROP, 15,15};
   
   //const Race* ptRace = reinterpret_cast<const Race *>(&race);
   
@@ -95,9 +96,9 @@ int main(int argc, char * arg[])
 
   //SDL::gvm->switchView(VIEW_ITEM_CRAFT);
   
-  Unit* unit = new Hero(*UnitSpec::heroSpec(UnitID::HERO_DWARF));
-  SDL::gvm->unitDetailView()->setUnit(unit);
-  SDL::gvm->switchOverview(VIEW_UNIT);
+  /*Hero* unit = new Hero(*UnitSpec::heroSpec(UnitID::HERO_DWARF));
+  SDL::gvm->unitDetailView()->setHeroHire(unit, 200);
+  SDL::gvm->switchOverview(VIEW_UNIT);*/
   
   //SDL::gvm->switchView(VIEW_COMBAT);
   //SDL::gvm->switchView(VIEW_LBX);
