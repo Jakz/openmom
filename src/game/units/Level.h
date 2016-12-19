@@ -43,6 +43,7 @@ public:
   const I18 name;
   const level_bonuses bonuses;
   virtual s16 index() const = 0;
+  s16 ordinal() const { return index() + 1; }
 };
 
 class UnitLevel : public Level

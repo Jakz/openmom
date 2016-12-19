@@ -135,6 +135,8 @@ public:
   s32 getAvailableMana() const { return availableMana; }
   s32 getManaGain() const { return manaGain; }
   
+  s32 getFame() const { return fame; }
+  
   void alchemy(s32 gold, s32 mana) { goldPool += gold; manaPool -= mana; }
   
   const Combat* getCombat() const { return combat; }

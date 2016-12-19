@@ -9,6 +9,7 @@
 class Game;
 class Army;
 class Player;
+class Hero;
 
 class Event
 {
@@ -70,7 +71,8 @@ public:
   const Player* pickVictim(Event::Type type) const;
   const Event* pickRandomEvent() const;
   
-  
+  virtual float chanceOfMercenaryHeroOffer(const Player* player);
+  virtual u32 feeForMercenaryHeroOffer(const Player* player, const Hero* hero);
   
 };
 

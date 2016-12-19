@@ -123,6 +123,7 @@ public:
   const std::string title() const;
   
   const Item* itemAt(u16 index) const { return items[index]; }
+  const HeroSpec* getSpec() const { return static_cast<const HeroSpec*>(&spec); }
 };
 
 class RaceUnit : public Unit

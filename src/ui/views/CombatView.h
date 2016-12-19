@@ -73,6 +73,7 @@ private:
   }
   
   void addRoads();
+  void addMainBuilding(SpriteInfo info);
   
 public:
   CombatView(ViewManager* gvm);

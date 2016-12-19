@@ -210,11 +210,12 @@ public:
 class HeroSpec : public UnitSpec
 {
 public:
-  HeroSpec(UnitID ident, HeroType type, ItemSlots::Type items, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, Upkeep(upkeep,0,0), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items) { }
+  HeroSpec(UnitID ident, HeroType type, u32 requiredFame, ItemSlots::Type items, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(ident, Upkeep(upkeep,0,0), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items), requiredFame(requiredFame) { }
   
   const HeroType type;
   const ItemSlots::Type items;
+  const u32 requiredFame;
   
   Type productionType() const override { return Type::HERO; }
 };

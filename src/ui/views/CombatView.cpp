@@ -95,7 +95,7 @@ public:
     u16 height = info.sh();
     u16 offset = info.sh() <= 26 ? 16 : 20;
     ScreenCoord coords = coordsForTile(_x, _y);
-    Gfx::draw(info, coords.x, coords.y - height + offset);
+    Gfx::drawAnimated(info, coords.x, coords.y - height + offset);
   }
 };
 
@@ -136,7 +136,7 @@ void CombatView::activate()
   
   //addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 22), 2, 6));
   addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 2), 1, 6));
-  addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 17), 2, 6));
+  addMainBuilding(LSI(CMBTCITY, 17));
   addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 18), 4, 6));
 
   
@@ -153,11 +153,8 @@ void CombatView::deactivate()
   entries.clear();
 }
 
-void CombatView::addRoads()
-{
-  addGfxEntry(new FixedGfxEntry(LSI(CMBTCITY, cmbt_roads), 14, 40));
-
-}
+void CombatView::addRoads() { addGfxEntry(new FixedGfxEntry(LSI(CMBTCITY, cmbt_roads), 14, 40)); }
+void CombatView::addMainBuilding(SpriteInfo info) { addGfxEntry(new StaticGfxEntry(info, 2, 6)); }
 
 void CombatView::draw()
 {

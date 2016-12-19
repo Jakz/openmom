@@ -2,8 +2,10 @@
 
 #include "Localization.h"
 
+#include "Player.h"
 #include "Game.h"
 #include "Army.h"
+#include "Unit.h"
 
 using namespace std;
 
@@ -102,4 +104,36 @@ const Event* EventMechanics::pickRandomEvent() const
   }
   
   return e;
+}
+
+#pragma mark mercenary hero offers
+
+float EventMechanics::chanceOfMercenaryHeroOffer(const Player* player)
+{
+  // (3% + (fame / 25) )  / min(1, # heroes of player / 2)
+  
+  //TODO: if list<Hero*> will be used to keep dead heroes we need to adjust
+  size_t heroCount = player->getHeroes().size();
+  
+  if (heroCount == 6)
+    return 0.0f;
+
+  float chance = (0.03f + (player->getFame()/25) ) / std::min(1, (int)heroCount / 2);
+  
+  /* x 2 if famous */
+  if (player->hasTrait(TraitID::FAMOUS))
+    chance *= 2.0f;
+  
+  return std::min(chance, 0.10f);
+}
+
+u32 EventMechanics::feeForMercenaryHeroOffer(const Player* player, const Hero* hero)
+{
+  u32 base = 100 + (hero->getSpec()->requiredFame * 10);
+  u32 fee = base * (3 * hero->level->ordinal()) / 4;
+  
+  if (player->hasTrait(TraitID::CHARISMATIC))
+    fee /= 2;
+  
+  return fee;
 }
