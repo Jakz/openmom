@@ -19,6 +19,13 @@
 #include "Texture.h"
 #include "UnitDraw.h"
 
+enum combat_lbx_statics : lbx_index
+{
+  cmbt_roads = 0
+};
+
+
+
 constexpr u16 W = 10;
 constexpr u16 H = 20;
 constexpr u16 OX = 0;
@@ -26,12 +33,95 @@ constexpr u16 OY = 8;
 const int dirs[][2] = {{0,-2},{0,-1},{1,-1},{1,0},{0,1},{1,1},{0,2},{-1,1},{0,1},{-1,0},{-1,-1},{0,-1}};
 
 
-CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1))
+ScreenCoord coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
+
+
+struct entry_comparator
+{
+  bool operator()(const std::unique_ptr<CombatView::TileGfxEntry>& e1, const std::unique_ptr<CombatView::TileGfxEntry>& e2) const
+  {
+    if (e1->priority() < 0 && e2->priority() >= 0)
+      return true;
+    
+    if (e1->x() < e2->x())
+      return true;
+    else if (e1->y() < e2->y())
+      return true;
+    else
+      return e1->priority() > e2->priority();
+  }
+};
+
+
+class UnitGfxEntry : public CombatView::TileGfxEntry
+{
+private:
+  CombatUnit* unit;
+  
+public:
+  UnitGfxEntry(CombatUnit* unit) : CombatView::TileGfxEntry(10), unit(unit) { }
+  
+  u16 x() const override { return unit->x(); }
+  u16 y() const override { return unit->y(); }
+  
+  void draw() override
+  {
+    ScreenCoord coords = coordsForTile(unit->x(), unit->y());
+    
+    if (unit->selected)
+    {
+      Gfx::draw(SpriteInfo(TextureID::COMBAT_MISC_TILES, 0, 1), coords.x, coords.y);
+    }
+    
+    //if (player->shouldDrawSelectedArmy() || player->)
+    UnitDraw::drawUnitIsoCombat(unit->getUnit(), coords.x, coords.y - 17, Facing::EAST, UnitDraw::CombatAction::STAY);
+  }
+};
+
+class StaticGfxEntry : public CombatView::TileGfxEntry
+{
+private:
+  SpriteInfo info;
+  u16 _x, _y;
+  
+public:
+  StaticGfxEntry(SpriteInfo info, u16 x, u16 y) : CombatView::TileGfxEntry(0), info(info), _x(x), _y(y) { }
+  
+  u16 x() const override { return _x; }
+  u16 y() const override { return _y; }
+  
+  void draw() override
+  {
+    u16 height = info.sh();
+    u16 offset = info.sh() <= 26 ? 16 : 20;
+    ScreenCoord coords = coordsForTile(_x, _y);
+    Gfx::draw(info, coords.x, coords.y - height + offset);
+  }
+};
+
+class FixedGfxEntry : public CombatView::TileGfxEntry
+{
+private:
+  SpriteInfo info;
+  u16 _x, _y;
+  
+public:
+  FixedGfxEntry(SpriteInfo info, u16 x, u16 y) : CombatView::TileGfxEntry(-1), info(info), _x(x), _y(y) { }
+  
+  u16 x() const override { return 0; }
+  u16 y() const override { return 0; }
+  
+  void draw() override
+  {
+    Gfx::draw(info, _x, _y);
+  }
+};
+
+
+CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1)), entriesDirty(true)
 {
   
 }
-
-ScreenCoord CombatView::coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
 
 void CombatView::activate()
 {
@@ -39,11 +129,44 @@ void CombatView::activate()
   Player* p2 = *std::next(g->getPlayers().begin());
   
   this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin(), &g->combatMechanics);
+  this->entriesDirty = true;
+  
+  /*for (CombatUnit* unit : combat->getUnits())
+    addGfxEntry(new UnitGfxEntry(unit));*/
+  
+  //addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 22), 2, 6));
+  addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 2), 1, 6));
+  addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 17), 2, 6));
+  addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 18), 4, 6));
+
+  
+  addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 3), 3, 6));
+  addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 4), 5, 6));
+  
+  addRoads();
+
+
 }
 
+void CombatView::deactivate()
+{
+  entries.clear();
+}
+
+void CombatView::addRoads()
+{
+  addGfxEntry(new FixedGfxEntry(LSI(CMBTCITY, cmbt_roads), 14, 40));
+
+}
 
 void CombatView::draw()
 {
+  if (entriesDirty)
+  {
+    std::sort(entries.begin(), entries.end(), entry_comparator());
+    entriesDirty = false;
+  }
+  
   /*if (subState != SubState.SPELL_CAST && player.spellTarget() != null)
   {
     subState = SubState.SPELL_CAST;
@@ -80,8 +203,11 @@ void CombatView::draw()
     ScreenCoord hoverCoords = coordsForTile(hover.x, hover.y);
     //TODO: working?
     Gfx::drawAnimated(TSI(COMBAT_MISC_TILES, 0, 1), hoverCoords.x, hoverCoords.y,0);
+    
+    Fonts::drawString(Fonts::format("%u,%u", hover.x, hover.y), FontFaces::Small::WHITE, 5, 5, ALIGN_LEFT);
   }
   
+
   /*
   if (reachable != null)
   {
@@ -123,22 +249,9 @@ void CombatView::draw()
     Fonts.drawString("Spell", Fonts.Face.TEAL_MEDIUM, 20, 20, Align.LEFT);
   */
   
-  const auto& allUnits = combat->getUnits();
-  
-  for (CombatUnit* unit : allUnits)
-  {
-    ScreenCoord coords = coordsForTile(unit->x(), unit->y());
-    
-    if (unit->selected)
-    {
-      Gfx::draw(SpriteInfo(TextureID::COMBAT_MISC_TILES, 0, 1), coords.x, coords.y);
-    }
-    
-    //if (player->shouldDrawSelectedArmy() || player->)
-    UnitDraw::drawUnitIsoCombat(unit->getUnit(), coords.x, coords.y - 17, Facing::EAST, UnitDraw::CombatAction::STAY);
-  }
-  
-  
+  for (const auto& entry : entries)
+    entry->draw();
+
   Gfx::drawClipped(TextureID::COMBAT_BACKDROP, 0, 200-36, 0, 0, 320, 36);
 
   /*

@@ -86,11 +86,6 @@ Facing Combat::relativeFacing(CombatUnit *u1, CombatUnit *u2)
   return Facing::NORTH;
 }
 
-void Combat::sortUnits()
-{
-  sort(begin(allUnits), end(allUnits), [](const CombatUnit* u1, const CombatUnit* u2) { return *u1 < *u2; });
-}
-
 void Combat::deployUnits()
 {
   // TODO
@@ -101,10 +96,6 @@ void Combat::deployUnits()
     unit->setPosition(tile);
     tile = tile.neighbour(Facing::SOUTH_EAST);
   }
-  
-  
-  
-  sortUnits();
 }
 
 const position_map& Combat::reachable(CombatUnit *unit)

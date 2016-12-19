@@ -11,12 +11,29 @@
 
 #include "View.h"
 
+#include <vector>
+#include <memory>
+
 class ViewManager;
 class CombatUnit;
 class Combat;
 
 class CombatView : public View
 {
+public:
+  class TileGfxEntry
+  {
+    s16 _priority;
+  protected:
+    TileGfxEntry(s16 priority) : _priority(priority) { }
+  public:
+    u16 priority() const { return _priority; }
+    virtual u16 x() const = 0;
+    virtual u16 y() const = 0;
+
+    virtual void draw() = 0;
+  };
+  
 private:
   enum Button
   {
@@ -39,19 +56,31 @@ private:
   void draw() override;
   void drawPost() override { }
   
-  void drawUnitProps(CombatUnit* unit, bool onTheLeft);
-  
   Coord hover;
   
   Combat* combat;
+    
+  
+  void drawUnitProps(CombatUnit* unit, bool onTheLeft);
+  
+  bool entriesDirty;
+  std::vector<std::unique_ptr<TileGfxEntry>> entries;
+  
+  void addGfxEntry(TileGfxEntry* entry)
+  {
+    entriesDirty = true;
+    entries.push_back(std::unique_ptr<TileGfxEntry>(entry));
+  }
+  
+  void addRoads();
   
 public:
   CombatView(ViewManager* gvm);
   
   void activate() override;
-  void deactivate() override { }
+  void deactivate() override;
   
-  ScreenCoord coordsForTile(u16 x, u16 y);
+  //ScreenCoord coordsForTile(u16 x, u16 y);
 
   void mouseReleased(u16 x, u16 y, MouseButton b) override;
   void mouseMoved(u16 x, u16 y, MouseButton b) override;

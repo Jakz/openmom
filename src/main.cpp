@@ -44,6 +44,7 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::ARMYLIST);
   lbx::Repository::loadLBX(LBXID::BACKGRND);
   lbx::Repository::loadLBX(LBXID::CITYSCAP);
+  lbx::Repository::loadLBX(LBXID::CMBTCITY);
   lbx::Repository::loadLBX(LBXID::FIGURES3);
   lbx::Repository::loadLBX(LBXID::FIGURES4);
   lbx::Repository::loadLBX(LBXID::FIGURE10);

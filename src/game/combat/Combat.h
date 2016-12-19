@@ -74,13 +74,6 @@ public:
   
   bool hasMoves() const { return moves > 0; }
   
-  bool operator<(const CombatUnit &c2) const
-  {
-    if (position.position.x < position.position.x) return true;
-    else if (position.position.y < position.position.y) return true;
-    return false;
-  }
-  
   CombatPosition position;
   u16 moves;
   bool selected;
@@ -151,7 +144,6 @@ public:
   const position_map& reachable(CombatUnit* unit);
   
   void deployUnits();
-  void sortUnits();
   
   const std::vector<CombatUnit*>& getUnits() { return allUnits; }
 
