@@ -48,10 +48,10 @@ const Texture Texture::textures[] =
   
   
   Texture(TextureID::MAIN_CURSORS,"main/cursors.png",1,5,16,16),
+  Texture(TextureID::MAIN_LOW_BUTTONS,"main/next-turn.png",2,2,80,27),
   Texture(TextureID::MAIN_MIRROR_BACKDROP,"static/mirror-backdrop.png",1,1,180,196),
   Texture(TextureID::MAIN_MIRROR,"static/mirror.png",1,17,128,129),
   Texture(TextureID::MAIN_RIGHT_BACKDROPS,"main/right-backdrops.png",1,2,80,98),
-  Texture(TextureID::MAIN_LOW_BUTTONS,"main/next-turn.png",2,2,80,27),
   
   Texture(TextureID::MAGIC_GLOBAL_SPELLS,"magic/global-spells.png",2,13,110,113),
   Texture(TextureID::MAGIC_SPELL_EFFECTS,"magic/spell-effects.png",4,{12,6,18,12,12,12,28,24,20,17,37,21,17},60,54,true,1),
@@ -150,7 +150,6 @@ const Texture Texture::textures[] =
   // units ,not combat related sprites)
   
   Texture(TextureID::UNIT_DETAIL_SKILL_ARROWS,"units/static/skill-pane-arrows.png",2,2,9,10),
-  Texture(TextureID::UNIT_DETAIL_BUTTONS,"units/static/detail-buttons.png",2,3, {49,49,49},12),
   Texture(TextureID::UNIT_DETAIL_SPECIAL_THINGS,"units/special-things.png",1,1,73,33), // contiene anche mirino minimap
   Texture(TextureID::UNIT_DETAIL_TARGET,"units/static/target-backdrop.png",1,1,238,200),
   Texture(TextureID::UNIT_DETAIL_MOVEMENT,"units/movement.png",1,3,7,6),
@@ -204,6 +203,8 @@ const Texture Texture::textures[] =
 
 Color Texture::at(u16 x, u16 y, u16 r, u16 c) const
 {
+  static_assert(sizeof(textures)/sizeof(textures[0]) == static_cast<size_t>(TextureID::TEXTURES_COUNT), "");
+  
   u16 sx, sy;
   u16 tw = img->w;
   

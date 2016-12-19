@@ -25,11 +25,14 @@ private:
     UP_ARROW,
     DOWN_ARROW,
     
-    HERO_HIRE,
-    HERO_REJECT,
+    LOW_ACTION,
+    HIGH_ACTION,
     
-    DISMISS,
-    OK,
+    OK = LOW_ACTION,
+    DISMISS = HIGH_ACTION,
+    
+    HERO_REJECT = LOW_ACTION,
+    HERO_HIRE = HIGH_ACTION,
     
     BUTTON_COUNT
   };
@@ -50,6 +53,8 @@ private:
   void drawPost() override { }
   
   void switchMode(Mode mode);
+  
+  void buttonClicked(Button button);
   
 public:
   UnitDetailView(ViewManager* gvm);

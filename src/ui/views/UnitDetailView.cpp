@@ -38,9 +38,9 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[DISMISS] = TristateButton::build("Dismiss", 0, 0, TextureID::UNIT_DETAIL_BUTTONS, 0); // TODO: action
-  buttons[OK] = TristateButton::build("Ok", 0, 0, TextureID::UNIT_DETAIL_BUTTONS, 1)->setAction([gvm](){gvm->closeOverview();});
-  
+  buttons[HIGH_ACTION] = BistateLabeledButton::buildLBX("High Action", 0, 0, LSI(BACKGRND, 24), "", FontFaces::Serif::GOLD)->setAction([this](){this->buttonClicked(HIGH_ACTION);});
+  buttons[LOW_ACTION] = BistateLabeledButton::buildLBX("Low Action", 0, 0, LSI(BACKGRND, 24), "", FontFaces::Serif::GOLD)->setAction([this](){this->buttonClicked(LOW_ACTION);});
+
   buttons[UP_ARROW] = TristateButton::build("Up", 0, 0, TextureID::UNIT_DETAIL_SKILL_ARROWS, 0)->setAction([this](){skillDraw.prevPage();});
   buttons[DOWN_ARROW] = TristateButton::build("Down", 0, 0, TextureID::UNIT_DETAIL_SKILL_ARROWS, 1)->setAction([this](){skillDraw.nextPage();});
   
@@ -60,14 +60,55 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
    areas.get(7).setAction(new Action() { public void execute() { SkillDraw.openHelpForSkill(unit, 7); } });*/
 }
 
+void UnitDetailView::buttonClicked(Button button)
+{
+  if (mode == Mode::NORMAL)
+  {
+    if (button == Button::OK)
+    {
+      gvm->closeOverview();
+    }
+    else if (button == Button::DISMISS)
+    {
+      // TODO
+    }
+  }
+  else if (mode == Mode::HERO_HIRE)
+  {
+    if (button == Button::HERO_HIRE)
+    {
+      // TODO
+    }
+    else if (button == Button::HERO_REJECT)
+    {
+      // TODO
+    }
+  }
+}
+
 void UnitDetailView::switchMode(Mode mode)
 {
   this->mode = mode;
-  this->c = mode == Mode::NORMAL ? normalBaseCoords: heroHireCoords;
+  
+  // TODO: text alignment on buttons is shifted by a variable amount, try to find exact formula
+  
+  if (mode == Mode::NORMAL)
+  {
+    this->c = normalBaseCoords;
+    buttons[HIGH_ACTION]->setLabel("Dismiss");
+    buttons[LOW_ACTION]->setLabel("Ok");
+  }
+  else if (mode == Mode::HERO_HIRE)
+  {
+    this->c = heroHireCoords;
+    buttons[HIGH_ACTION]->setLabel("Hire");
+    buttons[LOW_ACTION]->setLabel("Reject");
+  }
   
   /* adjust button positions according to mode */
-  buttons[DISMISS]->setPosition(c.x + 222, c.y + 143);
-  buttons[OK]->setPosition(c.x + 222, c.y + 162);
+  buttons[HIGH_ACTION]->setPosition(c.x + 222, c.y + 143);
+  buttons[LOW_ACTION]->setPosition(c.x + 222, c.y + 162);
+  
   buttons[UP_ARROW]->setPosition(c.x + 205, c.y + 104);
   buttons[DOWN_ARROW]->setPosition(c.x + 205, c.y + 168);
   

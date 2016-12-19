@@ -42,6 +42,33 @@ void BistateButton::draw()
   }
 }
 
+//TODO: verify offset fomula which is not precise
+BistateLabeledButton::BistateLabeledButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, std::string label, const FontSpriteSheet* font) : BistateButton(name, x, y, normal, pressed),
+label(label), font(font), textPosition(x + normal.sw()/2, y + normal.sh()/2 - font->sh()/2)
+{
+
+}
+
+void BistateLabeledButton::setPosition(u16 x, u16 y)
+{
+  this->x = x;
+  this->y = y;
+  textPosition = ScreenCoord(x + normalCoords.sw()/2, y + normalCoords.sh()/2 - font->sh()/2);
+}
+
+void BistateLabeledButton::draw()
+{
+  BistateButton::draw();
+  
+  if (isVisible())
+  {
+    if (pressed)
+      Fonts::drawString(label, font, textPosition.x+1, textPosition.y+1, ALIGN_CENTER);
+    else
+      Fonts::drawString(label, font, textPosition.x, textPosition.y, ALIGN_CENTER);
+  }
+}
+
 void TristateButton::draw()
 {
   if (isVisible())

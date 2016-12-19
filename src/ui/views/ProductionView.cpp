@@ -33,8 +33,8 @@ ProductionView::ProductionView(ViewManager *gvm) : View(gvm), city(nullptr), sel
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[CANCEL] = TristateButton::build("Cancel", 99, 181, TextureID::UNIT_DETAIL_BUTTONS, 2);
-  buttons[OK] = TristateButton::build("Ok", 172, 181, TextureID::UNIT_DETAIL_BUTTONS, 1);
+  buttons[CANCEL] = BistateLabeledButton::buildLBX("Cancel", 99, 181, LSI(BACKGRND,24), "Cancel", FontFaces::Serif::GOLD);
+  buttons[OK] = BistateLabeledButton::buildLBX("Ok", 172, 181, LSI(BACKGRND,24), "Ok", FontFaces::Serif::GOLD);
   
   buttons[CANCEL]->setAction([this,gvm](){ gvm->closeOverview(); });
   buttons[OK]->setAction([this,gvm]() {

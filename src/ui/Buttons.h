@@ -39,7 +39,7 @@ public:
   inline void deactivate() { active = false; }
   inline void activateIf(bool condition) { active = condition; }
   
-  void setPosition(u16 x, u16 y) { this->x = x; this->y = y; }
+  virtual void setPosition(u16 x, u16 y) { this->x = x; this->y = y; }
   
   virtual inline Clickable* setAction(Action action) { this->action = action; return this; }
   inline Action getAction() { return action; }
@@ -74,6 +74,9 @@ public:
   
   inline Button* setAction(Action action) override { this->action = action; return this; }
   
+  virtual void setLabel(const std::string&) { }
+  
+  template<typename T> T* as() { return static_cast<T*>(this); }
   
   inline void press() { pressed = true;}
   inline void release() { pressed = false; }
@@ -106,7 +109,7 @@ protected:
   
 public:
   void draw() override;
-  
+
   static BistateButton* build(const std::string name, u16 x, u16 y, TextureID texture, u16 c)
   {
     return new BistateButton(name, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c));
@@ -117,8 +120,27 @@ public:
     assert(info.isLBX());
     return new BistateButton(name, x, y, info, info.frame(1));
   }
+};
+
+class BistateLabeledButton : public BistateButton
+{
+protected:
+  ScreenCoord textPosition;
+  std::string label;
+  const FontSpriteSheet* font;
+  BistateLabeledButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, std::string label, const FontSpriteSheet* font);
   
+public:
+  void draw() override;
   
+  void setLabel(const std::string& label) override { this->label = label; }
+  void setPosition(u16 x, u16 y) override;
+  
+  static BistateLabeledButton* buildLBX(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, const FontSpriteSheet* font)
+  {
+    assert(info.isLBX());
+    return new BistateLabeledButton(name, x, y, info, info.frame(1), label, font);
+  }
 };
 
 class TristateButton : public BistateButton

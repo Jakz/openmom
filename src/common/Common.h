@@ -280,6 +280,7 @@ struct ScreenCoord
   
   ScreenCoord(s16 x, s16 y) : x(x), y(y) { }
   bool operator==(const ScreenCoord& o) const { return x == o.x && y == o.y; }
+  ScreenCoord& operator+=(s16 i) { x += i; y += i; return *this; }
 };
 
 using Coord = ScreenCoord;
