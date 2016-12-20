@@ -345,7 +345,7 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
       else
       {
         Army* army = player->getSelectedArmy();
-        Route* route = player->getRoute();
+        pathfind::Route* route = player->getRoute();
         
         if (army && !route)
           player->computeRoute(t->x(), t->y());

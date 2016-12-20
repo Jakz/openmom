@@ -8,7 +8,7 @@
 
 class MovementEffect;
 class Unit;
-class Route;
+namespace pathfind { class Route; }
 class Player;
 
 typedef std::unordered_set<const MovementEffect*> movement_list;
@@ -16,6 +16,7 @@ typedef std::list<Unit*> unit_list;
 
 class Army
 {
+  using Route = pathfind::Route;
 
 private:
   Position position;

@@ -31,6 +31,22 @@ typedef int16_t s16;
 typedef int32_t s32;
 typedef int64_t s64;
 
+template<typename T>
+class optional
+{
+private:
+  T _value;
+  bool _isPresent;
+  
+public:
+  optional(T value) : _value(value), _isPresent(true) { }
+  optional() : _isPresent(false) { }
+  optional& operator=(T value) { _value = value; _isPresent = true; return *this; }
+  bool isPresent() const { return _isPresent; }
+  operator T() const { assert(_isPresent); return _value; }
+  T* operator->() { assert(_isPresent); return &_value; }
+};
+
 typedef u32 Color;
 
 using lbx_index = s16;

@@ -23,11 +23,13 @@
 
 class Game;
 class Army;
-class Route;
+namespace pathfind { class Route; }
 
 
 class LocalPlayer : public Player
 {
+  using Route = pathfind::Route;
+  
 private:
   Position viewport;
 

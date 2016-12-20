@@ -11,6 +11,7 @@
 #endif
 
 using namespace std;
+using namespace pathfind;
 
 bool MovementStrategy::movementAllowed(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const
 {
@@ -80,7 +81,7 @@ void Route::consumeMovement(World *world)
   s16 availMoves = army->availableMoves();
   
   PathTileInfo& currentMove = positions.front();
-  PathTileInfo lastMove = PathTileInfo(-1, -1);
+  optional<PathTileInfo> lastMove;
   s16 totalCost = 0;
   
   while (availMoves > currentMove.cost)
@@ -100,9 +101,9 @@ void Route::consumeMovement(World *world)
       break;
   }
   
-  if (lastMove.x != -1)
+  if (lastMove.isPresent())
   {
-    world->get(lastMove.x, lastMove.y, army->getPosition().plane)->placeArmy(army);
+    world->get(lastMove->x, lastMove->y, army->getPosition().plane)->placeArmy(army);
     
     auto it = army->begin();
     while (it != army->end())
@@ -142,7 +143,7 @@ void PathFinder::computeReachable(World* world, const Position position, const m
   }
 }
 
-Route* PathFinder::computeRoute(World* world, const Position& position, const unit_list& units, const Player* player, s16 dx, s16 dy)
+Route* PathFinder::computeRoute(World* world, const Position position, const unit_list& units, const Player* player, s16 dx, s16 dy)
 {
   LOGD2("[pathfind] computing route from (%d,%d) to (%d,%d)", position.x, position.y, dx, dy)
   

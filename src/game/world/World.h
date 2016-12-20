@@ -146,7 +146,7 @@ public:
   
   void calcSubTile(u16 x, u16 y, Plane p);
   
-  PathFinder pathfinder;
+  pathfind::PathFinder pathfinder;
   
   Game* const game;
   const u16 w, h;
