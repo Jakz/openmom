@@ -46,11 +46,11 @@ s16 MovementStrategy::cost(const movement_list& movement, const unit_list& units
   return 2;
 }
 
-float MovementStrategy::heuristic(const movement_list& movement, const unit_list& units, const Player* owner, s16 w, s16 h, s16 x, s16 y, s16 dx, s16 dy) const
+float MovementStrategy::heuristic(const movement_list& movement, const unit_list& units, const Player* owner, s16 w, s16 h, const Position start, const Position goal) const
 {
-  s16 ax = std::abs(x - dx);
+  s16 ax = std::abs(start.x - goal.x);
   s16 tx = ax > w/2 ? w - ax : ax;
-  s16 ty = std::abs(y - dy);
+  s16 ty = std::abs(start.y - goal.y);
   
   return std::sqrt(static_cast<float>(tx*tx + ty*ty));
 }
@@ -61,9 +61,8 @@ bool Route::stillValid(World *world)
   pending.clear();
   
   /* go through the route and check that movement is still allowed on each tile of the route */
-  return std::any_of(positions.begin(), positions.end(), [world,this] (const PathTileInfo& p) {
-    Position pos = Position(p.x,p.y,army->getPosition().plane);
-    return !PathFinder::strategy.movementAllowed(army->getOwner()->game()->mapMechanics.movementTypeOfArmy(army->getUnits()), army->getUnits(), army->getOwner(), world, pos);
+  return std::any_of(positions.begin(), positions.end(), [world,this] (const Route::step_type& p) {
+    return !PathFinder::strategy.movementAllowed(army->getOwner()->game()->mapMechanics.movementTypeOfArmy(army->getUnits()), army->getUnits(), army->getOwner(), world, p);
   });
 }
 
@@ -75,13 +74,13 @@ void Route::consumeMovement(World *world)
   if (army->isPlaced())
     tile->unplaceArmy();
   
-  pending.push_back(PathTileInfo(army->getPosition()));
+  pending.emplace_back(army->getPosition(), 0);
   
   /* TODO: not good! it must consider cost of single cells, not going just this way */
   s16 availMoves = army->availableMoves();
   
-  PathTileInfo& currentMove = positions.front();
-  optional<PathTileInfo> lastMove;
+  Route::step_type currentMove = positions.front();
+  optional<Route::step_type> lastMove;
   s16 totalCost = 0;
   
   while (availMoves > currentMove.cost)
@@ -89,8 +88,8 @@ void Route::consumeMovement(World *world)
     army->getOwner()->fog()->setRange(Position(currentMove.x, currentMove.y, army->getPosition().plane), army->sightRange());
     
     pending.push_back(currentMove);
-    availMoves -= currentMove.gameCost;
-    totalCost += currentMove.gameCost;
+    availMoves -= currentMove.cost;
+    totalCost += currentMove.cost;
     
     lastMove = positions.front();
     positions.pop_front();
@@ -143,121 +142,100 @@ void PathFinder::computeReachable(World* world, const Position position, const m
   }
 }
 
-Route* PathFinder::computeRoute(World* world, const Position position, const unit_list& units, const Player* player, s16 dx, s16 dy)
+PathTileInfo* PathFinder::findOpenNode(Position position)
 {
-  LOGD2("[pathfind] computing route from (%d,%d) to (%d,%d)", position.x, position.y, dx, dy)
+  auto it = std::find_if(openSet.begin(), openSet.end(), [&position] (PathTileInfo* node) { return *node == position; });
+  return it != openSet.end() ? *it : nullptr;
+}
+
+const PathTileInfo* PathFinder::stepRoute(World *world, const Position goal, const movement_list &movement, const unit_list &units, const Player *player)
+{
+  PathTileInfo* current = * min_element(openSet.begin(), openSet.end(), [](const PathTileInfo* t1, const PathTileInfo*t2) { return t1->cost + t1->hCost < t2->cost + t2->hCost; });
+  
+  if (*current == goal)
+    return current;
+  
+  openSet.erase(current);
+  closedSet.insert(current);
+  
+  computeReachable(world, *current, movement, units, player);
+  
+#if DEBUG >= 2
+  {
+    std::stringstream ss;
+    ss << "[pathfind] reachable: ";
+    for (const auto& p : reachable) ss << "(" << p.x << "," << p.y << ") ";
+    LOGD2("%s", ss.str().c_str());
+  }
+#endif
+  
+  for (const Position& tp : reachable)
+  {
+    int gameCost = strategy.cost(movement, units, player, world, tp);
+    int testCost = current->cost + gameCost;
+    
+    PathTileInfo* testOpen = findOpenNode(tp);
+    
+    if (!testOpen || testCost < testOpen->gameCost)
+    {
+      if (!testOpen)
+      {
+        buffer.emplace_back(tp, current, testCost, strategy.heuristic(movement, units, player, w, h, tp, goal));
+        openSet.insert(&buffer.back());
+      }
+      else
+        testOpen->update(current, testCost, strategy.heuristic(movement, units, player, w, h, tp, goal));
+    }
+  }
+
+  return nullptr;
+}
+
+Route* PathFinder::computeRoute(World* world, const Position start, const unit_list& units, const Player* player, Position goal)
+{
+  LOGD2("[pathfind] computing route from (%d,%d) to (%d,%d)", start.x, start.y, goal.x, goal.y)
   
   reset();
   
   // TODO: maybe it's redundant, search for calls around
   const movement_list movement = player->game()->mapMechanics.movementTypeOfArmy(units);
   
-  const s16 x = position.x;
-  const s16 y = position.y;
-  
-  if (dx < 0) dx = w + dx;
-  else if (dx >= w) dx %= w;
-  
-  if (!strategy.movementAllowedLast(movement, units, player, world, position))
+  goal.wrapAndCheckValidity(w, h);
+
+  if (!strategy.movementAllowedLast(movement, units, player, world, goal))
     return nullptr;
   
-  auto& startTile = info[x][y];
-  startTile.cost = 0;
-  startTile.hCost = strategy.heuristic(movement, units, player, w, h, x, y, dx, dy);
-  openSet.insert(&startTile);
+  buffer.emplace_back(start, nullptr, 0, strategy.heuristic(movement, units, player, w, h, start, goal));
+  openSet.insert(&buffer.back());
   
   while (!openSet.empty())
   {
-    const PathTileInfo *current = *min_element(openSet.begin(), openSet.end(), [](const PathTileInfo* t1, const PathTileInfo*t2) { return t1->cost + t1->hCost < t2->cost + t2->hCost; });
+    const PathTileInfo* finished = stepRoute(world, goal, movement, units, player);
     
-    if (current->x == dx && current->y == dy)
-      break;
-    
-    openSet.erase(current);
-    closedSet.insert(current);
-    
-    computeReachable(world, Position(current->x, current->y, position.plane), movement, units, player);
-    
-#if DEBUG >= 2
+    if (finished)
     {
-      std::stringstream ss;
-      ss << "[pathfinder] reachable: ";
-      for (const auto& p : reachable) ss << "(" << p.x << "," << p.y << ") ";
-      LOGD2("%s", ss.str().c_str());
+      /* we finished and found a path */
+      return reconstructPath(finished);
+      reset();
     }
-#endif
+  }
+  
+  /* if, after the whole search, we didn't reach the goal tile then there is no route */
+  reset();
+  return nullptr;
+}
 
-    for (const Position& tp : reachable)
-    {
-      s16 xp = tp.x, yp = tp.y;
-      
-      int gameCost = strategy.cost(movement, units, player, world, tp);
-      int cost = current->cost + gameCost;
-      bool better = false;
-      PathTileInfo* n = &info[xp][yp];
-      info[xp][yp].gameCost = gameCost;
-      
-      if (closedSet.find(n) != closedSet.end())
-        continue;
-      
-      if (openSet.find(n) == openSet.end())
-      {
-        openSet.insert(n);
-        better = true;
-      }
-      else if (cost < n->cost)
-        better = true;
-      
-      if (better)
-      {
-        n->parent = current;
-        n->cost = cost;
-        n->hCost = strategy.heuristic(movement, units, player, w, h, xp, yp, dx, dy);
-        openSet.erase(n);
-        closedSet.insert(n); // TODO: check if should be openSet or closedSet
-      }
-    }
-  }
-  
-  // if, after the whole search, the parent of destination is null then no path has been found
-  if (!info[dx][dy].parent)
-    return nullptr;
-  
+Route* PathFinder::reconstructPath(const PathTileInfo* info)
+{
   Route* r = new Route();
-  const PathTileInfo* l = &info[dx][dy];
   
-  while (!(l->x == x && l->y == y))
+  while (info->parent)
   {
-    r->prepend(*l);
-    l = l->parent;
+    r->prepend(RouteStep(*info, info->cost));
+    info = info->parent;
   }
-  
+
   return r;
 }
-
-
-
-PathFinder::PathFinder(World* world, s16 w, s16 h) : w(w), h(h)
-{
-  info = new PathTileInfo*[w];
-  
-  for (int x = 0; x < w; ++x)
-  {
-    info[x] = new PathTileInfo[h];
-  }
-  
-  for (int x = 0; x < w; ++x)
-    for (int y = 0; y < h; ++y)
-      info[x][y] = PathTileInfo(x, y);
-}
-
-PathFinder::~PathFinder()
-{
-  for (int x = 0; x < w; ++x)
-    delete [] info[x];
-  
-  delete [] info;
-}
-
 
 

@@ -154,9 +154,9 @@ void Game::placeArmy(Army* army, const Position& position)
   army->getOwner()->fog()->setRange(position, army->sightRange());
 }
 
-void Game::computeRoute(Army *army, const Position& position)
+void Game::computeRoute(Army *army, const Position goal)
 {
-  world->pathfinder.computeRoute(world, army, position.x, position.y);
+  world->pathfinder.computeRoute(world, army, goal);
 }
 
 bool Game::settleCity(Army* army, const std::string name)

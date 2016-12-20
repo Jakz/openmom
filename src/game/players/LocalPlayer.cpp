@@ -61,10 +61,10 @@ void LocalPlayer::push(anims::Animation* animation)
   // TODO
 }
 
-void LocalPlayer::computeRoute(s16 dx, s16 dy)
+void LocalPlayer::computeRoute(const Position goal)
 {
   delete selectedRoute;
-  selectedRoute = g->world->pathfinder.computeRoute(g->world, selectedArmy, dx, dy);
+  selectedRoute = g->world->pathfinder.computeRoute(g->world, selectedArmy, goal);
   
   selectedArmy->setRoute(selectedRoute);
   

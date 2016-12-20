@@ -64,8 +64,8 @@ public:
   s16 selectedAvailMoves();
   bool wholeSelected() { return selectedCount() == selectedArmy->size(); }
   void resetArmy() { selectedArmy = nullptr; selectedRoute = nullptr; }
-  Route* getRoute() { return selectedRoute; }
-  void computeRoute(s16 dx, s16 dy);
+  Route* getRoute() const { return selectedRoute; }
+  void computeRoute(const Position position);
   bool consumeRoute();
   Army* splitAndSelect();
   

@@ -348,7 +348,7 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
         pathfind::Route* route = player->getRoute();
         
         if (army && !route)
-          player->computeRoute(t->x(), t->y());
+          player->computeRoute(t->position);
         else if (army && !route->completed() && route->dx() == t->x() && route->dy() == t->y() && player->selectedAvailMoves() > 0)
         {
           player->consumeRoute();
@@ -357,7 +357,7 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
           updateBuildButton();
         }
         else if (army)
-          player->computeRoute(t->x(),t->y());
+          player->computeRoute(t->position);
         
         /*if (route != null && !route.completed())
          System.out.println(cx+" "+cy+"  "+route.dx()+" "+route.dy());*/

@@ -34,7 +34,7 @@ void Blink::step()
 
 
 
-UnitMovement::UnitMovement(LocalPlayer* player, const Army* army, const list<pathfind::PathTileInfo>& moves) : ContinuousAnimation(100), player(player), army(army), moves(moves)
+UnitMovement::UnitMovement(LocalPlayer* player, const Army* army, const decltype(moves)& moves) : ContinuousAnimation(100), player(player), army(army), moves(moves)
 {
   Position s = Viewport::tileCoords(player, moves.front().x, moves.front().y);
   Position d = Viewport::tileCoords(player, ::next(moves.begin())->x, ::next(moves.begin())->y);

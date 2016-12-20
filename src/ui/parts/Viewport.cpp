@@ -271,18 +271,15 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
         }
       }
       
-      // TODO draw route info on map
-      /*if (player->selectedRoute() != null)
+      // TODO should this be here on in MainView?
+      pathfind::Route* route = player->getRoute();
+      if (route)
       {
-        Route r = player.selectedRoute();
-        
-        if (r != null && r.has((vx+x)%map.width(),vy+y))
+        if (route->passesBy(t->position))
         {
-          Gfx::canvas.noFill();
-          Gfx::canvas.stroke(Gfx::color(255, 0, 0));
-          Gfx::canvas.rect(sx+10-3, sy+9-3, 5, 5);
+          Gfx::rect(sx+10-3, sy+9-3, 5, 5, RGB(255,0,0));
         }
-      }*/
+      }
       
       sx += tileWidth;
     }

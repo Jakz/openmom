@@ -31,21 +31,30 @@ namespace pathfind
     bool movementAllowedLast(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const;
     
     s16 cost(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const;
-    float heuristic(const movement_list& movement, const unit_list& units, const Player* owner, s16 w, s16 h, s16 x, s16 y, s16 dx, s16 dy) const;
+    float heuristic(const movement_list& movement, const unit_list& units, const Player* owner, s16 w, s16 h, const Position start, const Position goal) const;
   };
   
-  struct PathTileInfo
+  struct PathTileInfo : public Position
   {
     mutable const PathTileInfo* parent;
     mutable s16 cost;
     mutable float hCost;
     mutable s16 gameCost;
     
-    s16 x, y;
+    //PathTileInfo() = default;
+    PathTileInfo(Position pos, const PathTileInfo* parent, s16 gameCost, float hCost)
+    : Position(pos), parent(parent), gameCost(gameCost), hCost(hCost), cost(gameCost+hCost) { }
     
-    PathTileInfo() : x(-1), y(-1) { }
-    PathTileInfo(const Position& pos) : x(pos.x), y(pos.y), parent(nullptr) { }
-    PathTileInfo(s16 x, s16 y) : x(x), y(y), cost(0), parent(nullptr) { }
+    void update(PathTileInfo* parent, s16 gameCost, float hCost)
+    {
+      this->parent = parent;
+      this->gameCost = gameCost;
+      this->hCost = hCost;
+      this->cost = gameCost + hCost;
+    }
+    
+    bool operator==(const Position pos) const { return pos.x == x && pos.y == y; }
+    
     void reset() { parent = nullptr; }
   };
   
@@ -53,10 +62,20 @@ namespace pathfind
   {
     inline size_t operator()(const PathTileInfo& k) const { return std::hash<u32>()((k.x << 16) | k.y); }
   };
+  
+  struct RouteStep : public Position
+  {
+    s16 cost;
+    RouteStep() = default;
+    RouteStep(Position p, s16 cost) : Position(p), cost(cost) { }
+    
+    bool operator==(const Position pos) const { return pos.x == x && pos.y == y; }
+  };
 
   class Route
   {
-    using step_type = PathTileInfo;
+  public:
+    using step_type = RouteStep;
     
   private:
     mutable Army* army;
@@ -75,7 +94,7 @@ namespace pathfind
     s16 dx() { return positions.back().x; }
     s16 dy() { return positions.back().y; }
     
-    bool passesBy(s16 x, s16 y) { return std::find_if(positions.begin(), positions.end(), [&](const step_type& i){return i.x == x && i.y == y;}) != positions.end(); }
+    bool passesBy(Position position) { return std::find(positions.begin(), positions.end(), position) != positions.end(); }
     
     void consumeMovement(World* world);
     
@@ -93,33 +112,30 @@ namespace pathfind
   {
   private:
     const s16 w, h;
-    std::unordered_set<const PathTileInfo*> openSet, closedSet;
+    std::list<PathTileInfo> buffer;
+    std::unordered_set<PathTileInfo*> openSet, closedSet;
     std::vector<Position> reachable;
-    PathTileInfo** info;
+    
+    PathTileInfo* findOpenNode(Position position);
+    Route* reconstructPath(const PathTileInfo* goal);
     
     void computeReachable(World* world, const Position position, const movement_list& movement, const unit_list& units, const Player* player);
+    const PathTileInfo* stepRoute(World* world, const Position goal, const movement_list& movement, const unit_list& units, const Player* player);
     
   public:
-    PathFinder(World* world, s16 w, s16 h);
-    ~PathFinder();
+    PathFinder(World* world, s16 w, s16 h) : w(w), h(h) { }
+    ~PathFinder() { }
     
     void reset()
     {
-      for (int x = 0; x < w; ++x)
-      {
-        for (int y = 0; y < h; ++y)
-        {
-          info[x][y].reset();
-        }
-      }
-      
+      buffer.clear();
       closedSet.clear();
       openSet.clear();
       reachable.clear();
     }
     
-    Route* computeRoute(World* world, Army* army, s16 dx, s16 dy) { return computeRoute(world, army->getPosition(), army->getUnits(), army->getOwner(), dx, dy); }
-    Route* computeRoute(World* world, const Position position, const unit_list& units, const Player* player, s16 x, s16 y);
+    Route* computeRoute(World* world, Army* army, const Position goal) { return computeRoute(world, army->getPosition(), army->getUnits(), army->getOwner(), goal); }
+    Route* computeRoute(World* world, const Position start, const unit_list& units, const Player* player, Position goal);
     
     static const MovementStrategy strategy;
   };

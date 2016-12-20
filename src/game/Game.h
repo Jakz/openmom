@@ -49,7 +49,7 @@ public:
   void dummyInit();
   
   void placeArmy(Army* army, const Position& position);
-  void computeRoute(Army* army, const Position& position);
+  void computeRoute(Army* army, const Position goal);
   
   bool settleCity(Army* army, const std::string name);
   void settleCity(Player* player, const std::string name, const Position& position);

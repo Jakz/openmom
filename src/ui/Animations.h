@@ -95,11 +95,11 @@ namespace anims
     s16 tx, ty;
     s16 sx, sy;
     const Army* army;
-    std::list<pathfind::PathTileInfo> moves;
+    std::list<pathfind::Route::step_type> moves;
     LocalPlayer *player;
     
   public:
-    UnitMovement(LocalPlayer* player, const Army* army, const std::list<pathfind::PathTileInfo>& moves);
+    UnitMovement(LocalPlayer* player, const Army* army, const decltype(moves)& moves);
 
     void step() override;
     bool hasFinished() override;
