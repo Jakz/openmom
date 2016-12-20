@@ -86,7 +86,10 @@ class PathFinder
 private:
   const s16 w, h;
   std::unordered_set<const PathTileInfo*> openSet, closedSet;
+  std::vector<Position> reachable;
   PathTileInfo** info;
+  
+  void computeReachable(World* world, const Position position, const movement_list& movement, const unit_list& units, const Player* player);
   
 public:
   PathFinder(World* world, s16 w, s16 h);
@@ -104,6 +107,7 @@ public:
     
     closedSet.clear();
     openSet.clear();
+    reachable.clear();
   }
   
   Route* computeRoute(World* world, Army* army, s16 dx, s16 dy) { return computeRoute(world, army->getPosition(), army->getUnits(), army->getOwner(), dx, dy); }

@@ -182,6 +182,21 @@ struct Position
   Position() { }
   Position(s16 x, s16 y, Plane plane) : x(x), y(y), plane(plane) { }
   
+  Position relative(s16 ox, s16 oy) const { return Position(x+ox, y+oy, plane); }
+  
+  bool wrapAndCheckValidity(u16 w, u16 h)
+  {
+    if (y < 0 || y >= h) return false;
+    else
+    {
+      if (x < 0)
+        x = w + x;
+      else if (x >= w)
+        x = x%w;
+      return true;
+    }
+  }
+  
   bool same(const Position& p) const { return p.x == x && p.y == y && p.plane == plane; }
 };
 

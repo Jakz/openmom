@@ -6,6 +6,10 @@
 #include "Player.h"
 #include "Game.h"
 
+#if DEBUG >= 2
+#include <sstream>
+#endif
+
 using namespace std;
 
 bool MovementStrategy::movementAllowed(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const
@@ -110,6 +114,34 @@ void Route::consumeMovement(World *world)
 
 const MovementStrategy PathFinder::strategy;
 
+void PathFinder::computeReachable(World* world, const Position position, const movement_list& movement, const unit_list& units, const Player* player)
+{
+  reachable.clear();
+  
+  /* find all reachable tiles around the position: they are all 8 surrounding tiles
+     assuming that the unit is allowed to walk in there
+   */
+  for (int xx = -1; xx <= 1; ++xx)
+  {
+    for (int yy = -1; yy <= 1; ++yy)
+    {
+      if (xx == 0 && yy == 0)
+        continue;
+      else
+      {
+        Position np = position.relative(xx, yy);
+        
+        // ignore tiles that goes out of the map vertically
+        if (!np.wrapAndCheckValidity(w, h))
+          continue;
+        
+        if (strategy.movementAllowed(movement, units, player, world, np))
+          reachable.push_back(np);
+      }
+    }
+  }
+}
+
 Route* PathFinder::computeRoute(World* world, const Position& position, const unit_list& units, const Player* player, s16 dx, s16 dy)
 {
   LOGD2("[pathfind] computing route from (%d,%d) to (%d,%d)", position.x, position.y, dx, dy)
@@ -143,57 +175,45 @@ Route* PathFinder::computeRoute(World* world, const Position& position, const un
     openSet.erase(current);
     closedSet.insert(current);
     
-    for (int xx = -1; xx <= 1; ++xx)
+    computeReachable(world, Position(current->x, current->y, position.plane), movement, units, player);
+    
+#if DEBUG >= 2
     {
-      for (int yy = -1; yy <= 1; ++yy)
+      std::stringstream ss;
+      ss << "[pathfinder] reachable: ";
+      for (const auto& p : reachable) ss << "(" << p.x << "," << p.y << ") ";
+      LOGD2("%s", ss.str().c_str());
+    }
+#endif
+
+    for (const Position& tp : reachable)
+    {
+      s16 xp = tp.x, yp = tp.y;
+      
+      int gameCost = strategy.cost(movement, units, player, world, tp);
+      int cost = current->cost + gameCost;
+      bool better = false;
+      PathTileInfo* n = &info[xp][yp];
+      info[xp][yp].gameCost = gameCost;
+      
+      if (closedSet.find(n) != closedSet.end())
+        continue;
+      
+      if (openSet.find(n) == openSet.end())
       {
-        if (xx == 0 && yy == 0)
-          continue;
-        else
-        {
-          s16 xp = current->x + xx;
-          s16 yp = current->y + yy;
-          
-          if (yp < 0 || yp >= h) // ignore tiles that goes out of the map vertically
-            continue;
-          
-          // wrap tiles that goes over the horizontal bound
-          if (xp < 0)
-            xp = w + xp;
-          else if (xp >= w)
-            xp = xp%w;
-          
-          const Position tp = Position(xp,yp,position.plane);
-          if (strategy.movementAllowed(movement, units, player, world, tp) && (xp != dx || yp != dy))
-          {
-            int gameCost = strategy.cost(movement, units, player, world, tp);
-            int cost = current->cost + gameCost;
-            bool better = false;
-            PathTileInfo* n = &info[xp][yp];
-            info[xp][yp].gameCost = gameCost;
-            
-            if (closedSet.find(n) != closedSet.end())
-              continue;
-            
-            if (openSet.find(n) == openSet.end())
-            {
-              openSet.insert(n);
-              better = true;
-            }
-            else if (cost < n->cost)
-              better = true;
-            
-            if (better)
-            {
-              n->parent = current;
-              n->cost = cost;
-              n->hCost = strategy.heuristic(movement, units, player, w, h, xp, yp, dx, dy);
-              openSet.erase(n);
-              closedSet.insert(n); // TODO: check if should be openSet or closedSet
-            }
-          }
-          
-        }
+        openSet.insert(n);
+        better = true;
+      }
+      else if (cost < n->cost)
+        better = true;
+      
+      if (better)
+      {
+        n->parent = current;
+        n->cost = cost;
+        n->hCost = strategy.heuristic(movement, units, player, w, h, xp, yp, dx, dy);
+        openSet.erase(n);
+        closedSet.insert(n); // TODO: check if should be openSet or closedSet
       }
     }
   }
