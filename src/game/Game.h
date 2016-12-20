@@ -86,29 +86,10 @@ public:
 
   void turnBeginning();
   
-  void nextTurn()
-  {
-    ++current;
-    
-    if (current == players.end())
-    {
-      firstTurn = false;
-      ++turnCounter;
-      current = players.begin();
-    }
-    
-    if (!firstTurn)
-      turnBeginning();
-  }
-  
-  void nextLocal()
-  {
-    // TODO
-  }
+  void nextTurn();
   
   u32 getTurnCount() { return turnCounter; }
 
-  
   Settings settings;
   
   ValuesMechanics values;
@@ -137,18 +118,10 @@ private:
 public:
   LocalGame(Game* game);
   
+  void switchToPlayer(Player* player);
+  
   LocalPlayer* currentPlayer() { return *current; }
   
-  void nextTurn()
-  {
-    ++current;
-    
-    if (current == players.end())
-      current = players.begin();
-    
-    game->nextTurn();
-  }
-
   Game* getGame() { return game; }
   
   static LocalGame* i;

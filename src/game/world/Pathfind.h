@@ -17,8 +17,8 @@ class MovementStrategy
 public:
   MovementStrategy() { }
   
-  bool blocked(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const;
-  bool blockedLast(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const;
+  bool movementAllowed(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const;
+  bool movementAllowedLast(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const;
   
   s16 cost(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const;
   float heuristic(const movement_list& movement, const unit_list& units, const Player* owner, s16 w, s16 h, s16 x, s16 y, s16 dx, s16 dy) const;
@@ -110,6 +110,12 @@ public:
   Route* computeRoute(World* world, const Position& position, const unit_list& units, const Player* player, s16 x, s16 y);
   
   static const MovementStrategy strategy;
+};
+
+class PathFinder2
+{
+private:
+  
 };
 
 #endif

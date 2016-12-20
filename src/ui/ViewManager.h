@@ -27,6 +27,8 @@ class ResearchView;
 class SpellBookView;
 class UnitDetailView;
 
+class LocalPlayer;
+
 class ViewManager : public EventListener
 {
 private:
@@ -45,6 +47,8 @@ public:
     animating = true;
     animations.push_back(animation);
   }
+  
+  void setPlayer(LocalPlayer* player);
   
   void switchView(ViewID type);
   void switchOverview(ViewID type);

@@ -92,7 +92,7 @@ public:
   u16 getPopulation() const { return population; }
   u16 getMaxPopulation() const { return maxPopulation; }
   
-  Player* getOwner() { return owner; }
+  Player* getOwner() const { return owner; }
   
   u16 sightRange() { return 2; } // TODO
   

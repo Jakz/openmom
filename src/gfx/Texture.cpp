@@ -100,9 +100,7 @@ const Texture Texture::textures[] =
   Texture(TextureID::SPELL_BOOK_DUMMY_TEXT,"spellbook/dummy-text.png",0,0,122,128),
   
   Texture(TextureID::RIGHT_BACKDROP,"static/right_backdrop.gif",2,1,80,124),
-  
-  Texture(TextureID::CITY_MAP_TILE,"city/city-map-tiles.png",2,5,32,30),
-  
+    
   Texture(TextureID::CITY_TRADE_HOUSING_BACKDROP,"city/tradegoods-housing-backdrop.png",1,1,53,33),
   Texture(TextureID::CITY_VIEW_BACKDROP,"static/backdrop-city.png",1,1,320,200),
   Texture(TextureID::CITY_VIEW_BUTTONS,"city/city-buttons-1.png",3,3,{30,36,30},10),

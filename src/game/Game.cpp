@@ -397,8 +397,26 @@ void Game::turnBeginning()
   current->growCities();
 }
 
+void Game::nextTurn()
+{
+  ++current;
+  
+  if (current == players.end())
+  {
+    firstTurn = false;
+    ++turnCounter;
+    current = players.begin();
+  }
+  
+  if (!firstTurn)
+    turnBeginning();
+  
+  localGame->switchToPlayer(*current);
+}
 
 
+#include "ViewManager.h"
+#include "SDLHelper.h"
 
 LocalGame* LocalGame::i = nullptr;
 
@@ -410,4 +428,10 @@ LocalGame::LocalGame(Game* game) : game(game)
   
   current = players.begin();
   LocalGame::i = this;
+}
+
+void LocalGame::switchToPlayer(Player* player)
+{
+  current = std::find(players.begin(), players.end(), player);
+  SDL::gvm->setPlayer(*current);
 }

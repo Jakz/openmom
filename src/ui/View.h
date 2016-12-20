@@ -24,55 +24,57 @@ class ViewManager;
 
 class View : public EventListener
 {
-  protected:
-    std::vector<Button*> buttons;
-    std::vector<Clickable*> areas;
+protected:
+  std::vector<Button*> buttons;
+  std::vector<Clickable*> areas;
   
-    Button* curButton;
+  Button* curButton;
   
-    LocalPlayer *player;
-    Game *g;
+  LocalPlayer *player;
+  Game *g;
   
-    virtual void activate() = 0;
-    virtual void deactivate() = 0;
+  virtual void activate() = 0;
+  virtual void deactivate() = 0;
   
-    virtual void draw() = 0;
-    virtual void drawPost() = 0;
-
-    ViewManager *gvm;
+  virtual void draw() = 0;
+  virtual void drawPost() = 0;
   
-  public:
-    View(ViewManager *gvm) : gvm(gvm), curButton(nullptr) { }
+  void setPlayer(LocalPlayer* player) { this->player = player; }
   
-    Button* buttonAt(u16 index) { return buttons[index]; }
-    Clickable* areaAt(u16 index) { return areas[index]; }
+  ViewManager *gvm;
   
-    void doActivate(LocalPlayer* player);
-    void doDeactivate() { deactivate(); }
+public:
+  View(ViewManager *gvm) : gvm(gvm), curButton(nullptr) { }
   
-    virtual void doDraw()
-    {
-      draw();
-      drawButtons();
-    }
+  Button* buttonAt(u16 index) { return buttons[index]; }
+  Clickable* areaAt(u16 index) { return areas[index]; }
   
-    void drawButtons();
+  void doActivate(LocalPlayer* player);
+  void doDeactivate() { deactivate(); }
   
-    void doMouseReleased(u16 x, u16 y, MouseButton b);
-    void doMousePressed(u16 x, u16 y, MouseButton b);
-    void doMouseDragged(u16 x, u16 y, MouseButton b);
+  virtual void doDraw()
+  {
+    draw();
+    drawButtons();
+  }
   
-    void doMouseMoved(u16 x, u16 y, MouseButton b) { mouseMoved(x,y,b); }
-    void doMouseClicked(u16 x, u16 y, MouseButton b) { mouseClicked(x,y,b); }
+  void drawButtons();
   
-    void doKeyPressed(KeyboardKey key, KeyboardMod mod) { keyPressed(key,mod); }
-    void doKeyReleased(KeyboardKey key, KeyboardMod mod) { keyReleased(key,mod); }
+  void doMouseReleased(u16 x, u16 y, MouseButton b);
+  void doMousePressed(u16 x, u16 y, MouseButton b);
+  void doMouseDragged(u16 x, u16 y, MouseButton b);
+  
+  void doMouseMoved(u16 x, u16 y, MouseButton b) { mouseMoved(x,y,b); }
+  void doMouseClicked(u16 x, u16 y, MouseButton b) { mouseClicked(x,y,b); }
+  
+  void doKeyPressed(KeyboardKey key, KeyboardMod mod) { keyPressed(key,mod); }
+  void doKeyReleased(KeyboardKey key, KeyboardMod mod) { keyReleased(key,mod); }
   
   friend class ViewManager;
   
   Action buildSwitchViewAction(View* view, ViewID newView);
   Action buildSwitchOverviewAction(View* view, ViewID newView);
-
+  
 };
 
 #endif

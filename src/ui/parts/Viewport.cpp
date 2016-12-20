@@ -15,6 +15,12 @@
 
 #include "Game.h"
 
+enum lbx_indices
+{
+  city_sprite_with_walls = LBXI(MAPBACK, 20),
+  city_sprite_no_walls = LBXI(MAPBACK, 21)
+};
+
 std::unordered_map<u8,u8> Viewport::waterMap = {
   {0, 0},
   {255, 2},
@@ -203,16 +209,13 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
       {
         if (player->fog()->get(op))
         {
+          const City* city = t->city;
           /* draw city */
-          if (t->city)
+          if (city)
           {
-            Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[t->city->getOwner()->color]);
-            
-            if (t->city->hasBuilding(Building::CITY_WALLS))
-              Gfx::draw(TextureID::CITY_MAP_TILE, 0, t->city->tileSize(), sx - 8, sy - 6);
-            else
-              Gfx::draw(TextureID::CITY_MAP_TILE, 1, t->city->tileSize(), sx - 8, sy - 6);
-            
+            Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[city->getOwner()->color]);
+            SpriteInfo citySprite = LBXU(city->hasBuilding(Building::CITY_WALLS) ? city_sprite_with_walls : city_sprite_no_walls);
+            Gfx::draw(citySprite.frame(city->tileSize()), sx - 8, sy - 6);
             Gfx::unbindColorMap();
           }
           

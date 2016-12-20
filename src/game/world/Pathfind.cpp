@@ -8,24 +8,24 @@
 
 using namespace std;
 
-bool MovementStrategy::blocked(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const
+bool MovementStrategy::movementAllowed(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const
 {
   Tile* t = world->get(position);
   
   if ((t->type == TILE_WATER || t->type == TILE_SHORE))
-    return  movement.find(&Effects::NON_CORPOREAL) != movement.end() || movement.find(&Effects::FLYING) != movement.end();
+    return movement.find(&Effects::NON_CORPOREAL) != movement.end() || movement.find(&Effects::FLYING) != movement.end();
   else
     return true;
 }
 
-bool MovementStrategy::blockedLast(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const
+bool MovementStrategy::movementAllowedLast(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const
 {
   Tile* t = world->get(position);
   
   if (t && t->army && t->army->size() + owner->selectedCount() > 9)
     return true;
   
-  return blocked(movement, units, owner, world, position);
+  return movementAllowed(movement, units, owner, world, position);
 }
 
 s16 MovementStrategy::cost(const movement_list& movement, const unit_list& units, const Player* owner, World* world, const Position& position) const
@@ -55,14 +55,11 @@ bool Route::stillValid(World *world)
 {
   pending.clear();
   
-  for (auto &p : positions)
-  {
+  /* go through the route and check that movement is still allowed on each tile of the route */
+  return std::any_of(positions.begin(), positions.end(), [world,this] (const PathTileInfo& p) {
     Position pos = Position(p.x,p.y,army->getPosition().plane);
-    if (PathFinder::strategy.blocked(army->getOwner()->game()->mapMechanics.movementTypeOfArmy(army->getUnits()), army->getUnits(), army->getOwner(), world, pos))
-      return true;
-  }
-  
-  return false;
+    return !PathFinder::strategy.movementAllowed(army->getOwner()->game()->mapMechanics.movementTypeOfArmy(army->getUnits()), army->getUnits(), army->getOwner(), world, pos);
+  });
 }
 
 
@@ -115,29 +112,32 @@ const MovementStrategy PathFinder::strategy;
 
 Route* PathFinder::computeRoute(World* world, const Position& position, const unit_list& units, const Player* player, s16 dx, s16 dy)
 {
+  LOGD2("[pathfind] computing route from (%d,%d) to (%d,%d)", position.x, position.y, dx, dy)
+  
   reset();
   
   // TODO: maybe it's redundant, search for calls around
   const movement_list movement = player->game()->mapMechanics.movementTypeOfArmy(units);
   
-  const s16 &x = position.x;
-  const s16 &y = position.y;
+  const s16 x = position.x;
+  const s16 y = position.y;
   
   if (dx < 0) dx = w + dx;
   else if (dx >= w) dx %= w;
   
-  if (strategy.blockedLast(movement, units, player, world, position))
+  if (!strategy.movementAllowedLast(movement, units, player, world, position))
     return nullptr;
   
-  info[x][y].cost = 0;
-  info[x][y].hCost = strategy.heuristic(movement, units, player, w, h, x, y, dx, dy);
-  openSet.insert(&info[x][y]);
+  auto& startTile = info[x][y];
+  startTile.cost = 0;
+  startTile.hCost = strategy.heuristic(movement, units, player, w, h, x, y, dx, dy);
+  openSet.insert(&startTile);
   
   while (!openSet.empty())
   {
     const PathTileInfo *current = *min_element(openSet.begin(), openSet.end(), [](const PathTileInfo* t1, const PathTileInfo*t2) { return t1->cost + t1->hCost < t2->cost + t2->hCost; });
     
-    if (current->x == x && current->y == y)
+    if (current->x == dx && current->y == dy)
       break;
     
     openSet.erase(current);
@@ -164,7 +164,7 @@ Route* PathFinder::computeRoute(World* world, const Position& position, const un
             xp = xp%w;
           
           const Position tp = Position(xp,yp,position.plane);
-          if (!strategy.blocked(movement, units, player, world, tp) && (xp != x || yp != y))
+          if (strategy.movementAllowed(movement, units, player, world, tp) && (xp != dx || yp != dy))
           {
             int gameCost = strategy.cost(movement, units, player, world, tp);
             int cost = current->cost + gameCost;

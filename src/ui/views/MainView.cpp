@@ -27,7 +27,7 @@ enum lbx_indices
   main_backdrop = LBXI(MAIN,0)
 };
 
-MainView::MainView(ViewManager *gvm) : View(gvm)
+MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
 {
   buttons.resize(BUTTON_COUNT);
   
@@ -179,8 +179,8 @@ void MainView::draw()
       auto movement = player->selectedArmyMovementType();
       
       /* TODO: non corporeal symbol in game looks like swimming, not flying */
-      if (movement.find(&Effects::NON_CORPOREAL) != movement.end() || movement.find(&Effects::FLYING) != movement.end()) // TODO: why?
-        movement.erase(movement.find(&Effects::NON_CORPOREAL));
+      /*if (movement.find(&Effects::NON_CORPOREAL) != movement.end() || movement.find(&Effects::FLYING) != movement.end()) // TODO: why?
+        movement.erase(movement.find(&Effects::NON_CORPOREAL));*/
 
       //TODO: fixare icona movimento che ora usa un Set<SkillEffect.MovementBonus>
       /*if (movement.size() > 0)
@@ -233,6 +233,18 @@ void MainView::draw()
     Fonts::drawString(Fonts::format("%d",player->totalManaPool()), FontFaces::Small::WHITE, 304, 67, ALIGN_RIGHT);
     Fonts::drawString("MP", FontFaces::Tiny::WHITE, 305, 67, ALIGN_LEFT);
   }
+  
+#if DEBUG
+  {
+    u32 turns = g->getTurnCount();
+    const auto& players = g->getPlayers();
+    auto it = std::find(players.begin(), players.end(), g->currentPlayer());
+    size_t indexOfCurrentPlayer = std::distance(players.begin(), it);
+    auto it2 = std::find(players.begin(), players.end(), player);
+    size_t indexOfViewPlayer = std::distance(players.begin(), it2);
+    Fonts::drawString(Fonts::format("t %u gp %zu vp %zu %d,%d", turns, indexOfCurrentPlayer, indexOfViewPlayer, hoveredTile ? hoveredTile->x() : -1, hoveredTile ? hoveredTile->y() : -1), FontFaces::Tiny::WHITE_STROKE, 0, HEIGHT-10, ALIGN_LEFT);
+  }
+#endif
 }
 
 void MainView::drawPost()
@@ -390,7 +402,7 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
 
 void MainView::mouseMoved(u16 x, u16 y, MouseButton b)
 {
-  if (substate == SURVEYOR)
+  //if (substate == SURVEYOR)
   {
     const Position pos = Viewport::hoveredPosition(g->world, player, x, y);
     Tile* tile = g->world->get(pos);

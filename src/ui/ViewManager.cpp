@@ -180,5 +180,10 @@ void ViewManager::keyReleased(KeyboardKey key, KeyboardMod mod)
     respondingView()->doKeyReleased(key, mod);
 }
 
+void ViewManager::setPlayer(LocalPlayer* player)
+{
+  std::for_each(views, views+VIEW_COUNT, [player] (View* view) { view->setPlayer(player); });
+}
+
 
 //CityView* ViewManager::cityView() { return static_cast<CityView*>(views[VIEW_CITY]); }
