@@ -90,8 +90,8 @@ public:
   void mouseReleased(u16 x, u16 y, MouseButton b) override;
   void mouseMoved(u16 x, u16 y, MouseButton b) override;
   
-  void keyPressed(KeyboardKey key, KeyboardMod mod) override;
-  void keyReleased(KeyboardKey key, KeyboardMod mod) override;
+  void keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
+  void keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
 
 };
 

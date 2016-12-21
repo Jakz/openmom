@@ -58,6 +58,7 @@
 		0442470F1980A04800A8D7CC /* SpellMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0442470D1980A04800A8D7CC /* SpellMechanics.cpp */; };
 		044247121980B97900A8D7CC /* EventMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044247101980B97900A8D7CC /* EventMechanics.cpp */; };
 		044E466D1980202D00E396AD /* MiniMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044E466B1980202D00E396AD /* MiniMap.cpp */; };
+		046428F01E0AC4DC003A76D8 /* ConsoleView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */; };
 		0464E11419813E1A009C91ED /* CityMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11219813E1A009C91ED /* CityMechanics.cpp */; };
 		0464E11719818239009C91ED /* PlayerMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11519818239009C91ED /* PlayerMechanics.cpp */; };
 		0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E1181981D1EF009C91ED /* CityScape.cpp */; };
@@ -337,6 +338,8 @@
 		044247111980B97900A8D7CC /* EventMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EventMechanics.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		044E466B1980202D00E396AD /* MiniMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiniMap.cpp; sourceTree = "<group>"; };
 		044E466C1980202D00E396AD /* MiniMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniMap.h; sourceTree = "<group>"; };
+		046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleView.cpp; sourceTree = "<group>"; };
+		046428EF1E0AC4DC003A76D8 /* ConsoleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleView.h; sourceTree = "<group>"; };
 		0464E11219813E1A009C91ED /* CityMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CityMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0464E11319813E1A009C91ED /* CityMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CityMechanics.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0464E11519818239009C91ED /* PlayerMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PlayerMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -662,6 +665,8 @@
 				0439E9AC198691530009BFF7 /* UnitDetailView.h */,
 				0486165B1E031609004B62B7 /* LbxView.cpp */,
 				0486165C1E031609004B62B7 /* LbxView.h */,
+				046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */,
+				046428EF1E0AC4DC003A76D8 /* ConsoleView.h */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -982,6 +987,7 @@
 				04E282C61E02343E00DD673D /* SDLHelper.cpp in Sources */,
 				0403760D197AE16100A5B5FC /* Level.cpp in Sources */,
 				04E282C31E0227DE00DD673D /* GUISettings.cpp in Sources */,
+				046428F01E0AC4DC003A76D8 /* ConsoleView.cpp in Sources */,
 				048204A219888E5C00D4B699 /* LBX.cpp in Sources */,
 				040375DF197990B900A5B5FC /* Gfx.cpp in Sources */,
 				0482049F19885DA900D4B699 /* Diplomacy.cpp in Sources */,

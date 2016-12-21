@@ -141,13 +141,13 @@ void SDL::handleEvents()
       
       case SDL_KEYDOWN:
       {
-        gvm->keyPressed(event.key.keysym.scancode, static_cast<KeyboardMod>(event.key.keysym.mod));
+        gvm->keyPressed(event.key.keysym.scancode, event.key.keysym.sym, static_cast<KeyboardMod>(event.key.keysym.mod));
         break;
       }
         
       case SDL_KEYUP:
       {
-        gvm->keyReleased(event.key.keysym.scancode, static_cast<KeyboardMod>(event.key.keysym.mod));
+        gvm->keyReleased(event.key.keysym.scancode, event.key.keysym.sym, static_cast<KeyboardMod>(event.key.keysym.mod));
         break;
       }
     }

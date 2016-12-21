@@ -187,7 +187,8 @@ enum class LBXID : u8
 
 constexpr size_t LBX_COUNT = static_cast<size_t>(LBXID::COUNT);
 
-using KeyboardKey = SDL_Scancode;
+using KeyboardKey = SDL_Keycode;
+using KeyboardCode = SDL_Scancode;
 using KeyboardMod = SDL_Keymod;
 
 struct Position
@@ -366,6 +367,7 @@ enum ViewID
   VIEW_PRODUCTION,
   VIEW_OUTPOST,
   VIEW_NEW_GAME,
+  VIEW_CONSOLE,
   
   VIEW_LBX,
   

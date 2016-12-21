@@ -25,6 +25,7 @@
 #include "ResearchView.h"
 #include "SpellBookView.h"
 #include "UnitDetailView.h"
+#include "ConsoleView.h"
 
 #include "LBXView.h"
 
@@ -50,6 +51,7 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_RESEARCH] = new ResearchView(this);
   views[VIEW_SPELL_BOOK] = new SpellBookView(this);
   views[VIEW_UNIT] = new UnitDetailView(this);
+  views[VIEW_CONSOLE] = new ConsoleView(this);
   
   views[VIEW_LBX] = new lbx::LBXView(this);
 }
@@ -71,6 +73,8 @@ ProductionView* ViewManager::productionView() { return static_cast<ProductionVie
 ResearchView* ViewManager::researchView() { return static_cast<ResearchView*>(views[VIEW_RESEARCH]); }
 SpellBookView* ViewManager::spellBookView() { return static_cast<SpellBookView*>(views[VIEW_SPELL_BOOK]); }
 UnitDetailView* ViewManager::unitDetailView() { return static_cast<UnitDetailView*>(views[VIEW_UNIT]); }
+ConsoleView* ViewManager::consoleView() { return static_cast<ConsoleView*>(views[VIEW_CONSOLE]); }
+
 
 void ViewManager::switchView(ViewID type)
 {
@@ -168,16 +172,16 @@ void ViewManager::mousePressed(u16 x, u16 y, MouseButton b)
     respondingView()->doMousePressed(x, y, b);
 }
 
-void ViewManager::keyPressed(KeyboardKey key, KeyboardMod mod)
+void ViewManager::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   if (!animating)
-    respondingView()->doKeyPressed(key, mod);
+    respondingView()->doKeyPressed(key, kkey, mod);
 }
 
-void ViewManager::keyReleased(KeyboardKey key, KeyboardMod mod)
+void ViewManager::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   if (!animating)
-    respondingView()->doKeyReleased(key, mod);
+    respondingView()->doKeyReleased(key, kkey, mod);
 }
 
 void ViewManager::setPlayer(LocalPlayer* player)

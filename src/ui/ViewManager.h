@@ -26,6 +26,7 @@ class ProductionView;
 class ResearchView;
 class SpellBookView;
 class UnitDetailView;
+class ConsoleView;
 
 class LocalPlayer;
 
@@ -62,8 +63,8 @@ public:
   void mouseMoved(u16 x, u16 y, MouseButton b) override;
   void mouseDragged(u16 x, u16 y, MouseButton b) override;
   
-  void keyPressed(KeyboardKey key, KeyboardMod mod) override;
-  void keyReleased(KeyboardKey key, KeyboardMod mod) override;
+  void keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
+  void keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
   
   inline bool isThereOverview() { return !overviews.empty(); }
   inline View* firstOverview() { return isThereOverview() ? overviews.front() : nullptr; }
@@ -86,6 +87,7 @@ public:
   ResearchView* researchView();
   SpellBookView* spellBookView();
   UnitDetailView* unitDetailView();
+  ConsoleView* consoleView();
 };
 
 #endif

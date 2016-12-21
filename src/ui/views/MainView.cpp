@@ -439,17 +439,18 @@ void MainView::mouseMoved(u16 x, u16 y, MouseButton b)
   }
 }
 
-void MainView::keyPressed(KeyboardKey key, KeyboardMod mod)
+void MainView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   switch (key)
   {
     case SDL_SCANCODE_RETURN: buttons[NEXT]->press(); break;
+    case SDL_SCANCODE_GRAVE: gvm->switchOverview(VIEW_CONSOLE);
       
     default: break;
   }
 }
 
-void MainView::keyReleased(KeyboardKey key, KeyboardMod mod)
+void MainView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   switch (key)
   {

@@ -35,7 +35,7 @@ public:
   MirrorView(ViewManager* gvm);
   
   void mousePressed(u16 x, u16 y, MouseButton b) override;
-  void keyPressed(KeyboardKey key, KeyboardMod mod) override;
+  void keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
   
   void activate() override { }
   void deactivate() override { }

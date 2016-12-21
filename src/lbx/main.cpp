@@ -23,6 +23,8 @@
 using namespace std;
 using namespace lbx;
 
+
+
 constexpr int FIRST_TABLE_WIDTH = 200;
 constexpr int NUMERIC_COLUMN_WIDTH = 40;
 constexpr int SECOND_TABLE_WIDTH = 320;
@@ -42,6 +44,17 @@ MyCheckbox *animatedCheckbox;
 MyCheckbox* defaultPaletteCheckbox;
 MyCheckbox* doubleScaleCheckbox;
 Fl_Table *tableSprites;
+
+std::unordered_set<u32> usedSprites;
+bool isUsed(LBXID id, u32 index) { return usedSprites.find((static_cast<u32>(id) << 16) | index) != usedSprites.end(); }
+void toggleUsed(LBXID id, u32 index, bool value)
+{
+  auto key = (static_cast<u32>(id) << 16) | index;
+  if (value)
+    usedSprites.insert(key);
+  else
+    usedSprites.erase(key);
+}
 
 size_t ticks = 0;
 
@@ -381,12 +394,13 @@ public:
     row_height_all(ROW_HEIGHT);         // default height of rows
     row_resize(0);              // disable row resizing
     // Cols
-    cols(4);             // how many columns
+    cols(5);             // how many columns
     col_header(1);              // enable column headers (along top)
     col_width_all(SECOND_TABLE_WIDTH/4);          // default width of columns
     col_width(0, 30);
     col_width(1, 140);
     col_width(3, 20);
+    col_width(4, 20);
     when(FL_WHEN_RELEASE);
     callback(mycallback, this);
     end();
@@ -404,6 +418,12 @@ public:
   {
     if (callback_context() == CONTEXT_CELL)
     {
+      if (callback_col() == 4)
+      {
+        toggleUsed(currentLBX->ident, callback_row(), Fl::event_button() == FL_LEFT_MOUSE);
+        return;
+      }
+      
       selection = callback_row();
       
       if (currentLBX->info.header.type == LBXFileType::GRAPHICS)
@@ -443,7 +463,7 @@ public:
         return;
       case CONTEXT_COL_HEADER:
       {
-        static const char* columnNames[] = {"#", "Name", "Spec", "P"};
+        static const char* columnNames[] = {"#", "Name", "Spec", "P", "U"};
         DrawHeader(columnNames[COL], X, Y, W, H);
         return;
       }
@@ -470,6 +490,10 @@ public:
         {
           const LBXFileName& entry = assetNames[currentLBX->ident][ROW];
           fl_draw(fmt::sprintf("%s/%s",entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
+        }
+        else if (COL == 4)
+        {
+          fl_draw(isUsed(currentLBX->ident, ROW) ? "Y" : "N", X, Y, W, H, FL_ALIGN_CENTER);
         }
         else
         {

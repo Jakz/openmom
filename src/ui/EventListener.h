@@ -20,8 +20,8 @@ class EventListener
   virtual void mouseMoved(u16 x, u16 y, MouseButton b) { };
   virtual void mouseDragged(u16 x, u16 y, MouseButton b) { };
   
-  virtual void keyPressed(KeyboardKey key, KeyboardMod mod) { };
-  virtual void keyReleased(KeyboardKey key, KeyboardMod mod) { };
+  virtual void keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { };
+  virtual void keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { };
 };
 
 #endif

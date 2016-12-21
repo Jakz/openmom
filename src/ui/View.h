@@ -67,8 +67,8 @@ public:
   void doMouseMoved(u16 x, u16 y, MouseButton b) { mouseMoved(x,y,b); }
   void doMouseClicked(u16 x, u16 y, MouseButton b) { mouseClicked(x,y,b); }
   
-  void doKeyPressed(KeyboardKey key, KeyboardMod mod) { keyPressed(key,mod); }
-  void doKeyReleased(KeyboardKey key, KeyboardMod mod) { keyReleased(key,mod); }
+  void doKeyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { keyPressed(key,kkey,mod); }
+  void doKeyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { keyReleased(key,kkey,mod); }
   
   friend class ViewManager;
   

@@ -155,7 +155,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::UNIT_DETAIL_PROPS_EMPTY,"units/props-empty.png",1,12,9,8),
   Texture(TextureID::UNIT_SKILL_ICONS,"units/skill-icons.png",16,16,16,16),
   
-  Texture(TextureID::UNITS_MISC_SYMBOLS,"units/misc-symbols.png",1,12, {9,4}, {6,4}),
   Texture(TextureID::UNITS_COLOR_BACKDROP,"units/unit-backdrop.png",1,5,20,18),
   
   Texture(TextureID::UNITS_STATIC_STANDARD,"units/standard-units.png",14,11,18,16),

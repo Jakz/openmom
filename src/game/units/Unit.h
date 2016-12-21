@@ -84,7 +84,7 @@ public:
   s16 getAvailableMoves() const { return availableMoves; }
   void useMoves(s16 moves) { availableMoves -= moves; }
   
-  bool isSelected() { return selected;}
+  bool isSelected() const { return selected;}
   void select() { selected = true; }
   void unselect() { selected = false; }
   

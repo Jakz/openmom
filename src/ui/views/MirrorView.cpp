@@ -51,7 +51,7 @@ void MirrorView::mousePressed(u16 x, u16 y, MouseButton b)
   gvm->closeOverview();
 }
 
-void MirrorView::keyPressed(KeyboardKey key, KeyboardMod mod)
+void MirrorView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   if (key == SDL_SCANCODE_RETURN)
     gvm->closeOverview();
