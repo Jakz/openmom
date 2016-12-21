@@ -74,7 +74,7 @@ public:
     }
     
     //if (player->shouldDrawSelectedArmy() || player->)
-    UnitDraw::drawUnitIsoCombat(unit->getUnit(), coords.x, coords.y - 17, Facing::EAST, UnitDraw::CombatAction::STAY);
+    UnitDraw::drawUnitIsoCombat(unit->getUnit(), coords.x, coords.y - 17, Dir::EAST, UnitDraw::CombatAction::STAY);
   }
 };
 

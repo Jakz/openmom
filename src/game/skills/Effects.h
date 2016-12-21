@@ -14,8 +14,8 @@
 #include <vector>
 
 class SkillEffect;
-typedef const std::vector<const SkillEffect*> effect_list;
-typedef const std::initializer_list<const SkillEffect*> effect_init_list;
+using effect_list = std::vector<const SkillEffect*>;
+using effect_init_list = const std::initializer_list<const SkillEffect*>;
 
 enum class Property : u8;
 class Unit;
@@ -97,13 +97,6 @@ public:
   SimpleEffect(SkillEffect::Type type, Type effect) : SkillEffect(type), effect(effect) { }
 };
 
-class MovementEffect : public SimpleEffect
-{
-public:
-  MovementEffect(SimpleEffect::Type movement, bool shared) : SimpleEffect(SkillEffect::Type::MOVEMENT, movement), shared(shared) { }
-  const bool shared;
-};
-
 class SpecialAttackEffect : public SimpleEffect
 {
 public:
@@ -134,9 +127,9 @@ public:
   UnitBonus(Property property, s16 value) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, value) { }
 
   
-  static effect_list build(std::initializer_list<Property> properties, s16 value)
+  static const effect_list build(std::initializer_list<Property> properties, s16 value)
   {
-    std::vector<const SkillEffect*> effects;
+    effect_list effects;
     effects.resize(properties.size());
     std::transform(properties.begin(), properties.end(), effects.begin(), [&] (const Property& property) { return new UnitBonus(property, value); });
     return effects;
@@ -208,14 +201,17 @@ public:
 
 
 
-
+class MovementEffect : public SimpleEffect
+{
+public:
+  MovementEffect(SimpleEffect::Type movement, bool shared) : SimpleEffect(SkillEffect::Type::MOVEMENT, movement), shared(shared) { }
+  const bool shared;
+};
 
 class Effects
 {
 public:
-  static const MovementEffect FORESTWALK, FLYING, UNDERGROUND, MOUNTAINWALK, NON_CORPOREAL, PATH_FINDER, PLANAR_TRAVEL, TELEPORT, SWIMMING, WINDWALK, SAILING, DESERTWALK, SWAMPWALK;
-  
-  constexpr static const MovementEffect* const MOVEMENT_EFFECTS[] = {&FORESTWALK, &FLYING, &UNDERGROUND, &MOUNTAINWALK, &NON_CORPOREAL, &PATH_FINDER, &PLANAR_TRAVEL, &TELEPORT, &SWIMMING, &WINDWALK, &SAILING, &DESERTWALK, &SWAMPWALK};
+  static const MovementEffect *FORESTWALK, *FLYING, *UNDERGROUND, *MOUNTAINWALK, *NON_CORPOREAL, *PATH_FINDER, *PLANAR_TRAVEL, *TELEPORT, *SWIMMING, *WINDWALK, *SAILING, *DESERTWALK, *SWAMPWALK;
 };
 
 

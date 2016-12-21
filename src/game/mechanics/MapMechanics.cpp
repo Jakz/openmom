@@ -165,45 +165,65 @@ s16 MapMechanics::specificMovementCost(World* world, const Position& position, c
   return baseMovementCost(t->type);
 }
 
+#define ANY_OF(x) any_of(u.begin(), u.end(), [] (const movement_list& l) { return l.find(Effects::x) != l.end(); })
+#define NONE_OF(x) any_of(u.begin(), u.end(), [] (const movement_list& l) { return l.find(Effects::x) != l.end(); })
+#define ALL_OF(x) any_of(u.begin(), u.end(), [] (const movement_list& l) { return l.find(Effects::x) != l.end(); })
+
+
 //TODO: check behavior
-const movement_list MapMechanics::movementTypeOfArmy(const unit_list& units) const
+const movement_list MapMechanics::movementTypeForSetOfEffects(const movement_list_group& u) const
 {  
   movement_list movements;
   
-  if (units.size() == 1)
+  /* if all units has either SWIMMING or FLYING and no unit has SAILING or WIND_WALKING */
+  if (u.all_of([](const movement_list& l) { return l.contains(Effects::SWIMMING) || l.contains(Effects::FLYING); }) &&
+      u.none_of([](const movement_list& l) { return l.contains(Effects::SAILING) || l.contains(Effects::WINDWALK); }))
+    movements.add(Effects::SWIMMING);
+  
+  if (u.any_of(Effects::WINDWALK) || u.all_of(Effects::FLYING))
+    movements.add(Effects::FLYING);
+  
+  if (u.any_of(Effects::SAILING))
+    movements.add(Effects::SAILING);
+  
+  if (u.any_of(Effects::FORESTWALK) &&
+      u.none_of([](const movement_list& l){ return l.contains(Effects::WINDWALK) || l.contains(Effects::SAILING) || l.contains(Effects::MOUNTAINWALK); }))
+    movements.add(Effects::FORESTWALK);
+  
+  if (u.any_of(Effects::MOUNTAINWALK) &&
+      u.none_of([](const movement_list& l){ return l.contains(Effects::WINDWALK) || l.contains(Effects::SAILING) || l.contains(Effects::FORESTWALK); }))
+    movements.add(Effects::MOUNTAINWALK);
+  
+  if (!movements.contains(Effects::FLYING) && !movements.contains(Effects::SAILING))
   {
-    Unit* unit = units.front();
-    for (const MovementEffect* const effect : Effects::MOVEMENT_EFFECTS)
-    {
-      if (unit->skills()->hasSkillEffect(effect))
-        movements.insert(effect);
-    }
+    bool allNonCorporeal = u.all_of(Effects::NON_CORPOREAL);
+    bool anyPathFinder = u.any_of(Effects::PATH_FINDER);
+    bool anyMountainerAndForestwalker = u.any_of(Effects::MOUNTAINWALK) && u.any_of(Effects::FORESTWALK);
     
-    return movements;
+    if (allNonCorporeal || anyPathFinder || anyMountainerAndForestwalker)
+      movements.add(Effects::PATH_FINDER);
   }
-  else
-  {
-    movement_list toRemoveMovements, finalMovements;
+  
+  if (u.all_of(Effects::PLANAR_TRAVEL))
+    movements.add(Effects::PLANAR_TRAVEL);
+  
+  if (u.any_of(Effects::WINDWALK))
+    movements.add(Effects::WINDWALK);
+  
+  return movements;
+}
 
-    for (const MovementEffect* const effect : Effects::MOVEMENT_EFFECTS)
-    {
-      for (const Unit* unit : units)
-      {
-        bool hasMovement = unit->skills()->hasSkillEffect(effect);
-        
-        if (hasMovement && effect->shared)
-          movements.insert(effect);
-        else if (!hasMovement && !effect->shared)
-          toRemoveMovements.insert(effect);
-      }
-    }
-    
-    for (auto effect : movements)
-      if (toRemoveMovements.find(effect) == toRemoveMovements.end())
-        finalMovements.insert(effect);
-    
-    return finalMovements;
-  }
+const movement_list MapMechanics::movementTypeOfArmy(const unit_list& units) const
+{    
+  movement_list_group umovements(units.size());
+  
+  std::transform(units.begin(), units.end(), std::back_inserter(umovements), [] (const Unit* unit) {
+    movement_list movements;
+    unit->skills()->findAllEffectsOftype(movements, SkillEffect::Type::MOVEMENT);
+    return movements;
+  });
+  
+  return movementTypeForSetOfEffects(umovements);
 }
 
 

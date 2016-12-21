@@ -19,7 +19,7 @@ using namespace std;
 constexpr const s16 Combat::DIRS[12][2];
 constexpr const u16 Combat::DIRS_LENGTH;
 
-CombatTile CombatTile::neighbour(Facing facing) const
+CombatTile CombatTile::neighbour(Dir facing) const
 {
   const s16* offsets = Combat::dirs(facing, this->y % 2 == 0);
   return CombatTile(this->x + offsets[0], this->y + offsets[1]);
@@ -77,13 +77,13 @@ void Combat::attack(CombatUnit *u1, CombatUnit *u2)
   u2->getOwner()->push(new anims::CombatAttack(u2));
 }
 
-Facing Combat::relativeFacing(CombatUnit *u1, CombatUnit *u2)
+Dir Combat::relativeFacing(CombatUnit *u1, CombatUnit *u2)
 {
   for (int i = 0; i < 8; ++i)
     if (u1->x()+dirs(i,u1->y()%2 == 0)[0] == u2->x() && u1->y()+dirs(i,u1->y()%2 == 0)[1] == u2->y())
-      return static_cast<Facing>(i);
+      return static_cast<Dir>(i);
   
-  return Facing::NORTH;
+  return Dir::NORTH;
 }
 
 void Combat::deployUnits()
@@ -94,7 +94,7 @@ void Combat::deployUnits()
   for (auto* unit : allUnits)
   {
     unit->setPosition(tile);
-    tile = tile.neighbour(Facing::SOUTH_EAST);
+    tile = tile.neighbour(Dir::SOUTH_EAST);
   }
 }
 

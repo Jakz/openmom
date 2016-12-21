@@ -39,6 +39,8 @@ public:
   
   s16 baseMovementCost(TileType type) const;
   s16 specificMovementCost(World* world, const Position& position, const Army* army) const;
+  
+  const movement_list movementTypeForSetOfEffects(const movement_list_group& movements) const;
   const movement_list movementTypeOfArmy(const unit_list& units) const;
 };
 

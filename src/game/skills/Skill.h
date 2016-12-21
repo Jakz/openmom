@@ -221,7 +221,7 @@ public:
   const SkillBase base;
 
   virtual const std::string name() const;
-  virtual effect_list& getEffects() const = 0;
+  virtual const effect_list& getEffects() const = 0;
   
   virtual bool is(SkillBase base) const { return this->base == base; }
   
@@ -238,7 +238,7 @@ public:
 class ConcreteSkill : public Skill
 {
 private:
-  effect_list effects;
+  const effect_list effects;
   
 public:
   bool hideValue;
@@ -247,7 +247,7 @@ public:
   ConcreteSkill(SkillBase base, effect_list effects, bool hideValue = true) : Skill(base), effects(effects), hideValue(hideValue) { }
 
   
-  effect_list& getEffects() const override { return effects; }
+  const effect_list& getEffects() const override { return effects; }
   
   bool hasSimpleEffect(SimpleEffect::Type type);
   const SpecialAttackEffect* hasEffect(SimpleEffect::Type ident);
@@ -263,7 +263,7 @@ private:
 public:
   WrapSkill(SkillBase base, const Skill& existingSkill) : Skill(base), existingSkill(existingSkill) { }
   
-  effect_list& getEffects() const override { return existingSkill.getEffects(); }
+  const effect_list& getEffects() const override { return existingSkill.getEffects(); }
   bool is(SkillBase) const override { return this->base == base || existingSkill.base == base; }
 };
 

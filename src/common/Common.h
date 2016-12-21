@@ -222,6 +222,20 @@ struct PositionOffset
   s8 y;
 };
 
+enum class Dir
+{
+  NORTH = 0,
+  NORTH_EAST,
+  EAST,
+  SOUTH_EAST,
+  SOUTH,
+  SOUTH_WEST,
+  WEST,
+  NORTH_WEST,
+  
+  INVALID = -1
+};
+
 class Palette;
 
 class SpriteSheet

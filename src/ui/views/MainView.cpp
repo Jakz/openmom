@@ -136,6 +136,26 @@ void MainView::updateBuildButton()
 		buttons[BUILD]->deactivate();
 }
 
+SpriteInfo MainView::movementIconForType(const MovementEffect* effect)
+{
+  if (!effect) return LBXI(MAIN, 38);
+  else if (effect == Effects::SWIMMING) return LBXI(MAIN, 19);
+  else if (effect == Effects::FLYING) return LBXI(MAIN, 22);
+  else if (effect == Effects::SAILING) return LBXI(MAIN, 18);
+  else if (effect == Effects::FORESTWALK) return LBXI(MAIN, 21);
+  else if (effect == Effects::MOUNTAINWALK) return LBXI(MAIN, 20);
+  else if (effect == Effects::PATH_FINDER) return LBXI(MAIN, 23);
+  else if (effect == Effects::PLANAR_TRAVEL) return LBXI(MAIN, 36);
+  else if (effect == Effects::WINDWALK) return LBXI(MAIN, 37);
+  
+  //TODO: is it correct? since non corporeal is swimming implicitly
+  else if (effect == Effects::NON_CORPOREAL) return LBXI(MAIN, 19);
+
+  
+  assert(false);
+  return 0;
+}
+
 void MainView::draw()
 {
   if (substate != SPELL_CAST && player->getSpellTarget() != Target::NONE)
@@ -157,7 +177,7 @@ void MainView::draw()
       
       UnitDraw::drawStatic(unit, x+1, y+1, player->isSelectedUnit(unit), false);
       
-      // draw unit level
+      /* draw unit level */
       s16 levelIndex = unit->level ? unit->level->index(): -1;
       if (levelIndex > 0)
       {
@@ -165,9 +185,11 @@ void MainView::draw()
         s16 badge = levelIndex / 3;
         s16 badgeCount = levelIndex % 3;
         
+        static const SpriteInfo badge_lbx = LSI(MAIN,51);
+        
         // TODO: in realtà le icone non hanno bordo nero nel gioco anche se nelle png sì
         for (int u = 0; u < badgeCount+1; ++u)
-          Gfx::draw(TextureID::UNITS_MISC_SYMBOLS, 1, badge, x + 3 + 4*u, y + 22);
+          Gfx::draw(badge_lbx.relative(badge), x + 3 + 4*u, y + 22);
       }
     }
     
@@ -176,18 +198,24 @@ void MainView::draw()
     if (moves > 0)
     {
       Fonts::drawString(Fonts::format("Moves: %d%s",moves/2, moves%2 == 0 ? ".5" : "" ), FontFaces::Small::WHITE, 245, 166, ALIGN_LEFT);
-      auto movement = player->selectedArmyMovementType();
+      movement_list movement = player->selectedArmyMovementType();
       
-      /* TODO: non corporeal symbol in game looks like swimming, not flying */
-      /*if (movement.find(&Effects::NON_CORPOREAL) != movement.end() || movement.find(&Effects::FLYING) != movement.end()) // TODO: why?
-        movement.erase(movement.find(&Effects::NON_CORPOREAL));*/
-
-      //TODO: fixare icona movimento che ora usa un Set<SkillEffect.MovementBonus>
-      /*if (movement.size() > 0)
-       for (int i = 0; i < movement.size(); ++i)
-       Gfx.draw(Texture.UNITS_MISC_SYMBOLS, 0, 1+movement.get(i).ordinal(), 306-10*i, 167);
-       else
-       Gfx.draw(Texture.UNITS_MISC_SYMBOLS, 0, 0, 306, 167);*/
+      /* draw movement icons */
+      if (movement.size() > 0)
+      {
+        size_t i = 0;
+        bool hasFlying = movement.contains(Effects::FLYING);
+        for (const auto* effect : movement)
+        {
+          //TODO: maybe this should be decided by the algorithm which computes the movement type
+          if (effect == Effects::SWIMMING && hasFlying)
+            continue;
+          
+          Gfx::draw(movementIconForType(effect), 306-10*i++, 167);
+        }
+      }
+      else
+        Gfx::draw(movementIconForType(nullptr), 306, 167);
     }
   }
   else if (substate == SURVEYOR)

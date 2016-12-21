@@ -172,18 +172,18 @@ namespace skillimpl
   static const ConcreteSkill MITHRIL_WEAPONS = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,1)});
   static const ConcreteSkill ADAMANTIUM_WEAPONS = ConcreteSkill(SkillBase::ADAMANTIUM_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,2)});
   
-  static const ConcreteSkill FORESTWALK = ConcreteSkill(SkillBase::FORESTWALK, {&Effects::FORESTWALK});
-  static const ConcreteSkill FLYING = ConcreteSkill(SkillBase::FLYING, {&Effects::FLYING});
-  static const ConcreteSkill UNDERGROUND = ConcreteSkill(SkillBase::UNDERGROUND, {&Effects::UNDERGROUND});
-  static const ConcreteSkill MOUNTAINWALK = ConcreteSkill(SkillBase::MOUNTAINWALK, {&Effects::MOUNTAINWALK});
-  static const ConcreteSkill NON_CORPOREAL = ConcreteSkill(SkillBase::NON_CORPOREAL, {&Effects::NON_CORPOREAL});
-  static const ConcreteSkill PATH_FINDER = ConcreteSkill(SkillBase::PATH_FINDER, {&Effects::PATH_FINDER});
-  static const ConcreteSkill PLANAR_TRAVEL = ConcreteSkill(SkillBase::PLANAR_TRAVEL, {&Effects::PLANAR_TRAVEL});
-  static const ConcreteSkill TELEPORT = ConcreteSkill(SkillBase::TELEPORT, {&Effects::TELEPORT});
-  static const ConcreteSkill SWIMMING = ConcreteSkill(SkillBase::SWIMMING, {&Effects::SWIMMING});
-  static const ConcreteSkill WINDWALK = ConcreteSkill(SkillBase::WINDWALK, {&Effects::WINDWALK});
-  static const ConcreteSkill DESERTWALK = ConcreteSkill(SkillBase::DESERTWALK, {&Effects::DESERTWALK});
-  static const ConcreteSkill SWAMPWALK = ConcreteSkill(SkillBase::SWAMPWALK, {&Effects::SWAMPWALK});
+  static const ConcreteSkill FORESTWALK = ConcreteSkill(SkillBase::FORESTWALK, {Effects::FORESTWALK});
+  static const ConcreteSkill FLYING = ConcreteSkill(SkillBase::FLYING, {Effects::FLYING});
+  static const ConcreteSkill UNDERGROUND = ConcreteSkill(SkillBase::UNDERGROUND, {Effects::UNDERGROUND});
+  static const ConcreteSkill MOUNTAINWALK = ConcreteSkill(SkillBase::MOUNTAINWALK, {Effects::MOUNTAINWALK});
+  static const ConcreteSkill NON_CORPOREAL = ConcreteSkill(SkillBase::NON_CORPOREAL, {Effects::NON_CORPOREAL});
+  static const ConcreteSkill PATH_FINDER = ConcreteSkill(SkillBase::PATH_FINDER, {Effects::PATH_FINDER});
+  static const ConcreteSkill PLANAR_TRAVEL = ConcreteSkill(SkillBase::PLANAR_TRAVEL, {Effects::PLANAR_TRAVEL});
+  static const ConcreteSkill TELEPORT = ConcreteSkill(SkillBase::TELEPORT, {Effects::TELEPORT});
+  static const ConcreteSkill SWIMMING = ConcreteSkill(SkillBase::SWIMMING, {Effects::SWIMMING});
+  static const ConcreteSkill WINDWALK = ConcreteSkill(SkillBase::WINDWALK, {Effects::WINDWALK});
+  static const ConcreteSkill DESERTWALK = ConcreteSkill(SkillBase::DESERTWALK, {Effects::DESERTWALK});
+  static const ConcreteSkill SWAMPWALK = ConcreteSkill(SkillBase::SWAMPWALK, {Effects::SWAMPWALK});
 
   
   static const ConcreteSkill IMMUNITY_MAGIC = ConcreteSkill(SkillBase::IMMUNITY_MAGIC, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MAGIC), new UnitBonus(Property::RESIST, 50)} );

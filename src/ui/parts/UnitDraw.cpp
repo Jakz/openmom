@@ -154,7 +154,7 @@ static const IsoOffset ISOC_4FIGURES[] = {{2,-4},{11,1},{-8,1,},{2,6}};
 static const IsoOffset ISOC_6FIGURES[] = {{1,-5},{4,-1},{10,2},{-10,0},{-3,3},{1,7}};
 static const IsoOffset ISOC_8FIGURES[] = {{1,-5},{7,-2},{11,0},{-2,-1},{4,1},{-10,0},{-4,3},{2,6}};
 
-void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Facing facing, CombatAction caction)
+void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, CombatAction caction)
 {
   int action = 1;
   

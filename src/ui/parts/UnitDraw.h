@@ -16,7 +16,7 @@ class Unit;
 class UnitSpec;
 class Hero;
 
-enum class Facing;
+enum class Dir;
 
 class UnitDraw
 {
@@ -34,7 +34,7 @@ public:
   static void drawUnitIso(const UnitSpec* unit, s16 x, s16 y, const Unit* realUnit);
 	static void drawHeroPortrait(const Hero* unit, s16 x, s16 y);
 
-  static void drawUnitIsoCombat(const Unit* unit, s16 x, s16 y, Facing facing, CombatAction caction);
+  static void drawUnitIsoCombat(const Unit* unit, s16 x, s16 y, Dir facing, CombatAction caction);
 
 };
 

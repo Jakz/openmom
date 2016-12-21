@@ -10,20 +10,6 @@
 class HitPoints;
 class CombatMechanics;
 
-enum class Facing
-{
-  NORTH = 0,
-  NORTH_EAST,
-  EAST,
-  SOUTH_EAST,
-  SOUTH,
-  SOUTH_WEST,
-  WEST,
-  NORTH_WEST,
-  
-  INVALID = -1
-};
-
 enum class CombatModifier : u8
 {
   MOD_HALF,
@@ -36,15 +22,15 @@ struct CombatTile
   CombatTile(s8 x, s8 y) : x(x), y(y) { }
   
   operator bool() const { return x != -1; }
-  CombatTile neighbour(Facing facing) const;
+  CombatTile neighbour(Dir facing) const;
 };
 
 struct CombatPosition
 {
   CombatTile position;
-  Facing facing;
+  Dir facing;
   
-  CombatPosition(s8 x = -1, s8 y = -1, Facing f = Facing::NORTH) : position(x, y), facing(f) { }
+  CombatPosition(s8 x = -1, s8 y = -1, Dir f = Dir::NORTH) : position(x, y), facing(f) { }
 };
 
 class CombatUnit
@@ -64,13 +50,13 @@ public:
   s16 getProperty(Property property) const { return unit->getProperty(property); }
   
   void setPosition(u16 x, u16 y) { position.position = CombatTile(x,y); }
-  void setPosition(u16 x, u16 y, Facing facing) { position = CombatPosition(x,y,facing); }
+  void setPosition(u16 x, u16 y, Dir facing) { position = CombatPosition(x,y,facing); }
   void setPosition(CombatTile tile) { position.position = tile; }
-  void setFacing(Facing facing) { position.facing = facing; }
+  void setFacing(Dir facing) { position.facing = facing; }
   
   u16 x() const { return position.position.x; }
   u16 y() const { return position.position.y; }
-  Facing facing() const { return position.facing; }
+  Dir facing() const { return position.facing; }
   
   bool hasMoves() const { return moves > 0; }
   
@@ -135,7 +121,7 @@ public:
   
   void attack(CombatUnit *u1, CombatUnit *u2);
   
-  Facing relativeFacing(CombatUnit *u1, CombatUnit *u2);
+  Dir relativeFacing(CombatUnit *u1, CombatUnit *u2);
   
   void moveUnit(CombatUnit *unit, u16 x, u16 y);
   
@@ -168,18 +154,18 @@ public:
   static constexpr const s16 DIRS[12][2] = {{0,-2},{0,-1},{1,-1},{1,0},{0,1},{1,1},{0,2},{-1,1},{0,1},{-1,0},{-1,-1},{0,-1}};
   static constexpr const u16 DIRS_LENGTH = std::extent<decltype(DIRS)>::value;
   
-  static const s16* dirs(int facing, bool even) { return dirs(static_cast<Facing>(facing), even); }
-  static const s16* dirs(Facing facing, bool even)
+  static const s16* dirs(int facing, bool even) { return dirs(static_cast<Dir>(facing), even); }
+  static const s16* dirs(Dir facing, bool even)
   {
     switch (facing) {
-      case Facing::NORTH: return DIRS[0];
-			case Facing::NORTH_EAST: return even ? DIRS[1] : DIRS[2];
-			case Facing::EAST: return DIRS[3];
-			case Facing::SOUTH_EAST: return even ? DIRS[4] : DIRS[5];
-			case Facing::SOUTH: return DIRS[6];
-			case Facing::SOUTH_WEST: return even ? DIRS[7] : DIRS[8];
-			case Facing::WEST: return DIRS[9];
-			case Facing::NORTH_WEST: return even ? DIRS[10] : DIRS[11];
+      case Dir::NORTH: return DIRS[0];
+			case Dir::NORTH_EAST: return even ? DIRS[1] : DIRS[2];
+			case Dir::EAST: return DIRS[3];
+			case Dir::SOUTH_EAST: return even ? DIRS[4] : DIRS[5];
+			case Dir::SOUTH: return DIRS[6];
+			case Dir::SOUTH_WEST: return even ? DIRS[7] : DIRS[8];
+			case Dir::WEST: return DIRS[9];
+			case Dir::NORTH_WEST: return even ? DIRS[10] : DIRS[11];
 			default: return nullptr;
 		}
   }

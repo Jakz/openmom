@@ -102,7 +102,7 @@ bool SkillSet::hasSkillEffect(const SkillEffect* effect) const
 {
   for (auto skill : *this)
   {
-    effect_list& effects = skill->getEffects();
+    const effect_list& effects = skill->getEffects();
     
     for (const auto e : effects)
       if (e == effect)
@@ -116,7 +116,7 @@ bool SkillSet::hasSimpleEffect(SimpleEffect::Type type) const
 {
   for (auto skill : *this)
   {
-    effect_list& effects = skill->getEffects();
+    const effect_list& effects = skill->getEffects();
     for (const auto e : effects)
       if (e->type == SkillEffect::Type::ABILITY && static_cast<const SimpleEffect*>(e)->effect == type)
         return true;

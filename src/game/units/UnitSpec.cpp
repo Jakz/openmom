@@ -61,7 +61,7 @@ static const HeroSpec heroSpecs[] = {
 
 // SummonSpec(UnitID ident, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
 static const SummonSpec summonSpecs[] = {
-  SummonSpec(UnitID::MAGIC_SPIRIT, 1, 30,    5, 0, Ranged::NONE, 0,    4, 8, 10, 1,     1, 2,   {Skills::MELD, Skills::NON_CORPOREAL}),
+  SummonSpec(UnitID::MAGIC_SPIRIT, 1, 30,    5, 0, Ranged::NONE, 0,    4, 8, 10, 1,     1, 2,   {Skills::MELD, Skills::SWIMMING, Skills::NON_CORPOREAL}),
   
   SummonSpec(UnitID::GUARDIAN_SPIRIT, 1, 80,    10, 0, Ranged::NONE, 0,    4, 10, 10, 1,     1, 2,   {Skills::MELD, Skills::NON_CORPOREAL, Skills::RESISTANCE_TO_ALL}),
 
