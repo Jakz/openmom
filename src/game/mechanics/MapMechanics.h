@@ -34,11 +34,8 @@ public:
   
   ManaNode* generateManaNode(World* world, const Position position, const School school) const;
   
-  u16 turnsRequiredToBuildRoadOnTile(Tile* tile) const;
-  
-  
-  s16 baseMovementCost(TileType type) const;
-  s16 specificMovementCost(World* world, const Position& position, const Army* army) const;
+  virtual u16 turnsRequiredToBuildRoadOnTile(Tile* tile) const;
+  virtual s16 movementCost(World* world, const Position& position, const movement_list& movement) const;
   
   const movement_list movementTypeForSetOfEffects(const movement_list_group& movements) const;
   const movement_list movementTypeOfArmy(const unit_list& units) const;

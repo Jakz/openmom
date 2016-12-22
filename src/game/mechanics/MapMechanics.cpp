@@ -126,43 +126,43 @@ u16 MapMechanics::turnsRequiredToBuildRoadOnTile(Tile* tile) const
   return 0;
 }
 
-
-s16 MapMechanics::baseMovementCost(TileType type) const
-{
-  switch (type) {
-    case TILE_GRASS:
-    case TILE_WATER:
-    case TILE_SHORE:
-      return 1;
-    case TILE_DESERT:
-    case TILE_FOREST:
-    case TILE_HILL:
-    case TILE_RIVER:
-    case TILE_TUNDRA:
-    case TILE_RIVER_MOUTH:
-      return 2;
-    case TILE_MOUNTAIN:
-    case TILE_SWAMP:
-    case TILE_VOLCANO:
-      return 3;
-			//default:
-			//	return 0;
-			// TODO: river mouth / shore?
-    case TILE_TYPES: return 0;
-  }
-}
-
-s16 MapMechanics::specificMovementCost(World* world, const Position& position, const Army* army) const
+s16 MapMechanics::movementCost(World* world, const Position& position, const movement_list& movement) const
 {
   Tile* t = world->get(position);
-  if (army->hasMovement(Effects::NON_CORPOREAL) && t->hasRoad)
-    return baseMovementCost(t->type);
-  else if (t->hasRoad && t->hasEnchantedRoad)
-    return 0;
-  else if (t->hasRoad)
-    return 1;
   
-  return baseMovementCost(t->type);
+  bool canMakeUseOfRoads = !movement.contains(Effects::NON_CORPOREAL) && !movement.contains(Effects::FLYING);
+  
+  if (canMakeUseOfRoads && t->hasEnchantedRoad)
+    return 0;
+  else if (canMakeUseOfRoads && t->hasRoad)
+    return 1;
+  else
+  {
+    switch (t->type) {
+      case TILE_GRASS:
+        return movement.contains(Effects::MOUNTAINWALK) ? 6 : 2;
+      case TILE_DESERT:
+      case TILE_WATER:
+      case TILE_SHORE:
+        return 1;
+      case TILE_FOREST:
+        return movement.contains(Effects::FORESTWALK) ? 2 : 4;
+      case TILE_RIVER:
+      case TILE_RIVER_MOUTH:
+      case TILE_TUNDRA:
+        return movement.contains(Effects::SWIMMING) ? 2 : 4;
+      case TILE_SWAMP:
+        return movement.contains(Effects::SWIMMING) ? 2 : 6;
+      case TILE_HILL:
+        return movement.contains(Effects::MOUNTAINWALK) ? 2 : 6;
+      case TILE_MOUNTAIN:
+      case TILE_VOLCANO:
+        return movement.contains(Effects::MOUNTAINWALK) ? 2 : 8;
+      case TILE_TYPES:
+        assert(false);
+        return 0;
+    }
+  }
 }
 
 #define ANY_OF(x) any_of(u.begin(), u.end(), [] (const movement_list& l) { return l.find(Effects::x) != l.end(); })
