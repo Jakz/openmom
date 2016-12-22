@@ -79,7 +79,7 @@ public:
   
   void selectUnit(Unit* unit);
   void deselectUnit(Unit* unit);
-  bool isSelectedUnit(Unit* unit);
+  bool isSelectedUnit(Unit* unit) const;
 
   
   void combatTurnBegun() override { combatCurrentlyPlaying = true; }

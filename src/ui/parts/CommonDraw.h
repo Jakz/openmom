@@ -15,10 +15,12 @@ class UnitSpec;
 class Unit;
 class Player;
 
+enum class MovementBaseType;
+
 class CommonDraw
 {
   public:
-    static void drawMovement(u16 v, u16 x, u16 y, u16 c);
+    static void drawMovement(u16 v, MovementBaseType icon, u16 x, u16 y, u16 c);
     static void drawGoldUpkeep(u16 g, u16 x, u16 y);
     static void drawUpkeep(const Upkeep& upkeep, u16 x, u16 y);
   

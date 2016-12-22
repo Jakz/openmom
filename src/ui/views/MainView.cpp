@@ -197,7 +197,7 @@ void MainView::draw()
     s16 moves = player->selectedAvailMoves();
     if (moves > 0)
     {
-      Fonts::drawString(Fonts::format("Moves: %d%s",moves/2, moves%2 == 0 ? ".5" : "" ), FontFaces::Small::WHITE, 245, 166, ALIGN_LEFT);
+      Fonts::drawString(Fonts::format("Moves: %d%s",moves/2, moves%2 == 0 ? "" : ".5" ), FontFaces::Small::WHITE, 245, 166, ALIGN_LEFT);
       movement_list movement = player->selectedArmyMovementType();
       
       /* draw movement icons */
@@ -317,9 +317,10 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
     
     if (b == BUTTON_RIGHT)
     {
-      if (a && (!c || (c && !a->isPatrolling())) && a->getOwner() == player)
+      if (a && (!c || (c && !a->isPatrolling())))
       {
-        switchToUnitSelection(a);
+        if (a->getOwner() == player)
+          switchToUnitSelection(a);
       }
       else if (c)
       {
@@ -406,11 +407,22 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
           // select/deselect unit in army
           if (b == BUTTON_LEFT)
           {
-            Unit* u = army->get(j);
-            if (player->isSelectedUnit(u))
-              player->deselectUnit(u);
+            Unit* unit = army->get(j);
+            
+            if (army->size() > 2 && player->isSelectedUnit(unit) && std::all_of(army->begin(), army->end(), [this](Unit* u) { return player->isSelectedUnit(u); }))
+            {
+              for (Unit* aunit : *army)
+                if (aunit != unit)
+                  player->deselectUnit(aunit);
+            }
             else
-              player->selectUnit(u);
+            {
+              if (player->isSelectedUnit(unit))
+                player->deselectUnit(unit);
+              else
+                player->selectUnit(unit);
+            }
+
             
             updateBuildButton();
             

@@ -63,14 +63,14 @@ Upkeep PlayerMechanics::computeUpkeep(const Player *player)
   for (auto c : player->cities)
   {
     if (!c->isOutpost())
-      up.add(c->getUpkeep());
+      up += c->getUpkeep();
   }
   
   for (auto a : player->armies)
   {
     for (auto u : *a)
     {
-      up.add(u->upkeep());
+      up += u->upkeep();
     }
   }
   
@@ -89,9 +89,7 @@ Upkeep PlayerMechanics::computeGain(const Player *player)
   Upkeep up;
   
   for (auto c : player->cities)
-  {
-    up.add(c->getProduction());
-  }
+    up += c->getProduction();
   
   // TODO: noble
   

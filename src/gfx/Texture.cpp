@@ -150,7 +150,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::UNIT_DETAIL_SKILL_ARROWS,"units/static/skill-pane-arrows.png",2,2,9,10),
   Texture(TextureID::UNIT_DETAIL_SPECIAL_THINGS,"units/special-things.png",1,1,73,33), // contiene anche mirino minimap
   Texture(TextureID::UNIT_DETAIL_TARGET,"units/static/target-backdrop.png",1,1,238,200),
-  Texture(TextureID::UNIT_DETAIL_MOVEMENT,"units/movement.png",1,3,7,6),
   Texture(TextureID::UNIT_DETAIL_PROPS,"units/props.png",2,12,9,8),
   Texture(TextureID::UNIT_DETAIL_PROPS_EMPTY,"units/props-empty.png",1,12,9,8),
   Texture(TextureID::UNIT_SKILL_ICONS,"units/skill-icons.png",16,16,16,16),

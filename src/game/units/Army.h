@@ -104,7 +104,7 @@ public:
   const movement_list& getMovementType() { return movementType; }
   bool hasMovement(const MovementEffect* movement) const { return movementType.contains(movement); }
   
-  Unit* firstSelected() { return !units.empty() ? units.front() : nullptr; }
+  const Unit* firstSelected() { return !units.empty() ? units.front() : nullptr; }
   void merge(Army* army);
   
   void patrol();
@@ -130,8 +130,9 @@ public:
   void setRoute(Route* route);
   void clearRoute();
   
-  typedef std::list<Unit*>::iterator iterator;
-  typedef std::list<Unit*>::const_iterator const_iterator;
+  using iterator = unit_list::iterator;
+  using const_iterator = unit_list::const_iterator;
+
   iterator begin() { return units.begin(); }
   iterator end() { return units.end(); }
   const_iterator begin() const { return units.begin(); }

@@ -85,7 +85,7 @@ void ProductionView::draw()
     const UnitSpec* spec = static_cast<const UnitSpec*>(product);
     Fonts::drawString("Moves", FontFaces::Small::TEAL, 128, 19, ALIGN_LEFT);
     Fonts::drawString("Upkeep", FontFaces::Small::TEAL, 128, 26, ALIGN_LEFT);
-    CommonDraw::drawMovement(spec->movement, 165, 19, 0);
+    CommonDraw::drawMovement(spec->movement, MovementBaseType::WALKING, 163, 19, 0); // TODO: use real type value
     CommonDraw::drawUpkeep(spec->upkeep, 164, 26);
     UnitDraw::drawUnitIso(spec, 83, 5, nullptr);
     CommonDraw::drawUnitProps(spec, 128, 47, 10);

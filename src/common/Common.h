@@ -339,19 +339,33 @@ using Coord = ScreenCoord;
 
 class Upkeep
 {
-  public:
-    mutable s16 gold, mana, food;
-    
-  public:
-    Upkeep(s16 gold = 0, s16 mana = 16, s16 food = 0) : gold(gold), mana(mana), food(food) { }
-    
-  public:
-    void add(const Upkeep &upkeep)
+public:
+  enum class Type { GOLD, MANA, FOOD };
+  
+  mutable s16 gold, mana, food;
+  
+  Upkeep(s16 gold = 0, s16 mana = 16, s16 food = 0) : gold(gold), mana(mana), food(food) { }
+
+  s16 operator[](Type type) const
+  {
+    switch (type)
     {
-      gold += upkeep.gold;
-      mana += upkeep.mana;
-      food += upkeep.food;
+      case Type::GOLD: return gold;
+      case Type::MANA: return mana;
+      case Type::FOOD: return food;
     }
+    assert(false);
+  }
+  
+  Upkeep& operator+=(const Upkeep &upkeep)
+  {
+    gold += upkeep.gold;
+    mana += upkeep.mana;
+    food += upkeep.food;
+    return *this;
+  }
+  
+  Upkeep operator+(const Upkeep& o) const { return Upkeep(gold+o.gold, mana+o.mana, food+o.food); }
 };
 
 enum ViewID

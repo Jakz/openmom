@@ -76,6 +76,7 @@ public:
   
   Productable::Type type() const { return spec.productionType(); }
   
+  template<typename T> T getEnumProperty(Property property) const { return static_cast<T>(getProperty(property)); }
   s16 getProperty(Property property) const { return getBaseProperty(property) + getBonusProperty(property); };
   s16 getBaseProperty(Property property) const;
   s16 getBonusProperty(Property property) const;
@@ -88,8 +89,8 @@ public:
   void select() { selected = true; }
   void unselect() { selected = false; }
   
-  Upkeep upkeep() const { Upkeep u = spec.upkeep; u.add(speelUpkeep()); return u; }
-  Upkeep speelUpkeep() const { return Upkeep(0, _skills.spellsUpkeep(), 0); }
+  Upkeep upkeep() const { return spec.upkeep + spellUpkeep(); }
+  Upkeep spellUpkeep() const { return Upkeep(0, _skills.spellsUpkeep(), 0); }
   void removeSpell(const Spell* spell);
   
   void turnBegin() {

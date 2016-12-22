@@ -117,7 +117,7 @@ void ArmiesView::draw()
   Upkeep upkeep;
   for (auto a : player->getArmies())
     for (auto u : *a)
-      upkeep.add(u->upkeep());
+      upkeep += u->upkeep();
   
   Fonts::drawString(/*to_string(upkeep.gold)+*/"7", 44, 172, ALIGN_CENTER);
   Fonts::drawString(/*to_string(upkeep.mana+*/"0", 44, 182, ALIGN_CENTER);

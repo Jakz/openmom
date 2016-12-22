@@ -456,7 +456,7 @@ Upkeep CityMechanics::computeUpkeep(const City* city)
 {
   Upkeep u;
   for (auto b : city->buildings)
-    u.add(b->upkeep);
+    u += b->upkeep;
   return u;
 }
 

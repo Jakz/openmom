@@ -10,22 +10,29 @@
 #include "Gfx.h"
 #include "Font.h"
 
-void CommonDraw::drawMovement(u16 v, u16 x, u16 y, u16 c)
+enum lbx_indices
+{
+  walk_icon = LBXI(UNITVIEW,24),
+  fly_icon = LBXI(UNITVIEW,25),
+  swim_icon = LBXI(UNITVIEW,26)
+};
+
+void CommonDraw::drawMovement(u16 v, MovementBaseType type, u16 x, u16 y, u16 c)
 {
   if (v > 0)
   {
+    SpriteInfo icon = walk_icon;
+    
+    if (type == MovementBaseType::FLYING)
+      icon = fly_icon;
+    else if (type == MovementBaseType::SWIMMING)
+      icon = swim_icon;
+    
     for (int i = v; i > 0; --i)
-      if (i >= 10)
-      {
-        i -= 9;
-        Gfx::draw(TextureID::UNIT_DETAIL_MOVEMENT, 0, c, x, y);
-        x += 15;
-      }
-      else
-      {
-        Gfx::draw(TextureID::UNIT_DETAIL_MOVEMENT, 0, c, x, y);
-        x += 8;
-      }
+    {
+      Gfx::draw(icon, x, y);
+      x += 8;
+    }
   }
 }
 
@@ -50,50 +57,34 @@ void CommonDraw::drawGoldUpkeep(u16 gold, u16 x, u16 y)
 
 void CommonDraw::drawUpkeep(const Upkeep& uk, u16 x, u16 y)
 {
-  if (uk.mana > 0)
+  /* gold, mana, food */
+  static const SpriteInfo gfx[][2] = {
+    { SpriteInfo(TextureID::CITY_PRODUCTION, 2, 2), SpriteInfo(TextureID::CITY_PRODUCTION, 2, 0) },
+    { SpriteInfo(TextureID::CITY_PRODUCTION, 3, 2), SpriteInfo(TextureID::CITY_PRODUCTION, 3, 0) },
+    { SpriteInfo(TextureID::CITY_PRODUCTION, 0, 2), SpriteInfo(TextureID::CITY_PRODUCTION, 0, 0) }
+  };
+  
+  static const Upkeep::Type values[3] = { Upkeep::Type::GOLD, Upkeep::Type::MANA, Upkeep::Type::FOOD };
+  
+  for (size_t t = 0; t < 3; ++t)
   {
-    for (int i = uk.mana; i > 0; --i)
-      if (i >= 10)
-      {
-        i -= 9;
-        Gfx::draw(TextureID::CITY_PRODUCTION, 3, 2, x, y);
-        x += 15;
-      }
-      else
-      {
-        Gfx::draw(TextureID::CITY_PRODUCTION, 3, 0, x, y);
-        x += 8;
-      }
-  }
-  if (uk.gold > 0)
-  {
-    for (int i = uk.gold; i > 0; --i)
-      if (i >= 10)
-      {
-        i -= 9;
-        Gfx::draw(TextureID::CITY_PRODUCTION, 2, 2, x, y);
-        x += 15;
-      }
-      else
-      {
-        Gfx::draw(TextureID::CITY_PRODUCTION, 2, 0, x, y);
-        x += 8;
-      }
-  }
-  if (uk.food > 0)
-  {
-    for (int i = uk.food; i > 0; --i)
-      if (i >= 10)
-      {
-        i -= 9;
-        Gfx::draw(TextureID::CITY_PRODUCTION, 0, 2, x, y);
-        x += 15;
-      }
-      else
-      {
-        Gfx::draw(TextureID::CITY_PRODUCTION, 0, 0, x, y);
-        x += 8;
-      }
+    s16 value = uk[values[t]];
+    
+    if (value > 0)
+    {
+      for (int i = value; i > 0; --i)
+        if (i >= 10)
+        {
+          i -= 9;
+          Gfx::draw(gfx[t][0], x, y);
+          x += 15;
+        }
+        else
+        {
+          Gfx::draw(gfx[t][1], x, y);
+          x += 8;
+        }
+    }
   }
 }
 

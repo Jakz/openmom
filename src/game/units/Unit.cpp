@@ -68,6 +68,15 @@ s16 Unit::getBaseProperty(Property property) const
   switch (property) {
     case Property::ALIVE_FIGURES:
       return _health.aliveCount();
+    case Property::MOVEMENT_BASE_TYPE:
+    {
+      if (skills()->hasSkillEffect(Effects::FLYING))
+        return static_cast<s16>(MovementBaseType::FLYING);
+      else if (skills()->hasSkillEffect(Effects::SWIMMING))
+        return static_cast<s16>(MovementBaseType::SWIMMING);
+      else
+        return static_cast<s16>(MovementBaseType::WALKING);
+    }
     case Property::XP:
       return 1;
     case Property::RESIST_CHAOS:
@@ -92,7 +101,7 @@ s16 Unit::getBonusProperty(Property property) const
 {
   int bonus = 0;
   
-  if (property == Property::FIGURES)
+  if (property == Property::FIGURES || property == Property::MOVEMENT_BASE_TYPE)
     return 0;
   
   if (spec.productionType() != Productable::Type::SUMMON)

@@ -127,6 +127,7 @@ enum class Property : u8
   HIT_POINTS,
   //UPKEEP,
   MOVEMENT,
+  MOVEMENT_BASE_TYPE,
   SIGHT,
   TO_HIT, // +% to hit expressed in centesimal (eg. 10 = 10%)
   TO_DEFEND,
@@ -135,6 +136,13 @@ enum class Property : u8
   AMMO,
   ALIVE_FIGURES,
   THROWN_ATTACK //TODO: implement to get it from skills
+};
+
+enum class MovementBaseType
+{
+  WALKING,
+  SWIMMING,
+  FLYING
 };
 
 enum class HeroType : u8

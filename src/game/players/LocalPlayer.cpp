@@ -141,7 +141,7 @@ void LocalPlayer::deselectUnit(Unit* unit)
   }
 }
 
-bool LocalPlayer::isSelectedUnit(Unit* unit)
+bool LocalPlayer::isSelectedUnit(Unit* unit) const
 {
   return find(selectedUnits.begin(), selectedUnits.end(), unit) != selectedUnits.end();
 }

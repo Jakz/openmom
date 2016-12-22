@@ -159,8 +159,8 @@ void UnitDetailView::draw()
   
   /* TODO: cambiare immagine in base al tipo di movimento */
   // TODO: should it be getProperty and not getBaseProperty?
-  CommonDraw::drawMovement(unit->getBaseProperty(Property::MOVEMENT), c.x + 87, c.y + 26, 0);
-  CommonDraw::drawUpkeep(uk, c.x + 86, c.y + 33);
+  CommonDraw::drawMovement(unit->getBaseProperty(Property::MOVEMENT), unit->getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE), c.x + 84, c.y + 25, 0);
+  CommonDraw::drawUpkeep(uk, c.x + 85, c.y + 33);
 }
 
 void UnitDetailView::setHeroHire(Hero* hero, u32 cost)
