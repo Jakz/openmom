@@ -473,14 +473,21 @@ public:
       {
         int fgcol = selection == ROW ? FL_RED : FL_BLACK;
         int bgcol = FL_WHITE;
-        fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, bgcol);
         
         LBXFileType type = currentLBX->info.header.type;
         bool isLoaded = currentLBX->isLoaded();
         
         if (!isLoaded)
           fgcol = fl_rgb_color(180, 180, 180);
+        else
+        {
+          if (isUsed(currentLBX->ident, ROW))
+            bgcol = fl_rgb_color(200, 255, 200);
+          else
+            bgcol = FL_WHITE;
+        }
         
+        fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, bgcol);
         fl_color(fgcol);
 
         
@@ -493,7 +500,7 @@ public:
         }
         else if (COL == 4)
         {
-          fl_draw(isUsed(currentLBX->ident, ROW) ? "Y" : "N", X, Y, W, H, FL_ALIGN_CENTER);
+          fl_draw(isUsed(currentLBX->ident, ROW) ? "Y" : "", X, Y, W, H, FL_ALIGN_CENTER);
         }
         else
         {
@@ -534,9 +541,48 @@ public:
 
 };
 
+void loadStatus()
+{
+  FILE* in = fopen("status.dat", "rb");
+  if (in)
+  {
+    fseek(in, 0, SEEK_END);
+    long amount = ftell(in) / sizeof(decltype(usedSprites)::value_type);
+    fseek(in, 0, SEEK_SET);
+    u32* data = new u32[amount];
+    fread(data, sizeof(decltype(usedSprites)::value_type), amount, in);
+    for (size_t i = 0; i < amount; ++i)
+      usedSprites.insert(data[i]);
+    delete [] data;
+  }
+  fclose(in);
+}
+
+void saveStatus()
+{
+  FILE* in = fopen("status.dat", "wb");
+  if (in)
+  {
+    fseek(in, 0, SEEK_END);
+    long amount = usedSprites.size();
+    u32* data = new u32[amount];
+    auto it = usedSprites.begin();
+    for (size_t i = 0; i < amount; ++i)
+    {
+      data[i] = *it;
+      ++it;
+    }
+    fwrite(data, sizeof(decltype(usedSprites)::value_type), amount, in);
+    delete [] data;
+  }
+  fclose(in);
+}
+
 int main(int argc, char **argv) {
 
   Repository::init();
+  
+  loadStatus();
   
   for (size_t i = 0; i < LBX_COUNT; ++i)
     Repository::loadLBX(static_cast<LBXID>(i));
@@ -556,6 +602,8 @@ int main(int argc, char **argv) {
   mywindow->show(argc, argv);
   
   int result = Fl::run();
+  
+  saveStatus();
 
   return result;
 }

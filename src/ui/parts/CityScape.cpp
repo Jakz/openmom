@@ -24,12 +24,12 @@ unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
   {Building::ORACLE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 1), 25, 2, 2)},
   {Building::ALCHEMISTS_GUILD,   BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0, 9), 14, 1, 1, true)},
   {Building::WIZARDS_GUILD,      BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0,10), 17, 2, 2, true)},
-  {Building::STABLE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0, 5), 40, 3, 3, true)},
+  {Building::STABLE,             BuildingSpecs(LSI(CITYSCAP, 51), 40, 3, 3, true)},
   {Building::FANTASTIC_STABLE,   BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0, 6), 40, 3, 3, true)},
   {Building::BARRACKS,           BuildingSpecs(LSI(CITYSCAP, 45), 30, 2, 3, true)},
   {Building::ARMORY,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 1), 25, 2, 2)},
   {Building::FIGHTERS_GUILD,     BuildingSpecs(LSI(CITYSCAP, 47), 35, 3, 2, true)},
-  {Building::ARMORERS_GUILD,     BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0, 0), 36, 3, 2, true)},
+  {Building::ARMORERS_GUILD,     BuildingSpecs(LSI(CITYSCAP, 48), 36, 3, 2, true)},
   {Building::WAR_COLLEGE,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 0), 36, 3, 2)},
   {Building::SHIP_WRIGHTS_GUILD, BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 0), 22, 2, 3)},
   {Building::SHIP_YARD,          BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 1), 32, 2, 3)},
@@ -47,8 +47,8 @@ unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
   {Building::SAWMILL,            BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0, 8), 25, 2, 3, true)},
   {Building::FORESTERS_GUILD,    BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 4), 25, 2, 2)},
   
-  {Building::HOUSING,            BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 4), 40, 2, 2)},
-  {Building::TRADE_GOODS,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 4), 40, 2, 2)},
+  {Building::HOUSING,            BuildingSpecs(LSI(CITYSCAP, 42), 40, 2, 2)}, //TODO: changes accordingly to race building type
+  {Building::TRADE_GOODS,        BuildingSpecs(LSI(CITYSCAP, 41), 40, 2, 2)},
   {Building::CITY_WALLS,         BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 5), 40, 2, 2)},
   
   {Building::SUMMONING_CIRCLE,   BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 4), 25, 3, 2)}

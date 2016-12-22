@@ -24,7 +24,7 @@
 using namespace std;
 
 const std::multimap<const Building*, const Building*> CityMechanics::buildingDependsOn = {
-  {Building::CITY_WALLS, Building::CITY_WALLS},
+  {Building::CITY_WALLS, Building::BUILDERS_HALL},
   
   {Building::SHRINE, Building::BUILDERS_HALL},
   {Building::TEMPLE, Building::SHRINE},
@@ -157,24 +157,60 @@ const std::multimap<RaceID, const Building*> CityMechanics::disallowedBuildingsB
   {RaceID::TROLLS, Building::FANTASTIC_STABLE}, {RaceID::TROLLS, Building::MINERS_GUILD}, {RaceID::TROLLS, Building::SAGES_GUILD}, {RaceID::TROLLS, Building::SHIP_YARD}, {RaceID::TROLLS, Building::UNIVERSITY}
 };
 
+const std::map<const Building*, const Building*> CityMechanics::buildingReplacementMap = {
+  { Building::BARRACKS, Building::ARMORY },
+  
+  { Building::FIGHTERS_GUILD, Building::ARMORERS_GUILD },
+  { Building::ARMORERS_GUILD, Building::WAR_COLLEGE },
+  
+  { Building::STABLE, Building::ANIMISTS_GUILD },
+  
+  { Building::SHIP_WRIGHTS_GUILD, Building::SHIP_YARD },
+  { Building::MARITIME_GUILD, Building::SHIP_WRIGHTS_GUILD },
+  
+  { Building::LIBRARY, Building::SAGES_GUILD },
+  
+  { Building::ALCHEMISTS_GUILD, Building::UNIVERSITY },
+  
+  { Building::SHRINE, Building::TEMPLE },
+  { Building::TEMPLE, Building::PARTHENON },
+  { Building::PARTHENON, Building::CATHEDRAL },
+  
+  { Building::MARKETPLACE, Building::BANK },
+  { Building::BANK, Building::MERCHANTS_GUILD },
+  
+  { Building::GRANARY, Building::FARMERS_MARKET },
+};
+
+bool CityMechanics::isBuildingCurrentlyReplaced(const City *city, const Building* building)
+{
+  auto it = buildingReplacementMap.find(building);
+  
+  /* if building can have a replacement */
+  while (it != buildingReplacementMap.end())
+  {
+    /* if city has the replacement return true */
+    if (city->hasBuilding(it->second))
+      return true;
+    /* otherwise traverse to the possible replacement of the replacement and try again */
+    else
+      it = buildingReplacementMap.find(it->second);
+  }
+  
+  return false;
+}
+
 
 bool CityMechanics::isBuildingAllowed(const City* city, const Building* building)
 {
   if (!isBuildingAllowedForRace(city, building) || !isBuildingAllowedForTerrain(city, building))
     return false;
   
-  if (city->hasBuilding(building) || building == Building::TRADE_GOODS || building == Building::HOUSING || building == Building::SUMMONING_CIRCLE || building == Building::MAGE_FORTRESS)
+  if (city->hasBuilding(building) || building == Building::SUMMONING_CIRCLE || building == Building::MAGE_FORTRESS)
     return false;
-  else
-  {
-    auto it = buildingDependsOn.equal_range(building);
-    
-    for (auto iit = it.first; iit != it.second; ++iit)
-      if (city->hasBuilding(iit->second))
-        return false;
-  }
-  
-  return true;
+
+  auto it = buildingDependsOn.equal_range(building);
+  return std::all_of(it.first, it.second, [city](decltype(*it.first)& iit) { return city->hasBuilding(iit.second); });
 }
 
 bool CityMechanics::isBuildingAllowedForTerrain(const City *city, const Building* building)
@@ -250,10 +286,12 @@ const list<const Building*> CityMechanics::availableBuildings(const City* city)
 
 list<const Productable*> CityMechanics::itemsUnlockedByBuilding(const Building* building, const City *city)
 {
+  LOGD3("[city] computing unlocked entries by %s", i18n::c(building->name));
+  
   list<const Productable*> items;
   
   //TODO: remove ancestors
-  for (auto it : buildingDependsOn)
+  for (const auto it : buildingDependsOn)
   {
     auto iit = buildingDependsOn.equal_range(it.first); // all the dependencies of current building
 
@@ -305,51 +343,43 @@ list<const Productable*> CityMechanics::itemsUnlockedByBuilding(const Building* 
   return items;
 }
 
-s16 CityMechanics::countSurroundTileType(const City* city, TileType type)
+void CityMechanics::lambdaOnCitySurroundings(const City* city, const std::function<void(const Tile*)>& functor)
 {
-  int count = 0;
-  
   for (int x = -2; x <= 2; ++x)
     for (int y = -2; y <= 2; ++y)
       if ((x != 2 && x != -2) || (y != 2 && y != -2))
       {
-        Tile* t = game->world->get(city->position.x + x, city->position.y + y, city->position.plane);
-        if (t && t->type == type)
-          ++count;
+        const Tile* tile = game->world->get(city->position.x + x, city->position.y + y, city->position.plane);
+        if (tile)
+          functor(tile);
       }
-  
+}
+
+
+s16 CityMechanics::countSurroundTileType(const City* city, TileType type)
+{
+  s16 count = 0;
+  lambdaOnCitySurroundings(city, [&count, type](const Tile* tile) {
+    count += tile->type == type ? 1 : 0;
+  });
   return count;
 }
 
 s16 CityMechanics::countSurroundResource(const City* city, Resource type)
 {
-  int count = 0;
-  
-  for (int x = -2; x <= 2; ++x)
-    for (int y = -2; y <= 2; ++y)
-      if ((x != 2 && x != -2) || (y != 2 && y != -2))
-      {
-        Tile* t = game->world->get(city->position.x + x, city->position.y + y, city->position.plane);
-        if (t && t->resource == type)
-          ++count;
-      }
-  
+  s16 count = 0;
+  lambdaOnCitySurroundings(city, [&count, type](const Tile* tile) {
+    count += tile->resource == type ? 1 : 0;
+  });
   return count;
 }
 
-s16 CityMechanics::countSurroundManaNode(const City* city, School type)
+s16 CityMechanics::countSurroundManaNode(const City* city, School school)
 {
-  int count = 0;
-  
-  for (int x = -2; x <= 2; ++x)
-    for (int y = -2; y <= 2; ++y)
-      if ((x != 2 && x != -2) || (y != 2 && y != -2))
-      {
-        Tile* t = game->world->get(city->position.x + x, city->position.y + y, city->position.plane);
-        if (t && t->node && t->node->school == type)
-          ++count;
-      }
-  
+  s16 count = 0;
+  lambdaOnCitySurroundings(city, [&count, school](const Tile* tile) {
+    count += tile->node && tile->node->school == school ? 1 : 0;
+  });
   return count;
 }
 
@@ -382,27 +412,23 @@ s16 CityMechanics::computeInitialPopulationGrowth(const City* city)
   
   // increase chance according to city resources
   // TODO: halved down resources only 1/2 bonus growth?
-  for (int x = -2; x <= 2; ++x)
-    for (int y = -2; y <= 2; ++y)
-      if ((x != 2 && x != -2) || (y != 2 && y != -2))
+  lambdaOnCitySurroundings(city, [&increaseChance] (const Tile* tile) {
+    if (tile->resource != Resource::NONE)
+    {
+      switch (tile->resource)
       {
-        Tile *t = game->world->get(city->position.x+x, city->position.y+y, city->position.plane);
-        if (t && t->resource != Resource::NONE)
-        {
-          switch (t->resource)
-          {
-            case Resource::IRON_ORE: increaseChance += 0.05; break;
-            case Resource::SILVER: increaseChance += 0.05; break;
-            case Resource::COAL: increaseChance += 0.10; break;
-            case Resource::GEMS: increaseChance += 0.10; break;
-            case Resource::GOLD: increaseChance += 0.10; break;
-            case Resource::MITHRIL: increaseChance += 0.10; break;
-            case Resource::ADAMANTIUM: increaseChance += 0.10; break;
-            case Resource::QOURK_CRYSTAL: increaseChance += 0.10; break;
-            case Resource::CRYSX_CRYSTAL: increaseChance += 0.10; break;
-          }
-        }
+        case Resource::IRON_ORE: increaseChance += 0.05; break;
+        case Resource::SILVER: increaseChance += 0.05; break;
+        case Resource::COAL: increaseChance += 0.10; break;
+        case Resource::GEMS: increaseChance += 0.10; break;
+        case Resource::GOLD: increaseChance += 0.10; break;
+        case Resource::MITHRIL: increaseChance += 0.10; break;
+        case Resource::ADAMANTIUM: increaseChance += 0.10; break;
+        case Resource::QOURK_CRYSTAL: increaseChance += 0.10; break;
+        case Resource::CRYSX_CRYSTAL: increaseChance += 0.10; break;
       }
+    }
+  });
   
   // TODO: if city has Stream of Life +10% - if city has Gaia's Blessing +20%
   

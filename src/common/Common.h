@@ -9,7 +9,13 @@
   extern void debugprintf(const char* str, ...);
   #define LOGD(...) debugprintf(__VA_ARGS__);
 
-  #if DEBUG == 2
+  #if DEBUG >= 3
+    #define LOGD3(...) debugprintf(__VA_ARGS__);
+  #else
+    #define LOGD3(...) do { } while (false);
+  #endif
+
+  #if DEBUG >= 2
     #define LOGD2(...) debugprintf(__VA_ARGS__);
   #else
     #define LOGD2(...) do { } while (false);

@@ -27,10 +27,17 @@ private:
   static const std::multimap<const Building*, const Building*> buildingDependsOn;
   static const std::multimap<UnitID, const Building*> unitDependsOn;
   static const std::multimap<RaceID, const Building*> disallowedBuildingsByRace;
+  static const std::map<const Building*, const Building*> buildingReplacementMap;
   
   Game* const game;
+  
+protected:
+  void lambdaOnCitySurroundings(const City* city, const std::function<void(const Tile*)>& functor);
+  
 public:
   CityMechanics(Game* game) : game(game) { }
+  
+  bool isBuildingCurrentlyReplaced(const City* city, const Building* building);
   
   bool isBuildingAllowed(const City* city, const Building* building);
   bool isBuildingAllowedForTerrain(const City *city, const Building* building);
