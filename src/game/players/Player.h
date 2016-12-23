@@ -173,6 +173,7 @@ public:
   
   const std::list<Hero*>& getHeroes() const { return heroes; }
   const std::list<Army*>& getArmies() const { return armies; }
+  const std::list<City*>& getCities() const { return cities; }
   
   s16 globalSkillSpellsCount(const Unit* u) const;
   const SkillGlobalSpell* nthGlobalSkillSpell(u16 i, const Unit* u) const;

@@ -10,6 +10,8 @@
 
 #include "Gfx.h"
 
+#include <numeric>
+
 using namespace std;
 
 
@@ -52,6 +54,7 @@ const FontSpriteSheet* FontFaces::Serif::BROWN = nullptr;
 const FontSpriteSheet* FontFaces::Serif::YELLOW_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::GOLD_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::GOLD = nullptr;
+const FontSpriteSheet* FontFaces::Serif::GOLD_ERROR_MESSAGE = nullptr;
 const FontSpriteSheet* FontFaces::Serif::SILVER_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::WHITE_SURVEY = nullptr;
 const FontSpriteSheet* FontFaces::Serif::DARK_BROWN = nullptr;
@@ -124,9 +127,14 @@ void FontFaces::buildFonts()
   
   MediumBold::BROWN_START = buildMediumBold({0, 0, RGB(166,134,105), RGB(52,40,28), RGB(52,40,28), RGB(52,40,28)});
   
+  /* color indices: background, high shadow, low shadow, single pixels, stripes x 4 (low to high) */
+  
   Serif::TEAL = buildSerif({0, RGB(24,68,68), RGB(24,68,68), RGB(58,166,166), RGB(243,235,231), RGB(188,238,218), RGB(197,239,217), RGB(193,239,240)});
   Serif::BROWN = buildSerif({0, 0, 0, RGB(120,74,36), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14)});
   Serif::YELLOW_SHADOW = buildSerif({0, 0, RGB(15,49,56), RGB(115,84,69), RGB(245,161,39), RGB(229,145,31), RGB(213,133,27), RGB(213,133,27)});
+  
+  Serif::GOLD_ERROR_MESSAGE = buildSerif({0, 0, RGB(128,13,4),RGB(121,85,36), RGB(207,138,24), RGB(245,161,39), RGB(255,199,103), RGB(255,243,127)});
+  
   Serif::GOLD_SHADOW = buildSerif({0,  0, RGB(67,43,36),RGB(74,51,44), RGB(213,133,27), RGB(245,161,39), RGB(255,199,103), RGB(255,243,127)});
   Serif::GOLD = buildSerif({0, 0, 0, RGB(255,174,12), RGB(213,133,27), RGB(245,161,39), RGB(255,199,103), RGB(255,243,127)});
   Serif::SILVER_SHADOW = buildSerif({0, 0, RGB(67,43,36), RGB(106,97,93), RGB(159,150,146), RGB(196,186,182), RGB(228,219,215), RGB(255,255,255)});  // TODO: take from fontColors map
@@ -193,13 +201,23 @@ string Fonts::format(const char *fmt_str, ...) {
   return string(formatted.get());
 }
 
-const string Fonts::join(vector<const string>& tokens, s16 s, s16 e)
+const string Fonts::join(const vector<const string>& tokens, s16 s, s16 e)
 {
-  //TODO: use sstream to optimize
-  string result = tokens[s];
+  assert(e <= tokens.size() - 1 && s >= 0 && s <= e);
   
-  for (int i = s+1; i <= e; ++i)
-    result += " "+tokens[i];
+  if (tokens.size() == 1)
+    return tokens[0];
+  
+  size_t finalLength = std::accumulate(tokens.begin()+s, tokens.end()-(tokens.size()-e-1), 0, [](size_t v, const std::string& token) { return v + token.length(); });
+  string result;
+  result.reserve(finalLength + (e - s));
+  
+  for (int i = s; i <= e; ++i)
+  {
+    if (i > s)
+      result += ' ';
+    result += tokens[i];
+  }
   
   return result;
 }
@@ -319,7 +337,7 @@ u16 Fonts::drawStringContext(const string& string, u16 x, u16 y, TextAlign align
   return plength;
 }
 
-u16 Fonts::drawStringBounded(const string& str, int x, int y, int bound, TextAlign align, const Palette* palette)
+u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, TextAlign align, const Palette* palette)
 {
   if (palette)
     setMap(palette);

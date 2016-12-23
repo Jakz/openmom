@@ -34,8 +34,8 @@ void ArmyView::draw()
   
   //Texture.draw(Texture.UNIT_DETAIL_TARGET, 41, 200 - h / 2);
   
-  Gfx::drawClipped(TextureID::UNIT_DETAIL_TARGET, 41, o, 0, 0, 238, h - 8);
-  Gfx::drawClipped(TextureID::UNIT_DETAIL_TARGET, 41, o + h - 10, 0, 195, 238, 5);
+  Gfx::drawClipped(TSI(UNIT_DETAIL_TARGET,0,0), 41, o, 0, 0, 238, h - 8);
+  Gfx::drawClipped(TSI(UNIT_DETAIL_TARGET,0,0), 41, o + h - 10, 0, 195, 238, 5);
   
   int c = 24;
   for (int j = 0; j < i; ++j)

@@ -136,6 +136,10 @@ s16 MapMechanics::movementCost(World* world, const Position& position, const mov
     return 0;
   else if (canMakeUseOfRoads && t->hasRoad)
     return 1;
+  else if (movement.contains(Effects::NON_CORPOREAL))
+    return 1;
+  else if (movement.contains(Effects::FLYING))
+    return 2;
   else
   {
     switch (t->type) {

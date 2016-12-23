@@ -84,7 +84,7 @@ void ArmiesView::draw()
       const Unit* u = a->get(j);
       
       if (a == army && u == unit)
-        Gfx::drawClipped(TextureID::UNIT_DETAIL_SPECIAL_THINGS, armiesPosition[0]+18*j, armiesPosition[1]+armiesYdelta*i+1, 40, 0, 19, 15);
+        Gfx::drawClipped(TSI(UNIT_DETAIL_SPECIAL_THINGS,0,0), armiesPosition[0]+18*j, armiesPosition[1]+armiesYdelta*i+1, 40, 0, 19, 15);
       
       // TODO: 'G' letter related to a particular unit status, maybe pathfinding?
       UnitDraw::drawStatic(u, armiesPosition[0]+18*j, armiesPosition[1]+armiesYdelta*i, false, a->isPatrolling());

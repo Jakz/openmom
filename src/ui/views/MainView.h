@@ -78,7 +78,7 @@ private:
 public:
   MainView(ViewManager* gvm);
   
-  void activate() override { }
+  void activate() override;
   void deactivate() override { }
   
   void switchToSpellCast();

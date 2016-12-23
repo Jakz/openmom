@@ -108,7 +108,7 @@ void SpellBookView::drawPage(u16 index)
         clip2 = Fonts::drawString(Fonts::format("%d MP",g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BLINK_WHITE_GREY, topLeftX[index]+ROW_WIDTH+7, curY-1, ALIGN_RIGHT);
       }
       
-      Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+clip+3, curY, clip+3, ROW_HEIGHT*i, -3-clip2, 6);
+      Gfx::drawClipped(TSI(SPELL_BOOK_DUMMY_TEXT,0,0), topLeftX[index]+clip+3, curY, clip+3, ROW_HEIGHT*i, -3-clip2, 6);
       
       
       s16 turns;
@@ -141,7 +141,7 @@ void SpellBookView::drawPage(u16 index)
         for (int j = 0; j < toDo; ++j)
           Gfx::draw(TextureID::SPELL_BOOK_SCHOOL_ICONS, 0, spell->school, topLeftX[index]+1+6*j, curY+6+1);
         if (toDo < 20)
-          Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+1+toDo*6+4, curY+6, 1+toDo*6+4, ROW_HEIGHT*i+6, 0, 6);
+          Gfx::drawClipped(TSI(SPELL_BOOK_DUMMY_TEXT,0,0), topLeftX[index]+1+toDo*6+4, curY+6, 1+toDo*6+4, ROW_HEIGHT*i+6, 0, 6);
         
         if (turns > 20)
         {
@@ -150,10 +150,10 @@ void SpellBookView::drawPage(u16 index)
             Gfx::draw(TextureID::SPELL_BOOK_SCHOOL_ICONS, 0, spell->school, topLeftX[index]+1+6*j, curY+12+1);
           
           if (toDo < 20)
-            Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+1+toDo*6+4, curY+12, 1+toDo*6+4, ROW_HEIGHT*i+6, 0, 6);
+            Gfx::drawClipped(TSI(SPELL_BOOK_DUMMY_TEXT,0,0), topLeftX[index]+1+toDo*6+4, curY+12, 1+toDo*6+4, ROW_HEIGHT*i+6, 0, 6);
         }
         else
-          Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index], curY+12, 0, ROW_HEIGHT*i+6, 0, 6);
+          Gfx::drawClipped(TSI(SPELL_BOOK_DUMMY_TEXT,0,0), topLeftX[index], curY+12, 0, ROW_HEIGHT*i+6, 0, 6);
       }
       else
       {
@@ -162,8 +162,8 @@ void SpellBookView::drawPage(u16 index)
         int w = 0;
         if (!combatMode)
           w = Fonts::drawString("Instant", FontFaces::Small::BROWN, topLeftX[index]+8, curY+6, ALIGN_LEFT);
-        Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index]+9+w+4, curY+6, 9+w+4, ROW_HEIGHT*i+6, 0, 6);
-        Gfx::drawClipped(TextureID::SPELL_BOOK_DUMMY_TEXT, topLeftX[index], curY+12, 0, ROW_HEIGHT*i+6, 0, 6);
+        Gfx::drawClipped(TSI(SPELL_BOOK_DUMMY_TEXT,0,0), topLeftX[index]+9+w+4, curY+6, 9+w+4, ROW_HEIGHT*i+6, 0, 6);
+        Gfx::drawClipped(TSI(SPELL_BOOK_DUMMY_TEXT,0,0), topLeftX[index], curY+12, 0, ROW_HEIGHT*i+6, 0, 6);
       }
     }
   }

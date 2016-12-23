@@ -64,6 +64,7 @@ class Gfx
   static Color get(SDL_Surface* surface, u16 x, u16 y) { return static_cast<Color*>(surface->pixels)[x + y*surface->w]; }
   static void set(SDL_Surface* surface, u16 x, u16 y, Color color) { static_cast<Color*>(surface->pixels)[x + y*surface->w] = color; }
 
+  
   static const SpriteSheet* sheet(SpriteInfo info);
 
 public:
@@ -100,7 +101,8 @@ public:
   static void colorMapBuffer(int w, int h, ColorMap& map);
   static void maskBufferWithImage(TextureID mask, TextureID snd, u16 r, u16 c, u16 r2, u16 c2);
 
-  static void drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h, u16 r = 0, u16 c = 0);
+  static void drawClipped(const SpriteSheet* sheet, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h);
+  static void drawClipped(SpriteInfo info, u16 x, u16 y, s16 fx, s16 fy, s16 w, s16 h);
 
   static void draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r = 0, u16 c = 0);
   static void draw(SpriteInfo info, s16 x, s16 y) { draw(info.sheet(), x, y, info.x(), info.y()); }
@@ -130,8 +132,6 @@ public:
 
   static u32 ticks;
   static u32 fticks;
-  static u32 fticksr;
-
 
   static const Color PALETTE[256];
 };

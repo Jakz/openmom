@@ -19,12 +19,13 @@
 
 #include "CityView.h"
 #include "CityScape.h"
+#include "LBX.h"
 
 MessageView::MessageView(ViewManager* gvm) : View(gvm), message(nullptr)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[NO] = TristateButton::build("No", 0, 0, TextureID::MESSAGE_CONFIRM_BUTTONS, 0)->setAction([this]() { discardMessage(); });
+  buttons[NO] = TristateButton::build("No", 0, 0, TextureID::MESSAGE_CONFIRM_BUTTONS, 0)->setAction([this]() { handleMessage(); });
   buttons[YES] = TristateButton::build("Yes", 30, 0, TextureID::MESSAGE_CONFIRM_BUTTONS, 1);
 }
 
@@ -32,13 +33,13 @@ void MessageView::handleMessage()
 {
   if (player->hasMessage())
   {
-    message = player->firstMessage();
+    message = player->fetchMessage();
     
     for (auto b : buttons) b->hide();
     
     if (message->type == msgs::Message::Type::CONFIRM)
     {
-      buttons[YES]->setAction([this](){ (buttons[YES]->getAction())(); discardMessage(); }); // FIXME: understand behavior and fix because now it's a stackoverflow
+      buttons[YES]->setAction([this](){ (buttons[YES]->getAction())(); handleMessage(); }); // FIXME: understand behavior and fix because now it's a stackoverflow
 
       buttons[NO]->show();
       buttons[YES]->show();
@@ -48,11 +49,11 @@ void MessageView::handleMessage()
     gvm->closeOverview();
 }
 
-void MessageView::discardMessage()
+/*void MessageView::discardMessage()
 {
   player->clearFirstMessage();
   handleMessage();
-}
+}*/
 
 void MessageView::discardAllMessages()
 {
@@ -66,15 +67,21 @@ void MessageView::mouseReleased(u16 x, u16 y, MouseButton b)
     discardAllMessages();
     
     /* TODO: così smista tutti i messaggi prima di switchare la vista (ad esempio due buildings completati), ci piace? */
-    const msgs::NewBuilding* msg = static_cast<const msgs::NewBuilding*>(message);
-    gvm->closeOverview();
-    gvm->cityView()->setCity(msg->city);
+    const msgs::NewBuilding* msg = message->as<const msgs::NewBuilding>();
+    City* city = msg->city;
+    gvm->closeOverview(); /* this will deallocate message */
+    gvm->cityView()->setCity(city);
     gvm->switchView(VIEW_CITY);
   }
   else if (message->type == msgs::Message::Type::ERROR || message->type == msgs::Message::Type::HELP_SKILL)
   {
-    discardMessage();
+    handleMessage();
   }
+}
+
+void MessageView::deactivate()
+{
+  message.reset(nullptr);
 }
 
 void MessageView::draw()
@@ -82,7 +89,7 @@ void MessageView::draw()
   switch (message->type) {
     case msgs::Message::Type::NEW_BUILDING:
     {
-      const msgs::NewBuilding* msg = static_cast<const msgs::NewBuilding*>(message);
+      const msgs::NewBuilding* msg = message->as<const msgs::NewBuilding>();
       
       Gfx::draw(TextureID::MESSAGE_LEFT, 7, 61);
       Gfx::draw(TextureID::MESSAGE_RIGHT, 243, 61);
@@ -101,8 +108,8 @@ void MessageView::draw()
       Gfx::bindBuffer();
       int h = Fonts::drawStringBounded(message->getMessage(), FontFaces::Small::BROWN, 76, 40, 175, ALIGN_LEFT);
       Gfx::bindCanvas();
-      Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 10, 0, 0, 210, h);
-      Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 3+h, 0, 200, 210, 23);
+      Gfx::drawClipped(TSI(HELP_BACKDROP,0,0), 55, 10, 0, 0, 210, h);
+      Gfx::drawClipped(TSI(HELP_BACKDROP,0,0), 55, 3+h, 0, 200, 210, 23);
       Gfx::mergeBuffer();
       break;
 
@@ -110,7 +117,7 @@ void MessageView::draw()
       
     case msgs::Message::Type::CONFIRM:
     {
-      const msgs::Confirm* msg = static_cast<const msgs::Confirm*>(message);
+      const msgs::Confirm* msg = message->as<const msgs::Confirm>();
 
       /* TODO: gestire font silver ovvero gestire colori diversi all'interno della stringa con marcatori */
       
@@ -121,9 +128,9 @@ void MessageView::draw()
       int y = 200/2 - (h+29)/2;
       Gfx::bindCanvas();
       // draw backdrop of the dialog by using text height
-      Gfx::drawClipped(TextureID::MESSAGE_CONFIRM_DIALOG, 68, y, 0, 0, 186, h);
+      Gfx::drawClipped(TSI(MESSAGE_CONFIRM_DIALOG,0,0), 68, y, 0, 0, 186, h);
       // draw bottom part of the dialog
-      Gfx::drawClipped(TextureID::MESSAGE_CONFIRM_DIALOG, 68, y+h, 0, 113, 186, 29);
+      Gfx::drawClipped(TSI(MESSAGE_CONFIRM_DIALOG,0,0), 68, y+h, 0, 113, 186, 29);
       
       // enable buttons and position them
       buttons[NO]->setPosition(68 + 18, y+h+5);
@@ -138,17 +145,23 @@ void MessageView::draw()
     
     case msgs::Message::Type::ERROR:
     {
-      const msgs::Error* msg = static_cast<const msgs::Error*>(message);
+      const msgs::Error* msg = message->as<const msgs::Error>();
+      
+      constexpr u32 MESSAGE_WIDTH = 174;
+      constexpr u32 DIALOG_WIDTH = 186;
+      constexpr u32 DIALOG_X = 68;
       
       Gfx::resetBuffer();
       Gfx::bindBuffer();
-      int h = Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::GOLD_SHADOW, 4, 5, 150, ALIGN_CENTER) + 3; // TODO: check align with new font management
-      int y = 200/2 - (h+29)/2;
+      int h = Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::GOLD_ERROR_MESSAGE, 4+MESSAGE_WIDTH/2, 5, MESSAGE_WIDTH, ALIGN_CENTER) + 3;
+      int y = HEIGHT/2 - (h+29)/2;
       Gfx::bindCanvas();
-      Gfx::drawClipped(TextureID::MESSAGE_ERROR_BACKDROP, 68, y, 0, 0, 186, h);
-      Gfx::drawClipped(TextureID::MESSAGE_ERROR_BACKDROP, 68, y+h, 0, 113, 186, 9);
-      Gfx::mergeBuffer(4,4,68+12,y+7,186,h+10);
       
+      lbx::LBXSpriteDataWithPalette dialogBottom{lbx::Repository::spriteFor(LSI(RESOURCE,39)), lbx::Repository::spriteFor(LSI(RESOURCE,38))->getPalette()};
+      
+      Gfx::drawClipped(&dialogBottom, DIALOG_X, y+h, 0, 0, DIALOG_WIDTH, 9);
+      Gfx::drawClipped(LSI(RESOURCE, 38), DIALOG_X, y, 0, 0, DIALOG_WIDTH, h);
+      Gfx::mergeBuffer(4, 4, DIALOG_X + (DIALOG_WIDTH - MESSAGE_WIDTH)/2, y+8, DIALOG_WIDTH, h+10);
       break;
     }
       
@@ -157,8 +170,8 @@ void MessageView::draw()
       Gfx::bindBuffer();
       int h = Fonts::drawStringBounded(message->getMessage(), FontFaces::Small::BROWN, 76, 40, 175, ALIGN_LEFT);
       Gfx::bindCanvas();
-      Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 10, 0, 0, 210, h);
-      Gfx::drawClipped(TextureID::HELP_BACKDROP, 55, 3+h, 0, 200, 210, 23);
+      Gfx::drawClipped(TSI(HELP_BACKDROP,0,0), 55, 3+h, 0, 200, 210, 23);
+      Gfx::drawClipped(TSI(HELP_BACKDROP,0,0), 55, 10, 0, 0, 210, h);
       Gfx::mergeBuffer();
       
       break;

@@ -173,7 +173,7 @@ public:
   
   class Serif {
   public:
-    const static FontSpriteSheet *TEAL, *BROWN, *YELLOW_SHADOW, *GOLD_SHADOW, *GOLD, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
+    const static FontSpriteSheet *TEAL, *BROWN, *YELLOW_SHADOW, *GOLD_SHADOW, *GOLD, *GOLD_ERROR_MESSAGE, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
   };
   
   class Crypt {
@@ -212,7 +212,7 @@ public:
   static inline u16 stringWidth(const FontSpriteSheet* face, const std::string string) { return face->stringWidth(string, hSpace, spaceCharAdj); }
   static inline u16 stringHeight() { return 0; }
   
-  static inline const std::string join(std::vector<const std::string>& tokens, s16 s, s16 e);
+  static inline const std::string join(const std::vector<const std::string>& tokens, s16 s, s16 e);
   static inline void split(std::string string, std::vector<const std::string>& tokens, s8 delim);
   
   static inline void setFace(const FontSpriteSheet* face, s16 v, s16 h) { setFace(face); setVerHorSpace(v,h); }
@@ -267,7 +267,7 @@ public:
     return drawStringBounded(string, x, y, bound, align);
   }
   
-  static u16 drawStringBounded(const std::string& string, int x, int y, int bound, TextAlign align, const Palette* palette = nullptr);
+  static u16 drawStringBounded(const std::string& string, const int x, int y, int bound, TextAlign align, const Palette* palette = nullptr);
   
   static const Palette* paletteFor(char c) { return fontColors[c]; }
   

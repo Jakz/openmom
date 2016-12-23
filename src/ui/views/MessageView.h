@@ -25,12 +25,12 @@ private:
     BUTTON_COUNT
   };
   
-  const msgs::Message *message;
+  std::unique_ptr<const msgs::Message> message;
   
   void draw() override;
   void drawPost() override { }
   
-  void discardMessage();
+  //void discardMessage();
   void discardAllMessages();
   void handleMessage();
   
@@ -40,7 +40,7 @@ public:
   void mouseReleased(u16 x, u16 y, MouseButton b) override;
   
   void activate() override { handleMessage(); }
-  void deactivate() override { }
+  void deactivate() override;
 };
 
 #endif

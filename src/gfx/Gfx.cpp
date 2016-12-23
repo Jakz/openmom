@@ -17,7 +17,6 @@
 
 u32 Gfx::ticks = 0;
 u32 Gfx::fticks = 0;
-u32 Gfx::fticksr = 0;
 
 SurfaceWrapper* Gfx::buffer = nullptr;
 SurfaceWrapper* Gfx::activeBuffer = nullptr;
@@ -538,17 +537,26 @@ void Gfx::drawClippedFromHeight(TextureID texture, s16 r, s16 c, s16 x, s16 y, s
   drawClipped(texture, x, y, r*tex->w, c*tex->h + t, tex->w, tex->h - t);
 }*/
 
-void Gfx::drawClipped(TextureID texture, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h, u16 r, u16 c)
+void Gfx::drawClipped(const SpriteSheet* sheet, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h)
 {
-  const Texture* tex = Texture::get(texture);
-  s16 tw = w != 0 ? (w > 0 ? w : tex->sw(r,c) + w - fx) : tex->sw(r,c) - fx;
-  s16 th = h != 0 ? (h > 0 ? h : tex->sh(r,c) + h - fy) : tex->sh(r,c) - fy;
+  s16 tw = w != 0 ? (w > 0 ? w : sheet->tw() + w - fx) : sheet->tw() - fx;
+  s16 th = h != 0 ? (h > 0 ? h : sheet->th() + h - fy) : sheet->th() - fy;
   s16 tx = fx;
   s16 ty = fy;
   s16 dx = x;
   s16 dy = y;
   
-  blit(tex, activeBuffer, tx, ty, dx, dy, tw, th, r, c);
+  blit(sheet, activeBuffer, tx, ty, dx, dy, tw, th);
+}
+
+void Gfx::drawClipped(SpriteInfo info, u16 sx, u16 sy, s16 tx, s16 ty, s16 w, s16 h)
+{
+  const auto* sheet = info.sheet();
+  s16 tw = w != 0 ? (w > 0 ? w : info.sw() + w - tx) : info.sw() - tx;
+  s16 th = h != 0 ? (h > 0 ? h : info.sh() + h - ty) : info.sh() - ty;
+  
+  blit(sheet, activeBuffer, tx, ty, sx, sy, tw, th, 0, info.y());
+
 }
 
 

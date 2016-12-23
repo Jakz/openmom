@@ -87,17 +87,17 @@ void MagicView::draw()
     
     // if percent for wand is 1.0 then we just draw full wand bar
     if (dests[i].locked)
-      Gfx::drawClipped(TextureID::MAGIC_MANA_WANDS, sx-1, sy-1, 16*(i*2 + 1), 0, 16, 72);
+      Gfx::drawClipped(TSI(MAGIC_MANA_WANDS,0,0), sx-1, sy-1, 16*(i*2 + 1), 0, 16, 72);
     else
       // head of the wand is drawn
-      Gfx::drawClipped(TextureID::MAGIC_MANA_WANDS, sx-1, sy-1, 16*(i*2), 0, 16, 22);
+      Gfx::drawClipped(TSI(MAGIC_MANA_WANDS,0,0), sx-1, sy-1, 16*(i*2), 0, 16, 22);
     
     s16 max = 72-22;
     s16 emptyPixels = (int)(max*(1-percent));
     s16 fullPixels = max-emptyPixels;
     // wand is drawn according to proportion between full and empty
-    Gfx::drawClipped(TextureID::MAGIC_MANA_WANDS, sx-1, sy-1+22, 16*(i*2), 22, 16, emptyPixels);
-    Gfx::drawClipped(TextureID::MAGIC_MANA_WANDS, sx-1, sy-1+22+emptyPixels, 16*(i*2+1), 22+emptyPixels, 16, fullPixels);
+    Gfx::drawClipped(TSI(MAGIC_MANA_WANDS,0,0), sx-1, sy-1+22, 16*(i*2), 22, 16, emptyPixels);
+    Gfx::drawClipped(TSI(MAGIC_MANA_WANDS,0,0), sx-1, sy-1+22+emptyPixels, 16*(i*2+1), 22+emptyPixels, 16, fullPixels);
   }
   
   // draw ratio values

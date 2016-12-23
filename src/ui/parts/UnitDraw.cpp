@@ -108,7 +108,7 @@ static const IsoOffset ISO_8FIGURES[] = {{+1,-5},{+7,-2},{+11,0},{-2,-1},{+4,+1}
 
 void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realUnit)
 {
-  Gfx::drawClipped(TextureID::UNIT_DETAIL_SPECIAL_THINGS, x, y, 0, 0, 40, 33);
+  Gfx::drawClipped(TSI(UNIT_DETAIL_SPECIAL_THINGS,0,0), x, y, 0, 0, 40, 33);
   x += 6;
   
   const IsoOffset* o = nullptr;

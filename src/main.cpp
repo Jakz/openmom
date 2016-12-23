@@ -70,7 +70,10 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::MAGIC);
   lbx::Repository::loadLBX(LBXID::MAIN);
   lbx::Repository::loadLBX(LBXID::MAPBACK);
+  lbx::Repository::loadLBX(LBXID::MONSTER);
   lbx::Repository::loadLBX(LBXID::PORTRAIT);
+  lbx::Repository::loadLBX(LBXID::RESOURCE);
+  lbx::Repository::loadLBX(LBXID::SPELLSCR);
   lbx::Repository::loadLBX(LBXID::UNITVIEW);
   lbx::LBX::load();
   FontFaces::buildFonts();

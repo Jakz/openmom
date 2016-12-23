@@ -44,6 +44,8 @@ public:
   const std::string& getMessage() const { return message; }
   
   Message(std::string message) : message(message), type(MESSAGE) { }
+  
+  template<typename T> const T* as() const { return static_cast<const T*>(this); }
 
 protected:
   Message(std::string message, Type type) : message(message), type(type) { }

@@ -249,7 +249,7 @@ void CombatView::draw()
   for (const auto& entry : entries)
     entry->draw();
 
-  Gfx::drawClipped(TextureID::COMBAT_BACKDROP, 0, 200-36, 0, 0, 320, 36);
+  Gfx::drawClipped(TSI(COMBAT_BACKDROP,0,0), 0, 200-36, 0, 0, 320, 36);
 
   /*
   if (subState == SubState.SPELL_CAST)

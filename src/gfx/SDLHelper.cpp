@@ -23,6 +23,8 @@ SDL_Texture* SDL::screen = nullptr;
 
 SDL_Surface* SDL::filter = nullptr;
 
+u32 SDL::animTicksCounter = 0;
+
 bool SDL::willQuit = false;
 
 ViewManager* SDL::gvm = nullptr;
@@ -49,7 +51,8 @@ bool SDL::init()
   SDL_GetWindowGammaRamp(window, r, g, b);
   for (int i = 0; i < 256; ++i)
     printf("%d %d %d %d\n", r[i], g[i], b[i], 257*i);*/
-
+  
+  animTicksCounter = 0;
 
   return true;
 }
@@ -77,6 +80,7 @@ void SDL::capFPS()
   u32 ticks = SDL_GetTicks();
   u32 elapsed = ticks - Gfx::ticks;
 
+  //printf("Ticks: %u, waiting %f ticks, aticks: %u\n", elapsed, TICKS_PER_FRAME - elapsed, Gfx::fticks);
   
   u32 frameTime = elapsed;
   
@@ -86,9 +90,12 @@ void SDL::capFPS()
     frameTime = TICKS_PER_FRAME;
   }
   
-  Gfx::fticks += (frameTime + Gfx::fticksr) / 100;
-  Gfx::fticksr = (frameTime + Gfx::fticksr) % 100;
-  
+  if (++animTicksCounter == FRAMES_PER_ANIM_TICK)
+  {
+    ++Gfx::fticks;
+    animTicksCounter = 0;
+  }
+    
   sprintf(titleBuffer, "OpenMoM v0.01 (%2.2f)", 1000.0f/fmax(elapsed, TICKS_PER_FRAME));
   SDL_SetWindowTitle(window, titleBuffer);
   

@@ -43,17 +43,17 @@ AlchemyView::AlchemyView(ViewManager* gvm) : View(gvm), inverted(false), percent
 void AlchemyView::draw()
 {
   // draw backdrop
-  Gfx::drawClipped(TextureID::ALCHEMY_BACKDROP, 77, 66, 0, 0, 166, 67);
+  Gfx::drawClipped(TSI(ALCHEMY_BACKDROP,0,0), 77, 66, 0, 0, 166, 67);
   
   // if conversion is inverted power -> gold switch label
   if (inverted)
-    Gfx::drawClipped(TextureID::ALCHEMY_BACKDROP, 77, 76, 0, 67, 166, 10);
+    Gfx::drawClipped(TSI(ALCHEMY_BACKDROP,0,0), 77, 76, 0, 67, 166, 10);
   
   // draw bar on amount bar
   // TODO: should be animated
-  Gfx::drawClipped(TextureID::ALCHEMY_BACKDROP,133, 91,  7, 77,   (s32)(percent*(49))+4, 7);
+  Gfx::drawClipped(TSI(ALCHEMY_BACKDROP,0,0),133, 91,  7, 77,   (s32)(percent*(49))+4, 7);
   // draw symbol on amount bar
-  Gfx::drawClipped(TextureID::ALCHEMY_BACKDROP,133+(s32)(percent*(49)),91,  0, 77,  7, 7);
+  Gfx::drawClipped(TSI(ALCHEMY_BACKDROP,0,0),133+(s32)(percent*(49)),91,  0, 77,  7, 7);
   
   int flx = 95, frx = 197, fy = 90;
   int gamount = 0, mamount = 0;

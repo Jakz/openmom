@@ -49,7 +49,7 @@ private:
   
   MiniMap map;
   
-  std::list<const msgs::Message*> messages;
+  std::list<std::unique_ptr<const msgs::Message>> messages;
   
 public:
   LocalPlayer(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight);
@@ -93,10 +93,9 @@ public:
 
   void push(anims::Animation* animation) override;
 
-  void send(msgs::Message* message) override { messages.push_back(message); }
+  void send(msgs::Message* message) override { messages.push_back(std::unique_ptr<msgs::Message>(message)); }
   bool hasMessage() { return !messages.empty(); }
-  const msgs::Message* firstMessage() const { return messages.front(); }
-  void clearFirstMessage() { messages.pop_front(); }
+  std::unique_ptr<const msgs::Message> fetchMessage() { auto msg = std::move(messages.front()); messages.pop_front(); return msg; }
   void clearMessages(){ messages.clear(); }
 };
 

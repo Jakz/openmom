@@ -32,15 +32,15 @@ void OutpostView::draw()
     Gfx::draw(TextureID::OUTPOST_HOUSES, i*100 <= city->getPopulation() ? 0 : 1, city->race.houseType, 38+14*i, 81);
   }
   
-  Gfx::drawClipped(TextureID::CITY_BACKGROUND, BX, BY, 100 - 35, 0, 72, 66);
+  Gfx::drawClipped(TSI(CITY_BACKGROUND,0,0), BX, BY, 100 - 35, 0, 72, 66);
   
   // draw correct far sight according to city features: grasslands, hills, mountain */
   if (city->hasPlacement(CITY_BY_MOUNTAIN))
-    Gfx::drawClipped(TextureID::CITY_LANDSCAPE, BX, BY, 100 - 35, 19*(2+3*city->getPosition().plane), 72, 19);
+    Gfx::drawClipped(TSI(CITY_LANDSCAPE,0,0), BX, BY, 100 - 35, 19*(2+3*city->getPosition().plane), 72, 19);
   else if (city->hasPlacement(CITY_BY_HILL))
-    Gfx::drawClipped(TextureID::CITY_LANDSCAPE, BX, BY, 100 - 35, 19*(1+3*city->getPosition().plane), 72, 19);
+    Gfx::drawClipped(TSI(CITY_LANDSCAPE,0,0), BX, BY, 100 - 35, 19*(1+3*city->getPosition().plane), 72, 19);
   else
-    Gfx::drawClipped(TextureID::CITY_LANDSCAPE, BX, BY, 100 - 35, 19*(0+3*city->getPosition().plane), 72, 19);
+    Gfx::drawClipped(TSI(CITY_LANDSCAPE,0,0), BX, BY, 100 - 35, 19*(0+3*city->getPosition().plane), 72, 19);
   
   // black bounding box around city scape
   Gfx::drawLine(RGB(0, 0, 0), BX, BY, BX, BY+66);

@@ -328,11 +328,10 @@ void LBX::scanFileNames(const FileInfo& info, string_list& names, FILE *in)
   fread(&names[0], sizeof(LBXFileName), header.count, in);
   
   //int i = 25;
-  for (int i = 0; i < header.count; ++i)
+  /*for (int i = 0; i < header.count; ++i)
   {
     printf("[lbx]   > (%d) %s/%s (%u %08X)\n", i, names[i].folder, names[i].name, offsets[i], offsets[i]);
-    //scanGfx(header, offsets[i], in);
-  }
+  }*/
 }
 
 bool LBX::loadHeader(FileInfo& info, FILE *in)
@@ -525,7 +524,6 @@ std::string LBX::getLBXPath(const std::string& name)
 FILE* LBX::getDescriptor(const LBXFile& lbx)
 {
   string name = getLBXPath(lbx.fileName);
-  printf("Request to load %s from %s\n", lbx.fileName.c_str(), name.c_str());
   return fopen(name.c_str(), "rb");
 }
 
@@ -620,6 +618,7 @@ void LBX::load()
  
  }*/
 
+size_t Repository::bytesUsed;
 LBXFile Repository::data[LBX_COUNT];
 
 const LBXFile& Repository::loadLBX(LBXID ident)
@@ -629,8 +628,8 @@ const LBXFile& Repository::loadLBX(LBXID ident)
   FILE *in = LBX::getDescriptor(lbx);
   LBX::loadHeader(lbx.info, in);
   
-  printf("SIZE: %zu\n", lbx.info.offsets.size());
-  
+  LOGD("[lbx] caching %zu assets %s", lbx.info.offsets.size(), lbx.fileName.c_str()/*, LBX::getLBXPath(lbx.fileName).c_str()*/);
+
   if (lbx.info.header.type == LBXFileType::GRAPHICS)
   {
     lbx.sprites = new LBXSpriteData*[lbx.size()];
@@ -656,6 +655,8 @@ const LBXSpriteData* Repository::loadLBXSpriteData(SpriteInfo info)
   
   LOGD("[lbx] loading gfx entry %u from %s", info.index(), file(info.lbx()).fileName.c_str());
   LBXSpriteData* spriteData = LBX::scanGfx(lbx.info.header, lbx.info.offsets[info.index()], in);
+  gfxAllocated(spriteData);
+  LOGD3("[lbx] lbx cache size: %zu", bytesUsed);
   
   lbx.sprites[info.index()] = spriteData;
   
@@ -677,8 +678,20 @@ const LBXArrayData* Repository::loadLBXArrayData(const LBXFile& lbx, size_t inde
   return arrayData;
 }
 
+void Repository::gfxAllocated(const LBXSpriteData* data)
+{
+  bytesUsed += data->memoryUsedInBytes();
+}
+
+void Repository::gfxDeallocated(const LBXSpriteData* data)
+{
+  bytesUsed -= data->memoryUsedInBytes();
+}
+
 void Repository::init()
 {
+  bytesUsed = 0;
+  
   static const char* names[] = {
     "armylist",
     "backgrnd",

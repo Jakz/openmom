@@ -123,6 +123,28 @@ namespace lbx
     u16 sh(u16,u16) const override { return height; }
     
     const Palette* getPalette() const override { return palette; }
+    
+    size_t memoryUsedInBytes() const { return count*width*height + sizeof(Color)*256; }
+  };
+  
+  class LBXSpriteDataWithPalette : public SpriteSheet
+  {
+  private:
+    const LBXSpriteData* const sprite;
+    const Palette* const palette;
+    
+  public:
+    LBXSpriteDataWithPalette(const LBXSpriteData* sprite, const Palette* palette) : sprite(sprite), palette(palette) { }
+    
+    Color at(u16 x, u16 y, u16 c, u16 r) const override { return palette->get(sprite->data[c+r][x+y*sprite->width]); }
+    
+    u16 tw() const override { return sprite->tw(); }
+    u16 th() const override { return sprite->th(); }
+    
+    u16 sw(u16,u16) const override { return sprite->sw(0,0); }
+    u16 sh(u16,u16) const override { return sprite->sh(0,0); }
+
+    const Palette* getPalette() const override { return palette; }
   };
   
   struct LBXArrayData
@@ -172,6 +194,10 @@ namespace lbx
   private:
     static LBXFile data[LBX_COUNT];
     static LBXFile& file(LBXID ident) { return data[static_cast<size_t>(ident)]; }
+    
+    static size_t bytesUsed;
+    static void gfxAllocated(const LBXSpriteData* data);
+    static void gfxDeallocated(const LBXSpriteData* data);
     
   public:
     static void init();

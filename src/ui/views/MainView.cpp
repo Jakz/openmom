@@ -16,11 +16,12 @@
 #include "City.h"
 
 #include "ViewManager.h"
-
 #include "OutpostView.h"
 #include "CityView.h"
 #include "ArmyView.h"
 #include "UnitDetailView.h"
+
+#include "LBX.h"
 
 enum lbx_indices
 {
@@ -64,6 +65,13 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
   buttons[BUILD]->deactivate();
   
   substate = MAIN;
+}
+
+void MainView::activate()
+{
+  player->send(new msgs::Error("antanius"));
+  player->send(new msgs::Error("fotius"));
+  player->send(new msgs::NewBuilding(player->getCities().front(), Building::ARMORY));
 }
 
 void MainView::switchToSpellCast()
@@ -242,7 +250,7 @@ void MainView::draw()
 
   const Position vp = player->getViewport();
   Viewport::drawMicroMap(player, 251, 21, 58, 30, vp.x, vp.y, vp.plane); // 58, 30
-  Gfx::drawClipped(TextureID::UNIT_DETAIL_SPECIAL_THINGS, 251 + 58/2 - 7, 21 + 30/2 - 6, 59, 0, 14, 12);
+  Gfx::drawClipped(TSI(UNIT_DETAIL_SPECIAL_THINGS,0,0), 251 + 58/2 - 7, 21 + 30/2 - 6, 59, 0, 14, 12);
 
 
   if (substate == MAIN)
@@ -289,15 +297,33 @@ void MainView::drawPost()
   //ColorMap.BlinkMap blink = new ColorMap.BlinkMap(new int[]{Gfx.color(223, 150, 28)}, 0,0,0,    180,30,0,  6);
   //Fonts.drawString("Test Blink", Fonts.Face.YELLOW_SMALL, 50, 50, Fonts.Align.LEFT, blink);
   
-  /*Gfx.bindBuffer();
-   Gfx.resetBuffer(179,136);
-   Gfx.draw(Texture.SUMMON_BACKDROP, 0, 0);
-   Gfx.drawAnimated(Texture.SUMMON_ANIMATION, 1, 14+82-31, 26+97-43, 0);
-   Gfx.drawAnimated(Texture.SUMMON_ANIMATION, 0, 0+82-31, 0+97-43, 0);
-   Gfx.colorMapBuffer(179, 136, ColorMap.summonAnimationRed);
-   Gfx.mergeBuffer(0, 0, 31, 43, 179, 136);
-   Gfx.bindCanvas();
-   Gfx.drawClippedFromHeight(Texture.SUMMON_WIZARDS, 0, 7, 39, 46+5, 5);*/
+  /*SpriteInfo wizard = LSI(SPELLSCR, 53);
+  
+  lbx::LBXSpriteDataWithPalette summonBg(lbx::Repository::spriteFor(LSI(SPELLSCR,9)), lbx::Repository::spriteFor(LSI(SPELLSCR,64))->getPalette());
+  lbx::LBXSpriteDataWithPalette summonFlame(lbx::Repository::spriteFor(LSI(SPELLSCR,11)), lbx::Repository::spriteFor(LSI(SPELLSCR,64))->getPalette());
+  lbx::LBXSpriteDataWithPalette summonFlame2(lbx::Repository::spriteFor(LSI(SPELLSCR,10)), lbx::Repository::spriteFor(LSI(SPELLSCR,64))->getPalette());
+
+  ScreenCoord base = ScreenCoord(0, 0);
+  u16 creatureTopY = 18;
+  u16 creatureBottomY = 90;
+  
+  static u32 startTicks = Gfx::ticks;
+  u32 elapsed = Gfx::ticks - startTicks;
+  
+  float percent = elapsed / 5000.0f;
+  u16 creatureY = creatureBottomY - (creatureBottomY - creatureTopY)*percent;
+  
+  printf("elapsed: %u, percent: %2.2f, y: %u\n", elapsed, percent, creatureY);
+
+  
+  Gfx::draw(&summonBg, base.x, base.y);
+  
+  u16 frame = (Gfx::fticks % 15);
+  
+  Gfx::drawClipped(wizard, base.x + 8, base.y + 3 + 5, 0, 5, wizard.sw(), wizard.sh()-5);
+  Gfx::draw(&summonFlame2, base.x + 55, base.y + 0+97-43, frame);
+  Gfx::draw(LSI(MONSTER, 22), base.x + 76, base.y + creatureY);
+  Gfx::draw(&summonFlame, base.x + 65, base.y + 26+97-43, frame);*/
 }
 
 void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
