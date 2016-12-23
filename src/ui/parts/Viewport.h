@@ -23,6 +23,7 @@ public:
   static inline s16 baseOffsetX(s16 vx, s16 w) { return vx - w/2; }
   static inline s16 baseOffsetY(s16 vy, s16 h) { return vy - h/2; }
 
+  static ScreenCoord screenCoordsForTile(const LocalPlayer* player, Position p);
   static Position tileCoords(const LocalPlayer* player, s16 x, s16 y);
   static bool isOutsideViewport(const LocalPlayer* player, s16 x, s16 y);
   

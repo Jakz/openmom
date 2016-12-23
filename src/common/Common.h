@@ -56,6 +56,7 @@ public:
 typedef u32 Color;
 
 using lbx_index = s16;
+using sprite_ref = u32;
 
 constexpr Color RGB(u32 r, u32 g, u32 b) { return 0xFF000000 | (r << 16) | (g << 8) | b; }
 constexpr Color RGB16(u32 r, u32 g, u32 b) { return RGB(r<<2, g<<2, b<<2); }
@@ -318,6 +319,8 @@ public:
   u16 sw() const { return sheet()->sw(x(), y()); }
   u16 sh() const { return sheet()->sh(x(), y()); }
   
+  u16 count() const;
+  
   SpriteInfo relative(s16 offset) const { return SpriteInfo(lbx(), index()+offset); }
   SpriteInfo frame(s16 offset, u8 f) const { return SpriteInfo(lbx(), index()+offset, f); }
   SpriteInfo frame(u8 f) const { return SpriteInfo(lbx(), index(), f); }
@@ -330,9 +333,14 @@ struct ScreenCoord
   s16 x;
   s16 y;
   
+  ScreenCoord() : x(-1), y(-1) { }
   ScreenCoord(s16 x, s16 y) : x(x), y(y) { }
   bool operator==(const ScreenCoord& o) const { return x == o.x && y == o.y; }
   ScreenCoord& operator+=(s16 i) { x += i; y += i; return *this; }
+  
+  bool isValid() const { return x != -1; }
+  
+  static ScreenCoord INVALID;
 };
 
 using Coord = ScreenCoord;

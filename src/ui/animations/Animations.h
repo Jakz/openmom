@@ -23,53 +23,53 @@ namespace anims
 {
   class Animation
   {
-    protected:
-      Animation *nextAnim;
-
-    public:
-      Animation() : nextAnim(nullptr) { }
+  protected:
+    std::unique_ptr<Animation> nextAnim;
     
-      virtual bool hasFinished() = 0;
-      virtual void step() = 0;
+  public:
+    Animation() { }
     
-      Animation* next() { return nextAnim; }
-      void setNext(Animation *animation) { this->nextAnim = animation; }
+    virtual bool hasFinished() = 0;
+    virtual void step() = 0;
     
-      virtual void reset() = 0;
+    std::unique_ptr<Animation>& next() { return nextAnim; }
+    void setNext(Animation *animation) { this->nextAnim = std::unique_ptr<Animation>(animation); }
     
-      virtual ~Animation() { }
+    virtual void reset() = 0;
+    
+    virtual ~Animation() { }
   };
-
+  
   class DiscreteAnimation : public Animation
   {
   protected:
     u32 start;
     u32 duration;
-
+    
   public:
     DiscreteAnimation(u32 duration) : start(Gfx::fticks), duration(duration) { }
     void reset() override { start = Gfx::fticks; }
     bool hasFinished() override { return Gfx::fticks >= duration + start; }
   };
-
+  
   class ContinuousAnimation : public Animation
   {
-    protected:
-      u32 start;
-      u32 duration;
+  protected:
+    u32 start;
+    u32 duration;
     
-    public:
-      ContinuousAnimation(u32 duration) : start(Gfx::ticks), duration(duration) { }
+  public:
+    ContinuousAnimation(u32 duration) : start(Gfx::ticks), duration(duration) { }
     
-      void reset() override { start = Gfx::ticks; }
+    void reset() override { start = Gfx::ticks; }
     
-      float position() {
-        return std::min(1.0f, (Gfx::ticks - start) / (float)duration);
-      }
+    float position() {
+      return std::min(1.0f, (Gfx::ticks - start) / (float)duration);
+    }
     
-      bool hasFinished() override { return Gfx::ticks > duration + start; }
+    bool hasFinished() override { return Gfx::ticks > duration + start; }
   };
-
+  
   class Blink : public ContinuousAnimation
   {
   private:
@@ -88,7 +88,7 @@ namespace anims
     
     void step() override;
   };
-
+  
   class UnitMovement : public ContinuousAnimation
   {
   private:
@@ -100,11 +100,11 @@ namespace anims
     
   public:
     UnitMovement(LocalPlayer* player, const Army* army, const decltype(moves)& moves);
-
+    
     void step() override;
     bool hasFinished() override;
   };
-
+  
   // TODO
   class CombatAttack : public ContinuousAnimation
   {
@@ -124,18 +124,20 @@ namespace anims
     void step() override { }
   };
   /*
-  class CombatUnitAttackAnimation
-  {
-  private:
-    s16 sx, sy;
-    s16 facing;
-    const CombatUnit* unit;
-    
-  public:
-    CombatUnitAttack(Comat)
-    
-  };
-  */
+   class CombatUnitAttackAnimation
+   {
+   private:
+   s16 sx, sy;
+   s16 facing;
+   const CombatUnit* unit;
+   
+   public:
+   CombatUnitAttack(Comat)
+   
+   };
+   */
 }
+
+#include "SpellEffectAnim.h"
 
 #endif

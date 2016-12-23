@@ -14,7 +14,6 @@
 		040375E0197990B900A5B5FC /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D6197990B900A5B5FC /* Texture.cpp */; };
 		040375E1197990B900A5B5FC /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D9197990B900A5B5FC /* Localization.cpp */; };
 		040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E41979EA6700A5B5FC /* Buttons.cpp */; };
-		040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E9197A9ABC00A5B5FC /* Animations.cpp */; };
 		040375F2197AAF7B00A5B5FC /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F0197AAF7B00A5B5FC /* View.cpp */; };
 		040375F5197AB04100A5B5FC /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F3197AB04100A5B5FC /* Player.cpp */; };
 		040375F8197AB04700A5B5FC /* LocalPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375F6197AB04700A5B5FC /* LocalPlayer.cpp */; };
@@ -59,6 +58,9 @@
 		044247121980B97900A8D7CC /* EventMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044247101980B97900A8D7CC /* EventMechanics.cpp */; };
 		044E466D1980202D00E396AD /* MiniMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044E466B1980202D00E396AD /* MiniMap.cpp */; };
 		046428F01E0AC4DC003A76D8 /* ConsoleView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */; };
+		046428F41E0CE81D003A76D8 /* Dialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F11E0CE6CB003A76D8 /* Dialogs.cpp */; };
+		046428F81E0D1ABA003A76D8 /* Animations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F61E0D1ABA003A76D8 /* Animations.cpp */; };
+		046428FB1E0D1AEF003A76D8 /* SpellEffectAnim.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F91E0D1AEF003A76D8 /* SpellEffectAnim.cpp */; };
 		0464E11419813E1A009C91ED /* CityMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11219813E1A009C91ED /* CityMechanics.cpp */; };
 		0464E11719818239009C91ED /* PlayerMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11519818239009C91ED /* PlayerMechanics.cpp */; };
 		0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E1181981D1EF009C91ED /* CityScape.cpp */; };
@@ -145,7 +147,6 @@
 		048616A51E038086004B62B7 /* ViewManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375FC197ABA9100A5B5FC /* ViewManager.cpp */; };
 		048616A61E038086004B62B7 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
 		048616A71E038086004B62B7 /* Buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E41979EA6700A5B5FC /* Buttons.cpp */; };
-		048616A81E038086004B62B7 /* Animations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E9197A9ABC00A5B5FC /* Animations.cpp */; };
 		048616A91E038086004B62B7 /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D9197990B900A5B5FC /* Localization.cpp */; };
 		048616AA1E0380A4004B62B7 /* osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04E282D41E0242C000DD673D /* osx.mm */; };
 		0487516D197F612400009661 /* Messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0487516B197F612400009661 /* Messages.cpp */; };
@@ -249,8 +250,6 @@
 		040375DA197990B900A5B5FC /* Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Localization.h; sourceTree = "<group>"; };
 		040375E41979EA6700A5B5FC /* Buttons.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Buttons.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		040375E51979EA6700A5B5FC /* Buttons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Buttons.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		040375E9197A9ABC00A5B5FC /* Animations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Animations.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		040375EA197A9ABC00A5B5FC /* Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Animations.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		040375EF197AAC1800A5B5FC /* EventListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EventListener.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		040375F0197AAF7B00A5B5FC /* View.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = View.cpp; sourceTree = "<group>"; };
 		040375F1197AAF7B00A5B5FC /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
@@ -340,6 +339,12 @@
 		044E466C1980202D00E396AD /* MiniMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniMap.h; sourceTree = "<group>"; };
 		046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleView.cpp; sourceTree = "<group>"; };
 		046428EF1E0AC4DC003A76D8 /* ConsoleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleView.h; sourceTree = "<group>"; };
+		046428F11E0CE6CB003A76D8 /* Dialogs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dialogs.cpp; sourceTree = "<group>"; };
+		046428F21E0CE6CB003A76D8 /* Dialogs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dialogs.h; sourceTree = "<group>"; };
+		046428F61E0D1ABA003A76D8 /* Animations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Animations.cpp; sourceTree = "<group>"; };
+		046428F71E0D1ABA003A76D8 /* Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animations.h; sourceTree = "<group>"; };
+		046428F91E0D1AEF003A76D8 /* SpellEffectAnim.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpellEffectAnim.cpp; sourceTree = "<group>"; };
+		046428FA1E0D1AEF003A76D8 /* SpellEffectAnim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpellEffectAnim.h; sourceTree = "<group>"; };
 		0464E11219813E1A009C91ED /* CityMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CityMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0464E11319813E1A009C91ED /* CityMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CityMechanics.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0464E11519818239009C91ED /* PlayerMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PlayerMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -551,6 +556,7 @@
 		040375E31979E82900A5B5FC /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				046428F51E0D1ABA003A76D8 /* animations */,
 				044E466A1980202300E396AD /* parts */,
 				04037615197AF92C00A5B5FC /* views */,
 				040375EF197AAC1800A5B5FC /* EventListener.h */,
@@ -562,8 +568,6 @@
 				04EE4590197C92C400EA0CC0 /* GfxData.h */,
 				040375E41979EA6700A5B5FC /* Buttons.cpp */,
 				040375E51979EA6700A5B5FC /* Buttons.h */,
-				040375E9197A9ABC00A5B5FC /* Animations.cpp */,
-				040375EA197A9ABC00A5B5FC /* Animations.h */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -719,6 +723,8 @@
 		044E466A1980202300E396AD /* parts */ = {
 			isa = PBXGroup;
 			children = (
+				046428F11E0CE6CB003A76D8 /* Dialogs.cpp */,
+				046428F21E0CE6CB003A76D8 /* Dialogs.h */,
 				044E466B1980202D00E396AD /* MiniMap.cpp */,
 				044E466C1980202D00E396AD /* MiniMap.h */,
 				0464E1181981D1EF009C91ED /* CityScape.cpp */,
@@ -735,6 +741,17 @@
 				0439E9AF19869F6D0009BFF7 /* CommonDraw.h */,
 			);
 			path = parts;
+			sourceTree = "<group>";
+		};
+		046428F51E0D1ABA003A76D8 /* animations */ = {
+			isa = PBXGroup;
+			children = (
+				046428F91E0D1AEF003A76D8 /* SpellEffectAnim.cpp */,
+				046428FA1E0D1AEF003A76D8 /* SpellEffectAnim.h */,
+				046428F61E0D1ABA003A76D8 /* Animations.cpp */,
+				046428F71E0D1ABA003A76D8 /* Animations.h */,
+			);
+			path = animations;
 			sourceTree = "<group>";
 		};
 		048616501E02E758004B62B7 /* filters */ = {
@@ -952,6 +969,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				046428F41E0CE81D003A76D8 /* Dialogs.cpp in Sources */,
 				0439E9B019869F6D0009BFF7 /* CommonDraw.cpp in Sources */,
 				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
 				04797BEF1C1DCB830026C153 /* ValuesMechanics.cpp in Sources */,
@@ -1002,6 +1020,7 @@
 				040375F8197AB04700A5B5FC /* LocalPlayer.cpp in Sources */,
 				0439E9A4198690DB0009BFF7 /* ProductionView.cpp in Sources */,
 				040375FB197AB09000A5B5FC /* Game.cpp in Sources */,
+				046428F81E0D1ABA003A76D8 /* Animations.cpp in Sources */,
 				04037603197AC90900A5B5FC /* Places.cpp in Sources */,
 				04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */,
 				0439E99219868FCB0009BFF7 /* CombatView.cpp in Sources */,
@@ -1019,9 +1038,9 @@
 				04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */,
 				04037627197B58C900A5B5FC /* World.cpp in Sources */,
 				04F00C87197E0CB000293EE0 /* CombatSpells.cpp in Sources */,
-				040375EB197A9ABC00A5B5FC /* Animations.cpp in Sources */,
 				0420538D197DA9D700B4C2CA /* SkillSet.cpp in Sources */,
 				0442470F1980A04800A8D7CC /* SpellMechanics.cpp in Sources */,
+				046428FB1E0D1AEF003A76D8 /* SpellEffectAnim.cpp in Sources */,
 				0439E9AD198691530009BFF7 /* UnitDetailView.cpp in Sources */,
 				0420539B197DCDB300B4C2CA /* MapMechanics.cpp in Sources */,
 				048E08BC1982B20A009AED0A /* WorldGenerator.cpp in Sources */,
@@ -1135,7 +1154,6 @@
 				048616A51E038086004B62B7 /* ViewManager.cpp in Sources */,
 				048616A61E038086004B62B7 /* GfxData.cpp in Sources */,
 				048616A71E038086004B62B7 /* Buttons.cpp in Sources */,
-				048616A81E038086004B62B7 /* Animations.cpp in Sources */,
 				048616A91E038086004B62B7 /* Localization.cpp in Sources */,
 				04E282B41E021DA100DD673D /* View.cpp in Sources */,
 				04E282B31E021D9700DD673D /* LBX.cpp in Sources */,

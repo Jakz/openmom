@@ -13,6 +13,9 @@
 #include "Unit.h"
 #include "Game.h"
 
+#include "SDLHelper.h"
+#include "ViewManager.h"
+
 using namespace std;
 
 LocalPlayer::LocalPlayer(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight) :
@@ -58,7 +61,7 @@ bool LocalPlayer::selectedArmyCanBuildOutpost()
 
 void LocalPlayer::push(anims::Animation* animation)
 {
-  // TODO
+  SDL::gvm->push(animation);
 }
 
 void LocalPlayer::computeRoute(const Position goal)

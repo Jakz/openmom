@@ -67,7 +67,7 @@ private:
   static constexpr s8 RANGED_INDEX[] = {-1,6,5,6,14,15,16,17,18};
   static constexpr s8 PROPERTY_INDEX[] = {-1,-1,-1,-1,9,22,14,15,16,17,18};
   
-  static std::unordered_map<const Spell*, s16> specialSpellGfxEffects;
+  static std::unordered_map<const Spell*, sprite_ref> specialSpellGfxEffects;
 
 public:
   static Color colorForSchool(School school);
@@ -80,7 +80,7 @@ public:
   static const UnitGfxSpec& unitGfxSpec(const UnitSpec* spec);
   static SpriteInfo heroGfxSpec(const UnitSpec* spec);
   
-  static s16 specialSpellGfxEffect(const Spell* spell);
+  static SpriteInfo specialSpellGfxEffect(const Spell* spell);
 };
 
 #endif

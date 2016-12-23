@@ -16,6 +16,9 @@
 
 #include "Messages.h"
 
+#include "Animations.h"
+#include "GfxData.h"
+
 using namespace std;
 
 Game::Game() : world(new World(this, 60,40)), values(this), mapMechanics(this), lairMechanics(this), spellMechanics(this), eventMechanics(this), cityMechanics(this), playerMechanics(this), combatMechanics(this), firstTurn(true), turnCounter(0)
@@ -120,6 +123,8 @@ void Game::dummyInit()
   
   player->book()->discoverSpell(Spells::BLESS);
   player->book()->discoverSpell(Spells::CORRUPTION);
+  player->book()->discoverSpell(Spells::CHANGE_TERRAIN);
+  player->book()->discoverSpell(Spells::RAISE_VOLCANO);
   player->book()->discoverSpell(Spells::GUARDIAN_SPIRIT);
   
   new LocalGame(this);
@@ -298,7 +303,8 @@ bool Game::castSpell(Tile* tile, Player* player)
   {
     spellMechanics.applyTileSpell(cast, tile);
     cancelCast(player);
-    // TODO caster.push(new SpellEffect(((SpecialSpell)cast.spell).effectId,new Position(tile.x,tile.y)));
+    //TODO: we'll need to find a way to manage everything seamlessly for local players and other kind of players such that all players which have a viewport view the animaton
+    localGame->currentPlayer()->push(new anims::SpellEffect(localGame->currentPlayer(), GfxData::specialSpellGfxEffect(cast.spell), tile->position));
     playerMechanics.updateGlobalGains(player);
     
     return true;

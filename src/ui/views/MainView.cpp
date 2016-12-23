@@ -23,6 +23,8 @@
 
 #include "LBX.h"
 
+#include "Animations.h"
+
 enum lbx_indices
 {
   main_backdrop = LBXI(MAIN,0)
@@ -68,10 +70,10 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
 }
 
 void MainView::activate()
-{
-  player->send(new msgs::Error("antanius"));
+{  
+  /*player->send(new msgs::Error("antanius"));
   player->send(new msgs::Error("fotius"));
-  player->send(new msgs::NewBuilding(player->getCities().front(), Building::ARMORY));
+  player->send(new msgs::NewBuilding(player->getCities().front(), Building::ARMORY));*/
 }
 
 void MainView::switchToSpellCast()

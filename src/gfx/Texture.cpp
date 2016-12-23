@@ -92,7 +92,6 @@ const Texture Texture::textures[] =
   //113 - 29
   Texture(TextureID::MESSAGE_CONFIRM_DIALOG,"static/confirm-dialog.png",1,1,186,142),
   Texture(TextureID::MESSAGE_CONFIRM_BUTTONS,"static/confirm-buttons.png",2,2,66,17),
-  Texture(TextureID::MESSAGE_ERROR_BACKDROP,"static/error-message-backdrop.png",1,1,186,121),
   
   Texture(TextureID::SPELL_BOOK_BACKDROP,"spellbook/backdrop.png",0,0,285,186),
   Texture(TextureID::SPELL_BOOK_CORNERS,"spellbook/corners.png",1,2,14,14),
@@ -102,7 +101,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::RIGHT_BACKDROP,"static/right_backdrop.gif",2,1,80,124),
     
   Texture(TextureID::CITY_TRADE_HOUSING_BACKDROP,"city/tradegoods-housing-backdrop.png",1,1,53,33),
-  Texture(TextureID::CITY_VIEW_BACKDROP,"static/backdrop-city.png",1,1,320,200),
   Texture(TextureID::CITY_VIEW_BUTTONS,"city/city-buttons-1.png",3,3,{30,36,30},10),
   Texture(TextureID::CITY_BACKGROUND,"city/city-background.png",5,1, 205, 96),
   Texture(TextureID::CITY_WATER,"city/city-water.png",4,6,16,96, true,5),

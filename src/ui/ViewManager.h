@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "EventListener.h"
+#include "Animations.h"
 
 #include <list>
 
@@ -37,7 +38,7 @@ private:
   View* current;
   std::list<View*> overviews;
   
-  std::list<anims::Animation*> animations;
+  std::list<std::unique_ptr<anims::Animation>> animations;
   bool animating;
   
 public:
@@ -46,7 +47,7 @@ public:
   void push(anims::Animation* animation)
   {
     animating = true;
-    animations.push_back(animation);
+    animations.push_back(std::unique_ptr<anims::Animation>(animation));
   }
   
   void setPlayer(LocalPlayer* player);

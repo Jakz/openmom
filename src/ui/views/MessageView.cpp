@@ -14,12 +14,12 @@
 #include "Messages.h"
 #include "Buttons.h"
 #include "ViewManager.h"
+#include "Dialogs.h"
 
 #include "LocalPlayer.h"
 
 #include "CityView.h"
 #include "CityScape.h"
-#include "LBX.h"
 
 MessageView::MessageView(ViewManager* gvm) : View(gvm), message(nullptr)
 {
@@ -73,7 +73,7 @@ void MessageView::mouseReleased(u16 x, u16 y, MouseButton b)
     gvm->cityView()->setCity(city);
     gvm->switchView(VIEW_CITY);
   }
-  else if (message->type == msgs::Message::Type::ERROR || message->type == msgs::Message::Type::HELP_SKILL)
+  else if (message->type == msgs::Message::Type::ERROR || message->type == msgs::Message::Type::HELP_SKILL || message->type == msgs::Message::Type::MESSAGE)
   {
     handleMessage();
   }
@@ -146,22 +146,7 @@ void MessageView::draw()
     case msgs::Message::Type::ERROR:
     {
       const msgs::Error* msg = message->as<const msgs::Error>();
-      
-      constexpr u32 MESSAGE_WIDTH = 174;
-      constexpr u32 DIALOG_WIDTH = 186;
-      constexpr u32 DIALOG_X = 68;
-      
-      Gfx::resetBuffer();
-      Gfx::bindBuffer();
-      int h = Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::GOLD_ERROR_MESSAGE, 4+MESSAGE_WIDTH/2, 5, MESSAGE_WIDTH, ALIGN_CENTER) + 3;
-      int y = HEIGHT/2 - (h+29)/2;
-      Gfx::bindCanvas();
-      
-      lbx::LBXSpriteDataWithPalette dialogBottom{lbx::Repository::spriteFor(LSI(RESOURCE,39)), lbx::Repository::spriteFor(LSI(RESOURCE,38))->getPalette()};
-      
-      Gfx::drawClipped(&dialogBottom, DIALOG_X, y+h, 0, 0, DIALOG_WIDTH, 9);
-      Gfx::drawClipped(LSI(RESOURCE, 38), DIALOG_X, y, 0, 0, DIALOG_WIDTH, h);
-      Gfx::mergeBuffer(4, 4, DIALOG_X + (DIALOG_WIDTH - MESSAGE_WIDTH)/2, y+8, DIALOG_WIDTH, h+10);
+      dialogs::drawErrorDialog(msg->getMessage());
       break;
     }
       

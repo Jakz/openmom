@@ -28,6 +28,15 @@ const SpriteSheet* SpriteInfo::sheet() const
   return isLBX() ? static_cast<const SpriteSheet*>(lbx::Repository::spriteFor(*this)) : Texture::get(texture());
 }
 
+u16 SpriteInfo::count() const
+{
+  assert(isLBX());
+  const lbx::LBXSpriteData* data = static_cast<const lbx::LBXSpriteData*>(sheet());
+  return data->count;
+}
+
+ScreenCoord ScreenCoord::INVALID = ScreenCoord(-1,-1);
+
 static const Trait traitInfo[] = {
   {TraitID::ALCHEMY,1,NO_SCHOOL},
   {TraitID::WARLORD,2,NO_SCHOOL},

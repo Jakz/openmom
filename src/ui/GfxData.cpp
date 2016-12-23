@@ -40,10 +40,10 @@ const TileGfxSpec GfxData::specs[] =
   TileGfxSpec(0,0,{RGB(0, 14, 90),RGB(7, 25, 95)},{RGB(8,4,4),RGB(36,28,24)}) // RIVER_MOUTH TODO: check colors
 };
 
-unordered_map<const Spell*, s16> GfxData::specialSpellGfxEffects = {
-  {Spells::CORRUPTION, 11},
-  {Spells::CHANGE_TERRAIN, 12},
-  {Spells::RAISE_VOLCANO, 7}
+unordered_map<const Spell*, sprite_ref> GfxData::specialSpellGfxEffects = {
+  {Spells::CORRUPTION, LBXI(SPECFX, 7)},
+  {Spells::CHANGE_TERRAIN, LBXI(SPECFX, 8)},
+  {Spells::RAISE_VOLCANO, LBXI(SPECFX, 11)}
 };
 
 
@@ -120,4 +120,4 @@ SpriteInfo GfxData::itemGfxSpec(Item::TypeID type, int index)
   assert(false);
 }
 
-s16 GfxData::specialSpellGfxEffect(const Spell *spell) { return specialSpellGfxEffects[spell]; }
+SpriteInfo GfxData::specialSpellGfxEffect(const Spell *spell) { return specialSpellGfxEffects[spell]; }

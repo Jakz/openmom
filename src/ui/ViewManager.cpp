@@ -99,22 +99,22 @@ void ViewManager::closeOverview()
 
 void ViewManager::draw()
 {
-  list<Animation*>::iterator it = animations.begin();
+  auto it = animations.begin();
+  auto cend = animations.end();
   
-  while (it != animations.end())
+  while (it != cend)
   {
-    Animation* a = *it;
+    Animation* a = it->get();
     if (a->hasFinished())
     {
-      it = animations.erase(it);
       
       if (a->next())
       {
         a->reset();
-        push(a->next());
+        animations.push_back(std::move(a->next()));
       }
       
-      delete a;
+      it = animations.erase(it);
     }
     else
       ++it;
@@ -136,7 +136,7 @@ void ViewManager::draw()
       v->doDraw();
   }
   
-  for (Animation *a : animations)
+  for (const auto& a : animations)
     a->step();
   
   current->drawPost();

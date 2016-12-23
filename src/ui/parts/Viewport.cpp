@@ -152,6 +152,20 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
   //	Gfx::draw(TextureID::TILE_FOG, 0, 9, x, y);
 }
 
+ScreenCoord Viewport::screenCoordsForTile(const LocalPlayer* player, Position p)
+{
+  if (!isOutsideViewport(player, p.x, p.y))
+  {
+    const Position v = player->getViewport();
+    s16 dx = p.x - (v.x - viewportW/2);
+    s16 dy = p.y - (v.y - viewportH/2);
+    
+    return ScreenCoord(baseX + dx*tileWidth, baseY + dy*tileHeight);
+  }
+  
+  return ScreenCoord::INVALID;
+}
+
 
 Position Viewport::tileCoords(const LocalPlayer* player, s16 x, s16 y)
 {
