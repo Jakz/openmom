@@ -7,7 +7,9 @@ File terrain.lbx has 3 subentries:
 3. tile minimap color
 
 These 3 subentries are start at the three offsets specified by the default LBX offsets header.
-Game tile indices are 761 per plane, so 1524 different tiles.
+Game tile value are `761` per plane, so `1524` different tiles which are mapped to 1761 different graphics tiles (because some are animated).
+
+The file doesn't contain any info regarding the joining configurations for sprites which link two different tile types (eg. shore tiles) so they're probably hardcoded in the game.
 
 # TILE GFX DATA
 
@@ -24,7 +26,7 @@ Game tile indices are 761 per plane, so 1524 different tiles.
     20x18 byte tile data (index in standard palette)
     8 byte footer (always 0)
 
-This yields a total of 384 bytes per tile.
+This yields a total of `384` bytes per tile.
 
 # TILE MAPPING
 
@@ -52,5 +54,5 @@ In the end the element at position `i` (so `0xA5480 + i*2`) in the entry specifi
 
 # TILE MINIMAP COLOR
 
-Third entry is just an array of 1524 bytes which contain the index of the minimap color from the standard palette. This entry starts at `0xA6068`.
+Third entry is just an array of `1524` bytes which contains the index of the minimap color from the standard palette. This entry starts at `0xA6068`.
 

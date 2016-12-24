@@ -18,8 +18,32 @@
 enum lbx_indices
 {
   city_sprite_with_walls = LBXI(MAPBACK, 20),
-  city_sprite_no_walls = LBXI(MAPBACK, 21)
+  city_sprite_no_walls = LBXI(MAPBACK, 21),
+  
+  road_none = LBXI(MAPBACK,45),
+  road_north = LBXI(MAPBACK,46),
+  road_north_west = LBXI(MAPBACK,47),
+  road_west = LBXI(MAPBACK,48),
+  road_south_west = LBXI(MAPBACK,49),
+  road_south = LBXI(MAPBACK,50),
+  road_south_east = LBXI(MAPBACK,51),
+  road_east = LBXI(MAPBACK,52),
+  road_north_east = LBXI(MAPBACK,53),
+  
+  road_ench_none = LBXI(MAPBACK,54),
+  road_ench_north = LBXI(MAPBACK,55),
+  road_ench_north_west = LBXI(MAPBACK,56),
+  road_ench_west = LBXI(MAPBACK,57),
+  road_ench_south_west = LBXI(MAPBACK,58),
+  road_ench_south = LBXI(MAPBACK,59),
+  road_ench_south_east = LBXI(MAPBACK,60),
+  road_ench_east = LBXI(MAPBACK,61),
+  road_ench_north_east = LBXI(MAPBACK,62)
 };
+
+const static sprite_ref roads[] = { road_none, road_north, road_north_west, road_west, road_south_west, road_south, road_south_east, road_east, road_north_east };
+const static sprite_ref roads_ench[] = { road_ench_none, road_ench_north, road_ench_north_west, road_ench_west, road_ench_south_west, road_ench_south, road_ench_south_east, road_ench_east, road_ench_north_east };
+
 
 std::unordered_map<u8,u8> Viewport::waterMap = {
   {0, 0},
@@ -136,15 +160,12 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
   if (t->hasRoad || t->city)
   {
     if (t->roads == 0)
-      Gfx::draw(TextureID::TILE_ROADS, 0, 0, x, y);
+      Gfx::drawAnimated(t->hasEnchantedRoad ? roads_ench[0] : roads[0], x, y);
     else
       for (int i = 0; i < 8; ++i)
         if ((t->roads & (1<<i)) == 1<<i)
         {
-          if (t->hasEnchantedRoad)
-            Gfx::drawAnimated(SpriteInfo(TextureID::TILE_ROADS_ENCHANTED, 1+i), x, y, 0/*t->animationOffset()*/);
-          else
-            Gfx::draw(TextureID::TILE_ROADS, 0, 1+i, x, y);
+          Gfx::drawAnimated(t->hasEnchantedRoad ? roads_ench[i+1] : roads[i+1], x, y);
         }
   }
   

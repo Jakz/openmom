@@ -46,8 +46,7 @@ enum class TextureID : u16
   
   TILE_NODE_AURAS,
   TILE_FOG,
-  TILE_ROADS,
-  TILE_ROADS_ENCHANTED,
+
   TILE_RESOURCES,
   TILE_PLACES,
   

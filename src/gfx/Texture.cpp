@@ -41,8 +41,6 @@ const Texture Texture::textures[] =
   
   Texture(TextureID::TILE_NODE_AURAS,"tile/node-auras.png",5,6,20,18,true,2),
   Texture(TextureID::TILE_FOG,"tile/fog.png",1,10,20,18),
-  Texture(TextureID::TILE_ROADS,"tile/roads.png",1,9,20,18),
-  Texture(TextureID::TILE_ROADS_ENCHANTED,"tile/enchanted-roads.png",9,6,20,18,true,2),
   Texture(TextureID::TILE_RESOURCES,"tile/resources.png",1,11,20,18),
   Texture(TextureID::TILE_PLACES,"tile/places.png",1,10,20,18),
   

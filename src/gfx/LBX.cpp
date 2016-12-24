@@ -35,15 +35,22 @@
  
  */
 
-
-
-
+struct LBXTerrainInfo
+{
+  const char* name;
+  size_t count;
+};
 
 using namespace std;
 using namespace lbx;
 
 const Color BLACK_ALPHA = RGB(0, 255, 0);
 const Color TRANSPARENT = RGB(255, 0, 255);
+
+constexpr size_t TERRAIN_COUNT_PER_PLANE = 0x2FA;
+constexpr size_t TERRAIN_BASE = 768;
+constexpr size_t TERRAIN_ENTRY_LENGTH = 384;
+constexpr size_t TERRAIN_ENTRY_HEADER = 16;
 
 const vector<string> findFiles(string path, const char *ext)
 {
@@ -334,6 +341,62 @@ void LBX::scanFileNames(const FileInfo& info, string_list& names, FILE *in)
   }*/
 }
 
+LBXSpriteData* LBX::scanTerrainGfx(LBXOffset offset, size_t count, FILE* in)
+{
+  constexpr size_t width = 20;
+  constexpr size_t height = 18;
+  
+  // create palette from standard palette
+  const u16 PALETTE_SIZE = std::extent<decltype(Gfx::PALETTE)>::value;
+  Color* palette = new Color[PALETTE_SIZE];
+  memcpy(palette, Gfx::PALETTE, sizeof(Color)*PALETTE_SIZE);
+  
+  LBXSpriteData* sprite = new LBXSpriteData(new IndexedPalette(palette), count, 20, 18, false);
+  
+  u8* buffer = new u8[width*height];
+
+  for (size_t i = 0; i < count; ++i)
+  {
+    fseek(in, offset + TERRAIN_ENTRY_HEADER + i*TERRAIN_ENTRY_LENGTH, SEEK_SET);
+    fread(buffer, 1, width*height, in);
+
+    /* we need to transpose as graphics in game is stored by column */
+    for (size_t x = 0; x < 20; ++x)
+      for (size_t y = 0; y < 18; ++y)
+        sprite->data[i][x+width*y] = buffer[y+height*x];
+  }
+  
+  delete [] buffer;
+  return sprite;
+}
+
+std::vector<LBXTerrainSpriteSpecs> LBX::scanTerrainTileInfo(FILE* in)
+{
+  constexpr size_t offset = 676992, offset2 = 680040;
+  constexpr size_t length = 3048;
+  constexpr size_t count = length / sizeof(u16);
+  
+  static_assert(count == TERRAIN_COUNT_PER_PLANE*2, "");
+  
+  std::vector<LBXTerrainSpriteSpecs> data;
+  data.resize(count);
+  
+  fseek(in, offset, SEEK_SET);
+  for (size_t i = 0; i < count; ++i)
+  {
+    fread(&data[i].data, sizeof(u8), 2, in);
+  }
+  
+  fseek(in, offset2, SEEK_SET);
+  for (size_t i = 0; i < count; ++i)
+  {
+    fread(&data[i].minimapColor, sizeof(u8), 1, in);
+    //printf("index in array: %04x %04zu, values: %02x %02x, index in terrain: %d %04x, animated: %c, data: %02x\n", (u32)i, i, data[i].data[0], data[i].data[1], data[i].index(), data[i].index(), data[i].animated() ? 'y' : 'n', data[i].data2);
+  }
+  
+  return data;
+}
+
 bool LBX::loadHeader(FileInfo& info, FILE *in)
 {
   fread(&info.header, sizeof(LBXHeader), 1, in);
@@ -620,9 +683,16 @@ void LBX::load()
 
 size_t Repository::bytesUsed;
 LBXFile Repository::data[LBX_COUNT];
+std::vector<LBXTerrainSpriteSpecs> Repository::terrainData;
 
 const LBXFile& Repository::loadLBX(LBXID ident)
 {
+  if (ident == LBXID::TERRAIN)
+    return loadLBXTerrain();
+  else if (ident == LBXID::TERRTYPE)
+    return loadLBXTerrainMap();
+  
+  
   LBXFile& lbx = file(ident);
   
   FILE *in = LBX::getDescriptor(lbx);
@@ -676,6 +746,102 @@ const LBXArrayData* Repository::loadLBXArrayData(const LBXFile& lbx, size_t inde
   fclose(in);
   
   return arrayData;
+}
+
+const LBXSpriteData* Repository::loadLBXSpriteTerrainData(SpriteInfo info)
+{
+  LBXFile& lbx = file(info.lbx());
+  FILE *in = LBX::getDescriptor(lbx);
+
+  LOGD("[lbx] loading gfx entry %u from %s", info.index(), file(info.lbx()).fileName.c_str());
+  LBXSpriteData* sprite = LBX::scanTerrainGfx(lbx.info.offsets[info.index()], terrainData[info.index()].animated() ? 4 : 1, in);
+  lbx.sprites[info.index()] = sprite;
+  gfxAllocated(sprite);
+  
+  fclose(in);
+  
+  return sprite;
+}
+
+LBXArrayData* Repository::loadLBXSpriteTerrainMappingData(LBXFile& lbx)
+{
+  constexpr size_t offset1 = 548+2;
+  
+  FILE *in = LBX::getDescriptor(lbx);
+  
+  fread(&lbx.info.header, sizeof(LBXHeader), 1, in);
+  lbx.info.offsets.push_back(offset1);
+
+  
+  LOGD("[lbx] loading terrain mapping from %s", lbx.fileName.c_str());
+  
+  LBXArrayData* array = new LBXArrayData(1, 512);
+  
+  fseek(in, offset1, SEEK_SET);
+  
+  u16 v = 0;
+  u16 c = 0;
+  
+  while (c < 255)
+  {
+    fread(&v, sizeof(u16), 1, in);
+    
+    if (v > 0x0A1)
+      break;
+
+    /* since shores are stored as a bitmask which starts from north east while implementation assumes that first direction is north
+       we need to adjust values
+     */
+    u16 ai = ((c+1) >> 1) | (((c+1) & 0x01) ? 0x80 : 0x00);
+    
+    array->set(ai, v);
+    ++c;
+  }
+  
+  fclose(in);
+  
+  return array;
+}
+
+const LBXFile& Repository::loadLBXTerrain()
+{
+  LBXFile& lbx = file(LBXID::TERRAIN);
+  
+  FILE *in = LBX::getDescriptor(lbx);
+  fread(&lbx.info.header, sizeof(LBXHeader), 1, in);
+  
+  terrainData = LBX::scanTerrainTileInfo(in);
+  
+  fclose(in);
+  
+  lbx.info.header.type = LBXFileType::TILES;
+  lbx.info.header.count = terrainData.size();
+  
+  lbx.info.offsets.reserve(terrainData.size());
+  for (u32 i = 0; i < terrainData.size(); ++i)
+    lbx.info.offsets.push_back(TERRAIN_BASE + TERRAIN_ENTRY_LENGTH*terrainData[i].index());
+  
+  LOGD("[lbx] caching %zu assets %s", lbx.info.offsets.size(), lbx.fileName.c_str()/*, LBX::getLBXPath(lbx.fileName).c_str()*/);
+  
+  lbx.sprites = new LBXSpriteData*[lbx.size()];
+  std::fill(lbx.sprites, lbx.sprites+lbx.size(), nullptr);
+
+  return lbx;
+}
+
+const LBXFile& Repository::loadLBXTerrainMap()
+{
+  LBXFile& lbx = file(LBXID::TERRTYPE);
+  
+
+  
+  lbx.arrays = new LBXArrayData*[lbx.size()];
+  lbx.arrays[0] = loadLBXSpriteTerrainMappingData(lbx);
+  
+  lbx.info.header.count = 1;
+  lbx.info.header.type = LBXFileType::TILES_MAPPING;
+
+  return lbx;
 }
 
 void Repository::gfxAllocated(const LBXSpriteData* data)

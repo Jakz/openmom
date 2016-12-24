@@ -23,14 +23,16 @@
 using namespace std;
 using namespace lbx;
 
-
-
 constexpr int FIRST_TABLE_WIDTH = 200;
 constexpr int NUMERIC_COLUMN_WIDTH = 40;
 constexpr int SECOND_TABLE_WIDTH = 320;
 constexpr int WINDOW_HEIGHT = 800;
 constexpr int WINDOW_WIDTH = 1024;
 constexpr int ROW_HEIGHT = 12;
+
+static const int DIRECTION_DX = 70;
+static const int DIRECTION_MULTIPLIERS[8][2] = {{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1}};
+static const int DIRECTION_BASE[2] = { FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+100, 100 };
 
 class MyWindow;
 class LBXTable;
@@ -43,7 +45,77 @@ LBXTable *tableLbx;
 MyCheckbox *animatedCheckbox;
 MyCheckbox* defaultPaletteCheckbox;
 MyCheckbox* doubleScaleCheckbox;
+MyCheckbox* directionBoxes[8];
+
 Fl_Table *tableSprites;
+
+const char* terrainTypeForIndex(u16 index)
+{
+  if (index == 0x00)
+    return "ocean";
+  else if (index == 0x01)
+    return "grasslands-buggy";
+  else if (index <= 0xA1)
+    return "shore-join";
+  else if (index == 0xA2)
+    return "grasslands";
+  else if (index == 0xA3)
+    return "forest";
+  else if (index == 0xA4)
+    return "mountain";
+  else if (index == 0xA5)
+    return "desert";
+  else if (index == 0xA6)
+    return "swamp";
+  else if (index == 0xA7)
+    return "tundra";
+  else if (index == 0xA8)
+    return "node-sorcery";
+  else if (index == 0xA9)
+    return "node-nature";
+  else if (index == 0xAA)
+    return "node-chaos";
+  else if (index == 0xAB)
+    return "hills";
+  else if (index == 0xAC || index == 0xAD)
+    return "grasslands";
+  else if (index <= 0xB0)
+    return "desert";
+  else if (index <= 0xB2)
+    return "swamp";
+  else if (index == 0xB3)
+    return "volcano";
+  else if (index == 0xB4)
+    return "grasslands";
+  else if (index <= 0xB6)
+    return "tundra";
+  else if (index <= 0xB8)
+    return "forest";
+  else if (index <= 0xC4)
+    return "river-shore";
+  else if (index <= 0xC8)
+    return "shore-lake";
+  else if (index <= 0xE8)
+    return "shore-ocean";
+  else if (index <= 0x102)
+    return "river-shore";
+  else if (index <= 0x112)
+    return "mountains-join";
+  else if (index <= 0x123)
+    return "hills-join";
+  else if (index <= 0x1C3)
+    return "desert-join";
+  else if (index <= 0x258)
+    return "shore";
+  else if (index <= 0x260)
+    return "ocean";
+  else if (index <= 0x261)
+    return "tundra-buggy";
+  else if (index <= 0x2f9)
+    return "tundra-join";
+  else
+    assert(false);
+}
 
 std::unordered_set<u32> usedSprites;
 bool isUsed(LBXID id, u32 index) { return usedSprites.find((static_cast<u32>(id) << 16) | index) != usedSprites.end(); }
@@ -82,7 +154,7 @@ class MyCheckbox : public Fl_Check_Button
 private:
   
 public:
-  MyCheckbox(const char* label, int x, int y) : Fl_Check_Button(x, y, 100, 20, label) { }
+  MyCheckbox(const char* label, int x, int y, int w = 100, int h = 20) : Fl_Check_Button(x, y, w, h, label) { }
   
   int handle(int event) override
   {
@@ -97,11 +169,49 @@ public:
   bool isToggled = false;
 };
 
+void drawSprite(const u8* data, u16 w, u16 h, int& sx, int& sy, int S, const Palette* palette)
+{
+  u8* tdata = new u8[w*h*3 * S*S];
+  
+  for (size_t x = 0; x < w; ++x)
+  {
+    for (size_t y = 0; y < h; ++y)
+    {
+      u8 index = data[x + y*w];
+      
+      Color pixel = !palette ? Gfx::PALETTE[index] : palette->get(index);
+      u8 r = GET_RED(pixel), g = GET_GREEN(pixel), b = GET_BLUE(pixel);
+      
+      for (size_t ix = 0; ix < S; ++ix)
+        for (size_t iy = 0; iy < S; ++iy)
+        {
+          u8* base = &tdata[(x*S+ix)*3 + (y*S+iy)*w*3*S];
+          base[0] = r;
+          base[1] = g;
+          base[2] = b;
+        }
+    }
+  }
+  
+  if (sy+h*S >= WINDOW_HEIGHT)
+  {
+    sy = 50;
+    sx += w*S+2;
+  }
+  
+  fl_draw_image(tdata, sx, sy, w*S, h*S);
+  
+  sy += h*S+2;
+  
+  delete [] tdata;
+}
+
 class MyWindow : public Fl_Double_Window
 {
 private:
   const LBXSpriteData* sprite;
   const LBXArrayData* array;
+  u8 mask = 0;
 
 public:
   MyWindow() : Fl_Double_Window(WINDOW_WIDTH, WINDOW_HEIGHT, "LBX Explorer 0.1"), sprite(nullptr), array(nullptr)
@@ -119,147 +229,126 @@ public:
     
     //fl_color(FL_BLACK);
     
-    bool isAnimated = animatedCheckbox->isToggled;
-
-    if (sprite)
+    if (currentLBX && currentLBX->info.header.type == LBXFileType::TILES_MAPPING)
     {
-      int sx = FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+50;
-      int sy = 50;
+      u8 mask = 0;
       
-      for (int i = 0; i < sprite->count && (!isAnimated || i == 0); ++i)
+      for (int i = 0; i < 8; ++i)
       {
-        const size_t spriteIndex = isAnimated ? ((ticks/5)%sprite->count) : i;
-        const int w = sprite->width, h = sprite->height;
-        int S = doubleScaleCheckbox->isToggled ? 4 : 2;
+        if (directionBoxes[i]->isToggled)
+          mask |= (1<<i);
+      }
+      
+      if (mask != 0)
+      {
+        u16 index = currentLBX->arrays[0]->get<u16>(mask);
         
-        //printf("DRAW %d %d\n", w, h);
+        fl_draw(fmt::sprintf("Mask: %u", mask).c_str(), FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+250, DIRECTION_BASE[1] - DIRECTION_DX);
+        fl_draw(fmt::sprintf("Tile Index: %03X", index).c_str(), FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+250, DIRECTION_BASE[1] - DIRECTION_DX + 20);
         
-        u8* tdata = new u8[w*h*3 * S*S];
         
-        for (size_t x = 0; x < w; ++x)
+        const LBXFile& file = Repository::holderForID(LBXID::TERRAIN);
+        
+        if (!file.sprites[index])
+          Repository::loadLBXSpriteTerrainData(LSI(TERRAIN, index));
+
+        const int S = 4;
+        int bx = DIRECTION_BASE[0] - (20*S)/2 + 10;
+        int by = DIRECTION_BASE[1] - (18*S)/2 + 7;
+        drawSprite(file.sprites[index]->data[0], 20, 18, bx, by, S, nullptr);
+      }
+      
+      
+    }
+    else
+    {
+    
+      bool isAnimated = animatedCheckbox->isToggled;
+
+      if (sprite)
+      {
+        int sx = FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+50;
+        int sy = 50;
+        
+        for (int i = 0; i < sprite->count && (!isAnimated || i == 0); ++i)
         {
-          for (size_t y = 0; y < h; ++y)
-          {
-            
-            
-            u8 index = sprite->data[spriteIndex][x + y*w];
-            
-            Color pixel;
-            
-            /*constexpr int DELTA = 256 - 32;
-            if (index < DELTA)*/
-            {
-              pixel = defaultPaletteCheckbox->isToggled ? Gfx::PALETTE[index] : sprite->palette->get(index);
-            }
-            /*else
-            {
-              int delta = 32 - (index - DELTA);
-              pixel = RGB((7 + delta*2) << 2, (4 + (delta/2)) << 2, (2 + (delta/2)) << 2);
-            }*/
-            
-            u8 r = GET_RED(pixel), g = GET_GREEN(pixel), b = GET_BLUE(pixel);
-            
-            for (size_t ix = 0; ix < S; ++ix)
-              for (size_t iy = 0; iy < S; ++iy)
-              {
-                u8* base = &tdata[(x*S+ix)*3 + (y*S+iy)*w*3*S];
-                base[0] = r;
-                base[1] = g;
-                base[2] = b;
-              }
-            
-            
-            /*tdata[x*S*3 + y*w*3*S*S] = r; tdata[x*S*3 + 1 + y*w*3*S*S] = g; tdata[x*S*3 + 2 + y*w*3*S*S] = b;
-            tdata[(x*S+1)*3 + y*w*3*S*S] = r; tdata[(x*S+1)*3 + 1 + y*w*3*S*S] = g; tdata[(x*S+1)*3 + 2 + y*w*3*S*S] = b;
-            
-            tdata[x*S*3 + y*w*3*S*S + w*3*S] = r; tdata[x*S*3 + 1 + y*w*3*S*S + w*3*S ] = g; tdata[x*S*3 + 2 + y*w*3*S*S + w*3*S] = b;
-            tdata[(x*S+1)*3 + y*w*3*S*S + w*3*S] = r; tdata[(x*S+1)*3 + 1 + y*w*3*S*S + w*3*S] = g; tdata[(x*S+1)*3 + 2 + y*w*3*S*S + w*3*S] = b;*/
-            
-            //tdata[(i*S+w*S)*3] = r; tdata[(i*S+w*S)*3 + 1] = g; tdata[(i*S+w*S)*3 + 2] = b;
-          }
-        }
-        
-        if (sy+h*S >= WINDOW_HEIGHT)
-        {
-          sy = 50;
-          sx += w*S+2;
-        }
-  
-        fl_draw_image(tdata, sx, sy, w*S, h*S);
-        
-        sy += h*S+2;
-        
-        delete [] tdata;
-        
-        // draw palette
-        
-        const int PW = 10;
-        
-        for (int p = 0; p < 2; ++p)
-        {
-          u8 *palette = new u8[3*768*PW];
+          // draw sprite
           
-          for (size_t i = 0; i < 256; ++i)
+          int S = doubleScaleCheckbox->isToggled ? 4 : 2;
+          const size_t spriteIndex = isAnimated ? ((ticks/5)%sprite->count) : i;
+
+          drawSprite(sprite->data[spriteIndex], sprite->width, sprite->height, sx, sy, S, defaultPaletteCheckbox->isToggled ? nullptr : sprite->palette);
+
+          // draw palette
+          
+          const int PW = 10;
+          
+          for (int p = 0; p < 2; ++p)
           {
-            u8* base = palette+(PW*3*3)*i;
-            Color pixel = p == 0 ? Gfx::PALETTE[i] : sprite->palette->get(i);
-            u8 r = GET_RED(pixel), g = GET_GREEN(pixel), b = GET_BLUE(pixel);
+            u8 *palette = new u8[3*768*PW];
             
-            for (size_t x = 0; x < PW; ++x)
+            for (size_t i = 0; i < 256; ++i)
             {
-              for (size_t y = 0; y < 3; ++y)
+              u8* base = palette+(PW*3*3)*i;
+              Color pixel = p == 0 ? Gfx::PALETTE[i] : sprite->palette->get(i);
+              u8 r = GET_RED(pixel), g = GET_GREEN(pixel), b = GET_BLUE(pixel);
+              
+              for (size_t x = 0; x < PW; ++x)
               {
-                base[0+x*3+y*(PW*3)] = r;
-                base[1+x*3+y*(PW*3)] = g;
-                base[2+x*3+y*(PW*3)] = b;
+                for (size_t y = 0; y < 3; ++y)
+                {
+                  base[0+x*3+y*(PW*3)] = r;
+                  base[1+x*3+y*(PW*3)] = g;
+                  base[2+x*3+y*(PW*3)] = b;
+                }
               }
             }
+            
+            fl_draw_image(palette, FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+16*p, 0, PW, 768);
+            
+            delete[] palette;
           }
-          
-          fl_draw_image(palette, FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+16*p, 0, PW, 768);
-          
-          delete[] palette;
         }
       }
-    }
-    else if (array != nullptr)
-    {
-      fl_font(FL_HELVETICA, 10);
-      
-      int y = 12, x = FIRST_TABLE_WIDTH + SECOND_TABLE_WIDTH + 5;
-      double maxw = 0.0;
-      for (int i = 0; i < array->count; ++i)
+      else if (array != nullptr)
       {
-        string str = to_string(i) + ": ";
-        str.reserve(array->size);
+        fl_font(FL_HELVETICA, 10);
         
-        for (size_t kk = 0; kk < array->size; ++kk)
+        int y = 12, x = FIRST_TABLE_WIDTH + SECOND_TABLE_WIDTH + 5;
+        double maxw = 0.0;
+        for (int i = 0; i < array->count; ++i)
         {
-          u8 u = array->data[i][kk];
-          if (u == 0x00)
-            continue;
-          else if (u == '\n')
-            str += "<\\n>";
-          else if (u <= 128)
-            str += (char)u;
-          else
-            str += fmt::sprintf("<%02X>", u);
-        }
-        
-        maxw = std::max(maxw, fl_width(str.c_str()));
-        
-        fl_draw(str.c_str(), x, y);
-
-        if (y > WINDOW_HEIGHT - 40)
-        {
-          x += maxw + 10;
-          y = 12;
+          string str = to_string(i) + ": ";
+          str.reserve(array->size);
           
-          if (x > WINDOW_WIDTH)
-            break;
+          for (size_t kk = 0; kk < array->size; ++kk)
+          {
+            u8 u = array->data[i][kk];
+            if (u == 0x00)
+              continue;
+            else if (u == '\n')
+              str += "<\\n>";
+            else if (u <= 128)
+              str += (char)u;
+            else
+              str += fmt::sprintf("<%02X>", u);
+          }
+          
+          maxw = std::max(maxw, fl_width(str.c_str()));
+          
+          fl_draw(str.c_str(), x, y);
+
+          if (y > WINDOW_HEIGHT - 40)
+          {
+            x += maxw + 10;
+            y = 12;
+            
+            if (x > WINDOW_WIDTH)
+              break;
+          }
+          else
+            y += 12;
         }
-        else
-          y += 12;
       }
     }
   }
@@ -312,18 +401,27 @@ public:
       const auto& entry = holder(selection);
       
       if (entry.sprites == nullptr)
-      {
         Repository::loadLBX(entry.ident);
-      }
       
       if (assetNames.find(entry.ident) == assetNames.end())
         LBX::scanFileNames(entry.info, assetNames[entry.ident], LBX::getDescriptor(entry));
         
       currentLBX = &holder(selection);
       
+      if (currentLBX->info.header.type == LBXFileType::TILES_MAPPING)
+      {
+        for (size_t i = 0; i < 8; ++i)
+          directionBoxes[i]->show();
+      }
+      else
+      {
+        for (size_t i = 0; i < 8; ++i)
+          directionBoxes[i]->hide();
+      }
+      
       tableSprites->rows(currentLBX->size());
       tableSprites->redraw();
-      tableSprites->row_height_all(20);
+      tableSprites->row_height_all(12);
       
       redraw();
     }
@@ -440,6 +538,17 @@ public:
         
         mywindow->setData(currentLBX->arrays[selection]);
       }
+      else if (currentLBX->info.header.type == LBXFileType::TILES)
+      {
+        if (!currentLBX->sprites[selection])
+          Repository::loadLBXSpriteTerrainData(SpriteInfo(currentLBX->ident, selection));
+        
+        mywindow->setData(currentLBX->sprites[selection]);
+      }
+      else if (currentLBX->info.header.type == LBXFileType::TILES_MAPPING)
+      {
+        mywindow->setData(currentLBX->arrays[selection]);
+      }
       
 
       
@@ -487,16 +596,39 @@ public:
             bgcol = FL_WHITE;
         }
         
+        if (COL == 3 && type == LBXFileType::TILES)
+        {
+          const auto& terrainInfo = lbx::Repository::terrainInfo()[ROW];
+          const Color c = Gfx::PALETTE[terrainInfo.minimapColor];
+          bgcol = fl_rgb_color(GET_RED(c), GET_GREEN(c), GET_BLUE(c));
+          fgcol = FL_WHITE;
+        }
+        
         fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, bgcol);
         fl_color(fgcol);
 
-        
         if (COL == 0)
-          fl_draw(fmt::sprintf("%u", ROW).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+        {
+          if (type == LBXFileType::TILES)
+            fl_draw(fmt::sprintf("%03X", ROW%0x2FA).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+          else
+            fl_draw(fmt::sprintf("%u", ROW).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+        }
         else if (COL == 1)
         {
-          const LBXFileName& entry = assetNames[currentLBX->ident][ROW];
-          fl_draw(fmt::sprintf("%s/%s",entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
+          if (type != LBXFileType::TILES)
+          {
+            const LBXFileName& entry = assetNames[currentLBX->ident][ROW];
+            fl_draw(fmt::sprintf("%s/%s",entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
+          }
+          else
+          {
+            const auto& terrainInfo = lbx::Repository::terrainInfo()[ROW];
+            const char* plane = ROW <= 0x2F9 ? "arcanus" : "myrran";
+            
+            fl_draw(fmt::sprintf("%s/%s (%03X)", plane, terrainTypeForIndex(ROW%0x2FA), terrainInfo.index()).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
+          }
+
         }
         else if (COL == 4)
         {
@@ -504,18 +636,18 @@ public:
         }
         else
         {
-          if (type == LBXFileType::GRAPHICS)
+          if (type == LBXFileType::GRAPHICS || type == LBXFileType::TILES)
           {
             LBXSpriteData* sprite = currentLBX->sprites[ROW];
 
-            if (sprite)
+            if (sprite && COL == 2)
+              fl_draw(fmt::sprintf("%ux%u (%u)", sprite->width, sprite->height, sprite->count).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+            else if (sprite && COL == 3 && sprite->hasCustomPalette && type == LBXFileType::GRAPHICS)
+              fl_draw("Y", X,Y,W,H, FL_ALIGN_CENTER);
+            else if (COL == 3 && type == LBXFileType::TILES)
             {
-              if (COL == 2)
-                fl_draw(fmt::sprintf("%ux%u (%u)", sprite->width, sprite->height, sprite->count).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
-              else if (COL == 3 && sprite->hasCustomPalette)
-                fl_draw("Y", X,Y,W,H, FL_ALIGN_CENTER);
-              
-              //window->redraw();
+              const auto& terrainInfo = lbx::Repository::terrainInfo()[ROW];
+              fl_draw(fmt::sprintf("%02X", terrainInfo.minimapColor).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
             }
           }
           else if (type == LBXFileType::DATA_ARRAY)
@@ -528,8 +660,11 @@ public:
                 fl_draw(fmt::sprintf("%u x %u bytes", array->count, array->size).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
             }
           }
-          
-
+          else if (type == LBXFileType::TILES_MAPPING)
+          {
+            if (COL == 2)
+              fl_draw(fmt::sprintf("256 x 2 bytes").c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+          }
         }
 
         return;
@@ -596,6 +731,14 @@ int main(int argc, char **argv) {
   doubleScaleCheckbox = new MyCheckbox("double scale", FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+5, WINDOW_HEIGHT - 20);
   animatedCheckbox = new MyCheckbox("animated", FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+5 + 100, WINDOW_HEIGHT - 20);
   defaultPaletteCheckbox = new MyCheckbox("default palette", FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+5 + 200, WINDOW_HEIGHT - 20);
+  
+  static const char* dirNames[] = {"N","NW","W","SW","S","SE","E","NE"};
+  
+  for (int i = 0; i < 8; ++i)
+  {
+    directionBoxes[i] = new MyCheckbox(dirNames[i], DIRECTION_BASE[0] + DIRECTION_MULTIPLIERS[i][0]*DIRECTION_DX, DIRECTION_BASE[1] + DIRECTION_MULTIPLIERS[i][1]*DIRECTION_DX, 20, 20);
+    directionBoxes[i]->hide();
+  }
 
   
   mywindow->end();

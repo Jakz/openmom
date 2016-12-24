@@ -22,7 +22,9 @@ namespace lbx
   enum LBXFileType : u16
   {
     GRAPHICS = 0,
-    DATA_ARRAY = 5
+    DATA_ARRAY = 5,
+    TILES = 111,
+    TILES_MAPPING = 112,
   };
   
   struct LBXHeader
@@ -76,6 +78,14 @@ namespace lbx
   using LBXOffset = u32;
   using offset_list = std::vector<LBXOffset>;
   using string_list = std::vector<LBXFileName>;
+  
+  struct LBXTerrainSpriteSpecs
+  {
+    u8 data[2];
+    u8 minimapColor;
+    u16 index() const { return ((data[0]&0x7F)/3)*128 + data[1] - 2; }
+    bool animated() const { return data[0] & 0x80; }
+  };
   
   struct FileInfo
   {
@@ -162,6 +172,10 @@ namespace lbx
       }
     }
     
+    template<typename T> T get(size_t index) const { return reinterpret_cast<T*>(data[0])[index]; }
+    template<typename T> void set(size_t index, T value) const { reinterpret_cast<T*>(data[0])[index] = value; }
+
+    
     ~LBXArrayData()
     {
       std::for_each(data, data+count, [](u8* data) { delete [] data; });
@@ -181,7 +195,7 @@ namespace lbx
       LBXArrayData** arrays;
     };
     
-    bool isLoaded() const { return (info.header.type == LBXFileType::GRAPHICS && sprites) || (info.header.type == LBXFileType::DATA_ARRAY && arrays); }
+    bool isLoaded() const { return ((info.header.type == LBXFileType::GRAPHICS || info.header.type == LBXFileType::TILES) && sprites) || ((info.header.type == LBXFileType::DATA_ARRAY || info.header.type == LBXFileType::TILES_MAPPING) && arrays); }
     
     LBXFile() : sprites(nullptr) { }
     LBXFile(LBXID ident, const std::string& fileName) : ident(ident), fileName(fileName), sprites(nullptr) { }
@@ -192,6 +206,7 @@ namespace lbx
   class Repository
   {
   private:
+    static std::vector<LBXTerrainSpriteSpecs> terrainData;
     static LBXFile data[LBX_COUNT];
     static LBXFile& file(LBXID ident) { return data[static_cast<size_t>(ident)]; }
     
@@ -207,10 +222,19 @@ namespace lbx
     static const LBXFile& loadLBX(LBXID ident);
     static const LBXFile& holderForID(LBXID ident) { return file(ident); }
     
+    static const LBXFile& loadLBXTerrain();
+    static const LBXFile& loadLBXTerrainMap();
+    
     static bool shouldAllocateSprite(SpriteInfo info) { return file(info.lbx()).sprites[info.index()] == nullptr; }
     
     static const LBXSpriteData* loadLBXSpriteData(SpriteInfo info);
     static const LBXArrayData* loadLBXArrayData(const LBXFile& lbx, size_t index);
+    
+    static const LBXSpriteData* loadLBXSpriteTerrainData(SpriteInfo info);
+    static LBXArrayData* loadLBXSpriteTerrainMappingData(LBXFile& lbx);
+
+    
+    static const std::vector<LBXTerrainSpriteSpecs>& terrainInfo() { return terrainData; }
     
     static const LBXSpriteData* spriteFor(SpriteInfo info) {
       assert(static_cast<u32>(info.lbx()) < LBX_COUNT);
@@ -254,6 +278,8 @@ namespace lbx
     
     static LBXSpriteData* scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in);
     static void scanFileNames(const FileInfo& info, string_list& names, FILE *in);
+    static LBXSpriteData* scanTerrainGfx(LBXOffset offset, size_t count, FILE* in);
+    static std::vector<LBXTerrainSpriteSpecs> scanTerrainTileInfo(FILE* in);
 
     static void loadText(const LBXHeader& header, offset_list& offsets, FILE *in);
     static void loadFonts(const LBXHeader& header, offset_list& offsets, FILE *in);
