@@ -91,10 +91,7 @@ const Texture Texture::textures[] =
   Texture(TextureID::MESSAGE_CONFIRM_DIALOG,"static/confirm-dialog.png",1,1,186,142),
   Texture(TextureID::MESSAGE_CONFIRM_BUTTONS,"static/confirm-buttons.png",2,2,66,17),
   
-  Texture(TextureID::SPELL_BOOK_BACKDROP,"spellbook/backdrop.png",0,0,285,186),
-  Texture(TextureID::SPELL_BOOK_CORNERS,"spellbook/corners.png",1,2,14,14),
   Texture(TextureID::SPELL_BOOK_SCHOOL_ICONS,"spellbook/school-symbols.png",1,5,5,5),
-  Texture(TextureID::SPELL_BOOK_DUMMY_TEXT,"spellbook/dummy-text.png",0,0,122,128),
   
   Texture(TextureID::RIGHT_BACKDROP,"static/right_backdrop.gif",2,1,80,124),
     
