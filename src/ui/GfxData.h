@@ -56,10 +56,20 @@ struct UnitGfxSpec
   UnitGfxSpec(SpriteInfo still, SpriteInfo fullFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), isFlyingFigure(isFlyingFigure) { }
 };
 
+struct WizardGfxSpec
+{
+  WizardGfxSpec(SpriteInfo portraitSmall, SpriteInfo portraitLarge, SpriteInfo diplomacyMood) : portraitSmall(portraitSmall), portraitLarge(portraitLarge), diplomacyMood(diplomacyMood) { }
+  const SpriteInfo portraitSmall;
+  const SpriteInfo portraitLarge;
+  const SpriteInfo diplomacyMood;
+
+};
+
 
 class GfxData
 {
 private:
+  static std::unordered_map<WizardID, WizardGfxSpec, enum_hash> wizardSpecs;
   static std::unordered_map<const UnitSpec*, UnitGfxSpec> unitSpecs;
   static std::unordered_map<const UnitSpec*, SpriteInfo> heroPortraits;
   
@@ -76,6 +86,8 @@ public:
   static s8 propertyGfxIndex(Property property) { return PROPERTY_INDEX[static_cast<u8>(property)]; }
   
   static SpriteInfo itemGfxSpec(Item::TypeID type, int index);
+  
+  static const WizardGfxSpec& wizardGfxSpec(WizardID wizard) { return wizardSpecs[wizard]; }
   
   static const UnitGfxSpec& unitGfxSpec(const UnitSpec* spec);
   static SpriteInfo heroGfxSpec(const UnitSpec* spec);

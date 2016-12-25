@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <type_traits>
 #include "SDL.h"
 
 #ifdef DEBUG
@@ -52,6 +53,17 @@ public:
   bool isPresent() const { return _isPresent; }
   operator T() const { assert(_isPresent); return _value; }
   T* operator->() { assert(_isPresent); return &_value; }
+};
+
+struct enum_hash
+{
+  template <typename T>
+  inline
+  typename std::enable_if<std::is_enum<T>::value, size_t>::type
+  operator ()(T const value) const
+  {
+    return static_cast<size_t>(static_cast<size_t>(value));
+  }
 };
 
 typedef u32 Color;

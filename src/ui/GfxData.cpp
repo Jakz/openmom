@@ -46,6 +46,23 @@ unordered_map<const Spell*, sprite_ref> GfxData::specialSpellGfxEffects = {
   {Spells::RAISE_VOLCANO, LBXI(SPECFX, 11)}
 };
 
+std::unordered_map<WizardID, WizardGfxSpec, enum_hash> GfxData::wizardSpecs = {
+  { WizardID::MERLIN, WizardGfxSpec{ LSI(MAGIC, 18), LSI(WIZARDS, 0), LSI(MOODWIZ, 0) } },
+  { WizardID::RAVEN, WizardGfxSpec{ LSI(MAGIC, 19), LSI(WIZARDS, 1), LSI(MOODWIZ, 1) } },
+  { WizardID::SHAREE, WizardGfxSpec{ LSI(MAGIC, 20), LSI(WIZARDS, 2), LSI(MOODWIZ, 2) } },
+  { WizardID::LO_PAN, WizardGfxSpec{ LSI(MAGIC, 21), LSI(WIZARDS, 3), LSI(MOODWIZ, 3) } },
+  { WizardID::JAFAR, WizardGfxSpec{ LSI(MAGIC, 22), LSI(WIZARDS, 4), LSI(MOODWIZ, 4) } },
+  { WizardID::OBERIC, WizardGfxSpec{ LSI(MAGIC, 23), LSI(WIZARDS, 5), LSI(MOODWIZ, 5) } },
+  { WizardID::RJAK, WizardGfxSpec{ LSI(MAGIC, 24), LSI(WIZARDS, 6), LSI(MOODWIZ, 6) } },
+  { WizardID::SSS_RA, WizardGfxSpec{ LSI(MAGIC, 25), LSI(WIZARDS, 7), LSI(MOODWIZ, 7) } },
+  { WizardID::TAURON, WizardGfxSpec{ LSI(MAGIC, 26), LSI(WIZARDS, 8), LSI(MOODWIZ, 8) } },
+  { WizardID::FREYA, WizardGfxSpec{ LSI(MAGIC, 27), LSI(WIZARDS, 9), LSI(MOODWIZ, 9) } },
+  { WizardID::HORUS, WizardGfxSpec{ LSI(MAGIC, 28), LSI(WIZARDS, 10), LSI(MOODWIZ, 10) } },
+  { WizardID::ARIEL, WizardGfxSpec{ LSI(MAGIC, 29), LSI(WIZARDS, 11), LSI(MOODWIZ, 11) } },
+  { WizardID::TLALOC, WizardGfxSpec{ LSI(MAGIC, 30), LSI(WIZARDS, 12), LSI(MOODWIZ, 12) } },
+  { WizardID::KALI, WizardGfxSpec{ LSI(MAGIC, 31), LSI(WIZARDS, 13), LSI(MOODWIZ, 13) } }
+};
+
 
 constexpr s8 GfxData::RANGED_INDEX[];
 constexpr s8 GfxData::PROPERTY_INDEX[];

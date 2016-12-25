@@ -224,17 +224,6 @@ enum class I18 : u16
   PLACEHOLDER
 };
 
-struct enum_hash
-{
-  template <typename T>
-  inline
-  typename std::enable_if<std::is_enum<T>::value, size_t>::type
-  operator ()(T const value) const
-  {
-    return static_cast<size_t>(static_cast<size_t>(value));
-  }
-};
-
 namespace lbx { class LBX; }
 
 class i18n
