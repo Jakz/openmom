@@ -5,6 +5,7 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Double_Window.H>
+#include <FL/Fl_Choice.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Table.H>
 #include <FL/FL_Check_Button.h>
@@ -14,6 +15,7 @@
 #include <functional>
 #include <unordered_map>
 #include <thread>
+#include <array>
 
 #include "Gfx.h"
 
@@ -25,7 +27,7 @@ using namespace lbx;
 
 constexpr int FIRST_TABLE_WIDTH = 200;
 constexpr int NUMERIC_COLUMN_WIDTH = 40;
-constexpr int SECOND_TABLE_WIDTH = 320;
+constexpr int SECOND_TABLE_WIDTH = 340;
 constexpr int WINDOW_HEIGHT = 800;
 constexpr int WINDOW_WIDTH = 1024;
 constexpr int ROW_HEIGHT = 12;
@@ -39,15 +41,33 @@ class LBXTable;
 class MyCheckbox;
 class SpriteTable;
 class PreviewWidget;
+class MyCombobox;
 
 MyWindow *mywindow = nullptr;
 LBXTable *tableLbx;
 MyCheckbox *animatedCheckbox;
 MyCheckbox* defaultPaletteCheckbox;
 MyCheckbox* doubleScaleCheckbox;
+MyCheckbox* myrranCheckbox;
 MyCheckbox* directionBoxes[8];
+MyCombobox* terrainTypeCB;
 
 Fl_Table *tableSprites;
+
+struct LBXTerrainInfo
+{
+  const char* group;
+  int offset;
+  int arrayIndex;
+};
+
+static const std::array<LBXTerrainInfo, 5> terrainInfo = {{
+  { "shore-0", 0, 0 },
+  { "desert-0", -2 + 0x124, 0 },
+  { "tundra-0", -2 + 0x25A, 0 },
+  { "mountains-1", 0, 1 },
+  { "hills-1", -0x103 + 0x113, 1 }
+}};
 
 const char* terrainTypeForIndex(u16 index)
 {
@@ -107,7 +127,7 @@ const char* terrainTypeForIndex(u16 index)
     return "desert-join";
   else if (index <= 0x258)
     return "shore";
-  else if (index <= 0x260)
+  else if (index <= 0x259)
     return "ocean";
   else if (index <= 0x261)
     return "tundra-buggy";
@@ -149,10 +169,41 @@ PreviewWidget* preview = nullptr;
 const LBXFile* currentLBX = nullptr;
 
 
-class MyCheckbox : public Fl_Check_Button
+class MyCombobox : public Fl_Choice
 {
 private:
   
+  
+public:
+  MyCombobox(const char* label, int x, int y, int w, int h) : Fl_Choice(x, y, w, h, label)
+  {
+    for (size_t i = 0; i < terrainInfo.size(); ++i)
+      add(terrainInfo[i].group);
+    callback(mycallback);
+    value(0);
+  }
+  
+  int handle(int event) override
+  {
+    return Fl_Choice::handle(event);
+  }
+  
+  void mycallback()
+  {
+    this->index = this->value();
+  }
+  
+  static void mycallback(Fl_Widget* w, void* data)
+  {
+    static_cast<MyCombobox*>(w)->mycallback();
+  }
+  
+  int index = 0;
+};
+
+class MyCheckbox : public Fl_Check_Button
+{
+
 public:
   MyCheckbox(const char* label, int x, int y, int w = 100, int h = 20) : Fl_Check_Button(x, y, w, h, label) { }
   
@@ -169,13 +220,16 @@ public:
   bool isToggled = false;
 };
 
-void drawSprite(const u8* data, u16 w, u16 h, int& sx, int& sy, int S, const Palette* palette)
+void drawSprite(const u8* data, int w, int h, int& sx, int& sy, int S, const Palette* palette, bool autoClip = true, int cw = std::numeric_limits<int>::max(), int ch = std::numeric_limits<int>::max())
 {
-  u8* tdata = new u8[w*h*3 * S*S];
+  cw = std::min(w, cw);
+  ch = std::min(h, ch);
   
-  for (size_t x = 0; x < w; ++x)
+  u8* tdata = new u8[cw*ch*3 * S*S];
+  
+  for (size_t x = 0; x < cw; ++x)
   {
-    for (size_t y = 0; y < h; ++y)
+    for (size_t y = 0; y < ch; ++y)
     {
       u8 index = data[x + y*w];
       
@@ -185,7 +239,7 @@ void drawSprite(const u8* data, u16 w, u16 h, int& sx, int& sy, int S, const Pal
       for (size_t ix = 0; ix < S; ++ix)
         for (size_t iy = 0; iy < S; ++iy)
         {
-          u8* base = &tdata[(x*S+ix)*3 + (y*S+iy)*w*3*S];
+          u8* base = &tdata[(x*S+ix)*3 + (y*S+iy)*cw*3*S];
           base[0] = r;
           base[1] = g;
           base[2] = b;
@@ -195,11 +249,19 @@ void drawSprite(const u8* data, u16 w, u16 h, int& sx, int& sy, int S, const Pal
   
   if (sy+h*S >= WINDOW_HEIGHT)
   {
-    sy = 50;
-    sx += w*S+2;
+    if (autoClip)
+    {
+      sy = 50;
+      sx += w*S+2;
+    }
+    else
+    {
+      delete [] tdata;
+      return;
+    }
   }
   
-  fl_draw_image(tdata, sx, sy, w*S, h*S);
+  fl_draw_image(tdata, sx, sy, cw*S, ch*S);
   
   sy += h*S+2;
   
@@ -214,7 +276,7 @@ private:
   u8 mask = 0;
 
 public:
-  MyWindow() : Fl_Double_Window(WINDOW_WIDTH, WINDOW_HEIGHT, "LBX Explorer 0.1"), sprite(nullptr), array(nullptr)
+  MyWindow() : Fl_Double_Window(WINDOW_WIDTH, WINDOW_HEIGHT, "LBX Explorer 0.6"), sprite(nullptr), array(nullptr)
   {
     Fl::add_timeout(0.10, Timer_CB, (void*)this);
 
@@ -241,11 +303,22 @@ public:
       
       if (mask != 0)
       {
-        u16 index = currentLBX->arrays[0]->get<u16>(mask);
+        // shore, desert, hills
+        int selectedBatch = terrainTypeCB->index;
+
+        
+        u16 index = currentLBX->arrays[terrainInfo[selectedBatch].arrayIndex]->get<u16>(mask);
         
         fl_draw(fmt::sprintf("Mask: %u", mask).c_str(), FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+250, DIRECTION_BASE[1] - DIRECTION_DX);
         fl_draw(fmt::sprintf("Tile Index: %03X", index).c_str(), FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+250, DIRECTION_BASE[1] - DIRECTION_DX + 20);
+
+        index = index + terrainInfo[selectedBatch].offset;
         
+        fl_draw(fmt::sprintf("Computed Index: %03X", index).c_str(), FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+250, DIRECTION_BASE[1] - DIRECTION_DX + 40);
+
+        
+        if (myrranCheckbox->isToggled)
+          index += 0x2FA;
         
         const LBXFile& file = Repository::holderForID(LBXID::TERRAIN);
         
@@ -361,6 +434,224 @@ public:
   }
 };
 
+class SpriteTable : public Fl_Table
+{
+private:
+  int selection;
+  
+public:
+  SpriteTable() : Fl_Table(FIRST_TABLE_WIDTH,0,SECOND_TABLE_WIDTH,WINDOW_HEIGHT), selection(-1), rowHeight(ROW_HEIGHT)
+  {
+    rows(0);             // how many rows
+    row_height_all(rowHeight);         // default height of rows
+    row_resize(0);              // disable row resizing
+    // Cols
+    cols(5);             // how many columns
+    col_header(1);              // enable column headers (along top)
+    col_width_all(SECOND_TABLE_WIDTH/4);          // default width of columns
+    col_width(0, 30);
+    col_width(1, 140);
+    col_width(3, 20);
+    col_width(4, 60);
+    when(FL_WHEN_RELEASE);
+    callback(mycallback, this);
+    end();
+  }
+  
+  void DrawHeader(const char *s, int X, int Y, int W, int H) {
+    fl_push_clip(X,Y,W,H);
+    fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, row_header_color());
+    fl_color(FL_BLACK);
+    fl_draw(s,X,Y,W,H, FL_ALIGN_CENTER);
+    fl_pop_clip();
+  }
+  
+  void mycallback()
+  {
+    if (callback_context() == CONTEXT_CELL)
+    {
+      if (callback_col() == 4)
+      {
+        toggleUsed(currentLBX->ident, callback_row(), Fl::event_button() == FL_LEFT_MOUSE);
+        return;
+      }
+      
+      selection = callback_row();
+      
+      if (currentLBX->info.header.type == LBXFileType::GRAPHICS)
+      {
+        if (!currentLBX->sprites[selection])
+          Repository::loadLBXSpriteData(SpriteInfo(currentLBX->ident, selection));
+        
+        mywindow->setData(currentLBX->sprites[selection]);
+      }
+      else if (currentLBX->info.header.type == LBXFileType::DATA_ARRAY)
+      {
+        if (!currentLBX->arrays[selection])
+          Repository::loadLBXArrayData(*currentLBX, selection);
+        
+        mywindow->setData(currentLBX->arrays[selection]);
+      }
+      else if (currentLBX->info.header.type == LBXFileType::TILES)
+      {
+        if (!currentLBX->sprites[selection])
+          Repository::loadLBXSpriteTerrainData(SpriteInfo(currentLBX->ident, selection));
+        
+        mywindow->setData(currentLBX->sprites[selection]);
+      }
+      else if (currentLBX->info.header.type == LBXFileType::TILES_MAPPING)
+      {
+        mywindow->setData(currentLBX->arrays[selection]);
+      }
+      
+      
+      
+      redraw();
+    }
+  }
+  
+  static void mycallback(Fl_Widget* w, void* data)
+  {
+    static_cast<SpriteTable*>(data)->mycallback();
+  }
+  
+  int rowHeight;
+  
+  
+  void draw_cell(TableContext context, int ROW=0, int COL=0, int X=0, int Y=0, int W=0, int H=0)
+  {
+    switch (context)
+    {
+      case CONTEXT_STARTPAGE:
+        fl_font(FL_HELVETICA, 10);
+        return;
+      case CONTEXT_COL_HEADER:
+      {
+        static const char* columnNames[] = {"#", "Name", "Spec", "P", "U"};
+        DrawHeader(columnNames[COL], X, Y, W, H);
+        return;
+      }
+      case CONTEXT_ROW_HEADER:
+        return;
+      case CONTEXT_CELL:
+      {
+        int fgcol = selection == ROW ? FL_RED : FL_BLACK;
+        int bgcol = FL_WHITE;
+        
+        LBXFileType type = currentLBX->info.header.type;
+        bool isLoaded = currentLBX->isLoaded();
+        
+        if (!isLoaded)
+          fgcol = fl_rgb_color(180, 180, 180);
+        else
+        {
+          if (isUsed(currentLBX->ident, ROW))
+            bgcol = fl_rgb_color(200, 255, 200);
+          else
+            bgcol = FL_WHITE;
+        }
+        
+        if (COL == 3 && type == LBXFileType::TILES)
+        {
+          const auto& terrainInfo = lbx::Repository::terrainInfo()[ROW];
+          const Color c = Gfx::PALETTE[terrainInfo.minimapColor];
+          bgcol = fl_rgb_color(GET_RED(c), GET_GREEN(c), GET_BLUE(c));
+          fgcol = FL_WHITE;
+        }
+        
+        fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, bgcol);
+        fl_color(fgcol);
+        
+        if (COL == 0)
+        {
+          if (type == LBXFileType::TILES)
+            fl_draw(fmt::sprintf("%03X", ROW%0x2FA).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+          else
+            fl_draw(fmt::sprintf("%u", ROW).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+        }
+        else if (COL == 1)
+        {
+          if (type != LBXFileType::TILES)
+          {
+            const LBXFileName& entry = assetNames[currentLBX->ident][ROW];
+            fl_draw(fmt::sprintf("%s/%s",entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
+          }
+          else
+          {
+            const auto& terrainInfo = lbx::Repository::terrainInfo()[ROW];
+            const char* plane = ROW <= 0x2F9 ? "arcanus" : "myrran";
+            
+            fl_draw(fmt::sprintf("%s/%s (%03X)", plane, terrainTypeForIndex(ROW%0x2FA), terrainInfo.index()).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
+          }
+          
+        }
+        else if (COL == 4)
+        {
+          if (type == LBXFileType::TILES || type == LBXFileType::GRAPHICS)
+          {
+            LBXSpriteData* sprite = currentLBX->sprites[ROW];
+            
+            if (!sprite)
+            {
+              if (type == LBXFileType::TILES)
+                Repository::loadLBXSpriteTerrainData(SpriteInfo(currentLBX->ident, ROW));
+              else if (type == LBXFileType::GRAPHICS)
+                Repository::loadLBXSpriteData(SpriteInfo(currentLBX->ident, ROW));
+            }
+            
+            if (sprite)
+            {
+              int sx = X+1, sy = Y+1;
+              
+              const Palette* palette = (defaultPaletteCheckbox->isToggled || type == LBXFileType::TILES) ? nullptr : sprite->palette;
+              
+              drawSprite(sprite->data[0], sprite->width, sprite->height, sx, sy, 2, palette, false, 20, 18);
+            }
+          }
+        }
+        else
+        {
+          if (type == LBXFileType::GRAPHICS || type == LBXFileType::TILES)
+          {
+            LBXSpriteData* sprite = currentLBX->sprites[ROW];
+            
+            if (sprite && COL == 2)
+              fl_draw(fmt::sprintf("%ux%u (%u)", sprite->width, sprite->height, sprite->count).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+            else if (sprite && COL == 3 && sprite->hasCustomPalette && type == LBXFileType::GRAPHICS)
+              fl_draw("Y", X,Y,W,H, FL_ALIGN_CENTER);
+            else if (COL == 3 && type == LBXFileType::TILES)
+            {
+              const auto& terrainInfo = lbx::Repository::terrainInfo()[ROW];
+              fl_draw(fmt::sprintf("%02X", terrainInfo.minimapColor).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+            }
+          }
+          else if (type == LBXFileType::DATA_ARRAY)
+          {
+            LBXArrayData* array = currentLBX->arrays[ROW];
+            
+            if (array)
+            {
+              if (COL == 2)
+                fl_draw(fmt::sprintf("%u x %u bytes", array->count, array->size).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+            }
+          }
+          else if (type == LBXFileType::TILES_MAPPING)
+          {
+            if (COL == 2)
+              fl_draw(fmt::sprintf("256 x 2 bytes").c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+          }
+        }
+        
+        return;
+      }
+      default:
+        return;
+    }
+  }
+  
+};
+
+
 class LBXTable : public Fl_Table
 {
 private:
@@ -408,20 +699,30 @@ public:
         
       currentLBX = &holder(selection);
       
+      if (currentLBX->info.header.type == LBXFileType::TILES || currentLBX->info.header.type == LBXFileType::GRAPHICS)
+        tableSprites->row_height_all(20*2+2);
+      else
+        tableSprites->row_height_all(ROW_HEIGHT);
+
+      
       if (currentLBX->info.header.type == LBXFileType::TILES_MAPPING)
       {
         for (size_t i = 0; i < 8; ++i)
           directionBoxes[i]->show();
+        terrainTypeCB->show();
+        myrranCheckbox->show();
+        
       }
       else
       {
         for (size_t i = 0; i < 8; ++i)
           directionBoxes[i]->hide();
+        terrainTypeCB->hide();
+        myrranCheckbox->hide();
       }
       
       tableSprites->rows(currentLBX->size());
       tableSprites->redraw();
-      tableSprites->row_height_all(12);
       
       redraw();
     }
@@ -480,201 +781,6 @@ public:
 };
 
 
-class SpriteTable : public Fl_Table
-{
-private:
-  int selection;
-  
-public:
-  SpriteTable() : Fl_Table(FIRST_TABLE_WIDTH,0,SECOND_TABLE_WIDTH,WINDOW_HEIGHT), selection(-1)
-  {
-    rows(0);             // how many rows
-    row_height_all(ROW_HEIGHT);         // default height of rows
-    row_resize(0);              // disable row resizing
-    // Cols
-    cols(5);             // how many columns
-    col_header(1);              // enable column headers (along top)
-    col_width_all(SECOND_TABLE_WIDTH/4);          // default width of columns
-    col_width(0, 30);
-    col_width(1, 140);
-    col_width(3, 20);
-    col_width(4, 20);
-    when(FL_WHEN_RELEASE);
-    callback(mycallback, this);
-    end();
-  }
-  
-  void DrawHeader(const char *s, int X, int Y, int W, int H) {
-    fl_push_clip(X,Y,W,H);
-    fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, row_header_color());
-    fl_color(FL_BLACK);
-    fl_draw(s,X,Y,W,H, FL_ALIGN_CENTER);
-    fl_pop_clip();
-  }
-  
-  void mycallback()
-  {
-    if (callback_context() == CONTEXT_CELL)
-    {
-      if (callback_col() == 4)
-      {
-        toggleUsed(currentLBX->ident, callback_row(), Fl::event_button() == FL_LEFT_MOUSE);
-        return;
-      }
-      
-      selection = callback_row();
-      
-      if (currentLBX->info.header.type == LBXFileType::GRAPHICS)
-      {
-        if (!currentLBX->sprites[selection])
-          Repository::loadLBXSpriteData(SpriteInfo(currentLBX->ident, selection));
-        
-        mywindow->setData(currentLBX->sprites[selection]);
-      }
-      else if (currentLBX->info.header.type == LBXFileType::DATA_ARRAY)
-      {
-        if (!currentLBX->arrays[selection])
-          Repository::loadLBXArrayData(*currentLBX, selection);
-        
-        mywindow->setData(currentLBX->arrays[selection]);
-      }
-      else if (currentLBX->info.header.type == LBXFileType::TILES)
-      {
-        if (!currentLBX->sprites[selection])
-          Repository::loadLBXSpriteTerrainData(SpriteInfo(currentLBX->ident, selection));
-        
-        mywindow->setData(currentLBX->sprites[selection]);
-      }
-      else if (currentLBX->info.header.type == LBXFileType::TILES_MAPPING)
-      {
-        mywindow->setData(currentLBX->arrays[selection]);
-      }
-      
-
-      
-      redraw();
-    }
-  }
-  
-  static void mycallback(Fl_Widget* w, void* data)
-  {
-    static_cast<SpriteTable*>(data)->mycallback();
-  }
-  
-
-  
-  void draw_cell(TableContext context, int ROW=0, int COL=0, int X=0, int Y=0, int W=0, int H=0)
-  {
-    switch (context)
-    {
-      case CONTEXT_STARTPAGE:
-        fl_font(FL_HELVETICA, 10);
-        return;
-      case CONTEXT_COL_HEADER:
-      {
-        static const char* columnNames[] = {"#", "Name", "Spec", "P", "U"};
-        DrawHeader(columnNames[COL], X, Y, W, H);
-        return;
-      }
-      case CONTEXT_ROW_HEADER:
-        return;
-      case CONTEXT_CELL:
-      {
-        int fgcol = selection == ROW ? FL_RED : FL_BLACK;
-        int bgcol = FL_WHITE;
-        
-        LBXFileType type = currentLBX->info.header.type;
-        bool isLoaded = currentLBX->isLoaded();
-        
-        if (!isLoaded)
-          fgcol = fl_rgb_color(180, 180, 180);
-        else
-        {
-          if (isUsed(currentLBX->ident, ROW))
-            bgcol = fl_rgb_color(200, 255, 200);
-          else
-            bgcol = FL_WHITE;
-        }
-        
-        if (COL == 3 && type == LBXFileType::TILES)
-        {
-          const auto& terrainInfo = lbx::Repository::terrainInfo()[ROW];
-          const Color c = Gfx::PALETTE[terrainInfo.minimapColor];
-          bgcol = fl_rgb_color(GET_RED(c), GET_GREEN(c), GET_BLUE(c));
-          fgcol = FL_WHITE;
-        }
-        
-        fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, bgcol);
-        fl_color(fgcol);
-
-        if (COL == 0)
-        {
-          if (type == LBXFileType::TILES)
-            fl_draw(fmt::sprintf("%03X", ROW%0x2FA).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
-          else
-            fl_draw(fmt::sprintf("%u", ROW).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
-        }
-        else if (COL == 1)
-        {
-          if (type != LBXFileType::TILES)
-          {
-            const LBXFileName& entry = assetNames[currentLBX->ident][ROW];
-            fl_draw(fmt::sprintf("%s/%s",entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
-          }
-          else
-          {
-            const auto& terrainInfo = lbx::Repository::terrainInfo()[ROW];
-            const char* plane = ROW <= 0x2F9 ? "arcanus" : "myrran";
-            
-            fl_draw(fmt::sprintf("%s/%s (%03X)", plane, terrainTypeForIndex(ROW%0x2FA), terrainInfo.index()).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
-          }
-
-        }
-        else if (COL == 4)
-        {
-          fl_draw(isUsed(currentLBX->ident, ROW) ? "Y" : "", X, Y, W, H, FL_ALIGN_CENTER);
-        }
-        else
-        {
-          if (type == LBXFileType::GRAPHICS || type == LBXFileType::TILES)
-          {
-            LBXSpriteData* sprite = currentLBX->sprites[ROW];
-
-            if (sprite && COL == 2)
-              fl_draw(fmt::sprintf("%ux%u (%u)", sprite->width, sprite->height, sprite->count).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
-            else if (sprite && COL == 3 && sprite->hasCustomPalette && type == LBXFileType::GRAPHICS)
-              fl_draw("Y", X,Y,W,H, FL_ALIGN_CENTER);
-            else if (COL == 3 && type == LBXFileType::TILES)
-            {
-              const auto& terrainInfo = lbx::Repository::terrainInfo()[ROW];
-              fl_draw(fmt::sprintf("%02X", terrainInfo.minimapColor).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
-            }
-          }
-          else if (type == LBXFileType::DATA_ARRAY)
-          {
-            LBXArrayData* array = currentLBX->arrays[ROW];
-            
-            if (array)
-            {
-              if (COL == 2)
-                fl_draw(fmt::sprintf("%u x %u bytes", array->count, array->size).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
-            }
-          }
-          else if (type == LBXFileType::TILES_MAPPING)
-          {
-            if (COL == 2)
-              fl_draw(fmt::sprintf("256 x 2 bytes").c_str(), X,Y,W,H, FL_ALIGN_CENTER);
-          }
-        }
-
-        return;
-      }
-      default:
-        return;
-    }
-  }
-
-};
 
 void loadStatus()
 {
@@ -739,7 +845,12 @@ int main(int argc, char **argv) {
     directionBoxes[i] = new MyCheckbox(dirNames[i], DIRECTION_BASE[0] + DIRECTION_MULTIPLIERS[i][0]*DIRECTION_DX, DIRECTION_BASE[1] + DIRECTION_MULTIPLIERS[i][1]*DIRECTION_DX, 20, 20);
     directionBoxes[i]->hide();
   }
-
+  
+  myrranCheckbox = new MyCheckbox("Myrran", DIRECTION_BASE[0] - DIRECTION_MULTIPLIERS[5][0]*DIRECTION_DX, DIRECTION_BASE[1] + DIRECTION_MULTIPLIERS[5][1]*DIRECTION_DX + 50);
+  terrainTypeCB = new MyCombobox("Type", DIRECTION_BASE[0] - DIRECTION_MULTIPLIERS[5][0]*DIRECTION_DX, DIRECTION_BASE[1] + DIRECTION_MULTIPLIERS[5][1]*DIRECTION_DX + 70, 100, 20);
+  
+  myrranCheckbox->hide();
+  terrainTypeCB->hide();
   
   mywindow->end();
   mywindow->show(argc, argv);

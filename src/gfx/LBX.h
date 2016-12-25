@@ -231,7 +231,7 @@ namespace lbx
     static const LBXArrayData* loadLBXArrayData(const LBXFile& lbx, size_t index);
     
     static const LBXSpriteData* loadLBXSpriteTerrainData(SpriteInfo info);
-    static LBXArrayData* loadLBXSpriteTerrainMappingData(LBXFile& lbx);
+    static LBXArrayData* loadLBXSpriteTerrainMappingData(LBXFile& lbx, size_t i, FILE* in);
 
     
     static const std::vector<LBXTerrainSpriteSpecs>& terrainInfo() { return terrainData; }

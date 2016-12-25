@@ -763,21 +763,13 @@ const LBXSpriteData* Repository::loadLBXSpriteTerrainData(SpriteInfo info)
   return sprite;
 }
 
-LBXArrayData* Repository::loadLBXSpriteTerrainMappingData(LBXFile& lbx)
+LBXArrayData* Repository::loadLBXSpriteTerrainMappingData(LBXFile& lbx, size_t i, FILE* in)
 {
-  constexpr size_t offset1 = 548+2;
-  
-  FILE *in = LBX::getDescriptor(lbx);
-  
-  fread(&lbx.info.header, sizeof(LBXHeader), 1, in);
-  lbx.info.offsets.push_back(offset1);
-
-  
-  LOGD("[lbx] loading terrain mapping from %s", lbx.fileName.c_str());
+  LOGD("[lbx] loading terrain mapping %zu from %s", i, lbx.fileName.c_str());
   
   LBXArrayData* array = new LBXArrayData(1, 512);
-  
-  fseek(in, offset1, SEEK_SET);
+
+  fseek(in, lbx.info.offsets[i] , SEEK_SET);
   
   u16 v = 0;
   u16 c = 0;
@@ -786,9 +778,6 @@ LBXArrayData* Repository::loadLBXSpriteTerrainMappingData(LBXFile& lbx)
   {
     fread(&v, sizeof(u16), 1, in);
     
-    if (v > 0x0A1)
-      break;
-
     /* since shores are stored as a bitmask which starts from north east while implementation assumes that first direction is north
        we need to adjust values
      */
@@ -797,9 +786,7 @@ LBXArrayData* Repository::loadLBXSpriteTerrainMappingData(LBXFile& lbx)
     array->set(ai, v);
     ++c;
   }
-  
-  fclose(in);
-  
+    
   return array;
 }
 
@@ -833,13 +820,25 @@ const LBXFile& Repository::loadLBXTerrainMap()
 {
   LBXFile& lbx = file(LBXID::TERRTYPE);
   
+  constexpr size_t offset[] = { 548+2, 1062 };
+  
+  FILE *in = LBX::getDescriptor(lbx);
+  
+  fread(&lbx.info.header, sizeof(LBXHeader), 1, in);
+  lbx.info.header.count = 2;
+  lbx.info.header.type = LBXFileType::TILES_MAPPING;
+  
+  lbx.info.offsets.push_back(offset[0]);
+  lbx.info.offsets.push_back(offset[1]);
 
   
-  lbx.arrays = new LBXArrayData*[lbx.size()];
-  lbx.arrays[0] = loadLBXSpriteTerrainMappingData(lbx);
+  lbx.arrays = new LBXArrayData*[2];
+  lbx.arrays[0] = loadLBXSpriteTerrainMappingData(lbx, 0, in);
+  lbx.arrays[1] = loadLBXSpriteTerrainMappingData(lbx, 1, in);
   
-  lbx.info.header.count = 1;
-  lbx.info.header.type = LBXFileType::TILES_MAPPING;
+
+  
+  fclose(in);
 
   return lbx;
 }
