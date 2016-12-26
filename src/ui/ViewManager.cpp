@@ -88,13 +88,13 @@ void ViewManager::switchOverview(ViewID type)
 {
   View* overview = views[type];
   overview->doActivate(LocalGame::i->currentPlayer());
-  overviews.push_front(overview);
+  overviews.push_back(overview);
 }
 
 void ViewManager::closeOverview()
 {
-  overviews.front()->doDeactivate();
-  overviews.pop_front();
+  overviews.back()->doDeactivate();
+  overviews.pop_back();
 }
 
 void ViewManager::draw()
@@ -131,7 +131,7 @@ void ViewManager::draw()
   if (isThereOverview())
   {
     Gfx::draw(TextureID::DARKNER, 0, 0);
-    
+
     for (View *v : overviews)
       v->doDraw();
   }

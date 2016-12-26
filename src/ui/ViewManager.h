@@ -68,8 +68,8 @@ public:
   void keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
   
   inline bool isThereOverview() { return !overviews.empty(); }
-  inline View* firstOverview() { return isThereOverview() ? overviews.front() : nullptr; }
-  inline View* respondingView() { return isThereOverview() ? overviews.front() : current; }
+  inline View* firstOverview() { return isThereOverview() ? overviews.back() : nullptr; }
+  inline View* respondingView() { return isThereOverview() ? overviews.back() : current; }
   
   AlchemyView* alchemyView();
   ArmiesItemsView* armiesItemsView();

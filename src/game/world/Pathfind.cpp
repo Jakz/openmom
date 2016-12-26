@@ -76,14 +76,13 @@ void Route::consumeMovement(World *world)
   
   pending.emplace_back(army->getPosition(), 0);
   
-  /* TODO: not good! it must consider cost of single cells, not going just this way */
   s16 availMoves = army->availableMoves();
   
   Route::step_type currentMove = positions.front();
   optional<Route::step_type> lastMove;
   s16 totalCost = 0;
   
-  while (availMoves > currentMove.cost)
+  while (availMoves > 0)
   {
     army->getOwner()->fog()->setRange(Position(currentMove.x, currentMove.y, army->getPosition().plane), army->sightRange());
     
