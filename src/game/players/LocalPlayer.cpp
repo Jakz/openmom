@@ -35,8 +35,6 @@ void LocalPlayer::selectArmy(Army* army)
   
   if (!g->revalidateRoute(army))
     army->setRoute(nullptr);
-  
-  selectedRoute = army->getRoute();
 }
 
 const movement_list LocalPlayer::selectedArmyMovementType()
@@ -66,13 +64,7 @@ void LocalPlayer::push(anims::Animation* animation)
 
 void LocalPlayer::computeRoute(const Position goal)
 {
-  delete selectedRoute;
-  selectedRoute = g->world->pathfinder.computeRoute(g->world, selectedArmy, goal);
-  
-  selectedArmy->setRoute(selectedRoute);
-  
-  if (selectedRoute)
-    selectedRoute->setArmy(selectedArmy);
+  selectedRoute.reset(g->world->pathfinder.computeRoute(g->world, selectedArmy, goal));
 }
 
 bool LocalPlayer::consumeRoute()
@@ -83,15 +75,13 @@ bool LocalPlayer::consumeRoute()
   else
     army = selectedArmy;
   
-  army->setRoute(selectedRoute);
-  selectedRoute->setArmy(army);
-  return g->consumeMovement(selectedArmy);
+  army->setRoute(selectedRoute.release());
+  return g->consumeMovement(army);
 }
 
 Army* LocalPlayer::splitAndSelect()
 {
   Army* newArmy = new Army(this);
-  Route* r = selectedRoute;
   
   for (auto u : *selectedArmy)
   {
@@ -107,10 +97,8 @@ Army* LocalPlayer::splitAndSelect()
   }
   
   newArmy->setPosition(selectedArmy->getPosition());
-  selectedArmy->clearRoute();
   selectArmy(newArmy);
   
-  selectedRoute = r;
   return newArmy;
 }
 
@@ -130,8 +118,7 @@ void LocalPlayer::selectNone()
 void LocalPlayer::selectUnit(Unit* unit)
 {
   selectedUnits.push_back(unit);
-  delete selectedRoute;
-  selectedRoute = nullptr;
+  selectedRoute.reset(nullptr);
 }
 
 void LocalPlayer::deselectUnit(Unit* unit)
@@ -139,14 +126,19 @@ void LocalPlayer::deselectUnit(Unit* unit)
   if (selectedArmy && selectedUnits.size() > 1)
   {
     selectedUnits.remove(unit);
-    delete selectedRoute;
-    selectedRoute = nullptr;
+    selectedRoute.reset(nullptr);
   }
 }
 
 bool LocalPlayer::isSelectedUnit(Unit* unit) const
 {
   return find(selectedUnits.begin(), selectedUnits.end(), unit) != selectedUnits.end();
+}
+
+void LocalPlayer::resetArmy()
+{
+  selectedArmy = nullptr;
+  selectedRoute.reset(nullptr);
 }
 
 s16 LocalPlayer::selectedAvailMoves()

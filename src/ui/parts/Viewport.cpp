@@ -307,7 +307,7 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
       }
       
       // TODO should this be here on in MainView?
-      pathfind::Route* route = player->getRoute();
+      const auto& route = player->getRoute();
       if (route)
       {
         if (route->passesBy(t->position))

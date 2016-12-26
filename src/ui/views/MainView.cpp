@@ -402,7 +402,7 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
       else
       {
         Army* army = player->getSelectedArmy();
-        pathfind::Route* route = player->getRoute();
+        const auto& route = player->getRoute();
         
         if (army && !route)
           player->computeRoute(t->position);

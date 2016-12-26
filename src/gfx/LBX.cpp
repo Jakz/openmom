@@ -843,6 +843,66 @@ const LBXFile& Repository::loadLBXTerrainMap()
   return lbx;
 }
 
+#include <set>
+
+const LBXFile& Repository::loadLBXHelp()
+{
+  static_assert(sizeof(LBXHelpEntry) == 1048, "");
+  constexpr size_t offset = 37073;
+  constexpr size_t entries = 1614;
+  
+  
+  LBXFile& lbx = file(LBXID::HELP);
+  
+  FILE* in = LBX::getDescriptor(lbx);
+  
+  fread(&lbx.info.header, sizeof(LBXHeader), 1, in);
+
+  fseek(in, offset, SEEK_SET);
+  
+  size_t i = 0;
+  
+  set<s16> paddings;
+  
+  for (; i < entries; ++i)
+  {
+    size_t off = ftell(in);
+    if (off == 881761)
+      break;
+    
+    LBXHelpEntry entry;
+    fread(&entry, sizeof(LBXHelpEntry), 1, in);
+    
+    //if (entry.type == 0)
+    //  continue;
+    
+    printf("%3zu %08zu: %s", i, off, entry.title);
+    
+    if (entry.hasGfx())
+    {
+      printf(" %s(%u)", entry.lbxName, entry.lbxIndex);
+    }
+    
+    printf("   %d", entry.type);
+    printf(" %s", entry.text);
+    
+    paddings.insert(entry.type);
+    
+    printf("\n");
+    
+
+  }
+  
+  for (auto k : paddings)
+    printf(">>> %d\n", k);
+  
+  LOGD("[lbx] read %zu help entries", i);
+  
+  fclose(in);
+  
+  return lbx;
+}
+
 void Repository::gfxAllocated(const LBXSpriteData* data)
 {
   bytesUsed += data->memoryUsedInBytes();
@@ -963,4 +1023,6 @@ void Repository::init()
   
   for (int i = 0; i < LBX_COUNT; ++i)
     data[i] = LBXFile(static_cast<LBXID>(i), names[i]);
+  
+  loadLBXHelp();
 }

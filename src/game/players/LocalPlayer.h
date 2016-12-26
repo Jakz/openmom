@@ -36,7 +36,7 @@ private:
   s16 spellBookPage;
   
   Army* selectedArmy;
-  Route* selectedRoute;
+  std::unique_ptr<Route> selectedRoute;
   unit_list selectedUnits;
   
   bool drawSelectedArmy = true;
@@ -63,8 +63,8 @@ public:
   void selectAll() override;
   s16 selectedAvailMoves();
   bool wholeSelected() { return selectedCount() == selectedArmy->size(); }
-  void resetArmy() { selectedArmy = nullptr; selectedRoute = nullptr; }
-  Route* getRoute() const { return selectedRoute; }
+  void resetArmy();
+  const std::unique_ptr<Route>& getRoute() const { return selectedRoute; }
   void computeRoute(const Position position);
   bool consumeRoute();
   Army* splitAndSelect();

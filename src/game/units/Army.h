@@ -91,7 +91,7 @@ private:
   
   void updateMovementType();
 
-  Route* route;
+  std::unique_ptr<Route> route;
 
 public:
   Army(Player* owner, std::initializer_list<Unit*> units = {});
@@ -125,8 +125,8 @@ public:
   
   void turnBegin();
   
-  Route* getRoute() { return route; }
-  const Route* getRoute() const { return route; }
+  //Route* getRoute() { return route; }
+  const std::unique_ptr<Route>& getRoute() const { return route; }
   void setRoute(Route* route);
   void clearRoute();
   

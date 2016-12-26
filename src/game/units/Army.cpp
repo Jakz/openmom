@@ -20,11 +20,12 @@ Army::Army(Player* owner, initializer_list<Unit*> units) : owner(owner), isPatro
 
 void Army::setRoute(Route* route)
 {
-  delete this->route;
-  this->route = route;
+  this->route.reset(route);
+  if (route)
+    route->setArmy(this);
 }
 
-void Army::clearRoute() { delete route; route = nullptr; }
+void Army::clearRoute() { setRoute(nullptr); }
 
 
 void Army::updateMovementType()
@@ -40,7 +41,7 @@ s16 Army::sightRange()
 }
 
 s16 Army::availableMoves()
-{
+{  
   s16 min = std::numeric_limits<s16>::max();
   for (auto u : units)
   {

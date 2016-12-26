@@ -25,6 +25,7 @@ namespace lbx
     DATA_ARRAY = 5,
     TILES = 111,
     TILES_MAPPING = 112,
+    HELP
   };
   
   struct LBXHeader
@@ -73,6 +74,24 @@ namespace lbx
     u8 r;
     u8 g;
     u8 b;
+  } __attribute__((__packed__));
+  
+  enum LBXHelpEntryType
+  {
+    LAST_ENTRY = 0,
+    KEEP_TO_NEXT = -1
+  };
+  
+  struct LBXHelpEntry
+  {
+    char title[30];
+    char lbxName[14];
+    u16 lbxIndex;
+    s16 type;
+    char text[1000];
+    
+    bool hasGfx() const { return lbxName[0] != 0; }
+    
   } __attribute__((__packed__));
 
   using LBXOffset = u32;
@@ -224,6 +243,8 @@ namespace lbx
     
     static const LBXFile& loadLBXTerrain();
     static const LBXFile& loadLBXTerrainMap();
+    
+    static const LBXFile& loadLBXHelp();
     
     static bool shouldAllocateSprite(SpriteInfo info) { return file(info.lbx()).sprites[info.index()] == nullptr; }
     

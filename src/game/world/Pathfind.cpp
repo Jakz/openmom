@@ -103,9 +103,8 @@ void Route::consumeMovement(World *world)
   {
     world->get(lastMove->x, lastMove->y, army->getPosition().plane)->placeArmy(army);
     
-    auto it = army->begin();
-    while (it != army->end())
-      (*it)->useMoves(totalCost);
+    for (Unit* unit : *army)
+      unit->useMoves(totalCost);
   }
 }
 
@@ -230,10 +229,18 @@ Route* PathFinder::reconstructPath(const PathTileInfo* info)
   
   while (info->parent)
   {
-    r->prepend(RouteStep(*info, info->cost));
+    r->prepend(RouteStep(*info, info->gameCost));
     info = info->parent;
   }
-
+  
+#if DEBUG >= 2
+  {
+    std::stringstream ss;
+    ss << "[pathfind] found route: ";
+    for (const auto& p : *r) ss << "(" << p.x << "," << p.y << ") ";
+    LOGD2("%s", ss.str().c_str());
+  }
+#endif
   return r;
 }
 
