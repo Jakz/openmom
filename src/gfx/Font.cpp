@@ -31,6 +31,7 @@ const FontSpriteSheet* FontFaces::Small::RED_PALE = nullptr;
 const FontSpriteSheet* FontFaces::Small::WHITE = nullptr;
 const FontSpriteSheet* FontFaces::Small::TEAL = nullptr;
 const FontSpriteSheet* FontFaces::Small::BROWN = nullptr;
+const FontSpriteSheet* FontFaces::Small::BROWN_HELP = nullptr;
 const FontSpriteSheet* FontFaces::Small::GREENW = nullptr;
 const FontSpriteSheet* FontFaces::Small::BLUEW = nullptr;
 const FontSpriteSheet* FontFaces::Small::REDW = nullptr;
@@ -51,6 +52,7 @@ const FontSpriteSheet* FontFaces::MediumBold::BROWN_START = nullptr;
 
 const FontSpriteSheet* FontFaces::Serif::TEAL = nullptr;
 const FontSpriteSheet* FontFaces::Serif::BROWN = nullptr;
+const FontSpriteSheet* FontFaces::Serif::BROWN_HELP = nullptr;
 const FontSpriteSheet* FontFaces::Serif::YELLOW_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::GOLD_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::GOLD = nullptr;
@@ -111,6 +113,7 @@ void FontFaces::buildFonts()
   Small::WHITE = buildSmall({0,0,RGB(0,0,0),RGB(143,133,130),RGB(255,255,255)});
   Small::TEAL = buildSmall({0,0,RGB(20,69,69),RGB(85,166,166),RGB(190,239,239)});
   Small::BROWN = buildSmall({0,0,0,RGB(119,85,23),RGB(51,40,26)});
+  Small::BROWN_HELP = new FontSpriteSheet(FontData::fonts[FONT_SMALL], {0,0,0,RGB(121,85,36),RGB(69,36,4)}, 1, 1);
   Small::GREENW = buildSmall({0,0,RGB(0,0,0),RGB(21,71,45),RGB(42,141,97)});
   Small::BLUEW = buildSmall({0,0,RGB(0,0,0),RGB(24,79,116),RGB(78,127,166)});
   Small::REDW = buildSmall({0,0,RGB(0,0,0),RGB(128,0,4),RGB(255,0,8)});
@@ -131,6 +134,7 @@ void FontFaces::buildFonts()
   
   Serif::TEAL = buildSerif({0, RGB(24,68,68), RGB(24,68,68), RGB(58,166,166), RGB(243,235,231), RGB(188,238,218), RGB(197,239,217), RGB(193,239,240)});
   Serif::BROWN = buildSerif({0, 0, 0, RGB(120,74,36), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14)});
+  Serif::BROWN_HELP = buildSerif({0, 0, 0, RGB(97,69,36), RGB(69,4,4), RGB(69,4,4), RGB(69,4,4), RGB(69,4,4)});
   Serif::YELLOW_SHADOW = buildSerif({0, 0, RGB(15,49,56), RGB(115,84,69), RGB(245,161,39), RGB(229,145,31), RGB(213,133,27), RGB(213,133,27)});
   
   Serif::GOLD_ERROR_MESSAGE = buildSerif({0, 0, RGB(128,13,4),RGB(121,85,36), RGB(207,138,24), RGB(245,161,39), RGB(255,199,103), RGB(255,243,127)});

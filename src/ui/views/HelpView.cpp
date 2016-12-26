@@ -19,8 +19,8 @@
 
 using namespace help;
 
-constexpr u16 bx = 20;
-constexpr u16 by = 20;
+constexpr u16 px = 20;
+constexpr u16 py = 20;
 constexpr u16 bound = 150;
 
 HelpView::HelpView(ViewManager* gvm) : View(gvm)
@@ -37,8 +37,13 @@ void HelpView::draw()
 {
   const auto* p = entry.paragraph;
   
-  const auto* titleFace = FontFaces::Serif::GOLD;
-  const auto* textFace = FontFaces::Small::WHITE;
+  const auto* titleFace = FontFaces::Serif::BROWN_HELP;
+  const auto* textFace = FontFaces::Small::BROWN_HELP;
+  
+  u16 bx = px, by = py;
+  
+  Gfx::draw(LSI(HELP, 0), bx, by);
+  bx += 17; by += 25;
   
   Fonts::drawString(p->title, titleFace, bx, by, ALIGN_LEFT);
   Fonts::drawStringBounded(p->text, textFace, bx + 2, by + titleFace->ver + titleFace->sh(), bound, ALIGN_LEFT);

@@ -66,6 +66,7 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::FIGURE11);
   lbx::Repository::loadLBX(LBXID::FIGURE12);
   lbx::Repository::loadLBX(LBXID::ITEMS);
+  lbx::Repository::loadLBX(LBXID::HELP);
   lbx::Repository::loadLBX(LBXID::HIRE);
   lbx::Repository::loadLBX(LBXID::MAGIC);
   lbx::Repository::loadLBX(LBXID::MAIN);

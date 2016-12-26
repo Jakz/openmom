@@ -158,7 +158,7 @@ public:
   
   class Small {
   public:
-    const static FontSpriteSheet *YELLOW, *BLUE_MAGIC, *WHITE_PALE, *YELLOW_PALE, *RED_PALE, *WHITE, *TEAL, *BROWN, *GREENW, *BLUEW, *REDW, *PURPLEW, *YELLOWW, *GRAY_ITEM_CRAFT, *BLINK_WHITE_GREY;
+    const static FontSpriteSheet *YELLOW, *BLUE_MAGIC, *WHITE_PALE, *YELLOW_PALE, *RED_PALE, *WHITE, *TEAL, *BROWN, *BROWN_HELP, *GREENW, *BLUEW, *REDW, *PURPLEW, *YELLOWW, *GRAY_ITEM_CRAFT, *BLINK_WHITE_GREY;
   };
   
   class Medium {
@@ -173,7 +173,7 @@ public:
   
   class Serif {
   public:
-    const static FontSpriteSheet *TEAL, *BROWN, *YELLOW_SHADOW, *GOLD_SHADOW, *GOLD, *GOLD_ERROR_MESSAGE, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
+    const static FontSpriteSheet *TEAL, *BROWN, *BROWN_HELP, *YELLOW_SHADOW, *GOLD_SHADOW, *GOLD, *GOLD_ERROR_MESSAGE, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
   };
   
   class Crypt {

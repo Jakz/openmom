@@ -701,6 +701,8 @@ const LBXFile& Repository::loadLBX(LBXID ident)
     return loadLBXTerrain();
   else if (ident == LBXID::TERRTYPE)
     return loadLBXTerrainMap();
+  else if (ident == LBXID::HELP)
+    return loadLBXHelp();
   
   
   LBXFile& lbx = file(ident);
@@ -864,6 +866,14 @@ const LBXFile& Repository::loadLBXHelp()
   FILE* in = LBX::getDescriptor(lbx);
   
   fread(&lbx.info.header, sizeof(LBXHeader), 1, in);
+  lbx.info.offsets.resize(lbx.size());
+  fread(&lbx.info.offsets[0], sizeof(LBXOffset), 3, in);
+  
+  lbx.info.header.count = 2;
+  lbx.info.offsets.pop_back();
+  lbx.info.header.type = LBXFileType::GRAPHICS;
+  lbx.sprites = new LBXSpriteData*[lbx.size()];
+  std::fill(lbx.sprites, lbx.sprites+lbx.size(), nullptr);
 
   fseek(in, offset, SEEK_SET);
   
