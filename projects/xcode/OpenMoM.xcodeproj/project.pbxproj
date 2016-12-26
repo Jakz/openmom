@@ -61,6 +61,8 @@
 		046428F41E0CE81D003A76D8 /* Dialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F11E0CE6CB003A76D8 /* Dialogs.cpp */; };
 		046428F81E0D1ABA003A76D8 /* Animations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F61E0D1ABA003A76D8 /* Animations.cpp */; };
 		046428FB1E0D1AEF003A76D8 /* SpellEffectAnim.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F91E0D1AEF003A76D8 /* SpellEffectAnim.cpp */; };
+		046428FE1E117C2D003A76D8 /* Help.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428FC1E117C2D003A76D8 /* Help.cpp */; };
+		046428FF1E117C2D003A76D8 /* Help.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428FC1E117C2D003A76D8 /* Help.cpp */; };
 		0464E11419813E1A009C91ED /* CityMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11219813E1A009C91ED /* CityMechanics.cpp */; };
 		0464E11719818239009C91ED /* PlayerMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11519818239009C91ED /* PlayerMechanics.cpp */; };
 		0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E1181981D1EF009C91ED /* CityScape.cpp */; };
@@ -345,6 +347,8 @@
 		046428F71E0D1ABA003A76D8 /* Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animations.h; sourceTree = "<group>"; };
 		046428F91E0D1AEF003A76D8 /* SpellEffectAnim.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpellEffectAnim.cpp; sourceTree = "<group>"; };
 		046428FA1E0D1AEF003A76D8 /* SpellEffectAnim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpellEffectAnim.h; sourceTree = "<group>"; };
+		046428FC1E117C2D003A76D8 /* Help.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Help.cpp; sourceTree = "<group>"; };
+		046428FD1E117C2D003A76D8 /* Help.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Help.h; sourceTree = "<group>"; };
 		0464E11219813E1A009C91ED /* CityMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CityMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0464E11319813E1A009C91ED /* CityMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CityMechanics.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0464E11519818239009C91ED /* PlayerMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PlayerMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -547,6 +551,8 @@
 		040375D8197990B900A5B5FC /* i18n */ = {
 			isa = PBXGroup;
 			children = (
+				046428FC1E117C2D003A76D8 /* Help.cpp */,
+				046428FD1E117C2D003A76D8 /* Help.h */,
 				040375D9197990B900A5B5FC /* Localization.cpp */,
 				040375DA197990B900A5B5FC /* Localization.h */,
 			);
@@ -989,6 +995,7 @@
 				044247121980B97900A8D7CC /* EventMechanics.cpp in Sources */,
 				0439E98C19868F8A0009BFF7 /* ArmyView.cpp in Sources */,
 				04037621197B539400A5B5FC /* Tile.cpp in Sources */,
+				046428FE1E117C2D003A76D8 /* Help.cpp in Sources */,
 				0464E11419813E1A009C91ED /* CityMechanics.cpp in Sources */,
 				048204A5198893BA00D4B699 /* CombatMechanics.cpp in Sources */,
 				040375DE197990B900A5B5FC /* Font.cpp in Sources */,
@@ -1066,6 +1073,7 @@
 				04E218871C02A386005784E1 /* format.cc in Sources */,
 				04C1F4851B25359D00F7688A /* Font.cpp in Sources */,
 				04E282D71E0242C000DD673D /* osx.mm in Sources */,
+				046428FF1E117C2D003A76D8 /* Help.cpp in Sources */,
 				04C1F4861B2535A800F7688A /* Gfx.cpp in Sources */,
 				04C1F4871B2535C000F7688A /* Buttons.cpp in Sources */,
 				04E282C01E0227CF00DD673D /* Util.cpp in Sources */,
