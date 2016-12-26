@@ -10,6 +10,7 @@
 
 #include "Buildings.h"
 #include "Localization.h"
+#include "Help.h"
 
 #include "Font.h"
 #include "Common.h"
@@ -685,6 +686,15 @@ size_t Repository::bytesUsed;
 LBXFile Repository::data[LBX_COUNT];
 std::vector<LBXTerrainSpriteSpecs> Repository::terrainData;
 
+LBXFile& Repository::file(const std::string &name)
+{
+  auto it = std::find_if(data, data+LBX_COUNT, [&name](const LBXFile& file) { return strings::tolower(file.fileName) == name; });
+  
+  assert(it < data+LBX_COUNT);
+  
+  return *it;
+}
+
 const LBXFile& Repository::loadLBX(LBXID ident)
 {
   if (ident == LBXID::TERRAIN)
@@ -843,14 +853,11 @@ const LBXFile& Repository::loadLBXTerrainMap()
   return lbx;
 }
 
-#include <set>
-
 const LBXFile& Repository::loadLBXHelp()
 {
   static_assert(sizeof(LBXHelpEntry) == 1048, "");
-  constexpr size_t offset = 37073;
-  constexpr size_t entries = 1614;
-  
+  constexpr size_t offset = 37069 + 4;
+  constexpr size_t count = 806;
   
   LBXFile& lbx = file(LBXID::HELP);
   
@@ -862,40 +869,61 @@ const LBXFile& Repository::loadLBXHelp()
   
   size_t i = 0;
   
-  set<s16> paddings;
+  auto& dest = help::Data::data;
   
-  for (; i < entries; ++i)
+  dest.resize(count);
+  
+  for (i = 0; i < 806; ++i)
   {
     size_t off = ftell(in);
-    if (off == 881761)
-      break;
     
     LBXHelpEntry entry;
     fread(&entry, sizeof(LBXHelpEntry), 1, in);
     
-    //if (entry.type == 0)
-    //  continue;
+    for (size_t j = 0; entry.lbxName[j] != '\0'; ++j)
+      if (entry.lbxName[j] == '.')
+      {
+        entry.lbxName[j] = '\0';
+        break;
+      }
+      else entry.lbxName[j] = std::tolower(entry.lbxName[j]);
     
-    printf("%3zu %08zu: %s", i, off, entry.title);
+    for (size_t j = 0; entry.text[j] != '\0'; ++j)
+      if (entry.text[j] == 0x14)
+        entry.text[j] = '\n';
+    
+    auto& current = dest[i];
+    
+    if (!entry.hasGfx())
+    {
+      current = help::Paragraph(entry.title, entry.text);
+    }
+    else
+    {
+      current = help::Paragraph(entry.title, entry.text, SpriteInfo(file(entry.lbxName).ident, entry.lbxIndex));
+    }
+    
+    if (entry.type == -1)
+      current.next = &dest[i+1];
+    else if (entry.type != 0)
+      current.next = &dest[entry.type];
+    else
+      current.next = nullptr;
+    
+    printf("%3zu %s %c\n%s\n\n", i, current.title.c_str(), current.next ? 'y' : 'n', current.text.c_str());
+
+    
+    /*printf("%3zu %08zu: %s", i, off, entry.title);
     
     if (entry.hasGfx())
-    {
       printf(" %s(%u)", entry.lbxName, entry.lbxIndex);
-    }
     
     printf("   %d", entry.type);
     printf(" %s", entry.text);
     
-    paddings.insert(entry.type);
-    
-    printf("\n");
-    
-
+    printf("\n");*/
   }
-  
-  for (auto k : paddings)
-    printf(">>> %d\n", k);
-  
+
   LOGD("[lbx] read %zu help entries", i);
   
   fclose(in);

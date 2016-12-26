@@ -25,6 +25,8 @@
 #include "ResearchView.h"
 #include "SpellBookView.h"
 #include "UnitDetailView.h"
+#include "HelpView.h"
+
 #include "ConsoleView.h"
 
 #include "LBXView.h"
@@ -51,6 +53,8 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_RESEARCH] = new ResearchView(this);
   views[VIEW_SPELL_BOOK] = new SpellBookView(this);
   views[VIEW_UNIT] = new UnitDetailView(this);
+  views[VIEW_HELP] = new HelpView(this);
+  
   views[VIEW_CONSOLE] = new ConsoleView(this);
   
   views[VIEW_LBX] = new lbx::LBXView(this);
@@ -73,6 +77,8 @@ ProductionView* ViewManager::productionView() { return static_cast<ProductionVie
 ResearchView* ViewManager::researchView() { return static_cast<ResearchView*>(views[VIEW_RESEARCH]); }
 SpellBookView* ViewManager::spellBookView() { return static_cast<SpellBookView*>(views[VIEW_SPELL_BOOK]); }
 UnitDetailView* ViewManager::unitDetailView() { return static_cast<UnitDetailView*>(views[VIEW_UNIT]); }
+HelpView* ViewManager::helpView() { return static_cast<HelpView*>(views[VIEW_HELP]); }
+
 ConsoleView* ViewManager::consoleView() { return static_cast<ConsoleView*>(views[VIEW_CONSOLE]); }
 
 

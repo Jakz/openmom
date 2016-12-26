@@ -74,6 +74,8 @@ void MainView::activate()
   /*player->send(new msgs::Error("antanius"));
   player->send(new msgs::Error("fotius"));
   player->send(new msgs::NewBuilding(player->getCities().front(), Building::ARMORY));*/
+  
+  gvm->switchOverview(VIEW_HELP);
 }
 
 void MainView::switchToSpellCast()

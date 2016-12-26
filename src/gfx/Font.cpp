@@ -385,3 +385,11 @@ u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, T
     return y + font->sh();
   }
 }
+
+string strings::tolower(const std::string &text)
+{
+  string lname;
+  lname.resize(text.size());
+  std::transform(text.begin(), text.end(), lname.begin(), ::tolower);
+  return lname;
+}

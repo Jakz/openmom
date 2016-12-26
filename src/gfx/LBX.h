@@ -90,7 +90,7 @@ namespace lbx
     s16 type;
     char text[1000];
     
-    bool hasGfx() const { return lbxName[0] != 0; }
+    bool hasGfx() const { return lbxName[0] != '\0'; }
     
   } __attribute__((__packed__));
 
@@ -228,6 +228,7 @@ namespace lbx
     static std::vector<LBXTerrainSpriteSpecs> terrainData;
     static LBXFile data[LBX_COUNT];
     static LBXFile& file(LBXID ident) { return data[static_cast<size_t>(ident)]; }
+    static LBXFile& file(const std::string& name);
     
     static size_t bytesUsed;
     static void gfxAllocated(const LBXSpriteData* data);

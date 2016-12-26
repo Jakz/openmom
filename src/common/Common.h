@@ -310,6 +310,7 @@ private:
   };
   
 public:
+  SpriteInfo() : SpriteInfo(0) { }
   SpriteInfo(decltype(data) data) : data(data) { }
   
   explicit SpriteInfo(TextureID texture, s8 x, s8 y) : data((static_cast<u32>(texture) << texture_id_shift) | (x << texture_x_shift) | (y << texture_y_shift)) { assert(x >= 0 && y >= 0); }
@@ -409,6 +410,7 @@ enum ViewID
   VIEW_PRODUCTION,
   VIEW_OUTPOST,
   VIEW_NEW_GAME,
+  VIEW_HELP,
   VIEW_CONSOLE,
   
   VIEW_LBX,

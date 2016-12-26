@@ -287,4 +287,11 @@ public:
   }
 };
 
+class strings
+{
+public:
+  static std::string tolower(const std::string& text);
+  static bool compareInsensitive(const std::string& s1, const std::string& s2) { return tolower(s1) == tolower(s2); }
+};
+
 #endif
