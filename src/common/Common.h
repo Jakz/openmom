@@ -201,6 +201,7 @@ enum class LBXID : u8
 #define LBXI(x, y) (0x80000000 | (static_cast<u32>(LBXID::x) << 16) | (y))
 #define LBXU(x) SpriteInfo(x)
 #define LSI(x, y) SpriteInfo(LBXID::x, y)
+#define LSI_PLACEHOLD SpriteInfo(LBXID::COUNT, 0)
 #define TSI(x, y, z) SpriteInfo(TextureID::x, y, z)
 #define TSIS(x, y) SpriteInfo(TextureID::x, y)
 
@@ -440,7 +441,7 @@ enum PlayerColor : u8
   RED,
   PURPLE,
   YELLOW,
-  NEUTRAL
+  NEUTRAL,
 };
 
 enum WizardID : u8

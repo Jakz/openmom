@@ -63,6 +63,15 @@ std::unordered_map<WizardID, WizardGfxSpec, enum_hash> GfxData::wizardSpecs = {
   { WizardID::KALI, WizardGfxSpec{ LSI(MAGIC, 31), LSI(WIZARDS, 13), LSI(MOODWIZ, 13) } }
 };
 
+std::unordered_map<PlayerColor, PlayerGfxSpec, enum_hash> GfxData::playerSpecs = {
+  { PlayerColor::BLUE, { LSI(MAGIC, 1), LSI(MAPBACK, 14) } },
+  { PlayerColor::GREEN, { LSI(MAGIC, 2), LSI(MAPBACK, 15) } },
+  { PlayerColor::PURPLE, { LSI(MAGIC, 3), LSI(MAPBACK, 16) } },
+  { PlayerColor::RED, { LSI(MAGIC, 4), LSI(MAPBACK, 17) } },
+  { PlayerColor::YELLOW, { LSI(MAGIC, 5), LSI(MAPBACK, 18) } },
+  { PlayerColor::NEUTRAL, { LSI_PLACEHOLD, LSI(MAPBACK, 19) } }
+};
+
 
 constexpr s8 GfxData::RANGED_INDEX[];
 constexpr s8 GfxData::PROPERTY_INDEX[];
@@ -74,36 +83,36 @@ Color GfxData::colorForSchool(const School school)
 }
 
 std::unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
-  { UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 0), LSI(FIGURES3, 72)) },
-  { UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 1), LSI(FIGURES3, 80)) },
-  { UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 2), LSI(FIGURES3, 88)) },
-  { UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 3), LSI(FIGURES3, 96)) },
-  { UnitSpec::raceSpec(UnitID::SHAMANS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 4), LSI(FIGURES3, 104)) },
-  { UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 8), LSI(FIGURES4, 0)) },
-  { UnitSpec::raceSpec(UnitID::SETTLERS, RaceID::BARBARIANS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_STATIC_STANDARD, (u8)RaceID::BARBARIANS, 10), LSI(FIGURES3, 112)) },
+  { UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 39), LSI(FIGURES3, 72)) },
+  { UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 40), LSI(FIGURES3, 80)) },
+  { UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 41), LSI(FIGURES3, 88)) },
+  { UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 42), LSI(FIGURES3, 96)) },
+  { UnitSpec::raceSpec(UnitID::SHAMANS, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 43), LSI(FIGURES3, 104)) },
+  { UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 45), LSI(FIGURES4, 0)) },
+  { UnitSpec::raceSpec(UnitID::SETTLERS, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 44), LSI(FIGURES3, 112)) },
 
   //{ UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 0, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_SPEARMEN) },
   //{ UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 1, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_SWORDSMEN) },
   //{ UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 2, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_BOWMEN) }
   
   
-  { UnitSpec::heroSpec(UnitID::HERO_DWARF), UnitGfxSpec(SpriteInfo(TextureID::UNITS_HEROES, 0, 0), LSI(FIGURES1, 0)) },
+  { UnitSpec::heroSpec(UnitID::HERO_DWARF), UnitGfxSpec(LSI(UNITS1, 0), LSI(FIGURES1, 0)) },
   //{ UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), UnitGfxSpec(SpriteInfo(UNITS_HEROES, 6, 0), UNIT_HERO_ORC_WARRIOR) }
   
   
-  { UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT), UnitGfxSpec(SpriteInfo(TextureID::UNITS_FANTASTIC, 0, 0), LSI(FIGURE11, 32)) },
+  { UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT), UnitGfxSpec(LSI(UNITS2, 34), LSI(FIGURE11, 32)) },
   
-  { UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT), UnitGfxSpec(SpriteInfo(TextureID::UNITS_FANTASTIC, 3, 1), LSI(FIGURE12, 88)) }, // TODO: full figure wrong
+  { UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT), UnitGfxSpec(LSI(UNITS2, 56), LSI(FIGURE12, 88)) }, // TODO: full figure wrong
 
   
-  { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(SpriteInfo(TextureID::UNITS_FANTASTIC, 1, 0), LSI(FIGURE11, 40)) },
-  { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(SpriteInfo(TextureID::UNITS_FANTASTIC, 1, 9), LSI(FIGURE11, 112), true) }
+  { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(LSI(UNITS2, 45), LSI(FIGURE11, 40)) },
+  { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(LSI(UNITS2, 44), LSI(FIGURE11, 112), true) }
 
 };
 
 std::unordered_map<const UnitSpec*, SpriteInfo> GfxData::heroPortraits = {
   { UnitSpec::heroSpec(UnitID::HERO_DWARF), LSI(PORTRAIT, 10) },
-  { UnitSpec::heroSpec(UnitID::HERO_DWARF), LSI(PORTRAIT, 6) }
+  { UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), LSI(PORTRAIT, 6) }
 };
 
 const UnitGfxSpec& GfxData::unitGfxSpec(const UnitSpec* spec)

@@ -23,7 +23,7 @@ void UnitDraw::drawStatic(const Army *army, s16 x, s16 y)
 {
   if ((army != LocalGame::i->currentPlayer()->getSelectedArmy()) || (Gfx::fticks % 6) < 3)
   {
-    Gfx::draw(TextureID::UNITS_COLOR_BACKDROP, 0, army->getOwner()->color, x, y);
+    Gfx::draw(GfxData::playerGfxSpec(army->getOwner()->color).unitBack, x, y);
     
     const Unit* first = nullptr;
     if (army == LocalGame::i->currentPlayer()->getSelectedArmy())
@@ -58,7 +58,7 @@ void UnitDraw::drawStatic(const Army *army, s16 x, s16 y)
 void UnitDraw::drawStatic(const Unit *unit, s16 x, s16 y, bool backdrop, bool grayScale)
 {
   if (backdrop)
-    Gfx::draw(TextureID::UNITS_COLOR_BACKDROP, 0, unit->getArmy()->getOwner()->color, x, y);
+    Gfx::draw(GfxData::playerGfxSpec(unit->getArmy()->getOwner()->color).unitBack, x, y);
   
   Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[unit->getArmy()->getOwner()->color]);
   
@@ -78,7 +78,8 @@ void UnitDraw::drawStatic(const Unit *unit, s16 x, s16 y, bool backdrop, bool gr
 
 void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
 {
-  Gfx::rawDraw(TextureID::UNITS_COLOR_BACKDROP, 0, army->getOwner()->color, x, y);
+  // TODO: verify
+  Gfx::rawDraw(GfxData::playerGfxSpec(army->getOwner()->color).unitBack, x, y);
   const Unit* first = army->get(0);
   
   Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[army->getOwner()->color]);

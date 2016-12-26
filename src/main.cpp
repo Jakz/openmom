@@ -77,6 +77,8 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::SPELLS);
   lbx::Repository::loadLBX(LBXID::SPELLSCR);
   lbx::Repository::loadLBX(LBXID::UNITVIEW);
+  lbx::Repository::loadLBX(LBXID::UNITS1);
+  lbx::Repository::loadLBX(LBXID::UNITS2);
   lbx::LBX::load();
   FontFaces::buildFonts();
   //return 0;

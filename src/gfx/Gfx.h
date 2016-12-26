@@ -116,6 +116,7 @@ public:
   
   static void drawAnimated(SpriteInfo info, u16 x, u16 y, s16 offset = 0, s16 animFactor = 1);
   
+  static void rawDraw(SpriteInfo info, u16 x, u16 y);
   static void rawDraw(TextureID texture, u16 r, u16 c, u16 x, u16 y);
   static void draw(TextureID texture, u16 x, u16 y);
   static void draw(TextureID texture, u16 i, u16 x, u16 y);

@@ -560,6 +560,10 @@ void Gfx::drawClipped(SpriteInfo info, u16 sx, u16 sy, s16 tx, s16 ty, s16 w, s1
 }
 
 
+void Gfx::rawDraw(SpriteInfo info, u16 x, u16 y)
+{
+  blit(info.sheet(), canvas, 0, 0, x, y, info.sw(), info.sh(), info.x(), info.y());
+}
 
 void Gfx::rawDraw(TextureID texture, u16 r, u16 c, u16 x, u16 y)
 {

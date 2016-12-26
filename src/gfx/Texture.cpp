@@ -147,26 +147,15 @@ const Texture Texture::textures[] =
   Texture(TextureID::UNIT_DETAIL_PROPS_EMPTY,"units/props-empty.png",1,12,9,8),
   Texture(TextureID::UNIT_SKILL_ICONS,"units/skill-icons.png",16,16,16,16),
   
-  Texture(TextureID::UNITS_COLOR_BACKDROP,"units/unit-backdrop.png",1,5,20,18),
   
   Texture(TextureID::UNITS_STATIC_STANDARD,"units/standard-units.png",14,11,18,16),
-  Texture(TextureID::UNITS_FANTASTIC,"units/fantastic-units.png",11,11,18,16),
-  Texture(TextureID::UNITS_HEROES,"units/hero-units.png",4,10,18,16),
   
-  Texture(TextureID::UNIT_HERO_PORTRAITS,"units/hero-portraits.png",4,10,32,32),
   Texture(TextureID::UNIT_HERO_ITEM_BACKGROUND,"units/items-background.png",1,6,18,16),
   
   
   Texture(TextureID::ITEM_CRAFT_BACKDROP,"static/backdrop-itemcraft.png",320,200),
   Texture(TextureID::ITEM_CRAFT_BUTTONS,"magic/view/item-craft-buttons.png",4,10,31,13),
   Texture(TextureID::ITEM_CRAFT_ARROWS,"magic/view/item-craft-arrows.png",2,2,9,7),
-  
-  Texture(TextureID::UNIT_BARBARIANS_SPEARMEN,"units/figures/barbarians/spearmen.png",4,8,28,30),
-  Texture(TextureID::UNIT_BARBARIANS_SWORDSMEN,"units/figures/barbarians/swordsmen.png",4,8,28,30),
-  Texture(TextureID::UNIT_BARBARIANS_BOWMEN,"units/figures/barbarians/bowmen.png",4,8,28,30),
-  Texture(TextureID::UNIT_BARBARIANS_CAVALRY,"units/figures/barbarians/cavalry.png",4,8,28,30),
-  Texture(TextureID::UNIT_BARBARIANS_SHAMAN,"units/figures/barbarians/shamans.png",4,8,28,30),
-  Texture(TextureID::UNIT_BARBARIANS_SETTLERS,"units/figures/barbarians/settlers.png",4,8,28,30),
   
   /* altezza max help: 200 + 23 pezzo di chiusura da sovrapporre */
   Texture(TextureID::HELP_BACKDROP,"static/help-backdrop.png",1,1,217,223),
