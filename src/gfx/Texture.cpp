@@ -47,7 +47,6 @@ const Texture Texture::textures[] =
   
   Texture(TextureID::MAIN_CURSORS,"main/cursors.png",1,5,16,16),
   Texture(TextureID::MAIN_LOW_BUTTONS,"main/next-turn.png",2,2,80,27),
-  Texture(TextureID::MAIN_MIRROR_BACKDROP,"static/mirror-backdrop.png",1,1,180,196),
   Texture(TextureID::MAIN_MIRROR,"static/mirror.png",1,17,128,129),
   Texture(TextureID::MAIN_RIGHT_BACKDROPS,"main/right-backdrops.png",1,2,80,98),
   
@@ -86,7 +85,6 @@ const Texture Texture::textures[] =
   
   Texture(TextureID::MESSAGE_LEFT,"static/message-left.png",1,1,249,59),
   Texture(TextureID::MESSAGE_RIGHT,"static/message-right.png",1,1,55,59),
-  Texture(TextureID::MESSAGE_BUILDING_BACKDROP,"static/message-building-backdrop.png",1,1,41,43),
   //113 - 29
   Texture(TextureID::MESSAGE_CONFIRM_DIALOG,"static/confirm-dialog.png",1,1,186,142),
   Texture(TextureID::MESSAGE_CONFIRM_BUTTONS,"static/confirm-buttons.png",2,2,66,17),
@@ -95,8 +93,6 @@ const Texture Texture::textures[] =
   
   Texture(TextureID::RIGHT_BACKDROP,"static/right_backdrop.gif",2,1,80,124),
     
-  Texture(TextureID::CITY_TRADE_HOUSING_BACKDROP,"city/tradegoods-housing-backdrop.png",1,1,53,33),
-  Texture(TextureID::CITY_VIEW_BUTTONS,"city/city-buttons-1.png",3,3,{30,36,30},10),
   Texture(TextureID::CITY_BACKGROUND,"city/city-background.png",5,1, 205, 96),
   Texture(TextureID::CITY_WATER,"city/city-water.png",4,6,16,96, true,5),
   Texture(TextureID::CITY_LANDSCAPE,"city/scape/landscape.png",12,1,205,19),

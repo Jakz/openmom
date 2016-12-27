@@ -24,7 +24,7 @@ MirrorView::MirrorView(ViewManager* gvm) : View(gvm)
 
 void MirrorView::draw()
 {
-  Gfx::draw(TextureID::MAIN_MIRROR_BACKDROP, 70, 2);
+  Gfx::draw(LSI(BACKGRND, 4), 70, 2); // mirror bg
   CommonDraw::drawWizardGem(player, 81, 13);
   Fonts::drawString(player->name, FontFaces::Serif::YELLOW_SHADOW, 171, 12, ALIGN_CENTER);
   

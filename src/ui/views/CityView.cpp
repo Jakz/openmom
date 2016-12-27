@@ -37,9 +37,9 @@ CityView::CityView(ViewManager* gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[BUY] = TristateButton::build("Buy", 214, 188, TextureID::CITY_VIEW_BUTTONS, 0);
-  buttons[CHANGE] = TristateButton::build("Change", 247, 188, TextureID::CITY_VIEW_BUTTONS, 1);
-  buttons[OK] = TristateButton::build("Ok", 286, 188, TextureID::CITY_VIEW_BUTTONS, 2);
+  buttons[BUY] = NormalButton::buildTristate("Buy", 214, 188, LSI(BACKGRND, 7), LSI(BACKGRND, 14));
+  buttons[CHANGE] = NormalButton::buildBistate("Change", 247, 188, LSI(BACKGRND, 8));
+  buttons[OK] = NormalButton::buildBistate("Ok", 286, 188, LSI(BACKGRND, 9));
 
   buttons[BUY]->deactivate();
   
@@ -173,7 +173,7 @@ void CityView::draw()
   /* draw current production */
   if (production == Building::HOUSING || production == Building::TRADE_GOODS)
   {
-    Gfx::draw(TextureID::CITY_TRADE_HOUSING_BACKDROP, 260, 149);
+    Gfx::draw(LSI(BACKGRND, 13), 260, 149);
     CityLayout::drawBuildingCentered(static_cast<const Building*>(production), 217, 179);
     
     /* TODO: localize and center align */
