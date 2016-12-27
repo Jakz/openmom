@@ -16,6 +16,56 @@ void Clickable::draw()
   Gfx::rect(x, y, w, h, Gfx::color(255, 0, 0));
 }
 
+void NormalButton::draw()
+{
+  /* if not visible don't draw anything */
+  if (!isVisible())
+    return;
+  
+  /* if not active */
+  if (!isActive())
+  {
+    /* if a sprite for inactive gfx is specified use it, otherwise assert false
+       since it's required
+     */
+    if (gfx.inactive.isPresent())
+      Gfx::draw(gfx.inactive, x, y);
+    else { assert(false); }
+    return;
+  }
+
+  if (pressed)
+  {
+    /* if a sprite for pressed gfx is specified use it */
+    if (gfx.pressed.isPresent())
+      Gfx::draw(gfx.pressed, x, y);
+    /* otherwise it's an offset button so draw normal gfx ofsetted by 1 */
+    else if (shouldOffsetNormal)
+      Gfx::draw(gfx.normal, x+1, y+1);
+    else
+      Gfx::draw(gfx.normal, x, y);
+  }
+  else
+    Gfx::draw(gfx.normal, x, y);
+  
+  /* if there is a label draw it accordingly */
+  if (labelGfx.isPresent())
+  {
+    if (pressed)
+      Fonts::drawString(labelGfx->label, labelGfx->font, labelGfx->position.x+1, labelGfx->position.y+1, ALIGN_CENTER);
+    else
+      Fonts::drawString(labelGfx->label, labelGfx->font, labelGfx->position.x, labelGfx->position.y, ALIGN_CENTER);
+  }
+}
+
+void NormalButton::setPosition(u16 x, u16 y)
+{
+  Button::setPosition(x, y);
+  /* update label position if it was present */
+  if (labelGfx.isPresent())
+    labelGfx->position = ScreenCoord(x + gfx.normal.sw()/2, y + gfx.normal.sh()/2 - labelGfx->font->sh()/2);
+}
+
 void SimpleButton::draw()
 {
   if (isVisible())

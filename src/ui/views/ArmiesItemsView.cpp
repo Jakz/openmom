@@ -31,13 +31,13 @@ ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[ALCHEMY] = TristateButton::build("Alchemy", 236, 157, TextureID::ARMIES_BUTTONS, 2)->setAction([gvm](){gvm->switchOverview(VIEW_ALCHEMY);});
-  buttons[OK] = TristateButton::build("Ok", 236, 177, TextureID::ARMIES_BUTTONS, 3)->setAction([gvm](){gvm->closeOverview();});
+  buttons[ALCHEMY] = NormalButton::buildBistate("Alchemy", 236, 157, LSI(ARMYLIST, 7))->setAction([gvm](){gvm->switchOverview(VIEW_ALCHEMY);});
+  buttons[OK] = NormalButton::buildBistate("Ok", 236, 177, LSI(ARMYLIST, 8))->setAction([gvm](){gvm->closeOverview();});
 }
 
 void ArmiesItemsView::draw()
 {
-  Gfx::draw(TextureID::ARMIES_BACKDROP_ITEMS, 17, 2);
+  Gfx::draw(LSI(ARMYLIST, 5), 17, 2);
   
   // draw heroes portraits
   u16 heroPositions[][2] = {{32,15},{32,61},{32,107},{167,15},{167,61},{167,107}};

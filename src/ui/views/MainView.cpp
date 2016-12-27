@@ -35,21 +35,21 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[GAME] = BistateButton::buildLBX("Game", 7, 4, LSI(MAIN, 1));
-  buttons[SPELLS] = BistateButton::buildLBX("Spells", 47, 4, LSI(MAIN, 2));
-  buttons[ARMIES] = BistateButton::buildLBX("Armies", 89, 4, LSI(MAIN, 3));
-  buttons[CITIES] = BistateButton::buildLBX("Cities", 140, 4, LSI(MAIN, 4));
-  buttons[MAGIC] = BistateButton::buildLBX("Magic", 184, 4, LSI(MAIN, 5));
-  buttons[INFO] = BistateButton::buildLBX("Info", 226, 4, LSI(MAIN, 6));
-  buttons[PLANE] = BistateButton::buildLBX("Plane", 270, 4, LSI(MAIN, 7));
+  buttons[GAME] = NormalButton::buildBistate("Game", 7, 4, LSI(MAIN, 1));
+  buttons[SPELLS] = NormalButton::buildBistate("Spells", 47, 4, LSI(MAIN, 2));
+  buttons[ARMIES] = NormalButton::buildBistate("Armies", 89, 4, LSI(MAIN, 3));
+  buttons[CITIES] = NormalButton::buildBistate("Cities", 140, 4, LSI(MAIN, 4));
+  buttons[MAGIC] = NormalButton::buildBistate("Magic", 184, 4, LSI(MAIN, 5));
+  buttons[INFO] = NormalButton::buildBistate("Info", 226, 4, LSI(MAIN, 6));
+  buttons[PLANE] = NormalButton::buildBistate("Plane", 270, 4, LSI(MAIN, 7));
   
   buttons[NEXT] = TristateButton::build("Next", 240, 173, TextureID::MAIN_LOW_BUTTONS, 0);
   buttons[CANCEL_SURVEYOR] = TristateButton::build("Cancel", 240, 173, TextureID::MAIN_LOW_BUTTONS, 1);
 
-  buttons[DONE] = TristateButton::buildLBX("Done", 246, 176, LSI(MAIN, 8), LSI(MAIN,12));
-  buttons[PATROL] = TristateButton::buildLBX("Patrol", 280, 176, LSI(MAIN, 9), LSI(MAIN,13));
-  buttons[WAIT] = TristateButton::buildLBX("Wait", 246, 186, LSI(MAIN, 10), LSI(MAIN,14));
-  buttons[BUILD] = TristateButton::buildLBX("Build", 280, 186, LSI(MAIN, 11), LSI(MAIN,15));
+  buttons[DONE] = NormalButton::buildTristate("Done", 246, 176, LSI(MAIN, 8), LSI(MAIN,12));
+  buttons[PATROL] = NormalButton::buildTristate("Patrol", 280, 176, LSI(MAIN, 9), LSI(MAIN,13));
+  buttons[WAIT] = NormalButton::buildTristate("Wait", 246, 186, LSI(MAIN, 10), LSI(MAIN,14));
+  buttons[BUILD] = NormalButton::buildTristate("Build", 280, 186, LSI(MAIN, 11), LSI(MAIN,15));
   // CANCEL BUTTON MISSING
   
   buttons[SPELLS]->setAction([gvm](){ gvm->switchOverview(VIEW_SPELL_BOOK); });

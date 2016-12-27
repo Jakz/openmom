@@ -121,9 +121,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::ALCHEMY_BACKDROP,"magic/view/backdrop-alchemy.png",1,1,166,84),
   Texture(TextureID::ALCHEMY_BUTTONS,"magic/view/buttons-alchemy.png",2,4, {49,49,26,26},16),
   
-  Texture(TextureID::ARMIES_BUTTONS,"armies/buttons.png",2,4, {41,41,59,59},15),
-  Texture(TextureID::ARMIES_ARROWS,"armies/arrows.png",3,2,9,10),
-  Texture(TextureID::ARMIES_BACKDROP_ITEMS,"armies/backdrop-items.png",1,1,285,197),
   
   Texture(TextureID::RESEARCH_BACKDROP,"static/backdrop-research.png",1,1,320,200),
   Texture(TextureID::RESEARCH_MISC,"static/research-misc.png",1,2,16,16),

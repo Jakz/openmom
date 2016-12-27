@@ -28,18 +28,18 @@ ArmiesView::ArmiesView(ViewManager* gvm) : View(gvm), offset(0), unit(nullptr), 
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[ITEMS] = TristateButton::build("Items", 273, 163, TextureID::ARMIES_BUTTONS, 0)->setAction([gvm](){ gvm->switchOverview(VIEW_ARMIES_ITEMS); });
-  buttons[OK] = TristateButton::build("Ok", 273, 182, TextureID::ARMIES_BUTTONS, 1)->setAction([gvm](){ gvm->switchView(VIEW_MAIN); });
+  buttons[ITEMS] = NormalButton::buildBistate("Items", 273, 163, LSI(ARMYLIST, 3))->setAction([gvm](){ gvm->switchOverview(VIEW_ARMIES_ITEMS); });
+  buttons[OK] = NormalButton::buildBistate("Ok", 273, 182, LSI(ARMYLIST, 4))->setAction([gvm](){ gvm->switchView(VIEW_MAIN); });
   // TODO: arrows buttons
   
   auto lambdaScrollDown = [this](){ scrollDown(); };
   auto lambdaScrollUp = [this](){ scrollUp(); };
 
   
-  buttons[PREV1] = TristateButton::build("Prev1", 60, 26, TextureID::ARMIES_ARROWS, 0)->setAction(lambdaScrollUp);
-  buttons[NEXT1] = TristateButton::build("Next1", 60, 139, TextureID::ARMIES_ARROWS, 1)->setAction(lambdaScrollDown);
-  buttons[PREV2] = TristateButton::build("Prev2", 259, 26, TextureID::ARMIES_ARROWS, 0)->setAction(lambdaScrollUp);
-  buttons[NEXT2] = TristateButton::build("Next1", 250, 139, TextureID::ARMIES_ARROWS, 1)->setAction(lambdaScrollDown);
+  buttons[PREV1] = NormalButton::buildTristate("Prev1", 60, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
+  buttons[NEXT1] = NormalButton::buildTristate("Next1", 60, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
+  buttons[PREV2] = NormalButton::buildTristate("Prev2", 259, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
+  buttons[NEXT2] = NormalButton::buildTristate("Next1", 250, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
 }
 
 void ArmiesView::updateScrollButtons()

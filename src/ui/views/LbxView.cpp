@@ -21,13 +21,13 @@ const u16 MAX_PER_PAGE = 23;
 LBXView::LBXView(ViewManager* gvm) : View(gvm), selectedLBX(-1), lbxOffset(0), contentOffset(0), selectedContent(-1)
 {
   buttons.resize(4);
-  buttons[0] = TristateButton::build("prev lbx", 5, 5+23*8, TextureID::ARMIES_ARROWS, 0)->setAction([this](){  });
+  /*buttons[0] = TristateButton::build("prev lbx", 5, 5+23*8, TextureID::ARMIES_ARROWS, 0)->setAction([this](){  });
   buttons[1] = TristateButton::build("next lbx", 15, 5+23*8, TextureID::ARMIES_ARROWS, 1)->setAction([this](){  });
   
   buttons[2] = TristateButton::build("prev content", 50, 5+23*8, TextureID::ARMIES_ARROWS, 0)->setAction([this](){ --contentOffset; updateContentButtons(); });
-  buttons[3] = TristateButton::build("next nextcontent", 60, 5+23*8, TextureID::ARMIES_ARROWS, 1)->setAction([this](){ ++contentOffset; updateContentButtons(); });
+  buttons[3] = TristateButton::build("next nextcontent", 60, 5+23*8, TextureID::ARMIES_ARROWS, 1)->setAction([this](){ ++contentOffset; updateContentButtons(); });*/
   
-  for (auto &b : buttons) b->hide();
+  //for (auto &b : buttons) b->hide();
   
   hasNextContent = false;
   hasPrevContent = false;

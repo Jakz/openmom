@@ -47,6 +47,27 @@ public:
   void draw();
 };
 
+struct ButtonGfx
+{
+  SpriteInfo normal;
+  optional<SpriteInfo> pressed;
+  optional<SpriteInfo> inactive;
+  
+  ButtonGfx(SpriteInfo normal) : normal(normal) { }
+  ButtonGfx(SpriteInfo normal, SpriteInfo pressed) : normal(normal), pressed(pressed) { }
+  ButtonGfx(SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : normal(normal), pressed(pressed), inactive(inactive) { }
+};
+
+struct TextInfo
+{
+  std::string label;
+  const FontSpriteSheet* font;
+  ScreenCoord position;
+  
+  TextInfo() = default;
+  TextInfo(const std::string& label, const FontSpriteSheet* font, ScreenCoord position) : label(label), font(font), position(position) { }
+};
+
 class Button : public Clickable
 {
 protected:
@@ -87,6 +108,37 @@ public:
   }
 };
 
+class NormalButton : public Button
+{
+protected:
+  bool shouldOffsetNormal;
+  ButtonGfx gfx;
+  optional<TextInfo> labelGfx;
+  
+public:
+  NormalButton(const std::string& name, u16 x, u16 y, SpriteInfo normal, bool shouldOffsetNormal) : Button(name, x, y, normal), gfx(normal), shouldOffsetNormal(shouldOffsetNormal) { }
+  NormalButton(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Button(name, x, y, normal), gfx(normal, pressed) { }
+  NormalButton(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : Button(name, x, y, normal), gfx(normal, pressed, inactive) { }
+
+  void setTextInfo(const TextInfo& info) { labelGfx = info; }
+  void setLabel(const std::string& string) override { assert(labelGfx.isPresent()); labelGfx->label = string; }
+  
+  void draw() override;
+  void setPosition(u16 x, u16 y) override;
+  
+  static Button* buildSimple(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new NormalButton(name, x, y, normal, false); }
+  
+  static Button* buildOffsetted(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new NormalButton(name, x, y, normal, true); }
+  
+  static Button* buildBistate(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) { return new NormalButton(name, x, y, normal, pressed); }
+  static Button* buildBistate(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new NormalButton(name, x, y, normal, normal.frame(1)); }
+  
+  static Button* buildTristate(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) { return new NormalButton(name, x, y, normal, pressed, inactive); }
+  static Button* buildTristate(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo inactive) { return new NormalButton(name, x, y, normal, normal.frame(1), inactive); }
+  static Button* buildTristate(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new NormalButton(name, x, y, normal, normal.frame(1), normal); }
+  
+};
+
 class SimpleButton : public Button
 {
 public:
@@ -105,6 +157,7 @@ class BistateButton : public Button
 {
 protected:
   SpriteInfo pressedCoords;
+  
   BistateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Button(name, x, y, normal), pressedCoords(pressed) { }
   
 public:
