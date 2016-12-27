@@ -19,9 +19,9 @@
 #include "LocalPlayer.h"
 #include "Game.h"
 
-void UnitDraw::drawStatic(const Army *army, s16 x, s16 y)
+void UnitDraw::drawStatic(const Army *army, s16 x, s16 y, bool forceDraw)
 {
-  if ((army != LocalGame::i->currentPlayer()->getSelectedArmy()) || (Gfx::fticks % 6) < 3)
+  if (forceDraw || (army != LocalGame::i->currentPlayer()->getSelectedArmy()) || (Gfx::fticks % 6) < 3)
   {
     Gfx::draw(GfxData::playerGfxSpec(army->getOwner()->color).unitBack, x, y);
     

@@ -25,7 +25,7 @@ private:
   static SDL_Surface *filter;
   
   static const u32 SCALE_FACTOR = 3;
-  static const u32 FRAME_RATE = 20;
+  static const u32 FRAME_RATE = 60;
   static constexpr float TICKS_PER_FRAME = 1000 / (float)FRAME_RATE;
   static constexpr u32 ANIM_TICKS_PER_SECOND = 10;
   static constexpr u32 FRAMES_PER_ANIM_TICK = FRAME_RATE / ANIM_TICKS_PER_SECOND;

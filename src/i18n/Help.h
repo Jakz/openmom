@@ -3,6 +3,7 @@
 #include "Common.h"
 
 #include <string>
+#include <unordered_map>
 
 namespace lbx {
   class Repository;
@@ -33,9 +34,11 @@ namespace help
   {
   private:
     static std::vector<Paragraph> data;
+    static std::unordered_map<std::string, const Paragraph*> helpMapping;
     
   public:
     static const Paragraph* at(size_t i) { return &data[i]; }
+    static const Paragraph* get(const std::string& i) { auto it = helpMapping.find(i); return it != helpMapping.end() ? it->second : nullptr; }
     
     friend class lbx::Repository;
   };
