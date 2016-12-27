@@ -161,7 +161,6 @@
 		048E08BC1982B20A009AED0A /* WorldGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08BA1982B20A009AED0A /* WorldGenerator.cpp */; };
 		04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B11983286E00291B82 /* Viewport.cpp */; };
 		04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B419833C1E00291B82 /* UnitDraw.cpp */; };
-		04B6F6481E118166007B10C6 /* HelpView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B6F6461E118166007B10C6 /* HelpView.cpp */; };
 		04C1F47F1B25290C00F7688A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C1F44B1B25270300F7688A /* main.cpp */; };
 		04C1F4841B25358200F7688A /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
 		04C1F4851B25359D00F7688A /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D2197990B900A5B5FC /* Font.cpp */; };
@@ -389,8 +388,6 @@
 		04ABF7B21983286E00291B82 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		04ABF7B419833C1E00291B82 /* UnitDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitDraw.cpp; sourceTree = "<group>"; };
 		04ABF7B519833C1E00291B82 /* UnitDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitDraw.h; sourceTree = "<group>"; };
-		04B6F6461E118166007B10C6 /* HelpView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelpView.cpp; sourceTree = "<group>"; };
-		04B6F6471E118166007B10C6 /* HelpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpView.h; sourceTree = "<group>"; };
 		04C1F44B1B25270300F7688A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		04C1F4511B25288F00F7688A /* LBXManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LBXManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C729BF19853F4E002F16E6 /* MainView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainView.cpp; sourceTree = "<group>"; };
@@ -654,8 +651,6 @@
 				0439E98E19868FAD0009BFF7 /* CityView.h */,
 				0439E99019868FCB0009BFF7 /* CombatView.cpp */,
 				0439E99119868FCB0009BFF7 /* CombatView.h */,
-				04B6F6461E118166007B10C6 /* HelpView.cpp */,
-				04B6F6471E118166007B10C6 /* HelpView.h */,
 				0439E99319868FF60009BFF7 /* ItemCraftView.cpp */,
 				0439E99419868FF60009BFF7 /* ItemCraftView.h */,
 				0439E996198690150009BFF7 /* MagicView.cpp */,
@@ -1026,7 +1021,6 @@
 				040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */,
 				0439E99B1986903A0009BFF7 /* MessageView.cpp in Sources */,
 				040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */,
-				04B6F6481E118166007B10C6 /* HelpView.cpp in Sources */,
 				04E2829C1E01A7DB00DD673D /* OriginalSave.cpp in Sources */,
 				04E218861C02A386005784E1 /* format.cc in Sources */,
 				048616561E02E758004B62B7 /* hq2x.cpp in Sources */,

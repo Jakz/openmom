@@ -53,6 +53,7 @@ public:
   bool isPresent() const { return _isPresent; }
   operator T() const { assert(_isPresent); return _value; }
   T* operator->() { assert(_isPresent); return &_value; }
+  const T* operator->() const { assert(_isPresent); return &_value; }
 };
 
 struct enum_hash
@@ -410,7 +411,6 @@ enum ViewID
   VIEW_PRODUCTION,
   VIEW_OUTPOST,
   VIEW_NEW_GAME,
-  VIEW_HELP,
   VIEW_CONSOLE,
   
   VIEW_LBX,

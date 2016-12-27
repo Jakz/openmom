@@ -351,17 +351,16 @@ u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, T
   
   if (lines.size() > 1)
   {
-    int dy = 0;
+    int dy = y;
     
     for (const string& line : lines)
     {
-      int ndy = drawStringBounded(line, x, y+dy, bound, align) - y;
+      int ndy = drawStringBounded(line, x, dy, bound, align);
       
-      if (dy == 0) dy = vSpace;
-      dy += ndy;
+      dy = ndy;
     }
     
-    return y+dy;
+    return dy;
   }
   else
   {
@@ -386,7 +385,7 @@ u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, T
     if (s != e || e < words.size())
       drawString(join(words,s,e), x, y, align);
     
-    return y + font->sh();
+    return y + vSpace + font->sh();
   }
 }
 

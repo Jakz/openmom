@@ -180,7 +180,7 @@ void CityView::draw()
     if (production == Building::HOUSING)
       Fonts::drawStringBounded("Increases population growth rate.", FontFaces::Tiny::WHITE, 286, 158, 50, ALIGN_CENTER);
     else if (production == Building::TRADE_GOODS)
-      Fonts::drawStringBounded("Convert production to gold.", FontFaces::Tiny::WHITE, 286, 158, 40, ALIGN_CENTER);
+      Fonts::drawStringBounded("Converts production to gold.", FontFaces::Tiny::WHITE, 286, 158, 50, ALIGN_CENTER);
     
   }
   else

@@ -28,7 +28,6 @@ class ResearchView;
 class SpellBookView;
 class UnitDetailView;
 class ConsoleView;
-class HelpView;
 
 class LocalPlayer;
 
@@ -89,7 +88,6 @@ public:
   ResearchView* researchView();
   SpellBookView* spellBookView();
   UnitDetailView* unitDetailView();
-  HelpView* helpView();
   
   ConsoleView* consoleView();
 };

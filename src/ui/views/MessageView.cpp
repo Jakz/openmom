@@ -73,7 +73,7 @@ void MessageView::mouseReleased(u16 x, u16 y, MouseButton b)
     gvm->cityView()->setCity(city);
     gvm->switchView(VIEW_CITY);
   }
-  else if (message->type == msgs::Message::Type::ERROR || message->type == msgs::Message::Type::HELP_SKILL || message->type == msgs::Message::Type::MESSAGE)
+  else if (message->type == msgs::Message::Type::ERROR || message->type == msgs::Message::Type::HELP || message->type == msgs::Message::Type::MESSAGE)
   {
     handleMessage();
   }
@@ -102,15 +102,66 @@ void MessageView::draw()
       break;
     }
       
-    case msgs::Message::Type::HELP_SKILL:
+    case msgs::Message::Type::HELP:
     {
+      const msgs::Help* msg = message->as<const msgs::Help>();
+
+      
+      const auto* titleFace = FontFaces::Serif::BROWN_HELP;
+      const auto* textFace = FontFaces::Small::BROWN_HELP;
+      
+      SpriteInfo upperBG = LSI(HELP, 0);
+      SpriteInfo lowerBG = LSI(HELP, 1);
+      
+      const u16 px = WIDTH/2 - upperBG.sw()/2;
+      const u16 bound = 180;
+      
+      int tth = 0;
+      
       Gfx::resetBuffer();
       Gfx::bindBuffer();
-      int h = Fonts::drawStringBounded(message->getMessage(), FontFaces::Small::BROWN, 76, 40, 175, ALIGN_LEFT);
+      {
+        int ty = 4;
+        
+        const auto* p = msg->data;
+        
+        while (p)
+        {
+          int titleX = 4, textX = titleX + 2;
+          
+          if (p->icon.isPresent())
+          {
+            Gfx::draw(p->icon, titleX, ty);
+            titleX += p->icon->sw() + 3;
+          }
+          
+          Fonts::drawString(p->title, titleFace, titleX, ty, ALIGN_LEFT);
+          
+          if (!p->icon.isPresent())
+            ty += titleFace->ver + titleFace->sh();
+          else
+            ty += std::max((int)p->icon->sh() + 1, titleFace->ver + titleFace->sh());
+          
+          int h = Fonts::drawStringBounded(p->text, textFace, textX, ty, bound, ALIGN_LEFT) - ty;
+          ty += h;
+          
+          tth = ty;
+          
+          p = p->next;
+          ty += 3;
+        }
+        
+      }
+      
       Gfx::bindCanvas();
-      Gfx::drawClipped(TSI(HELP_BACKDROP,0,0), 55, 10, 0, 0, 210, h);
-      Gfx::drawClipped(TSI(HELP_BACKDROP,0,0), 55, 3+h, 0, 200, 210, 23);
-      Gfx::mergeBuffer();
+      
+      int totalHeight = tth + 20;
+      int finalY = HEIGHT/2 - totalHeight/2 - lowerBG.sh()/2;
+      
+      Gfx::drawClipped(LSI(HELP, 0), px, finalY, 0, 0, 217, totalHeight);
+      Gfx::draw(LSI(HELP,1), px, finalY + totalHeight);
+      Gfx::mergeBuffer(4, 4, px + 17, finalY + 25, 186, tth);
+
       break;
 
     }

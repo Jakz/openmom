@@ -23,6 +23,7 @@
 
 #include "LBX.h"
 
+#include "Help.h"
 #include "Animations.h"
 
 enum lbx_indices
@@ -71,11 +72,10 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
 
 void MainView::activate()
 {  
-  /*player->send(new msgs::Error("antanius"));
-  player->send(new msgs::Error("fotius"));
+  player->send(new msgs::Help(help::Data::at(289)));
+  /*player->send(new msgs::Error("fotius"));
   player->send(new msgs::NewBuilding(player->getCities().front(), Building::ARMORY));*/
   
-  gvm->switchOverview(VIEW_HELP);
 }
 
 void MainView::switchToSpellCast()
