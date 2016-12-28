@@ -87,7 +87,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::MESSAGE_RIGHT,"static/message-right.png",1,1,55,59),
   //113 - 29
   Texture(TextureID::MESSAGE_CONFIRM_DIALOG,"static/confirm-dialog.png",1,1,186,142),
-  Texture(TextureID::MESSAGE_CONFIRM_BUTTONS,"static/confirm-buttons.png",2,2,66,17),
   
   Texture(TextureID::SPELL_BOOK_SCHOOL_ICONS,"spellbook/school-symbols.png",1,5,5,5),
   

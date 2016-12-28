@@ -25,8 +25,8 @@ MessageView::MessageView(ViewManager* gvm) : View(gvm), message(nullptr)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[NO] = TristateButton::build("No", 0, 0, TextureID::MESSAGE_CONFIRM_BUTTONS, 0)->setAction([this]() { handleMessage(); });
-  buttons[YES] = TristateButton::build("Yes", 30, 0, TextureID::MESSAGE_CONFIRM_BUTTONS, 1);
+  buttons[NO] = NormalButton::buildBistate("No", 0, 0, LSI(RESOURCE,4))->setAction([this]() { handleMessage(); });
+  buttons[YES] = NormalButton::buildBistate("Yes", 30, 0, LSI(RESOURCE,3));
 }
 
 void MessageView::handleMessage()
