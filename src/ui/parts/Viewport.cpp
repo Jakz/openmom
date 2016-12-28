@@ -38,7 +38,17 @@ enum lbx_indices
   road_ench_south = LBXI(MAPBACK,59),
   road_ench_south_east = LBXI(MAPBACK,60),
   road_ench_east = LBXI(MAPBACK,61),
-  road_ench_north_east = LBXI(MAPBACK,62)
+  road_ench_north_east = LBXI(MAPBACK,62),
+  
+  place_tower_unowned = LBXI(MAPBACK, 69),
+  place_tower_owned = LBXI(MAPBACK, 70),
+  place_mound = LBXI(MAPBACK, 71),
+  place_temple = LBXI(MAPBACK, 72),
+  place_keep = LBXI(MAPBACK, 73),
+  place_ruins = LBXI(MAPBACK, 74),
+  place_fallen_temple = LBXI(MAPBACK, 75),
+  place_mud = LBXI(MAPBACK, 76),
+  place_corruption = LBXI(MAPBACK, 77)
 };
 
 const static sprite_ref roads[] = { road_none, road_north, road_north_west, road_west, road_south_west, road_south, road_south_east, road_east, road_north_east };
@@ -99,6 +109,20 @@ enum TileSheet : u8 {
   NODES
 };
 
+SpriteInfo Viewport::gfxForPlace(const Place* place)
+{
+  switch (place->type)
+  {
+    case PLACE_TOWER_OF_WIZARDRY: return place_tower_unowned; //TODO: there is 1 pixel shift compared to other tower gfx
+    case PLACE_TOWER_OF_WIZARDRY_CLEARED: return place_tower_owned;
+    case PLACE_CAVE: return place_mound;
+    case PLACE_RUINS: return place_ruins;
+    case PLACE_KEEP: return place_keep;
+    case PLACE_TEMPLE: return place_temple;
+    case PLACE_ANCIENT_RUINS: return place_fallen_temple;
+  }
+}
+
 
 void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
 {
@@ -152,10 +176,10 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
     Gfx::draw(TextureID::TILE_RESOURCES, 0, static_cast<u8>(t->resource), x, y);
   
   if (t->place)
-    Gfx::draw(TextureID::TILE_PLACES, 0, static_cast<u8>(t->place->type), x, y);
+    Gfx::draw(gfxForPlace(t->place), x, y);
   
   if (t->isCorrupted())
-    Gfx::draw(TextureID::TILE_PLACES, 1, 0, x, y);
+    Gfx::draw(place_corruption, x, y);
   
   if (t->hasRoad || t->city)
   {

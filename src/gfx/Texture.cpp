@@ -42,7 +42,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::TILE_NODE_AURAS,"tile/node-auras.png",5,6,20,18,true,2),
   Texture(TextureID::TILE_FOG,"tile/fog.png",1,10,20,18),
   Texture(TextureID::TILE_RESOURCES,"tile/resources.png",1,11,20,18),
-  Texture(TextureID::TILE_PLACES,"tile/places.png",1,10,20,18),
   
   
   Texture(TextureID::MAIN_CURSORS,"main/cursors.png",1,5,16,16),
@@ -132,7 +131,7 @@ const Texture Texture::textures[] =
   
   // units ,not combat related sprites)
   
-  Texture(TextureID::UNIT_DETAIL_SKILL_ARROWS,"units/static/skill-pane-arrows.png",2,2,9,10),
+
   Texture(TextureID::UNIT_DETAIL_SPECIAL_THINGS,"units/special-things.png",1,1,73,33), // contiene anche mirino minimap
   Texture(TextureID::UNIT_DETAIL_TARGET,"units/static/target-backdrop.png",1,1,238,200),
   Texture(TextureID::UNIT_DETAIL_PROPS,"units/props.png",2,12,9,8),
@@ -166,8 +165,6 @@ const Texture Texture::textures[] =
   
   Texture(TextureID::DARKNER,"static/darkner.png",1,1,320,200),
   
-  Texture(TextureID::NEW_GAME_BACKDROP,"newgame/backdrop.png",1,1,320,200),
-  Texture(TextureID::NEW_GAME_PARTIALS,"newgame/backdrops-right.png",1,2,153,200),
   Texture(TextureID::NEW_GAME_BUTTONS1,"newgame/buttons1.png",1,6,{63,63,64,64,64,64},15)
 };
 

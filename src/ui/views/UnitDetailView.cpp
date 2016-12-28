@@ -31,7 +31,10 @@ enum lbx_indices
   buttons_backdrop = LBXI(UNITVIEW, 2),
   
   hero_hire_banner = LBXI(HIRE, 0),
-  hero_portrait_border = LBXI(UNITVIEW, 33)
+  hero_portrait_border = LBXI(UNITVIEW, 33),
+  
+  up_arrow = LBXI(UNITVIEW, 3),
+  down_arrow = LBXI(UNITVIEW, 4)
 };
 
 UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mode(Mode::NORMAL), c(normalBaseCoords)
@@ -41,8 +44,8 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
   buttons[HIGH_ACTION] = BistateLabeledButton::buildLBX("High Action", 0, 0, LSI(BACKGRND, 24), "", FontFaces::Serif::GOLD)->setAction([this](){this->buttonClicked(HIGH_ACTION);});
   buttons[LOW_ACTION] = BistateLabeledButton::buildLBX("Low Action", 0, 0, LSI(BACKGRND, 24), "", FontFaces::Serif::GOLD)->setAction([this](){this->buttonClicked(LOW_ACTION);});
 
-  buttons[UP_ARROW] = TristateButton::build("Up", 0, 0, TextureID::UNIT_DETAIL_SKILL_ARROWS, 0)->setAction([this](){skillDraw.prevPage();});
-  buttons[DOWN_ARROW] = TristateButton::build("Down", 0, 0, TextureID::UNIT_DETAIL_SKILL_ARROWS, 1)->setAction([this](){skillDraw.nextPage();});
+  buttons[UP_ARROW] = NormalButton::buildTristate("Up", 0, 0, up_arrow)->setAction([this](){skillDraw.prevPage();});
+  buttons[DOWN_ARROW] = NormalButton::buildTristate("Down", 0, 0, down_arrow)->setAction([this](){skillDraw.nextPage();});
   
   /*for (int i = 0; i < 8; ++i)
    {

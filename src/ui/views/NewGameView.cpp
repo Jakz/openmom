@@ -38,8 +38,8 @@ void NewGameView::updateLabelsOptions()
 
 void NewGameView::draw()
 {
-  Gfx::draw(TextureID::NEW_GAME_BACKDROP, 0, 0);
-  Gfx::draw(TextureID::NEW_GAME_PARTIALS, 0, 0, 165, 0);
+  Gfx::draw(LSI(NEWGAME, 0), 0, 0);
+  Gfx::draw(LSI(NEWGAME, 1), 165, 0);
 
   /*Gfx::drawGrayScale(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30);
   Gfx::drawGlow(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30, CHAOS);*/

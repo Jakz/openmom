@@ -47,9 +47,7 @@ enum class TextureID : u16
   TILE_NODE_AURAS,
   TILE_FOG,
 
-  TILE_RESOURCES,
-  TILE_PLACES,
-  
+  TILE_RESOURCES,  
   
   MAIN_CURSORS,
   MAIN_LOW_BUTTONS,
@@ -137,7 +135,6 @@ enum class TextureID : u16
   
   // units
   
-  UNIT_DETAIL_SKILL_ARROWS,
   UNIT_DETAIL_SPECIAL_THINGS, // contiene anche mirino minimap
   UNIT_DETAIL_TARGET,
   UNIT_DETAIL_PROPS,
@@ -170,8 +167,6 @@ enum class TextureID : u16
   
   DARKNER,
   
-  NEW_GAME_BACKDROP,
-  NEW_GAME_PARTIALS,
   NEW_GAME_BUTTONS1,
   
   TEXTURES_COUNT
