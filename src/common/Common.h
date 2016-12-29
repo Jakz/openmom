@@ -412,9 +412,7 @@ enum ViewID
   VIEW_OUTPOST,
   VIEW_NEW_GAME,
   VIEW_CONSOLE,
-  
-  VIEW_LBX,
-  
+    
   VIEW_COUNT
 };
 

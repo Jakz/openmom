@@ -74,7 +74,6 @@
 		048616571E02E758004B62B7 /* hq3x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048616521E02E758004B62B7 /* hq3x.cpp */; };
 		048616581E02E758004B62B7 /* hq4x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048616531E02E758004B62B7 /* hq4x.cpp */; };
 		048616591E02E758004B62B7 /* hqx_init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048616551E02E758004B62B7 /* hqx_init.cpp */; };
-		0486165D1E031609004B62B7 /* LbxView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0486165B1E031609004B62B7 /* LbxView.cpp */; };
 		0486165E1E031743004B62B7 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 04E282CD1E023BEB00DD673D /* data */; };
 		0486165F1E038086004B62B7 /* OriginalSave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */; };
 		048616601E038086004B62B7 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E282BD1E0227CF00DD673D /* Util.cpp */; };
@@ -145,7 +144,6 @@
 		048616A11E038086004B62B7 /* ResearchView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9A5198691070009BFF7 /* ResearchView.cpp */; };
 		048616A21E038086004B62B7 /* SpellBookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9A81986912D0009BFF7 /* SpellBookView.cpp */; };
 		048616A31E038086004B62B7 /* UnitDetailView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9AB198691530009BFF7 /* UnitDetailView.cpp */; };
-		048616A41E038086004B62B7 /* LbxView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0486165B1E031609004B62B7 /* LbxView.cpp */; };
 		048616A51E038086004B62B7 /* ViewManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375FC197ABA9100A5B5FC /* ViewManager.cpp */; };
 		048616A61E038086004B62B7 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
 		048616A71E038086004B62B7 /* Buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E41979EA6700A5B5FC /* Buttons.cpp */; };
@@ -368,8 +366,6 @@
 		048616531E02E758004B62B7 /* hq4x.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hq4x.cpp; sourceTree = "<group>"; };
 		048616541E02E758004B62B7 /* hqx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hqx.h; sourceTree = "<group>"; };
 		048616551E02E758004B62B7 /* hqx_init.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hqx_init.cpp; sourceTree = "<group>"; };
-		0486165B1E031609004B62B7 /* LbxView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LbxView.cpp; sourceTree = "<group>"; };
-		0486165C1E031609004B62B7 /* LbxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LbxView.h; sourceTree = "<group>"; };
 		0487516B197F612400009661 /* Messages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Messages.cpp; sourceTree = "<group>"; };
 		0487516C197F612400009661 /* Messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Messages.h; sourceTree = "<group>"; };
 		04879A3D1978374100313BC7 /* OpenMoM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMoM.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -673,8 +669,6 @@
 				0439E9A91986912D0009BFF7 /* SpellBookView.h */,
 				0439E9AB198691530009BFF7 /* UnitDetailView.cpp */,
 				0439E9AC198691530009BFF7 /* UnitDetailView.h */,
-				0486165B1E031609004B62B7 /* LbxView.cpp */,
-				0486165C1E031609004B62B7 /* LbxView.h */,
 				046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */,
 				046428EF1E0AC4DC003A76D8 /* ConsoleView.h */,
 			);
@@ -1058,7 +1052,6 @@
 				048E08B919829C6D009AED0A /* SkillDraw.cpp in Sources */,
 				040375E1197990B900A5B5FC /* Localization.cpp in Sources */,
 				040375DC197990B900A5B5FC /* Race.cpp in Sources */,
-				0486165D1E031609004B62B7 /* LbxView.cpp in Sources */,
 				048616581E02E758004B62B7 /* hq4x.cpp in Sources */,
 				044E466D1980202D00E396AD /* MiniMap.cpp in Sources */,
 			);
@@ -1158,7 +1151,6 @@
 				048616A11E038086004B62B7 /* ResearchView.cpp in Sources */,
 				048616A21E038086004B62B7 /* SpellBookView.cpp in Sources */,
 				048616A31E038086004B62B7 /* UnitDetailView.cpp in Sources */,
-				048616A41E038086004B62B7 /* LbxView.cpp in Sources */,
 				048616A51E038086004B62B7 /* ViewManager.cpp in Sources */,
 				048616A61E038086004B62B7 /* GfxData.cpp in Sources */,
 				048616A71E038086004B62B7 /* Buttons.cpp in Sources */,

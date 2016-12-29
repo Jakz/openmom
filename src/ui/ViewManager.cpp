@@ -28,8 +28,6 @@
 
 #include "ConsoleView.h"
 
-#include "LBXView.h"
-
 using namespace std;
 using namespace anims;
 
@@ -54,8 +52,6 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_UNIT] = new UnitDetailView(this);
   
   views[VIEW_CONSOLE] = new ConsoleView(this);
-  
-  views[VIEW_LBX] = new lbx::LBXView(this);
 }
 
 AlchemyView* ViewManager::alchemyView() { return static_cast<AlchemyView*>(views[VIEW_ALCHEMY]); }
