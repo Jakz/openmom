@@ -88,11 +88,6 @@ void CommonDraw::drawUpkeep(const Upkeep& uk, u16 x, u16 y)
   }
 }
 
-void CommonDraw::drawWizardGem(const Player *player, u16 x, u16 y)
-{
-  Gfx::draw(TextureID::WIZARD_PORTRAITS_GEMS, player->color, player->wizard.ident, x, y);
-}
-
 struct PropertyDrawInfo
 {
   const Property property;

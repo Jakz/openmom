@@ -105,7 +105,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::OUTPOST_VIEW_BACKDROP,"static/backdrop-outpost.png",1,1,262,103),
   Texture(TextureID::OUTPOST_HOUSES,"city/outpost-houses.png",2,3,12,13),
   
-  Texture(TextureID::MAGIC_BUTTONS,"magic/view/buttons.png",2,2, {58,26},15),
   Texture(TextureID::MAGIC_GEMS,"magic/view/gems.png",1,7,42,45),
   Texture(TextureID::MAGIC_PORTRAITS,"magic/view/portraits.png",1,14,33,35),
   Texture(TextureID::MAGIC_MANA_WANDS,"magic/view/mana-wands.png",1,6,16,72),
@@ -139,11 +138,7 @@ const Texture Texture::textures[] =
   
   Texture(TextureID::UNIT_HERO_ITEM_BACKGROUND,"units/items-background.png",1,6,18,16),
   
-  
-  Texture(TextureID::ITEM_CRAFT_BACKDROP,"static/backdrop-itemcraft.png",320,200),
-  Texture(TextureID::ITEM_CRAFT_BUTTONS,"magic/view/item-craft-buttons.png",4,10,31,13),
-  Texture(TextureID::ITEM_CRAFT_ARROWS,"magic/view/item-craft-arrows.png",2,2,9,7),
-  
+    
   /* altezza max help: 200 + 23 pezzo di chiusura da sovrapporre */
   Texture(TextureID::HELP_BACKDROP,"static/help-backdrop.png",1,1,217,223),
   
@@ -155,8 +150,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::COMBAT_GRASS_ARCANUS,"combat/arcanus/grass.png",6,8,30,16),
   Texture(TextureID::COMBAT_MISC_TILES,"combat/misc-tiles.png",3,8,30,16,true,1),
   
-  Texture(TextureID::WIZARD_PORTRAITS,"wizards/portraits.png",1,14,109,104),
-  Texture(TextureID::WIZARD_PORTRAITS_GEMS,"wizards/portraits-gems.png",5,14,41,43),
   Texture(TextureID::WIZARD_SPELLBOOKS,"wizards/spellbooks.png",3,6,9,21),
   
   Texture(TextureID::DARKNER,"static/darkner.png",1,1,320,200),

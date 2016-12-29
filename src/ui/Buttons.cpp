@@ -141,17 +141,12 @@ void LabeledSimpleButton::draw()
 template<typename T>
 void RadioButton<T>::draw()
 {
-  if (isVisible())
-  {
-    const SpriteInfo &info = pressed ? pressedCoords : normalCoords;
-    
-    if (group->getCurrent() == this)
-    {
-      //TODO: not generic for lbx/non lbx
-      SpriteInfo info2 = SpriteInfo(info.texture(), info.x()+toggledOffset[0], info.y()+toggledOffset[1]);
-      Gfx::draw(info2, x, y);
-    }
-		else
-		  Gfx::draw(info, x, y);
-  }
+  if (!isVisible()) return;
+  
+  bool isSelected = group->getCurrent() == this;
+  
+  if (isSelected)
+    Gfx::draw(pressed ? toggledGfx.pressed : toggledGfx.normal, x, y);
+  else
+    NormalButton::draw();
 }

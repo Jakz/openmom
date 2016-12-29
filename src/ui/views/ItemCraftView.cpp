@@ -17,7 +17,23 @@
 
 #include "Util.h"
 
-constexpr const Item::TypeID ItemCraftView::ITEM_TYPES[];
+const Item::TypeID ItemCraftView::ITEM_TYPES[] = {
+  Item::TypeID::SWORD, Item::TypeID::MACE, Item::TypeID::AXE, Item::TypeID::BOW, Item::TypeID::STAFF,
+  Item::TypeID::WAND, Item::TypeID::MISC, Item::TypeID::SHIELD, Item::TypeID::CHAIN, Item::TypeID::PLATE
+};
+
+sprite_ref TYPE_BUTTONS[][2] = {
+  { LBXI(SPELLSCR, 14), LBXI(SPELLSCR, 25) },
+  { LBXI(SPELLSCR, 15), LBXI(SPELLSCR, 26) },
+  { LBXI(SPELLSCR, 16), LBXI(SPELLSCR, 27) },
+  { LBXI(SPELLSCR, 17), LBXI(SPELLSCR, 28) },
+  { LBXI(SPELLSCR, 18), LBXI(SPELLSCR, 29) },
+  { LBXI(SPELLSCR, 19), LBXI(SPELLSCR, 30) },
+  { LBXI(SPELLSCR, 20), LBXI(SPELLSCR, 31) },
+  { LBXI(SPELLSCR, 21), LBXI(SPELLSCR, 32) },
+  { LBXI(SPELLSCR, 22), LBXI(SPELLSCR, 33) },
+  { LBXI(SPELLSCR, 23), LBXI(SPELLSCR, 34) }
+};
 
 ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), currentType(Item::TypeID::SWORD), currentItemGfx(0)
 {
@@ -46,7 +62,7 @@ ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), curr
   
   for (size_t i = 0; i < sizeof(ITEM_TYPES)/sizeof(ITEM_TYPES[0]); ++i)
   {
-    RadioButton<Item::TypeID>* button = RadioButton<Item::TypeID>::build("type", ITEM_TYPES[i], itemType, 156 + 33*(i%5), 3 + 15*(i/5), TextureID::ITEM_CRAFT_BUTTONS, i, 0, 2);
+    RadioButton<Item::TypeID>* button = RadioButton<Item::TypeID>::build("type", ITEM_TYPES[i], itemType, 156 + 33*(i%5), 3 + 15*(i/5), TYPE_BUTTONS[i][0], TYPE_BUTTONS[i][1]);
     buttons.push_back(button);
     itemType->add(button);
   }
@@ -61,7 +77,7 @@ void ItemCraftView::updateItemName()
 
 void ItemCraftView::draw()
 {
-  Gfx::draw(TextureID::ITEM_CRAFT_BACKDROP, 0, 0);
+  Gfx::draw(LSI(SPELLSCR, 13), 0, 0);
   
   const auto itemGfx = GfxData::itemGfxSpec(currentType, currentItemGfx);
   

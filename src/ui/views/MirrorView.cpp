@@ -12,6 +12,7 @@
 
 #include "Font.h"
 #include "Gfx.h"
+#include "GfxData.h"
 #include "Texture.h"
 #include "CommonDraw.h"
 #include "View.h"
@@ -25,7 +26,7 @@ MirrorView::MirrorView(ViewManager* gvm) : View(gvm)
 void MirrorView::draw()
 {
   Gfx::draw(LSI(BACKGRND, 4), 70, 2); // mirror bg
-  CommonDraw::drawWizardGem(player, 81, 13);
+  Gfx::draw(GfxData::wizardGfxSpec(player->wizard.ident).getGemmedPortrait(player->color), 81, 13);
   Fonts::drawString(player->name, FontFaces::Serif::YELLOW_SHADOW, 171, 12, ALIGN_CENTER);
   
   u16 t = 0;

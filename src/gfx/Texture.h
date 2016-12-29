@@ -110,7 +110,6 @@ enum class TextureID : u16
   OUTPOST_VIEW_BACKDROP,
   OUTPOST_HOUSES,
   
-  MAGIC_BUTTONS,
   MAGIC_GEMS,
   MAGIC_PORTRAITS,
   MAGIC_MANA_WANDS,
@@ -142,11 +141,7 @@ enum class TextureID : u16
   
   UNIT_HERO_ITEM_BACKGROUND,
   
-  
-  ITEM_CRAFT_BACKDROP,
-  ITEM_CRAFT_BUTTONS,
-  ITEM_CRAFT_ARROWS,
-  
+    
   /* altezza max help: 200 + 23 pezzo di chiusura da sovrapporre */
   HELP_BACKDROP,
   
@@ -158,8 +153,6 @@ enum class TextureID : u16
   COMBAT_GRASS_ARCANUS,
   COMBAT_MISC_TILES,
   
-  WIZARD_PORTRAITS,
-  WIZARD_PORTRAITS_GEMS,
   WIZARD_SPELLBOOKS,
   
   DARKNER,

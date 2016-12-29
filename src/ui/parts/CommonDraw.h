@@ -23,9 +23,7 @@ class CommonDraw
     static void drawMovement(u16 v, MovementBaseType icon, u16 x, u16 y, u16 c);
     static void drawGoldUpkeep(u16 g, u16 x, u16 y);
     static void drawUpkeep(const Upkeep& upkeep, u16 x, u16 y);
-  
-    static void drawWizardGem(const Player* player, u16 x, u16 y);
-  
+    
     static void drawUnitProps(const UnitSpec* spec, u16 xx, u16 yy, s16 max);
     static void drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max);
 

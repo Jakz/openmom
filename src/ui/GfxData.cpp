@@ -47,20 +47,20 @@ unordered_map<const Spell*, sprite_ref> GfxData::specialSpellGfxEffects = {
 };
 
 std::unordered_map<WizardID, WizardGfxSpec, enum_hash> GfxData::wizardSpecs = {
-  { WizardID::MERLIN, WizardGfxSpec{ LSI(MAGIC, 18), LSI(WIZARDS, 0), LSI(MOODWIZ, 0) } },
-  { WizardID::RAVEN, WizardGfxSpec{ LSI(MAGIC, 19), LSI(WIZARDS, 1), LSI(MOODWIZ, 1) } },
-  { WizardID::SHAREE, WizardGfxSpec{ LSI(MAGIC, 20), LSI(WIZARDS, 2), LSI(MOODWIZ, 2) } },
-  { WizardID::LO_PAN, WizardGfxSpec{ LSI(MAGIC, 21), LSI(WIZARDS, 3), LSI(MOODWIZ, 3) } },
-  { WizardID::JAFAR, WizardGfxSpec{ LSI(MAGIC, 22), LSI(WIZARDS, 4), LSI(MOODWIZ, 4) } },
-  { WizardID::OBERIC, WizardGfxSpec{ LSI(MAGIC, 23), LSI(WIZARDS, 5), LSI(MOODWIZ, 5) } },
-  { WizardID::RJAK, WizardGfxSpec{ LSI(MAGIC, 24), LSI(WIZARDS, 6), LSI(MOODWIZ, 6) } },
-  { WizardID::SSS_RA, WizardGfxSpec{ LSI(MAGIC, 25), LSI(WIZARDS, 7), LSI(MOODWIZ, 7) } },
-  { WizardID::TAURON, WizardGfxSpec{ LSI(MAGIC, 26), LSI(WIZARDS, 8), LSI(MOODWIZ, 8) } },
-  { WizardID::FREYA, WizardGfxSpec{ LSI(MAGIC, 27), LSI(WIZARDS, 9), LSI(MOODWIZ, 9) } },
-  { WizardID::HORUS, WizardGfxSpec{ LSI(MAGIC, 28), LSI(WIZARDS, 10), LSI(MOODWIZ, 10) } },
-  { WizardID::ARIEL, WizardGfxSpec{ LSI(MAGIC, 29), LSI(WIZARDS, 11), LSI(MOODWIZ, 11) } },
-  { WizardID::TLALOC, WizardGfxSpec{ LSI(MAGIC, 30), LSI(WIZARDS, 12), LSI(MOODWIZ, 12) } },
-  { WizardID::KALI, WizardGfxSpec{ LSI(MAGIC, 31), LSI(WIZARDS, 13), LSI(MOODWIZ, 13) } }
+  { WizardID::MERLIN, WizardGfxSpec{ LSI(MAGIC, 18), LSI(WIZARDS, 0), LSI(MOODWIZ, 0), LSI(LILWIZ, 0) } },
+  { WizardID::RAVEN, WizardGfxSpec{ LSI(MAGIC, 19), LSI(WIZARDS, 1), LSI(MOODWIZ, 1), LSI(LILWIZ, 5) } },
+  { WizardID::SHAREE, WizardGfxSpec{ LSI(MAGIC, 20), LSI(WIZARDS, 2), LSI(MOODWIZ, 2), LSI(LILWIZ, 10) } },
+  { WizardID::LO_PAN, WizardGfxSpec{ LSI(MAGIC, 21), LSI(WIZARDS, 3), LSI(MOODWIZ, 3), LSI(LILWIZ, 15) } },
+  { WizardID::JAFAR, WizardGfxSpec{ LSI(MAGIC, 22), LSI(WIZARDS, 4), LSI(MOODWIZ, 4), LSI(LILWIZ, 20) } },
+  { WizardID::OBERIC, WizardGfxSpec{ LSI(MAGIC, 23), LSI(WIZARDS, 5), LSI(MOODWIZ, 5), LSI(LILWIZ, 25) } },
+  { WizardID::RJAK, WizardGfxSpec{ LSI(MAGIC, 24), LSI(WIZARDS, 6), LSI(MOODWIZ, 6), LSI(LILWIZ, 30) } },
+  { WizardID::SSS_RA, WizardGfxSpec{ LSI(MAGIC, 25), LSI(WIZARDS, 7), LSI(MOODWIZ, 7), LSI(LILWIZ, 35) } },
+  { WizardID::TAURON, WizardGfxSpec{ LSI(MAGIC, 26), LSI(WIZARDS, 8), LSI(MOODWIZ, 8), LSI(LILWIZ, 40) } },
+  { WizardID::FREYA, WizardGfxSpec{ LSI(MAGIC, 27), LSI(WIZARDS, 9), LSI(MOODWIZ, 9), LSI(LILWIZ, 45) } },
+  { WizardID::HORUS, WizardGfxSpec{ LSI(MAGIC, 28), LSI(WIZARDS, 10), LSI(MOODWIZ, 10), LSI(LILWIZ, 50) } },
+  { WizardID::ARIEL, WizardGfxSpec{ LSI(MAGIC, 29), LSI(WIZARDS, 11), LSI(MOODWIZ, 11), LSI(LILWIZ, 55) } },
+  { WizardID::TLALOC, WizardGfxSpec{ LSI(MAGIC, 30), LSI(WIZARDS, 12), LSI(MOODWIZ, 12), LSI(LILWIZ, 60) } },
+  { WizardID::KALI, WizardGfxSpec{ LSI(MAGIC, 31), LSI(WIZARDS, 13), LSI(MOODWIZ, 13), LSI(LILWIZ, 65) } }
 };
 
 std::unordered_map<PlayerColor, PlayerGfxSpec, enum_hash> GfxData::playerSpecs = {
@@ -114,6 +114,19 @@ std::unordered_map<const UnitSpec*, SpriteInfo> GfxData::heroPortraits = {
   { UnitSpec::heroSpec(UnitID::HERO_DWARF), LSI(PORTRAIT, 10) },
   { UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), LSI(PORTRAIT, 6) }
 };
+
+SpriteInfo WizardGfxSpec::getGemmedPortrait(PlayerColor color) const
+{
+  switch (color)
+  {
+    case BLUE: return gemmedPortrait.relative(0);
+    case GREEN: return gemmedPortrait.relative(1);
+    case PURPLE: return gemmedPortrait.relative(2);
+    case RED: return gemmedPortrait.relative(3);
+    case YELLOW: return gemmedPortrait.relative(4);
+    default: assert(false);
+  }
+}
 
 const UnitGfxSpec& GfxData::unitGfxSpec(const UnitSpec* spec)
 {

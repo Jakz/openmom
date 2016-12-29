@@ -58,10 +58,15 @@ struct UnitGfxSpec
 
 struct WizardGfxSpec
 {
-  WizardGfxSpec(SpriteInfo portraitSmall, SpriteInfo portraitLarge, SpriteInfo diplomacyMood) : portraitSmall(portraitSmall), portraitLarge(portraitLarge), diplomacyMood(diplomacyMood) { }
+  WizardGfxSpec(SpriteInfo portraitSmall, SpriteInfo portraitLarge, SpriteInfo diplomacyMood, SpriteInfo gemmedPortrait)
+  : portraitSmall(portraitSmall), portraitLarge(portraitLarge), diplomacyMood(diplomacyMood), gemmedPortrait(gemmedPortrait) { }
+  
   const SpriteInfo portraitSmall;
   const SpriteInfo portraitLarge;
   const SpriteInfo diplomacyMood;
+  const SpriteInfo gemmedPortrait;
+  
+  SpriteInfo getGemmedPortrait(PlayerColor color) const;
 };
 
 struct PlayerGfxSpec

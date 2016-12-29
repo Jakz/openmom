@@ -252,17 +252,18 @@ public:
 };
 
 template<typename T>
-class RadioButton : public Button
+class RadioButton : public NormalButton
 {
 private:
   RadioButtonGroup<T>* group;
-  u8 toggledOffset[2];
-  SpriteInfo pressedCoords;
+  
+  ButtonGfx toggledGfx;
   bool toggled;
+  
   T data;
   
-  RadioButton(const std::string name, T data, RadioButtonGroup<T>* group, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, u8 offsetX, u8 offsetY) :
-  Button(name, x, y, normal), data(data), toggledOffset{offsetX, offsetY}, pressedCoords(pressed), toggled(false), group(group) { }
+  RadioButton(const std::string name, T data, RadioButtonGroup<T>* group, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo normalToggled, SpriteInfo pressedToggled)
+  : NormalButton(name, x, y, normal, pressed), data(data), toggledGfx(normalToggled, pressedToggled), toggled(false), group(group) { }
   
 public:
   void draw() override;
@@ -271,9 +272,9 @@ public:
   
   void click() override { group->click(this); }
   
-  static RadioButton* build(const std::string name, T data, RadioButtonGroup<T>* group, u16 x, u16 y, TextureID texture, u8 c, u8 offsetX, u8 offsetY)
+  static RadioButton* build(const std::string name, T data, RadioButtonGroup<T>* group, u16 x, u16 y, SpriteInfo untoggled, SpriteInfo toggled)
   {
-    return new RadioButton(name, data, group, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c), offsetX, offsetY);
+    return new RadioButton(name, data, group, x, y, untoggled, untoggled.frame(1), toggled, toggled.frame(1));
   }
 };
 
