@@ -56,9 +56,9 @@ void ArmiesItemsView::draw()
     Gfx::draw(hero_gold_portrait, heroPositions[i][0]-1, heroPositions[i][1]-1);
     UnitDraw::drawHeroPortrait(hero, heroPositions[i][0], heroPositions[i][1]);
     
-    for (int j = 0; j < Item::MAX_SLOTS; ++j)
+    for (int j = 0; j < items::Item::MAX_SLOTS; ++j)
     {
-      const Item* item = hero->itemAt(j);
+      const items::Item* item = hero->itemAt(j);
       
       u8 indices[] = {0,4,5};
       // TODO: real slots

@@ -280,6 +280,6 @@ public:
 
 #include "Items.h" // FIXME: forced for explicit declaration of template method
 
-template class RadioButton<Item::TypeID>;
+template class RadioButton<items::Item::TypeID>;
 
 #endif

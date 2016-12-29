@@ -115,7 +115,7 @@ public:
 class Hero : public Unit
 {
 protected:
-  std::array<Item*, 3> items;
+  std::array<items::Item*, 3> items;
   
 public:
   Hero(const HeroSpec& spec) : Unit(spec, &HeroLevel::HERO), items({nullptr}) { }
@@ -123,7 +123,7 @@ public:
   // const std::string name() const; TODO: name management
   const std::string title() const;
   
-  const Item* itemAt(u16 index) const { return items[index]; }
+  const items::Item* itemAt(u16 index) const { return items[index]; }
   const HeroSpec* getSpec() const { return static_cast<const HeroSpec*>(&spec); }
 };
 

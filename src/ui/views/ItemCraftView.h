@@ -33,7 +33,7 @@ private:
   void draw() override;
   void drawPost() override { }
   
-  Item::TypeID currentType;
+  items::Item::TypeID currentType;
   s8 currentItemGfx;
   std::string itemName;
   
@@ -41,16 +41,16 @@ private:
   
   void updateItemName();
   
-  RadioButtonGroup<Item::TypeID>* itemType;
+  RadioButtonGroup<items::Item::TypeID>* itemType;
   
-  static const Item::TypeID ITEM_TYPES[];
+  static const items::Item::TypeID ITEM_TYPES[];
   
 public:
   ItemCraftView(ViewManager* gvm);
   
   void activate() override
   {
-    currentType = Item::TypeID::SWORD;
+    currentType = items::Item::TypeID::SWORD;
     currentItemGfx = 0;
     updateItemName();
   }

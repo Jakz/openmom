@@ -1,14 +1,36 @@
 #include "Items.h"
 
 #include "Skill.h"
+#include "UnitSpec.h"
+
 #include "Localization.h"
 
-using namespace ItemEnchant;
+
+using namespace items;
 
 //const PowerEnchant ItemEnchants::POWER_BLESS = PowerEnchant(new WrapSkill(SkillBase::ITEM_BLESS, Skills::BLESS), LIFE, 2)
 
 // TODO
 //const ItemClassSpec ItemEnchants::SPEC_SWORD
+
+// SWORD = 0, MACE, AXE, BOW, STAFF, WAND, MISC, SHIELD, CHAIN, PLATE
+
+static const PropertyAffix melee_attack_affix = PropertyAffix(Property::MELEE, {1,2,3,4,5,6}, {50,100,200,350,550,800});
+static const PropertyAffix defense_affix = PropertyAffix(Property::SHIELDS, {1,2,3,4,5,6}, {50,100,200,350,550,800});
+static const PropertyAffix movement_affix = PropertyAffix(Property::MOVEMENT, {1,2,3,4}, {100,200,400,800});
+
+static const PropertyAffix to_hit_affix = PropertyAffix(Property::TO_HIT, {1,2,3}, {400,800,1200});
+
+
+static const PropertyAffix sword_affixes[] =
+{
+  PropertyAffix(melee_attack_affix, 3),
+  PropertyAffix(defense_affix, 3),
+  // spell skill
+  PropertyAffix(to_hit_affix, 3)
+};
+
+
 
 
 static Item::Type types[] = {
@@ -30,14 +52,14 @@ const Item::Type* Item::typeForItem(Item::TypeID type)
 }
 
 
-static ItemSlots slots[] = {
-  ItemSlots({{ {Item::Class::MELEE,Item::Class::RANGED}, {Item::Class::ARMOR}, {Item::Class::MISC} }}, {{145, 149, 148}}),
-  ItemSlots({{ {Item::Class::MELEE,Item::Class::STAFF_WAND}, {Item::Class::ARMOR}, {Item::Class::MISC} }}, {{146, 149, 148}}),
-  ItemSlots({{ {Item::Class::STAFF_WAND}, {Item::Class::MISC}, {Item::Class::MISC} }}, {{147, 148, 148}}),
-  ItemSlots({{ {Item::Class::MELEE},{Item::Class::ARMOR},{Item::Class::MISC} }}, {{144, 149, 148}})
+static Slots slots[] = {
+  Slots({{ {Item::Class::MELEE,Item::Class::RANGED}, {Item::Class::ARMOR}, {Item::Class::MISC} }}, {{145, 149, 148}}),
+  Slots({{ {Item::Class::MELEE,Item::Class::STAFF_WAND}, {Item::Class::ARMOR}, {Item::Class::MISC} }}, {{146, 149, 148}}),
+  Slots({{ {Item::Class::STAFF_WAND}, {Item::Class::MISC}, {Item::Class::MISC} }}, {{147, 148, 148}}),
+  Slots({{ {Item::Class::MELEE},{Item::Class::ARMOR},{Item::Class::MISC} }}, {{144, 149, 148}})
 };
 
-const ItemSlots* ItemSlots::slotsFor(ItemSlots::Type type)
+const Slots* Slots::slotsFor(Slots::Type type)
 {
   return &slots[static_cast<u16>(type)];
 }

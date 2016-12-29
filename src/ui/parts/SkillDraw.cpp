@@ -38,7 +38,7 @@ void SkillDraw::draw(const Unit* unit)
     for (int i = 0; i < 3; ++i, ++curOffset)
     {
       if (!hero->itemAt(i))
-        drawSkill(curOffset, ItemSlots::slotsFor(static_cast<const HeroSpec&>(hero->spec).items)->sprites[i], "", base.x, base.y);
+        drawSkill(curOffset, items::Slots::slotsFor(static_cast<const HeroSpec&>(hero->spec).items)->sprites[i], "", base.x, base.y);
     }
   }
   else

@@ -17,6 +17,8 @@
 
 #include "Util.h"
 
+using namespace items;
+
 const Item::TypeID ItemCraftView::ITEM_TYPES[] = {
   Item::TypeID::SWORD, Item::TypeID::MACE, Item::TypeID::AXE, Item::TypeID::BOW, Item::TypeID::STAFF,
   Item::TypeID::WAND, Item::TypeID::MISC, Item::TypeID::SHIELD, Item::TypeID::CHAIN, Item::TypeID::PLATE

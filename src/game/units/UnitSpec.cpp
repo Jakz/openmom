@@ -55,8 +55,8 @@ static const RaceUnitSpec raceSpecs[] = {
 };
 
 static const HeroSpec heroSpecs[] = {
-  HeroSpec(UnitID::HERO_DWARF, HeroType::HERO, 0, ItemSlots::Type::WARRIOR, 2, -1,    5, 0, Ranged::NONE, 0,     4, 10, 11, 1,    1, 1,   {Skills::LUCKY, Skills::MOUNTAINWALK}),
-  HeroSpec(UnitID::HERO_ORC_WARRIOR, HeroType::HERO, 0, ItemSlots::Type::WARRIOR, 2, -1,   6, 0, Ranged::NONE, 0,    4, 6, 8, 1,    1, 1,   {Skills::MOUNTAINWALK})
+  HeroSpec(UnitID::HERO_DWARF, HeroType::HERO, 0, items::Slots::Type::WARRIOR, 2, -1,    5, 0, Ranged::NONE, 0,     4, 10, 11, 1,    1, 1,   {Skills::LUCKY, Skills::MOUNTAINWALK}),
+  HeroSpec(UnitID::HERO_ORC_WARRIOR, HeroType::HERO, 0, items::Slots::Type::WARRIOR, 2, -1,   6, 0, Ranged::NONE, 0,    4, 6, 8, 1,    1, 1,   {Skills::MOUNTAINWALK})
 };
 
 // SummonSpec(UnitID ident, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :

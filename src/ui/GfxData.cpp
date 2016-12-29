@@ -140,9 +140,9 @@ SpriteInfo GfxData::heroGfxSpec(const UnitSpec *spec)
   return heroPortraits.find(spec)->second;
 }
 
-SpriteInfo GfxData::itemGfxSpec(Item::TypeID type, int index)
+SpriteInfo GfxData::itemGfxSpec(items::Item::TypeID type, int index)
 {
-  using ID = Item::TypeID;
+  using ID = items::Item::TypeID;
   switch (type)
   {
     case ID::SWORD: return LSI(ITEMS, 0).relative(index);
