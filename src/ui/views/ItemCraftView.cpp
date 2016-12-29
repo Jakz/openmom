@@ -37,6 +37,13 @@ sprite_ref TYPE_BUTTONS[][2] = {
   { LBXI(SPELLSCR, 23), LBXI(SPELLSCR, 34) }
 };
 
+void ItemCraftView::ClickableAffix::draw()
+{
+  
+  
+  Clickable::draw();
+}
+
 ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), currentType(Item::TypeID::SWORD), currentItemGfx(0), propertyCostLimit(200)
 {
   buttons.resize(BUTTON_COUNT);
@@ -72,6 +79,11 @@ ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), curr
   itemType->set(0);
 }
 
+void ItemCraftView::updateClickableAreas()
+{
+  
+}
+
 void ItemCraftView::updateItemName()
 {
   
@@ -88,6 +100,7 @@ void ItemCraftView::draw()
   
   Fonts::drawString(itemName, FontFaces::Small::GRAY_ITEM_CRAFT, 29, 12, ALIGN_LEFT);
   
+  /* get all affixes for item type */
   const auto affixes = items::Affixes::forType(currentType);
   
   auto mediumFace = FontFaces::MediumBold::BROWN_ITEM_CRAFT;
@@ -102,6 +115,9 @@ void ItemCraftView::draw()
   int bx = BASE_X;
   for (const auto& affix : affixes.properties)
   {
+    /* since property cost limit may be specified (which is 200 for enchant item spell we need
+       to keep only affixes which have lower cost
+     */
     size_t effectiveRange = affix.sizeForCost(propertyCostLimit);
     
     if (by + effectiveRange*LINE_HEIGHT > MAX_H)

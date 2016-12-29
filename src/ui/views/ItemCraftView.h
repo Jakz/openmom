@@ -11,6 +11,7 @@
 
 #include "View.h"
 #include "Items.h"
+#include "Buttons.h"
 
 #include <string>
 
@@ -47,6 +48,20 @@ private:
   
   static const items::Item::TypeID ITEM_TYPES[];
   
+  void updateClickableAreas();
+  
+  class ClickableAffix : public Clickable
+  {
+    std::string left;
+    std::string right;
+    
+    ClickableAffix(std::string left, std::string right, u16 x, u16 y, u16 w, u16 h) : Clickable(x,y,w,h), left(left), right(right) { }
+    void draw() override;
+  };
+  
+  std::vector<std::unique_ptr<ClickableAffix>> clickables;
+
+
 public:
   ItemCraftView(ViewManager* gvm);
   

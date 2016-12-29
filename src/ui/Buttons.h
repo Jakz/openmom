@@ -44,7 +44,7 @@ public:
   virtual inline Clickable* setAction(Action action) { this->action = action; return this; }
   inline Action getAction() { return action; }
   
-  void draw();
+  virtual void draw();
 };
 
 struct ButtonGfx
