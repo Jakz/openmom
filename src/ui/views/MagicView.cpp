@@ -27,8 +27,9 @@ MagicView::MagicView(ViewManager* gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[ALCHEMY] = TristateButton::build("Alchemy", 234, 183, TextureID::MAGIC_BUTTONS, 0)->setAction([gvm](){ gvm->switchOverview(VIEW_ALCHEMY); });
-  buttons[OK] = TristateButton::build("Ok", 294, 183, TextureID::MAGIC_BUTTONS, 1)->setAction([gvm](){ gvm->switchView(VIEW_MAIN); });
+  //TODO: for these buttons alpha and darkening should be disabled but engine doesn't support specifying it
+  buttons[ALCHEMY] = NormalButton::buildBistate("Alchemy", 234, 183, LSI(MAGIC,13))->setAction([gvm](){ gvm->switchOverview(VIEW_ALCHEMY); });
+  buttons[OK] = NormalButton::buildBistate("Ok", 294, 183, LSI(MAGIC,14))->setAction([gvm](){ gvm->switchView(VIEW_MAIN); });
 
 }
 

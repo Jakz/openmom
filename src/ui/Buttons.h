@@ -49,10 +49,11 @@ public:
 
 struct ButtonGfx
 {
-  SpriteInfo normal;
+  optional<SpriteInfo> normal;
   optional<SpriteInfo> pressed;
   optional<SpriteInfo> inactive;
   
+  ButtonGfx() = default;
   ButtonGfx(SpriteInfo normal) : normal(normal) { }
   ButtonGfx(SpriteInfo normal, SpriteInfo pressed) : normal(normal), pressed(pressed) { }
   ButtonGfx(SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : normal(normal), pressed(pressed), inactive(inactive) { }
@@ -74,6 +75,8 @@ protected:
   const std::string name;
   bool pressed, visible;
   SpriteInfo normalCoords;
+  
+  Button(const std::string& name, u16 x, u16 y, u16 w, u16 h) : Clickable(x, y, w, h), name(name), pressed(false), visible(true) { }
   
   Button(const std::string name, u16 x, u16 y, SpriteInfo info) :
   Clickable(x, y, info.sw(), info.sh()), name(name), pressed(false), visible(true), normalCoords(info)
@@ -116,6 +119,7 @@ protected:
   optional<TextInfo> labelGfx;
   
 public:
+  NormalButton(const std::string& name, u16 x, u16 y, u16 w, u16 h) : Button(name, x, y, w, h) { }
   NormalButton(const std::string& name, u16 x, u16 y, SpriteInfo normal, bool shouldOffsetNormal) : Button(name, x, y, normal), gfx(normal), shouldOffsetNormal(shouldOffsetNormal) { }
   NormalButton(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Button(name, x, y, normal), gfx(normal, pressed) { }
   NormalButton(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : Button(name, x, y, normal), gfx(normal, pressed, inactive) { }
@@ -127,6 +131,12 @@ public:
   void setPosition(u16 x, u16 y) override;
   
   static Button* buildSimple(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new NormalButton(name, x, y, normal, false); }
+  
+  static Button* buildPressedOnly(const std::string& name, u16 x, u16 y, SpriteInfo pressed) {
+    auto* bt = new NormalButton(name, x, y, pressed.sw(), pressed.sh());
+    bt->gfx.pressed = pressed;
+    return bt;
+  }
   
   static Button* buildOffsetted(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new NormalButton(name, x, y, normal, true); }
   
@@ -193,29 +203,6 @@ public:
   {
     assert(info.isLBX());
     return new BistateLabeledButton(name, x, y, info, info.frame(1), label, font);
-  }
-};
-
-class TristateButton : public BistateButton
-{
-private:
-  TristateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : BistateButton(name, x, y, normal, pressed), inactiveCoords(inactive) { }
-  
-protected:
-  SpriteInfo inactiveCoords;
-  
-public:
-  void draw() override;
-  
-  static TristateButton* build(const std::string name, u16 x, u16 y, TextureID texture, u16 c)
-  {
-    return new TristateButton(name, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c), SpriteInfo(texture, 2, c));
-  }
-  
-  static BistateButton* buildLBX(const std::string name, u16 x, u16 y, SpriteInfo info, SpriteInfo disabled)
-  {
-    assert(info.isLBX());
-    return new TristateButton(name, x, y, info, info.frame(1), disabled);
   }
 };
 

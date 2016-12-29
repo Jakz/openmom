@@ -40,12 +40,15 @@ void NormalButton::draw()
     if (gfx.pressed.isPresent())
       Gfx::draw(gfx.pressed, x, y);
     /* otherwise it's an offset button so draw normal gfx ofsetted by 1 */
-    else if (shouldOffsetNormal)
-      Gfx::draw(gfx.normal, x+1, y+1);
-    else
-      Gfx::draw(gfx.normal, x, y);
+    else if (gfx.normal.isPresent())
+    {
+      if (shouldOffsetNormal)
+        Gfx::draw(gfx.normal, x+1, y+1);
+      else
+        Gfx::draw(gfx.normal, x, y);
+    }
   }
-  else
+  else if (gfx.normal.isPresent())
     Gfx::draw(gfx.normal, x, y);
   
   /* if there is a label draw it accordingly */
@@ -63,7 +66,7 @@ void NormalButton::setPosition(u16 x, u16 y)
   Button::setPosition(x, y);
   /* update label position if it was present */
   if (labelGfx.isPresent())
-    labelGfx->position = ScreenCoord(x + gfx.normal.sw()/2, y + gfx.normal.sh()/2 - labelGfx->font->sh()/2);
+    labelGfx->position = ScreenCoord(x + gfx.normal->sw()/2, y + gfx.normal->sh()/2 - labelGfx->font->sh()/2);
 }
 
 void SimpleButton::draw()
@@ -116,15 +119,6 @@ void BistateLabeledButton::draw()
       Fonts::drawString(label, font, textPosition.x+1, textPosition.y+1, ALIGN_CENTER);
     else
       Fonts::drawString(label, font, textPosition.x, textPosition.y, ALIGN_CENTER);
-  }
-}
-
-void TristateButton::draw()
-{
-  if (isVisible())
-  {
-    SpriteInfo info = active ? (pressed ? pressedCoords : normalCoords) : inactiveCoords;
-    Gfx::draw(info, x, y);
   }
 }
 

@@ -28,7 +28,15 @@
 
 enum lbx_indices
 {
-  main_backdrop = LBXI(MAIN,0)
+  main_backdrop = LBXI(MAIN,0),
+  
+  right_backdrop_main = LBXI(MAIN, 34),  // 80x97
+  right_backdrop_cast = LBXI(MAIN, 40),  // 80x98
+  right_backdrop_survey = LBXI(MAIN, 57),  // 80x98
+  
+  next_button_backdrop = LBXI(MAIN, 35),
+  cancel_button_backdrop = LBXI(MAIN, 47)
+  
 };
 
 MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
@@ -43,8 +51,8 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
   buttons[INFO] = NormalButton::buildBistate("Info", 226, 4, LSI(MAIN, 6));
   buttons[PLANE] = NormalButton::buildBistate("Plane", 270, 4, LSI(MAIN, 7));
   
-  buttons[NEXT] = TristateButton::build("Next", 240, 173, TextureID::MAIN_LOW_BUTTONS, 0);
-  buttons[CANCEL_SURVEYOR] = TristateButton::build("Cancel", 240, 173, TextureID::MAIN_LOW_BUTTONS, 1);
+  buttons[NEXT] = NormalButton::buildPressedOnly("Next", 246, 178, LSI(MAIN, 58));
+  buttons[CANCEL_SURVEYOR] = NormalButton::buildBistate("Cancel", 263, 181, LSI(MAIN, 41));
 
   buttons[DONE] = NormalButton::buildTristate("Done", 246, 176, LSI(MAIN, 8), LSI(MAIN,12));
   buttons[PATROL] = NormalButton::buildTristate("Patrol", 280, 176, LSI(MAIN, 9), LSI(MAIN,13));
@@ -232,12 +240,14 @@ void MainView::draw()
   }
   else if (substate == SURVEYOR)
   {
-    Gfx::draw(TextureID::MAIN_RIGHT_BACKDROPS, 0, 1, 240, 76);
+    Gfx::draw(right_backdrop_survey, 240, 76);
+    Gfx::draw(cancel_button_backdrop, 240, 76 + 97);
     surveyor.draw();
   }
   else if (substate == SPELL_CAST)
   {
-    Gfx::draw(TextureID::MAIN_RIGHT_BACKDROPS, 0, 2, 240, 76);
+    Gfx::draw(right_backdrop_cast, 240, 76);
+    Gfx::draw(cancel_button_backdrop, 240, 76 + 97);
     Fonts::drawString("Casting", FontFaces::Serif::WHITE_SURVEY, 240+6+8+4, 76+2+1, ALIGN_LEFT);
     
     //TODO: colors etc
@@ -246,7 +256,10 @@ void MainView::draw()
     Fonts::drawStringBounded("^wSelect a friendly unit as the target for a ^yBless^^ ^wspell", 119, 49, 64, ALIGN_LEFT);
   }
   else
-    Gfx::draw(TextureID::MAIN_RIGHT_BACKDROPS, 0, 0, 240, 76);
+  {
+    Gfx::draw(right_backdrop_main, 240, 76);
+    Gfx::draw(next_button_backdrop, 240, 76+97);
+  }
   
   //Sprites.drawTile(p, Sprites.Texture.RIGHT_BACKDROP, 0, 0, 480, 152);
   Viewport::drawMainViewport(player, g->world);

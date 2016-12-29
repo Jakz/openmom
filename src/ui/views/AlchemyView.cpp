@@ -22,8 +22,8 @@ AlchemyView::AlchemyView(ViewManager* gvm) : View(gvm), inverted(false), percent
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[CANCEL] = TristateButton::build("Cancel", 95, 105, TextureID::ALCHEMY_BUTTONS, 1)->setAction([gvm](){ gvm->closeOverview(); });
-  buttons[OK] = TristateButton::build("Ok", 178, 105, TextureID::ALCHEMY_BUTTONS, 0)-> setAction([this,gvm](){
+  buttons[CANCEL] = NormalButton::buildBistate("Cancel", 95, 105, LSI(MAGIC, 53))->setAction([gvm](){ gvm->closeOverview(); });
+  buttons[OK] = NormalButton::buildBistate("Ok", 178, 105, LSI(MAGIC, 54))-> setAction([this,gvm](){
     g->alchemy(player, amount, !inverted);
     gvm->closeOverview();
   });
@@ -36,8 +36,8 @@ AlchemyView::AlchemyView(ViewManager* gvm) : View(gvm), inverted(false), percent
     inverted = !inverted;
   };
   
-  buttons[SWITCH] = TristateButton::build("Switch1", 148, 105, TextureID::ALCHEMY_BUTTONS, 2)->setAction(invertAction);
-  buttons[SWITCH2] = TristateButton::build("Switch2", 148, 105, TextureID::ALCHEMY_BUTTONS, 3)->setAction(invertAction)->hide();
+  buttons[SWITCH] = NormalButton::buildBistate("Switch1", 148, 105, LSI(MAGIC, 55))->setAction(invertAction);
+  buttons[SWITCH2] = NormalButton::buildBistate("Switch2", 148, 105, LSI(MAGIC, 56))->setAction(invertAction)->hide();
 }
 
 void AlchemyView::draw()

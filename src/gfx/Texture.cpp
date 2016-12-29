@@ -45,9 +45,7 @@ const Texture Texture::textures[] =
   
   
   Texture(TextureID::MAIN_CURSORS,"main/cursors.png",1,5,16,16),
-  Texture(TextureID::MAIN_LOW_BUTTONS,"main/next-turn.png",2,2,80,27),
   Texture(TextureID::MAIN_MIRROR,"static/mirror.png",1,17,128,129),
-  Texture(TextureID::MAIN_RIGHT_BACKDROPS,"main/right-backdrops.png",1,2,80,98),
   
   Texture(TextureID::MAGIC_GLOBAL_SPELLS,"magic/global-spells.png",2,13,110,113),
   Texture(TextureID::MAGIC_SPELL_EFFECTS,"magic/spell-effects.png",4,{12,6,18,12,12,12,28,24,20,17,37,21,17},60,54,true,1),
@@ -112,9 +110,7 @@ const Texture Texture::textures[] =
   Texture(TextureID::MAGIC_PORTRAITS,"magic/view/portraits.png",1,14,33,35),
   Texture(TextureID::MAGIC_MANA_WANDS,"magic/view/mana-wands.png",1,6,16,72),
   
-  Texture(TextureID::ALCHEMY_BACKDROP,"magic/view/backdrop-alchemy.png",1,1,166,84),
-  Texture(TextureID::ALCHEMY_BUTTONS,"magic/view/buttons-alchemy.png",2,4, {49,49,26,26},16),
-  
+  Texture(TextureID::ALCHEMY_BACKDROP,"magic/view/backdrop-alchemy.png",1,1,166,84),  
   
   Texture(TextureID::RESEARCH_BACKDROP,"static/backdrop-research.png",1,1,320,200),
   Texture(TextureID::RESEARCH_MISC,"static/research-misc.png",1,2,16,16),
