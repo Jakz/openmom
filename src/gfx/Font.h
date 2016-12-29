@@ -168,7 +168,7 @@ public:
   
   class MediumBold {
   public:
-    const static FontSpriteSheet *BROWN_START;
+    const static FontSpriteSheet *BROWN_START, *BROWN_ITEM_CRAFT;
   };
   
   class Serif {

@@ -6,6 +6,7 @@
 #include <vector>
 #include <numeric>
 #include <array>
+#include <string>
 
 class Skill;
 class SkillEffect;
@@ -77,19 +78,32 @@ namespace items
     const Property property;
     std::vector<s16> values;
     std::vector<u16> costs;
+    std::string _name; //TODO: localize
     
   public:
     PropertyAffix(const PropertyAffix& other, size_t limit) :
-    property(other.property), values(other.values.begin(), other.values.begin()+limit), costs(other.costs.begin(), other.costs.begin()+limit)
+    property(other.property), _name(other._name), values(other.values.begin(), other.values.begin()+limit), costs(other.costs.begin(), other.costs.begin()+limit)
     {
       
     }
     
-    PropertyAffix(Property property, const std::initializer_list<s16>& values, const std::initializer_list<u16>& costs) :
-    property(property), values(values), costs(costs)
+    PropertyAffix(Property property, const std::string& name, const std::initializer_list<s16>& values, const std::initializer_list<u16>& costs) :
+    property(property), _name(name), values(values), costs(costs)
     {
       assert(values.size() == costs.size());
     }
+    
+    size_t size() const { return values.size(); }
+    s16 valueAt(size_t index) const { return values[index]; }
+    u16 costAt(size_t index) const { return costs[index]; }
+    const std::string& name() const { return _name; }
+  };
+  
+  struct Affixes
+  {
+    const std::vector<PropertyAffix>& properties;
+    
+    static Affixes forType(Item::TypeID type);
   };
   
 }

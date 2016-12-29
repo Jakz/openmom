@@ -15,14 +15,16 @@ using namespace items;
 
 // SWORD = 0, MACE, AXE, BOW, STAFF, WAND, MISC, SHIELD, CHAIN, PLATE
 
-static const PropertyAffix melee_attack_affix = PropertyAffix(Property::MELEE, {1,2,3,4,5,6}, {50,100,200,350,550,800});
-static const PropertyAffix defense_affix = PropertyAffix(Property::SHIELDS, {1,2,3,4,5,6}, {50,100,200,350,550,800});
-static const PropertyAffix movement_affix = PropertyAffix(Property::MOVEMENT, {1,2,3,4}, {100,200,400,800});
+#pragma mark Affixes
 
-static const PropertyAffix to_hit_affix = PropertyAffix(Property::TO_HIT, {1,2,3}, {400,800,1200});
+static const PropertyAffix melee_attack_affix = PropertyAffix(Property::MELEE, "Attack", {1,2,3,4,5,6}, {50,100,200,350,550,800});
+static const PropertyAffix defense_affix = PropertyAffix(Property::SHIELDS, "Defense", {1,2,3,4,5,6}, {50,100,200,350,550,800});
+static const PropertyAffix movement_affix = PropertyAffix(Property::MOVEMENT, "Movement", {1,2,3,4}, {100,200,400,800});
+
+static const PropertyAffix to_hit_affix = PropertyAffix(Property::TO_HIT, "To Hit", {1,2,3}, {400,800,1200});
 
 
-static const PropertyAffix sword_affixes[] =
+static const std::vector<PropertyAffix> sword_affixes =
 {
   PropertyAffix(melee_attack_affix, 3),
   PropertyAffix(defense_affix, 3),
@@ -30,7 +32,16 @@ static const PropertyAffix sword_affixes[] =
   PropertyAffix(to_hit_affix, 3)
 };
 
+static const std::vector<PropertyAffix> empty_affixes = { };
 
+Affixes Affixes::forType(Item::TypeID type)
+{
+  switch (type)
+  {
+    case Item::TypeID::SWORD: return { sword_affixes };
+    default: return { empty_affixes };
+  }
+}
 
 
 static Item::Type types[] = {
@@ -63,3 +74,5 @@ const Slots* Slots::slotsFor(Slots::Type type)
 {
   return &slots[static_cast<u16>(type)];
 }
+
+

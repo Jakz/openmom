@@ -48,6 +48,7 @@ const FontSpriteSheet* FontFaces::Medium::BLACK = nullptr;
 const FontSpriteSheet* FontFaces::Medium::BLUE_MAGIC = nullptr;
 
 const FontSpriteSheet* FontFaces::MediumBold::BROWN_START = nullptr;
+const FontSpriteSheet* FontFaces::MediumBold::BROWN_ITEM_CRAFT = nullptr;
 
 
 const FontSpriteSheet* FontFaces::Serif::TEAL = nullptr;
@@ -128,7 +129,10 @@ void FontFaces::buildFonts()
   Medium::BLACK = buildMedium({0, 0, RGB(90,154,154), RGB(6,69,69), RGB(6,2,2)});
   Medium::BLUE_MAGIC = buildMedium({0, 0, RGB(81,60,48), RGB(97,69,36), RGB(146,146,166)});
   
-  MediumBold::BROWN_START = buildMediumBold({0, 0, RGB(166,134,105), RGB(52,40,28), RGB(52,40,28), RGB(52,40,28)});
+  /* color indices: background, high shadow, low shadow, unused?, main color, middle dots, single pixels */
+  MediumBold::BROWN_START = buildMediumBold({0, 0, RGB(166,134,105), RGB(52,40,28), RGB(52,40,28), RGB(52,40,28), RGB(255,255,255)}); // TODO: fix last color
+  MediumBold::BROWN_ITEM_CRAFT = buildMediumBold({0, RGB(73,52,44), RGB(56,32,28), 0, RGB(166,134,105), RGB(150,117,93), RGB(142,113,89)});
+
   
   /* color indices: background, high shadow, low shadow, single pixels, stripes x 4 (low to high) */
   

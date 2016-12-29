@@ -534,6 +534,8 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
       
       static const s8 dirs[8][2] = {{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1}};
       
+      /*TODO: missing single pixel strokes (eg. top right corners of medium bold which are now mapped to light stroke */
+      
       // precompute font stroke
       for (int x = 0; x < width; ++x)
         for (int y = 0; y < heights[i]+2; ++y)

@@ -87,5 +87,22 @@ void ItemCraftView::draw()
   Gfx::drawGlow(itemGfx, 7, 6, school);
   
   Fonts::drawString(itemName, FontFaces::Small::GRAY_ITEM_CRAFT, 29, 12, ALIGN_LEFT);
+  
+  const auto affixes = items::Affixes::forType(currentType);
+  
+  auto mediumFace = FontFaces::MediumBold::BROWN_ITEM_CRAFT;
+  
+  int by = 40;
+  int bx = 21;
+  for (const auto& affix : affixes.properties)
+  {
+    for (size_t i = 0; i < affix.size(); ++i)
+    {
+      Fonts::drawString(Fonts::format("%+d", affix.valueAt(i)), mediumFace, bx, by, ALIGN_RIGHT);
+      Fonts::drawString(Fonts::format("%s", affix.name().c_str()), mediumFace, bx+2, by, ALIGN_LEFT);
+      by += 11;
+    }
+    by += 5;
+  }
 
 }
