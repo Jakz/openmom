@@ -37,7 +37,7 @@ sprite_ref TYPE_BUTTONS[][2] = {
   { LBXI(SPELLSCR, 23), LBXI(SPELLSCR, 34) }
 };
 
-ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), currentType(Item::TypeID::SWORD), currentItemGfx(0)
+ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), currentType(Item::TypeID::SWORD), currentItemGfx(0), propertyCostLimit(200)
 {
   buttons.resize(BUTTON_COUNT);
   
@@ -92,17 +92,31 @@ void ItemCraftView::draw()
   
   auto mediumFace = FontFaces::MediumBold::BROWN_ITEM_CRAFT;
   
-  int by = 40;
-  int bx = 21;
+  constexpr int BASE_Y = 40;
+  constexpr int BASE_X = 21;
+  constexpr int MAX_H = 196;
+  constexpr int LINE_HEIGHT = 11;
+  constexpr int GROUP_SPACING = 3;
+  
+  int by = BASE_Y;
+  int bx = BASE_X;
   for (const auto& affix : affixes.properties)
   {
-    for (size_t i = 0; i < affix.size(); ++i)
+    size_t effectiveRange = affix.sizeForCost(propertyCostLimit);
+    
+    if (by + effectiveRange*LINE_HEIGHT > MAX_H)
+    {
+      bx += 91;
+      by = BASE_Y;
+    }
+    
+    for (size_t i = 0; i < effectiveRange; ++i)
     {
       Fonts::drawString(Fonts::format("%+d", affix.valueAt(i)), mediumFace, bx, by, ALIGN_RIGHT);
       Fonts::drawString(Fonts::format("%s", affix.name().c_str()), mediumFace, bx+2, by, ALIGN_LEFT);
-      by += 11;
+      by += LINE_HEIGHT;
     }
-    by += 5;
+    by += GROUP_SPACING;
   }
 
 }

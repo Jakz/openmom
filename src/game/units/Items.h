@@ -73,7 +73,7 @@ namespace items
     static const Slots* slotsFor(Slots::Type type);
   };
   
-  class PropertyAffix
+  class PropertyAffixSpec
   {
     const Property property;
     std::vector<s16> values;
@@ -81,16 +81,30 @@ namespace items
     std::string _name; //TODO: localize
     
   public:
-    PropertyAffix(const PropertyAffix& other, size_t limit) :
+    PropertyAffixSpec(const PropertyAffixSpec& other, size_t limit) :
     property(other.property), _name(other._name), values(other.values.begin(), other.values.begin()+limit), costs(other.costs.begin(), other.costs.begin()+limit)
     {
       
     }
     
-    PropertyAffix(Property property, const std::string& name, const std::initializer_list<s16>& values, const std::initializer_list<u16>& costs) :
+    PropertyAffixSpec(const PropertyAffixSpec& other) : PropertyAffixSpec(other, other.size()) { }
+    
+    PropertyAffixSpec(Property property, const std::string& name, const std::initializer_list<s16>& values, const std::initializer_list<u16>& costs) :
     property(property), _name(name), values(values), costs(costs)
     {
       assert(values.size() == costs.size());
+    }
+    
+    size_t sizeForCost(u16 max) const
+    {
+      if (max == 0) return size();
+      
+      size_t i = 0;
+      for (i = 0; i < costs.size(); ++i)
+        if (costs[i] > max)
+          return i;
+      
+      return size();
     }
     
     size_t size() const { return values.size(); }
@@ -101,7 +115,7 @@ namespace items
   
   struct Affixes
   {
-    const std::vector<PropertyAffix>& properties;
+    const std::vector<PropertyAffixSpec>& properties;
     
     static Affixes forType(Item::TypeID type);
   };

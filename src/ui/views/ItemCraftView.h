@@ -37,6 +37,8 @@ private:
   s8 currentItemGfx;
   std::string itemName;
   
+  u16 propertyCostLimit;
+  
   School school;
   
   void updateItemName();

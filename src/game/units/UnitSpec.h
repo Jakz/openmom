@@ -129,6 +129,7 @@ enum class Property : u8
   MOVEMENT,
   MOVEMENT_BASE_TYPE,
   SIGHT,
+  SPELL_SKILL,
   TO_HIT, // +% to hit expressed in centesimal (eg. 10 = 10%)
   TO_DEFEND,
   XP, // bonus xp to each turn, default is 1 but can modified by certain skills
