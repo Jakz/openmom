@@ -37,9 +37,13 @@ sprite_ref TYPE_BUTTONS[][2] = {
   { LBXI(SPELLSCR, 23), LBXI(SPELLSCR, 34) }
 };
 
+const FontSpriteSheet* ItemCraftView::ClickableAffix::font() { return FontFaces::MediumBold::BROWN_ITEM_CRAFT; }
+ItemCraftView::ClickableAffix::ClickableAffix(std::string left, std::string right, u16 x, u16 y, u16 w, u16 h) : Clickable(x,y,w,10), left(left), right(right) { }
+
 void ItemCraftView::ClickableAffix::draw()
 {
-  
+  Fonts::drawString(left.c_str(), font(), x, y, ALIGN_RIGHT);
+  Fonts::drawString(right.c_str(), font(), x+2, y, ALIGN_LEFT);
   
   Clickable::draw();
 }
@@ -66,6 +70,7 @@ ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), curr
     currentType = b->getData();
     currentItemGfx = 0;
     school = static_cast<School>(Util::randomIntInclusive(1, 5)); // TODO: why?
+    updateClickableAreas();
     updateItemName();
   });
   
@@ -81,7 +86,46 @@ ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), curr
 
 void ItemCraftView::updateClickableAreas()
 {
+  clickables.clear();
   
+  /* get all affixes for item type */
+  const auto affixes = items::Affixes::forType(currentType);
+  
+  constexpr int BASE_Y = 40;
+  constexpr int BASE_X = 21;
+  constexpr int MAX_H = 196;
+  constexpr int LINE_HEIGHT = 11;
+  constexpr int GROUP_SPACING = 3;
+  
+  int by = BASE_Y;
+  int bx = BASE_X;
+  for (const auto& affix : affixes.properties)
+  {
+    /* since property cost limit may be specified (which is 200 for enchant item spell we need
+     to keep only affixes which have lower cost
+     */
+    size_t effectiveRange = affix.sizeForCost(propertyCostLimit);
+    auto mediumFace = FontFaces::MediumBold::BROWN_ITEM_CRAFT;
+
+    if (by + effectiveRange*LINE_HEIGHT > MAX_H)
+    {
+      bx += 91;
+      by = BASE_Y;
+    }
+    
+    for (size_t i = 0; i < effectiveRange; ++i)
+    {
+      std::string left = Fonts::format("%+d", affix.valueAt(i));
+      std::string right = Fonts::format("%s", affix.name().c_str());
+      u16 width = Fonts::stringWidth(mediumFace, right) /*+ Fonts::stringWidth(mediumFace, left)*/ + 2;
+      
+      clickables.push_back(std::unique_ptr<ClickableAffix>(new ClickableAffix(left, right, bx, by, width, LINE_HEIGHT)));
+
+      by += LINE_HEIGHT;
+    }
+    by += GROUP_SPACING;
+  }
+
 }
 
 void ItemCraftView::updateItemName()
@@ -100,39 +144,6 @@ void ItemCraftView::draw()
   
   Fonts::drawString(itemName, FontFaces::Small::GRAY_ITEM_CRAFT, 29, 12, ALIGN_LEFT);
   
-  /* get all affixes for item type */
-  const auto affixes = items::Affixes::forType(currentType);
-  
-  auto mediumFace = FontFaces::MediumBold::BROWN_ITEM_CRAFT;
-  
-  constexpr int BASE_Y = 40;
-  constexpr int BASE_X = 21;
-  constexpr int MAX_H = 196;
-  constexpr int LINE_HEIGHT = 11;
-  constexpr int GROUP_SPACING = 3;
-  
-  int by = BASE_Y;
-  int bx = BASE_X;
-  for (const auto& affix : affixes.properties)
-  {
-    /* since property cost limit may be specified (which is 200 for enchant item spell we need
-       to keep only affixes which have lower cost
-     */
-    size_t effectiveRange = affix.sizeForCost(propertyCostLimit);
-    
-    if (by + effectiveRange*LINE_HEIGHT > MAX_H)
-    {
-      bx += 91;
-      by = BASE_Y;
-    }
-    
-    for (size_t i = 0; i < effectiveRange; ++i)
-    {
-      Fonts::drawString(Fonts::format("%+d", affix.valueAt(i)), mediumFace, bx, by, ALIGN_RIGHT);
-      Fonts::drawString(Fonts::format("%s", affix.name().c_str()), mediumFace, bx+2, by, ALIGN_LEFT);
-      by += LINE_HEIGHT;
-    }
-    by += GROUP_SPACING;
-  }
-
+  for (const auto& clickable : clickables)
+    clickable->draw();
 }

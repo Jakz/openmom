@@ -55,7 +55,10 @@ private:
     std::string left;
     std::string right;
     
-    ClickableAffix(std::string left, std::string right, u16 x, u16 y, u16 w, u16 h) : Clickable(x,y,w,h), left(left), right(right) { }
+    const FontSpriteSheet* font();
+    const FontSpriteSheet* fontSelected();
+  public:
+    ClickableAffix(std::string left, std::string right, u16 x, u16 y, u16 w, u16 h);
     void draw() override;
   };
   
@@ -70,6 +73,7 @@ public:
     currentType = items::Item::TypeID::SWORD;
     currentItemGfx = 0;
     updateItemName();
+    updateClickableAreas();
   }
   
   void deactivate() override { }

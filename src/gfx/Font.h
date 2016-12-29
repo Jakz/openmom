@@ -209,7 +209,7 @@ private:
 public:
   static std::string format(const char* str, ...);
   
-  static inline u16 stringWidth(const FontSpriteSheet* face, const std::string string) { return face->stringWidth(string, hSpace, spaceCharAdj); }
+  static inline u16 stringWidth(const FontSpriteSheet* face, const std::string& string) { return face->stringWidth(string, hSpace, spaceCharAdj); }
   static inline u16 stringHeight() { return 0; }
   
   static inline const std::string join(const std::vector<const std::string>& tokens, s16 s, s16 e);
