@@ -43,21 +43,21 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[GAME] = NormalButton::buildBistate("Game", 7, 4, LSI(MAIN, 1));
-  buttons[SPELLS] = NormalButton::buildBistate("Spells", 47, 4, LSI(MAIN, 2));
-  buttons[ARMIES] = NormalButton::buildBistate("Armies", 89, 4, LSI(MAIN, 3));
-  buttons[CITIES] = NormalButton::buildBistate("Cities", 140, 4, LSI(MAIN, 4));
-  buttons[MAGIC] = NormalButton::buildBistate("Magic", 184, 4, LSI(MAIN, 5));
-  buttons[INFO] = NormalButton::buildBistate("Info", 226, 4, LSI(MAIN, 6));
-  buttons[PLANE] = NormalButton::buildBistate("Plane", 270, 4, LSI(MAIN, 7));
+  buttons[GAME] = Button::buildBistate("Game", 7, 4, LSI(MAIN, 1));
+  buttons[SPELLS] = Button::buildBistate("Spells", 47, 4, LSI(MAIN, 2));
+  buttons[ARMIES] = Button::buildBistate("Armies", 89, 4, LSI(MAIN, 3));
+  buttons[CITIES] = Button::buildBistate("Cities", 140, 4, LSI(MAIN, 4));
+  buttons[MAGIC] = Button::buildBistate("Magic", 184, 4, LSI(MAIN, 5));
+  buttons[INFO] = Button::buildBistate("Info", 226, 4, LSI(MAIN, 6));
+  buttons[PLANE] = Button::buildBistate("Plane", 270, 4, LSI(MAIN, 7));
   
-  buttons[NEXT] = NormalButton::buildPressedOnly("Next", 246, 178, LSI(MAIN, 58));
-  buttons[CANCEL_SURVEYOR] = NormalButton::buildBistate("Cancel", 263, 181, LSI(MAIN, 41));
+  buttons[NEXT] = Button::buildPressedOnly("Next", 246, 178, LSI(MAIN, 58));
+  buttons[CANCEL_SURVEYOR] = Button::buildBistate("Cancel", 263, 181, LSI(MAIN, 41));
 
-  buttons[DONE] = NormalButton::buildTristate("Done", 246, 176, LSI(MAIN, 8), LSI(MAIN,12));
-  buttons[PATROL] = NormalButton::buildTristate("Patrol", 280, 176, LSI(MAIN, 9), LSI(MAIN,13));
-  buttons[WAIT] = NormalButton::buildTristate("Wait", 246, 186, LSI(MAIN, 10), LSI(MAIN,14));
-  buttons[BUILD] = NormalButton::buildTristate("Build", 280, 186, LSI(MAIN, 11), LSI(MAIN,15));
+  buttons[DONE] = Button::buildTristate("Done", 246, 176, LSI(MAIN, 8), LSI(MAIN,12));
+  buttons[PATROL] = Button::buildTristate("Patrol", 280, 176, LSI(MAIN, 9), LSI(MAIN,13));
+  buttons[WAIT] = Button::buildTristate("Wait", 246, 186, LSI(MAIN, 10), LSI(MAIN,14));
+  buttons[BUILD] = Button::buildTristate("Build", 280, 186, LSI(MAIN, 11), LSI(MAIN,15));
   // CANCEL BUTTON MISSING
   
   buttons[SPELLS]->setAction([gvm](){ gvm->switchOverview(VIEW_SPELL_BOOK); });
@@ -80,7 +80,7 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
 
 void MainView::activate()
 {  
-  player->send(new msgs::Help(help::Data::at(289)));
+  //player->send(new msgs::Help(help::Data::at(289)));
   /*player->send(new msgs::Error("fotius"));
   player->send(new msgs::NewBuilding(player->getCities().front(), Building::ARMORY));*/
   

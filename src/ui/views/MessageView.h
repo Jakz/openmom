@@ -17,7 +17,7 @@ namespace msgs { class Message; }
 class MessageView : public View
 {
 private:
-  enum Button
+  enum
   {
     NO,
     YES,

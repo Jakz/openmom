@@ -41,11 +41,11 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[HIGH_ACTION] = BistateLabeledButton::buildLBX("High Action", 0, 0, LSI(BACKGRND, 24), "", FontFaces::Serif::GOLD)->setAction([this](){this->buttonClicked(HIGH_ACTION);});
-  buttons[LOW_ACTION] = BistateLabeledButton::buildLBX("Low Action", 0, 0, LSI(BACKGRND, 24), "", FontFaces::Serif::GOLD)->setAction([this](){this->buttonClicked(LOW_ACTION);});
+  buttons[HIGH_ACTION] = Button::buildBistate("High Action", 0, 0, LSI(BACKGRND, 24), "", FontFaces::Serif::GOLD)->setAction([this](){this->buttonClicked(HIGH_ACTION);});
+  buttons[LOW_ACTION] = Button::buildBistate("Low Action", 0, 0, LSI(BACKGRND, 24), "", FontFaces::Serif::GOLD)->setAction([this](){this->buttonClicked(LOW_ACTION);});
 
-  buttons[UP_ARROW] = NormalButton::buildTristate("Up", 0, 0, up_arrow)->setAction([this](){skillDraw.prevPage();});
-  buttons[DOWN_ARROW] = NormalButton::buildTristate("Down", 0, 0, down_arrow)->setAction([this](){skillDraw.nextPage();});
+  buttons[UP_ARROW] = Button::buildTristate("Up", 0, 0, up_arrow)->setAction([this](){skillDraw.prevPage();});
+  buttons[DOWN_ARROW] = Button::buildTristate("Down", 0, 0, down_arrow)->setAction([this](){skillDraw.nextPage();});
   
   /*for (int i = 0; i < 8; ++i)
    {
@@ -63,26 +63,26 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
    areas.get(7).setAction(new Action() { public void execute() { SkillDraw.openHelpForSkill(unit, 7); } });*/
 }
 
-void UnitDetailView::buttonClicked(Button button)
+void UnitDetailView::buttonClicked(button button)
 {
   if (mode == Mode::NORMAL)
   {
-    if (button == Button::OK)
+    if (button == button::OK)
     {
       gvm->closeOverview();
     }
-    else if (button == Button::DISMISS)
+    else if (button == button::DISMISS)
     {
       // TODO
     }
   }
   else if (mode == Mode::HERO_HIRE)
   {
-    if (button == Button::HERO_HIRE)
+    if (button == button::HERO_HIRE)
     {
       // TODO
     }
-    else if (button == Button::HERO_REJECT)
+    else if (button == button::HERO_REJECT)
     {
       // TODO
     }

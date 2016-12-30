@@ -37,9 +37,9 @@ CityView::CityView(ViewManager* gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[BUY] = NormalButton::buildTristate("Buy", 214, 188, LSI(BACKGRND, 7), LSI(BACKGRND, 14));
-  buttons[CHANGE] = NormalButton::buildBistate("Change", 247, 188, LSI(BACKGRND, 8));
-  buttons[OK] = NormalButton::buildBistate("Ok", 286, 188, LSI(BACKGRND, 9));
+  buttons[BUY] = Button::buildTristate("Buy", 214, 188, LSI(BACKGRND, 7), LSI(BACKGRND, 14));
+  buttons[CHANGE] = Button::buildBistate("Change", 247, 188, LSI(BACKGRND, 8));
+  buttons[OK] = Button::buildBistate("Ok", 286, 188, LSI(BACKGRND, 9));
 
   buttons[BUY]->deactivate();
   

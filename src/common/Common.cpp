@@ -36,6 +36,8 @@ u16 SpriteInfo::count() const
 }
 
 ScreenCoord ScreenCoord::INVALID = ScreenCoord(-1,-1);
+ScreenCoord ScreenCoord::ZERO = ScreenCoord(0,0);
+
 
 static const Trait traitInfo[] = {
   {TraitID::ALCHEMY,1,NO_SCHOOL},

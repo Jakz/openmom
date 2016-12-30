@@ -18,7 +18,7 @@ class Unit;
 class ArmiesView : public View
 {
 private:
-  enum Button
+  enum
   {
     ITEMS,
     OK,

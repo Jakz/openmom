@@ -49,6 +49,7 @@ const FontSpriteSheet* FontFaces::Medium::BLUE_MAGIC = nullptr;
 
 const FontSpriteSheet* FontFaces::MediumBold::BROWN_START = nullptr;
 const FontSpriteSheet* FontFaces::MediumBold::BROWN_ITEM_CRAFT = nullptr;
+const FontSpriteSheet* FontFaces::MediumBold::GRAY_ITEM_CRAFT = nullptr;
 const FontSpriteSheet* FontFaces::MediumBold::GOLD_ITEM_CRAFT = nullptr;
 
 
@@ -131,9 +132,10 @@ void FontFaces::buildFonts()
   Medium::BLUE_MAGIC = buildMedium({0, 0, RGB(81,60,48), RGB(97,69,36), RGB(146,146,166)});
   
   /* color indices: background, high shadow, low shadow, unused?, main color, middle dots, single pixels */
-  MediumBold::BROWN_START = buildMediumBold({0, 0, RGB(166,134,105), RGB(52,40,28), RGB(52,40,28), RGB(52,40,28), RGB(255,255,255)}); // TODO: fix last color
+  MediumBold::BROWN_START = buildMediumBold({0, 0, RGB(166,134,105), RGB(52,40,28), RGB(52,40,28), RGB(52,40,28), RGB(52,40,28)}); // TODO: fix last color
   MediumBold::BROWN_ITEM_CRAFT = buildMediumBold({0, RGB(73,52,44), RGB(56,32,28), 0, RGB(166,134,105), RGB(150,117,93), RGB(142,113,89)});
   MediumBold::GOLD_ITEM_CRAFT = buildMediumBold({0, RGB(73,52,44), RGB(56,32,28), 0, RGB(255,182,43), RGB(239,166,35), RGB(223,150,27)});
+  MediumBold::GRAY_ITEM_CRAFT = buildMediumBold({0, 0, RGB(65,43,35), 0, RGB(158,150,146), RGB(142,134,130), RGB(142,134,130)});
 
   
   /* color indices: background, high shadow, low shadow, single pixels, stripes x 4 (low to high) */

@@ -19,7 +19,7 @@ class ViewManager;
 class CityView : public View
 {
 private:
-  enum Button
+  enum button
   {
     BUY,
     CHANGE,

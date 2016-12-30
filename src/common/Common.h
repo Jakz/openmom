@@ -357,6 +357,7 @@ struct ScreenCoord
   bool isValid() const { return x != -1; }
   
   static ScreenCoord INVALID;
+  static ScreenCoord ZERO;
 };
 
 using Coord = ScreenCoord;

@@ -25,8 +25,8 @@ MessageView::MessageView(ViewManager* gvm) : View(gvm), message(nullptr)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[NO] = NormalButton::buildBistate("No", 0, 0, LSI(RESOURCE,4))->setAction([this]() { handleMessage(); });
-  buttons[YES] = NormalButton::buildBistate("Yes", 30, 0, LSI(RESOURCE,3));
+  buttons[NO] = Button::buildBistate("No", 0, 0, LSI(RESOURCE,4))->setAction([this]() { handleMessage(); });
+  buttons[YES] = Button::buildBistate("Yes", 30, 0, LSI(RESOURCE,3));
 }
 
 void MessageView::handleMessage()

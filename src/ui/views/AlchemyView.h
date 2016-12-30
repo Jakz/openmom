@@ -16,7 +16,7 @@ class ViewManager;
 class AlchemyView : public View
 {
 private:
-  enum Button
+  enum
   {
     CANCEL,
     OK,

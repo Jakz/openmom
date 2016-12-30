@@ -116,7 +116,6 @@ enum class TextureID : u16
   
   ALCHEMY_BACKDROP,
     
-  RESEARCH_BACKDROP,
   RESEARCH_MISC,
   RESEARCH_BEAM,
   RESEARCH_TOME, // TODO: taken from screenshot, palette was wrong
@@ -156,9 +155,7 @@ enum class TextureID : u16
   WIZARD_SPELLBOOKS,
   
   DARKNER,
-  
-  NEW_GAME_BUTTONS1,
-  
+    
   TEXTURES_COUNT
 };
 

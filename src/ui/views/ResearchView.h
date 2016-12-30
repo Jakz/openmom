@@ -17,7 +17,7 @@ class BookView;
 class ResearchView : public View
 {
 private:
-  enum Button
+  enum
   {
     PREV_PAGE,
     NEXT_PAGE,

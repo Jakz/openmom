@@ -73,8 +73,10 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::MAIN);
   lbx::Repository::loadLBX(LBXID::MAPBACK);
   lbx::Repository::loadLBX(LBXID::MONSTER);
+  lbx::Repository::loadLBX(LBXID::NEWGAME);
   lbx::Repository::loadLBX(LBXID::PORTRAIT);
   lbx::Repository::loadLBX(LBXID::RESOURCE);
+  lbx::Repository::loadLBX(LBXID::SCROLL);
   lbx::Repository::loadLBX(LBXID::SPECFX);
   lbx::Repository::loadLBX(LBXID::SPELLS);
   lbx::Repository::loadLBX(LBXID::SPELLSCR);
@@ -102,9 +104,9 @@ int main(int argc, char * arg[])
   
   //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
 
-  //SDL::gvm->switchView(VIEW_MAIN);
+  SDL::gvm->switchView(VIEW_MAIN);
 
-  SDL::gvm->switchView(VIEW_ITEM_CRAFT);
+  //SDL::gvm->switchView(VIEW_ITEM_CRAFT);
   
   /*Hero* unit = new Hero(*UnitSpec::heroSpec(UnitID::HERO_DWARF));
   SDL::gvm->unitDetailView()->setHeroHire(unit, 200);

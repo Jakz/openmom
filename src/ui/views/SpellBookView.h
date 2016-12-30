@@ -19,7 +19,7 @@ class ViewManager;
 class SpellBookView : public View
 {
 private:
-  enum Button
+  enum
   {
     PREV_PAGE,
     NEXT_PAGE,

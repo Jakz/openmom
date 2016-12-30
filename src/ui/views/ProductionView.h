@@ -22,7 +22,7 @@ class ViewManager;
 class ProductionView : public View
 {
 private:
-  enum Button { OK, CANCEL, BUTTON_COUNT  };
+  enum { OK, CANCEL, BUTTON_COUNT  };
   
   enum Side : u8 { SIDE_LEFT, SIDE_RIGHT };
   

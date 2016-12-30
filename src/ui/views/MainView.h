@@ -20,7 +20,7 @@ class MovementEffect;
 class MainView : public View
 {
 private:
-  enum Button : u8
+  enum : u8
   {
     GAME,
     SPELLS,

@@ -57,14 +57,14 @@ ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), curr
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[PREV_GFX] = NormalButton::buildBistate("Prev Gfx", 4, 24, LSI(SPELLSCR, 35))->setAction([this](){
+  buttons[PREV_GFX] = Button::buildBistate("Prev Gfx", 4, 24, LSI(SPELLSCR, 35))->setAction([this](){
     --currentItemGfx;
     if (currentItemGfx < 0)
       currentItemGfx = Item::typeForItem(currentType)->count();
     updateItemName();
   });
   
-  buttons[NEXT_GFX] = NormalButton::buildBistate("Next Gfx", 17, 24, LSI(SPELLSCR, 36))->setAction([this](){
+  buttons[NEXT_GFX] = Button::buildBistate("Next Gfx", 17, 24, LSI(SPELLSCR, 36))->setAction([this](){
     ++currentItemGfx;
     currentItemGfx %= Item::typeForItem(currentType)->count();
     updateItemName();

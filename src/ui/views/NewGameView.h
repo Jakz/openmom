@@ -16,7 +16,7 @@ class NewGameView : public View
       WIZARD_CHOICE
     };
   
-    enum Button
+    enum
     {
       OPTIONS_OK,
       OPTIONS_CANCEL,

@@ -16,7 +16,7 @@ class ViewManager;
 class ArmiesItemsView : public View
 {
 private:
-  enum Button
+  enum
   {
     ALCHEMY,
     OK,

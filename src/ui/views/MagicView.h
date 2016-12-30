@@ -16,7 +16,7 @@ class ViewManager;
 class MagicView : public View
 {
 private:
-  enum Button
+  enum
   {
     ALCHEMY,
     OK,

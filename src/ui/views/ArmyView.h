@@ -17,7 +17,7 @@ class Army;
 class ArmyView : public View
 {
 private:
-  enum Button
+  enum
   {
     
     BUTTON_COUNT

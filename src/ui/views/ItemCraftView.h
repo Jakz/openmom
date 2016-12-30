@@ -20,7 +20,7 @@ class ViewManager;
 class ItemCraftView : public View
 {
 private:
-  enum Button
+  enum
   {
     PREV_GFX,
     NEXT_GFX,
@@ -34,6 +34,7 @@ private:
   items::Item::TypeID currentType;
   s8 currentItemGfx;
   std::string itemName;
+  u16 itemCost;
   
   u16 propertyCostLimit;
   

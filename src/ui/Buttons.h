@@ -95,7 +95,7 @@ struct TextInfo
   ScreenCoord position;
   
   TextInfo() = default;
-  TextInfo(const std::string& label, const FontSpriteSheet* font, ScreenCoord position) : label(label), font(font), position(position) { }
+  TextInfo(const std::string& label, const FontSpriteSheet* font) : label(label), font(font) { }
 };
 
 class Button : public Clickable
@@ -103,20 +103,25 @@ class Button : public Clickable
 protected:
   const std::string name;
   bool pressed, visible;
-  SpriteInfo normalCoords;
   
-  Button(const std::string& name, u16 x, u16 y, u16 w, u16 h) : Clickable(x, y, w, h), name(name), pressed(false), visible(true) { }
-  
-  Button(const std::string name, u16 x, u16 y, SpriteInfo info) :
-  Clickable(x, y, info.sw(), info.sh()), name(name), pressed(false), visible(true), normalCoords(info)
-  {
-    
-  }
+  bool shouldOffsetNormal;
+  ButtonGfx gfx;
+  optional<TextInfo> labelGfx;
   
 public:
-  virtual void draw() = 0;
+  Button(const std::string& name, u16 x, u16 y, u16 w, u16 h) : Clickable(x, y, w, h), name(name), pressed(false), visible(true) { }
+  Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, bool shouldOffsetNormal) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal), shouldOffsetNormal(shouldOffsetNormal) { }
+  Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal, pressed) { }
+  Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal, pressed, inactive) { }
+
+  virtual void setTextInfo(const TextInfo& info);
+  virtual void setLabel(const std::string& string);
+  
+  void draw() override;
+  void setPosition(u16 x, u16 y) override;
   
   inline void execute() { if (action) action(); }
+  virtual void click() { execute(); }
   
   inline void showIf(bool condition) { visible = condition;}
   inline Button* hide() { visible = false; return this; }
@@ -124,128 +129,37 @@ public:
   inline bool isVisible() { return visible;}
   
   bool isActive() override { return active && visible; }
-  
   inline Button* setAction(Action action) override { this->action = action; return this; }
-  
-  virtual void setLabel(const std::string&) { }
-  
+
   template<typename T> T* as() { return static_cast<T*>(this); }
   
   inline void press() { pressed = true;}
   inline void release() { pressed = false; }
-  
-  virtual void click() {
-    //TODO log clicked
-    execute();
-  }
-};
 
-class NormalButton : public Button
-{
-protected:
-  bool shouldOffsetNormal;
-  ButtonGfx gfx;
-  optional<TextInfo> labelGfx;
   
-public:
-  NormalButton(const std::string& name, u16 x, u16 y, u16 w, u16 h) : Button(name, x, y, w, h) { }
-  NormalButton(const std::string& name, u16 x, u16 y, SpriteInfo normal, bool shouldOffsetNormal) : Button(name, x, y, normal), gfx(normal), shouldOffsetNormal(shouldOffsetNormal) { }
-  NormalButton(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Button(name, x, y, normal), gfx(normal, pressed) { }
-  NormalButton(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : Button(name, x, y, normal), gfx(normal, pressed, inactive) { }
-
-  void setTextInfo(const TextInfo& info) { labelGfx = info; }
-  void setLabel(const std::string& string) override { assert(labelGfx.isPresent()); labelGfx->label = string; }
-  
-  void draw() override;
-  void setPosition(u16 x, u16 y) override;
-  
-  static Button* buildSimple(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new NormalButton(name, x, y, normal, false); }
+  static Button* buildSimple(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new Button(name, x, y, normal, false); }
   
   static Button* buildPressedOnly(const std::string& name, u16 x, u16 y, SpriteInfo pressed) {
-    auto* bt = new NormalButton(name, x, y, pressed.sw(), pressed.sh());
+    auto* bt = new Button(name, x, y, pressed.sw(), pressed.sh());
     bt->gfx.pressed = pressed;
     return bt;
   }
   
-  static Button* buildOffsetted(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new NormalButton(name, x, y, normal, true); }
+  static Button* buildOffsetted(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new Button(name, x, y, normal, true); }
   
-  static Button* buildBistate(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) { return new NormalButton(name, x, y, normal, pressed); }
-  static Button* buildBistate(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new NormalButton(name, x, y, normal, normal.frame(1)); }
-  
-  static Button* buildTristate(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) { return new NormalButton(name, x, y, normal, pressed, inactive); }
-  static Button* buildTristate(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo inactive) { return new NormalButton(name, x, y, normal, normal.frame(1), inactive); }
-  static Button* buildTristate(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new NormalButton(name, x, y, normal, normal.frame(1), normal); }
-  
-};
-
-class SimpleButton : public Button
-{
-public:
-  SimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info) : Button(name, x, y, info) { }
-  void draw() override;
-};
-
-class OffsetButton : public Button
-{
-public:
-  OffsetButton(const std::string name, u16 x, u16 y, SpriteInfo info) : Button(name, x, y, info) { }
-  void draw() override;
-};
-
-class BistateButton : public Button
-{
-protected:
-  SpriteInfo pressedCoords;
-  
-  BistateButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Button(name, x, y, normal), pressedCoords(pressed) { }
-  
-public:
-  void draw() override;
-
-  static BistateButton* build(const std::string name, u16 x, u16 y, TextureID texture, u16 c)
-  {
-    return new BistateButton(name, x, y, SpriteInfo(texture, 0, c), SpriteInfo(texture, 1, c));
+  static Button* buildBistate(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) { return new Button(name, x, y, normal, pressed); }
+  static Button* buildBistate(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new Button(name, x, y, normal, normal.frame(1)); }
+  static Button* buildBistate(const std::string& name, u16 x, u16 y, SpriteInfo normal, const std::string& label, const FontSpriteSheet* font) {
+    auto* bt = new Button(name, x, y, normal, normal.frame(1));
+    bt->setTextInfo(TextInfo(label, font));
+    return bt;
   }
-  
-  static BistateButton* buildLBX(const std::string name, u16 x, u16 y, SpriteInfo info)
-  {
-    assert(info.isLBX());
-    return new BistateButton(name, x, y, info, info.frame(1));
-  }
-};
 
-class BistateLabeledButton : public BistateButton
-{
-protected:
-  ScreenCoord textPosition;
-  std::string label;
-  const FontSpriteSheet* font;
-  BistateLabeledButton(const std::string name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, std::string label, const FontSpriteSheet* font);
   
-public:
-  void draw() override;
+  static Button* buildTristate(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) { return new Button(name, x, y, normal, pressed, inactive); }
+  static Button* buildTristate(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo inactive) { return new Button(name, x, y, normal, normal.frame(1), inactive); }
+  static Button* buildTristate(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new Button(name, x, y, normal, normal.frame(1), normal); }
   
-  void setLabel(const std::string& label) override { this->label = label; }
-  void setPosition(u16 x, u16 y) override;
-  
-  static BistateLabeledButton* buildLBX(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, const FontSpriteSheet* font)
-  {
-    assert(info.isLBX());
-    return new BistateLabeledButton(name, x, y, info, info.frame(1), label, font);
-  }
-};
-
-class LabeledSimpleButton : public OffsetButton
-{
-protected:
-  std::string label;
-  u16 textX, textY;
-  const FontSpriteSheet* font;
-  
-public:
-  LabeledSimpleButton(const std::string name, u16 x, u16 y, SpriteInfo info, std::string label, const FontSpriteSheet* font);
-  void setLabel(std::string label) { this->label = label; }
-  void draw() override;
 };
 
 template<typename T>
@@ -295,7 +209,7 @@ public:
 };
 
 template<typename T>
-class RadioButton : public NormalButton
+class RadioButton : public Button
 {
   using group_t = RadioButtonGroup<RadioButton<T>>;
 private:
@@ -307,7 +221,7 @@ private:
   T data;
   
   RadioButton(const std::string name, T data, RadioButtonGroup<RadioButton<T>>* group, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo normalToggled, SpriteInfo pressedToggled)
-  : NormalButton(name, x, y, normal, pressed), data(data), toggledGfx(normalToggled, pressedToggled), toggled(false), group(group) { }
+  : Button(name, x, y, normal, pressed), data(data), toggledGfx(normalToggled, pressedToggled), toggled(false), group(group) { }
   
 public:
   void draw() override;

@@ -33,8 +33,8 @@ ProductionView::ProductionView(ViewManager *gvm) : View(gvm), city(nullptr), sel
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[CANCEL] = BistateLabeledButton::buildLBX("Cancel", 99, 181, LSI(BACKGRND,24), "Cancel", FontFaces::Serif::GOLD);
-  buttons[OK] = BistateLabeledButton::buildLBX("Ok", 172, 181, LSI(BACKGRND,24), "Ok", FontFaces::Serif::GOLD);
+  buttons[CANCEL] = Button::buildBistate("Cancel", 99, 181, LSI(BACKGRND,24), "Cancel", FontFaces::Serif::GOLD);
+  buttons[OK] = Button::buildBistate("Ok", 172, 181, LSI(BACKGRND,24), "Ok", FontFaces::Serif::GOLD);
   
   buttons[CANCEL]->setAction([this,gvm](){ gvm->closeOverview(); });
   buttons[OK]->setAction([this,gvm]() {
@@ -43,7 +43,7 @@ ProductionView::ProductionView(ViewManager *gvm) : View(gvm), city(nullptr), sel
     if (production != city->getProductable())
     {
       city->setProductable(production);
-      gvm->cityView()->buttonAt(CityView::Button::BUY)->activateIf(g->cityMechanics.isProductionBuyable(city));
+      gvm->cityView()->buttonAt(CityView::button::BUY)->activateIf(g->cityMechanics.isProductionBuyable(city));
     }
     left.clear();
     right.clear();

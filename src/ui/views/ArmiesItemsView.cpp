@@ -31,8 +31,8 @@ ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[ALCHEMY] = NormalButton::buildBistate("Alchemy", 236, 157, LSI(ARMYLIST, 7))->setAction([gvm](){gvm->switchOverview(VIEW_ALCHEMY);});
-  buttons[OK] = NormalButton::buildBistate("Ok", 236, 177, LSI(ARMYLIST, 8))->setAction([gvm](){gvm->closeOverview();});
+  buttons[ALCHEMY] = Button::buildBistate("Alchemy", 236, 157, LSI(ARMYLIST, 7))->setAction([gvm](){gvm->switchOverview(VIEW_ALCHEMY);});
+  buttons[OK] = Button::buildBistate("Ok", 236, 177, LSI(ARMYLIST, 8))->setAction([gvm](){gvm->closeOverview();});
 }
 
 void ArmiesItemsView::draw()

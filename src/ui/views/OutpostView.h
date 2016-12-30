@@ -17,7 +17,7 @@ class ViewManager;
 class OutpostView : public View
 {
 private:
-  enum Button
+  enum
   {
     OPTIONS_OK,
     OPTIONS_CANCEL,

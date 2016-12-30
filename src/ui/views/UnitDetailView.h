@@ -19,7 +19,7 @@ class Unit;
 class UnitDetailView : public View
 {
 private:
-  enum Button
+  enum button
   {
 
     UP_ARROW,
@@ -54,7 +54,7 @@ private:
   
   void switchMode(Mode mode);
   
-  void buttonClicked(Button button);
+  void buttonClicked(button button);
   
 public:
   UnitDetailView(ViewManager* gvm);

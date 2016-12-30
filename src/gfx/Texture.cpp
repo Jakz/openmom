@@ -111,7 +111,6 @@ const Texture Texture::textures[] =
   
   Texture(TextureID::ALCHEMY_BACKDROP,"magic/view/backdrop-alchemy.png",1,1,166,84),  
   
-  Texture(TextureID::RESEARCH_BACKDROP,"static/backdrop-research.png",1,1,320,200),
   Texture(TextureID::RESEARCH_MISC,"static/research-misc.png",1,2,16,16),
   Texture(TextureID::RESEARCH_BEAM,"magic/view/research-beam.png",1,10,77,147,true,1),
   Texture(TextureID::RESEARCH_TOME,"magic/view/research-tome.png",42,54), // TODO: taken from screenshot, palette was wrong
@@ -153,8 +152,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::WIZARD_SPELLBOOKS,"wizards/spellbooks.png",3,6,9,21),
   
   Texture(TextureID::DARKNER,"static/darkner.png",1,1,320,200),
-  
-  Texture(TextureID::NEW_GAME_BUTTONS1,"newgame/buttons1.png",1,6,{63,63,64,64,64,64},15)
 };
 
 Color Texture::at(u16 x, u16 y, u16 r, u16 c) const

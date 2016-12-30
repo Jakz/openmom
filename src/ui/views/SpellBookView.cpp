@@ -29,8 +29,8 @@ SpellBookView::SpellBookView(ViewManager* gvm) : View(gvm), book(new BookView(6)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[PREV_PAGE] = new SimpleButton("Prev page", 29, 14, LSI(SPELLS, 1));
-  buttons[NEXT_PAGE] = new SimpleButton("Next page", 274, 14, LSI(SPELLS, 2));
+  buttons[PREV_PAGE] = Button::buildSimple("Prev page", 29, 15, LSI(SPELLS, 1));
+  buttons[NEXT_PAGE] = Button::buildSimple("Next page", 274, 15, LSI(SPELLS, 2));
   
   
   buttons[PREV_PAGE]->setAction([this]() {

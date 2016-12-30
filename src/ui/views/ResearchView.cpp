@@ -26,8 +26,8 @@ ResearchView::ResearchView(ViewManager* gvm) : View(gvm), book(new BookView(4))
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[PREV_PAGE] = new SimpleButton("Prev page", 15, 9, LSI(SPELLS, 1));
-  buttons[NEXT_PAGE] = new SimpleButton("Next page", 288, 9, LSI(SPELLS, 2));
+  buttons[PREV_PAGE] = Button::buildSimple("Prev page", 15, 9, LSI(SCROLL, 7));
+  buttons[NEXT_PAGE] = Button::buildSimple("Next page", 289, 9, LSI(SCROLL, 8));
   
   
   buttons[PREV_PAGE]->setAction([this]() {
@@ -65,7 +65,7 @@ void ResearchView::activate()
 void ResearchView::draw()
 {
   // backdrop
-  Gfx::draw(TextureID::RESEARCH_BACKDROP, 0, 0);
+  Gfx::draw(LSI(SCROLL,6), 0, 0);
   
   // prevpage / nextpage buttons
   
