@@ -137,15 +137,32 @@ const char* terrainTypeForIndex(u16 index)
     assert(false);
 }
 
+std::unordered_map<LBXID, u32, enum_hash> usedSpritesCount;
 std::unordered_set<u32> usedSprites;
 bool isUsed(LBXID id, u32 index) { return usedSprites.find((static_cast<u32>(id) << 16) | index) != usedSprites.end(); }
+bool isTotallyUsed(LBXID id) { return usedSpritesCount[id] == Repository::holderForID(id).size(); }
 void toggleUsed(LBXID id, u32 index, bool value)
 {
   auto key = (static_cast<u32>(id) << 16) | index;
   if (value)
-    usedSprites.insert(key);
+  {
+    bool wasPresent = usedSprites.find(key) != usedSprites.end();
+    
+    if (!wasPresent)
+    {
+      usedSprites.insert(key);
+      ++usedSpritesCount[id];
+    }
+  }
   else
-    usedSprites.erase(key);
+  {
+    bool wasPresent = usedSprites.find(key) != usedSprites.end();
+    if (wasPresent)
+    {
+      usedSprites.erase(key);
+      --usedSpritesCount[id];
+    }
+  }
 }
 
 size_t ticks = 0;
@@ -755,7 +772,8 @@ public:
         const LBXFile& lbx = holder(ROW);
         
         int fgcol = selection == ROW ? FL_RED : FL_BLACK;
-        int bgcol = FL_WHITE;
+        int bgcol = isTotallyUsed(static_cast<LBXID>(ROW)) ? fl_rgb_color(200, 255, 200) : FL_WHITE;
+        
         fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, bgcol);
         fl_color(fgcol);
         
@@ -793,7 +811,10 @@ void loadStatus()
     u32* data = new u32[amount];
     fread(data, sizeof(decltype(usedSprites)::value_type), amount, in);
     for (size_t i = 0; i < amount; ++i)
+    {
       usedSprites.insert(data[i]);
+      ++usedSpritesCount[static_cast<LBXID>(data[i] >> 16)];
+    }
     delete [] data;
   }
   fclose(in);
