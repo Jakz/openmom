@@ -17,9 +17,6 @@
 
 class ViewManager;
 
-template<typename T>
-class RadioButtonGroup;
-
 class ItemCraftView : public View
 {
 private:
@@ -44,13 +41,16 @@ private:
   
   void updateItemName();
   
-  RadioButtonGroup<items::Item::TypeID>* itemType;
+  std::unique_ptr<RadioButtonGroup<RadioButton<items::Item::TypeID>>> itemType;
   
   static const items::Item::TypeID ITEM_TYPES[];
   
   void updateClickableAreas();
   
-  class ClickableAffix : public Clickable
+  using affix_clickable_t = RadioClickable<size_t>;
+  using affix_radio_group_t = RadioButtonGroup<affix_clickable_t>;
+
+  class ClickableAffix : public affix_clickable_t
   {
     std::string left;
     std::string right;
@@ -58,12 +58,19 @@ private:
     const FontSpriteSheet* font();
     const FontSpriteSheet* fontSelected();
   public:
-    ClickableAffix(std::string left, std::string right, u16 x, u16 y, u16 w, u16 h);
+    ClickableAffix(affix_radio_group_t* group, size_t index, std::string left, std::string right, u16 x, u16 y, u16 w, u16 h);
     void draw() override;
   };
   
-  std::vector<std::unique_ptr<ClickableAffix>> clickables;
+  class ClickableGroup
+  {
+    std::vector<const ClickableAffix*> affixes;
+  };
+  
+  clickable_list<ClickableAffix> clickables;
+  std::vector<std::unique_ptr<affix_radio_group_t>> groups;
 
+  size_t selectedPropertiesCount();
 
 public:
   ItemCraftView(ViewManager* gvm);
@@ -77,6 +84,8 @@ public:
   }
   
   void deactivate() override { }
+  
+  void mouseReleased(u16 x, u16 y, MouseButton b) override;
 };
 
 #endif

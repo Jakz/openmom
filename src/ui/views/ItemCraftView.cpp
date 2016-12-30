@@ -14,6 +14,9 @@
 #include "Gfx.h"
 #include "GfxData.h"
 #include "ColorMap.h"
+#include "Messages.h"
+#include "Player.h"
+#include "LocalPlayer.h"
 
 #include "Util.h"
 
@@ -37,8 +40,10 @@ sprite_ref TYPE_BUTTONS[][2] = {
   { LBXI(SPELLSCR, 23), LBXI(SPELLSCR, 34) }
 };
 
-const FontSpriteSheet* ItemCraftView::ClickableAffix::font() { return FontFaces::MediumBold::BROWN_ITEM_CRAFT; }
-ItemCraftView::ClickableAffix::ClickableAffix(std::string left, std::string right, u16 x, u16 y, u16 w, u16 h) : Clickable(x,y,w,10), left(left), right(right) { }
+const FontSpriteSheet* ItemCraftView::ClickableAffix::font() { return toggled ? FontFaces::MediumBold::GOLD_ITEM_CRAFT : FontFaces::MediumBold::BROWN_ITEM_CRAFT; }
+
+ItemCraftView::ClickableAffix::ClickableAffix(affix_radio_group_t* group, size_t index, std::string left, std::string right, u16 x, u16 y, u16 w, u16 h)
+: affix_clickable_t(index, group, x, y, w, 10), left(left), right(right) { }
 
 void ItemCraftView::ClickableAffix::draw()
 {
@@ -65,7 +70,7 @@ ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), curr
     updateItemName();
   });
   
-  itemType = new RadioButtonGroup<Item::TypeID>();
+  itemType = decltype(itemType)(new RadioButtonGroup<RadioButton<Item::TypeID>>());
   itemType->setAction([this](RadioButton<Item::TypeID>* b){
     currentType = b->getData();
     currentItemGfx = 0;
@@ -76,7 +81,7 @@ ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), curr
   
   for (size_t i = 0; i < sizeof(ITEM_TYPES)/sizeof(ITEM_TYPES[0]); ++i)
   {
-    RadioButton<Item::TypeID>* button = RadioButton<Item::TypeID>::build("type", ITEM_TYPES[i], itemType, 156 + 33*(i%5), 3 + 15*(i/5), TYPE_BUTTONS[i][0], TYPE_BUTTONS[i][1]);
+    RadioButton<Item::TypeID>* button = RadioButton<Item::TypeID>::build("type", ITEM_TYPES[i], itemType.get(), 156 + 33*(i%5), 3 + 15*(i/5), TYPE_BUTTONS[i][0], TYPE_BUTTONS[i][1]);
     buttons.push_back(button);
     itemType->add(button);
   }
@@ -84,9 +89,17 @@ ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), curr
   itemType->set(0);
 }
 
+size_t ItemCraftView::selectedPropertiesCount()
+{
+  size_t count = std::count_if(groups.begin(), groups.end(), [](const decltype(groups)::value_type& group) { return group->getCurrent() != nullptr; });
+  return count;
+}
+
+
 void ItemCraftView::updateClickableAreas()
 {
   clickables.clear();
+  groups.clear();
   
   /* get all affixes for item type */
   const auto affixes = items::Affixes::forType(currentType);
@@ -113,13 +126,34 @@ void ItemCraftView::updateClickableAreas()
       by = BASE_Y;
     }
     
+    affix_radio_group_t* group = new affix_radio_group_t(true);
+    group->setCanSelectPredicate((std::function<bool(RadioClickable<size_t>*)>)[this, group] (RadioClickable<size_t>* button) {
+      size_t count = selectedPropertiesCount();
+      
+      if (button->getGroup()->getCurrent() == nullptr)
+        ++count;
+      
+      bool valid = count <= 4;
+      
+      if (!valid)
+      {
+        msgs::Error* error = new msgs::Error("Only four powers may be enchanted into an item"); //TODO: localize, graphics is not correctly centered
+        this->player->send(error);
+      }
+      
+      return valid;
+    });
+    groups.emplace_back(group);
+    
     for (size_t i = 0; i < effectiveRange; ++i)
     {
       std::string left = Fonts::format("%+d", affix.valueAt(i));
       std::string right = Fonts::format("%s", affix.name().c_str());
       u16 width = Fonts::stringWidth(mediumFace, right) /*+ Fonts::stringWidth(mediumFace, left)*/ + 2;
       
-      clickables.push_back(std::unique_ptr<ClickableAffix>(new ClickableAffix(left, right, bx, by, width, LINE_HEIGHT)));
+      ClickableAffix* area = new ClickableAffix(group, i, left, right, bx, by, width, LINE_HEIGHT);
+      group->add(area);
+      clickables.emplace_back(area);
 
       by += LINE_HEIGHT;
     }
@@ -144,6 +178,10 @@ void ItemCraftView::draw()
   
   Fonts::drawString(itemName, FontFaces::Small::GRAY_ITEM_CRAFT, 29, 12, ALIGN_LEFT);
   
-  for (const auto& clickable : clickables)
-    clickable->draw();
+  clickables.draw();
+}
+
+void ItemCraftView::mouseReleased(u16 x, u16 y, MouseButton b)
+{
+  clickables.handleEvent(x, y, b);
 }

@@ -47,6 +47,35 @@ public:
   virtual void draw();
 };
 
+template<typename T>
+class clickable_list
+{
+private:
+  std::vector<std::unique_ptr<T>> areas;
+  
+public:
+  clickable_list() { }
+  clickable_list(size_t r) { areas.resize(r); }
+  
+  size_t size() const { return areas.size(); }
+  void emplace_back(T* area) { areas.emplace_back(area); }
+  void clear() { areas.clear(); }
+  
+  void draw() { for (const auto& area : areas) area->draw(); }
+  void handleEvent(u16 x, u16 y, MouseButton b)
+  {
+    for (const auto& area : areas)
+      if (area->isActive() && area->isCorrectButton(b) && area->isInside(x,y))
+        area->getAction()();
+  }
+  
+  using iterator = typename decltype(areas)::iterator;
+  using const_iterator = typename decltype(areas)::const_iterator;
+  
+  const_iterator begin() const { return areas.begin(); }
+  const_iterator end() const { return areas.end(); }
+};
+
 struct ButtonGfx
 {
   optional<SpriteInfo> normal;
@@ -220,49 +249,64 @@ public:
 };
 
 template<typename T>
-class RadioButton;
-
-template<typename T>
 class RadioButtonGroup
 {
-private:
-  std::vector<RadioButton<T>*> buttons;
-  RadioButton<T>* current;
-  std::function<void(RadioButton<T>*)> lambda;
-public:
-  RadioButtonGroup() : current(nullptr) { }
+  using value_type = T*;
   
-  RadioButton<T>* getCurrent() { return current; }
+private:
+  bool allowsNoSelection;
+  std::vector<T*> buttons;
+  T* current;
+  std::function<void(T*)> lambda;
+  std::function<bool(T*)> canSelectPredicate;
+public:
+  RadioButtonGroup(bool allowsNoSelection = false)
+    : current(nullptr), allowsNoSelection(allowsNoSelection), canSelectPredicate([](T*){return true;}) { }
+  
+  T* getCurrent() const { return current; }
   void set(u16 index) { current = buttons[index]; }
-  void click(RadioButton<T>* button)
+  void click(T* button)
   {
     if (current != button)
     {
+      if (button && !canSelectPredicate(button))
+        return;
+      
       current = button;
-      lambda(current);
+      if (lambda)
+        lambda(current);
     }
+    else if (allowsNoSelection)
+    {
+      current = nullptr;
+    }
+    
+    for (const auto& button : buttons)
+      button->setToggled(button == current);
   }
   
-  void add(RadioButton<T>* button)
+  void add(T* button)
   {
     buttons.push_back(button);
   }
   
-  void setAction(std::function<void(RadioButton<T>*)> lambda) { this->lambda = lambda; }
+  void setCanSelectPredicate(std::function<bool(T*)> predicate) { this->canSelectPredicate = predicate; }
+  void setAction(std::function<void(T*)> lambda) { this->lambda = lambda; }
 };
 
 template<typename T>
 class RadioButton : public NormalButton
 {
+  using group_t = RadioButtonGroup<RadioButton<T>>;
 private:
-  RadioButtonGroup<T>* group;
+  group_t* group;
   
   ButtonGfx toggledGfx;
   bool toggled;
   
   T data;
   
-  RadioButton(const std::string name, T data, RadioButtonGroup<T>* group, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo normalToggled, SpriteInfo pressedToggled)
+  RadioButton(const std::string name, T data, RadioButtonGroup<RadioButton<T>>* group, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo normalToggled, SpriteInfo pressedToggled)
   : NormalButton(name, x, y, normal, pressed), data(data), toggledGfx(normalToggled, pressedToggled), toggled(false), group(group) { }
   
 public:
@@ -271,11 +315,31 @@ public:
   const T getData() const { return data; }
   
   void click() override { group->click(this); }
+  void setToggled(bool t) { this->toggled = t; }
   
-  static RadioButton* build(const std::string name, T data, RadioButtonGroup<T>* group, u16 x, u16 y, SpriteInfo untoggled, SpriteInfo toggled)
+  static RadioButton<T>* build(const std::string name, T data, RadioButtonGroup<RadioButton<T>>* group, u16 x, u16 y, SpriteInfo untoggled, SpriteInfo toggled)
   {
     return new RadioButton(name, data, group, x, y, untoggled, untoggled.frame(1), toggled, toggled.frame(1));
   }
+};
+
+template<typename T>
+class RadioClickable : public Clickable
+{
+  using group_t = RadioButtonGroup<RadioClickable<T>>;
+
+protected:
+  group_t* group;
+  bool toggled;
+  T data;
+
+public:
+  RadioClickable(T data, group_t* group, u16 x, u16 y, u16 w, u16 h) : Clickable(x, y, w, h), group(group), toggled(false), data(data) {
+    setAction([this](){ this->group->click(this); });
+  }
+  
+  const group_t* getGroup() const { return group; }
+  void setToggled(bool t) { this->toggled = t; }
 };
 
 #include "Items.h" // FIXME: forced for explicit declaration of template method
