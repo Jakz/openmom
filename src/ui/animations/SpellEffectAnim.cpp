@@ -46,9 +46,8 @@ void SpellEffect::step()
 
 SummonAnimation::SummonAnimation(WizardID wizard, const SummonSpec* spec)
 : ContinuousEndlessAnimation(5000), spec(spec), wizard(GfxData::wizardGfxSpec(wizard).summonPose), creature(GfxData::unitGfxSpec(spec).summonFigure),
-  palette(lbx::Repository::spriteFor(GfxData::schoolGfxSpec(spec->as<SummonSpec>()->school).summonPalette)->getPalette())
+  palette(GfxData::schoolGfxSpec(spec->as<SummonSpec>()->school).summonPalette.palette())
 {
-
 }
 
 void SummonAnimation::step()
@@ -67,7 +66,7 @@ void SummonAnimation::step()
   
   Gfx::draw(&summonBg, base.x, base.y);
   
-  u16 frame = (Gfx::fticks % 15);
+  u16 frame = (Gfx::fticks % 15); //TODO: should use directly drawAnimated but it's a SpriteSheet not sprite info
   
   Gfx::drawClipped(wizard, base.x + 8, base.y + 3 + 5, 0, 5, wizard.sw(), wizard.sh()-5);
   Gfx::draw(&summonFlame2, base.x + 55, base.y + 0+97-43, frame);
@@ -79,3 +78,34 @@ void SummonAnimation::step()
 }
 
 void SummonAnimation::mouseReleased(u16 x, u16 y, MouseButton b) { finish(); }
+
+#pragma mark SpellDiscover
+
+SpellDiscoverAnimation::SpellDiscoverAnimation(WizardID wizard, School school)
+: ContinuousEndlessAnimation(1000), wizard(GfxData::wizardGfxSpec(wizard).researchPose), familiar(GfxData::schoolGfxSpec(school).researchFamiliar)
+{
+}
+
+void SpellDiscoverAnimation::step()
+{
+  SpriteInfo bg = LSI(WIZLAB, 19);
+  const Palette* palette = bg.palette();
+  
+  Gfx::draw(bg, 0, 0);
+  
+  lbx::LBXSpriteDataWithPalette podium(lbx::Repository::spriteFor(LSI(WIZLAB,20)), palette);
+  lbx::LBXSpriteDataWithPalette beam(lbx::Repository::spriteFor(LSI(WIZLAB,21)), palette);
+  lbx::LBXSpriteDataWithPalette familiar(lbx::Repository::spriteFor(this->familiar), palette);
+
+  
+  u16 frame = (Gfx::fticks % 10); //TODO: should use directly drawAnimated but it's a SpriteSheet not sprite info
+  
+  Gfx::draw(wizard, 69, 75);
+  Gfx::draw(&beam, 132, -3, frame);
+  Gfx::draw(&podium, 149, 133);
+  Gfx::draw(&familiar, 190, 160);
+}
+
+
+void SpellDiscoverAnimation::mouseReleased(u16 x, u16 y, MouseButton b) { finish(); }
+

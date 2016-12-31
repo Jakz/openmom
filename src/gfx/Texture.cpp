@@ -119,10 +119,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::RESEARCH_WIZARDS,"magic/research-wizards.png",1,14,84,107),
   
   
-  Texture(TextureID::SUMMON_BACKDROP,"static/backdrop-summon.png",179,136),
-  Texture(TextureID::SUMMON_WIZARDS,"magic/summon-wizards.png",1,14,65,91),
-  Texture(TextureID::SUMMON_ANIMATION,"magic/summon-animation.png",2,15, {85,70}, {47,30}, true, 1),
-  
   // units ,not combat related sprites)
   
 

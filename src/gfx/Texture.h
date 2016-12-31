@@ -123,11 +123,7 @@ enum class TextureID : u16
   RESEARCH_LAB_BACKDROP,
   RESEARCH_WIZARDS,
   
-  
-  SUMMON_BACKDROP,
-  SUMMON_WIZARDS,
-  SUMMON_ANIMATION,
-  
+    
   // units
   
   UNIT_DETAIL_SPECIAL_THINGS, // contiene anche mirino minimap

@@ -101,12 +101,12 @@ std::unordered_map<const UnitSpec*, SpriteInfo> GfxData::heroPortraits = {
 };
 
 std::unordered_map<School, SchoolGfxSpec, enum_hash> GfxData::schoolSpecs = {
-  { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61) } },
-  { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62) } },
-  { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63) } },
-  { School::CHAOS, { RGB(255,0,0), LSI(SPELLSCR, 64) } },
-  { School::LIFE, { RGB(255,255,255), LSI(SPELLSCR, 65) } },
-  { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66) } },
+  { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61), 0 } },
+  { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62), LSI(WIZLAB, 14) } },
+  { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63), LSI(WIZLAB, 15) } },
+  { School::CHAOS, { RGB(255,0,0), LSI(SPELLSCR, 64), LSI(WIZLAB, 16) } },
+  { School::LIFE, { RGB(255,255,255), LSI(SPELLSCR, 65), LSI(WIZLAB, 17) } },
+  { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66), LSI(WIZLAB, 18) } },
 };
 
 SpriteInfo WizardGfxSpec::getGemmedPortrait(PlayerColor color) const

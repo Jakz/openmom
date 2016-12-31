@@ -81,6 +81,7 @@ struct SchoolGfxSpec
 {
   Color color;
   SpriteInfo summonPalette;
+  SpriteInfo researchFamiliar;
 };
 
 

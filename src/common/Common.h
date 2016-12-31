@@ -337,6 +337,8 @@ public:
   u16 sw() const { return sheet()->sw(x(), y()); }
   u16 sh() const { return sheet()->sh(x(), y()); }
   
+  const Palette* palette() const;
+  
   u16 count() const;
   
   SpriteInfo relative(s16 offset) const { return SpriteInfo(lbx(), index()+offset); }

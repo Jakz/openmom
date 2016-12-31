@@ -83,6 +83,7 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::UNITVIEW);
   lbx::Repository::loadLBX(LBXID::UNITS1);
   lbx::Repository::loadLBX(LBXID::UNITS2);
+  lbx::Repository::loadLBX(LBXID::WIZLAB);
   lbx::LBX::load();
   FontFaces::buildFonts();
   //return 0;

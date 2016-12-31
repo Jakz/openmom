@@ -45,6 +45,17 @@ namespace anims
     void mouseReleased(u16 x, u16 y, MouseButton b) override;
   };
 
+  class SpellDiscoverAnimation : public ContinuousEndlessAnimation
+  {
+  private:
+    SpriteInfo wizard;
+    SpriteInfo familiar;
+    
+  public:
+    SpellDiscoverAnimation(WizardID wizard, School school);
+    void step() override;
+    void mouseReleased(u16 x, u16 y, MouseButton b) override;
+  };
   
   
 };

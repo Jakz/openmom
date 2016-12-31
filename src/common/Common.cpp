@@ -35,6 +35,13 @@ u16 SpriteInfo::count() const
   return data->count;
 }
 
+const Palette* SpriteInfo::palette() const
+{
+  assert(isLBX());
+  const lbx::LBXSpriteData* data = static_cast<const lbx::LBXSpriteData*>(sheet());
+  return data->palette;
+}
+
 ScreenCoord ScreenCoord::INVALID = ScreenCoord(-1,-1);
 ScreenCoord ScreenCoord::ZERO = ScreenCoord(0,0);
 
