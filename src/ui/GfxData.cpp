@@ -15,15 +15,6 @@
 
 using namespace std;
 
-static const Color schoolColors[] = {
-  Gfx::color(0,0,0),
-  Gfx::color(255, 0, 0),
-  Gfx::color(0, 0, 0),
-  Gfx::color(255, 255, 255),
-  Gfx::color(0, 255, 0),
-  Gfx::color(0, 0, 255)
-};
-
 const TileGfxSpec GfxData::specs[] =
 {
   TileGfxSpec(0,6,RGB(56,94,18),RGB(81,60,48)), // GRASS
@@ -76,12 +67,6 @@ std::unordered_map<PlayerColor, PlayerGfxSpec, enum_hash> GfxData::playerSpecs =
 constexpr s8 GfxData::RANGED_INDEX[];
 constexpr s8 GfxData::PROPERTY_INDEX[];
 
-
-Color GfxData::colorForSchool(const School school)
-{
-  return school < SCHOOL_COUNT ? schoolColors[school] : 0;
-}
-
 std::unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
   { UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 39), LSI(FIGURES3, 72)) },
   { UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 40), LSI(FIGURES3, 80)) },
@@ -100,19 +85,28 @@ std::unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
   //{ UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), UnitGfxSpec(SpriteInfo(UNITS_HEROES, 6, 0), UNIT_HERO_ORC_WARRIOR) }
   
   
-  { UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT), UnitGfxSpec(LSI(UNITS2, 34), LSI(FIGURE11, 32)) },
+  { UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT), UnitGfxSpec(LSI(UNITS2, 34), LSI(FIGURE11, 32), LSI(MONSTER, 0)) },
   
-  { UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT), UnitGfxSpec(LSI(UNITS2, 56), LSI(FIGURE12, 88)) }, // TODO: full figure wrong
+  { UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT), UnitGfxSpec(LSI(UNITS2, 56), LSI(FIGURE12, 88), LSI(MONSTER, 22)) }, // TODO: full figure wrong
 
   
-  { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(LSI(UNITS2, 45), LSI(FIGURE11, 40)) },
-  { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(LSI(UNITS2, 44), LSI(FIGURE11, 112), true) }
+  { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(LSI(UNITS2, 45), LSI(FIGURE11, 40), LSI(MONSTER, 1)) },
+  { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(LSI(UNITS2, 44), LSI(FIGURE11, 112), LSI(MONSTER, 10), true) }
 
 };
 
 std::unordered_map<const UnitSpec*, SpriteInfo> GfxData::heroPortraits = {
   { UnitSpec::heroSpec(UnitID::HERO_DWARF), LSI(PORTRAIT, 10) },
   { UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), LSI(PORTRAIT, 6) }
+};
+
+std::unordered_map<School, SchoolGfxSpec, enum_hash> GfxData::schoolSpecs = {
+  { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61) } },
+  { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62) } },
+  { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63) } },
+  { School::CHAOS, { RGB(255,0,0), LSI(SPELLSCR, 64) } },
+  { School::LIFE, { RGB(255,255,255), LSI(SPELLSCR, 65) } },
+  { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66) } },
 };
 
 SpriteInfo WizardGfxSpec::getGemmedPortrait(PlayerColor color) const

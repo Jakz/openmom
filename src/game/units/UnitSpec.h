@@ -194,6 +194,8 @@ public:
   static const HeroSpec* heroSpec(UnitID unit);
   static const SummonSpec* summonSpec(UnitID unit);
   static const std::vector<const RaceUnitSpec*> unitsForRace(RaceID race);
+  
+  template<typename T> const T* as() const { return static_cast<const T*>(this); }
 };
 
 class RaceUnitSpec : public UnitSpec
@@ -210,8 +212,10 @@ public:
 class SummonSpec : public UnitSpec
 {
 public:
-  SummonSpec(UnitID ident, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, Upkeep(0,upkeep,0), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills) { }
+  SummonSpec(UnitID ident, School school, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(ident, Upkeep(0,upkeep,0), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), school(school) { }
+  
+  const School school;
   
   Type productionType() const override { return Type::SUMMON; }
 };

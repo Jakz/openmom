@@ -83,7 +83,7 @@ void MainView::activate()
   //player->send(new msgs::Help(help::Data::at(289)));
   /*player->send(new msgs::Error("fotius"));
   player->send(new msgs::NewBuilding(player->getCities().front(), Building::ARMORY));*/
-  player->push(new anims::SummonAnimation(WizardID::FREYA, nullptr));
+  player->push(new anims::SummonAnimation(WizardID::FREYA, UnitSpec::summonSpec(UnitID::HELL_HOUNDS)));
 }
 
 void MainView::switchToSpellCast()

@@ -51,9 +51,12 @@ struct UnitGfxSpec
 {
   const SpriteInfo still;
   const SpriteInfo fullFigure;
+  const SpriteInfo summonFigure;
   const bool isFlyingFigure;
   
   UnitGfxSpec(SpriteInfo still, SpriteInfo fullFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), isFlyingFigure(isFlyingFigure) { }
+  UnitGfxSpec(SpriteInfo still, SpriteInfo fullFigure, SpriteInfo summonFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), summonFigure(summonFigure), isFlyingFigure(isFlyingFigure) { }
+
 };
 
 struct WizardGfxSpec
@@ -74,6 +77,12 @@ struct PlayerGfxSpec
   const SpriteInfo unitBack;
 };
 
+struct SchoolGfxSpec
+{
+  Color color;
+  SpriteInfo summonPalette;
+};
+
 
 class GfxData
 {
@@ -84,6 +93,9 @@ private:
   static std::unordered_map<const UnitSpec*, UnitGfxSpec> unitSpecs;
   static std::unordered_map<const UnitSpec*, SpriteInfo> heroPortraits;
   
+  static std::unordered_map<School, SchoolGfxSpec, enum_hash> schoolSpecs;
+
+  
   static const TileGfxSpec specs[];
   static constexpr s8 RANGED_INDEX[] = {-1,6,5,6,14,15,16,17,18};
   static constexpr s8 PROPERTY_INDEX[] = {-1,-1,-1,-1,9,22,14,15,16,17,18};
@@ -91,7 +103,6 @@ private:
   static std::unordered_map<const Spell*, sprite_ref> specialSpellGfxEffects;
 
 public:
-  static Color colorForSchool(School school);
   static const TileGfxSpec& tileGfxSpec(TileType type) { return specs[type]; }
   static s8 rangedGfxIndex(Ranged ranged) { return RANGED_INDEX[static_cast<u8>(ranged)]; }
   static s8 propertyGfxIndex(Property property) { return PROPERTY_INDEX[static_cast<u8>(property)]; }
@@ -100,6 +111,7 @@ public:
   
   static const PlayerGfxSpec& playerGfxSpec(PlayerColor color) { return playerSpecs.find(color)->second; }
   static const WizardGfxSpec& wizardGfxSpec(WizardID wizard) { return wizardSpecs.find(wizard)->second; }
+  static const SchoolGfxSpec& schoolGfxSpec(School school) { return schoolSpecs.find(school)->second; }
   
   static const UnitGfxSpec& unitGfxSpec(const UnitSpec* spec);
   static SpriteInfo heroGfxSpec(const UnitSpec* spec);

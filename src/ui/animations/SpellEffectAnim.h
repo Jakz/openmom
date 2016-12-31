@@ -34,11 +34,13 @@ namespace anims
   
   class SummonAnimation : public ContinuousEndlessAnimation
   {
+    const SummonSpec* const spec;
     SpriteInfo wizard;
     SpriteInfo creature;
-    
+    const Palette* palette;
+        
   public:
-    SummonAnimation(WizardID wizard, const SummonSpec* unit);
+    SummonAnimation(WizardID wizard, const SummonSpec* spec);
     void step() override;
     void mouseReleased(u16 x, u16 y, MouseButton b) override;
   };

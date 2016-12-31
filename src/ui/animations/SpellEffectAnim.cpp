@@ -2,6 +2,9 @@
 
 #include "Viewport.h"
 #include "GfxData.h"
+#include "Font.h"
+
+#include "Unit.h"
 
 #include "LBX.h"
 
@@ -42,17 +45,18 @@ void SpellEffect::step()
 #pragma mark SummonEffect
 
 SummonAnimation::SummonAnimation(WizardID wizard, const SummonSpec* spec)
-: ContinuousEndlessAnimation(5000), wizard(GfxData::wizardGfxSpec(wizard).summonPose), creature(LSI(MONSTER, 22))
+: ContinuousEndlessAnimation(5000), spec(spec), wizard(GfxData::wizardGfxSpec(wizard).summonPose), creature(GfxData::unitGfxSpec(spec).summonFigure),
+  palette(lbx::Repository::spriteFor(GfxData::schoolGfxSpec(spec->as<SummonSpec>()->school).summonPalette)->getPalette())
 {
-  
+
 }
 
 void SummonAnimation::step()
 {
   /* TODO: find alternative way to manage sprite data with palette */
-  lbx::LBXSpriteDataWithPalette summonBg(lbx::Repository::spriteFor(LSI(SPELLSCR,9)), lbx::Repository::spriteFor(LSI(SPELLSCR,64))->getPalette());
-  lbx::LBXSpriteDataWithPalette summonFlame(lbx::Repository::spriteFor(LSI(SPELLSCR,11)), lbx::Repository::spriteFor(LSI(SPELLSCR,64))->getPalette());
-  lbx::LBXSpriteDataWithPalette summonFlame2(lbx::Repository::spriteFor(LSI(SPELLSCR,10)), lbx::Repository::spriteFor(LSI(SPELLSCR,64))->getPalette());
+  lbx::LBXSpriteDataWithPalette summonBg(lbx::Repository::spriteFor(LSI(SPELLSCR,9)), palette);
+  lbx::LBXSpriteDataWithPalette summonFlame(lbx::Repository::spriteFor(LSI(SPELLSCR,11)), palette);
+  lbx::LBXSpriteDataWithPalette summonFlame2(lbx::Repository::spriteFor(LSI(SPELLSCR,10)), palette);
   
   ScreenCoord base = ScreenCoord(30, 42);
   u16 creatureTopY = 18;
@@ -69,6 +73,9 @@ void SummonAnimation::step()
   Gfx::draw(&summonFlame2, base.x + 55, base.y + 0+97-43, frame);
   Gfx::drawClipped(creature, base.x + 76, base.y + creatureY, 0, 0, creature.sw(), std::min((int)creatureBottomY - creatureY, (int)creature.sh()));
   Gfx::draw(&summonFlame, base.x + 65, base.y + 26+97-43, frame);
+  
+  //TODO: palette is not the same, single pixels different
+  Fonts::drawString(Fonts::format("%s Summoned", spec->productionName().c_str()), FontFaces::Serif::GOLD_SHADOW, base.x + 90, base.y + 116, ALIGN_CENTER);
 }
 
 void SummonAnimation::mouseReleased(u16 x, u16 y, MouseButton b) { finish(); }
