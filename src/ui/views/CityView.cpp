@@ -50,7 +50,7 @@ CityView::CityView(ViewManager* gvm) : View(gvm)
   });
   
   buttons[OK]->setAction([gvm](){ gvm->switchView(VIEW_MAIN); });
-  buttons[CHANGE]->setAction([gvm,this]{ gvm->productionView()->setCty(city); gvm->switchOverview(VIEW_PRODUCTION); });
+  buttons[CHANGE]->setAction([gvm,this]{ gvm->productionView()->setCity(city); gvm->switchOverview(VIEW_PRODUCTION); });
   
   for (int i = 0; i < 6; ++i)
     areas.push_back((new Clickable(139, 51 + 7*i, 68, 7))->setAction([this,i](){

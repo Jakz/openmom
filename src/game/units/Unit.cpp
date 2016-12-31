@@ -84,16 +84,16 @@ s16 Unit::getBaseProperty(Property property) const
     case Property::RESIST_SORCERY:
     case Property::RESIST_LIFE:
     case Property::RESIST_DEATH:
-      return spec.getProperty(Property::RESIST);
+      return spec->getProperty(Property::RESIST);
     case Property::SHIELDS_RANGED:
     case Property::SHIELDS_CHAOS:
     case Property::SHIELDS_NATURE:
     case Property::SHIELDS_SORCERY:
     case Property::SHIELDS_LIFE:
     case Property::SHIELDS_DEATH:
-      return spec.getProperty(Property::SHIELDS);
+      return spec->getProperty(Property::SHIELDS);
     default:
-      return spec.getProperty(property);
+      return spec->getProperty(property);
   }
 }
 
@@ -104,7 +104,7 @@ s16 Unit::getBonusProperty(Property property) const
   if (property == Property::FIGURES || property == Property::MOVEMENT_BASE_TYPE)
     return 0;
   
-  if (spec.productionType() != Productable::Type::SUMMON)
+  if (spec->productionType() != Productable::Type::SUMMON)
   {
     switch (property)
     {
@@ -168,8 +168,8 @@ s16 Unit::getBonusProperty(Property property) const
 
 
 const std::string RaceUnit::name() const {
-  const RaceUnitSpec& rspec = static_cast<const RaceUnitSpec&>(spec);
-  return i18n::s(rspec.race.ident).unitName + " " + spec.productionName();
+  const RaceUnitSpec* rspec = static_cast<const RaceUnitSpec*>(spec);
+  return i18n::s(rspec->race.ident).unitName + " " + spec->productionName();
 }
 
 

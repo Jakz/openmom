@@ -81,7 +81,7 @@ void Army::add(Unit* unit)
   // if unit is an hero and army has an owner then
   // add it also to heroes of player
   // TODO: for now it's here, then we'll see
-  if (unit->spec.productionType() == Productable::Type::HERO)
+  if (unit->spec->productionType() == Productable::Type::HERO)
     owner->add(static_cast<Hero*>(unit));
   
   updateMovementType();

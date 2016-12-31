@@ -40,7 +40,7 @@ void UnitDraw::drawStatic(const Army *army, s16 x, s16 y, bool forceDraw)
     
     Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[army->getOwner()->color]);
     
-    const SpriteInfo& info = GfxData::unitGfxSpec(&first->spec).still;
+    const SpriteInfo& info = GfxData::unitGfxSpec(first->spec).still;
     
     if (!army->isPatrolling())
       Gfx::draw(info, x+1, y+1);
@@ -62,7 +62,7 @@ void UnitDraw::drawStatic(const Unit *unit, s16 x, s16 y, bool backdrop, bool gr
   
   Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[unit->getArmy()->getOwner()->color]);
   
-  const SpriteInfo& info = GfxData::unitGfxSpec(&unit->spec).still;
+  const SpriteInfo& info = GfxData::unitGfxSpec(unit->spec).still;
   
   if (grayScale)
     Gfx::drawGrayScale(info, x+1, y+1);
@@ -84,7 +84,7 @@ void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
   
   Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[army->getOwner()->color]);
 
-  const SpriteInfo& info = GfxData::unitGfxSpec(&first->spec).still;
+  const SpriteInfo& info = GfxData::unitGfxSpec(first->spec).still;
   Gfx::draw(info, x+1, y+1);
   
   School school = first->glow();
@@ -96,7 +96,7 @@ void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
 
 void UnitDraw::drawHeroPortrait(const Hero *unit, s16 x, s16 y)
 {
-  Gfx::draw(GfxData::heroGfxSpec(&unit->spec), x, y);
+  Gfx::draw(GfxData::heroGfxSpec(unit->spec), x, y);
 }
 
 
@@ -159,7 +159,7 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
 {
   int action = 1;
   
-  if (caction == CombatAction::MOVE || (caction == CombatAction::STAY && GfxData::unitGfxSpec(&unit->spec).isFlyingFigure))
+  if (caction == CombatAction::MOVE || (caction == CombatAction::STAY && GfxData::unitGfxSpec(unit->spec).isFlyingFigure))
   {
     if (Gfx::fticks%6 < 2)
       action = 0;
@@ -178,13 +178,13 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
   
   Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[unit->getArmy()->getOwner()->color]);
 
-  SpriteInfo sprite = GfxData::unitGfxSpec(&unit->spec).fullFigure.relative(static_cast<u8>(facing));
+  SpriteInfo sprite = GfxData::unitGfxSpec(unit->spec).fullFigure.relative(static_cast<u8>(facing));
   
   School glow = unit->glow();
   
   const IsoOffset* offsets = nullptr;
   
-  switch (unit->spec.figures) {
+  switch (unit->spec->figures) {
     case 1: offsets = ISOC_1FIGURES; break;
     case 4: offsets = ISOC_4FIGURES; break;
     case 6: offsets = ISOC_6FIGURES; break;

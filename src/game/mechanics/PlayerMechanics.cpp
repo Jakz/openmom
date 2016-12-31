@@ -156,10 +156,10 @@ void PlayerMechanics::castSpell(Player* player, const Spell* spell)
     // add unit to city army or as new army
     // TODO: move units from full army to make room for summon
     if (tile->army && tile->army->size() < 9)
-      tile->army->add(new FantasticUnit(*static_cast<const SummonSpell*>(spell)->spec));
+      tile->army->add(new FantasticUnit(static_cast<const SummonSpell*>(spell)->spec));
     else if (!tile->army)
     {
-      tile->placeArmy(new Army(player, {new FantasticUnit(*static_cast<const SummonSpell*>(spell)->spec)}));
+      tile->placeArmy(new Army(player, {new FantasticUnit(static_cast<const SummonSpell*>(spell)->spec)}));
     }
     
     // TODO: push summoning effect

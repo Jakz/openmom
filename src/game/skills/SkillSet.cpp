@@ -8,7 +8,7 @@
 
 using namespace std;
 
-SkillSet::SkillSet(Unit& unit) : unit(unit), nativeSkills(unit.spec.skills) { }
+SkillSet::SkillSet(Unit& unit) : unit(unit), nativeSkills(unit.spec->skills) { }
 
 size_t SkillSet::size() const {
   Army* army = unit.getArmy();

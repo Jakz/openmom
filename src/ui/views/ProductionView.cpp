@@ -159,7 +159,7 @@ void ProductionView::mousePressed(u16 x, u16 y, MouseButton b)
   }
 }
 
-void ProductionView::setCty(City *city)
+void ProductionView::setCity(City *city)
 {
   this->city = city;
   

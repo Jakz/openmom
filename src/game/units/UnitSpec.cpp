@@ -75,7 +75,7 @@ const std::vector<const RaceUnitSpec*> UnitSpec::unitsForRace(RaceID race)
 {
   std::vector<const RaceUnitSpec*> units;
   
-  for (auto u : raceSpecs)
+  for (const auto& u : raceSpecs)
   {
     if (u.race.ident == race)
       units.push_back(&u);

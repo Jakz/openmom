@@ -46,13 +46,13 @@ public:
 class Unit
 {
 public:
-  const UnitSpec& spec;
+  const UnitSpec* const spec;
   
 private:
   Army* army;
 
 protected:
-  Unit(const UnitSpec& spec, const Level* level) : spec(spec), army(nullptr), _skills(*this), _health(*this), xp(0), selected(true), level(level)
+  Unit(const UnitSpec* spec, const Level* level) : spec(spec), army(nullptr), _skills(*this), _health(*this), xp(0), selected(true), level(level)
   {
     resetMoves();
     _health.healAll();
@@ -74,7 +74,7 @@ public:
   
   s32 getExperience() const { return xp; }
   
-  Productable::Type type() const { return spec.productionType(); }
+  Productable::Type type() const { return spec->productionType(); }
   
   template<typename T> T getEnumProperty(Property property) const { return static_cast<T>(getProperty(property)); }
   s16 getProperty(Property property) const { return getBaseProperty(property) + getBonusProperty(property); };
@@ -89,7 +89,7 @@ public:
   void select() { selected = true; }
   void unselect() { selected = false; }
   
-  Upkeep upkeep() const { return spec.upkeep + spellUpkeep(); }
+  Upkeep upkeep() const { return spec->upkeep + spellUpkeep(); }
   Upkeep spellUpkeep() const { return Upkeep(0, _skills.spellsUpkeep(), 0); }
   void removeSpell(const Spell* spell);
   
@@ -108,7 +108,7 @@ public:
   HitPoints* health() { return &_health; }
   const HitPoints* health() const { return &_health; }
   
-  virtual const std::string name() const { return spec.productionName(); }
+  virtual const std::string name() const { return spec->productionName(); }
   School glow() const { return _skills.glowEffect(); }
 };
 
@@ -118,19 +118,19 @@ protected:
   std::array<items::Item*, 3> items;
   
 public:
-  Hero(const HeroSpec& spec) : Unit(spec, &HeroLevel::HERO), items({nullptr}) { }
+  Hero(const HeroSpec* spec) : Unit(spec, &HeroLevel::HERO), items({nullptr}) { }
   
   // const std::string name() const; TODO: name management
   const std::string title() const;
   
   const items::Item* itemAt(u16 index) const { return items[index]; }
-  const HeroSpec* getSpec() const { return static_cast<const HeroSpec*>(&spec); }
+  const HeroSpec* getSpec() const { return static_cast<const HeroSpec*>(spec); }
 };
 
 class RaceUnit : public Unit
 {
 public:
-  RaceUnit(const RaceUnitSpec& spec) : Unit(spec, &UnitLevel::RECRUIT) { } //TODO: starting level may change (according to buildings e wizard traits
+  RaceUnit(const RaceUnitSpec* spec) : Unit(spec, &UnitLevel::RECRUIT) { } //TODO: starting level may change (according to buildings e wizard traits
   
   const std::string name() const override;
 };
@@ -138,7 +138,7 @@ public:
 class FantasticUnit : public Unit
 {
 public:
-  FantasticUnit(const SummonSpec& spec) : Unit(spec, nullptr) { }
+  FantasticUnit(const SummonSpec* spec) : Unit(spec, nullptr) { }
 };
 
 #endif

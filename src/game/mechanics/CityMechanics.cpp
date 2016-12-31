@@ -736,10 +736,10 @@ void CityMechanics::updateProduction(City *c)
       Army* a = t->army;
       
       if (!a)
-        t->placeArmy(new Army(c->owner, {new RaceUnit(*static_cast<const RaceUnitSpec*>(c->production))}));
+        t->placeArmy(new Army(c->owner, {new RaceUnit(static_cast<const RaceUnitSpec*>(c->production))}));
       else if (a && a->size() < 9)
       {
-        a->add(new RaceUnit(*static_cast<const RaceUnitSpec*>(c->production)));
+        a->add(new RaceUnit(static_cast<const RaceUnitSpec*>(c->production)));
         a->unpatrol();
       }
       else
@@ -753,7 +753,7 @@ void CityMechanics::updateProduction(City *c)
           
           if (a && a->getOwner() == c->owner && a->size() < 9)
           {
-            a->add(new RaceUnit(*static_cast<const RaceUnitSpec*>(c->production)));
+            a->add(new RaceUnit(static_cast<const RaceUnitSpec*>(c->production)));
             done = true;
             break;
           }
@@ -768,7 +768,7 @@ void CityMechanics::updateProduction(City *c)
             
             if (!a)
             {
-              t->placeArmy(new Army(c->owner, {new RaceUnit(*static_cast<const RaceUnitSpec*>(c->production))}));
+              t->placeArmy(new Army(c->owner, {new RaceUnit(static_cast<const RaceUnitSpec*>(c->production))}));
               done = true;
               break;
             }

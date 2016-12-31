@@ -45,7 +45,7 @@ public:
   
   void mousePressed(u16 x, u16 y, MouseButton b) override;
   
-  void setCty(City* city);
+  void setCity(City* city);
 };
 
 #endif

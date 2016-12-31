@@ -48,8 +48,8 @@ void Game::dummyInit()
 
   
   Army* army2 = new Army(player2, {
-		new FantasticUnit(*UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT)),
-    new RaceUnit(*UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS)),
+		new FantasticUnit(UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT)),
+    new RaceUnit(UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS)),
   });
   
   player2->add(army2);
@@ -85,13 +85,13 @@ void Game::dummyInit()
   //WorldGenerator.generate(world, MYRRAN);
 
   Army* a = new Army(player, {
-		new FantasticUnit(*UnitSpec::summonSpec(UnitID::GREAT_DRAKE)),
-    new RaceUnit(*UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS)),
-		new RaceUnit(*UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS)),
-		new RaceUnit(*UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS)),
-		new RaceUnit(*UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS)),
-    new FantasticUnit(*UnitSpec::summonSpec(UnitID::GREAT_DRAKE)),
-		new RaceUnit(*UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS)),
+		new FantasticUnit(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)),
+    new RaceUnit(UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS)),
+		new RaceUnit(UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS)),
+		new RaceUnit(UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS)),
+		new RaceUnit(UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS)),
+    new FantasticUnit(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)),
+		new RaceUnit(UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS)),
   });
   
   SpellCast cast = SpellCast(player, Spells::BLESS);
@@ -130,8 +130,8 @@ void Game::dummyInit()
   new LocalGame(this);
   
   placeArmy(a, Position(5, 6, ARCANUS));
-  placeArmy(new Army(player, {new FantasticUnit(*UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT)),new FantasticUnit(*UnitSpec::summonSpec(UnitID::GREAT_DRAKE))}), Position(4, 3, ARCANUS));
-  placeArmy(new Army(player, {new FantasticUnit(*UnitSpec::summonSpec(UnitID::GREAT_DRAKE)), new Hero(*UnitSpec::heroSpec(UnitID::HERO_DWARF))}), Position(4, 8, ARCANUS));
+  placeArmy(new Army(player, {new FantasticUnit(UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT)),new FantasticUnit(UnitSpec::summonSpec(UnitID::GREAT_DRAKE))}), Position(4, 3, ARCANUS));
+  placeArmy(new Army(player, {new FantasticUnit(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)), new Hero(UnitSpec::heroSpec(UnitID::HERO_DWARF))}), Position(4, 8, ARCANUS));
   
   City* florence = new City(player, "Florence", 4000, Position(3, 3, ARCANUS));
   florence->addBuilding(Building::MAGE_FORTRESS);
