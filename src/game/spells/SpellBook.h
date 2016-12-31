@@ -91,7 +91,9 @@ public:
   bool spendManaForCast(s32 mana)
   {
     bool finished = mana >= manaToCast;
-    manaToCast -= std::min(mana, manaToCast);
+    s32 valueSpent = std::min(mana, manaToCast);
+    manaToCast -= valueSpent;
+    LOGG("spell-cast", "spending %d mana, %d mana still needed", valueSpent, manaToCast);
     return finished;
   }
   

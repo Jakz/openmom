@@ -9,6 +9,7 @@
 #ifdef DEBUG
   extern void debugprintf(const char* str, ...);
   #define LOGD(...) debugprintf(__VA_ARGS__);
+  #define LOGG(y, x, ...) LOGD("[game]%s " x, y, __VA_ARGS__);
 
   #if DEBUG >= 3
     #define LOGD3(...) debugprintf(__VA_ARGS__);
@@ -24,6 +25,7 @@
 #else
   #define LOGD(...) do { } while (false);
   #define LOGD2(...) do { } while (false);
+  #define LOGG(...) do { } while (false);
 #endif
 
 #define WIDTH (320)

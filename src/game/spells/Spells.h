@@ -108,6 +108,8 @@ class Spell
   
   bool canBeCastInCombat() const { return mana.combatManaCost > 0; }
   bool canBeCastInOverland() const { return mana.manaCost > 0; }
+  
+  template <typename T> const T* as() const { return static_cast<const T*>(this); }
 };
 
 

@@ -385,6 +385,8 @@ void Game::turnBeginning()
   // TODO: if values change, these are not reflected in manaRatios of player
   Player* current = currentPlayer();
   
+  LOGG("turn", "turn %zu start for ", turnCounter, current->name.c_str())
+  
   current->updateCities();
   
   playerMechanics.updatePools(current);

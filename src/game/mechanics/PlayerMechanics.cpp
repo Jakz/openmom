@@ -185,10 +185,16 @@ void PlayerMechanics::updateSpellCast(Player *player)
   
   if (spell)
   {
-    s32 manaAvailable = std::min(player->availableMana, std::min(g->spellMechanics.actualManaCost(player, spell, false), player->manaPool));
+    s32 maxAvailableMana = player->availableMana;
+    s32 actualManaCost = g->spellMechanics.actualManaCost(player, spell, false);
+    
+    LOGG("spell-cast","updating spell cast for '%s', castingSkill: %d, spellCost: %d, manaPool: %d", i18n::c(spell->name), maxAvailableMana, actualManaCost, player->manaPool);
+    
+    s32 manaAvailable = std::min(maxAvailableMana, std::min(actualManaCost, player->manaPool));
 
     if (player->spellBook.spendManaForCast(manaAvailable))
     {
+      LOGG("spell-cast","casting spell '%s'", i18n::c(spell->name));
       castSpell(player, spell);
       //player->spellBook.cancelCast(); // TODO: if you cancel it then since it is required by mechanics (eg. unit spell) it crashes, if you don't it keeps casting it
     }
