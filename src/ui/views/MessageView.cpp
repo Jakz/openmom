@@ -39,7 +39,10 @@ void MessageView::handleMessage()
     
     if (message->type == msgs::Message::Type::CONFIRM)
     {
-      buttons[YES]->setAction([this](){ (buttons[YES]->getAction())(); handleMessage(); }); // FIXME: understand behavior and fix because now it's a stackoverflow
+      buttons[YES]->setAction([this](){
+        message->as<msgs::Confirm>()->action();
+        handleMessage();
+      }); // FIXME: understand behavior and fix because now it's a stackoverflow
 
       buttons[NO]->show();
       buttons[YES]->show();
@@ -49,11 +52,10 @@ void MessageView::handleMessage()
     gvm->closeOverview();
 }
 
-/*void MessageView::discardMessage()
+void MessageView::discardMessage()
 {
-  player->clearFirstMessage();
-  handleMessage();
-}*/
+  message.reset(nullptr);
+}
 
 void MessageView::discardAllMessages()
 {

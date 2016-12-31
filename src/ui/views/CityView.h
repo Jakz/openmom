@@ -15,6 +15,7 @@
 class City;
 class CityLayout;
 class ViewManager;
+enum class UpkeepSymbol;
 
 class CityView : public View
 {
@@ -34,7 +35,7 @@ private:
   void draw() override;
   void drawPost() override { }
   
-  s16 drawCityProp(s16 value, s16 row, s16 sx, s16 sy);
+  s16 drawCityProp(s16 value, UpkeepSymbol type, s16 sx, s16 sy);
   
 public:
   CityView(ViewManager* gvm);

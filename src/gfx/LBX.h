@@ -25,6 +25,8 @@ namespace lbx
     DATA_ARRAY = 5,
     TILES = 111,
     TILES_MAPPING = 112,
+    SOUND = 113,
+    MUSIC = 114,
     HELP
   };
   

@@ -30,7 +30,7 @@ private:
   void draw() override;
   void drawPost() override { }
   
-  //void discardMessage();
+  void discardMessage();
   void discardAllMessages();
   void handleMessage();
   

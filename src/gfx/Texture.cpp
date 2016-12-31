@@ -85,7 +85,6 @@ const Texture Texture::textures[] =
   //113 - 29
   Texture(TextureID::MESSAGE_CONFIRM_DIALOG,"static/confirm-dialog.png",1,1,186,142),
   
-  Texture(TextureID::SPELL_BOOK_SCHOOL_ICONS,"spellbook/school-symbols.png",1,5,5,5),
   
   Texture(TextureID::RIGHT_BACKDROP,"static/right_backdrop.gif",2,1,80,124),
     
@@ -94,10 +93,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::CITY_LANDSCAPE,"city/scape/landscape.png",12,1,205,19),
   
   Texture(TextureID::CITY_RACES_LABOUR,"city/city-races-labour.png",3,14,10,16),
-  Texture(TextureID::CITY_PRODUCTION,"city/production.png",5,4,{7,7,14,14},7),
-  Texture(TextureID::CITY_BUILDINGS_1,"city/scape/buildings-1.png",6,5,40,33),
-  Texture(TextureID::CITY_BUILDINGS_2,"city/scape/buildings-2.png",13,9,40,33,true,2),
-  Texture(TextureID::CITY_FORTRESS,"city/scape/fortress.png",1,9,40,48,true,2),
   Texture(TextureID::CITY_ROADS,"city/scape/roads.png",4,1,210,75),
   Texture(TextureID::CITY_HOUSES,"city/scape/houses.png",3,5,12,20),
   Texture(TextureID::CITY_WALLS,"city/scape/walls.png",4, {1,1,4,4}, 205, 11, true, 2),

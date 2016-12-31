@@ -23,6 +23,7 @@
 #include "ViewManager.h"
 
 #include "Gfx.h"
+#include "GfxData.h"
 #include "Texture.h"
 #include "Font.h"
 #include "Buttons.h"
@@ -82,18 +83,18 @@ void CityView::setCity(City *city)
     CityLayout::updateLayout(city);
 }
 
-s16 CityView::drawCityProp(s16 value, s16 row, s16 sx, s16 sy)
+s16 CityView::drawCityProp(s16 value, UpkeepSymbol type, s16 sx, s16 sy)
 {
   for (s16 i = value; i > 0; --i)
     if (i >= 10)
     {
       i -= 9;
-      Gfx::draw(TextureID::CITY_PRODUCTION, row, 2, sx, sy);
+      Gfx::draw(GfxData::upkeepGfxSpec(type).tenTimes, sx, sy);
       sx += 15;
     }
     else
     {
-      Gfx::draw(TextureID::CITY_PRODUCTION, row, 0, sx, sy);
+      Gfx::draw(GfxData::upkeepGfxSpec(type).single, sx, sy);
       sx += 6;
     }
   
@@ -107,7 +108,7 @@ void CityView::draw()
   /* draw minimap */
   Viewport::drawCityViewport(player, g->world, city->getPosition());
   
-  Gfx::draw(LSI(BACKGRND, 6), 0, 0);
+  Gfx::draw(LSI(BACKGRND, 6), 0, 0); // bg
   
   /* city name*/
   std::string cityName = Fonts::format("%s of %s", i18n::c(i18n::CITY_SIZE_NAMES[city->tileSize()]), city->getName().c_str());
@@ -135,21 +136,21 @@ void CityView::draw()
   
   //TODO: spacing between icons still incorrect
   
-  sx += drawCityProp(city->necessaryFood, 0, sx, sy) + 5;
-  drawCityProp(city->food, 0, sx, sy);
+  sx += drawCityProp(city->necessaryFood, UpkeepSymbol::FOOD, sx, sy) + 5;
+  drawCityProp(city->food, UpkeepSymbol::FOOD, sx, sy);
   sx = 6;
   sy += 8;
-  drawCityProp(city->work, 1, sx, sy);
+  drawCityProp(city->work, UpkeepSymbol::WORK, sx, sy);
   sx = 6;
   sy += 8;
-  sx += drawCityProp(city->upkeep.gold, 2, sx, sy) + 5;
-  drawCityProp(city->gold, 2, sx, sy);
+  sx += drawCityProp(city->upkeep.gold, UpkeepSymbol::GOLD, sx, sy) + 5;
+  drawCityProp(city->gold, UpkeepSymbol::GOLD, sx, sy);
   sx = 6;
   sy += 8;
-  drawCityProp(city->mana, 3, sx, sy);
+  drawCityProp(city->mana, UpkeepSymbol::MANA, sx, sy);
   sx = 6;
   sy += 8;
-  drawCityProp(city->knowledge, 4, sx, sy);
+  drawCityProp(city->knowledge, UpkeepSymbol::RESEARCH, sx, sy);
   
   Army* army = g->world->get(city->getPosition())->army;
   
@@ -205,11 +206,10 @@ void CityView::draw()
     for (int i = 0; i < std::min(production->productionCost()/10, 40); ++i)
     {
       /* TODO: fixare il draw parziale delle monete */
-      //TextureID::drawClippedToRow(TextureID::CITY_PRODUCTION, 5, 0, 262+i%max*5, 151+i/max*7, 2);
       if (i*10 < city->productionPool)
-        Gfx::draw(TextureID::CITY_PRODUCTION, 5, 1, 262+i%max*5, 151+i/max*7);
+        Gfx::draw(LSI(BACKGRND, 12), 262+i%max*5, 151+i/max*7);
       else
-        Gfx::draw(TextureID::CITY_PRODUCTION, 5, 0, 262+i%max*5, 151+i/max*7);
+        Gfx::draw(LSI(BACKGRND, 11), 262+i%max*5, 151+i/max*7);
     }
   }
   

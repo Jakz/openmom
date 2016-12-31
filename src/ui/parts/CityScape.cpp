@@ -13,45 +13,46 @@ using namespace std;
 
 //TODO: finish conversion using LBX entries
 unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
-  {Building::MAGE_FORTRESS,      BuildingSpecs(LSI(CITYSCAP, 40),  0, 2, 3, true)},
-  {Building::BUILDERS_HALL,      BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 0), 27, 2, 3)},
-  {Building::SMITHY,             BuildingSpecs(LSI(CITYSCAP, 50), 25, 2, 2, true)},
-  {Building::SHRINE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 2), 32, 3, 2)}, /*24*/
-  {Building::TEMPLE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 2), 36, 3, 2)},
-  {Building::PARTHENON,          BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 2), 40, 3, 3)},
-  {Building::CATHEDRAL,          BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 4), 34, 3, 3)},
-  {Building::ANIMISTS_GUILD,     BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 0), 24, 2, 2)},
-  {Building::ORACLE,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 1), 25, 2, 2)},
-  {Building::ALCHEMISTS_GUILD,   BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0, 9), 14, 1, 1, true)},
-  {Building::WIZARDS_GUILD,      BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0,10), 17, 2, 2, true)},
-  {Building::STABLE,             BuildingSpecs(LSI(CITYSCAP, 51), 40, 3, 3, true)},
-  {Building::FANTASTIC_STABLE,   BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0, 6), 40, 3, 3, true)},
-  {Building::BARRACKS,           BuildingSpecs(LSI(CITYSCAP, 45), 30, 2, 3, true)},
-  {Building::ARMORY,             BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 1), 25, 2, 2)},
-  {Building::FIGHTERS_GUILD,     BuildingSpecs(LSI(CITYSCAP, 47), 35, 3, 2, true)},
-  {Building::ARMORERS_GUILD,     BuildingSpecs(LSI(CITYSCAP, 48), 36, 3, 2, true)},
-  {Building::WAR_COLLEGE,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 0), 36, 3, 2)},
-  {Building::SHIP_WRIGHTS_GUILD, BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 0), 22, 2, 3)},
-  {Building::SHIP_YARD,          BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 1), 32, 2, 3)},
-  {Building::MARITIME_GUILD,     BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0, 7), 30, 2, 3, true)},
-  {Building::MARKETPLACE,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 2), 25, 2, 2)},
-  {Building::BANK,               BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 2), 26, 2, 2)},
-  {Building::MERCHANTS_GUILD,    BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  0, 3), 25, 2, 2)},
-  {Building::GRANARY,            BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 3), 17, 2, 2)},
-  {Building::FARMERS_MARKET,     BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 3), 24, 2, 2)},
-  {Building::LIBRARY,            BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 1), 36, 3, 2)},
-  {Building::UNIVERSITY,         BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 1), 36, 3, 2)},
-  {Building::SAGES_GUILD,        BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 1), 25, 2, 2)},
-  {Building::MINERS_GUILD,       BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  4, 3), 23, 2, 2)},
-  {Building::MECHANICIANS_GUILD, BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  3, 3), 21, 2, 2)},
-  {Building::SAWMILL,            BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_2,  0, 8), 25, 2, 3, true)},
-  {Building::FORESTERS_GUILD,    BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  1, 4), 25, 2, 2)},
+  {Building::MAGE_FORTRESS,      BuildingSpecs(LSI(CITYSCAP, 40),  0, 2, 3)},
+  
+  {Building::BUILDERS_HALL,      BuildingSpecs(LSI(CITYSCAP, 73), 27, 2, 3)},
+  {Building::SMITHY,             BuildingSpecs(LSI(CITYSCAP, 50), 25, 2, 2)},
+  {Building::SHRINE,             BuildingSpecs(LSI(CITYSCAP, 64), 32, 3, 2)}, /*24*/
+  {Building::TEMPLE,             BuildingSpecs(LSI(CITYSCAP, 65), 36, 3, 2)},
+  {Building::PARTHENON,          BuildingSpecs(LSI(CITYSCAP, 66), 40, 3, 3)},
+  {Building::CATHEDRAL,          BuildingSpecs(LSI(CITYSCAP, 67), 34, 3, 3)},
+  {Building::ANIMISTS_GUILD,     BuildingSpecs(LSI(CITYSCAP, 52), 24, 2, 2)},
+  {Building::ORACLE,             BuildingSpecs(LSI(CITYSCAP, 60), 25, 2, 2)},
+  {Building::ALCHEMISTS_GUILD,   BuildingSpecs(LSI(CITYSCAP, 61), 14, 1, 1)},
+  {Building::WIZARDS_GUILD,      BuildingSpecs(LSI(CITYSCAP, 63), 17, 2, 2)},
+  {Building::STABLE,             BuildingSpecs(LSI(CITYSCAP, 51), 40, 3, 3)},
+  {Building::FANTASTIC_STABLE,   BuildingSpecs(LSI(CITYSCAP, 53), 40, 3, 3)},
+  {Building::BARRACKS,           BuildingSpecs(LSI(CITYSCAP, 45), 30, 2, 3)},
+  {Building::ARMORY,             BuildingSpecs(LSI(CITYSCAP, 46), 25, 2, 2)},
+  {Building::FIGHTERS_GUILD,     BuildingSpecs(LSI(CITYSCAP, 47), 35, 3, 2)},
+  {Building::ARMORERS_GUILD,     BuildingSpecs(LSI(CITYSCAP, 48), 36, 3, 2)},
+  {Building::WAR_COLLEGE,        BuildingSpecs(LSI(CITYSCAP, 49), 36, 3, 2)},
+  {Building::SHIP_WRIGHTS_GUILD, BuildingSpecs(LSI(CITYSCAP, 54), 22, 2, 3)},
+  {Building::SHIP_YARD,          BuildingSpecs(LSI(CITYSCAP, 55), 32, 2, 3)},
+  {Building::MARITIME_GUILD,     BuildingSpecs(LSI(CITYSCAP, 56), 30, 2, 3)},
+  {Building::MARKETPLACE,        BuildingSpecs(LSI(CITYSCAP, 68), 25, 2, 2)},
+  {Building::BANK,               BuildingSpecs(LSI(CITYSCAP, 70), 26, 2, 2)},
+  {Building::MERCHANTS_GUILD,    BuildingSpecs(LSI(CITYSCAP, 69), 25, 2, 2)},
+  {Building::GRANARY,            BuildingSpecs(LSI(CITYSCAP, 71), 17, 2, 2)},
+  {Building::FARMERS_MARKET,     BuildingSpecs(LSI(CITYSCAP, 72), 24, 2, 2)},
+  {Building::LIBRARY,            BuildingSpecs(LSI(CITYSCAP, 58), 36, 3, 2)},
+  {Building::UNIVERSITY,         BuildingSpecs(LSI(CITYSCAP, 62), 36, 3, 2)},
+  {Building::SAGES_GUILD,        BuildingSpecs(LSI(CITYSCAP, 59), 25, 2, 2)},
+  {Building::MINERS_GUILD,       BuildingSpecs(LSI(CITYSCAP, 75), 23, 2, 2)},
+  {Building::MECHANICIANS_GUILD, BuildingSpecs(LSI(CITYSCAP, 74), 21, 2, 2)},
+  {Building::SAWMILL,            BuildingSpecs(LSI(CITYSCAP, 57), 25, 2, 3)},
+  {Building::FORESTERS_GUILD,    BuildingSpecs(LSI(CITYSCAP, 78), 25, 2, 2)},
   
   {Building::HOUSING,            BuildingSpecs(LSI(CITYSCAP, 42), 40, 2, 2)}, //TODO: changes accordingly to race building type
   {Building::TRADE_GOODS,        BuildingSpecs(LSI(CITYSCAP, 41), 40, 2, 2)},
-  {Building::CITY_WALLS,         BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 5), 40, 2, 2)},
+  {Building::CITY_WALLS,         BuildingSpecs(LSI(CITYSCAP, 114), 40, 2, 2)},
   
-  {Building::SUMMONING_CIRCLE,   BuildingSpecs(SpriteInfo(TextureID::CITY_BUILDINGS_1,  2, 4), 25, 3, 2)}
+  {Building::SUMMONING_CIRCLE,   BuildingSpecs(LSI(CITYSCAP, 6), 25, 3, 2)}
 };
 
 map<const City*, CityLayout*> CityLayout::layouts;
@@ -89,6 +90,7 @@ const std::vector<CityLayout::LayoutZone> CityLayout::getZones(const City* city)
 }
 
 static constexpr lbx_index river_and_ocean_tiles[2][PLANE_COUNT] = { {3, 4}, {115, 116} };
+static constexpr lbx_index house_gfx[3] = { 25, 30, 35 };
 
 void CityLayout::draw(const City *city, LocalPlayer *player)
 {
@@ -131,7 +133,10 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
     if (p.building)
       drawBuilding(p.building, p.x, p.y);
     else
-      Gfx::draw(TextureID::CITY_HOUSES, ht, p.house, p.x, p.y - Texture::get(TextureID::CITY_HOUSES)->sh());
+    {
+      const SpriteInfo houseGfx = LSI(CITYSCAP, house_gfx[ht]).relative(p.house);
+      Gfx::draw(houseGfx, p.x, p.y - houseGfx.sh());
+    }
   }
 }
 
@@ -139,11 +144,8 @@ void CityLayout::drawBuilding(const Building *building, s16 x, s16 y)
 {
   const BuildingSpecs& spec = specs[building];
   int height = spec.info.sh();
-  
-  if (spec.animated)
-    Gfx::drawAnimated(spec.info, x, y - height, 0);
-  else
-    Gfx::draw(spec.info, x, y - height);
+
+  Gfx::drawAnimated(spec.info, x, y - height, 0);
 }
 
 void CityLayout::drawBuildingCentered(const Building *building, s16 x, s16 y)
@@ -155,10 +157,7 @@ void CityLayout::drawBuildingCentered(const Building *building, s16 x, s16 y)
     const BuildingSpecs& spec = specs[building];
     int height = spec.info.sh();
 
-    if (spec.animated)
-      Gfx::drawAnimated(spec.info, x + (40 - spec.pixelWidth)/2, y - height, 0);
-    else
-      Gfx::draw(spec.info, x + (40 - spec.pixelWidth)/2, y - height);
+    Gfx::drawAnimated(spec.info, x + (40 - spec.pixelWidth)/2, y - height, 0);
   }
 }
 

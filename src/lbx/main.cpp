@@ -682,11 +682,12 @@ public:
     rows(LBX_COUNT);             // how many rows
     row_height_all(ROW_HEIGHT);         // default height of rows
     row_resize(0);              // disable row resizing
-    cols(3);             // how many columns
+    cols(4);             // how many columns
     col_header(1);              // enable column headers (along top)
-    col_width(0, 100);          // default width of columns
-    col_width(1, NUMERIC_COLUMN_WIDTH);
-    col_width(2, NUMERIC_COLUMN_WIDTH);
+    col_width(0, 90);          // default width of columns
+    col_width(1, 30);
+    col_width(2, 30);
+    col_width(3, 40);
     when(FL_WHEN_RELEASE);
     callback(mycallback, this);
     end();                      // end the Fl_Table group
@@ -760,8 +761,9 @@ public:
       case CONTEXT_COL_HEADER:
       {
         const char* title = "Archive";
-        if (COL == 1) title = "Entries";
-        else if (COL == 2) title = "Type";
+        if (COL == 1) title = "#";
+        else if (COL == 2) title = "T";
+        else if (COL == 3) title = "%";
         DrawHeader(title,X,Y,W,H);
         return;
       }
@@ -789,6 +791,14 @@ public:
         else if (COL == 2)
         {
           fl_draw(to_string(lbx.info.header.type).c_str(), X, Y, W, H, FL_ALIGN_CENTER);
+        }
+        else if (COL == 3)
+        {
+          if (lbx.info.header.type == LBXFileType::GRAPHICS)
+          {
+            float percent = usedSpritesCount.find(lbx.ident)->second / (float)lbx.size();
+            fl_draw(fmt::sprintf("%d%%", (int)(percent*100)).c_str(), X, Y, W, H, FL_ALIGN_CENTER);
+          }
         }
         return;
       }

@@ -9,6 +9,7 @@
 #include "SpellBookView.h"
 
 #include "Gfx.h"
+#include "GfxData.h"
 #include "Texture.h"
 #include "Buttons.h"
 #include "Font.h"
@@ -133,13 +134,15 @@ void SpellBookView::drawPage(u16 index)
         // TODO: real calculation of spell skill
         turns = 100 / g->spellMechanics.actualManaCost(player, spell, combatMode);
       }
+      
+      SpriteInfo schoolIcon = GfxData::schoolGfxSpec(spell->school).symbol;
             
       // draw mana symbols on spell entry
       if (!instant)
       {
         s16 toDo = std::min((int)turns, 20);
         for (int j = 0; j < toDo; ++j)
-          Gfx::draw(TextureID::SPELL_BOOK_SCHOOL_ICONS, 0, spell->school, topLeftX[index]+1+6*j, curY+6+1);
+          Gfx::draw(schoolIcon, topLeftX[index]+1+6*j, curY+6+1);
         if (toDo < 20)
           Gfx::drawClipped(LSI(SPELLS,10), topLeftX[index]+1+toDo*6+4, curY+6, 1+toDo*6+4, ROW_HEIGHT*i+6, 0, 6);
         
@@ -147,7 +150,7 @@ void SpellBookView::drawPage(u16 index)
         {
           toDo = std::min(turns-20, 20);
           for (int j = 0; j < toDo; ++j)
-            Gfx::draw(TextureID::SPELL_BOOK_SCHOOL_ICONS, 0, spell->school, topLeftX[index]+1+6*j, curY+12+1);
+            Gfx::draw(schoolIcon, topLeftX[index]+1+6*j, curY+12+1);
           
           if (toDo < 20)
             Gfx::drawClipped(LSI(SPELLS,10), topLeftX[index]+1+toDo*6+4, curY+12, 1+toDo*6+4, ROW_HEIGHT*i+6, 0, 6);
@@ -157,7 +160,7 @@ void SpellBookView::drawPage(u16 index)
       }
       else
       {
-        Gfx::draw(TextureID::SPELL_BOOK_SCHOOL_ICONS, 0, spell->school, topLeftX[index]+1, curY+6+1);
+        Gfx::draw(schoolIcon, topLeftX[index]+1, curY+6+1);
         // TODO: localize
         int w = 0;
         if (!combatMode)

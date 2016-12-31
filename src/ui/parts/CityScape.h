@@ -27,13 +27,12 @@ class CityLayout
 private:
   struct BuildingSpecs
   {
-    bool animated;
     SpriteInfo info;
     s16 width, depth;
     s16 pixelWidth;
     
-    BuildingSpecs() : info(SpriteInfo(TextureID::CITY_FORTRESS,0,0)) { }
-    BuildingSpecs(SpriteInfo info, s16 pixelWidth, s16 width, s16 depth, bool animated = false) : info(info), pixelWidth(pixelWidth), width(width), depth(depth), animated(animated) { }
+    BuildingSpecs() : info(LSI_PLACEHOLD) { }
+    BuildingSpecs(SpriteInfo info, s16 pixelWidth, s16 width, s16 depth) : info(info), pixelWidth(pixelWidth), width(width), depth(depth) { }
   };
   
   static std::unordered_map<const Building*, BuildingSpecs> specs;

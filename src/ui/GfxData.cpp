@@ -63,6 +63,10 @@ std::unordered_map<PlayerColor, PlayerGfxSpec, enum_hash> GfxData::playerSpecs =
   { PlayerColor::NEUTRAL, { LSI_PLACEHOLD, LSI(MAPBACK, 19) } }
 };
 
+std::unordered_map<RaceID, RaceGfxSpec, enum_hash> GfxData::raceSpecs = {
+  { RaceID::BARBARIANS, { LSI(BACKGRND, 45), LSI(BACKGRND, 59), LSI(BACKGRND, 74) } }
+};
+
 
 constexpr s8 GfxData::RANGED_INDEX[];
 constexpr s8 GfxData::PROPERTY_INDEX[];
@@ -101,12 +105,29 @@ std::unordered_map<const UnitSpec*, SpriteInfo> GfxData::heroPortraits = {
 };
 
 std::unordered_map<School, SchoolGfxSpec, enum_hash> GfxData::schoolSpecs = {
-  { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61), 0 } },
-  { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62), LSI(WIZLAB, 14) } },
-  { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63), LSI(WIZLAB, 15) } },
-  { School::CHAOS, { RGB(255,0,0), LSI(SPELLSCR, 64), LSI(WIZLAB, 16) } },
-  { School::LIFE, { RGB(255,255,255), LSI(SPELLSCR, 65), LSI(WIZLAB, 17) } },
-  { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66), LSI(WIZLAB, 18) } },
+  { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD } },
+  { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62), LSI(SPELLS, 4), LSI(WIZLAB, 14) } },
+  { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63), LSI(SPELLS, 5), LSI(WIZLAB, 15) } },
+  { School::CHAOS, { RGB(255,0,0), LSI(SPELLSCR, 64), LSI(SPELLS, 6), LSI(WIZLAB, 16) } },
+  { School::LIFE, { RGB(255,255,255), LSI(SPELLSCR, 65), LSI(SPELLS, 7), LSI(WIZLAB, 17) } },
+  { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66), LSI(SPELLS, 8), LSI(WIZLAB, 18) } },
+};
+
+// single icon, black icon, 10x icon, 10x black icon
+constexpr lbx_index production_symbols_gfx[][4] = {
+  { 40, 94, 88, 95 }, // food
+  { 41,  0, 89, 0 }, // production
+  { 42, 73, 90, 93 }, // gold
+  { 43,  0, 91, 0 }, // power
+  { 44,  0, 92, 0 }  // research
+};
+
+std::unordered_map<UpkeepSymbol, UpkeepSymbolSpec, enum_hash> GfxData::upkeepSymbolSpec = {
+  { UpkeepSymbol::FOOD, { LSI(BACKGRND, 40), LSI(BACKGRND, 94), LSI(BACKGRND, 88), LSI(BACKGRND, 95) } },
+  { UpkeepSymbol::WORK, { LSI(BACKGRND, 41), LSI_PLACEHOLD, LSI(BACKGRND, 89), LSI_PLACEHOLD } },
+  { UpkeepSymbol::GOLD, { LSI(BACKGRND, 42), LSI(BACKGRND, 73), LSI(BACKGRND, 90), LSI(BACKGRND, 93) } },
+  { UpkeepSymbol::MANA, { LSI(BACKGRND, 43), LSI_PLACEHOLD, LSI(BACKGRND, 91), LSI_PLACEHOLD } },
+  { UpkeepSymbol::RESEARCH, { LSI(BACKGRND, 44), LSI_PLACEHOLD, LSI(BACKGRND, 92), LSI_PLACEHOLD } }
 };
 
 SpriteInfo WizardGfxSpec::getGemmedPortrait(PlayerColor color) const

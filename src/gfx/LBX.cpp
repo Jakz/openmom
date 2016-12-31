@@ -712,6 +712,11 @@ const LBXFile& Repository::loadLBX(LBXID ident)
   FILE *in = LBX::getDescriptor(lbx);
   LBX::loadHeader(lbx.info, in);
   
+  if (ident == LBXID::SOUNDFX || ident == LBXID::SNDDRV)
+    lbx.info.header.type = LBXFileType::SOUND;
+  else if (ident == LBXID::MUSIC)
+    lbx.info.header.type = LBXFileType::MUSIC;
+  
   LOGD("[lbx] caching %zu assets %s", lbx.info.offsets.size(), lbx.fileName.c_str()/*, LBX::getLBXPath(lbx.fileName).c_str()*/);
 
   if (lbx.info.header.type == LBXFileType::GRAPHICS)
@@ -724,6 +729,7 @@ const LBXFile& Repository::loadLBX(LBXID ident)
     lbx.arrays = new LBXArrayData*[lbx.size()];
     std::fill(lbx.arrays, lbx.arrays+lbx.size(), nullptr);
   }
+  
   
   fclose(in);
   

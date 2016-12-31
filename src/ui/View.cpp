@@ -42,11 +42,14 @@ void View::drawButtons()
 
 void View::doMouseReleased(u16 x, u16 y, MouseButton b)
 {
+  bool handled = false;
+  
   if (curButton)
   {
     bool inside = curButton->isInside(x,y);
     if (inside && b == BUTTON_LEFT)
     {
+      handled = true;
       curButton->click();
       curButton->release();
       curButton = nullptr;
@@ -61,10 +64,14 @@ void View::doMouseReleased(u16 x, u16 y, MouseButton b)
   for (const auto c : areas)
   {
     if (c && c->isActive() && c->isCorrectButton(b) && c->isInside(x,y))
+    {
       c->getAction()();
+      handled = true;
+    }
   }
   
-  mouseReleased(x,y,b);
+  if (!handled)
+    mouseReleased(x,y,b);
 }
 
 void View::doMousePressed(u16 x, u16 y, MouseButton b)

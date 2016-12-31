@@ -17,6 +17,7 @@
 
 enum class Ranged : u8;
 enum class Property : u8;
+enum class RaceID : u8;
 
 class HeroSpec;
 class UnitSpec;
@@ -81,7 +82,33 @@ struct SchoolGfxSpec
 {
   Color color;
   SpriteInfo summonPalette;
+  SpriteInfo symbol;
   SpriteInfo researchFamiliar;
+};
+
+
+enum class UpkeepSymbol
+{
+  FOOD,
+  WORK,
+  GOLD,
+  MANA,
+  RESEARCH
+};
+
+struct UpkeepSymbolSpec
+{
+  SpriteInfo single;
+  SpriteInfo singleBlack;
+  SpriteInfo tenTimes;
+  SpriteInfo tenTimesBlack;
+};
+
+struct RaceGfxSpec
+{
+  SpriteInfo cityWorker;
+  SpriteInfo cityFarmer;
+  SpriteInfo cityRebel;
 };
 
 
@@ -90,11 +117,14 @@ class GfxData
 private:
   static std::unordered_map<WizardID, WizardGfxSpec, enum_hash> wizardSpecs;
   static std::unordered_map<PlayerColor, PlayerGfxSpec, enum_hash> playerSpecs;
+  static std::unordered_map<RaceID, RaceGfxSpec, enum_hash> raceSpecs;
+
   
   static std::unordered_map<const UnitSpec*, UnitGfxSpec> unitSpecs;
   static std::unordered_map<const UnitSpec*, SpriteInfo> heroPortraits;
   
   static std::unordered_map<School, SchoolGfxSpec, enum_hash> schoolSpecs;
+  static std::unordered_map<UpkeepSymbol, UpkeepSymbolSpec, enum_hash> upkeepSymbolSpec;
 
   
   static const TileGfxSpec specs[];
@@ -112,7 +142,10 @@ public:
   
   static const PlayerGfxSpec& playerGfxSpec(PlayerColor color) { return playerSpecs.find(color)->second; }
   static const WizardGfxSpec& wizardGfxSpec(WizardID wizard) { return wizardSpecs.find(wizard)->second; }
+  static const RaceGfxSpec& raceGfxSpec(RaceID race) { return raceSpecs.find(race)->second; }
   static const SchoolGfxSpec& schoolGfxSpec(School school) { return schoolSpecs.find(school)->second; }
+  static const UpkeepSymbolSpec& upkeepGfxSpec(UpkeepSymbol symbol) { return upkeepSymbolSpec.find(symbol)->second; }
+
   
   static const UnitGfxSpec& unitGfxSpec(const UnitSpec* spec);
   static SpriteInfo heroGfxSpec(const UnitSpec* spec);

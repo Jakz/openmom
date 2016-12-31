@@ -84,7 +84,7 @@ void MainView::activate()
   /*player->send(new msgs::Error("fotius"));
   player->send(new msgs::NewBuilding(player->getCities().front(), Building::ARMORY));*/
   //player->push(new anims::SummonAnimation(WizardID::FREYA, UnitSpec::summonSpec(UnitID::HELL_HOUNDS)));
-  player->push(new anims::SpellDiscoverAnimation(WizardID::SSS_RA, School::LIFE));
+  //player->push(new anims::SpellDiscoverAnimation(WizardID::SSS_RA, School::LIFE));
 
 }
 

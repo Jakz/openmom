@@ -38,18 +38,20 @@ void CommonDraw::drawMovement(u16 v, MovementBaseType type, u16 x, u16 y, u16 c)
 
 void CommonDraw::drawGoldUpkeep(u16 gold, u16 x, u16 y)
 {
+  const auto& gfx = GfxData::upkeepGfxSpec(UpkeepSymbol::GOLD);
+  
   if (gold > 0)
   {
     for (int i = gold; i > 0; --i)
       if (i >= 10)
       {
         i -= 9;
-        Gfx::draw(TextureID::CITY_PRODUCTION, 2, 2, x, y);
+        Gfx::draw(gfx.tenTimes, x, y);
         x += 15;
       }
       else
       {
-        Gfx::draw(TextureID::CITY_PRODUCTION, 2, 0, x, y);
+        Gfx::draw(gfx.single, x, y);
         x += 8;
       }
   }
@@ -58,17 +60,14 @@ void CommonDraw::drawGoldUpkeep(u16 gold, u16 x, u16 y)
 void CommonDraw::drawUpkeep(const Upkeep& uk, u16 x, u16 y)
 {
   /* gold, mana, food */
-  static const SpriteInfo gfx[][2] = {
-    { SpriteInfo(TextureID::CITY_PRODUCTION, 2, 2), SpriteInfo(TextureID::CITY_PRODUCTION, 2, 0) },
-    { SpriteInfo(TextureID::CITY_PRODUCTION, 3, 2), SpriteInfo(TextureID::CITY_PRODUCTION, 3, 0) },
-    { SpriteInfo(TextureID::CITY_PRODUCTION, 0, 2), SpriteInfo(TextureID::CITY_PRODUCTION, 0, 0) }
-  };
-  
+  static const UpkeepSymbol symbols[3] = { UpkeepSymbol::GOLD, UpkeepSymbol::MANA, UpkeepSymbol::FOOD };
   static const Upkeep::Type values[3] = { Upkeep::Type::GOLD, Upkeep::Type::MANA, Upkeep::Type::FOOD };
   
   for (size_t t = 0; t < 3; ++t)
   {
     s16 value = uk[values[t]];
+    const auto& gfx = GfxData::upkeepGfxSpec(symbols[t]);
+
     
     if (value > 0)
     {
@@ -76,12 +75,12 @@ void CommonDraw::drawUpkeep(const Upkeep& uk, u16 x, u16 y)
         if (i >= 10)
         {
           i -= 9;
-          Gfx::draw(gfx[t][0], x, y);
+          Gfx::draw(gfx.tenTimes, x, y);
           x += 15;
         }
         else
         {
-          Gfx::draw(gfx[t][1], x, y);
+          Gfx::draw(gfx.single, x, y);
           x += 8;
         }
     }
