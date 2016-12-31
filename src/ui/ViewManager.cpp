@@ -143,43 +143,57 @@ void ViewManager::draw()
 
 void ViewManager::mouseClicked(u16 x, u16 y, MouseButton b)
 {
-  if (!animating)
+  if (animating)
+    (*animations.begin())->mouseClicked(x, y, b);
+  else
     respondingView()->doMouseClicked(x, y, b);
 }
 
 void ViewManager::mouseDragged(u16 x, u16 y, MouseButton b)
 {
-  if (!animating)
+  if (animating)
+    (*animations.begin())->mouseDragged(x, y, b);
+  else
     respondingView()->doMouseDragged(x, y, b);
 }
 
 void ViewManager::mouseMoved(u16 x, u16 y, MouseButton b)
 {
-  if (!animating)
+  if (animating)
+    (*animations.begin())->mouseMoved(x, y, b);
+  else
     respondingView()->doMouseMoved(x, y, b);
 }
 
 void ViewManager::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-  if (!animating)
+  if (animating)
+    (*animations.begin())->mouseReleased(x, y, b);
+  else
     respondingView()->doMouseReleased(x, y, b);
 }
 
 void ViewManager::mousePressed(u16 x, u16 y, MouseButton b)
 {
-  if (!animating)
+  if (animating)
+    (*animations.begin())->mousePressed(x, y, b);
+  else
     respondingView()->doMousePressed(x, y, b);
 }
 
 void ViewManager::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
-  if (!animating)
+  if (animating)
+    (*animations.begin())->keyPressed(key, kkey, mod);
+  else
     respondingView()->doKeyPressed(key, kkey, mod);
 }
 
 void ViewManager::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
-  if (!animating)
+  if (animating)
+    (*animations.begin())->keyReleased(key, kkey, mod);
+  else
     respondingView()->doKeyReleased(key, kkey, mod);
 }
 

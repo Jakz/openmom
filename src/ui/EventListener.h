@@ -13,7 +13,7 @@
 
 class EventListener
 {
-  protected:
+  public:
   virtual void mousePressed(u16 x, u16 y, MouseButton b) { };
   virtual void mouseClicked(u16 x, u16 y, MouseButton b) { };
   virtual void mouseReleased(u16 x, u16 y, MouseButton b) { };

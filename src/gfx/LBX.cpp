@@ -922,7 +922,7 @@ const LBXFile& Repository::loadLBXHelp()
     else
       current.next = nullptr;
     
-    printf("%3zu %s %c\n%s\n\n", i, current.title.c_str(), current.next ? 'y' : 'n', current.text.c_str());
+    //printf("%3zu %s %c\n%s\n\n", i, current.title.c_str(), current.next ? 'y' : 'n', current.text.c_str());
 
     
     /*printf("%3zu %08zu: %s", i, off, entry.title);

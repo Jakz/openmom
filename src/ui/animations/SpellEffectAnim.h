@@ -3,6 +3,8 @@
 #include "Animations.h"
 #include "Common.h"
 
+class SummonSpec;
+
 namespace anims
 {
   class SpellEffect : public DiscreteAnimation
@@ -28,6 +30,17 @@ namespace anims
     {
       return force || DiscreteAnimation::hasFinished();
     }
+  };
+  
+  class SummonAnimation : public ContinuousEndlessAnimation
+  {
+    SpriteInfo wizard;
+    SpriteInfo creature;
+    
+  public:
+    SummonAnimation(WizardID wizard, const SummonSpec* unit);
+    void step() override;
+    void mouseReleased(u16 x, u16 y, MouseButton b) override;
   };
 
   

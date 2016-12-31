@@ -63,6 +63,7 @@ struct WizardGfxSpec
   const SpriteInfo diplomacyMood;
   const SpriteInfo gemmedPortrait;
   const SpriteInfo researchPose;
+  const SpriteInfo summonPose;
   
   SpriteInfo getGemmedPortrait(PlayerColor color) const;
 };

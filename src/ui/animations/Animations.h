@@ -10,6 +10,7 @@
 #define _ANIMATIONS_H_
 
 #include "Common.h"
+#include "EventListener.h"
 
 #include "PathFind.h"
 #include "Gfx.h"
@@ -21,19 +22,22 @@ class LocalPlayer;
 
 namespace anims
 {
-  class Animation
+  class Animation : public EventListener
   {
   protected:
+    bool forceFinished;
     std::unique_ptr<Animation> nextAnim;
     
   public:
-    Animation() { }
+    Animation() : forceFinished(false) { }
     
     virtual bool hasFinished() = 0;
     virtual void step() = 0;
     
     std::unique_ptr<Animation>& next() { return nextAnim; }
     void setNext(Animation *animation) { this->nextAnim = std::unique_ptr<Animation>(animation); }
+    
+    void finish() { forceFinished = true; }
     
     virtual void reset() = 0;
     
@@ -49,7 +53,7 @@ namespace anims
   public:
     DiscreteAnimation(u32 duration) : start(Gfx::fticks), duration(duration) { }
     void reset() override { start = Gfx::fticks; }
-    bool hasFinished() override { return Gfx::fticks >= duration + start; }
+    bool hasFinished() override { return forceFinished || Gfx::fticks >= duration + start; }
   };
   
   class ContinuousAnimation : public Animation
@@ -67,7 +71,19 @@ namespace anims
       return std::min(1.0f, (Gfx::ticks - start) / (float)duration);
     }
     
-    bool hasFinished() override { return Gfx::ticks > duration + start; }
+    bool hasFinished() override { return forceFinished || Gfx::ticks > duration + start; }
+  };
+  
+  class ContinuousEndlessAnimation : public ContinuousAnimation
+  {
+  protected:
+    
+  public:
+    ContinuousEndlessAnimation(u32 duration) : ContinuousAnimation(duration) { }
+    
+    void reset() override { start = Gfx::ticks; }
+    
+    bool hasFinished() override { return forceFinished; }
   };
   
   class Blink : public ContinuousAnimation

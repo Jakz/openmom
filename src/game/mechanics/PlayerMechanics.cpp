@@ -212,6 +212,7 @@ void PlayerMechanics::updateSpellResearch(Player *player)
 
 s32 PlayerMechanics::computeBaseCastingSkill(const Player *player)
 {
+  //TODO: does additional book found after game start contribute?
   s32 base = player->spellBook.totalBooks()*2;
   
   if (player->hasTrait(TraitID::ARCHMAGE))
@@ -254,6 +255,8 @@ void PlayerMechanics::updateBonusCastingSkill(Player *player)
   // TODO: check if correct (rounded down and so on)
   if (player->hasTrait(TraitID::ARCHMAGE))
     totalBonus += std::floor(player->manaRatio(2)/2.0f);
+ 
+  LOGG("spell-skill", "updating spell skill: updating counter from %d to %d, next increase at %d, total bonus skill: %d", player->castingSkillCounter, totalBonus, 2*player->castingSkillBase(), player->castingSkillGained_);
   
   while (totalBonus > 2*player->castingSkillBase())
   {

@@ -83,7 +83,7 @@ void MainView::activate()
   //player->send(new msgs::Help(help::Data::at(289)));
   /*player->send(new msgs::Error("fotius"));
   player->send(new msgs::NewBuilding(player->getCities().front(), Building::ARMORY));*/
-  
+  player->push(new anims::SummonAnimation(WizardID::FREYA, nullptr));
 }
 
 void MainView::switchToSpellCast()
@@ -313,34 +313,6 @@ void MainView::drawPost()
   
   //ColorMap.BlinkMap blink = new ColorMap.BlinkMap(new int[]{Gfx.color(223, 150, 28)}, 0,0,0,    180,30,0,  6);
   //Fonts.drawString("Test Blink", Fonts.Face.YELLOW_SMALL, 50, 50, Fonts.Align.LEFT, blink);
-  
-  /*SpriteInfo wizard = LSI(SPELLSCR, 53);
-  
-  lbx::LBXSpriteDataWithPalette summonBg(lbx::Repository::spriteFor(LSI(SPELLSCR,9)), lbx::Repository::spriteFor(LSI(SPELLSCR,64))->getPalette());
-  lbx::LBXSpriteDataWithPalette summonFlame(lbx::Repository::spriteFor(LSI(SPELLSCR,11)), lbx::Repository::spriteFor(LSI(SPELLSCR,64))->getPalette());
-  lbx::LBXSpriteDataWithPalette summonFlame2(lbx::Repository::spriteFor(LSI(SPELLSCR,10)), lbx::Repository::spriteFor(LSI(SPELLSCR,64))->getPalette());
-
-  ScreenCoord base = ScreenCoord(0, 0);
-  u16 creatureTopY = 18;
-  u16 creatureBottomY = 90;
-  
-  static u32 startTicks = Gfx::ticks;
-  u32 elapsed = Gfx::ticks - startTicks;
-  
-  float percent = elapsed / 5000.0f;
-  u16 creatureY = creatureBottomY - (creatureBottomY - creatureTopY)*percent;
-  
-  printf("elapsed: %u, percent: %2.2f, y: %u\n", elapsed, percent, creatureY);
-
-  
-  Gfx::draw(&summonBg, base.x, base.y);
-  
-  u16 frame = (Gfx::fticks % 15);
-  
-  Gfx::drawClipped(wizard, base.x + 8, base.y + 3 + 5, 0, 5, wizard.sw(), wizard.sh()-5);
-  Gfx::draw(&summonFlame2, base.x + 55, base.y + 0+97-43, frame);
-  Gfx::draw(LSI(MONSTER, 22), base.x + 76, base.y + creatureY);
-  Gfx::draw(&summonFlame, base.x + 65, base.y + 26+97-43, frame);*/
 }
 
 void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
