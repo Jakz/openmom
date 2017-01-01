@@ -111,20 +111,21 @@ struct RaceGfxSpec
   SpriteInfo cityRebel;
 };
 
+template<typename K, typename V> using gfx_map = typename std::conditional<std::is_enum<K>::value, std::unordered_map<K, V, enum_hash>, std::unordered_map<K,V>>::type;
 
 class GfxData
 {
 private:
-  static std::unordered_map<WizardID, WizardGfxSpec, enum_hash> wizardSpecs;
-  static std::unordered_map<PlayerColor, PlayerGfxSpec, enum_hash> playerSpecs;
-  static std::unordered_map<RaceID, RaceGfxSpec, enum_hash> raceSpecs;
+  static gfx_map<WizardID, WizardGfxSpec> wizardSpecs;
+  static gfx_map<PlayerColor, PlayerGfxSpec> playerSpecs;
+  static gfx_map<RaceID, RaceGfxSpec> raceSpecs;
 
   
-  static std::unordered_map<const UnitSpec*, UnitGfxSpec> unitSpecs;
-  static std::unordered_map<const UnitSpec*, SpriteInfo> heroPortraits;
+  static gfx_map<const UnitSpec*, UnitGfxSpec> unitSpecs;
+  static gfx_map<const UnitSpec*, SpriteInfo> heroPortraits;
   
-  static std::unordered_map<School, SchoolGfxSpec, enum_hash> schoolSpecs;
-  static std::unordered_map<UpkeepSymbol, UpkeepSymbolSpec, enum_hash> upkeepSymbolSpec;
+  static gfx_map<School, SchoolGfxSpec> schoolSpecs;
+  static gfx_map<UpkeepSymbol, UpkeepSymbolSpec> upkeepSymbolSpec;
 
   
   static const TileGfxSpec specs[];

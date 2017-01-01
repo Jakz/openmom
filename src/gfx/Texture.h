@@ -96,12 +96,10 @@ enum class TextureID : u16
   CITY_WATER,
   CITY_LANDSCAPE,
   
-  CITY_RACES_LABOUR,
   CITY_ROADS,
   CITY_HOUSES,
   CITY_WALLS,
   
-  OUTPOST_VIEW_BACKDROP,
   OUTPOST_HOUSES,
   
   MAGIC_GEMS,
@@ -109,15 +107,7 @@ enum class TextureID : u16
   MAGIC_MANA_WANDS,
   
   ALCHEMY_BACKDROP,
-    
-  RESEARCH_MISC,
-  RESEARCH_BEAM,
-  RESEARCH_TOME, // TODO: taken from screenshot, palette was wrong
-  RESEARCH_MASCOTS, // TODO: taken fron screenshot, palette was wrong
-  RESEARCH_LAB_BACKDROP,
-  RESEARCH_WIZARDS,
   
-    
   // units
   
   UNIT_DETAIL_SPECIAL_THINGS, // contiene anche mirino minimap

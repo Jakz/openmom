@@ -115,15 +115,17 @@ void CityView::draw()
   
   Fonts::drawString(cityName, FontFaces::Huge::GOLD, 104, 2, ALIGN_CENTER);
   
+  const auto& labourGfx = GfxData::raceGfxSpec(city->race.ident);
+  
   int popX = 4, reqFarmers = city->reservedPopulation;
   for (int i = 0; i < (city->population / 1000); ++i)
   {
     if (i < reqFarmers)
-      Gfx::draw(TextureID::CITY_RACES_LABOUR, 1, static_cast<u16>(city->race.ident), popX, 25);
+      Gfx::draw(labourGfx.cityFarmer, popX, 27);
     else if (i < reqFarmers + city->farmers)
-      Gfx::draw(TextureID::CITY_RACES_LABOUR, 1, static_cast<u16>(city->race.ident), popX, 25);
+      Gfx::draw(labourGfx.cityFarmer, popX, 27);
     else
-      Gfx::draw(TextureID::CITY_RACES_LABOUR, 0, static_cast<u16>(city->race.ident), popX, 25);
+      Gfx::draw(labourGfx.cityWorker, popX, 27);
     
     if (i == reqFarmers - 1)
       popX += 4;
@@ -220,7 +222,7 @@ void CityView::draw()
     Fonts::drawString(production->productionName(), FontFaces::Tiny::WHITE, 235, 177, ALIGN_CENTER);
   
   
-  // print city enchantments
+  /* draw city enchantments */
   int i = 0;
   for (const SpellCast& cast : city->getSpells())
   {

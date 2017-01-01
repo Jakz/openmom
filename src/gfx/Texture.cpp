@@ -92,12 +92,10 @@ const Texture Texture::textures[] =
   Texture(TextureID::CITY_WATER,"city/city-water.png",4,6,16,96, true,5),
   Texture(TextureID::CITY_LANDSCAPE,"city/scape/landscape.png",12,1,205,19),
   
-  Texture(TextureID::CITY_RACES_LABOUR,"city/city-races-labour.png",3,14,10,16),
   Texture(TextureID::CITY_ROADS,"city/scape/roads.png",4,1,210,75),
   Texture(TextureID::CITY_HOUSES,"city/scape/houses.png",3,5,12,20),
   Texture(TextureID::CITY_WALLS,"city/scape/walls.png",4, {1,1,4,4}, 205, 11, true, 2),
   
-  Texture(TextureID::OUTPOST_VIEW_BACKDROP,"static/backdrop-outpost.png",1,1,262,103),
   Texture(TextureID::OUTPOST_HOUSES,"city/outpost-houses.png",2,3,12,13),
   
   Texture(TextureID::MAGIC_GEMS,"magic/view/gems.png",1,7,42,45),
@@ -105,15 +103,7 @@ const Texture Texture::textures[] =
   Texture(TextureID::MAGIC_MANA_WANDS,"magic/view/mana-wands.png",1,6,16,72),
   
   Texture(TextureID::ALCHEMY_BACKDROP,"magic/view/backdrop-alchemy.png",1,1,166,84),  
-  
-  Texture(TextureID::RESEARCH_MISC,"static/research-misc.png",1,2,16,16),
-  Texture(TextureID::RESEARCH_BEAM,"magic/view/research-beam.png",1,10,77,147,true,1),
-  Texture(TextureID::RESEARCH_TOME,"magic/view/research-tome.png",42,54), // TODO: taken from screenshot, palette was wrong
-  Texture(TextureID::RESEARCH_MASCOTS,"magic/view/research-mascots.png",1,5,32,32), // TODO: taken fron screenshot, palette was wrong
-  Texture(TextureID::RESEARCH_LAB_BACKDROP,"static/backdrop-research-lab.png",1,1,320,200),
-  Texture(TextureID::RESEARCH_WIZARDS,"magic/research-wizards.png",1,14,84,107),
-  
-  
+
   // units ,not combat related sprites)
   
 

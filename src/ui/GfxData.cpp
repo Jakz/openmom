@@ -15,6 +15,9 @@
 
 using namespace std;
 
+constexpr s8 GfxData::RANGED_INDEX[];
+constexpr s8 GfxData::PROPERTY_INDEX[];
+
 const TileGfxSpec GfxData::specs[] =
 {
   TileGfxSpec(0,6,RGB(56,94,18),RGB(81,60,48)), // GRASS
@@ -31,13 +34,13 @@ const TileGfxSpec GfxData::specs[] =
   TileGfxSpec(0,0,{RGB(0, 14, 90),RGB(7, 25, 95)},{RGB(8,4,4),RGB(36,28,24)}) // RIVER_MOUTH TODO: check colors
 };
 
-unordered_map<const Spell*, sprite_ref> GfxData::specialSpellGfxEffects = {
+gfx_map<const Spell*, sprite_ref> GfxData::specialSpellGfxEffects = {
   {Spells::CORRUPTION, LBXI(SPECFX, 7)},
   {Spells::CHANGE_TERRAIN, LBXI(SPECFX, 8)},
   {Spells::RAISE_VOLCANO, LBXI(SPECFX, 11)}
 };
 
-std::unordered_map<WizardID, WizardGfxSpec, enum_hash> GfxData::wizardSpecs = {
+gfx_map<WizardID, WizardGfxSpec> GfxData::wizardSpecs = {
   { WizardID::MERLIN, { LSI(MAGIC, 18), LSI(WIZARDS, 0), LSI(MOODWIZ, 0), LSI(LILWIZ, 0), LSI(WIZLAB, 0), LSI(SPELLSCR, 46) } },
   { WizardID::RAVEN, { LSI(MAGIC, 19), LSI(WIZARDS, 1), LSI(MOODWIZ, 1), LSI(LILWIZ, 5), LSI(WIZLAB, 1), LSI(SPELLSCR, 47) } },
   { WizardID::SHAREE, { LSI(MAGIC, 20), LSI(WIZARDS, 2), LSI(MOODWIZ, 2), LSI(LILWIZ, 10), LSI(WIZLAB, 2), LSI(SPELLSCR, 48) } },
@@ -54,7 +57,7 @@ std::unordered_map<WizardID, WizardGfxSpec, enum_hash> GfxData::wizardSpecs = {
   { WizardID::KALI, { LSI(MAGIC, 31), LSI(WIZARDS, 13), LSI(MOODWIZ, 13), LSI(LILWIZ, 65), LSI(WIZLAB, 13), LSI(SPELLSCR, 59) } }
 };
 
-std::unordered_map<PlayerColor, PlayerGfxSpec, enum_hash> GfxData::playerSpecs = {
+gfx_map<PlayerColor, PlayerGfxSpec> GfxData::playerSpecs = {
   { PlayerColor::BLUE, { LSI(MAGIC, 1), LSI(MAPBACK, 14) } },
   { PlayerColor::GREEN, { LSI(MAGIC, 2), LSI(MAPBACK, 15) } },
   { PlayerColor::PURPLE, { LSI(MAGIC, 3), LSI(MAPBACK, 16) } },
@@ -63,15 +66,24 @@ std::unordered_map<PlayerColor, PlayerGfxSpec, enum_hash> GfxData::playerSpecs =
   { PlayerColor::NEUTRAL, { LSI_PLACEHOLD, LSI(MAPBACK, 19) } }
 };
 
-std::unordered_map<RaceID, RaceGfxSpec, enum_hash> GfxData::raceSpecs = {
-  { RaceID::BARBARIANS, { LSI(BACKGRND, 45), LSI(BACKGRND, 59), LSI(BACKGRND, 74) } }
+gfx_map<RaceID, RaceGfxSpec> GfxData::raceSpecs = {
+  { RaceID::BARBARIANS, { LSI(BACKGRND, 45), LSI(BACKGRND, 59), LSI(BACKGRND, 74) } },
+  { RaceID::BEASTMEN, { LSI(BACKGRND, 46), LSI(BACKGRND, 60), LSI(BACKGRND, 75) } },
+  { RaceID::DARK_ELVES, { LSI(BACKGRND, 47), LSI(BACKGRND, 61), LSI(BACKGRND, 76) } },
+  { RaceID::DRACONIANS, { LSI(BACKGRND, 48), LSI(BACKGRND, 62), LSI(BACKGRND, 77) } },
+  { RaceID::DWARVES, { LSI(BACKGRND, 49), LSI(BACKGRND, 63), LSI(BACKGRND, 78) } },
+  { RaceID::GNOLLS, { LSI(BACKGRND, 50), LSI(BACKGRND, 64), LSI(BACKGRND, 79) } },
+  { RaceID::HALFLINGS, { LSI(BACKGRND, 51), LSI(BACKGRND, 65), LSI(BACKGRND, 80) } },
+  { RaceID::HIGH_ELVES, { LSI(BACKGRND, 52), LSI(BACKGRND, 66), LSI(BACKGRND, 81) } },
+  { RaceID::HIGH_MEN, { LSI(BACKGRND, 53), LSI(BACKGRND, 67), LSI(BACKGRND, 82) } },
+  { RaceID::KLACKONS, { LSI(BACKGRND, 54), LSI(BACKGRND, 68), LSI(BACKGRND, 83) } },
+  { RaceID::LIZARDMEN, { LSI(BACKGRND, 55), LSI(BACKGRND, 69), LSI(BACKGRND, 84) } },
+  { RaceID::NOMADS, { LSI(BACKGRND, 56), LSI(BACKGRND, 70), LSI(BACKGRND, 85) } },
+  { RaceID::ORCS, { LSI(BACKGRND, 57), LSI(BACKGRND, 71), LSI(BACKGRND, 86) } },
+  { RaceID::TROLLS, { LSI(BACKGRND, 58), LSI(BACKGRND, 72), LSI(BACKGRND, 87) } },
 };
 
-
-constexpr s8 GfxData::RANGED_INDEX[];
-constexpr s8 GfxData::PROPERTY_INDEX[];
-
-std::unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
+gfx_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
   { UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 39), LSI(FIGURES3, 72)) },
   { UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 40), LSI(FIGURES3, 80)) },
   { UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 41), LSI(FIGURES3, 88)) },
@@ -99,12 +111,12 @@ std::unordered_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
 
 };
 
-std::unordered_map<const UnitSpec*, SpriteInfo> GfxData::heroPortraits = {
+gfx_map<const UnitSpec*, SpriteInfo> GfxData::heroPortraits = {
   { UnitSpec::heroSpec(UnitID::HERO_DWARF), LSI(PORTRAIT, 10) },
   { UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), LSI(PORTRAIT, 6) }
 };
 
-std::unordered_map<School, SchoolGfxSpec, enum_hash> GfxData::schoolSpecs = {
+gfx_map<School, SchoolGfxSpec> GfxData::schoolSpecs = {
   { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD } },
   { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62), LSI(SPELLS, 4), LSI(WIZLAB, 14) } },
   { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63), LSI(SPELLS, 5), LSI(WIZLAB, 15) } },
@@ -113,16 +125,7 @@ std::unordered_map<School, SchoolGfxSpec, enum_hash> GfxData::schoolSpecs = {
   { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66), LSI(SPELLS, 8), LSI(WIZLAB, 18) } },
 };
 
-// single icon, black icon, 10x icon, 10x black icon
-constexpr lbx_index production_symbols_gfx[][4] = {
-  { 40, 94, 88, 95 }, // food
-  { 41,  0, 89, 0 }, // production
-  { 42, 73, 90, 93 }, // gold
-  { 43,  0, 91, 0 }, // power
-  { 44,  0, 92, 0 }  // research
-};
-
-std::unordered_map<UpkeepSymbol, UpkeepSymbolSpec, enum_hash> GfxData::upkeepSymbolSpec = {
+gfx_map<UpkeepSymbol, UpkeepSymbolSpec> GfxData::upkeepSymbolSpec = {
   { UpkeepSymbol::FOOD, { LSI(BACKGRND, 40), LSI(BACKGRND, 94), LSI(BACKGRND, 88), LSI(BACKGRND, 95) } },
   { UpkeepSymbol::WORK, { LSI(BACKGRND, 41), LSI_PLACEHOLD, LSI(BACKGRND, 89), LSI_PLACEHOLD } },
   { UpkeepSymbol::GOLD, { LSI(BACKGRND, 42), LSI(BACKGRND, 73), LSI(BACKGRND, 90), LSI(BACKGRND, 93) } },

@@ -304,8 +304,8 @@ void MainView::draw()
 
 void MainView::drawPost()
 {
-  /*Gfx::draw(TextureID::RESEARCH_LAB_BACKDROP, 0, 0);
-  Gfx::draw(Texture::RESEARCH_WIZARDS, player->wi, 69, 75);
+  /*
+  
    Gfx.bindColorMap(ColorMap.researchBeam);
    Gfx.drawAnimated(Texture.RESEARCH_BEAM, 0, 132, -3, 0);
    Gfx.unbindColorMap();
