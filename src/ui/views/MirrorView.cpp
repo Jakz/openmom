@@ -34,10 +34,11 @@ void MirrorView::draw()
   for (u16 i = 0; i < SCHOOL_COUNT; ++i)
   {
     int nb = player->book()->booksForSchool(static_cast<School>(i));
+    const auto& gfxData = GfxData::schoolGfxSpec(static_cast<School>(i));
     
     for (int j = 0; j < nb; ++j)
     {
-      Gfx::draw(TextureID::WIZARD_SPELLBOOKS, (i+j*2+1)%3, i, 160 - (tot*8)/2 + t, 68);
+      Gfx::draw(gfxData.book.relative((i+j*2+1)%3), 160 - (tot*8)/2 + t, 68);
       t += 8;
     }
   }

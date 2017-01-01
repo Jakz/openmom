@@ -76,6 +76,7 @@ struct PlayerGfxSpec
 {
   const SpriteInfo gem;
   const SpriteInfo unitBack;
+  const SpriteInfo nodeAura;
 };
 
 struct SchoolGfxSpec
@@ -84,6 +85,7 @@ struct SchoolGfxSpec
   SpriteInfo summonPalette;
   SpriteInfo symbol;
   SpriteInfo researchFamiliar;
+  SpriteInfo book; // 3 entries starting from this
 };
 
 

@@ -48,7 +48,36 @@ enum lbx_indices
   place_ruins = LBXI(MAPBACK, 74),
   place_fallen_temple = LBXI(MAPBACK, 75),
   place_mud = LBXI(MAPBACK, 76),
-  place_corruption = LBXI(MAPBACK, 77)
+  
+  place_corruption = LBXI(MAPBACK, 77), 
+  
+  resource_iron = LBXI(MAPBACK, 78),
+  resource_coal = LBXI(MAPBACK, 79),
+  resource_silver = LBXI(MAPBACK, 80),
+  resource_gold = LBXI(MAPBACK, 81),
+  resource_gems = LBXI(MAPBACK, 82),
+  resource_mithril = LBXI(MAPBACK, 83),
+  resource_adamantium = LBXI(MAPBACK, 84),
+  resource_qourk = LBXI(MAPBACK, 85),
+  resource_crysx = LBXI(MAPBACK, 86),
+  resource_nightshade = LBXI(MAPBACK, 91),
+  resource_wild_game = LBXI(MAPBACK, 92),
+  
+  fog_line_ne = LBXI(MAPBACK, 0),
+  fog_line_se = LBXI(MAPBACK, 1),
+  fog_line_e = LBXI(MAPBACK, 2),
+  fog_line_sw = LBXI(MAPBACK, 3),
+  fog_line_s = LBXI(MAPBACK, 5),
+  fog_line_nw = LBXI(MAPBACK, 7),
+  fog_line_n = LBXI(MAPBACK, 8),
+  fog_line_w = LBXI(MAPBACK, 11),
+  
+  fog_corner_nw_se = LBXI(MAPBACK, 4),
+  fog_corner_sw_ne = LBXI(MAPBACK, 9),
+  fog_corner_se = LBXI(MAPBACK, 6),
+  fog_corner_ne = LBXI(MAPBACK, 10),
+  fog_corner_nw = LBXI(MAPBACK, 12),
+  fog_corner_sw = LBXI(MAPBACK, 13)
 };
 
 const static sprite_ref roads[] = { road_none, road_north, road_north_west, road_west, road_south_west, road_south, road_south_east, road_east, road_north_east };
@@ -123,6 +152,24 @@ SpriteInfo Viewport::gfxForPlace(const Place* place)
   }
 }
 
+SpriteInfo Viewport::gfxForResource(Resource resource)
+{
+  switch (resource)
+  {
+    case Resource::ADAMANTIUM: return resource_adamantium;
+    case Resource::COAL: return resource_coal;
+    case Resource::CRYSX_CRYSTAL: return resource_crysx;
+    case Resource::GEMS: return resource_gems;
+    case Resource::GOLD: return resource_gold;
+    case Resource::IRON_ORE: return resource_iron;
+    case Resource::MITHRIL: return resource_mithril;
+    case Resource::NIGHT_SHADE: return resource_nightshade;
+    case Resource::QOURK_CRYSTAL: return resource_qourk;
+    case Resource::SILVER: return resource_silver;
+    case Resource::WILD_GAME: return resource_wild_game;
+    default: assert(false);
+  }
+}
 
 void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
 {
@@ -173,7 +220,7 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
   }
   
   if (t->resource != Resource::NONE)
-    Gfx::draw(TextureID::TILE_RESOURCES, 0, static_cast<u8>(t->resource), x, y);
+    Gfx::draw(gfxForResource(t->resource), x, y);
   
   if (t->place)
     Gfx::draw(gfxForPlace(t->place), x, y);
@@ -281,7 +328,8 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
           /* draw node auras */
           if (t->node && t->node->owner)
           {
-            Gfx::drawAnimated(SpriteInfo(TextureID::TILE_NODE_AURAS, t->node->owner->color), sx, sy, t->animationOffset);
+            auto& auraGfx = GfxData::playerGfxSpec(t->node->owner->color).nodeAura;
+            Gfx::drawAnimated(auraGfx, sx, sy, t->animationOffset);
             for (auto aura : t->node->auras)
             {
               int tx = x + aura.x;
@@ -291,7 +339,7 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
               {
                 tx = sx + aura.x*tileWidth;
                 ty = sy + aura.y*tileHeight;
-                Gfx::drawAnimated(SpriteInfo(TextureID::TILE_NODE_AURAS, t->node->owner->color), tx, ty, animationOffset);
+                Gfx::drawAnimated(auraGfx, tx, ty, animationOffset);
               }
             }
           }

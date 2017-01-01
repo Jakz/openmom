@@ -19,6 +19,7 @@ private:
   static void drawViewport(const World* map, const LocalPlayer* player, const Position& p, s16 ttx, s16 tty, s16 w, s16 h, bool darkenEdges);
   
   static SpriteInfo gfxForPlace(const Place* place);
+  static SpriteInfo gfxForResource(Resource resource);
   
 public:
   static void drawTile(const Tile* tile, u16 x, s16 y, Plane plane);

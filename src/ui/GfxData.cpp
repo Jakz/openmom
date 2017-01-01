@@ -58,12 +58,12 @@ gfx_map<WizardID, WizardGfxSpec> GfxData::wizardSpecs = {
 };
 
 gfx_map<PlayerColor, PlayerGfxSpec> GfxData::playerSpecs = {
-  { PlayerColor::BLUE, { LSI(MAGIC, 1), LSI(MAPBACK, 14) } },
-  { PlayerColor::GREEN, { LSI(MAGIC, 2), LSI(MAPBACK, 15) } },
-  { PlayerColor::PURPLE, { LSI(MAGIC, 3), LSI(MAPBACK, 16) } },
-  { PlayerColor::RED, { LSI(MAGIC, 4), LSI(MAPBACK, 17) } },
-  { PlayerColor::YELLOW, { LSI(MAGIC, 5), LSI(MAPBACK, 18) } },
-  { PlayerColor::NEUTRAL, { LSI_PLACEHOLD, LSI(MAPBACK, 19) } }
+  { PlayerColor::BLUE, { LSI(MAGIC, 1), LSI(MAPBACK, 14), LSI(MAPBACK, 63) } },
+  { PlayerColor::GREEN, { LSI(MAGIC, 2), LSI(MAPBACK, 15), LSI(MAPBACK, 64) } },
+  { PlayerColor::PURPLE, { LSI(MAGIC, 3), LSI(MAPBACK, 16), LSI(MAPBACK, 65) } },
+  { PlayerColor::RED, { LSI(MAGIC, 4), LSI(MAPBACK, 17), LSI(MAPBACK, 66) } },
+  { PlayerColor::YELLOW, { LSI(MAGIC, 5), LSI(MAPBACK, 18), LSI(MAPBACK, 67) } },
+  { PlayerColor::NEUTRAL, { LSI_PLACEHOLD, LSI(MAPBACK, 19), LSI_PLACEHOLD } }
 };
 
 gfx_map<RaceID, RaceGfxSpec> GfxData::raceSpecs = {
@@ -117,12 +117,12 @@ gfx_map<const UnitSpec*, SpriteInfo> GfxData::heroPortraits = {
 };
 
 gfx_map<School, SchoolGfxSpec> GfxData::schoolSpecs = {
-  { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD } },
-  { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62), LSI(SPELLS, 4), LSI(WIZLAB, 14) } },
-  { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63), LSI(SPELLS, 5), LSI(WIZLAB, 15) } },
-  { School::CHAOS, { RGB(255,0,0), LSI(SPELLSCR, 64), LSI(SPELLS, 6), LSI(WIZLAB, 16) } },
-  { School::LIFE, { RGB(255,255,255), LSI(SPELLSCR, 65), LSI(SPELLS, 7), LSI(WIZLAB, 17) } },
-  { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66), LSI(SPELLS, 8), LSI(WIZLAB, 18) } },
+  { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD, LSI_PLACEHOLD } },
+  { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62), LSI(SPELLS, 4), LSI(WIZLAB, 14), LSI(NEWGAME,30) } },
+  { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63), LSI(SPELLS, 5), LSI(WIZLAB, 15), LSI(NEWGAME, 27) } },
+  { School::CHAOS, { RGB(255,0,0), LSI(SPELLSCR, 64), LSI(SPELLS, 6), LSI(WIZLAB, 16), LSI(NEWGAME, 36) } },
+  { School::LIFE, { RGB(255,255,255), LSI(SPELLSCR, 65), LSI(SPELLS, 7), LSI(WIZLAB, 17), LSI(NEWGAME, 24) } },
+  { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66), LSI(SPELLS, 8), LSI(WIZLAB, 18), LSI(NEWGAME, 33) } },
 };
 
 gfx_map<UpkeepSymbol, UpkeepSymbolSpec> GfxData::upkeepSymbolSpec = {

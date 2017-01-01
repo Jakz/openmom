@@ -25,6 +25,7 @@
 #else
   #define LOGD(...) do { } while (false);
   #define LOGD2(...) do { } while (false);
+  #define LOGD3(...) do { } while (false);
   #define LOGG(...) do { } while (false);
 #endif
 

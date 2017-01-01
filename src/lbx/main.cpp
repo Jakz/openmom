@@ -137,11 +137,17 @@ const char* terrainTypeForIndex(u16 index)
     assert(false);
 }
 
+enum class state : u32
+{
+  none = 0, used = 1, ignored = 2
+};
+
 std::unordered_map<LBXID, u32, enum_hash> usedSpritesCount;
-std::unordered_set<u32> usedSprites;
-bool isUsed(LBXID id, u32 index) { return usedSprites.find((static_cast<u32>(id) << 16) | index) != usedSprites.end(); }
+std::unordered_map<u32, state> usedSprites;
+state isUsed(LBXID id, u32 index) { auto it = usedSprites.find((static_cast<u32>(id) << 16) | index); return it != usedSprites.end() ? it->second : state::none; }
 bool isTotallyUsed(LBXID id) { return usedSpritesCount[id] == Repository::holderForID(id).size(); }
-void toggleUsed(LBXID id, u32 index, bool value)
+
+void toggleUsed(LBXID id, u32 index, bool value, state s = state::used)
 {
   auto key = (static_cast<u32>(id) << 16) | index;
   if (value)
@@ -150,7 +156,7 @@ void toggleUsed(LBXID id, u32 index, bool value)
     
     if (!wasPresent)
     {
-      usedSprites.insert(key);
+      usedSprites[key] = s;
       ++usedSpritesCount[id];
     }
   }
@@ -163,6 +169,13 @@ void toggleUsed(LBXID id, u32 index, bool value)
       --usedSpritesCount[id];
     }
   }
+}
+
+void switchUsed(LBXID id, u32 index, state s = state::used)
+{
+  auto key = (static_cast<u32>(id) << 16) | index;
+  bool wasPresent = usedSprites.find(key) != usedSprites.end();
+  toggleUsed(id, index, !wasPresent, s);
 }
 
 size_t ticks = 0;
@@ -489,7 +502,10 @@ public:
     {
       if (callback_col() == 4)
       {
-        toggleUsed(currentLBX->ident, callback_row(), Fl::event_button() == FL_LEFT_MOUSE);
+        if (Fl::event() == FL_PUSH)
+        {
+          switchUsed(currentLBX->ident, callback_row(), Fl::event_button() == FL_LEFT_MOUSE ? state::used : state::ignored);
+        }
         return;
       }
       
@@ -562,8 +578,12 @@ public:
           fgcol = fl_rgb_color(180, 180, 180);
         else
         {
-          if (isUsed(currentLBX->ident, ROW))
+          state s = isUsed(currentLBX->ident, ROW);
+          
+          if (s == state::used)
             bgcol = fl_rgb_color(200, 255, 200);
+          else if (s == state::ignored)
+            bgcol = fl_rgb_color(255, 255, 220);
           else
             bgcol = FL_WHITE;
         }
@@ -816,14 +836,14 @@ void loadStatus()
   if (in)
   {
     fseek(in, 0, SEEK_END);
-    long amount = ftell(in) / sizeof(decltype(usedSprites)::value_type);
+    long amount = (ftell(in) / sizeof(u32)) / 2;
     fseek(in, 0, SEEK_SET);
-    u32* data = new u32[amount];
-    fread(data, sizeof(decltype(usedSprites)::value_type), amount, in);
+    u32* data = new u32[amount*2];
+    fread(data, sizeof(u32), amount*2, in);
     for (size_t i = 0; i < amount; ++i)
     {
-      usedSprites.insert(data[i]);
-      ++usedSpritesCount[static_cast<LBXID>(data[i] >> 16)];
+      usedSprites[data[2*i]] = (state)data[2*i+1];
+      ++usedSpritesCount[static_cast<LBXID>(data[2*i] >> 16)];
     }
     delete [] data;
   }
@@ -837,14 +857,15 @@ void saveStatus()
   {
     fseek(in, 0, SEEK_END);
     long amount = usedSprites.size();
-    u32* data = new u32[amount];
+    u32* data = new u32[amount*2];
     auto it = usedSprites.begin();
     for (size_t i = 0; i < amount; ++i)
     {
-      data[i] = *it;
+      data[i*2] = it->first;
+      data[i*2+1] = (u32)it->second;
       ++it;
     }
-    fwrite(data, sizeof(decltype(usedSprites)::value_type), amount, in);
+    fwrite(data, sizeof(u32), amount*2, in);
     delete [] data;
   }
   fclose(in);

@@ -39,9 +39,7 @@ const Texture Texture::textures[] =
   Texture(TextureID::MYRRAN_NODES,"tile/myrran/nodes.png",3,4,20,18,true,5),
   
   
-  Texture(TextureID::TILE_NODE_AURAS,"tile/node-auras.png",5,6,20,18,true,2),
   Texture(TextureID::TILE_FOG,"tile/fog.png",1,10,20,18),
-  Texture(TextureID::TILE_RESOURCES,"tile/resources.png",1,11,20,18),
   
   
   Texture(TextureID::MAIN_CURSORS,"main/cursors.png",1,5,16,16),
@@ -50,35 +48,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::MAGIC_GLOBAL_SPELLS,"magic/global-spells.png",2,13,110,113),
   Texture(TextureID::MAGIC_SPELL_EFFECTS,"magic/spell-effects.png",4,{12,6,18,12,12,12,28,24,20,17,37,21,17},60,54,true,1),
   Texture(TextureID::MAGIC_SCHOOL_ICONS,"static/magic-school-icons.png",1,5,100,90),
-  
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT0,"magic/effects/combat-effect-0.png",1,4,28,30,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT1,"magic/effects/combat-effect-1.png",1,8,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT2,"magic/effects/combat-effect-2.png",1,13,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT3,"magic/effects/combat-effect-3.png",1,8,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT4,"magic/effects/combat-effect-4.png",1,10,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT5,"magic/effects/combat-effect-5.png",1,4,28,30,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT6,"magic/effects/combat-effect-6.png",1,15,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT7,"magic/effects/combat-effect-7.png",1,14,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT8,"magic/effects/combat-effect-8.png",1,11,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT9,"magic/effects/combat-effect-9.png",1,14,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT10,"magic/effects/combat-effect-10.png",1,10,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT11,"magic/effects/combat-effect-11.png",1,4,28,30,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT12,"magic/effects/combat-effect-12.png",1,8,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT13,"magic/effects/combat-effect-13.png",1,10,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT14,"magic/effects/combat-effect-14.png",1,35,60,54,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT15,"magic/effects/combat-effect-15.png",1,10,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT16,"magic/effects/combat-effect-16.png",1,10,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT17,"magic/effects/combat-effect-17.png",1,8,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT18,"magic/effects/combat-effect-18.png",1,10,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT19,"magic/effects/combat-effect-19.png",1,14,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT20,"magic/effects/combat-effect-20.png",1,8,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT21,"magic/effects/combat-effect-21.png",1,10,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT22,"magic/effects/combat-effect-22.png",1,16,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT23,"magic/effects/combat-effect-23.png",1,16,28,30,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT24,"magic/effects/combat-effect-24.png",1,4,184,200,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT25,"magic/effects/combat-effect-25.png",1,8,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT26,"magic/effects/combat-effect-26.png",1,8,28,34,true,1),
-  Texture(TextureID::MAGIC_COMBAT_SPELL_EFFECT27,"magic/effects/combat-effect-27.png",1,16,28,34,true,1),
   
   Texture(TextureID::MESSAGE_LEFT,"static/message-left.png",1,1,249,59),
   Texture(TextureID::MESSAGE_RIGHT,"static/message-right.png",1,1,55,59),
@@ -129,9 +98,7 @@ const Texture Texture::textures[] =
   
   Texture(TextureID::COMBAT_GRASS_ARCANUS,"combat/arcanus/grass.png",6,8,30,16),
   Texture(TextureID::COMBAT_MISC_TILES,"combat/misc-tiles.png",3,8,30,16,true,1),
-  
-  Texture(TextureID::WIZARD_SPELLBOOKS,"wizards/spellbooks.png",3,6,9,21),
-  
+    
   Texture(TextureID::DARKNER,"static/darkner.png",1,1,320,200),
 };
 
