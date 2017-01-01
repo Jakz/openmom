@@ -51,10 +51,10 @@ public:
 
 struct UnitGfxSpec
 {
-  const SpriteInfo still;
-  const SpriteInfo fullFigure;
-  const SpriteInfo summonFigure;
-  const bool isFlyingFigure;
+  SpriteInfo still;
+  SpriteInfo fullFigure;
+  SpriteInfo summonFigure;
+  bool isFlyingFigure;
   
   UnitGfxSpec(SpriteInfo still, SpriteInfo fullFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), isFlyingFigure(isFlyingFigure) { }
   UnitGfxSpec(SpriteInfo still, SpriteInfo fullFigure, SpriteInfo summonFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), summonFigure(summonFigure), isFlyingFigure(isFlyingFigure) { }
@@ -63,21 +63,21 @@ struct UnitGfxSpec
 
 struct WizardGfxSpec
 {
-  const SpriteInfo portraitSmall;
-  const SpriteInfo portraitLarge;
-  const SpriteInfo diplomacyMood;
-  const SpriteInfo gemmedPortrait;
-  const SpriteInfo researchPose;
-  const SpriteInfo summonPose;
+  SpriteInfo portraitSmall;
+  SpriteInfo portraitLarge;
+  SpriteInfo diplomacyMood;
+  SpriteInfo gemmedPortrait;
+  SpriteInfo researchPose;
+  SpriteInfo summonPose;
   
   SpriteInfo getGemmedPortrait(PlayerColor color) const;
 };
 
 struct PlayerGfxSpec
 {
-  const SpriteInfo gem;
-  const SpriteInfo unitBack;
-  const SpriteInfo nodeAura;
+  SpriteInfo gem;
+  SpriteInfo unitBack;
+  SpriteInfo nodeAura;
 };
 
 struct SchoolGfxSpec
@@ -122,22 +122,54 @@ struct RaceHouseGfxSpec
   SpriteInfo housingBuilding;
 };
 
-template<typename K, typename V> using gfx_map = typename std::conditional<std::is_enum<K>::value, std::unordered_map<K, V, enum_hash>, std::unordered_map<K,V>>::type;
+template<typename K, typename V, size_t SIZE>
+class enum_simple_map
+{
+public:
+  static constexpr size_t size = SIZE;
+  using init_element = std::pair<K, V>;
+  
+  struct dummy_pair
+  {
+    const V& second;
+    const dummy_pair* operator->() const { return this; }
+  };
+  
+private:
+  std::array<V, size> data;
+public:
+  enum_simple_map(const std::initializer_list<init_element>& elements)
+  {
+    assert(elements.size() == size);
+    size_t i = 0;
+    for (auto it = elements.begin(); it != elements.end(); ++i, ++it)
+    {
+      assert(static_cast<size_t>(it->first) < size);
+      data[static_cast<size_t>(it->first)] = it->second;
+    }
+  }
+  
+  const V& operator[](K key) const { return data[static_cast<size_t>(key)]; }
+  dummy_pair find(K key) const { return { operator[](key) }; }
+};
+
+template<typename K, typename V, size_t SIZE = 0> using gfx_map = typename std::conditional<(std::is_enum<K>::value && SIZE > 0), enum_simple_map<K, V, SIZE>, std::unordered_map<K,V>>::type;
+
 
 class GfxData
 {
 private:
-  static gfx_map<WizardID, WizardGfxSpec> wizardSpecs;
-  static gfx_map<PlayerColor, PlayerGfxSpec> playerSpecs;
-  static gfx_map<RaceID, RaceGfxSpec> raceSpecs;
-  static gfx_map<HouseType, RaceHouseGfxSpec> raceHouseSpecs;
+  static gfx_map<WizardID, WizardGfxSpec, 14> wizardSpecs;
+  static gfx_map<PlayerColor, PlayerGfxSpec, 6> playerSpecs;
+  static gfx_map<RaceID, RaceGfxSpec, 14> raceSpecs;
+  static gfx_map<HouseType, RaceHouseGfxSpec, 3> raceHouseSpecs;
 
   
   static gfx_map<const UnitSpec*, UnitGfxSpec> unitSpecs;
   static gfx_map<const UnitSpec*, SpriteInfo> heroPortraits;
   
-  static gfx_map<School, SchoolGfxSpec> schoolSpecs;
-  static gfx_map<UpkeepSymbol, UpkeepSymbolSpec> upkeepSymbolSpec;
+  static gfx_map<School, SchoolGfxSpec, 6> schoolSpecs;
+  static gfx_map<UpkeepSymbol, UpkeepSymbolSpec, 5> upkeepSymbolSpec;
 
   
   static const TileGfxSpec specs[];

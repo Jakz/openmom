@@ -317,6 +317,8 @@ public:
   SpriteInfo() : SpriteInfo(0) { }
   SpriteInfo(decltype(data) data) : data(data) { }
   
+  SpriteInfo& operator=(const SpriteInfo& o) { this->data = o.data; return *this; }
+  
   explicit SpriteInfo(TextureID texture, s8 x, s8 y) : data((static_cast<u32>(texture) << texture_id_shift) | (x << texture_x_shift) | (y << texture_y_shift)) { assert(x >= 0 && y >= 0); }
   explicit SpriteInfo(TextureID texture, u16 i);
   

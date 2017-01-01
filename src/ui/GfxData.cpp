@@ -41,7 +41,7 @@ gfx_map<const Spell*, sprite_ref> GfxData::specialSpellGfxEffects = {
   {Spells::RAISE_VOLCANO, LBXI(SPECFX, 11)}
 };
 
-gfx_map<WizardID, WizardGfxSpec> GfxData::wizardSpecs = {
+decltype(GfxData::wizardSpecs) GfxData::wizardSpecs = {
   { WizardID::MERLIN, { LSI(MAGIC, 18), LSI(WIZARDS, 0), LSI(MOODWIZ, 0), LSI(LILWIZ, 0), LSI(WIZLAB, 0), LSI(SPELLSCR, 46) } },
   { WizardID::RAVEN, { LSI(MAGIC, 19), LSI(WIZARDS, 1), LSI(MOODWIZ, 1), LSI(LILWIZ, 5), LSI(WIZLAB, 1), LSI(SPELLSCR, 47) } },
   { WizardID::SHAREE, { LSI(MAGIC, 20), LSI(WIZARDS, 2), LSI(MOODWIZ, 2), LSI(LILWIZ, 10), LSI(WIZLAB, 2), LSI(SPELLSCR, 48) } },
@@ -58,7 +58,7 @@ gfx_map<WizardID, WizardGfxSpec> GfxData::wizardSpecs = {
   { WizardID::KALI, { LSI(MAGIC, 31), LSI(WIZARDS, 13), LSI(MOODWIZ, 13), LSI(LILWIZ, 65), LSI(WIZLAB, 13), LSI(SPELLSCR, 59) } }
 };
 
-gfx_map<PlayerColor, PlayerGfxSpec> GfxData::playerSpecs = {
+decltype(GfxData::playerSpecs) GfxData::playerSpecs = {
   { PlayerColor::BLUE, { LSI(MAGIC, 1), LSI(MAPBACK, 14), LSI(MAPBACK, 63) } },
   { PlayerColor::GREEN, { LSI(MAGIC, 2), LSI(MAPBACK, 15), LSI(MAPBACK, 64) } },
   { PlayerColor::PURPLE, { LSI(MAGIC, 3), LSI(MAPBACK, 16), LSI(MAPBACK, 65) } },
@@ -67,7 +67,7 @@ gfx_map<PlayerColor, PlayerGfxSpec> GfxData::playerSpecs = {
   { PlayerColor::NEUTRAL, { LSI_PLACEHOLD, LSI(MAPBACK, 19), LSI_PLACEHOLD } }
 };
 
-gfx_map<RaceID, RaceGfxSpec> GfxData::raceSpecs = {
+decltype(GfxData::raceSpecs) GfxData::raceSpecs = {
   { RaceID::BARBARIANS, { LSI(BACKGRND, 45), LSI(BACKGRND, 59), LSI(BACKGRND, 74) } },
   { RaceID::BEASTMEN, { LSI(BACKGRND, 46), LSI(BACKGRND, 60), LSI(BACKGRND, 75) } },
   { RaceID::DARK_ELVES, { LSI(BACKGRND, 47), LSI(BACKGRND, 61), LSI(BACKGRND, 76) } },
@@ -84,7 +84,7 @@ gfx_map<RaceID, RaceGfxSpec> GfxData::raceSpecs = {
   { RaceID::TROLLS, { LSI(BACKGRND, 58), LSI(BACKGRND, 72), LSI(BACKGRND, 87) } },
 };
 
-gfx_map<HouseType, RaceHouseGfxSpec> GfxData::raceHouseSpecs = {
+decltype(GfxData::raceHouseSpecs) GfxData::raceHouseSpecs = {
   { HouseType::NORMAL, { LSI(BACKGRND, 37), LSI(BACKGRND, 34), LSI(CITYSCAP, 25), LSI(CITYSCAP, 42) } },
   { HouseType::TREE, { LSI(BACKGRND, 38), LSI(BACKGRND, 35), LSI(CITYSCAP, 30), LSI(CITYSCAP, 43) } },
   { HouseType::MUD, { LSI(BACKGRND, 39), LSI(BACKGRND, 36), LSI(CITYSCAP, 35), LSI(CITYSCAP, 44) } }
@@ -123,7 +123,7 @@ gfx_map<const UnitSpec*, SpriteInfo> GfxData::heroPortraits = {
   { UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), LSI(PORTRAIT, 6) }
 };
 
-gfx_map<School, SchoolGfxSpec> GfxData::schoolSpecs = {
+decltype(GfxData::schoolSpecs) GfxData::schoolSpecs = {
   { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD, LSI_PLACEHOLD } },
   { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62), LSI(SPELLS, 4), LSI(WIZLAB, 14), LSI(NEWGAME,30) } },
   { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63), LSI(SPELLS, 5), LSI(WIZLAB, 15), LSI(NEWGAME, 27) } },
@@ -132,7 +132,7 @@ gfx_map<School, SchoolGfxSpec> GfxData::schoolSpecs = {
   { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66), LSI(SPELLS, 8), LSI(WIZLAB, 18), LSI(NEWGAME, 33) } },
 };
 
-gfx_map<UpkeepSymbol, UpkeepSymbolSpec> GfxData::upkeepSymbolSpec = {
+decltype(GfxData::upkeepSymbolSpec) GfxData::upkeepSymbolSpec = {
   { UpkeepSymbol::FOOD, { LSI(BACKGRND, 40), LSI(BACKGRND, 94), LSI(BACKGRND, 88), LSI(BACKGRND, 95) } },
   { UpkeepSymbol::WORK, { LSI(BACKGRND, 41), LSI_PLACEHOLD, LSI(BACKGRND, 89), LSI_PLACEHOLD } },
   { UpkeepSymbol::GOLD, { LSI(BACKGRND, 42), LSI(BACKGRND, 73), LSI(BACKGRND, 90), LSI(BACKGRND, 93) } },
