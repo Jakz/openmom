@@ -12,6 +12,7 @@
 #include "UnitSpec.h"
 #include "Texture.h"
 #include "Spells.h"
+#include "Race.h"
 
 using namespace std;
 
@@ -81,6 +82,12 @@ gfx_map<RaceID, RaceGfxSpec> GfxData::raceSpecs = {
   { RaceID::NOMADS, { LSI(BACKGRND, 56), LSI(BACKGRND, 70), LSI(BACKGRND, 85) } },
   { RaceID::ORCS, { LSI(BACKGRND, 57), LSI(BACKGRND, 71), LSI(BACKGRND, 86) } },
   { RaceID::TROLLS, { LSI(BACKGRND, 58), LSI(BACKGRND, 72), LSI(BACKGRND, 87) } },
+};
+
+gfx_map<HouseType, RaceHouseGfxSpec> GfxData::raceHouseSpecs = {
+  { HouseType::NORMAL, { LSI(BACKGRND, 37), LSI(BACKGRND, 34), LSI(CITYSCAP, 25), LSI(CITYSCAP, 42) } },
+  { HouseType::TREE, { LSI(BACKGRND, 38), LSI(BACKGRND, 35), LSI(CITYSCAP, 30), LSI(CITYSCAP, 43) } },
+  { HouseType::MUD, { LSI(BACKGRND, 39), LSI(BACKGRND, 36), LSI(CITYSCAP, 35), LSI(CITYSCAP, 44) } }
 };
 
 gfx_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {

@@ -18,6 +18,7 @@
 enum class Ranged : u8;
 enum class Property : u8;
 enum class RaceID : u8;
+enum class HouseType : u8;
 
 class HeroSpec;
 class UnitSpec;
@@ -113,6 +114,14 @@ struct RaceGfxSpec
   SpriteInfo cityRebel;
 };
 
+struct RaceHouseGfxSpec
+{
+  SpriteInfo outpostEmpty;
+  SpriteInfo outpostFull;
+  SpriteInfo cityScapeHouse; // 5 relative
+  SpriteInfo housingBuilding;
+};
+
 template<typename K, typename V> using gfx_map = typename std::conditional<std::is_enum<K>::value, std::unordered_map<K, V, enum_hash>, std::unordered_map<K,V>>::type;
 
 class GfxData
@@ -121,6 +130,7 @@ private:
   static gfx_map<WizardID, WizardGfxSpec> wizardSpecs;
   static gfx_map<PlayerColor, PlayerGfxSpec> playerSpecs;
   static gfx_map<RaceID, RaceGfxSpec> raceSpecs;
+  static gfx_map<HouseType, RaceHouseGfxSpec> raceHouseSpecs;
 
   
   static gfx_map<const UnitSpec*, UnitGfxSpec> unitSpecs;
@@ -146,6 +156,8 @@ public:
   static const PlayerGfxSpec& playerGfxSpec(PlayerColor color) { return playerSpecs.find(color)->second; }
   static const WizardGfxSpec& wizardGfxSpec(WizardID wizard) { return wizardSpecs.find(wizard)->second; }
   static const RaceGfxSpec& raceGfxSpec(RaceID race) { return raceSpecs.find(race)->second; }
+  static const RaceHouseGfxSpec& raceHouseGfxSpec(HouseType race) { return raceHouseSpecs.find(race)->second; }
+
   static const SchoolGfxSpec& schoolGfxSpec(School school) { return schoolSpecs.find(school)->second; }
   static const UpkeepSymbolSpec& upkeepGfxSpec(UpkeepSymbol symbol) { return upkeepSymbolSpec.find(symbol)->second; }
 

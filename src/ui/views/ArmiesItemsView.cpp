@@ -24,7 +24,8 @@ using namespace std;
 
 enum lbx_indices
 {
-  hero_gold_portrait = LBXI(ARMYLIST, 6)
+  hero_gold_portrait = LBXI(ARMYLIST, 6),
+  hero_items_backdrop = LBXI(ARMYLIST, 5)
 };
 
 ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
@@ -37,7 +38,7 @@ ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
 
 void ArmiesItemsView::draw()
 {
-  Gfx::draw(LSI(ARMYLIST, 5), 17, 2);
+  Gfx::draw(hero_items_backdrop, 17, 2);
   
   // draw heroes portraits
   u16 heroPositions[][2] = {{32,15},{32,61},{32,107},{167,15},{167,61},{167,107}};

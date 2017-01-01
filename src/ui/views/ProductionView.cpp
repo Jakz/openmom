@@ -61,7 +61,7 @@ void ProductionView::draw()
   
   if (which == SIDE_LEFT)
   {
-    CityLayout::drawBuildingCentered(static_cast<const Building*>(product), 82, 38);
+    CityLayout::drawBuildingCentered(city, static_cast<const Building*>(product), 82, 38);
     
     Fonts::drawString(Fonts::format("Cost %u",cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
     Fonts::drawStringBounded(i18n::s(static_cast<const Building*>(product)->desc), FontFaces::Serif::TEAL, 86, 106, 150, ALIGN_LEFT);

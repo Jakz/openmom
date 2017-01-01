@@ -4,6 +4,7 @@
 #include "Buildings.h"
 #include "City.h"
 #include "Gfx.h"
+#include "GfxData.h"
 #include "Util.h"
 
 #include <set>
@@ -90,7 +91,6 @@ const std::vector<CityLayout::LayoutZone> CityLayout::getZones(const City* city)
 }
 
 static constexpr lbx_index river_and_ocean_tiles[2][PLANE_COUNT] = { {3, 4}, {115, 116} };
-static constexpr lbx_index house_gfx[3] = { 25, 30, 35 };
 
 void CityLayout::draw(const City *city, LocalPlayer *player)
 {
@@ -112,7 +112,7 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
   
   Gfx::draw(TextureID::CITY_ROADS, 0, 0, 5, 118);
   
-  HouseType ht = city->race.houseType;
+  const auto& houseSpec = GfxData::raceHouseGfxSpec(city->race.houseType);
   
   const CityLayout* layout = layouts[city];
   
@@ -134,7 +134,7 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
       drawBuilding(p.building, p.x, p.y);
     else
     {
-      const SpriteInfo houseGfx = LSI(CITYSCAP, house_gfx[ht]).relative(p.house);
+      const SpriteInfo houseGfx = houseSpec.cityScapeHouse.relative(p.house);
       Gfx::draw(houseGfx, p.x, p.y - houseGfx.sh());
     }
   }
@@ -143,14 +143,23 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
 void CityLayout::drawBuilding(const Building *building, s16 x, s16 y)
 {
   const BuildingSpecs& spec = specs[building];
-  int height = spec.info.sh();
-
-  Gfx::drawAnimated(spec.info, x, y - height, 0);
+  drawBuildingSprite(spec.info, x, y);
 }
 
-void CityLayout::drawBuildingCentered(const Building *building, s16 x, s16 y)
+void CityLayout::drawBuildingSprite(SpriteInfo info, s16 x, s16 y)
 {
-  if (building == Building::TRADE_GOODS || building == Building::HOUSING || building == Building::CITY_WALLS)
+  int height = info.sh();
+  Gfx::drawAnimated(info, x, y - height, 0);
+}
+
+void CityLayout::drawBuildingCentered(const City* city, const Building *building, s16 x, s16 y)
+{
+  if (building == Building::HOUSING)
+  {
+    const auto& houseGfx = GfxData::raceHouseGfxSpec(city->race.houseType);
+    drawBuildingSprite(houseGfx.housingBuilding, x, y);
+  }
+  else if (building == Building::TRADE_GOODS || building == Building::CITY_WALLS)
     drawBuilding(building, x, y);
   else
   {

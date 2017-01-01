@@ -20,7 +20,7 @@
 class Building;
 class City;
 class LocalPlayer;
-enum HouseType : u8;
+enum class HouseType : u8;
 
 class CityLayout
 {
@@ -98,7 +98,8 @@ private:
 public:
   static void draw(const City* city, LocalPlayer* player);
   static void drawBuilding(const Building* building, s16 x, s16 y);
-  static void drawBuildingCentered(const Building* building, s16 x, s16 y);
+  static void drawBuildingSprite(SpriteInfo info, s16, s16 y);
+  static void drawBuildingCentered(const City* city, const Building* building, s16 x, s16 y);
   
   static void createLayout(const City* city)
   {

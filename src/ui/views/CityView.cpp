@@ -177,7 +177,8 @@ void CityView::draw()
   if (production == Building::HOUSING || production == Building::TRADE_GOODS)
   {
     Gfx::draw(LSI(BACKGRND, 13), 260, 149);
-    CityLayout::drawBuildingCentered(static_cast<const Building*>(production), 217, 179);
+
+    CityLayout::drawBuildingCentered(city, static_cast<const Building*>(production), 217, 179);
     
     /* TODO: localize and center align */
     if (production == Building::HOUSING)
@@ -190,7 +191,7 @@ void CityView::draw()
   {
     if (production->productionType() == Productable::Type::BUILDING)
     {
-      CityLayout::drawBuildingCentered(static_cast<const Building*>(city->getProductable()), 217, 177);
+      CityLayout::drawBuildingCentered(city, static_cast<const Building*>(city->getProductable()), 217, 177);
     }
     else if (production->productionType() == Productable::Type::UNIT)
     {

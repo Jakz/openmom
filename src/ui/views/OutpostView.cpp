@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Localization.h"
+#include "GfxData.h"
 
 #include "ViewManager.h"
 
@@ -27,9 +28,11 @@ void OutpostView::draw()
   Gfx::draw(LSI(BACKGRND, 32), 30, 50); // bg
   Fonts::drawString(i18n::s(city->race.ident).name, FontFaces::Small::YELLOW, 35, 72, ALIGN_LEFT);
   
+  auto& houseSpec = GfxData::raceHouseGfxSpec(city->race.houseType);
+
   for (int i = 0; i < 10; ++i)
   {
-    Gfx::draw(TextureID::OUTPOST_HOUSES, i*100 <= city->getPopulation() ? 0 : 1, city->race.houseType, 38+14*i, 81);
+    Gfx::draw(i*100 <= city->getPopulation() ? houseSpec.outpostFull : houseSpec.outpostEmpty, 38+14*i, 81);
   }
   
   Gfx::drawClipped(TSI(CITY_BACKGROUND,0,0), BX, BY, 100 - 35, 0, 72, 66);
@@ -48,7 +51,7 @@ void OutpostView::draw()
   Gfx::drawLine(RGB(0, 0, 0), BX, BY, BX+72, BY);
   Gfx::drawLine(RGB(0, 0, 0), BX, BY+65, BX+72, BY+65);
   
-  Gfx::draw(TextureID::CITY_HOUSES, city->race.houseType, 0, BX + 30, BY + 30);
+  Gfx::draw(houseSpec.cityScapeHouse, BX + 30, BY + 30);
   
   // TODO: draw units
 }

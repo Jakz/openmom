@@ -29,11 +29,11 @@ enum class RaceID : u8
   TROLLS,
 };
 
-enum HouseType : u8
+enum class HouseType : u8
 {
-	HOUSE_NORMAL,
-	HOUSE_TREE,
-	HOUSE_MUD
+	NORMAL,
+	TREE,
+	MUD
 };
 
 class Race

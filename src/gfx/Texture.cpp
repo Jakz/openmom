@@ -62,11 +62,8 @@ const Texture Texture::textures[] =
   Texture(TextureID::CITY_LANDSCAPE,"city/scape/landscape.png",12,1,205,19),
   
   Texture(TextureID::CITY_ROADS,"city/scape/roads.png",4,1,210,75),
-  Texture(TextureID::CITY_HOUSES,"city/scape/houses.png",3,5,12,20),
   Texture(TextureID::CITY_WALLS,"city/scape/walls.png",4, {1,1,4,4}, 205, 11, true, 2),
-  
-  Texture(TextureID::OUTPOST_HOUSES,"city/outpost-houses.png",2,3,12,13),
-  
+    
   Texture(TextureID::MAGIC_GEMS,"magic/view/gems.png",1,7,42,45),
   Texture(TextureID::MAGIC_PORTRAITS,"magic/view/portraits.png",1,14,33,35),
   Texture(TextureID::MAGIC_MANA_WANDS,"magic/view/mana-wands.png",1,6,16,72),

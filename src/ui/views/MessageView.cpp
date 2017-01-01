@@ -98,7 +98,7 @@ void MessageView::draw()
       Gfx::draw(LSI(BACKGRND, 10), 249, 69); // building background
       /* TODO: choose accordingly to major school of magic of the wizard and check if they are centered */
       Gfx::draw(TextureID::MAGIC_SCHOOL_ICONS, 0, 1, 6, 40);
-      CityLayout::drawBuildingCentered(msg->building, 249, 106);
+      CityLayout::drawBuildingCentered(msg->city, msg->building, 249, 106);
       
       Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::YELLOW_SHADOW, 79, 68, 170, ALIGN_LEFT);
       break;
