@@ -98,49 +98,50 @@ static const std::vector<PropertyAffixSpec> armor_affixes =
 
 static const std::vector<PropertyAffixSpec> empty_affixes = { };
 
-Affixes Affixes::forType(Item::TypeID type)
+Affixes Affixes::forType(TypeID type)
 {
   switch (type)
   {
-    case Item::TypeID::SWORD: return { sword_affixes };
-    case Item::TypeID::MACE: return { mace_affixes };
-    case Item::TypeID::AXE: return { axe_affixes };
-    case Item::TypeID::BOW: return { bow_affixes };
-    case Item::TypeID::STAFF: return { staff_affixes };
-    case Item::TypeID::WAND: return { wand_affixes };
-    case Item::TypeID::MISC: return { jewelry_affixes };
-    case Item::TypeID::SHIELD:
-    case Item::TypeID::CHAIN:
-    case Item::TypeID::PLATE:
+    case TypeID::SWORD: return { sword_affixes };
+    case TypeID::MACE: return { mace_affixes };
+    case TypeID::AXE: return { axe_affixes };
+    case TypeID::BOW: return { bow_affixes };
+    case TypeID::STAFF: return { staff_affixes };
+    case TypeID::WAND: return { wand_affixes };
+    case TypeID::MISC: return { jewelry_affixes };
+    case TypeID::SHIELD:
+    case TypeID::CHAIN:
+    case TypeID::PLATE:
       return { armor_affixes };
   }
 }
 
 
 static Item::Type types[] = {
-  Item::Type(Item::TypeID::SWORD, Item::Class::MELEE, { {I18::ITEM_SWORD, 9} }),
-  Item::Type(Item::TypeID::MACE, Item::Class::MELEE, { {I18::ITEM_MACE, 11} }),
-  Item::Type(Item::TypeID::AXE, Item::Class::MELEE, { {I18::ITEM_AXE, 9} }),
-  Item::Type(Item::TypeID::BOW, Item::Class::RANGED, { {I18::ITEM_BOW, 9} }),
-  Item::Type(Item::TypeID::STAFF, Item::Class::STAFF_WAND, { {I18::ITEM_STAFF, 9} }),
-  Item::Type(Item::TypeID::WAND, Item::Class::STAFF_WAND, { {I18::ITEM_WAND, 9} }),
-  Item::Type(Item::TypeID::MISC, Item::Class::MISC, { {I18::ITEM_AMULET, 6}, {I18::ITEM_RING, 6}, {I18::ITEM_CLOAK, 6}, {I18::ITEM_GAUNTLET, 4}, {I18::ITEM_HELM, 7}, {I18::ITEM_ORB, 6} }),
-  Item::Type(Item::TypeID::SHIELD, Item::Class::ARMOR, { {I18::ITEM_SHIELD, 10} }),
-  Item::Type(Item::TypeID::CHAIN, Item::Class::ARMOR, { {I18::ITEM_CHAIN_MAIL, 8} }),
-  Item::Type(Item::TypeID::PLATE, Item::Class::ARMOR, { {I18::ITEM_PLATE_MAIL, 7} }),
+  Item::Type(TypeID::SWORD, Class::MELEE, { {I18::ITEM_SWORD, 9} }),
+  Item::Type(TypeID::MACE, Class::MELEE, { {I18::ITEM_MACE, 11} }),
+  Item::Type(TypeID::AXE, Class::MELEE, { {I18::ITEM_AXE, 9} }),
+  Item::Type(TypeID::BOW, Class::RANGED, { {I18::ITEM_BOW, 9} }),
+  Item::Type(TypeID::STAFF, Class::STAFF_WAND, { {I18::ITEM_STAFF, 9} }),
+  Item::Type(TypeID::WAND, Class::STAFF_WAND, { {I18::ITEM_WAND, 9} }),
+  Item::Type(TypeID::MISC, Class::MISC, { {I18::ITEM_AMULET, 6}, {I18::ITEM_RING, 6}, {I18::ITEM_CLOAK, 6}, {I18::ITEM_GAUNTLET, 4}, {I18::ITEM_HELM, 7}, {I18::ITEM_ORB, 6} }),
+  Item::Type(TypeID::SHIELD, Class::ARMOR, { {I18::ITEM_SHIELD, 10} }),
+  Item::Type(TypeID::CHAIN, Class::ARMOR, { {I18::ITEM_CHAIN_MAIL, 8} }),
+  Item::Type(TypeID::PLATE, Class::ARMOR, { {I18::ITEM_PLATE_MAIL, 7} }),
 };
 
-const Item::Type* Item::typeForItem(Item::TypeID type)
+const Item::Type* Item::typeForItem(TypeID type)
 {
   return &types[static_cast<u16>(type)];
 }
 
+//enum class Class : u8 { MELEE = 0, RANGED, MELEE_STAFF, STAFF_WAND, ARMOR, MISC };
 
 static Slots slots[] = {
-  Slots({{ {Item::Class::MELEE,Item::Class::RANGED}, {Item::Class::ARMOR}, {Item::Class::MISC} }}, {{145, 149, 148}}),
-  Slots({{ {Item::Class::MELEE,Item::Class::STAFF_WAND}, {Item::Class::ARMOR}, {Item::Class::MISC} }}, {{146, 149, 148}}),
-  Slots({{ {Item::Class::STAFF_WAND}, {Item::Class::MISC}, {Item::Class::MISC} }}, {{147, 148, 148}}),
-  Slots({{ {Item::Class::MELEE},{Item::Class::ARMOR},{Item::Class::MISC} }}, {{144, 149, 148}})
+  Slots({{ {Class::MELEE,Class::RANGED}, {Class::ARMOR}, {Class::MISC} }}, {{145, 149, 148}}),
+  Slots({{ {Class::MELEE,Class::STAFF_WAND}, {Class::ARMOR}, {Class::MISC} }}, {{146, 149, 148}}),
+  Slots({{ {Class::STAFF_WAND}, {Class::MISC}, {Class::MISC} }}, {{147, 148, 148}}),
+  Slots({{ {Class::MELEE},{Class::ARMOR},{Class::MISC} }}, {{144, 149, 148}})
 };
 
 const Slots* Slots::slotsFor(Slots::Type type)

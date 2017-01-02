@@ -99,13 +99,7 @@ gfx_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
   { UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 45), LSI(FIGURES4, 0)) },
   { UnitSpec::raceSpec(UnitID::SETTLERS, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 44), LSI(FIGURES3, 112)) },
 
-  //{ UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 0, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_SPEARMEN) },
-  //{ UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 1, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_SWORDSMEN) },
-  //{ UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BEASTMEN), UnitGfxSpec(SpriteInfo(UNITS_STATIC_STANDARD, 2, (u8)RaceID::BEASTMEN), UNIT_BEASTMEN_BOWMEN) }
-  
-  
   { UnitSpec::heroSpec(UnitID::HERO_DWARF), UnitGfxSpec(LSI(UNITS1, 0), LSI(FIGURES1, 0)) },
-  //{ UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), UnitGfxSpec(SpriteInfo(UNITS_HEROES, 6, 0), UNIT_HERO_ORC_WARRIOR) }
   
   
   { UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT), UnitGfxSpec(LSI(UNITS2, 34), LSI(FIGURE11, 32), LSI(MONSTER, 0)) },
@@ -123,13 +117,15 @@ gfx_map<const UnitSpec*, SpriteInfo> GfxData::heroPortraits = {
   { UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), LSI(PORTRAIT, 6) }
 };
 
+
+//TODO: LIFE SPELL (SPECFX, 3) uses palette with multiple white alphas, understand how to manage it
 decltype(GfxData::schoolSpecs) GfxData::schoolSpecs = {
-  { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD, LSI_PLACEHOLD, LSI(MAGIC, 48) } },
-  { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62), LSI(SPELLS, 4), LSI(WIZLAB, 14), LSI(NEWGAME,30), LSI(MAGIC, 33) } },
-  { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63), LSI(SPELLS, 5), LSI(WIZLAB, 15), LSI(NEWGAME, 27), LSI(MAGIC, 36) } },
-  { School::CHAOS, { RGB(255,0,0), LSI(SPELLSCR, 64), LSI(SPELLS, 6), LSI(WIZLAB, 16), LSI(NEWGAME, 36), LSI(MAGIC, 39) } },
-  { School::LIFE, { RGB(255,255,255), LSI(SPELLSCR, 65), LSI(SPELLS, 7), LSI(WIZLAB, 17), LSI(NEWGAME, 24), LSI(MAGIC, 42) } },
-  { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66), LSI(SPELLS, 8), LSI(WIZLAB, 18), LSI(NEWGAME, 33), LSI(MAGIC, 45) } },
+  { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD, LSI_PLACEHOLD, LSI(MAGIC, 48), LSI(SPECFX, 5) } },
+  { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62), LSI(SPELLS, 4), LSI(WIZLAB, 14), LSI(NEWGAME,30), LSI(MAGIC, 33), LSI(SPECFX, 0) } },
+  { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63), LSI(SPELLS, 5), LSI(WIZLAB, 15), LSI(NEWGAME, 27), LSI(MAGIC, 36), LSI(SPECFX, 1) } },
+  { School::CHAOS, { RGB(255,0,0), LSI(SPELLSCR, 64), LSI(SPELLS, 6), LSI(WIZLAB, 16), LSI(NEWGAME, 36), LSI(MAGIC, 39), LSI(SPECFX, 2) } },
+  { School::LIFE, { RGB(255,255,255), LSI(SPELLSCR, 65), LSI(SPELLS, 7), LSI(WIZLAB, 17), LSI(NEWGAME, 24), LSI(MAGIC, 42), LSI(SPECFX, 3) } },
+  { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66), LSI(SPELLS, 8), LSI(WIZLAB, 18), LSI(NEWGAME, 33), LSI(MAGIC, 45), LSI(SPECFX, 4) } },
 };
 
 decltype(GfxData::upkeepSymbolSpec) GfxData::upkeepSymbolSpec = {
@@ -165,9 +161,9 @@ SpriteInfo GfxData::heroGfxSpec(const UnitSpec *spec)
   return heroPortraits.find(spec)->second;
 }
 
-SpriteInfo GfxData::itemGfxSpec(items::Item::TypeID type, int index)
+SpriteInfo GfxData::itemGfxSpec(items::TypeID type, int index)
 {
-  using ID = items::Item::TypeID;
+  using ID = items::TypeID;
   switch (type)
   {
     case ID::SWORD: return LSI(ITEMS, 0).relative(index);

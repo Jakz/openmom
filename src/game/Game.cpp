@@ -231,7 +231,8 @@ bool Game::castSpell(Unit* unit, Player* player, bool combat)
     
     if (!combat)
     {
-      //TODO player->push(new SpellEffect(SpellEffect.schoolsEffects[cast.spell.props.school.ordinal()],new Position(unit.army.x,unit.army.y)));
+      //TODO: we need to find correct handling from which players receive the animation but this is just related to possibly multiplayer games
+      localGame->currentPlayer()->push(new anims::SpellEffect(localGame->currentPlayer(), GfxData::schoolGfxSpec(cast.spell->school).overlandUnitSpellCast, unit->getArmy()->getPosition()));
       cancelCast(player);
       playerMechanics.updateGlobalGains(player);
     }

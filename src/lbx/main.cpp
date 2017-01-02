@@ -1,6 +1,7 @@
 #include "LBX.h"
 
 #include "format.h"
+#include "Platform.h"
 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
@@ -832,7 +833,9 @@ public:
 
 void loadStatus()
 {
-  FILE* in = fopen("status.dat", "rb");
+  std::string path = Platform::instance()->getResourcePath() + "/data/status.dat";
+  
+  FILE* in = fopen(path.c_str(), "rb");
   if (in)
   {
     fseek(in, 0, SEEK_END);
@@ -852,7 +855,9 @@ void loadStatus()
 
 void saveStatus()
 {
-  FILE* in = fopen("status.dat", "wb");
+  std::string path = Platform::instance()->getResourcePath() + "/data/status.dat";
+  
+  FILE* in = fopen(path.c_str(), "wb");
   if (in)
   {
     fseek(in, 0, SEEK_END);

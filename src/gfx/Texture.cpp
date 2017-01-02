@@ -45,7 +45,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::MAIN_CURSORS,"main/cursors.png",1,5,16,16),
   Texture(TextureID::MAIN_MIRROR,"static/mirror.png",1,17,128,129),
   
-  Texture(TextureID::MAGIC_SPELL_EFFECTS,"magic/spell-effects.png",4,{12,6,18,12,12,12,28,24,20,17,37,21,17},60,54,true,1),
   Texture(TextureID::MAGIC_SCHOOL_ICONS,"static/magic-school-icons.png",1,5,100,90),
   
   Texture(TextureID::MESSAGE_LEFT,"static/message-left.png",1,1,249,59),
@@ -55,26 +54,17 @@ const Texture Texture::textures[] =
   
   
   Texture(TextureID::RIGHT_BACKDROP,"static/right_backdrop.gif",2,1,80,124),
-    
-  Texture(TextureID::CITY_BACKGROUND,"city/city-background.png",5,1, 205, 96),
-  Texture(TextureID::CITY_WATER,"city/city-water.png",4,6,16,96, true,5),
-  Texture(TextureID::CITY_LANDSCAPE,"city/scape/landscape.png",12,1,205,19),
-  
-  Texture(TextureID::CITY_ROADS,"city/scape/roads.png",4,1,210,75),
-  Texture(TextureID::CITY_WALLS,"city/scape/walls.png",4, {1,1,4,4}, 205, 11, true, 2),
       
+  Texture(TextureID::CITY_ROADS,"city/scape/roads.png",4,1,210,75),
+  
 
   // units ,not combat related sprites)
   
 
   Texture(TextureID::UNIT_DETAIL_SPECIAL_THINGS,"units/special-things.png",1,1,73,33), // contiene anche mirino minimap
-  Texture(TextureID::UNIT_DETAIL_TARGET,"units/static/target-backdrop.png",1,1,238,200),
   Texture(TextureID::UNIT_DETAIL_PROPS,"units/props.png",2,12,9,8),
   Texture(TextureID::UNIT_DETAIL_PROPS_EMPTY,"units/props-empty.png",1,12,9,8),
   Texture(TextureID::UNIT_SKILL_ICONS,"units/skill-icons.png",16,16,16,16),
-  
-  
-  Texture(TextureID::UNITS_STATIC_STANDARD,"units/standard-units.png",14,11,18,16),
   
   Texture(TextureID::UNIT_HERO_ITEM_BACKGROUND,"units/items-background.png",1,6,18,16),
   

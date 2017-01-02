@@ -22,9 +22,9 @@
 
 using namespace items;
 
-const Item::TypeID ItemCraftView::ITEM_TYPES[] = {
-  Item::TypeID::SWORD, Item::TypeID::MACE, Item::TypeID::AXE, Item::TypeID::BOW, Item::TypeID::STAFF,
-  Item::TypeID::WAND, Item::TypeID::MISC, Item::TypeID::SHIELD, Item::TypeID::CHAIN, Item::TypeID::PLATE
+const TypeID ItemCraftView::ITEM_TYPES[] = {
+  TypeID::SWORD, TypeID::MACE, TypeID::AXE, TypeID::BOW, TypeID::STAFF,
+  TypeID::WAND, TypeID::MISC, TypeID::SHIELD, TypeID::CHAIN, TypeID::PLATE
 };
 
 sprite_ref TYPE_BUTTONS[][2] = {
@@ -53,7 +53,7 @@ void ItemCraftView::ClickableAffix::draw()
   Clickable::draw();
 }
 
-ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), currentType(Item::TypeID::SWORD), currentItemGfx(0), propertyCostLimit(200)
+ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), currentType(TypeID::SWORD), currentItemGfx(0), propertyCostLimit(200)
 {
   buttons.resize(BUTTON_COUNT);
   
@@ -70,8 +70,8 @@ ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), curr
     updateItemName();
   });
   
-  itemType = decltype(itemType)(new RadioButtonGroup<RadioButton<Item::TypeID>>());
-  itemType->setAction([this](RadioButton<Item::TypeID>* b){
+  itemType = decltype(itemType)(new RadioButtonGroup<RadioButton<TypeID>>());
+  itemType->setAction([this](RadioButton<TypeID>* b){
     currentType = b->getData();
     currentItemGfx = 0;
     school = static_cast<School>(Util::randomIntInclusive(1, 5)); // TODO: why?
@@ -81,7 +81,7 @@ ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), curr
   
   for (size_t i = 0; i < sizeof(ITEM_TYPES)/sizeof(ITEM_TYPES[0]); ++i)
   {
-    RadioButton<Item::TypeID>* button = RadioButton<Item::TypeID>::build("type", ITEM_TYPES[i], itemType.get(), 156 + 33*(i%5), 3 + 15*(i/5), TYPE_BUTTONS[i][0], TYPE_BUTTONS[i][1]);
+    RadioButton<TypeID>* button = RadioButton<TypeID>::build("type", ITEM_TYPES[i], itemType.get(), 156 + 33*(i%5), 3 + 15*(i/5), TYPE_BUTTONS[i][0], TYPE_BUTTONS[i][1]);
     buttons.push_back(button);
     itemType->add(button);
   }

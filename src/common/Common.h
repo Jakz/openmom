@@ -200,6 +200,7 @@ enum class LBXID : u8
 };
 
 #define LBXI(x, y) (0x80000000 | (static_cast<u32>(LBXID::x) << 16) | (y))
+#define LBXF(x, y, f) (0x80000000 | (static_cast<u32>(f) << 24) | (static_cast<u32>(LBXID::x) << 16) | (y))
 #define LBXU(x) SpriteInfo(x)
 #define LSI(x, y) SpriteInfo(LBXID::x, y)
 #define LSI_PLACEHOLD SpriteInfo(LBXID::COUNT, 0)

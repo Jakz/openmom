@@ -94,6 +94,7 @@ struct SchoolGfxSpec
   SpriteInfo researchFamiliar;
   SpriteInfo newGameBook; // 3 entries starting from this
   SpriteInfo book;
+  SpriteInfo overlandUnitSpellCast;
 };
 
 
@@ -190,7 +191,7 @@ public:
   static s8 rangedGfxIndex(Ranged ranged) { return RANGED_INDEX[static_cast<u8>(ranged)]; }
   static s8 propertyGfxIndex(Property property) { return PROPERTY_INDEX[static_cast<u8>(property)]; }
   
-  static SpriteInfo itemGfxSpec(items::Item::TypeID type, int index);
+  static SpriteInfo itemGfxSpec(items::TypeID type, int index);
   
   static const PlayerGfxSpec& playerGfxSpec(PlayerColor color) { return playerSpecs.find(color)->second; }
   static const WizardGfxSpec& wizardGfxSpec(WizardID wizard) { return wizardSpecs.find(wizard)->second; }

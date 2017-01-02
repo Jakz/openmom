@@ -31,7 +31,7 @@ private:
   void draw() override;
   void drawPost() override { }
   
-  items::Item::TypeID currentType;
+  items::TypeID currentType;
   s8 currentItemGfx;
   std::string itemName;
   u16 itemCost;
@@ -42,9 +42,9 @@ private:
   
   void updateItemName();
   
-  std::unique_ptr<RadioButtonGroup<RadioButton<items::Item::TypeID>>> itemType;
+  std::unique_ptr<RadioButtonGroup<RadioButton<items::TypeID>>> itemType;
   
-  static const items::Item::TypeID ITEM_TYPES[];
+  static const items::TypeID ITEM_TYPES[];
   
   void updateClickableAreas();
   
@@ -78,7 +78,7 @@ public:
   
   void activate() override
   {
-    currentType = items::Item::TypeID::SWORD;
+    currentType = items::TypeID::SWORD;
     currentItemGfx = 0;
     updateItemName();
     updateClickableAreas();

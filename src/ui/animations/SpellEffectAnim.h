@@ -10,7 +10,6 @@ namespace anims
   class SpellEffect : public DiscreteAnimation
   {
   public:
-    const static sprite_ref schools[];
     constexpr static u32 TICKS_PER_FRAME = 2;
     
   private:

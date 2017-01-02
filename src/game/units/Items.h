@@ -16,19 +16,19 @@ namespace items
 {
   constexpr size_t TYPES_COUNT = 10;
   
+  enum class Class : u8 { MELEE = 0, RANGED, MELEE_STAFF, STAFF_WAND, ARMOR, MISC };
+  enum TypeID : u8 { SWORD = 0, MACE, AXE, BOW, STAFF, WAND, MISC, SHIELD, CHAIN, PLATE };
+  
   class Item
   {
     
   public:
-    enum class Class : u8 { MELEE = 0, RANGED, MELEE_STAFF, STAFF_WAND, ARMOR, MISC };
     
     struct TypeGroup
     {
       I18 name;
       u16 size;
     };
-    
-    enum TypeID : u8 { SWORD = 0, MACE, AXE, BOW, STAFF, WAND, MISC, SHIELD, CHAIN, PLATE };
     
     struct Type
     {
@@ -65,10 +65,10 @@ namespace items
       WARRIOR
     };
     
-    const std::array<std::vector<Item::Class>, 3> types;
+    const std::array<std::vector<Class>, 3> types;
     const std::array<u16, 3> sprites;
     
-    Slots(std::array<std::vector<Item::Class>, 3> types, std::array<u16, 3> sprites) : types(types), sprites(sprites) { }
+    Slots(std::array<std::vector<Class>, 3> types, std::array<u16, 3> sprites) : types(types), sprites(sprites) { }
     
     static const Slots* slotsFor(Slots::Type type);
   };
@@ -117,7 +117,7 @@ namespace items
   {
     const std::vector<PropertyAffixSpec>& properties;
     
-    static Affixes forType(Item::TypeID type);
+    static Affixes forType(TypeID type);
   };
   
 }

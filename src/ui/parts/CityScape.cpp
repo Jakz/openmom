@@ -90,20 +90,72 @@ const std::vector<CityLayout::LayoutZone> CityLayout::getZones(const City* city)
   return std::vector<CityLayout::LayoutZone>(begin(zone_coords), end(zone_coords));
 }
 
-static constexpr lbx_index river_and_ocean_tiles[2][PLANE_COUNT] = { {3, 4}, {115, 116} };
+enum
+{
+  by_river = 0,
+  by_ocean,
+  
+  normal_bg,
+  flying_bg,
+  famine_bg, // TODO: maybe it's also desert bg
+  cursed_lands_bg,
+  gaias_bg,
+  
+  plains_bg,
+  hills_bg,
+  mountains_bg,
+  
+  chaos_rift_bg,
+  heavenly_light_bg,
+  cloud_of_shadow_bg,
+  
+  wall_stone,
+  wall_fire,
+  wall_darkness,
+  //wall_stine // TODO: ?????
+};
+
+static constexpr SpriteInfo::data_type city_statics[][PLANE_COUNT] = {
+  { LBXI(CITYSCAP, 3), LBXI(CITYSCAP, 115) },
+  { LBXI(CITYSCAP, 4), LBXI(CITYSCAP, 116) },
+  
+  { LBXF(CITYSCAP, 0, 4), LBXF(CITYSCAP, 8, 4) },
+  { LBXF(CITYSCAP, 0, 1), LBXF(CITYSCAP, 8, 1) },
+  { LBXF(CITYSCAP, 0, 2), LBXF(CITYSCAP, 8, 2) },
+  { LBXF(CITYSCAP, 0, 0), LBXF(CITYSCAP, 8, 0) },
+  { LBXF(CITYSCAP, 0, 3), LBXF(CITYSCAP, 8, 3) },
+  
+  { LBXI(CITYSCAP, 7), LBXI(CITYSCAP, 11) },
+  { LBXI(CITYSCAP, 1), LBXI(CITYSCAP, 9) },
+  { LBXI(CITYSCAP, 2), LBXI(CITYSCAP, 10) },
+  
+  { LBXI(CITYSCAP, 92), LBXI(CITYSCAP, 112) },
+  { LBXI(CITYSCAP, 93), LBXI(CITYSCAP, 113) },
+  { LBXI(CITYSCAP, 91), LBXI(CITYSCAP, 111) },
+  
+  { LBXI(CITYSCAP, 76), LBXI(CITYSCAP, 76) },
+  { LBXI(CITYSCAP, 77), LBXI(CITYSCAP, 77) },
+  { LBXI(CITYSCAP, 79), LBXI(CITYSCAP, 79) },
+  //{ LBXI(CITYSCAP, 80), LBXI(CITYSCAP, 80) },
+
+
+};
 
 void CityLayout::draw(const City *city, LocalPlayer *player)
 {
   Plane p = city->getPosition().plane;
-  Gfx::draw(TextureID::CITY_BACKGROUND, 4, p, 3, 101);
+  Gfx::draw(city_statics[normal_bg][p], 3, 101);
   
+  //TODO: if (!city->hasSpell(Spells::FLYING_FORTRESS)
+  {
   // draw correct far sight according to city features: grasslands, hills, mountain */
   if (city->hasPlacement(CITY_BY_MOUNTAIN))
-    Gfx::draw(TextureID::CITY_LANDSCAPE, 2+3*p, 0, 3, 101);
+    Gfx::draw(city_statics[mountains_bg][p], 3, 101);
   else if (city->hasPlacement(CITY_BY_HILL))
-    Gfx::draw(TextureID::CITY_LANDSCAPE, 1+3*p, 0, 3, 101);
+    Gfx::draw(city_statics[hills_bg][p], 3, 101);
   else
-    Gfx::draw(TextureID::CITY_LANDSCAPE, 0+3*p, 0, 3, 101);
+    Gfx::draw(city_statics[plains_bg][p], 3, 101);
+  }
   
   // draw correct far spell effects for cloud of darkness / heavenly light / etc
 //  if (city->hasSpell(Spells::CLOUD_OF_SHADOW))   // TODO: MISSING SPELL
@@ -117,16 +169,9 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
   const CityLayout* layout = layouts[city];
   
   if (city->hasPlacement(CITY_BY_SEA))
-    Gfx::drawAnimated(LSI(CITYSCAP, river_and_ocean_tiles[city->getPosition().plane][1]), 4, 100);
+    Gfx::drawAnimated(city_statics[by_ocean][p], 4, 100);
   else if (!city->hasPlacement(CITY_BY_SEA) && city->hasPlacement(CITY_BY_RIVER))
-    Gfx::drawAnimated(LSI(CITYSCAP, river_and_ocean_tiles[city->getPosition().plane][0]), 4, 100, 0, 5);
-  
-  //draw walls
-  //TODO: other kinds of walls + city wall spell
-  if (city->hasBuilding(Building::CITY_WALLS))
-    Gfx::drawAnimated(TSI(CITY_WALLS, 0, 3), 183, 0);
-  /*if (c->hasSpell(Spells::WALL_OF_DARKNESS))   TODO MISSING SPELL
-  Gfx::drawAnimated(TextureID::CITY_WALLS, 3, 3, 183, 0);*/
+    Gfx::drawAnimated(city_statics[by_river][p], 4, 100, 0, 5);
   
   for (auto &p : layout->positions)
   {
@@ -138,6 +183,15 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
       Gfx::draw(houseGfx, p.x, p.y - houseGfx.sh());
     }
   }
+  
+  //draw walls
+  //TODO: other kinds of walls + city wall spell
+  if (city->hasBuilding(Building::CITY_WALLS))
+    Gfx::drawAnimated(city_statics[wall_stone][p], 3, 183);
+  /*if (c->hasSpell(Spells::WALL_OF_DARKNESS))   //TODO MISSING SPELL
+    Gfx::drawAnimated(city_statics[wall_darkness][p], 3, 185);
+   if (c->hasSpell(Spells::WALL_OF_FIRE)) // TODO MISSING SPELL
+    Gfx::drawAnimated(city_statics[wall_fire][p], 3, 185);*/
 }
 
 void CityLayout::drawBuilding(const Building *building, s16 x, s16 y)

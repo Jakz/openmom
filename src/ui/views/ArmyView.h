@@ -29,6 +29,8 @@ private:
   void draw() override;
   void drawPost() override { }
   
+  void clickOnIth(size_t i);
+  
 public:
   ArmyView(ViewManager* gvm);
   
@@ -37,7 +39,7 @@ public:
   
   void mouseReleased(u16 x, u16 y, MouseButton b) override;
   
-  void setArmy(Army* army) { this->army = army; }
+  void setArmy(Army* army);
   void setAcceptSpellTarget() { acceptSpellTarget = true; }
 };
 

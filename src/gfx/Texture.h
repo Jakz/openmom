@@ -49,7 +49,6 @@ enum class TextureID : u16
   MAIN_CURSORS,
   MAIN_MIRROR,
   
-  MAGIC_SPELL_EFFECTS,
   MAGIC_SCHOOL_ICONS,
   
   MESSAGE_LEFT,
@@ -58,25 +57,16 @@ enum class TextureID : u16
   MESSAGE_CONFIRM_DIALOG,
     
   RIGHT_BACKDROP,
-    
-  CITY_BACKGROUND,
-  CITY_WATER,
-  CITY_LANDSCAPE,
   
   CITY_ROADS,
-  CITY_WALLS,
-      
   
   // units
   
   UNIT_DETAIL_SPECIAL_THINGS, // contiene anche mirino minimap
-  UNIT_DETAIL_TARGET,
   UNIT_DETAIL_PROPS,
   UNIT_DETAIL_PROPS_EMPTY,
   UNIT_SKILL_ICONS,
-    
-  UNITS_STATIC_STANDARD,
-  
+      
   UNIT_HERO_ITEM_BACKGROUND,
   
     
