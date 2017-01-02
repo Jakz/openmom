@@ -86,7 +86,8 @@ struct SchoolGfxSpec
   SpriteInfo summonPalette;
   SpriteInfo symbol;
   SpriteInfo researchFamiliar;
-  SpriteInfo book; // 3 entries starting from this
+  SpriteInfo newGameBook; // 3 entries starting from this
+  SpriteInfo book;
 };
 
 

@@ -172,8 +172,8 @@ namespace lbx
     u16 tw() const override { return sprite->tw(); }
     u16 th() const override { return sprite->th(); }
     
-    u16 sw(u16,u16) const override { return sprite->sw(0,0); }
-    u16 sh(u16,u16) const override { return sprite->sh(0,0); }
+    u16 sw(u16=0,u16=0) const override { return sprite->sw(0,0); }
+    u16 sh(u16=0,u16=0) const override { return sprite->sh(0,0); }
 
     const Palette* getPalette() const override { return palette; }
   };

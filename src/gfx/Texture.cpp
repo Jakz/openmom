@@ -45,7 +45,6 @@ const Texture Texture::textures[] =
   Texture(TextureID::MAIN_CURSORS,"main/cursors.png",1,5,16,16),
   Texture(TextureID::MAIN_MIRROR,"static/mirror.png",1,17,128,129),
   
-  Texture(TextureID::MAGIC_GLOBAL_SPELLS,"magic/global-spells.png",2,13,110,113),
   Texture(TextureID::MAGIC_SPELL_EFFECTS,"magic/spell-effects.png",4,{12,6,18,12,12,12,28,24,20,17,37,21,17},60,54,true,1),
   Texture(TextureID::MAGIC_SCHOOL_ICONS,"static/magic-school-icons.png",1,5,100,90),
   
@@ -63,12 +62,7 @@ const Texture Texture::textures[] =
   
   Texture(TextureID::CITY_ROADS,"city/scape/roads.png",4,1,210,75),
   Texture(TextureID::CITY_WALLS,"city/scape/walls.png",4, {1,1,4,4}, 205, 11, true, 2),
-    
-  Texture(TextureID::MAGIC_GEMS,"magic/view/gems.png",1,7,42,45),
-  Texture(TextureID::MAGIC_PORTRAITS,"magic/view/portraits.png",1,14,33,35),
-  Texture(TextureID::MAGIC_MANA_WANDS,"magic/view/mana-wands.png",1,6,16,72),
-  
-  Texture(TextureID::ALCHEMY_BACKDROP,"magic/view/backdrop-alchemy.png",1,1,166,84),  
+      
 
   // units ,not combat related sprites)
   
@@ -90,9 +84,7 @@ const Texture Texture::textures[] =
   
   Texture(TextureID::COMBAT_BACKDROP,"static/backdrop-combat.png",1,1,402,36),
   Texture(TextureID::COMBAT_BUTTONS,"combat/combat-buttons.png",3,6,26,10),
-  
-  Texture(TextureID::COMBAT_ENCHANTMENTS,"combat/enchantments.png",3,10,17,16),
-  
+    
   Texture(TextureID::COMBAT_GRASS_ARCANUS,"combat/arcanus/grass.png",6,8,30,16),
   Texture(TextureID::COMBAT_MISC_TILES,"combat/misc-tiles.png",3,8,30,16,true,1),
     

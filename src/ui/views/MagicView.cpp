@@ -13,6 +13,7 @@
 #include "City.h"
 
 #include "Gfx.h"
+#include "GfxData.h"
 #include "Texture.h"
 #include "Buttons.h"
 #include "Font.h"
@@ -22,6 +23,30 @@
 #include "Localization.h"
 
 using namespace std;
+
+enum
+{
+  gem_undiscovered = LBXI(MAGIC, 6),
+  gem_shattered = LBXI(MAGIC, 51),
+  
+  staff_mana_empty = LBXI(MAGIC, 7),
+  staff_research_empty = LBXI(MAGIC, 9),
+  staff_skill_empty = LBXI(MAGIC, 11),
+  
+  staff_mana_head = LBXI(MAGIC, 15),
+  staff_research_head = LBXI(MAGIC, 16),
+  staff_skill_head = LBXI(MAGIC, 17),
+  
+  staff_mana_full = LBXI(MAGIC, 8),
+  staff_research_full = LBXI(MAGIC, 10),
+  staff_skill_full = LBXI(MAGIC, 12)
+};
+
+SpriteInfo wands[][3] = {
+  { staff_mana_empty, staff_mana_full, staff_mana_head },
+  { staff_research_empty, staff_research_full, staff_research_head },
+  { staff_skill_empty, staff_skill_full, staff_skill_head },
+};
 
 MagicView::MagicView(ViewManager* gvm) : View(gvm)
 {
@@ -53,24 +78,21 @@ void MagicView::draw()
     {
       if (r.first->isAlive())
       {
-        u16 col = r.first->color;
-        u16 wiz = r.first->wizard.ident;
-        
-        Gfx::draw(TextureID::MAGIC_GEMS, 0, col, 23+77*c, 3);
-        Gfx::draw(TextureID::MAGIC_PORTRAITS, 0, wiz, 28+77*c, 8);
+        const auto& wizardGfx = GfxData::wizardGfxSpec(r.first->wizard.ident);
+        Gfx::draw(wizardGfx.getGemmedPortrait(r.first->color), 24+77*c, 4);
       }
       else
-        Gfx::draw(TextureID::MAGIC_GEMS, 0, 6, 23+77*c, 3);
+        Gfx::draw(gem_shattered, 24+77*c, 4);
     }
     else
-      Gfx::draw(TextureID::MAGIC_GEMS, 0, 5, 23+77*c, 3);
+      Gfx::draw(gem_undiscovered, 24+77*c, 4);
     
     ++c;
   }
   
   while (c < 4)
-    Gfx::draw(TextureID::MAGIC_GEMS, 0, 5, 23+77*c++, 3);
-  
+    Gfx::draw(gem_undiscovered, 24+77*c++, 4);
+
   // draw global spells
   s16 yy = 60;
   for (auto cast : player->getSpells())
@@ -80,25 +102,22 @@ void MagicView::draw()
   }
   
   // draw mana wands
+  const s16 wand_x[] = { 29, 28+47, 28+47*2 };
+  const s16 wand_head_adjust[][2] = {{-2,-2},{-1,-4},{-1,-2}};
   for (int i = 0; i < 3; ++i)
   {
-    s16 ix = 47;
-    s16 sx = 28 + ix*i, sy = 82;
+    s16 sx = wand_x[i], sy = 83 + 70;
     float percent = dests[i].v;
     
-    // if percent for wand is 1.0 then we just draw full wand bar
-    if (dests[i].locked)
-      Gfx::drawClipped(TSI(MAGIC_MANA_WANDS,0,0), sx-1, sy-1, 16*(i*2 + 1), 0, 16, 72);
-    else
-      // head of the wand is drawn
-      Gfx::drawClipped(TSI(MAGIC_MANA_WANDS,0,0), sx-1, sy-1, 16*(i*2), 0, 16, 22);
+    Gfx::draw(wands[i][0], sx, sy - wands[i][0].sh());
     
-    s16 max = 72-22;
+    if (dests[i].locked)
+      Gfx::draw(wands[i][2], sx + wand_head_adjust[i][0], sy + wand_head_adjust[i][1] - wands[i][0].sh());
+    
+    s16 max = 51;
     s16 emptyPixels = (int)(max*(1-percent));
     s16 fullPixels = max-emptyPixels;
-    // wand is drawn according to proportion between full and empty
-    Gfx::drawClipped(TSI(MAGIC_MANA_WANDS,0,0), sx-1, sy-1+22, 16*(i*2), 22, 16, emptyPixels);
-    Gfx::drawClipped(TSI(MAGIC_MANA_WANDS,0,0), sx-1, sy-1+22+emptyPixels, 16*(i*2+1), 22+emptyPixels, 16, fullPixels);
+    Gfx::drawClipped(wands[i][1], sx+4 - (i == 0 ? 1 : 0), sy-fullPixels, 0, emptyPixels, 6, fullPixels);
   }
   
   // draw ratio values
@@ -146,18 +165,6 @@ void MagicView::draw()
   Fonts::drawString("Summon To:", 99, 176+8*2, ALIGN_LEFT);
   City* summonCity = player->cityWithSummoningCircle();
   Fonts::drawString(summonCity ? summonCity->getName() : "None", 155, 176+8*2, ALIGN_LEFT);
-  
-  
-  /*
-   int wx = 0;
-   float percent = 0.35f;
-   int emptyPixels = (int)(mh*(1-percent));
-   Texture.drawClipped(Texture.MAGIC_MANA_WANDS, 27, 81, wx*16, 0, 16, emptyPixels);
-   Texture.drawClipped(Texture.MAGIC_MANA_WANDS, 27, 81+emptyPixels, (wx+1)*16, emptyPixels, 16, 72-emptyPixels);*/
-  
-  //Texture.draw(Texture.MAGIC_MANA_WANDS, 0, 0, 27, 81);
-  //Texture.draw(Texture.MAGIC_MANA_WANDS, 0, 2, 27+47, 81);
-  //Texture.draw(Texture.MAGIC_MANA_WANDS, 0, 4, 27+47*2, 81);
 }
 
 MagicView::WandHoverInfo MagicView::hoveredWand(u16 x, u16 y)

@@ -42,18 +42,30 @@ AlchemyView::AlchemyView(ViewManager* gvm) : View(gvm), inverted(false), percent
 
 void AlchemyView::draw()
 {
+  const u16 bar_length = 49;
+  
+  printf("Percent: %f\n", percent);
+  
   // draw backdrop
-  Gfx::drawClipped(TSI(ALCHEMY_BACKDROP,0,0), 77, 66, 0, 0, 166, 67);
+  Gfx::drawClipped(LSI(MAGIC, 52), 77, 66, 0, 0, 166, 67);
   
   // if conversion is inverted power -> gold switch label
   if (inverted)
-    Gfx::drawClipped(TSI(ALCHEMY_BACKDROP,0,0), 77, 76, 0, 67, 166, 10);
+    Gfx::draw(LSI(MAGIC, 59), 89, 76);
   
   // draw bar on amount bar
-  // TODO: should be animated
-  Gfx::drawClipped(TSI(ALCHEMY_BACKDROP,0,0),133, 91,  7, 77,   (s32)(percent*(49))+4, 7);
+  int shift = Gfx::fticks % 8;
+  int length = (s32)(percent*(49))+4;
+  
+  // TODO: should be animated / needs fix
+  if (length > shift)
+  {
+    Gfx::drawClipped(LSI(MAGIC, 57), 133 + shift, 91, 0, 0, length - shift, 7);
+    Gfx::drawClipped(LSI(MAGIC, 57), 133, 91, length - shift, 0, shift, 7);
+  }
+
   // draw symbol on amount bar
-  Gfx::drawClipped(TSI(ALCHEMY_BACKDROP,0,0),133+(s32)(percent*(49)),91,  0, 77,  7, 7);
+  Gfx::draw(LSI(MAGIC, 58), 133+(s32)(percent*(bar_length)), 91);
   
   int flx = 95, frx = 197, fy = 90;
   int gamount = 0, mamount = 0;

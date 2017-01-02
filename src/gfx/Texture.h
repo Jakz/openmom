@@ -49,7 +49,6 @@ enum class TextureID : u16
   MAIN_CURSORS,
   MAIN_MIRROR,
   
-  MAGIC_GLOBAL_SPELLS,
   MAGIC_SPELL_EFFECTS,
   MAGIC_SCHOOL_ICONS,
   
@@ -66,12 +65,7 @@ enum class TextureID : u16
   
   CITY_ROADS,
   CITY_WALLS,
-    
-  MAGIC_GEMS,
-  MAGIC_PORTRAITS,
-  MAGIC_MANA_WANDS,
-  
-  ALCHEMY_BACKDROP,
+      
   
   // units
   
@@ -91,9 +85,7 @@ enum class TextureID : u16
   
   COMBAT_BACKDROP,
   COMBAT_BUTTONS,
-  
-  COMBAT_ENCHANTMENTS,
-  
+    
   COMBAT_GRASS_ARCANUS,
   COMBAT_MISC_TILES,
     
