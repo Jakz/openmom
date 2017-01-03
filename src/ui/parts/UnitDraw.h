@@ -20,6 +20,10 @@ enum class Dir;
 
 class UnitDraw
 {
+private:
+  static void bindPlayerColorPalette(PlayerColor color);
+  static void unbindPlayerColorPalette();
+  
 public:
   enum class CombatAction : u8
   {

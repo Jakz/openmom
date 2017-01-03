@@ -149,6 +149,16 @@ public:
   ~IndexedPalette() { delete [] colors; }
 };
 
+class SharedPalette : public Palette
+{
+private:
+  const Color* colors;
+public:
+  SharedPalette(const Color* colors) : colors(colors) { }
+  
+  Color get(u8 index) const override { return colors[index]; }
+};
+
 class BlinkingPalette : public Palette
 {
 private:
@@ -181,6 +191,8 @@ public:
     for (size_t i = 0; i < colors.size(); ++i)
       this->colors[i] = *std::next(colors.begin(), i);
   }
+  
+  void setPalette(const Palette* palette) { this->palette = palette; }
   
   Color get(u8 index) const override { return index >= start && index < end ? colors[index - start] : palette->get(index); }
 };

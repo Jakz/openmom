@@ -226,7 +226,7 @@ namespace lbx
     
     static const LBXFile& loadLBXTerrain();
     static const LBXFile& loadLBXTerrainMap();
-    
+    static const LBXFile& loadLBXFonts();
     static const LBXFile& loadLBXHelp();
     
     static bool shouldAllocateSprite(SpriteInfo info) { return file(info.lbx()).sprites[info.index()] == nullptr; }
@@ -236,7 +236,6 @@ namespace lbx
     
     static const LBXSpriteData* loadLBXSpriteTerrainData(SpriteInfo info);
     static LBXArrayData* loadLBXSpriteTerrainMappingData(LBXFile& lbx, size_t i, FILE* in);
-
     
     static const std::vector<LBXTerrainSpriteSpecs>& terrainInfo() { return terrainData; }
     

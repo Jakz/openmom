@@ -332,7 +332,7 @@ void LBX::scanFileNames(const FileInfo& info, string_list& names, FILE *in)
   
   fseek(in, offsets[0] - sizeof(LBXFileName)*header.count, SEEK_SET);
   
-  names.reserve(header.count);
+  names.resize(header.count);
   fread(&names[0], sizeof(LBXFileName), header.count, in);
   
   //int i = 25;
@@ -413,21 +413,25 @@ bool LBX::loadHeader(FileInfo& info, FILE *in)
   return false;
 }
 
-static const u16 FONT_NUM = 8;
-static const u16 FONT_CHAR_NUM = 0x5E;
-
 void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
+  static const u16 FONT_NUM = 8;
+  static const u16 FONT_CHAR_NUM = 94;
+  
+  static const LBXOffset FONT_HEIGHTS_OFFSET = 0x16A;
+  static const LBXOffset FONT_WIDTH_OFFSET = 0x19A;
+  static const LBXOffset FONT_DATA_OFFSET = 0x49A;
+  
   LOGD("[lbx] loading %u fonts from fonts.lbx", FONT_NUM)
   
   // position to start of character heights resource
-  fseek(in, offsets[0] + 0x16A, SEEK_SET);
+  fseek(in, offsets[0] + FONT_HEIGHTS_OFFSET, SEEK_SET);
   
   u16 *heights = new u16[8];
   fread(heights, FONT_NUM, sizeof(u16), in);
   
   // position to start of character widths
-  fseek(in, offsets[0] + 0x19A, SEEK_SET);
+  fseek(in, offsets[0] + FONT_WIDTH_OFFSET, SEEK_SET);
   
   u8 **widths = new u8*[FONT_NUM];
   
@@ -446,7 +450,7 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
   }
   
   // position to start of character offsets
-  fseek(in, offsets[0] + 0x49A, SEEK_SET);
+  fseek(in, offsets[0] + FONT_DATA_OFFSET, SEEK_SET);
   
   u16 **foffsets = new u16*[FONT_NUM];
   
@@ -596,10 +600,10 @@ FILE* LBX::getDescriptor(const LBXFile& lbx)
 void LBX::load()
 {
   {
-    FileInfo info;
+    /*FileInfo info;
     FILE *in = fopen(getLBXPath("fonts").c_str(), "rb");
     loadHeader(info, in);
-    loadFonts(info.header, info.offsets, in);
+    loadFonts(info.header, info.offsets, in);*/
   }
   {
     FileInfo info;
@@ -705,6 +709,8 @@ const LBXFile& Repository::loadLBX(LBXID ident)
     return loadLBXTerrainMap();
   else if (ident == LBXID::HELP)
     return loadLBXHelp();
+  else if (ident == LBXID::FONTS)
+    return loadLBXFonts();
   
   
   LBXFile& lbx = file(ident);
@@ -808,6 +814,40 @@ LBXArrayData* Repository::loadLBXSpriteTerrainMappingData(LBXFile& lbx, size_t i
   }
     
   return array;
+}
+
+const LBXFile& Repository::loadLBXFonts()
+{
+  LBXFile& lbx = file(LBXID::FONTS);
+  FILE* in = LBX::getDescriptor(lbx);
+  
+  LBX::loadHeader(lbx.info, in);
+  LBX::loadFonts(lbx.info.header, lbx.info.offsets, in);
+  
+  /*string_list names;
+  LBX::scanFileNames(lbx.info, names, in);
+  for (size_t i = 0; i < lbx.size(); ++i)
+  {
+    size_t length = lbx.info.offsets[i+1] - lbx.info.offsets[i];
+    fseek(in, lbx.info.offsets[i], SEEK_SET);
+    
+    std::string outName = string(names[i].folder) + "-" + names[i].name;
+    std::replace(outName.begin(), outName.end(), '/', '-');
+    
+    FILE* out = fopen(outName.c_str(), "wb");
+    
+    byte* buffer = new byte[length];
+    fread(buffer, 1, length, in);
+    fwrite(buffer, 1, length, out);
+    fclose(out);
+  }*/
+  
+  
+  fclose(in);
+  
+  
+  
+  return lbx;
 }
 
 const LBXFile& Repository::loadLBXTerrain()

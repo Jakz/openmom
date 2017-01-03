@@ -130,6 +130,40 @@ struct RaceHouseGfxSpec
   SpriteInfo housingBuilding;
 };
 
+struct UnitPropGfxSpec
+{
+  enum class Type
+  {
+    SWORD,
+    MITHRIL_SWORD,
+    MAGIC_SWORD,
+    ADAMANTIUM_SWORD,
+    RANGED_MAGIC,
+    RANGED_BOW,
+    RANGED_ROCK,
+    RANGED_BREATH,
+    RANGED_THROWN,
+    SHIELDS,
+    HITS,
+    RESIST,
+    TO_HIT,
+    ARCANE,
+    CHAOS,
+    DEATH,
+    LIFE,
+    NATURE,
+    SORCERY,
+    FIGURES,
+    TO_DEF,
+    UNKNOWN,
+    SHIELDS_RANGED
+  };
+  
+  SpriteInfo standard;
+  SpriteInfo bonus;
+  SpriteInfo borderless;
+};
+
 template<typename K, typename V, size_t SIZE>
 class enum_simple_map
 {

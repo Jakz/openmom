@@ -48,8 +48,9 @@ void Game::dummyInit()
 
   
   Army* army2 = new Army(player2, {
-		new FantasticUnit(UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT)),
+    new Hero(UnitSpec::heroSpec(UnitID::HERO_DWARF)),
     new RaceUnit(UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS)),
+    new FantasticUnit(UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT)),
   });
   
   player2->add(army2);

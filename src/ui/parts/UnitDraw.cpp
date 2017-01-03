@@ -19,6 +19,19 @@
 #include "LocalPlayer.h"
 #include "Game.h"
 
+const static SharedPalette* basePalette = new SharedPalette(Gfx::PALETTE);
+const static OverridePalette* bluePalette = new OverridePalette(basePalette, 214, 5, {Gfx::PALETTE[219], Gfx::PALETTE[220], Gfx::PALETTE[221], Gfx::PALETTE[222], Gfx::PALETTE[223]});
+
+void UnitDraw::bindPlayerColorPalette(PlayerColor color)
+{
+  Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[color]);
+}
+
+void UnitDraw::unbindPlayerColorPalette()
+{
+  Gfx::unbindColorMap();
+}
+
 void UnitDraw::drawStatic(const Army *army, s16 x, s16 y, bool forceDraw)
 {
   if (forceDraw || (army != LocalGame::i->currentPlayer()->getSelectedArmy()) || (Gfx::fticks % 6) < 3)
@@ -38,7 +51,7 @@ void UnitDraw::drawStatic(const Army *army, s16 x, s16 y, bool forceDraw)
     else
       first = army->get(0);
     
-    Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[army->getOwner()->color]);
+    bindPlayerColorPalette(army->getOwner()->color);
     
     const SpriteInfo& info = GfxData::unitGfxSpec(first->spec).still;
     
@@ -51,7 +64,8 @@ void UnitDraw::drawStatic(const Army *army, s16 x, s16 y, bool forceDraw)
     if (school != NO_SCHOOL)
       Gfx::drawGlow(info, x+1, y+1, school);
     
-    Gfx::unbindColorMap();
+    unbindPlayerColorPalette();
+
   }
 }
 
@@ -60,7 +74,7 @@ void UnitDraw::drawStatic(const Unit *unit, s16 x, s16 y, bool backdrop, bool gr
   if (backdrop)
     Gfx::draw(GfxData::playerGfxSpec(unit->getArmy()->getOwner()->color).unitBack, x, y);
   
-  Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[unit->getArmy()->getOwner()->color]);
+  bindPlayerColorPalette(unit->getArmy()->getOwner()->color);
   
   const SpriteInfo& info = GfxData::unitGfxSpec(unit->spec).still;
   
@@ -73,7 +87,7 @@ void UnitDraw::drawStatic(const Unit *unit, s16 x, s16 y, bool backdrop, bool gr
   if (school != NO_SCHOOL)
     Gfx::drawGlow(info, x+1, y+1, school);
   
-  Gfx::unbindColorMap();
+  unbindPlayerColorPalette();
 }
 
 void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
@@ -82,7 +96,7 @@ void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
   Gfx::rawDraw(GfxData::playerGfxSpec(army->getOwner()->color).unitBack, x, y);
   const Unit* first = army->get(0);
   
-  Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[army->getOwner()->color]);
+  bindPlayerColorPalette(army->getOwner()->color);
 
   const SpriteInfo& info = GfxData::unitGfxSpec(first->spec).still;
   Gfx::draw(info, x+1, y+1);
@@ -91,7 +105,7 @@ void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
   if (school != NO_SCHOOL)
     Gfx::drawGlow(info, x+1, y+1, school);
   
-  Gfx::unbindColorMap();
+  unbindPlayerColorPalette();
 }
 
 void UnitDraw::drawHeroPortrait(const Hero *unit, s16 x, s16 y)
@@ -176,7 +190,7 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
       action = 3;
   }
   
-  Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[unit->getArmy()->getOwner()->color]);
+  bindPlayerColorPalette(unit->getArmy()->getOwner()->color);
 
   SpriteInfo sprite = GfxData::unitGfxSpec(unit->spec).fullFigure.relative(static_cast<u8>(facing));
   
@@ -198,5 +212,5 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
     //  Gfx::drawGlow(sprite.relative(action), x + offsets[i].x, y + offsets[i].y, glow); // TODO: check if it works with new management
   }
 
-  Gfx::unbindColorMap();
+  unbindPlayerColorPalette();
 }
