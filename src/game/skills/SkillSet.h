@@ -38,8 +38,8 @@ public:
   cast_list::iterator spellIterator() { return spells.begin(); }
   cast_list::const_iterator spellIterator() const { return spells.begin(); }
   
-  bool hasSpellSkill(SkillBase base) const;
-  bool hasSkill(SkillBase base) const;
+  bool hasSpell(const Spell* spell) const;
+  bool hasSkill(const Skill* skill) const;
   bool hasSkillEffect(const SkillEffect* effect) const;
   bool hasSimpleEffect(SimpleEffect::Type type) const;
   

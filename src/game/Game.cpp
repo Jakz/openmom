@@ -43,8 +43,8 @@ void Game::init()
 
 void Game::dummyInit()
 {
-  LocalPlayer *player = new LocalPlayer(this, "Kali", Data::wizard(KALI), GREEN, Race::race(RaceID::BARBARIANS), 60, 40);
-  LocalPlayer *player2 = new LocalPlayer(this, "Antani", Data::wizard(MERLIN), BLUE, Race::race(RaceID::BARBARIANS), 60, 40);
+  LocalPlayer *player = new LocalPlayer(this, "Kali", Data::wizard(WizardID::KALI), GREEN, Race::race(RaceID::BARBARIANS), 60, 40);
+  LocalPlayer *player2 = new LocalPlayer(this, "Antani", Data::wizard(WizardID::MERLIN), BLUE, Race::race(RaceID::BARBARIANS), 60, 40);
 
   
   Army* army2 = new Army(player2, {

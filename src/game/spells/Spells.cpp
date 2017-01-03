@@ -11,7 +11,7 @@ namespace spellimpl
   /* LIFE - COMMON */
   static UnitSpell BLESS = UnitSpell(I18::SPELL_BLESS, RARITY_COMMON, LIFE, COMBAT_CONTINUOUS, 20, 25, 5, 1, Skills::SPELL_BLESS);
   static UnitSpell ENDURANCE = UnitSpell(I18::SPELL_ENDURANCE, RARITY_COMMON, LIFE, CONTINUOUS, 60, 30, -1, 1, Skills::SPELL_ENDURANCE);
-  static SummonSpell GUARDIAN_SPIRIT = SummonSpell(I18::SPELL_GUARDIAN_SPIRIT, RARITY_COMMON, LIFE, 220, 80, -1, UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT)); // TODO: summon spec is not ready when initialized
+  static SummonSpell GUARDIAN_SPIRIT = SummonSpell(I18::SPELL_GUARDIAN_SPIRIT, RARITY_COMMON, LIFE, 220, 80, -1, UnitID::GUARDIAN_SPIRIT);
   
   
   
@@ -25,8 +25,8 @@ namespace spellimpl
 
 const vector<const SpellKind>& Spells::spellKinds(bool combat)
 {
-  static vector<const SpellKind> overland = {KIND_SUMMONING,KIND_SPECIAL,KIND_ENCHANTMENT,KIND_UNIT_SPELL};
-  static vector<const SpellKind> combatb = {KIND_SUMMONING,KIND_SPECIAL,KIND_ENCHANTMENT,KIND_UNIT_SPELL,KIND_COMBAT_SPELL};
+  static const vector<const SpellKind> overland = {KIND_SUMMONING,KIND_SPECIAL,KIND_ENCHANTMENT,KIND_UNIT_SPELL};
+  static const vector<const SpellKind> combatb = {KIND_SUMMONING,KIND_SPECIAL,KIND_ENCHANTMENT,KIND_UNIT_SPELL,KIND_COMBAT_SPELL};
   return combat ? combatb : overland;
 }
 

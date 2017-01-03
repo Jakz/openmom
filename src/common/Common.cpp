@@ -68,20 +68,20 @@ static const Trait traitInfo[] = {
 };
 
 static const Wizard wizardInfo[] = {
-  {MERLIN, I18::WIZARD_NAME_MERLIN},
-  {RAVEN, I18::WIZARD_NAME_RAVEN},
-  {SHAREE, I18::WIZARD_NAME_SHAREE},
-  {LO_PAN, I18::WIZARD_NAME_LO_PAN},
-  {JAFAR, I18::WIZARD_NAME_JAFAR},
-  {OBERIC, I18::WIZARD_NAME_OBERIC},
-  {RJAK, I18::WIZARD_NAME_RJAK},
-  {SSS_RA, I18::WIZARD_NAME_SSS_RA},
-  {TAURON, I18::WIZARD_NAME_TAURON},
-  {FREYA, I18::WIZARD_NAME_FREYA},
-  {HORUS, I18::WIZARD_NAME_HORUS},
-  {ARIEL, I18::WIZARD_NAME_ARIEL},
-  {TLALOC, I18::WIZARD_NAME_TLALOC},
-  {KALI, I18::WIZARD_NAME_KALI}
+  {WizardID::MERLIN, I18::WIZARD_NAME_MERLIN},
+  {WizardID::RAVEN, I18::WIZARD_NAME_RAVEN},
+  {WizardID::SHAREE, I18::WIZARD_NAME_SHAREE},
+  {WizardID::LO_PAN, I18::WIZARD_NAME_LO_PAN},
+  {WizardID::JAFAR, I18::WIZARD_NAME_JAFAR},
+  {WizardID::OBERIC, I18::WIZARD_NAME_OBERIC},
+  {WizardID::RJAK, I18::WIZARD_NAME_RJAK},
+  {WizardID::SSS_RA, I18::WIZARD_NAME_SSS_RA},
+  {WizardID::TAURON, I18::WIZARD_NAME_TAURON},
+  {WizardID::FREYA, I18::WIZARD_NAME_FREYA},
+  {WizardID::HORUS, I18::WIZARD_NAME_HORUS},
+  {WizardID::ARIEL, I18::WIZARD_NAME_ARIEL},
+  {WizardID::TLALOC, I18::WIZARD_NAME_TLALOC},
+  {WizardID::KALI, I18::WIZARD_NAME_KALI}
 };
 
 const Trait& Data::trait(const TraitID trait)
@@ -91,6 +91,6 @@ const Trait& Data::trait(const TraitID trait)
 
 const Wizard& Data::wizard(const WizardID wizard)
 {
-  return wizardInfo[wizard];
+  return wizardInfo[static_cast<size_t>(wizard)];
 }
 

@@ -11,6 +11,7 @@
 #include "Spells.h"
 #include "Tile.h"
 #include "Animations.h"
+#include "LocalPlayer.h"
 
 void PlayerMechanics::updateGlobalGains(Player* player)
 {
@@ -153,16 +154,19 @@ void PlayerMechanics::castSpell(Player* player, const Spell* spell)
     City* where = player->cityWithSummoningCircle();
     Tile* tile = g->world->get(where->getPosition());
     
+    const SummonSpec* spec = SummonSpec::summonSpec(static_cast<const SummonSpell*>(spell)->unit);
+    
     // add unit to city army or as new army
     // TODO: move units from full army to make room for summon
     if (tile->army && tile->army->size() < 9)
-      tile->army->add(new FantasticUnit(static_cast<const SummonSpell*>(spell)->spec));
+      tile->army->add(new FantasticUnit(spec));
     else if (!tile->army)
     {
-      tile->placeArmy(new Army(player, {new FantasticUnit(static_cast<const SummonSpell*>(spell)->spec)}));
+      tile->placeArmy(new Army(player, { new FantasticUnit(spec) }));
     }
     
-    // TODO: push summoning effect
+    // TODO: manage awareness and such things
+    g->localGame->currentPlayer()->push(new anims::SummonAnimation(player->wizard.ident, spec));
   }
   else if (spell->type == SpellType::GLOBAL || spell->type == SpellType::GLOBAL_SKILL)
   {

@@ -17,7 +17,7 @@ private:
   
   u16 spX(s16 i, s16 sx) { return sx + (i < 4 ? 0 : 107); }
   u16 spY(s16 i, s16 sy) { return sy + (17*(i%4)); }
-  
+      
 public:
   SkillDraw(ScreenCoord coord = ScreenCoord(0,0)) : page(0), totalPages(0), base(coord) { }
   

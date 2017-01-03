@@ -462,7 +462,7 @@ enum PlayerColor : u8
   NEUTRAL,
 };
 
-enum WizardID : u8
+enum class WizardID : u8
 {
   MERLIN = 0,
   RAVEN,

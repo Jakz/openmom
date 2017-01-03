@@ -29,10 +29,10 @@ TEST_CASE("basic stats of units") {
   
   SECTION("large shield modifier") {
     const RaceUnitSpec* spec = UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS);
-    Unit* unit = new RaceUnit(*spec);
+    Unit* unit = new RaceUnit(spec);
 
     REQUIRE(spec != nullptr);
-    REQUIRE(unit->skills()->hasSkill(SkillBase::LARGE_SHIELD));
+    REQUIRE(unit->skills()->hasSkill(Skills::LARGE_SHIELD));
     
     THEN("ranged and magic defense should be +2 compared to normal defense") {
       REQUIRE(unit->getProperty(Property::SHIELDS) == (unit->getProperty(Property::SHIELDS_CHAOS) - 2));
@@ -46,7 +46,7 @@ TEST_CASE("basic stats of units") {
     const RaceUnitSpec* spec = UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS);
     
     GIVEN("holy weapon spell") {
-      Unit* unit = new RaceUnit(*spec);
+      Unit* unit = new RaceUnit(spec);
       unit->skills()->add(Skills::SPELL_HOLY_WEAPON);
       REQUIRE(spec->getProperty(Property::TO_HIT) == 30);
 

@@ -264,7 +264,7 @@ public:
   WrapSkill(SkillBase base, const Skill& existingSkill) : Skill(base), existingSkill(existingSkill) { }
   
   const effect_list& getEffects() const override { return existingSkill.getEffects(); }
-  bool is(SkillBase) const override { return this->base == base || existingSkill.base == base; }
+  bool is(SkillBase base) const override { return this->base == base || existingSkill.base == base; }
 };
 
 using skill_init_list = std::initializer_list<const Skill*>;

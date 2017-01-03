@@ -89,13 +89,13 @@ s16 SkillSet::bonusForProperty(Property property) const
   return bonus;
 }
 
-bool SkillSet::hasSpellSkill(SkillBase base) const {
-  return std::find_if(spells.begin(), spells.end(), [&](const SpellCast& c) { return c.asUnitSpell()->skill->base == base; }) != spells.end();
+bool SkillSet::hasSpell(const Spell* spell) const {
+  return std::find_if(spells.begin(), spells.end(), [&](const SpellCast& c) { return c.spell == spell; }) != spells.end();
 }
 
-bool SkillSet::hasSkill(SkillBase base) const
+bool SkillSet::hasSkill(const Skill* skill) const
 {
-  return std::find_if(this->begin(), this->end(), [&](const Skill* c) { return c->base == base; }) != this->end();
+  return std::find(this->begin(), this->end(), skill) != this->end();
 }
 
 bool SkillSet::hasSkillEffect(const SkillEffect* effect) const

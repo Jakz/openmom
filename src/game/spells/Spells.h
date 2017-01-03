@@ -184,10 +184,10 @@ public:
 class SummonSpell : public Spell
 {
 public:
-  SummonSpell(I18 name, SpellRarity rarity, School school, s16 researchCost, s16 manaCost, s16 combatManaCost, const SummonSpec* spec) :
-    Spell(name, SpellType::SUMMON, rarity, KIND_SUMMONING, UNDEFINED, school, Target::NONE, {researchCost, manaCost, -1, combatManaCost, -1, 0}) { }
+  SummonSpell(I18 name, SpellRarity rarity, School school, s16 researchCost, s16 manaCost, s16 combatManaCost, UnitID unit) :
+    Spell(name, SpellType::SUMMON, rarity, KIND_SUMMONING, UNDEFINED, school, Target::NONE, {researchCost, manaCost, -1, combatManaCost, -1, 0}), unit(unit) { }
 
-  const SummonSpec* spec;
+  const UnitID unit;
 };
 
 
