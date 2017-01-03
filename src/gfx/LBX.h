@@ -145,7 +145,7 @@ namespace lbx
     const u16 width;
     const u16 height;
     
-    Color at(u16 x, u16 y, u16 c, u16 r) const override { return palette->get(data[c+r][x+y*width]); }
+    Color at(u16 x, u16 y, u16 c, u16 r) const override { return data[c+r][x+y*width]; }
 
     u16 tw() const override { return count*width; }
     u16 th() const override { return height; }
@@ -156,26 +156,6 @@ namespace lbx
     const Palette* getPalette() const override { return palette; }
     
     size_t memoryUsedInBytes() const { return count*width*height + sizeof(Color)*256; }
-  };
-  
-  class LBXSpriteDataWithPalette : public SpriteSheet
-  {
-  private:
-    const LBXSpriteData* const sprite;
-    const Palette* const palette;
-    
-  public:
-    LBXSpriteDataWithPalette(const LBXSpriteData* sprite, const Palette* palette) : sprite(sprite), palette(palette) { }
-    
-    Color at(u16 x, u16 y, u16 c, u16 r) const override { return palette->get(sprite->data[c+r][x+y*sprite->width]); }
-    
-    u16 tw() const override { return sprite->tw(); }
-    u16 th() const override { return sprite->th(); }
-    
-    u16 sw(u16=0,u16=0) const override { return sprite->sw(0,0); }
-    u16 sh(u16=0,u16=0) const override { return sprite->sh(0,0); }
-
-    const Palette* getPalette() const override { return palette; }
   };
   
   struct LBXArrayData

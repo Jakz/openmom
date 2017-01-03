@@ -80,6 +80,7 @@ public:
   static inline void bindColorMap(const ColorMap *map) { Gfx::map = map; }
   static inline void unbindColorMap() { Gfx::map = nullptr; }
 
+  static inline void bindPalette(SpriteInfo info) { bindPalette(info.palette()); }
   static inline void bindPalette(const Palette* palette) { Gfx::palette = palette; }
   static inline void unbindPalette() { Gfx::palette = nullptr; }
 
@@ -107,7 +108,10 @@ public:
   static void drawClipped(SpriteInfo info, u16 x, u16 y, s16 fx, s16 fy, s16 w, s16 h);
 
   static void draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r = 0, u16 c = 0);
+  static void draw(SpriteInfo info, const Palette* palette, s16 x, s16 y, u16 f) { bindPalette(palette); draw(info.sheet(), x, y, 0, f); unbindPalette(); }
   static void draw(SpriteInfo info, s16 x, s16 y) { draw(info.sheet(), x, y, info.x(), info.y()); }
+  static void draw(SpriteInfo info, const Palette* palette, s16 x, s16 y) { bindPalette(palette); draw(info.sheet(), x, y, info.x(), info.y()); unbindPalette(); }
+
   //static void draw(SpriteInfo info, s16 x, s16 y, u8 c) { draw(info.sheet(), x, y, info.x(), c); }
 
   static void drawGlow(SpriteInfo info, s16 x, s16 y, School color) { drawGlow(info.sheet(), x, y, info.x(), info.y(), color); }

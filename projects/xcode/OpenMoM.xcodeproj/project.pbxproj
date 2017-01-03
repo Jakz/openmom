@@ -157,6 +157,11 @@
 		04879A7D1978391F00313BC7 /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
 		048E08B919829C6D009AED0A /* SkillDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08B719829C6D009AED0A /* SkillDraw.cpp */; };
 		048E08BC1982B20A009AED0A /* WorldGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08BA1982B20A009AED0A /* WorldGenerator.cpp */; };
+		0493DA901E1B55FA0088FF42 /* SpellEffectAnim.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F91E0D1AEF003A76D8 /* SpellEffectAnim.cpp */; };
+		0493DA911E1B55FA0088FF42 /* Animations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F61E0D1ABA003A76D8 /* Animations.cpp */; };
+		0493DA921E1B55FA0088FF42 /* Dialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F11E0CE6CB003A76D8 /* Dialogs.cpp */; };
+		0493DA931E1B55FA0088FF42 /* ConsoleView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */; };
+		0493DA941E1B56040088FF42 /* Help.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428FC1E117C2D003A76D8 /* Help.cpp */; };
 		04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B11983286E00291B82 /* Viewport.cpp */; };
 		04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B419833C1E00291B82 /* UnitDraw.cpp */; };
 		04C1F47F1B25290C00F7688A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C1F44B1B25270300F7688A /* main.cpp */; };
@@ -1081,6 +1086,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0493DA941E1B56040088FF42 /* Help.cpp in Sources */,
+				0493DA901E1B55FA0088FF42 /* SpellEffectAnim.cpp in Sources */,
+				0493DA911E1B55FA0088FF42 /* Animations.cpp in Sources */,
+				0493DA921E1B55FA0088FF42 /* Dialogs.cpp in Sources */,
+				0493DA931E1B55FA0088FF42 /* ConsoleView.cpp in Sources */,
 				048616AA1E0380A4004B62B7 /* osx.mm in Sources */,
 				0486165F1E038086004B62B7 /* OriginalSave.cpp in Sources */,
 				048616601E038086004B62B7 /* Util.cpp in Sources */,

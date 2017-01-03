@@ -369,6 +369,10 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
 {
   lock(gsrc);
   lock(gdst);
+  
+  bool nativePalette = !palette && gsrc->getPalette();
+  if (nativePalette)
+    palette = gsrc->getPalette();
 
   for (s32 y = 0; y < h; ++y)
   {
@@ -377,6 +381,9 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
       if (x+tx < gdst->tw() && y+ty < gdst->th() && x+tx >= 0 && y+ty >= 0)
       {
         u32 ps = gsrc->at(fx+x, fy+y, r, c);
+        
+        if (palette)
+          ps = palette->get(ps);
         
         if (ps == 0xFF00FF00)
         {
@@ -397,8 +404,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
         else
         {
           // colorMap present
-          if (palette)
-            ps = palette->get(ps);
+
           
           if (map)
             ps = map->get(ps);
@@ -428,6 +434,9 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
       }
     }
   }
+  
+  if (nativePalette)
+    palette = nullptr;
   
   unlock(gsrc);
   unlock(gdst);

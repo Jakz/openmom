@@ -52,11 +52,6 @@ SummonAnimation::SummonAnimation(WizardID wizard, const SummonSpec* spec)
 
 void SummonAnimation::step()
 {
-  /* TODO: find alternative way to manage sprite data with palette */
-  lbx::LBXSpriteDataWithPalette summonBg(lbx::Repository::spriteFor(LSI(SPELLSCR,9)), palette);
-  lbx::LBXSpriteDataWithPalette summonFlame(lbx::Repository::spriteFor(LSI(SPELLSCR,11)), palette);
-  lbx::LBXSpriteDataWithPalette summonFlame2(lbx::Repository::spriteFor(LSI(SPELLSCR,10)), palette);
-  
   ScreenCoord base = ScreenCoord(30, 42);
   u16 creatureTopY = 18;
   u16 creatureBottomY = 100;
@@ -64,14 +59,14 @@ void SummonAnimation::step()
   float percent = position();
   u16 creatureY = creatureBottomY - (creatureBottomY - creatureTopY)*percent;
   
-  Gfx::draw(&summonBg, base.x, base.y);
+  Gfx::draw(LSI(SPELLSCR,9), palette, base.x, base.y); // BG
   
   u16 frame = (Gfx::fticks % 15); //TODO: should use directly drawAnimated but it's a SpriteSheet not sprite info
   
   Gfx::drawClipped(wizard, base.x + 8, base.y + 3 + 5, 0, 5, wizard.sw(), wizard.sh()-5);
-  Gfx::draw(&summonFlame2, base.x + 55, base.y + 0+97-43, frame);
+  Gfx::draw(LSI(SPELLSCR,10), palette, base.x + 55, base.y + 0+97-43, frame); // flame 2
   Gfx::drawClipped(creature, base.x + 76, base.y + creatureY, 0, 0, creature.sw(), std::min((int)creatureBottomY - creatureY, (int)creature.sh()));
-  Gfx::draw(&summonFlame, base.x + 65, base.y + 26+97-43, frame);
+  Gfx::draw(LSI(SPELLSCR,11), palette, base.x + 65, base.y + 26+97-43, frame); // flame1
   
   //TODO: palette is not the same, single pixels different
   Fonts::drawString(Fonts::format("%s Summoned", spec->productionName().c_str()), FontFaces::Serif::GOLD_SHADOW, base.x + 90, base.y + 116, ALIGN_CENTER);
@@ -92,18 +87,16 @@ void SpellDiscoverAnimation::step()
   const Palette* palette = bg.palette();
   
   Gfx::draw(bg, 0, 0);
-  
-  lbx::LBXSpriteDataWithPalette podium(lbx::Repository::spriteFor(LSI(WIZLAB,20)), palette);
-  lbx::LBXSpriteDataWithPalette beam(lbx::Repository::spriteFor(LSI(WIZLAB,21)), palette);
-  lbx::LBXSpriteDataWithPalette familiar(lbx::Repository::spriteFor(this->familiar), palette);
 
-  
   u16 frame = (Gfx::fticks % 10); //TODO: should use directly drawAnimated but it's a SpriteSheet not sprite info
   
   Gfx::draw(wizard, 69, 75);
-  Gfx::draw(&beam, 132, -3, frame);
-  Gfx::draw(&podium, 149, 133);
-  Gfx::draw(&familiar, 190, 160);
+  
+  Gfx::bindPalette(palette);
+  Gfx::draw(LSI(WIZLAB,21).frame(frame), 132, -3); // beam
+  Gfx::draw(LSI(WIZLAB,20), 149, 133); // podium
+  Gfx::draw(familiar, 190, 160); // familiar
+  Gfx::unbindPalette();
 }
 
 

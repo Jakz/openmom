@@ -305,12 +305,54 @@ private:
   const LBXSpriteData* sprite;
   const LBXArrayData* array;
   u8 mask = 0;
+  
+  int sx = FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+50;
+  int sy = 50;
+  
+  int hx = -1;
+  int hy = -1;
+  u8 hi = 0;
 
 public:
   MyWindow() : Fl_Double_Window(WINDOW_WIDTH, WINDOW_HEIGHT, "LBX Explorer 0.6"), sprite(nullptr), array(nullptr)
   {
     Fl::add_timeout(0.10, Timer_CB, (void*)this);
 
+  }
+  
+  int handle(int event) override
+  {
+    if (event == FL_ENTER)
+      return 1;
+    else if (event == FL_MOVE)
+    {
+      hx = -1;
+      hy = -1;
+      
+      int x = Fl::event_x() - sx;
+      int y = Fl::event_y() - sy;
+      
+      if (x >= 0 && y >= 0)
+      {
+        
+        if (sprite)
+        {
+          int S = doubleScaleCheckbox->isToggled ? 4 : 2;
+
+          if (x < S*sprite->width && y < S*sprite->height)
+          {
+            x /= S;
+            y /= S;
+            
+            hx = x;
+            hy = y;
+            hi = sprite->data[0][x + y*sprite->width];
+          }
+        }
+      }
+    }
+    
+    return Fl_Double_Window::handle(event);
   }
 
   void setData(const LBXArrayData* array) { this->array = array; this->sprite = nullptr; }
@@ -371,8 +413,8 @@ public:
 
       if (sprite)
       {
-        int sx = FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+50;
-        int sy = 50;
+        int sx = this->sx;
+        int sy = this->sy;
         
         for (int i = 0; i < sprite->count && (!isAnimated || i == 0); ++i)
         {
@@ -408,10 +450,18 @@ public:
               }
             }
             
-            fl_draw_image(palette, FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+16*p, 0, PW, 768);
+            fl_draw_image(palette, FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+16*p, 5, PW, 768);
             
             delete[] palette;
           }
+        }
+        
+        if (hx != -1)
+        {
+          Color pixel = !sprite->palette ? Gfx::PALETTE[hi] : sprite->palette->get(hi);
+
+          fl_draw(fmt::sprintf("(%d,%d) = %d = RGB(%d,%d,%d) = #%02X%02X%02X", hx, hy, hi, GET_RED(pixel), GET_GREEN(pixel), GET_BLUE(pixel), GET_RED(pixel), GET_GREEN(pixel), GET_BLUE(pixel)).c_str(), this->sx, 30);
+          fl_draw("<", FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+16*2, hi*3+10);
         }
       }
       else if (array != nullptr)

@@ -133,7 +133,7 @@ private:
   Color *colors;
 public:
   IndexedPalette(Color* colors) : colors(colors) { }
-  IndexedPalette(u8 size) : colors(new Color[size]) { }
+  IndexedPalette(size_t size) : colors(new Color[size]) { }
   
   IndexedPalette(color_list colors) : colors(new Color[colors.size()]) { setPalette(colors); }
   
@@ -165,6 +165,24 @@ public:
   }
 
   Color get(u8 index) const override;
+};
+
+class OverridePalette : public Palette
+{
+private:
+  const Palette* palette;
+  Color* colors;
+  size_t start;
+  size_t end;
+public:
+  OverridePalette(const Palette* palette, size_t start, size_t length, color_list colors) : palette(palette), colors(new Color[length]), start(start), end(start+length)
+  {
+    assert(colors.size() == length);
+    for (size_t i = 0; i < colors.size(); ++i)
+      this->colors[i] = *std::next(colors.begin(), i);
+  }
+  
+  Color get(u8 index) const override { return index >= start && index < end ? colors[index - start] : palette->get(index); }
 };
 
 #endif

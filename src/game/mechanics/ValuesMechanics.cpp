@@ -27,7 +27,7 @@ template<> float ValuesMechanics::get<float>(Value value)
       }
     }
       
-    default: return 0.0f;
+    default: assert(false); return 0.0f;
   }
 }
 
@@ -37,6 +37,6 @@ template<> s32 ValuesMechanics::get<s32>(Value value)
   {
     case Value::WARPED_NODE_POWER_MALUS: return 5;
       
-    default: return 0;
+    default: assert(false); return 0;
   }
 }
