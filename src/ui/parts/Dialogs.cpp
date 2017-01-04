@@ -39,6 +39,11 @@ void InfoMenu::draw()
   
   //static const auto leftWidth = leftTop.sw();
   Gfx::bindPalette(palette);
-  Gfx::drawClipped(leftTop, b.x, b.y, 0, 0, leftTop.sw(), h - rightBottom.sh());
+  Gfx::drawClipped(leftTop, b.x, b.y, 0, 0, leftTop.sw(), h - leftBottom.sh());
+  Gfx::draw(leftBottom, b.x, b.y + h - leftBottom.sh());
+  Gfx::drawClipped(top, b.x + leftTop.sw(), b.y, 0, 0, w - leftTop.sw() - rightTop.sw(), top.sh());
+  Gfx::drawClipped(rightTop, b.x + w - rightTop.sw(), b.y, 0, 0, rightTop.sw(), h - rightBottom.sh());
+  Gfx::draw(rightBottom, b.x + w - rightBottom.sw(), b.y + h - rightBottom.sh());
+  Gfx::drawClipped(bottom, b.x + leftBottom.sw(), b.y + h - bottom.sh(), 0, 0, w - leftBottom.sw() - rightBottom.sw(), bottom.sh());
   Gfx::unbindPalette();
 }

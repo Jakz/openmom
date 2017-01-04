@@ -55,11 +55,14 @@ namespace lbx
   {
     u16 width;
     u16 height;
-    u16 unknown1;
+    u16 alwaysZero1;
     u16 count;
-    u16 unknown2[3];
+    u16 frameLoopRestart;
+    u16 alwaysZero2;
+    u16 alwaysZero3;
     u16 paletteOffset;
-    u16 unknown3;
+    u8 unknown2;
+    u8 unknown3;
   } __attribute__((__packed__));
 
   struct LBXPaletteHeader
@@ -122,7 +125,7 @@ namespace lbx
 
 
   public:
-    LBXSpriteData(const Palette* palette, u16 count, u16 width, u16 height, bool hasCustomPalette) : palette(palette), count(count), width(width), height(height), data(new u8*[count]), hasCustomPalette(hasCustomPalette)
+    LBXSpriteData(const Palette* palette, u16 count, u16 frameLoopRestart, u16 width, u16 height, bool hasCustomPalette) : palette(palette), count(count), frameLoopRestart(frameLoopRestart), width(width), height(height), data(new u8*[count]), hasCustomPalette(hasCustomPalette)
     {
       for (u16 i = 0; i < count; ++i)
       {
@@ -142,8 +145,12 @@ namespace lbx
     const bool hasCustomPalette;
     const Palette* palette;
     const u16 count;
+    const u16 frameLoopRestart;
     const u16 width;
     const u16 height;
+    
+    u8 unknown2;
+    u8 unknown3;
     
     Color at(u16 x, u16 y, u16 c, u16 r) const override { return data[c+r][x+y*width]; }
 

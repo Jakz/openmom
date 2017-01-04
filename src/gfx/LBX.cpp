@@ -145,17 +145,17 @@ void LBX::loadArrayFile(const FileInfo& info, std::vector<TextFiller>& inserters
 }
 
 
-void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader &pheader, u16 index, u8* image, u8* data, u32 dataLength)
+void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader& pheader, u16 index, u8* image, u8* data, u32 dataLength)
 {
   s32 i = 0, x = 0;
   const u32 w = header.width, h = header.height;
   s32 y = 0;
   
-  //printf(">>>>>>>>>>>>>>>>>> FRAME %d\n", index);
-  
+  /* first byte is used to tell if a successive frame should be cleared
+     or if it's a copy of the previous: 1 means clear, 0 means copy
+   */
   if (index > 0 && data[i] == 1)
   {
-    //printf("CLEARING FRAME %d\n", index);
     for (int k = 0; k < header.width*header.height; ++k)
       image[k] = 0;
   }
@@ -164,16 +164,14 @@ void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader &phead
   
   u32 RLE_val = 0;
   u32 n_r = 0;
-  u32 longData = 0;
-  u32 lastPos = 0;
-  u32 nextCtl = 0;
-  u32 rleLength = 0;
-  u32 rleCounter = 0;
   
   while (x < w && i < dataLength)
   {
     y = 0;
     
+    /* if current data is the special 0xFF control character 
+       we reset RLE_val and we skip until the end of column 
+     */
     if (data[i] == 0xFF)
     {
       ++i;
@@ -181,39 +179,48 @@ void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader &phead
     }
     else
     {
-      longData = data[i+2];
-      nextCtl = i + data[i+1] + 2;
-      
+      /* each control structure is made by 4 bytes in the following way:
+         r rle value type (start from palette or start from default 0xE0 index)
+         c distance to next control sequence (add 2 since it starts after the control structure
+         l length of the subsequence of data values
+         y the current row of the sprite
+      */
       if (data[i] == 0x00) RLE_val = pheader.firstIndex + pheader.count;
       else if (data[i] == 0x80) RLE_val = 0xE0;
-      //else printf("UNRECOGNIZED RLE VALUE: %u\n", data[i]);
+      else printf("UNRECOGNIZED RLE VALUE: %u\n", data[i]);
+      
+      u32 nextControlPosition = i + data[i + 1] + 2;
+      u32 subsequenceLength = data[i + 2];
+      y = data[i + 3];
       
       //printf("%d,%d..%d COLUMN SKIPPED\n", x, y, data[i+3]-1);
-      y = data[i + 3];
       i += 4;
       
       n_r = i;
       
-      while (n_r < nextCtl)
+      /* when we arrive here n_r starts from the next byte of data,
+         while we're before the next control sequence
+       */
+      while (n_r < nextControlPosition)
       {
-        while (n_r < i + longData && x < w)
+        /* while we are before the end of the subsequence */
+        while (n_r < i + subsequenceLength && x < w)
         {
+          /* RLE structure is made by two bytes: first byte is the length,
+             second byte is the color index to repeat */
           if (data[n_r] >= RLE_val)
           {
-            
-            lastPos = n_r + 1;
-            rleLength = data[n_r] - RLE_val + 1;
-            rleCounter = 0;
+            u32 rleLength = data[n_r] - RLE_val + 1;
+            u8 colorIndex = data[n_r + 1];
+            u32 rleCounter = 0;
             
             //printf("%d,%d..%d RLE -> %d\n", x, y, y+rleCounter, data[lastPos]);
             
+            /* mind that the RLE sequence can't go over to next column */
             while (rleCounter < rleLength && y < h)
             {
-              if (x >= 0 && x < w && y >= 0 && y < h)
-              {
-                image[x + y*w] = data[lastPos];
-              }
-              //else printf("RLE OVERRUN: %d,%d\n",x,y);
+              assert(x >= 0 && x < w && y >= 0 && y < h);
+              image[x + y*w] = colorIndex;
               
               ++y;
               ++rleCounter;
@@ -221,31 +228,32 @@ void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader &phead
             
             n_r += 2;
           }
+          /* if value found wasn't an RLE value then we're just setting
+             single pixels */
           else
           {
-            if (x >= 0 && x < w && y >= 0 && y < h)
-            {
-              image[x + y*w] = data[n_r];
-              //printf("%d,%d SINGLE -> %d\n", x, y, data[n_r]);
-              
-            }
-            
+            assert(x >= 0 && x < w && y >= 0 && y < h);
+            image[x + y*w] = data[n_r];
+            //printf("%d,%d SINGLE -> %d\n", x, y, data[n_r]);
             ++n_r;
             ++y;
           }
         }
         
-        if (n_r < nextCtl)
+        /* if after the subsequence we still haven't reached the next
+           control character then there is another subsequence so we update
+           the row and the length of the next subsequence */
+        if (n_r < nextControlPosition)
         {
           //printf("ANOTHER RLE\n");
           y += data[n_r + 1];
           i = n_r + 2;
-          longData = data[n_r];
+          subsequenceLength = data[n_r];
           n_r += 2;
         }
       }
       
-      i = nextCtl;
+      i = nextControlPosition;
     }
     
     /*if (y != h)
@@ -261,6 +269,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
   fseek(in, offset, SEEK_SET);
   LBXGfxHeader gfxHeader;
   fread(&gfxHeader, sizeof(LBXGfxHeader), 1, in);
+  assert(gfxHeader.alwaysZero1 == 0 && gfxHeader.alwaysZero2 == 0 && gfxHeader.alwaysZero3 == 0);
   LOGD("[lbx]   WxH: %dx%d, frames: %d, palette: %c", gfxHeader.width, gfxHeader.height, gfxHeader.count, gfxHeader.paletteOffset ? 'y' : 'n');
   
   LBXOffset *frameOffsets = new LBXOffset[gfxHeader.count+1];
@@ -271,9 +280,12 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
   Color* palette = new Color[PALETTE_SIZE];
   memcpy(palette, Gfx::PALETTE, sizeof(Color)*PALETTE_SIZE);
   
-  LBXSpriteData *sprite = new LBXSpriteData(new IndexedPalette(palette), gfxHeader.count, gfxHeader.width, gfxHeader.height, gfxHeader.paletteOffset > 0);
+  LBXSpriteData *sprite = new LBXSpriteData(new IndexedPalette(palette), gfxHeader.count, gfxHeader.frameLoopRestart, gfxHeader.width, gfxHeader.height, gfxHeader.paletteOffset > 0);
   LBXPaletteHeader paletteHeader = {0,0,256};
   
+  sprite->unknown2 = gfxHeader.unknown2;
+  sprite->unknown3 = gfxHeader.unknown3;
+
   // there is a palette
   if (gfxHeader.paletteOffset > 0)
   {
@@ -352,7 +364,7 @@ LBXSpriteData* LBX::scanTerrainGfx(LBXOffset offset, size_t count, FILE* in)
   Color* palette = new Color[PALETTE_SIZE];
   memcpy(palette, Gfx::PALETTE, sizeof(Color)*PALETTE_SIZE);
   
-  LBXSpriteData* sprite = new LBXSpriteData(new IndexedPalette(palette), count, 20, 18, false);
+  LBXSpriteData* sprite = new LBXSpriteData(new IndexedPalette(palette), count, 0, 20, 18, false);
   
   u8* buffer = new u8[width*height];
 
@@ -438,15 +450,14 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
   // read widths
   for (int i = 0; i < FONT_NUM; ++i)
   {
-    // read 5E bytes for widths of current font
-    widths[i] = new u8[FONT_CHAR_NUM]; // 94
+    // read 94 bytes for widths of current font
+    widths[i] = new u8[FONT_CHAR_NUM];
     fread(widths[i], 1, FONT_CHAR_NUM, in);
     
     // skip 2 control characters
     u8 padding[2];
     fread(padding, 1, 2, in);
-    if (padding[0] != 0 || padding[1] != 0)
-      printf("ERROR!\n");
+    assert(padding[0] == 0 && padding[1] == 0);
   }
   
   // position to start of character offsets
@@ -718,7 +729,7 @@ const LBXFile& Repository::loadLBX(LBXID ident)
   FILE *in = LBX::getDescriptor(lbx);
   LBX::loadHeader(lbx.info, in);
   
-  if (ident == LBXID::SOUNDFX || ident == LBXID::SNDDRV)
+  if (ident == LBXID::SOUNDFX || ident == LBXID::SNDDRV || ident == LBXID::NEWSOUND || ident == LBXID::CMBTSND || ident == LBXID::INTROSFX || ident == LBXID::INTROSND)
     lbx.info.header.type = LBXFileType::SOUND;
   else if (ident == LBXID::MUSIC)
     lbx.info.header.type = LBXFileType::MUSIC;

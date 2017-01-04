@@ -339,6 +339,9 @@ public:
         {
           int S = doubleScaleCheckbox->isToggled ? 4 : 2;
 
+          bool isAnimated = animatedCheckbox->isToggled;
+          const size_t spriteIndex = isAnimated ? ((ticks/5)%sprite->count) : 0;
+          
           if (x < S*sprite->width && y < S*sprite->height)
           {
             x /= S;
@@ -346,7 +349,7 @@ public:
             
             hx = x;
             hy = y;
-            hi = sprite->data[0][x + y*sprite->width];
+            hi = sprite->data[spriteIndex][x + y*sprite->width];
           }
         }
       }
@@ -525,7 +528,7 @@ public:
   {
     rows(0);             // how many rows
     row_height_all(rowHeight);         // default height of rows
-    row_resize(0);              // disable row resizing
+    //row_resize(0);              // disable row resizing
     // Cols
     cols(5);             // how many columns
     col_header(1);              // enable column headers (along top)
@@ -703,8 +706,16 @@ public:
           {
             LBXSpriteData* sprite = currentLBX->sprites[ROW];
             
+            // fl_draw(fmt::sprintf("%ux%u (%u)", sprite->width, sprite->height, sprite->count).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+            
+            if (sprite)
+            {
+              //assert((sprite->unknown[0] == 0) && (sprite->unknown[2] == 0) && (sprite->unknown[3] == 0));
+              //assert(sprite->unknown[4] > 0 || sprite->count == 1);
+            }
+
             if (sprite && COL == 2)
-              fl_draw(fmt::sprintf("%ux%u (%u)", sprite->width, sprite->height, sprite->count).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+              fl_draw(fmt::sprintf("%4X\n%ux%u (%u) %d %d", currentLBX->info.offsets[ROW], sprite->width, sprite->height, sprite->count, sprite->unknown2, sprite->unknown3).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
             else if (sprite && COL == 3 && sprite->hasCustomPalette && type == LBXFileType::GRAPHICS)
               fl_draw("Y", X,Y,W,H, FL_ALIGN_CENTER);
             else if (COL == 3 && type == LBXFileType::TILES)
@@ -861,7 +872,19 @@ public:
         }
         else if (COL == 2)
         {
-          fl_draw(to_string(lbx.info.header.type).c_str(), X, Y, W, H, FL_ALIGN_CENTER);
+          const char* typeName = nullptr;
+          switch (lbx.info.header.type)
+          {
+            case LBXFileType::GRAPHICS: typeName = "GFX"; break;
+            case LBXFileType::DATA_ARRAY: typeName = "DATA"; break;
+            case LBXFileType::TILES: typeName = "TGFX"; break;
+            case LBXFileType::TILES_MAPPING: typeName = "TMAP"; break;
+            case LBXFileType::SOUND: typeName = "SFX"; break;
+            case LBXFileType::MUSIC: typeName = "MFX"; break;
+            case LBXFileType::HELP: typeName = "HLP"; break;
+          }
+          
+          fl_draw(typeName, X, Y, W, H, FL_ALIGN_CENTER);
         }
         else if (COL == 3)
         {
