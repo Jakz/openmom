@@ -665,7 +665,7 @@ public:
           if (type != LBXFileType::TILES)
           {
             const LBXFileName& entry = assetNames[currentLBX->ident][ROW];
-            fl_draw(fmt::sprintf("%s/%s",entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
+            fl_draw(fmt::sprintf("%6Xh\n%s/%s",currentLBX->info.offsets[ROW],entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
           }
           else
           {
@@ -715,7 +715,7 @@ public:
             }
 
             if (sprite && COL == 2)
-              fl_draw(fmt::sprintf("%4X\n%ux%u (%u) %d %d", currentLBX->info.offsets[ROW], sprite->width, sprite->height, sprite->count, sprite->unknown2, sprite->unknown3).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+              fl_draw(fmt::sprintf("%ux%u (%u)\n%d %d", sprite->width, sprite->height, sprite->count, sprite->unknown2, sprite->unknown3).c_str(), X,Y,W,H, FL_ALIGN_CENTER);
             else if (sprite && COL == 3 && sprite->hasCustomPalette && type == LBXFileType::GRAPHICS)
               fl_draw("Y", X,Y,W,H, FL_ALIGN_CENTER);
             else if (COL == 3 && type == LBXFileType::TILES)
