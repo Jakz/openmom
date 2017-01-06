@@ -11,10 +11,9 @@
 #include "Font.h"
 #include "LBX.h"
 
-#include "UnitDetailView.h"
+#include "YAML.h"
 
-//#include "Platform.h"
-//#include "yaml-cpp/yaml.h"
+#include "UnitDetailView.h"
 
 /*
  Combat
@@ -45,15 +44,8 @@ void init()
 
 int main(int argc, char * arg[])
 {
-  /*YAML::Node file = YAML::LoadFile(Platform::instance()->getResourcePath()+"/data/yaml/test.yaml");
-  
-  auto skills = file["skills"];
-  
-  for (auto skill : skills)
-  {
-    std::cout << skill["name"] << std::endl;
-  }*/
-  
+  //yaml::parse();
+  //return 0;
   
   lbx::Repository::init();
   lbx::Repository::loadLBX(LBXID::ARMYLIST);

@@ -79,7 +79,7 @@ constexpr u8 GET_RED(Color color) { return (color & 0x00FF0000) >> 16; }
 constexpr u8 GET_GREEN(Color color) { return (color & 0x0000FF00) >> 8; }
 constexpr u8 GET_BLUE(Color color) { return (color & 0x000000FF); }
 
-enum class I18 : u16;
+enum class I18 : u32;
 enum class TextureID : u16;
 enum Plane : u8;
 

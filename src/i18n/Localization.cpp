@@ -6,6 +6,26 @@
 using namespace std;
 
 
+I18 i18n::customMappingFreeIndex = I18::FIRST_AVAILABLE_INDEX;
+std::unordered_map<std::string, I18> i18n::customMapping;
+
+void i18n::mapCustomEntry(std::string key, std::string value)
+{
+  data[keyForString(key)] = value;
+}
+
+I18 i18n::keyForString(std::string key)
+{
+  auto it = customMapping.find(key);
+  if (it != customMapping.end())
+    return it->second;
+  
+  I18 nkey = customMappingFreeIndex;
+  customMapping[key] = nkey;
+  customMappingFreeIndex = static_cast<I18>(static_cast<u32>(customMappingFreeIndex) + 1);
+  return nkey;
+}
+
 constexpr const I18 i18n::CITY_SIZE_NAMES[];
 constexpr I18 i18n::SPELL_KIND_NAMES[];
 

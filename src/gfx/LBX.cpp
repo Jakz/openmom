@@ -155,11 +155,8 @@ void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader& phead
      or if it's a copy of the previous: 1 means clear, 0 means copy
    */
   if (index > 0 && data[i] == 1)
-  {
-    for (int k = 0; k < header.width*header.height; ++k)
-      image[k] = 0;
-  }
-  
+    std::fill(image, image + header.width*header.height, 0);
+
   ++i;
   
   u32 RLE_val = 0;
@@ -167,86 +164,83 @@ void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader& phead
   while (x < w && i < dataLength)
   {
     y = 0;
-    
-    /* if current data is the special 0xFF control character 
-       we reset RLE_val and we skip until the end of column 
+
+    /* if current data is the special 0xFF control character
+     we reset RLE_val and we skip until the end of column
      */
     if (data[i] == 0xFF)
     {
-      ++i;
       RLE_val = pheader.firstIndex + pheader.count;
+      ++i;
+      ++x;
+      continue;
     }
-    else
-    {
-      /* each control structure is made by 2 bytes in the following way:
-         r rle value type (start from palette or start from default 0xE0 index)
-         c distance to next control sequence (add 2 since it starts after the subsequence structure always present)
-      */
-      if (data[i] == 0x00)
-        RLE_val = pheader.firstIndex + pheader.count;
-      else if (data[i] == 0x80)
-        RLE_val = 0xE0;
-      else printf("UNRECOGNIZED RLE VALUE: %u\n", data[i]);
-      
-      u32 nextControlPosition = i + data[i + 1] + 2;
-      
-      //printf("%d,%d..%d COLUMN SKIPPED\n", x, y, data[i+3]-1);
-      i += 2;
-      
-      /* when we arrive here n_r starts from the next byte of data,
-         while we're before the next control sequence
-       */
-      while (i < nextControlPosition)
-      {
-        /* each subsequence is made by 2 bytes in the following way:
-           l length of the subsequence of data values
-           y the current row of the sprite
-         */
-        y += data[i + 1];
-        u32 subsequenceEnd = i + data[i] + 2;
-        i += 2;
+    /* each control structure is made by 2 bytes in the following way:
+       r rle value type (start from palette or start from default 0xE0 index)
+       c distance to next control sequence (add 2 since it starts after the subsequence structure always present)
+    */
+    if (data[i] == 0x00)
+      RLE_val = pheader.firstIndex + pheader.count;
+    else if (data[i] == 0x80)
+      RLE_val = 0xE0;
 
-        /* while we are before the end of the subsequence */
-        while (i < subsequenceEnd && x < w)
+    else printf("UNRECOGNIZED RLE VALUE: %u\n", data[i]);
+    
+    u32 columnDataLength = data[i + 1];
+    u32 nextColumnPosition = i + columnDataLength + 2;
+    
+    //printf("%d,%d..%d COLUMN SKIPPED\n", x, y, data[i+3]-1);
+    i += 2;
+    
+    /* when we arrive here n_r starts from the next byte of data,
+       while we're before the next control sequence
+     */
+    while (i < nextColumnPosition)
+    {
+      /* each subsequence is made by 2 bytes in the following way:
+         l length of the subsequence of data values
+         y a delta adjustment to y used to skip pixels in the column
+       */
+      u32 subsequenceEnd = i + data[i] + 2;
+      y += data[i + 1];
+      i += 2;
+
+      /* while we are before the end of the subsequence */
+      while (i < subsequenceEnd && x < w)
+      {
+        /* if we have an RLE value */
+        if (data[i] >= RLE_val)
         {
-          /* if we have an RLE value */
-          if (data[i] >= RLE_val)
-          {
-            /* RLE structure is made by two bytes: first byte is the length,
-             second byte is the color index to repeat */
-            u32 rleLength = data[i] - RLE_val + 1;
-            u8 colorIndex = data[i + 1];
-            u32 rleCounter = 0;
-            
-            //printf("%d,%d..%d RLE -> %d\n", x, y, y+rleCounter, data[lastPos]);
-            
-            /* mind that the RLE sequence can't go over to next column */
-            while (rleCounter < rleLength && y < h)
-            {
-              assert(x >= 0 && x < w && y >= 0 && y < h);
-              image[x + y*w] = colorIndex;
-              
-              ++y;
-              ++rleCounter;
-            }
-            
-            i += 2;
-          }
-          /* if value found wasn't an RLE value then we're just setting
-             single pixels */
-          else
+          /* RLE structure is made by two bytes: first byte is the length,
+           second byte is the color index to repeat */
+          u32 rleLength = data[i] - RLE_val + 1;
+          u8 colorIndex = data[i + 1];
+          u32 rleCounter = 0;
+          
+          //printf("%d,%d..%d RLE -> %d\n", x, y, y+rleCounter, data[lastPos]);
+          
+          /* mind that the RLE sequence can't go over to next column */
+          while (rleCounter < rleLength && y < h)
           {
             assert(x >= 0 && x < w && y >= 0 && y < h);
-            image[x + y*w] = data[i];
-            //printf("%d,%d SINGLE -> %d\n", x, y, data[n_r]);
-            ++i;
+            image[x + y*w] = colorIndex;
+            
             ++y;
+            ++rleCounter;
           }
+          
+          i += 2;
         }
-        
-        /* if after the subsequence we still haven't reached the next
-           control character then there is another subsequence so we update
-           the row and the length of the next subsequence */
+        /* if value found wasn't an RLE value then we're just setting
+           single pixels */
+        else
+        {
+          assert(x >= 0 && x < w && y >= 0 && y < h);
+          image[x + y*w] = data[i];
+          //printf("%d,%d SINGLE -> %d\n", x, y, data[n_r]);
+          ++i;
+          ++y;
+        }
       }
     }
     
@@ -264,6 +258,8 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
   LBXGfxHeader gfxHeader;
   fread(&gfxHeader, sizeof(LBXGfxHeader), 1, in);
   assert(gfxHeader.alwaysZero1 == 0 && gfxHeader.alwaysZero2 == 0 && gfxHeader.alwaysZero3 == 0);
+  //if (gfxHeader.count == 1 && gfxHeader.unknown2 == 1)
+  //  assert(false);
   //rassert(!((gfxHeader.count > 1) ^ (gfxHeader.unknown2 != 0)));
   LOGD("[lbx]   WxH: %dx%d, frames: %d, palette: %c", gfxHeader.width, gfxHeader.height, gfxHeader.count, gfxHeader.paletteOffset ? 'y' : 'n');
   

@@ -162,6 +162,7 @@
 		0493DA921E1B55FA0088FF42 /* Dialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F11E0CE6CB003A76D8 /* Dialogs.cpp */; };
 		0493DA931E1B55FA0088FF42 /* ConsoleView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */; };
 		0493DA941E1B56040088FF42 /* Help.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428FC1E117C2D003A76D8 /* Help.cpp */; };
+		0493DA971E1DFB0C0088FF42 /* YAML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0493DA951E1DFB0C0088FF42 /* YAML.cpp */; };
 		04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B11983286E00291B82 /* Viewport.cpp */; };
 		04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B419833C1E00291B82 /* UnitDraw.cpp */; };
 		04C1F47F1B25290C00F7688A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C1F44B1B25270300F7688A /* main.cpp */; };
@@ -385,6 +386,8 @@
 		048E08B819829C6D009AED0A /* SkillDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillDraw.h; sourceTree = "<group>"; };
 		048E08BA1982B20A009AED0A /* WorldGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldGenerator.cpp; sourceTree = "<group>"; };
 		048E08BB1982B20A009AED0A /* WorldGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldGenerator.h; sourceTree = "<group>"; };
+		0493DA951E1DFB0C0088FF42 /* YAML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YAML.cpp; sourceTree = "<group>"; };
+		0493DA961E1DFB0C0088FF42 /* YAML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YAML.h; sourceTree = "<group>"; };
 		04ABF7B11983286E00291B82 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Viewport.cpp; sourceTree = "<group>"; };
 		04ABF7B21983286E00291B82 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		04ABF7B419833C1E00291B82 /* UnitDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitDraw.cpp; sourceTree = "<group>"; };
@@ -837,6 +840,8 @@
 			children = (
 				04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */,
 				04E2829B1E01A7DB00DD673D /* OriginalSave.h */,
+				0493DA951E1DFB0C0088FF42 /* YAML.cpp */,
+				0493DA961E1DFB0C0088FF42 /* YAML.h */,
 			);
 			path = save;
 			sourceTree = "<group>";
@@ -984,6 +989,7 @@
 				04037611197AE1FF00A5B5FC /* Spells.cpp in Sources */,
 				0439E9AA1986912D0009BFF7 /* SpellBookView.cpp in Sources */,
 				0439E99519868FF60009BFF7 /* ItemCraftView.cpp in Sources */,
+				0493DA971E1DFB0C0088FF42 /* YAML.cpp in Sources */,
 				0439E99E198690580009BFF7 /* MirrorView.cpp in Sources */,
 				04205392197DA9E900B4C2CA /* Effects.cpp in Sources */,
 				040375F2197AAF7B00A5B5FC /* View.cpp in Sources */,
@@ -1256,6 +1262,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=3";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 			};
 			name = Debug;
 		};
@@ -1264,6 +1271,7 @@
 			baseConfigurationReference = 04E282CA1E023AF200DD673D /* Config.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 			};
 			name = Release;
 		};

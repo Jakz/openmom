@@ -216,11 +216,13 @@ class Skill
 {
 protected:
   Skill(SkillBase base) : base(base) { }
-  
-public:
   const SkillBase base;
 
+public:
+  
+  virtual SpriteInfo icon() const;
   virtual const std::string name() const;
+  
   virtual const effect_list& getEffects() const = 0;
   
   virtual bool is(SkillBase base) const { return this->base == base; }
@@ -234,6 +236,38 @@ public:
   static bool isHeroBase(SkillBase base);
   static bool isMovementBase(SkillBase base);
 };
+
+namespace skills
+{
+  enum class Type
+  {
+    NATIVE,
+    SPELL,
+  };
+  
+  struct VisualInfo
+  {
+    SpriteInfo icon;
+    I18 name;
+    bool hideValue;
+  };
+  
+  class ConcreteSkill : public Skill
+  {
+  private:
+    Type _type;
+    const effect_list _effects;
+    VisualInfo _visual;
+    
+  public:
+    ConcreteSkill(Type type, const effect_list effects, VisualInfo visual) : Skill(SkillBase::FIRST_STRIKE), _type(type), _effects(effects), _visual(visual) { }
+    
+    Type type() const { return _type; }
+    const effect_list& getEffects() const override { return _effects; }
+    
+    SpriteInfo icon() const override { return _visual.icon; }
+  };
+}
 
 class ConcreteSkill : public Skill
 {
@@ -264,7 +298,7 @@ public:
   WrapSkill(SkillBase base, const Skill& existingSkill) : Skill(base), existingSkill(existingSkill) { }
   
   const effect_list& getEffects() const override { return existingSkill.getEffects(); }
-  bool is(SkillBase base) const override { return this->base == base || existingSkill.base == base; }
+  bool is(SkillBase base) const override { return this->base == base || existingSkill.is(base); }
 };
 
 using skill_init_list = std::initializer_list<const Skill*>;
@@ -291,11 +325,6 @@ public:
   
   const_iterator begin() const { return skills.begin(); }
   const_iterator end() const { return skills.end(); }
-
-  bool hasSkill(SkillBase base) const
-  {
-    return std::find_if(skills.begin(), skills.end(), [&](const Skill* c) { return c->base == base; }) != skills.end();
-  }
 };
 
 class Skills

@@ -61,14 +61,17 @@ class iterator_base : public std::iterator<std::forward_iterator_tag, V,
   }
 
   template <typename W>
-  bool operator==(const iterator_base<W>& rhs) {
+  bool operator==(const iterator_base<W>& rhs) const {
     return m_iterator == rhs.m_iterator;
   }
 
   template <typename W>
-  bool operator!=(const iterator_base<W>& rhs) {
+  bool operator!=(const iterator_base<W>& rhs) const {
     return m_iterator != rhs.m_iterator;
   }
+                                             
+  const YAML::detail::node* single() const { return (*m_iterator).pNode; }
+  std::pair<Node,Node> const pair() { return std::make_pair((*m_iterator).first, (*m_iterator).second); }
 
   value_type operator*() const {
     const typename base_type::value_type& v = *m_iterator;

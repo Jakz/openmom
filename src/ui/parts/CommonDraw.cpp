@@ -238,7 +238,7 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
     Fonts::drawString(Fonts::format("%d%% Hit",unit->getProperty(Property::TO_HIT)), FontFaces::Small::TEAL, xx+62, yy, ALIGN_LEFT);
     xx += 50;
     Gfx::draw(TextureID::UNIT_DETAIL_PROPS, 0, 20, xx+50, yy-1);
-    Fonts::drawString(Fonts::format("%d% Def",unit->getProperty(Property::TO_DEFEND)), FontFaces::Small::TEAL, xx+62, yy, ALIGN_LEFT);
+    Fonts::drawString(Fonts::format("%d%% Def",unit->getProperty(Property::TO_DEFEND)), FontFaces::Small::TEAL, xx+62, yy, ALIGN_LEFT);
     xx = tx;
     yy += 10;
     if (unit->getProperty(Property::RANGED) > 0)

@@ -18,14 +18,14 @@ enum class UnitID : u16;
 enum class RaceID : u8;
 enum class SkillBase : u16;
 
-enum class I18 : u16
+enum class I18 : u32
 {
   CITY_HAMLET,
   CITY_VILLAGE,
   CITY_TOWN,
   CITY_CITY,
   CITY_CAPITOL,
-
+  
   
   MESSAGE_NEW_BUILDING,
   MESSAGE_OUTPOST_GROWN_TO_CITY,
@@ -123,7 +123,7 @@ enum class I18 : u16
   BUILDING_DESC_FORESTERS_GUILD,
   BUILDING_DESC_TRADE_GOODS,
   BUILDING_DESC_HOUSING,
-
+  
   
   UNIT_SPEARMEN,
   UNIT_SWORDSMEN,
@@ -221,7 +221,9 @@ enum class I18 : u16
   
   EMPTY,
   
-  PLACEHOLDER
+  PLACEHOLDER,
+  
+  FIRST_AVAILABLE_INDEX
 };
 
 namespace lbx { class LBX; }
@@ -234,25 +236,31 @@ public:
     std::string name;
     std::string unitName;
   };
-
-  private:
-    static std::unordered_map<I18, std::string, enum_hash> data;
-    static std::unordered_map<UnitID, std::string, enum_hash> units;
-    static std::unordered_map<RaceID, race_names, enum_hash> races;
-    static std::unordered_map<SkillBase, std::string, enum_hash> skills;
-    static std::unordered_map<TileType, std::vector<std::string>, enum_hash> surveyorDescs;
   
-  public:
-    static const char* c(I18 ident) { return data[ident].c_str(); }
-    static const std::string& s(I18 ident) { return data[ident]; }
-    static const std::string& s(UnitID unit) { return units[unit]; }
-    static const race_names& s(RaceID race) { return races[race]; }
-    static const std::string& s(SkillBase skill) { return skills[skill]; }
+private:
+  static I18 customMappingFreeIndex;
+  static std::unordered_map<std::string, I18> customMapping;
   
-    static const std::vector<std::string> surveyorDesc(TileType type) { return surveyorDescs[type]; }
-
-    static constexpr const I18 CITY_SIZE_NAMES[] { I18::CITY_HAMLET, I18::CITY_VILLAGE, I18::CITY_TOWN, I18::CITY_CITY, I18::CITY_CAPITOL };
-    static constexpr I18 SPELL_KIND_NAMES[] = { I18::SPELL_KIND_SUMMONING, I18::SPELL_KIND_SPECIAL, I18::SPELL_KIND_CITY, I18::SPELL_KIND_ENCHANTMENT, I18::SPELL_KIND_UNIT_SPELL, I18::SPELL_KIND_COMBAT_SPELL };
+  static std::unordered_map<I18, std::string, enum_hash> data;
+  static std::unordered_map<UnitID, std::string, enum_hash> units;
+  static std::unordered_map<RaceID, race_names, enum_hash> races;
+  static std::unordered_map<SkillBase, std::string, enum_hash> skills;
+  static std::unordered_map<TileType, std::vector<std::string>, enum_hash> surveyorDescs;
+  
+public:
+  static void mapCustomEntry(std::string key, std::string value);
+  static I18 keyForString(std::string key);
+  
+  static const char* c(I18 ident) { return data[ident].c_str(); }
+  static const std::string& s(I18 ident) { return data[ident]; }
+  static const std::string& s(UnitID unit) { return units[unit]; }
+  static const race_names& s(RaceID race) { return races[race]; }
+  static const std::string& s(SkillBase skill) { return skills[skill]; }
+  
+  static const std::vector<std::string> surveyorDesc(TileType type) { return surveyorDescs[type]; }
+  
+  static constexpr const I18 CITY_SIZE_NAMES[] { I18::CITY_HAMLET, I18::CITY_VILLAGE, I18::CITY_TOWN, I18::CITY_CITY, I18::CITY_CAPITOL };
+  static constexpr I18 SPELL_KIND_NAMES[] = { I18::SPELL_KIND_SUMMONING, I18::SPELL_KIND_SPECIAL, I18::SPELL_KIND_CITY, I18::SPELL_KIND_ENCHANTMENT, I18::SPELL_KIND_UNIT_SPELL, I18::SPELL_KIND_COMBAT_SPELL };
   
   friend class lbx::LBX;
 };

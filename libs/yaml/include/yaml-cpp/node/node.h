@@ -60,7 +60,14 @@ class YAML_CPP_API Node {
   // bool conversions
   YAML_CPP_OPERATOR_BOOL()
   bool operator!() const { return !IsDefined(); }
-
+  
+  // custom conversions
+  operator int16_t() const { return this->as<int16_t>(); }
+  operator uint16_t() const { return this->as<uint16_t>(); }
+  const std::string& asString() const { return this->Scalar(); }
+  operator const std::string&() const { return this->Scalar(); }
+  template<typename T> T getOrDefault(const char* key, T def) const { return operator[](key).IsDefined() ? operator[](key).as<T>() : def; }
+  
   // access
   template <typename T>
   T as() const;

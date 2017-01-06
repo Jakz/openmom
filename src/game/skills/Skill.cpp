@@ -3,6 +3,9 @@
 #include "Localization.h"
 #include "UnitSpec.h"
 
+// TODO: remove after refactor
+#include "Texture.h"
+
 using namespace std;
 
 bool Skill::isHeroBase(SkillBase base)
@@ -65,6 +68,10 @@ bool Skill::Comparator::operator()(const Skill *b1, const Skill *b2)
 
 
 
+SpriteInfo Skill::icon() const
+{
+  return SpriteInfo(TextureID::UNIT_SKILL_ICONS, static_cast<u16>(base));
+}
 
 
 const string Skill::name() const

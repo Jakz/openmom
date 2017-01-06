@@ -1,0 +1,29 @@
+skills:
+  - identifier: to_hit_1
+    type: native
+    effects:
+      - type: unit_bonus
+        property: to_hit
+        value: 1
+    visuals:
+      icon: [lbx, special2, 14]
+      i18n: skill_to_hit
+      hideValue: true
+  - identifier: to_hit_2
+    type: native
+    effects:
+      - type: unit_bonus
+        property: to_hit
+        value: 2
+    visuals:
+      icon: [lbx, special2, 14]
+      i18n: skill_to_hit
+  - identifier: to_hit_3
+    type: native
+    effects:
+      - type: unit_bonus
+        property: to_hit
+        value: 3
+    visuals:
+      icon: [lbx, special2, 14]
+      i18n: skill_to_hit
