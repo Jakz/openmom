@@ -17,6 +17,7 @@
 #include "Messages.h"
 
 #include "Animations.h"
+#include "Data.h"
 #include "GfxData.h"
 
 using namespace std;

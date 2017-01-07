@@ -4,6 +4,8 @@ LIBS_PATH = ${PROJECT_DIR}/../../libs
 FRAMEWORK_SEARCH_PATHS = ${inherited} $(PROJECT_DIR)/../../Libs
 LIBRARY_SEARCH_PATHS = ${PROJECT_DIR}/../../libs/yaml/lib/osx
 
+GCC_ENABLE_CPP_EXCEPTIONS = NO
+
 
 HEADER_SEARCH_PATHS = ${inherited} ${SRCROOT}/../../src ${LIBS_PATH}/SDL2.framework/Headers ${LIBS_PATH}/SDL2_image.framework/Headers ${LIBS_PATH}/yaml/include
 

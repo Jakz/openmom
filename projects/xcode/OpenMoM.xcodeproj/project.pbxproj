@@ -54,6 +54,7 @@
 		0439E9AA1986912D0009BFF7 /* SpellBookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9A81986912D0009BFF7 /* SpellBookView.cpp */; };
 		0439E9AD198691530009BFF7 /* UnitDetailView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9AB198691530009BFF7 /* UnitDetailView.cpp */; };
 		0439E9B019869F6D0009BFF7 /* CommonDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9AE19869F6D0009BFF7 /* CommonDraw.cpp */; };
+		043C01441E218A4E00E035D8 /* Data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043C01421E218A4E00E035D8 /* Data.cpp */; };
 		0442470F1980A04800A8D7CC /* SpellMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0442470D1980A04800A8D7CC /* SpellMechanics.cpp */; };
 		044247121980B97900A8D7CC /* EventMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044247101980B97900A8D7CC /* EventMechanics.cpp */; };
 		044E466D1980202D00E396AD /* MiniMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044E466B1980202D00E396AD /* MiniMap.cpp */; };
@@ -337,6 +338,8 @@
 		0439E9AC198691530009BFF7 /* UnitDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitDetailView.h; sourceTree = "<group>"; };
 		0439E9AE19869F6D0009BFF7 /* CommonDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CommonDraw.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0439E9AF19869F6D0009BFF7 /* CommonDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CommonDraw.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		043C01421E218A4E00E035D8 /* Data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Data.cpp; sourceTree = "<group>"; };
+		043C01431E218A4E00E035D8 /* Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Data.h; sourceTree = "<group>"; };
 		0442470D1980A04800A8D7CC /* SpellMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = SpellMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0442470E1980A04800A8D7CC /* SpellMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpellMechanics.h; sourceTree = "<group>"; };
 		044247101980B97900A8D7CC /* EventMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = EventMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -838,6 +841,8 @@
 		04E282991E01A7DB00DD673D /* save */ = {
 			isa = PBXGroup;
 			children = (
+				043C01421E218A4E00E035D8 /* Data.cpp */,
+				043C01431E218A4E00E035D8 /* Data.h */,
 				04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */,
 				04E2829B1E01A7DB00DD673D /* OriginalSave.h */,
 				0493DA951E1DFB0C0088FF42 /* YAML.cpp */,
@@ -982,6 +987,7 @@
 				046428F41E0CE81D003A76D8 /* Dialogs.cpp in Sources */,
 				0439E9B019869F6D0009BFF7 /* CommonDraw.cpp in Sources */,
 				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
+				043C01441E218A4E00E035D8 /* Data.cpp in Sources */,
 				04797BEF1C1DCB830026C153 /* ValuesMechanics.cpp in Sources */,
 				0439E998198690150009BFF7 /* MagicView.cpp in Sources */,
 				04E282CC1E023BCA00DD673D /* main.cpp in Sources */,

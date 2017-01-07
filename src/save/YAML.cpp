@@ -5,6 +5,7 @@
 #include "yaml-cpp/yaml.h"
 #include "Platform.h"
 
+#include "Data.h"
 #include "Localization.h"
 
 #include "UnitSpec.h"
@@ -106,7 +107,6 @@ template<> const SkillEffect* yaml::parse(const N& node)
 
 template<> const Skill* yaml::parse(const N& node)
 {
-  const std::string& identifier = node["identifier"];
   skills::Type type = optionalParse(node["type"], skills::Type::NATIVE);
   
   effect_list effects;
@@ -130,9 +130,9 @@ void yaml::parseSkills()
   
   for (const auto& yskill : skills)
   {
+    const std::string& identifier = yskill["identifier"];
     const Skill* skill = parse<const Skill*>(yskill);
-    
-    std::cout << yskill["identifier"].asString() << std::endl;
+    Data::registerData(identifier, skill);
   }
 }
 
@@ -155,13 +155,8 @@ void yaml::parseLocalization()
 
 void yaml::parse()
 {
-  try
-  {
-    parseLocalization();
-    parseSkills();
-  }
-  catch (YAML::InvalidNode e)
-  {
-    printf("[yaml] Error while parsing: %s", e.what());
-  }
+  parseLocalization();
+  parseSkills();
+  
+  Data::getInfo<const Skill*>();
 }

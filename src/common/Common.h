@@ -579,12 +579,4 @@ enum PlaceType : u8
   PLACE_ANCIENT_RUINS
 };
 
-
-class Data
-{
-  public:
-    static const Trait& trait(const TraitID trait);
-    static const Wizard& wizard(const WizardID wizard);
-};
-
 #endif
