@@ -16,6 +16,12 @@
 
 using namespace std;
 
+template<> gfx_map<const Skill*, SkillGfxSpec>& GfxData::containerFor<const Skill*, SkillGfxSpec>()
+{
+  static gfx_map<const Skill*, SkillGfxSpec> skillfGfxSpec;
+  return skillfGfxSpec;
+}
+
 constexpr s8 GfxData::RANGED_INDEX[];
 constexpr s8 GfxData::PROPERTY_INDEX[];
 

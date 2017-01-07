@@ -164,6 +164,8 @@ struct UnitPropGfxSpec
   SpriteInfo borderless;
 };
 
+using SkillGfxSpec = SpriteInfo;
+
 template<typename K, typename V, size_t SIZE>
 class enum_simple_map
 {
@@ -212,14 +214,17 @@ private:
   
   static gfx_map<School, SchoolGfxSpec, 6> schoolSpecs;
   static gfx_map<UpkeepSymbol, UpkeepSymbolSpec, 5> upkeepSymbolSpec;
-
   
   static const TileGfxSpec specs[];
   static constexpr s8 RANGED_INDEX[] = {-1,6,5,6,14,15,16,17,18};
   static constexpr s8 PROPERTY_INDEX[] = {-1,-1,-1,-1,9,22,14,15,16,17,18};
   
   static std::unordered_map<const Spell*, sprite_ref> specialSpellGfxEffects;
-
+  
+  template<typename K, typename V> static gfx_map<K,V>& containerFor();
+  template<typename K, typename V> static void registerData(K k, V v) { containerFor<K,V>().insert(std::make_pair(k,v)); }
+  
+  
 public:
   static const TileGfxSpec& tileGfxSpec(TileType type) { return specs[type]; }
   static s8 rangedGfxIndex(Ranged ranged) { return RANGED_INDEX[static_cast<u8>(ranged)]; }
@@ -240,6 +245,10 @@ public:
   static SpriteInfo heroGfxSpec(const UnitSpec* spec);
   
   static SpriteInfo specialSpellGfxEffect(const Spell* spell);
+  
+  template<typename K, typename V> static const V& gfxDataFor(K k) { return containerFor<K,V>(k); }
+  
+  friend class Data;
 };
 
 #endif

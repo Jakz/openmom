@@ -6,6 +6,7 @@
 #include "Platform.h"
 
 #include "Data.h"
+#include "GfxData.h"
 #include "Localization.h"
 
 #include "UnitSpec.h"
