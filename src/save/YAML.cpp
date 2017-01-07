@@ -45,6 +45,16 @@ template<> Property yaml::parse(const N& node)
 {
   if (node == "to_hit")
     return Property::TO_HIT;
+  else if (node == "melee")
+    return Property::MELEE;
+  else if (node == "defense")
+    return Property::SHIELDS;
+  else if (node == "resistance")
+    return Property::RESIST;
+  else if (node == "hits")
+    return Property::HIT_POINTS;
+  else if (node == "figures")
+    return Property::FIGURES;
   else
     assert(false);
 }
@@ -123,7 +133,6 @@ void yaml::parseSkills()
     const Skill* skill = parse<const Skill*>(yskill);
     
     std::cout << yskill["identifier"].asString() << std::endl;
-    std::cout << "aaa";
   }
 }
 
@@ -146,6 +155,13 @@ void yaml::parseLocalization()
 
 void yaml::parse()
 {
-  parseLocalization();
-  parseSkills();
+  try
+  {
+    parseLocalization();
+    parseSkills();
+  }
+  catch (YAML::InvalidNode e)
+  {
+    printf("[yaml] Error while parsing: %s", e.what());
+  }
 }

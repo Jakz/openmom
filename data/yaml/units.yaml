@@ -1,0 +1,56 @@
+units:
+#thrown is missing to barbarian units
+  - identifier: barbarian_spearmen
+    type: racial
+    race: barbarians
+    unit_type: spearmen
+    upkeep: 0
+    cost: 15
+    melee: 1
+    ranged: none
+    defense: 2
+    resistance: 5
+    hits: 1
+    figures: 8
+    visuals:
+      i18n: unit_racial_barbarian_spearmen
+      still_figure: [lbx, units, 39]
+      full_figure: [lbx, figures3, 72]
+  - identifier: barbarian_swordsmen
+    type: racial
+    race: barbarians
+    unit_type: swordsmen
+    upkeep: 1
+    cost: 30
+    melee: 3
+    ranged: none
+    defense: 2
+    resistance: 5
+    hits: 1
+    figures: 6
+    skills:
+      - large_shield
+    visuals:
+      i18n: unit_racial_barbarian_swordsmen
+      still_figure: [lbx, units, 40]
+      full_figure: [lbx, figures3, 80]
+  - identifier: barbarian_bowmen
+    type: racial
+    race: barbarians
+    unit_type: bowmen
+    upkeep: 1
+    cost: 30
+    melee: 1
+    ranged: [1, arrow, 8]
+    defense: 1
+    resistance: 5
+    hits: 1
+    figures: 6
+    visuals:
+      i18n: unit_racial_barbarian_bowmen
+      still_figure: [lbx, units, 41]
+      full_figure: [lbx, figures3, 88]
+
+    
+    
+  

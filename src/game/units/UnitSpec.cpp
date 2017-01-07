@@ -39,6 +39,8 @@ s16 UnitSpec::getProperty(Property property) const
   }
 }
 
+// RaceUnitSpec(UnitID ident, RaceID race, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+
 
 static const RaceUnitSpec raceSpecs[] = {
   RaceUnitSpec(  UnitID::SPEARMEN, RaceID::BARBARIANS, 0,  15,     1, 0,   Ranged::NONE, 0,    2, 5, 1, 8,    1, 1,   {}),
