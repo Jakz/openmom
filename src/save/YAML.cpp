@@ -13,6 +13,12 @@
 #include "Skill.h"
 #include "Effects.h"
 
+#define FETCH_OR_FAIL(map, n) do { \
+  auto it = map.find(n.asString()); \
+  if (it != map.end()) return it->second; \
+  assert(false); \
+  } while(false)
+
 using namespace YAML;
 using namespace yaml;
 
@@ -37,28 +43,32 @@ template<typename T, typename std::enable_if<!std::is_pointer<T>::value, int>::t
 
 template<> LBXID yaml::parse(const N& node)
 {
-  if (node == "special2")
-    return LBXID::SPECIAL2;
-  else
-    assert(false);
+  static const std::unordered_map<std::string, LBXID> mapping = {
+    { "special", LBXID::SPECIAL },
+    { "special2", LBXID::SPECIAL2 }
+  };
+  
+  FETCH_OR_FAIL(mapping, node);
 }
 
 template<> Property yaml::parse(const N& node)
 {
-  if (node == "to_hit")
-    return Property::TO_HIT;
-  else if (node == "melee")
-    return Property::MELEE;
-  else if (node == "defense")
-    return Property::SHIELDS;
-  else if (node == "resistance")
-    return Property::RESIST;
-  else if (node == "hits")
-    return Property::HIT_POINTS;
-  else if (node == "figures")
-    return Property::FIGURES;
-  else
-    assert(false);
+  static const std::unordered_map<std::string, Property> mapping = {
+    { "to_hit", Property::TO_HIT },
+    { "melee", Property::MELEE },
+    { "defense", Property::SHIELDS },
+    { "defense_ranged", Property::SHIELDS_RANGED },
+    { "defense_chaos", Property::SHIELDS_CHAOS },
+    { "defense_sorcery", Property::SHIELDS_SORCERY },
+    { "defense_nature", Property::SHIELDS_NATURE },
+    { "defense_life", Property::SHIELDS_LIFE },
+    { "defense_death", Property::SHIELDS_DEATH },
+    { "resistance", Property::RESIST },
+    { "hits", Property::HIT_POINTS },
+    { "figures", Property::FIGURES }
+  };
+  
+  FETCH_OR_FAIL(mapping, node);
 }
 
 template<> skills::Type yaml::parse(const N& node)
@@ -72,7 +82,7 @@ template<> skills::Type yaml::parse(const N& node)
 template<typename T> void yaml::parse(const N& node, std::vector<T>& dest)
 {
   assert(node.IsSequence());
-  dest.reserve(node.size());
+  //dest.reserve(node.size());
   for (const auto& entry : node)
     dest.push_back(parse<T>(entry));
 }
@@ -97,7 +107,9 @@ template<> const SkillEffect* yaml::parse(const N& node)
   
   if (type == "unit_bonus")
   {
-    return new UnitBonus(parse<Property>(node["property"]), node["value"]);
+    Property property = parse<Property>(node["property"]);
+    s16 value = parse<s16>(node["value"]);
+    return new UnitBonus(property, value);
   }
   else
   {

@@ -1289,8 +1289,8 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
+					"${inherited}",
+					"LBX_STATUS_PATH=\\\"${SRCROOT}/../../data\\\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

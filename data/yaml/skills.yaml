@@ -27,3 +27,27 @@ skills:
     visuals:
       icon: [lbx, special2, 14]
       i18n: skill_to_hit
+  - identifier: large_shield
+    type: native
+    effects:
+      - type: unit_bonus
+        property: defense_ranged
+        value: 2
+      - type: unit_bonus
+        property: defense_chaos
+        value: 2
+      - type: unit_bonus
+        property: defense_life
+        value: 2
+      - type: unit_bonus
+        property: defense_death
+        value: 2
+      - type: unit_bonus
+        property: defense_sorcery
+        value: 2
+      - type: unit_bonus
+        property: defense_nature
+        value: 2
+    visuals:
+      icon: [lbx, special, 14]
+      i18n: skill_large_shield

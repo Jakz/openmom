@@ -906,7 +906,7 @@ public:
 
 void loadStatus()
 {
-  std::string path = "status.dat"; //Platform::instance()->getResourcePath() + "/data/status.dat";
+  std::string path = std::string(LBX_STATUS_PATH) + "/status.dat"; //Platform::instance()->getResourcePath() + "/data/status.dat";
   
   FILE* in = fopen(path.c_str(), "rb");
   if (in)
@@ -928,7 +928,7 @@ void loadStatus()
 
 void saveStatus()
 {
-  std::string path = "status.dat";//Platform::instance()->getResourcePath() + "/data/status.dat";
+  std::string path = std::string(LBX_STATUS_PATH) + "/status.dat";//Platform::instance()->getResourcePath() + "/data/status.dat";
   
   FILE* in = fopen(path.c_str(), "wb");
   if (in)

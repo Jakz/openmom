@@ -13,8 +13,8 @@ units:
     hits: 1
     figures: 8
     visuals:
-      i18n: unit_racial_barbarian_spearmen
-      still_figure: [lbx, units, 39]
+      i18n: unit_racial_spearmen
+      icon: [lbx, units, 39]
       full_figure: [lbx, figures3, 72]
   - identifier: barbarian_swordsmen
     type: racial
@@ -31,8 +31,8 @@ units:
     skills:
       - large_shield
     visuals:
-      i18n: unit_racial_barbarian_swordsmen
-      still_figure: [lbx, units, 40]
+      i18n: unit_racial_swordsmen
+      icon: [lbx, units, 40]
       full_figure: [lbx, figures3, 80]
   - identifier: barbarian_bowmen
     type: racial
@@ -47,8 +47,8 @@ units:
     hits: 1
     figures: 6
     visuals:
-      i18n: unit_racial_barbarian_bowmen
-      still_figure: [lbx, units, 41]
+      i18n: unit_racial_bowmen
+      icon: [lbx, units, 41]
       full_figure: [lbx, figures3, 88]
 
     

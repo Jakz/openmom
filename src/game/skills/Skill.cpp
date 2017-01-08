@@ -127,7 +127,7 @@ namespace skillimpl
   
   static const ConcreteSkill LUCKY = ConcreteSkill(SkillBase::LUCKY, UnitBonus::build({Property::TO_HIT, Property::TO_DEFEND, Property::RESIST}, 1));
   
-  static const ConcreteSkill LARGE_SHIELD = ConcreteSkill(SkillBase::LARGE_SHIELD, {new UnitBonus(Property::SHIELDS_RANGED,2), new UnitBonus(Property::SHIELDS_CHAOS,2), new UnitBonus(Property::SHIELDS_LIFE,2), new UnitBonus(Property::SHIELDS_DEATH,2), new UnitBonus(Property::SHIELDS_NATURE,2), new UnitBonus(Property::SHIELDS_SORCERY,2)} );
+  /**/static const ConcreteSkill LARGE_SHIELD = ConcreteSkill(SkillBase::LARGE_SHIELD, {new UnitBonus(Property::SHIELDS_RANGED,2), new UnitBonus(Property::SHIELDS_CHAOS,2), new UnitBonus(Property::SHIELDS_LIFE,2), new UnitBonus(Property::SHIELDS_DEATH,2), new UnitBonus(Property::SHIELDS_NATURE,2), new UnitBonus(Property::SHIELDS_SORCERY,2)} );
   static const ConcreteSkill RESISTANCE_TO_ALL = ConcreteSkill(SkillBase::RESISTANCE_TO_ALL, {new UnitBonus(Property::RESIST,1)});
   
   static const ConcreteSkill FIRST_STRIKE = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::FIRST_STRIKE)} );
@@ -172,9 +172,9 @@ namespace skillimpl
   static const ConcreteSkill SCOUTING2 = ConcreteSkill(SkillBase::SCOUTING, {new UnitBonus(Property::SIGHT,2)}, false);
   static const ConcreteSkill SCOUTING3 = ConcreteSkill(SkillBase::SCOUTING, {new UnitBonus(Property::SIGHT,3)}, false);
   
-  static const ConcreteSkill TO_HIT1 = ConcreteSkill(SkillBase::TO_HIT, {new UnitBonus(Property::TO_HIT,1)}, false);
-  static const ConcreteSkill TO_HIT2 = ConcreteSkill(SkillBase::TO_HIT, {new UnitBonus(Property::TO_HIT,2)}, false);
-  static const ConcreteSkill TO_HIT3 = ConcreteSkill(SkillBase::TO_HIT, {new UnitBonus(Property::TO_HIT,3)}, false);
+  /**/static const ConcreteSkill TO_HIT1 = ConcreteSkill(SkillBase::TO_HIT, {new UnitBonus(Property::TO_HIT,1)}, false);
+  /**/static const ConcreteSkill TO_HIT2 = ConcreteSkill(SkillBase::TO_HIT, {new UnitBonus(Property::TO_HIT,2)}, false);
+  /**/static const ConcreteSkill TO_HIT3 = ConcreteSkill(SkillBase::TO_HIT, {new UnitBonus(Property::TO_HIT,3)}, false);
   
   static const ConcreteSkill MITHRIL_WEAPONS = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,1)});
   static const ConcreteSkill ADAMANTIUM_WEAPONS = ConcreteSkill(SkillBase::ADAMANTIUM_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,2)});
