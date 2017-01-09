@@ -54,6 +54,8 @@ const Wizard& Data::wizard(const WizardID wizard)
 
 #include "Skill.h"
 
-std::unordered_map<Data::key_type, const Skill*> skillsMap;
 
-template<> std::unordered_map<Data::key_type, const Skill*>& Data::containerFor() { return skillsMap; }
+template<> std::unordered_map<Data::key_type, const Skill*>& Data::containerFor() {
+  static map_t<const Skill*> skillsMap;
+  return skillsMap;
+}

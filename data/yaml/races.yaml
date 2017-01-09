@@ -1,0 +1,12 @@
+races:
+  - ident: barbarians
+    cityGrowthModifier: 20
+    outpostGrowthChance: 0.15
+    visuals:
+      graphics:
+        house_type: normal
+        worker: [lbx, backgrnd, 45]
+        farmer: [lbx, backgrnd, 59]
+        rebel: [lbx, backgrnd, 74]
+      i18n: race_name_barbarians
+      i18n_unit: race_prefix_barbarians

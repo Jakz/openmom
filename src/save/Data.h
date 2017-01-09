@@ -8,6 +8,7 @@ class Data
 {
 public:
   using key_type = std::string;
+  template<typename T> using map_t = std::unordered_map<key_type, T>;
   
 private:
   template<typename T> static std::unordered_map<key_type, T>& containerFor();
