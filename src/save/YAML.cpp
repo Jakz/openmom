@@ -13,6 +13,8 @@
 #include "Skill.h"
 #include "Effects.h"
 
+#define PARSE_ERROR(x, ...) do { LOGD("[yaml] parse error: " x, __VA_ARGS__); } while (false)
+
 #define FETCH_OR_FAIL(map, n) do { \
   auto it = map.find(n.asString()); \
   if (it != map.end()) return it->second; \
@@ -21,6 +23,39 @@
 
 using namespace YAML;
 using namespace yaml;
+
+class yaml::Node : public YAML::Node
+{
+  
+public:
+  Node(const YAML::Node& node) : YAML::Node(node) { }
+  
+  template<typename T> void keyNotFoundError(const T& key) const;
+  
+  template<typename T> const
+  YAML::Node operator[](const T& key) const
+  {
+    auto node = YAML::Node::operator[](key);
+    
+    if (node.IsDefined())
+      return node;
+    else
+    {
+      keyNotFoundError(key);
+      assert(false);
+    }
+  }
+};
+
+template<> void yaml::Node::keyNotFoundError(const int& key) const
+{
+  PARSE_ERROR("index '%d' not found", key);
+}
+
+template<typename T> void yaml::Node::keyNotFoundError(const T& key) const
+{
+  PARSE_ERROR("key '%s' not found", key);
+}
 
 using NNN = YAML::Node;
 
@@ -36,10 +71,21 @@ std::string yaml::yamlPath(const std::string& fileName)
   return Platform::instance()->getResourcePath() + "/data/yaml/" + fileName;
 }
 
+template<> s16 yaml::parse(const N& node) { return node.operator s16(); }
+template<> u16 yaml::parse(const N& node) { return node.operator u16(); }
+template<> bool yaml::parse(const N& node) { return node.as<bool>(); }
+
 template<typename T, typename std::enable_if<!std::is_pointer<T>::value, int>::type> T yaml::parse(const N& node)
 {
-  return node.as<T>();
+  T value;
+  parse(node, value);
+  return value;
 }
+
+/*template<typename T, typename std::enable_if<!std::is_pointer<T>::value, int>::type> T yaml::parse(const N& node)
+{
+  return node.as<T>();
+}*/
 
 template<> LBXID yaml::parse(const N& node)
 {
@@ -130,11 +176,38 @@ template<> const Skill* yaml::parse(const N& node)
   skills::VisualInfo visualInfo;
   visualInfo.name = i18n::keyForString(visuals["i18n"]);
   visualInfo.hideValue =  optionalParse(visuals["hideValue"], false);
-  parse(visuals["icon"], visualInfo.icon);
+  visualInfo.icon = parse<SpriteInfo>(node["icon"]);
   
   return new skills::ConcreteSkill(type, effects, visualInfo);
 }
 
+template<> const UnitSpec* yaml::parse(const N& node)
+{
+  assert(node.IsMap());
+  const std::string& ident = node["identifier"];
+  const std::string& type = node["type"];
+  
+  /* common properties */
+  s16 melee = node["melee"];
+  s16 defense = node["defense"];
+  s16 resistance = node["resistance"];
+  s16 hits = node["hits"];
+  s16 figures = node["figures"];
+  s16 movement = node["movement"];
+  s16 sight = node["sight"];
+  s16 upkeep = node["upkeep"];
+  
+  SpriteInfo gfxIcon = parse<SpriteInfo>(node["visuals"]["icon"]);
+  SpriteInfo gfxFigure = parse<SpriteInfo>(node["visuals"]["figure"]);
+  I18 gfxName = i18n::keyForString(node["visuals"]["i18n"]);
+
+  if (type == "racial")
+  {
+    
+  }
+  
+  return nullptr;
+}
 
 void yaml::parseSkills()
 {

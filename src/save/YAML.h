@@ -4,10 +4,11 @@
 #include <string>
 
 namespace YAML { class Node; }
+namespace yaml { class Node; }
 
 namespace yaml
 {
-  using N = YAML::Node;
+  using N = yaml::Node;
   
   N parse(const std::string& fileName);
   std::string yamlPath(const std::string& fileName);
