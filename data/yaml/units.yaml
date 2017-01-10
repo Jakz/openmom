@@ -99,7 +99,7 @@ units:
     upkeep: 3
     cost: 120
     melee: 7
-    ranged: [ none ]
+    ranged: none
     defense: 3
     resistance: 7
     hits: 3
@@ -118,7 +118,7 @@ units:
     upkeep: 2
     cost: 50
     melee: 0
-    ranged: [ none ]
+    ranged: none
     defense: 1
     resistance: 5
     hits: 10
@@ -139,7 +139,7 @@ units:
     upkeep: 2
     cost: 100
     melee: 5
-    ranged: [ none ]
+    ranged: none
     defense: 4
     resistance: 10
     hits: 10
@@ -159,7 +159,7 @@ units:
     upkeep: 1
     cost: 30
     melee: 5
-    ranged: [ none ]
+    ranged: none
     defense: 4
     resistance: 8
     hits: 10

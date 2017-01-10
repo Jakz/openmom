@@ -92,7 +92,7 @@ enum class UnitID : u16
   HERO_ORC_WARRIOR
 };
 
-enum class Ranged : u8
+enum class Ranged : u16
 {
   NONE = 0,
   ROCK,
@@ -103,6 +103,16 @@ enum class Ranged : u8
   LIFE,
   NATURE,
   SORCERY
+};
+
+struct RangedInfo
+{
+  Ranged type;
+  s16 strength;
+  s16 ammo;
+  
+  RangedInfo(Ranged type, s16 strength, s16 ammo) : type(type), strength(strength), ammo(ammo) { }
+  RangedInfo() : RangedInfo(Ranged::NONE, 0, 0) { }
 };
 
 enum class Property : u8
@@ -160,18 +170,15 @@ class SummonSpec;
 class UnitSpec : public Productable
 {
 protected:
-  UnitSpec(UnitID ident, Upkeep upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-  ident(ident), upkeep(upkeep), cost(cost), melee(melee), ranged(ranged), rangedType(rangedType), ammo(ammo),
-  defense(defense), resistance(resistance), hits(hits), figures(figures), movement(movement), sight(sight), skills(skills) { }
+  UnitSpec(UnitID ident, Upkeep upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+  ident(ident), upkeep(upkeep), cost(cost), melee(melee), ranged(ranged), defense(defense), resistance(resistance), hits(hits), figures(figures), movement(movement), sight(sight), skills(skills) { }
 
 public:
   const Upkeep upkeep;
 
   const s16 cost;
   const s16 melee;
-  const s16 ranged;
-  const Ranged rangedType;
-  const s16 ammo;
+  RangedInfo ranged;
   const s16 defense;
   const s16 resistance;
   const s16 hits;
@@ -201,12 +208,12 @@ public:
 class RaceUnitSpec : public UnitSpec
 {
 public:
-  RaceUnitSpec(const Race* race, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(UnitID::SETTLERS, Upkeep(upkeep,0,1), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), race(race) { }
+  RaceUnitSpec(const Race* race, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(UnitID::SETTLERS, Upkeep(upkeep,0,1), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), race(race) { }
   
   //TODO: remove when yaml management is ready
-  RaceUnitSpec(UnitID ident, RaceID race, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, Upkeep(upkeep,0,1), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), race(&Race::race(race)) { }
+  RaceUnitSpec(UnitID ident, RaceID race, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(ident, Upkeep(upkeep,0,1), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), race(&Race::race(race)) { }
   
   Type productionType() const override { return Type::UNIT; }
   
@@ -216,8 +223,8 @@ public:
 class SummonSpec : public UnitSpec
 {
 public:
-  SummonSpec(UnitID ident, School school, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, Upkeep(0,upkeep,0), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), school(school) { }
+  SummonSpec(UnitID ident, School school, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(ident, Upkeep(0,upkeep,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), school(school) { }
   
   const School school;
   
@@ -227,8 +234,8 @@ public:
 class HeroSpec : public UnitSpec
 {
 public:
-  HeroSpec(UnitID ident, HeroType type, u32 requiredFame, items::Slots::Type items, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, Upkeep(upkeep,0,0), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items), requiredFame(requiredFame) { }
+  HeroSpec(UnitID ident, HeroType type, u32 requiredFame, items::Slots::Type items, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(ident, Upkeep(upkeep,0,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items), requiredFame(requiredFame) { }
   
   const HeroType type;
   const items::Slots::Type items;

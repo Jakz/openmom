@@ -125,6 +125,23 @@ template<> School yaml::parse(const N& node)
   FETCH_OR_FAIL("School", mapping, node);
 }
 
+template<> Ranged yaml::parse(const N& node)
+{
+  static const std::unordered_map<std::string, Ranged> mapping = {
+    { "none", Ranged::NONE },
+    { "rock", Ranged::ROCK },
+    { "arrow", Ranged::ARROW },
+    { "bullet", Ranged::BULLET },
+    { "chaos", Ranged::CHAOS },
+    { "nature", Ranged::NATURE },
+    { "sorcery", Ranged::SORCERY },
+    { "life", Ranged::LIFE },
+    { "death", Ranged::DEATH }
+  };
+  
+  FETCH_OR_FAIL("Ranged", mapping, node);
+}
+
 template<> Property yaml::parse(const N& node)
 {
   static const std::unordered_map<std::string, Property> mapping = {
@@ -143,6 +160,21 @@ template<> Property yaml::parse(const N& node)
   };
   
   FETCH_OR_FAIL("Property", mapping, node);
+}
+
+template<> RangedInfo yaml::parse(const N& node)
+{
+  if (node == "none")
+    return RangedInfo();
+  else
+  {
+    assert(node.IsSequence() && node.size() == 3);
+    s16 strength = node[0];
+    Ranged type = parse<Ranged>(node[1]);
+    s16 ammo = node[2];
+    
+    return RangedInfo(type, strength, ammo);
+  }
 }
 
 template<> skills::Type yaml::parse(const N& node)
@@ -228,14 +260,14 @@ template<> const UnitSpec* yaml::parse(const N& node)
   s16 sight = node["sight"];
   s16 upkeep = node["upkeep"];
   s16 cost = node["cost"];
+  RangedInfo ranged = parse<RangedInfo>(node["ranged"]);
 
-  
-  
   SpriteInfo gfxIcon = parse<SpriteInfo>(node["visuals"]["icon"]);
   SpriteInfo gfxFigure = parse<SpriteInfo>(node["visuals"]["figure"]);
   I18 gfxName = i18n::keyForString(node["visuals"]["i18n"]);
   bool gfxIsFlying = optionalParse(node["visuals"]["is_flying"], false);
   
+  /* create racial unit spec */
   if (type == "racial")
   {
     const Race* race = Data::get<const Race*>(node["race"]);
@@ -245,9 +277,7 @@ template<> const UnitSpec* yaml::parse(const N& node)
                             upkeep,
                             cost,
                             melee,
-                            0, // TODO
-                            Ranged::NONE, // TODO
-                            0, // TODO
+                            ranged,
                             defense,
                             resistance,
                             hits,

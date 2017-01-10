@@ -15,7 +15,7 @@
 
 #include <unordered_map>
 
-enum class Ranged : u8;
+enum class Ranged : u16;
 enum class Property : u8;
 enum class RaceID : u8;
 enum class HouseType : u8;
