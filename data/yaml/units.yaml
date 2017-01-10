@@ -153,6 +153,7 @@ units:
       figure: [lbx, figures1, 0]
       portrait: [lbx, portrait, 10]
 # fantastic units
+# arcane
   - identifier: funit_magic_spirit
     type: fantastic
     school: arcane
@@ -172,6 +173,64 @@ units:
       icon: [lbx, units2, 34]
       figure: [lbx, figure11, 33]
       summon: [lbx, monster, 0]
-      
-    
+# life
+  - identifier: funit_guardian_spirit
+    type: fantastic
+    school: life
+    upkeep: 1
+    cost: 80
+    melee: 10
+    ranged: none
+    defense: 4
+    resistance: 10
+    hits: 10
+    figures: 1
+    movement: 1
+    sight: 2
+    skills: [ meld_with_node, swimming, non_corporeal, resistance_to_all ]
+    visuals:
+      i18n: funit_guardian_spirit
+      icon: [lbx, units2, 56]
+      figure: [lbx, figure12, 88]
+      summon: [lbx, monster, 22]    
+# chaos
+  - identifier: funit_hell_hounds
+    type: fantastic
+    school: chaos
+    upkeep: 1
+    cost: 40
+    melee: 3
+    ranged: none
+    defense: 2
+    resistance: 6
+    hits: 4
+    figures: 4
+    movement: 2
+    sight: 1
+    skills: [ to_hit_1, fiery_breath_3 ]
+    visuals:
+      i18n: funit_hell_hounds
+      icon: [lbx, units2, 45]
+      figure: [lbx, figure11, 40]
+      summon: [lbx, monster, 1]  
+  - identifier: funit_great_drake
+    type: fantastic
+    school: chaos
+    upkeep: 30
+    cost: 900
+    melee: 30
+    ranged: none
+    defense: 10
+    resistance: 12
+    hits: 30
+    figures: 1
+    movement: 2
+    sight: 2
+    skills: [ flying, to_hit_3, fire_breath_30 ]
+    visuals:
+      i18n: funit_great_drake
+      icon: [lbx, units2, 44]
+      figure: [lbx, figure11, 112]
+      summon: [lbx, monster, 10]
+      is_flying: true
   
