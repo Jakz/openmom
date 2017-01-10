@@ -3,23 +3,24 @@ units:
   - identifier: barbarian_spearmen
     type: racial
     race: barbarians
-    unit_type: spearmen
-    upkeep: 0
+    upkeep: #
     cost: 15
-    melee: 1
+    melee: 1 #
     ranged: none
-    defense: 2
-    resistance: 5
-    hits: 1
-    figures: 8
-    visuals:
+    defense: 2 #
+    resistance: 5 #
+    hits: 1 #
+    figures: 8 #
+    movement: 1 #
+    sight: 1 #
+    skills: [ thrown_1 ]
+    visuals: #
       i18n: unit_racial_spearmen
-      icon: [lbx, units, 39]
-      full_figure: [lbx, figures3, 72]
+      icon: [lbx, units1, 39]
+      figure: [lbx, figures3, 72]
   - identifier: barbarian_swordsmen
     type: racial
     race: barbarians
-    unit_type: swordsmen
     upkeep: 1
     cost: 30
     melee: 3
@@ -28,16 +29,17 @@ units:
     resistance: 5
     hits: 1
     figures: 6
-    skills:
-      - large_shield
+    movement: 1
+    sight: 1
+    skills: [ thrown_1, large_shield ]
+    requires: [ smithy ]
     visuals:
       i18n: unit_racial_swordsmen
-      icon: [lbx, units, 40]
-      full_figure: [lbx, figures3, 80]
+      icon: [lbx, units1, 40]
+      figure: [lbx, figures3, 80]
   - identifier: barbarian_bowmen
     type: racial
     race: barbarians
-    unit_type: bowmen
     upkeep: 1
     cost: 30
     melee: 1
@@ -46,11 +48,130 @@ units:
     resistance: 5
     hits: 1
     figures: 6
+    movement: 1
+    sight: 1
+    requires: [ barracks, sawmill ]
     visuals:
       i18n: unit_racial_bowmen
-      icon: [lbx, units, 41]
-      full_figure: [lbx, figures3, 88]
-
-    
+      icon: [lbx, units1, 41]
+      figure: [lbx, figures3, 88]
+  - identifier: barbarian_cavalry
+    type: racial
+    race: barbarians
+    upkeep: 2
+    cost: 60
+    melee: 4
+    ranged: none
+    defense: 2
+    resistance: 5
+    hits: 3
+    figures: 4
+    movement: 2
+    sight: 1
+    skills: [ thrown_1, first_strike ]
+    requires: [ barracks, stable ]
+    visuals:
+      i18n: unit_racial_cavalry
+      icon: [lbx, units1, 42]
+      figure: [lbx, figures3, 96]
+  - identifier: barbarian_shamans
+    type: racial
+    race: barbarians
+    upkeep: 1
+    cost: 50
+    melee: 2
+    ranged: [2, nature, 4]
+    defense: 3
+    resistance: 7
+    hits: 1
+    figures: 4
+    movement: 1
+    sight: 1
+    skills: [ healer, purify ]
+    requires: [ shrine ]
+    visuals:
+      i18n: unit_racial_shamans
+      icon: [lbx, units1, 43]
+      figure: [lbx, figures3, 104]
+  - identifier: barbarian_berserkers
+    type: racial
+    race: barbarians
+    upkeep: 3
+    cost: 120
+    melee: 7
+    ranged: [ none ]
+    defense: 3
+    resistance: 7
+    hits: 3
+    figures: 6
+    movement: 1
+    sight: 1
+    skills: [ thrown_3 ]
+    requires: [ armorers_guild ]
+    visuals:
+      i18n: unit_racial_berserkers
+      icon: [lbx, units1, 45]
+      figure: [lbx, figures4, 0]
+  - identifier: barbarian_settlers
+    type: racial
+    race: barbarians
+    upkeep: 2
+    cost: 50
+    melee: 0
+    ranged: [ none ]
+    defense: 1
+    resistance: 5
+    hits: 10
+    figures: 1
+    movement: 1
+    sight: 1
+    skills: [ create_outpost ]
+    requires: [ armorers_guild ]
+    visuals:
+      i18n: unit_racial_settlers
+      icon: [lbx, units1, 44]
+      figure: [lbx, figures3, 112]   
+# heroes 
+  - identifier: hero_dwarf
+    type: hero
+    slots: [melee, armor, jewelry]
+    required_fame: 0
+    upkeep: 2
+    cost: 100
+    melee: 5
+    ranged: [ none ]
+    defense: 4
+    resistance: 10
+    hits: 10
+    figures: 1
+    movement: 2
+    sight: 1
+    skills: [ mountaineer, constitution ]
+    visuals:
+      i18n: unit_hero_dwarf
+      icon: [lbx, units1, 0]
+      figure: [lbx, figures1, 0]
+      portrait: [lbx, portrait, 10]
+# fantastic units
+  - identifier: funit_magic_spirit
+    type: fantastic
+    school: arcane
+    upkeep: 1
+    cost: 30
+    melee: 5
+    ranged: [ none ]
+    defense: 4
+    resistance: 8
+    hits: 10
+    figures: 1
+    movement: 1
+    sight: 2
+    skills: [ meld_with_node, swimming, non_corporeal ]
+    visuals:
+      i18n: funit_magic_spirit
+      icon: [lbx, units2, 34]
+      figure: [lbx, figure11, 33]
+      summon: [lbx, monster, 0]
+      
     
   

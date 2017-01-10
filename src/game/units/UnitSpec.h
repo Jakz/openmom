@@ -201,12 +201,16 @@ public:
 class RaceUnitSpec : public UnitSpec
 {
 public:
+  RaceUnitSpec(const Race* race, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(UnitID::SETTLERS, Upkeep(upkeep,0,1), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), race(race) { }
+  
+  //TODO: remove when yaml management is ready
   RaceUnitSpec(UnitID ident, RaceID race, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, Upkeep(upkeep,0,1), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), race(Race::race(race)) { }
+    UnitSpec(ident, Upkeep(upkeep,0,1), cost, melee, ranged, rangedType, ammo, defense, resistance, hits, figures, movement, sight, skills), race(&Race::race(race)) { }
   
   Type productionType() const override { return Type::UNIT; }
   
-  const Race& race;
+  const Race* const race;
 };
 
 class SummonSpec : public UnitSpec

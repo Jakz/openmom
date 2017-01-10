@@ -56,6 +56,9 @@ static const RaceUnitSpec raceSpecs[] = {
   RaceUnitSpec(    UnitID::BOWMEN,   RaceID::BEASTMEN, 1, 30,      1, 1,  Ranged::ARROW, 8,    1, 5, 1, 6,    1, 1,   {})
 };
 
+// HeroSpec(UnitID ident, HeroType type, u32 requiredFame, items::Slots::Type items, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+
+
 static const HeroSpec heroSpecs[] = {
   HeroSpec(UnitID::HERO_DWARF, HeroType::HERO, 0, items::Slots::Type::WARRIOR, 2, -1,    5, 0, Ranged::NONE, 0,     4, 10, 11, 1,    1, 1,   {Skills::LUCKY, Skills::MOUNTAINWALK}),
   HeroSpec(UnitID::HERO_ORC_WARRIOR, HeroType::HERO, 0, items::Slots::Type::WARRIOR, 2, -1,   6, 0, Ranged::NONE, 0,    4, 6, 8, 1,    1, 1,   {Skills::MOUNTAINWALK})
@@ -79,7 +82,7 @@ const std::vector<const RaceUnitSpec*> UnitSpec::unitsForRace(RaceID race)
   
   for (const auto& u : raceSpecs)
   {
-    if (u.race.ident == race)
+    if (u.race->ident == race)
       units.push_back(&u);
   }
   
@@ -88,7 +91,7 @@ const std::vector<const RaceUnitSpec*> UnitSpec::unitsForRace(RaceID race)
 
 const RaceUnitSpec* UnitSpec::raceSpec(UnitID unit, RaceID race)
 {
-  const RaceUnitSpec* spec =  find_if(begin(raceSpecs), end(raceSpecs), [&](const RaceUnitSpec& spec) { return spec.ident == unit && spec.race.ident == race; } );
+  const RaceUnitSpec* spec =  find_if(begin(raceSpecs), end(raceSpecs), [&](const RaceUnitSpec& spec) { return spec.ident == unit && spec.race->ident == race; } );
   return spec != end(raceSpecs) ? spec : nullptr;
 }
 
