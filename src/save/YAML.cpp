@@ -24,7 +24,7 @@
   } while(false)
 
 using namespace YAML;
-using namespace yaml;
+using N = yaml::N;
 
 class yaml::Node : public YAML::Node
 {
@@ -33,6 +33,11 @@ public:
   Node(const YAML::Node& node) : YAML::Node(node) { }
   
   template<typename T> void keyNotFoundError(const T& key) const;
+  
+  template<typename T> const YAML::Node getWithoutCheck(const T& key) const
+  {
+    return YAML::Node::operator[](key);
+  }
   
   template<typename T> const
   YAML::Node operator[](const T& key) const
@@ -96,6 +101,8 @@ template<> LBXID yaml::parse(const N& node)
     { "figures3", LBXID::FIGURES3 },
     { "figures4", LBXID::FIGURES4 },
     { "figure11", LBXID::FIGURE11 },
+    { "figure12", LBXID::FIGURE12 },
+
     
     { "monster", LBXID::MONSTER },
     { "portrait", LBXID::PORTRAIT },
@@ -210,9 +217,10 @@ template<typename T> void yaml::parse(const N& node, std::vector<T>& dest)
     dest.push_back(parse<T>(entry));
 }
 
-template<typename T> T yaml::optionalParse(const N& node, T def)
+template<typename T> T yaml::optionalParse(const N& node, const char* key, T def)
 {
-  return node.IsDefined() ? parse<T>(node) : def;
+  N n = node.getWithoutCheck(key);
+  return n.IsDefined() ? parse<T>(n) : def;
 }
 
 template<> void yaml::parse(const N& node, SpriteInfo& v)
@@ -243,7 +251,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
 
 template<> const Skill* yaml::parse(const N& node)
 {
-  skills::Type type = optionalParse(node["type"], skills::Type::NATIVE);
+  skills::Type type = optionalParse(node, "type", skills::Type::NATIVE);
   
   effect_list effects;
   parse(node["effects"], effects);
@@ -252,19 +260,16 @@ template<> const Skill* yaml::parse(const N& node)
   
   skills::VisualInfo visualInfo;
   visualInfo.name = i18n::keyForString(visuals["i18n"]);
-  visualInfo.hideValue =  optionalParse(visuals["hideValue"], false);
+  visualInfo.hideValue =  optionalParse(visuals, "hideValue", false);
   visualInfo.icon = parse<SpriteInfo>(visuals["icon"]);
   
   return new skills::ConcreteSkill(type, effects, visualInfo);
 }
 
-template<> const UnitSpec* yaml::parse(const N& node)
+template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
 {
   assert(node.IsMap());
   
-  const UnitSpec* spec = nullptr;
-  
-  const std::string& ident = node["identifier"];
   const std::string& type = node["type"];
   
   /* common properties */
@@ -283,16 +288,16 @@ template<> const UnitSpec* yaml::parse(const N& node)
   SpriteInfo gfxIcon = parse<SpriteInfo>(visuals["icon"]);
   SpriteInfo gfxFigure = parse<SpriteInfo>(visuals["figure"]);
   I18 gfxName = i18n::keyForString(visuals["i18n"]);
-  bool gfxIsFlying = optionalParse(visuals["is_flying"], false);
+  bool gfxIsFlying = optionalParse(visuals, "is_flying", false);
   
-  UnitGfxSpec gfxSpec = UnitGfxSpec(gfxIcon, gfxFigure, gfxIsFlying);
+  std::pair<const UnitSpec*, UnitGfxSpec> data = std::make_pair(nullptr, UnitGfxSpec(gfxName, gfxIcon, gfxFigure, gfxIsFlying));
   
   /* create racial unit spec */
   if (type == "racial")
   {
     const Race* race = Data::get<const Race*>(node["race"]);
     
-    spec = new RaceUnitSpec(
+    data.first = new RaceUnitSpec(
                             race,
                             upkeep,
                             cost,
@@ -309,17 +314,13 @@ template<> const UnitSpec* yaml::parse(const N& node)
   }
   else if (type == "hero")
   {
-    gfxSpec.hero.portrait = parse<SpriteInfo>(visuals["portrait"]);
-    
     s32 requiredFame = node["required_fame"];
     
     const N yslots = node["slots"];
     using iclass = items::Class;
     items::Slots slots = items::Slots({parse<iclass>(yslots[0]), parse<iclass>(yslots[1]), parse<iclass>(yslots[2])});
-    
-    // HeroSpec(HeroType type, u32 requiredFame, items::Slots::Type items, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
 
-    spec = new HeroSpec(
+    data.first = new HeroSpec(
                         HeroType::HERO,
                         requiredFame,
                         slots,
@@ -336,19 +337,42 @@ template<> const UnitSpec* yaml::parse(const N& node)
                         { } // TODO
     );
     
-    
+    data.second.hero.portrait = parse<SpriteInfo>(visuals["portrait"]);
   }
   else if (type == "fantastic")
   {
     School school = parse<School>(node["school"]);
+
+    data.first = new SummonSpec(
+                                school,
+                                upkeep,
+                                cost,
+                                melee,
+                                ranged,
+                                defense,
+                                resistance,
+                                hits,
+                                figures,
+                                movement,
+                                sight,
+                                { } // TODO
+    );
     
-    
-    gfxSpec.fantastic.summonFigure = parse<SpriteInfo>(visuals["summon"]);
+    data.second.fantastic.summonFigure = parse<SpriteInfo>(visuals["summon"]);
   }
   
-  GfxData::registerData(spec, gfxSpec);
+  const N buildingsRequired = node.getWithoutCheck("requires");
+  if (buildingsRequired.IsDefined())
+  {
+    assert(buildingsRequired.IsSequence());
+    for (const std::string& ybuilding : buildingsRequired)
+    {
+      const Building* building = Data::building(ybuilding);
+      Data::unitDependsOnBuilding.insert(std::make_pair(data.first, building));
+    }
+  }
   
-  return spec;
+  return data;
 }
 
 void yaml::parseSkills()
@@ -372,8 +396,9 @@ void yaml::parseUnits()
   for (const auto& yunit : units)
   {
     const std::string& identifier = yunit["identifier"];
-    const UnitSpec* unit = parse<const UnitSpec*>(yunit);
-    Data::registerData(identifier, unit);
+    const std::pair<const UnitSpec*, UnitGfxSpec> unit = parse<std::pair<const UnitSpec*, UnitGfxSpec>>(yunit);
+    Data::registerData(identifier, unit.first);
+    GfxData::registerData(unit.first, unit.second);
   }
 
 }

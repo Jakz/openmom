@@ -112,7 +112,7 @@ public:
   }
   const cast_list& getSpells() { return spells; }
   
-  const Race& race;
+  const Race* const race;
   
   friend class CityMechanics;
   friend class CityLayout;

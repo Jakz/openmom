@@ -45,7 +45,7 @@ void init()
 int main(int argc, char * arg[])
 {
   yaml::parse();
-  return 0;
+  //return 0;
   
   lbx::Repository::init();
   lbx::Repository::loadLBX(LBXID::ARMYLIST);

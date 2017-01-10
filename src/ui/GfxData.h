@@ -51,6 +51,7 @@ public:
 
 struct UnitGfxSpec
 {
+  I18 name;
   SpriteInfo still;
   SpriteInfo fullFigure;
   
@@ -68,8 +69,8 @@ struct UnitGfxSpec
   
   bool isFlyingFigure;
 
-  UnitGfxSpec(SpriteInfo still, SpriteInfo fullFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), isFlyingFigure(isFlyingFigure) { }
-  UnitGfxSpec(SpriteInfo still, SpriteInfo fullFigure, SpriteInfo summonFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), fantastic({summonFigure}), isFlyingFigure(isFlyingFigure) { }
+  UnitGfxSpec(I18 name, SpriteInfo still, SpriteInfo fullFigure, bool isFlyingFigure = false) : name(name), still(still), fullFigure(fullFigure), isFlyingFigure(isFlyingFigure) { }
+  UnitGfxSpec(I18 name, SpriteInfo still, SpriteInfo fullFigure, SpriteInfo summonFigure, bool isFlyingFigure = false) : name(name), still(still), fullFigure(fullFigure), fantastic({summonFigure}), isFlyingFigure(isFlyingFigure) { }
 
 };
 

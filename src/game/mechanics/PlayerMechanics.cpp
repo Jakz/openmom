@@ -154,7 +154,7 @@ void PlayerMechanics::castSpell(Player* player, const Spell* spell)
     City* where = player->cityWithSummoningCircle();
     Tile* tile = g->world->get(where->getPosition());
     
-    const SummonSpec* spec = SummonSpec::summonSpec(static_cast<const SummonSpell*>(spell)->unit);
+    const SummonSpec* spec = nullptr; //TODO: fix with new management SummonSpec::summonSpec(static_cast<const SummonSpell*>(spell)->unit);
     
     // add unit to city army or as new army
     // TODO: move units from full army to make room for summon

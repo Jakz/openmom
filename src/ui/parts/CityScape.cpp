@@ -164,7 +164,7 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
   
   Gfx::draw(TextureID::CITY_ROADS, 0, 0, 5, 118);
   
-  const auto& houseSpec = GfxData::raceHouseGfxSpec(city->race.houseType);
+  const auto& houseSpec = GfxData::raceHouseGfxSpec(city->race->houseType);
   
   const CityLayout* layout = layouts[city];
   
@@ -210,7 +210,7 @@ void CityLayout::drawBuildingCentered(const City* city, const Building *building
 {
   if (building == Building::HOUSING)
   {
-    const auto& houseGfx = GfxData::raceHouseGfxSpec(city->race.houseType);
+    const auto& houseGfx = GfxData::raceHouseGfxSpec(city->race->houseType);
     drawBuildingSprite(houseGfx.housingBuilding, x, y);
   }
   else if (building == Building::TRADE_GOODS || building == Building::CITY_WALLS)

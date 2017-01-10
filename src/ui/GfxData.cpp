@@ -24,13 +24,7 @@ template<> gfx_map<const Skill*, SkillGfxSpec>& GfxData::containerFor<const Skil
 
 template<> gfx_map<const UnitSpec*, UnitGfxSpec>& GfxData::containerFor<const UnitSpec*, UnitGfxSpec>()
 {
-  static gfx_map<const UnitSpec*, UnitGfxSpec> unitGfxSpec = {
-    { UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT), UnitGfxSpec(LSI(UNITS2, 56), LSI(FIGURE12, 88), LSI(MONSTER, 22)) }, // TODO: full figure wrong
-    
-    { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(LSI(UNITS2, 45), LSI(FIGURE11, 40), LSI(MONSTER, 1)) },
-    { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(LSI(UNITS2, 44), LSI(FIGURE11, 112), LSI(MONSTER, 10), true) }
-  };
-  
+  static gfx_map<const UnitSpec*, UnitGfxSpec> unitGfxSpec;
   return unitGfxSpec;
 }
 

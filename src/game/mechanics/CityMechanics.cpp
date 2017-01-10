@@ -8,6 +8,7 @@
 
 #include "CityMechanics.h"
 
+#include "Data.h"
 #include "Player.h"
 #include "Game.h"
 #include "Race.h"
@@ -90,7 +91,7 @@ const std::multimap<const Building*, const Building*> CityMechanics::buildingDep
   
   {Building::FORESTERS_GUILD, Building::SAWMILL}
 };
-
+/*
 const std::multimap<UnitID, const Building*> CityMechanics::unitDependsOn = {
   {UnitID::SWORDSMEN, Building::SMITHY},
   {UnitID::HALBERDIERS, Building::ARMORY},
@@ -138,7 +139,7 @@ const std::multimap<UnitID, const Building*> CityMechanics::unitDependsOn = {
   {UnitID::STEAM_CANNON, Building::MINERS_GUILD},
   {UnitID::AIR_SHIP, Building::SHIP_YARD},
   {UnitID::WARLOCKS, Building::WIZARDS_GUILD}
-};
+};*/
 
 const std::multimap<RaceID, const Building*> CityMechanics::disallowedBuildingsByRace = {
   {RaceID::BARBARIANS, Building::ANIMISTS_GUILD},{RaceID::BARBARIANS, Building::CATHEDRAL}, {RaceID::BARBARIANS, Building::UNIVERSITY},
@@ -237,7 +238,7 @@ bool CityMechanics::isBuildingAllowedForTerrain(const City *city, const Building
 
 bool CityMechanics::isBuildingAllowedForRace(const City* city, const Building* building)
 {
-  auto it = disallowedBuildingsByRace.equal_range(city->race.ident);
+  auto it = disallowedBuildingsByRace.equal_range(city->race->ident);
   
   for (auto iit = it.first; iit != it.second; ++iit)
     if (iit->second == building)
@@ -248,23 +249,13 @@ bool CityMechanics::isBuildingAllowedForRace(const City* city, const Building* b
 
 bool CityMechanics::isUnitAllowed(const City* city, const RaceUnitSpec *unit)
 {
-  auto it = unitDependsOn.equal_range(unit->ident);
-  
-  if (!UnitSpec::raceSpec(unit->ident, city->race.ident))
-    return false;
-  else
-  {
-    for (auto iit = it.first; iit != it.second; ++iit)
-      if (!city->hasBuilding(iit->second))
-        return false;
-    
-    return true;
-  }
+  const auto it = Data::requiredBuildingsForUnit(unit);
+  return std::all_of(it.first, it.second, [city](const decltype(it.first)::value_type& entry) { return city->hasBuilding(entry.second); });
 }
 
 const list<const RaceUnitSpec*> CityMechanics::availableUnits(const City* city)
 {
-  vector<const RaceUnitSpec*> allUnits = UnitSpec::unitsForRace(city->race.ident);
+  vector<const RaceUnitSpec*> allUnits = Data::unitsForRace(city->race);
   list<const RaceUnitSpec*> units;
 
   copy_if(allUnits.begin(), allUnits.end(), back_inserter(units), [&](const RaceUnitSpec* spec) { return isUnitAllowed(city, spec); });
@@ -328,12 +319,11 @@ list<const Productable*> CityMechanics::itemsUnlockedByBuilding(const Building* 
     }
   }
   
-  vector<const RaceUnitSpec*> units = UnitSpec::unitsForRace(city->race.ident);
+  vector<const RaceUnitSpec*> units = Data::unitsForRace(city->race);
   // TODO: check behavior
   for (auto unit : units)
   {
-    auto iit = unitDependsOn.equal_range(unit->ident);
-    
+    auto iit = Data::requiredBuildingsForUnit(unit);    
     for (auto iit2 = iit.first; iit2 != iit.second; ++iit2)
       if (iit2->second == building)
         items.push_back(unit);
@@ -406,7 +396,7 @@ s16 CityMechanics::computeInitialPopulationGrowth(const City* city)
   Tile* t = game->world->get(city->position);
   
   // according to race there is a base chance of growing
-  increaseChance += city->race.outpostGrowthChance;
+  increaseChance += city->race->outpostGrowthChance;
   // chance is increased according to maximum population of city (+1% per point of maximum size)
   increaseChance += computeMaxPopulationForTile(t) / 100.0;
   
@@ -478,7 +468,7 @@ s16 CityMechanics::baseGold(const City* city)
   bgi += bonus;
   
   // dwarvens double their tax income
-  if (city->race.ident == RaceID::DWARVES)
+  if (city->race->ident == RaceID::DWARVES)
     bgi *= 2;
   
   return bgi;
@@ -507,7 +497,7 @@ s16 CityMechanics::computeGold(const City *city)
 
 s16 CityMechanics::baseProduction(const City *city)
 {
-  int multiplier = city->race.ident == RaceID::KLACKONS || city->race.ident == RaceID::DWARVES ? 3 : 2;
+  int multiplier = city->race->ident == RaceID::KLACKONS || city->race->ident == RaceID::DWARVES ? 3 : 2;
   
   return (city->workers*multiplier) + (s16)std::ceil(city->farmers/2.0);
 }
@@ -560,9 +550,9 @@ s16 CityMechanics::computeMana(const City *city)
   }
   
   // mana bonuses given by racial traits
-  if (city->race.ident == RaceID::DARK_ELVES)
+  if (city->race->ident == RaceID::DARK_ELVES)
     totalMana += city->population/1000;
-  else if (city->race.ident == RaceID::BEASTMEN || city->race.ident == RaceID::DRACONIANS || city->race.ident == RaceID::HIGH_ELVES)
+  else if (city->race->ident == RaceID::BEASTMEN || city->race->ident == RaceID::DRACONIANS || city->race->ident == RaceID::HIGH_ELVES)
     totalMana += (s16)std::floor((city->population/1000)/2);
   
   // mana bonuses given by buildings
@@ -585,7 +575,7 @@ s16 CityMechanics::computeMana(const City *city)
   bonus += (s16)std::floor(resourceBonus(city, Resource::MITHRIL, 1));
   
   // dwarvens gets double bonuses from these resources
-  if (city->race.ident == RaceID::DWARVES)
+  if (city->race->ident == RaceID::DWARVES)
     bonus *= 2;
   
   return totalMana + bonus;
@@ -618,7 +608,7 @@ s16 CityMechanics::computeGrowthRate(const City *city)
     return 0;
   
   // base growth rate
-  s16 growthRate = baseGrowthRate(city)*10 + city->race.growthBonus;
+  s16 growthRate = baseGrowthRate(city)*10 + city->race->growthBonus;
   
   // bonus from buildings
   if (city->hasBuilding(Building::GRANARY))
@@ -690,7 +680,7 @@ s16 CityMechanics::computeMaxPopulation(const City *city)
 
 void CityMechanics::partitionPopulation(City *city)
 {
-  int foodPerPopulation = (city->race.ident == RaceID::HALFLINGS) || city->hasBuilding(Building::ANIMISTS_GUILD) ? 3 : 2;
+  int foodPerPopulation = (city->race->ident == RaceID::HALFLINGS) || city->hasBuilding(Building::ANIMISTS_GUILD) ? 3 : 2;
   
   /* TODO: for now it just removes required farmers and set the remainders half workers and half farmers */
   city->reservedPopulation =  city->necessaryFood / foodPerPopulation;

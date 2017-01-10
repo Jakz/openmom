@@ -114,7 +114,7 @@ protected:
   Game *g;
   
 public:
-  Player(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race& race, u16 mapWidth, u16 mapHeight);
+  Player(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race* race, u16 mapWidth, u16 mapHeight);
 
   bool isAlive() const { return alive; }
   
@@ -194,7 +194,7 @@ public:
   const std::string name;
   const Wizard& wizard;
   const PlayerColor color;
-  const Race& race;
+  const Race* const race;
   
   static constexpr const float TAX_RATES[] = {0.5f,1.0f,1.5f,2.0f,2.5f,3.0f};
   

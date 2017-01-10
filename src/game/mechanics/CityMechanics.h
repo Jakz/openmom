@@ -25,7 +25,6 @@ class CityMechanics
 {
 private:
   static const std::multimap<const Building*, const Building*> buildingDependsOn;
-  static const std::multimap<UnitID, const Building*> unitDependsOn;
   static const std::multimap<RaceID, const Building*> disallowedBuildingsByRace;
   static const std::map<const Building*, const Building*> buildingReplacementMap;
   

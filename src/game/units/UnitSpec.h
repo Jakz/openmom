@@ -163,6 +163,13 @@ enum class HeroType : u8
   SPECIAL
 };
 
+enum class UnitType
+{
+  RACIAL,
+  FANTASTIC,
+  HERO
+};
+
 class RaceUnitSpec;
 class HeroSpec;
 class SummonSpec;
@@ -170,10 +177,12 @@ class SummonSpec;
 class UnitSpec : public Productable
 {
 protected:
-  UnitSpec(UnitID ident, Upkeep upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-  ident(ident), upkeep(upkeep), cost(cost), melee(melee), ranged(ranged), defense(defense), resistance(resistance), hits(hits), figures(figures), movement(movement), sight(sight), skills(skills) { }
+  UnitSpec(UnitType type, Upkeep upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+  type(type), upkeep(upkeep), cost(cost), melee(melee), ranged(ranged), defense(defense), resistance(resistance), hits(hits), figures(figures), movement(movement), sight(sight), skills(skills) { }
 
 public:
+  const UnitType type;
+  
   const Upkeep upkeep;
 
   const s16 cost;
@@ -194,13 +203,6 @@ public:
   u16 productionCost() const override { return cost; }
   const Upkeep& productionUpkeep() const override { return upkeep; }
   
-  const UnitID ident;
-  
-  static const UnitSpec* unitSpec(UnitID unit, RaceID race = RaceID::BARBARIANS);
-  static const RaceUnitSpec* raceSpec(UnitID unit, RaceID race);
-  static const SummonSpec* summonSpec(UnitID unit);
-  static const std::vector<const RaceUnitSpec*> unitsForRace(RaceID race);
-  
   template<typename T> const T* as() const { return static_cast<const T*>(this); }
 };
 
@@ -208,12 +210,8 @@ class RaceUnitSpec : public UnitSpec
 {
 public:
   RaceUnitSpec(const Race* race, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(UnitID::SETTLERS, Upkeep(upkeep,0,1), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), race(race) { }
-  
-  //TODO: remove when yaml management is ready
-  RaceUnitSpec(UnitID ident, RaceID race, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, Upkeep(upkeep,0,1), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), race(&Race::race(race)) { }
-  
+    UnitSpec(UnitType::RACIAL, Upkeep(upkeep,0,1), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), race(race) { }
+
   Type productionType() const override { return Type::UNIT; }
   
   const Race* const race;
@@ -222,8 +220,8 @@ public:
 class SummonSpec : public UnitSpec
 {
 public:
-  SummonSpec(UnitID ident, School school, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, Upkeep(0,upkeep,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), school(school) { }
+  SummonSpec(School school, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(UnitType::FANTASTIC, Upkeep(0,upkeep,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), school(school) { }
   
   const School school;
   
@@ -234,7 +232,7 @@ class HeroSpec : public UnitSpec
 {
 public:
   HeroSpec(HeroType type, u32 requiredFame, items::Slots items, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(UnitID::SETTLERS, Upkeep(upkeep,0,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items), requiredFame(requiredFame) { }
+    UnitSpec(UnitType::HERO, Upkeep(upkeep,0,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items), requiredFame(requiredFame) { }
   
   const HeroType type;
   const items::Slots items;

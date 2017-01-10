@@ -44,14 +44,14 @@ void Game::init()
 
 void Game::dummyInit()
 {
-  LocalPlayer *player = new LocalPlayer(this, "Kali", Data::wizard(WizardID::KALI), GREEN, Race::race(RaceID::BARBARIANS), 60, 40);
-  LocalPlayer *player2 = new LocalPlayer(this, "Antani", Data::wizard(WizardID::MERLIN), BLUE, Race::race(RaceID::BARBARIANS), 60, 40);
+  LocalPlayer *player = new LocalPlayer(this, "Kali", Data::wizard(WizardID::KALI), GREEN, Data::race("barbarians"), 60, 40);
+  LocalPlayer *player2 = new LocalPlayer(this, "Antani", Data::wizard(WizardID::MERLIN), BLUE, Data::race("barbarians"), 60, 40);
 
   
   Army* army2 = new Army(player2, {
     new Hero(Data::unit("hero_dwarf")->as<HeroSpec>()),
-    new RaceUnit(UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS)),
-    new FantasticUnit(UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT)),
+    new RaceUnit(Data::unit("barbarian_spearmen")->as<RaceUnitSpec>()),
+    new FantasticUnit(Data::unit("funit_magic_spirit")->as<SummonSpec>()),
   });
   
   player2->add(army2);
@@ -87,13 +87,13 @@ void Game::dummyInit()
   //WorldGenerator.generate(world, MYRRAN);
 
   Army* a = new Army(player, {
-		new FantasticUnit(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)),
-    new RaceUnit(UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS)),
-		new RaceUnit(UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS)),
-		new RaceUnit(UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS)),
-		new RaceUnit(UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS)),
-    new FantasticUnit(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)),
-		new RaceUnit(UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS)),
+		new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>()),
+    new RaceUnit(Data::unit("barbarian_spearmen")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("barbarian_swordsmen")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("barbarian_bowmen")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("barbarian_cavalry")->as<RaceUnitSpec>()),
+    new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>()),
+		new RaceUnit(Data::unit("barbarian_berserkers")->as<RaceUnitSpec>()),
   });
   
   SpellCast cast = SpellCast(player, Spells::BLESS);
@@ -132,8 +132,8 @@ void Game::dummyInit()
   new LocalGame(this);
   
   placeArmy(a, Position(5, 6, ARCANUS));
-  placeArmy(new Army(player, {new FantasticUnit(UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT)),new FantasticUnit(UnitSpec::summonSpec(UnitID::GREAT_DRAKE))}), Position(4, 3, ARCANUS));
-  placeArmy(new Army(player, {new FantasticUnit(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)), new Hero(Data::unit("hero_dwarf")->as<HeroSpec>())}), Position(4, 8, ARCANUS));
+  placeArmy(new Army(player, {new FantasticUnit(Data::unit("funit_magic_spirit")->as<SummonSpec>()),new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>())}), Position(4, 3, ARCANUS));
+  placeArmy(new Army(player, {new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>()), new Hero(Data::unit("hero_dwarf")->as<HeroSpec>())}), Position(4, 8, ARCANUS));
   
   City* florence = new City(player, "Florence", 4000, Position(3, 3, ARCANUS));
   florence->addBuilding(Building::MAGE_FORTRESS);
