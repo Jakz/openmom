@@ -22,6 +22,18 @@ template<> gfx_map<const Skill*, SkillGfxSpec>& GfxData::containerFor<const Skil
   return skillfGfxSpec;
 }
 
+template<> gfx_map<const UnitSpec*, UnitGfxSpec>& GfxData::containerFor<const UnitSpec*, UnitGfxSpec>()
+{
+  static gfx_map<const UnitSpec*, UnitGfxSpec> unitGfxSpec = {
+    { UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT), UnitGfxSpec(LSI(UNITS2, 56), LSI(FIGURE12, 88), LSI(MONSTER, 22)) }, // TODO: full figure wrong
+    
+    { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(LSI(UNITS2, 45), LSI(FIGURE11, 40), LSI(MONSTER, 1)) },
+    { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(LSI(UNITS2, 44), LSI(FIGURE11, 112), LSI(MONSTER, 10), true) }
+  };
+  
+  return unitGfxSpec;
+}
+
 constexpr s8 GfxData::RANGED_INDEX[];
 constexpr s8 GfxData::PROPERTY_INDEX[];
 
@@ -96,34 +108,6 @@ decltype(GfxData::raceHouseSpecs) GfxData::raceHouseSpecs = {
   { HouseType::MUD, { LSI(BACKGRND, 39), LSI(BACKGRND, 36), LSI(CITYSCAP, 35), LSI(CITYSCAP, 44) } }
 };
 
-gfx_map<const UnitSpec*, UnitGfxSpec> GfxData::unitSpecs = {
-  { UnitSpec::raceSpec(UnitID::SPEARMEN, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 39), LSI(FIGURES3, 72)) },
-  { UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 40), LSI(FIGURES3, 80)) },
-  { UnitSpec::raceSpec(UnitID::BOWMEN, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 41), LSI(FIGURES3, 88)) },
-  { UnitSpec::raceSpec(UnitID::CAVALRY, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 42), LSI(FIGURES3, 96)) },
-  { UnitSpec::raceSpec(UnitID::SHAMANS, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 43), LSI(FIGURES3, 104)) },
-  { UnitSpec::raceSpec(UnitID::BERSERKERS, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 45), LSI(FIGURES4, 0)) },
-  { UnitSpec::raceSpec(UnitID::SETTLERS, RaceID::BARBARIANS), UnitGfxSpec(LSI(UNITS1, 44), LSI(FIGURES3, 112)) },
-
-  { UnitSpec::heroSpec(UnitID::HERO_DWARF), UnitGfxSpec(LSI(UNITS1, 0), LSI(FIGURES1, 0)) },
-  
-  
-  { UnitSpec::summonSpec(UnitID::MAGIC_SPIRIT), UnitGfxSpec(LSI(UNITS2, 34), LSI(FIGURE11, 32), LSI(MONSTER, 0)) },
-  
-  { UnitSpec::summonSpec(UnitID::GUARDIAN_SPIRIT), UnitGfxSpec(LSI(UNITS2, 56), LSI(FIGURE12, 88), LSI(MONSTER, 22)) }, // TODO: full figure wrong
-
-  
-  { UnitSpec::summonSpec(UnitID::HELL_HOUNDS), UnitGfxSpec(LSI(UNITS2, 45), LSI(FIGURE11, 40), LSI(MONSTER, 1)) },
-  { UnitSpec::summonSpec(UnitID::GREAT_DRAKE), UnitGfxSpec(LSI(UNITS2, 44), LSI(FIGURE11, 112), LSI(MONSTER, 10), true) }
-
-};
-
-gfx_map<const UnitSpec*, SpriteInfo> GfxData::heroPortraits = {
-  { UnitSpec::heroSpec(UnitID::HERO_DWARF), LSI(PORTRAIT, 10) },
-  { UnitSpec::heroSpec(UnitID::HERO_ORC_WARRIOR), LSI(PORTRAIT, 6) }
-};
-
-
 //TODO: LIFE SPELL (SPECFX, 3) uses palette with multiple white alphas, understand how to manage it
 decltype(GfxData::schoolSpecs) GfxData::schoolSpecs = {
   { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD, LSI_PLACEHOLD, LSI(MAGIC, 48), LSI(SPECFX, 5) } },
@@ -153,18 +137,6 @@ SpriteInfo WizardGfxSpec::getGemmedPortrait(PlayerColor color) const
     case YELLOW: return gemmedPortrait.relative(4);
     default: assert(false);
   }
-}
-
-const UnitGfxSpec& GfxData::unitGfxSpec(const UnitSpec* spec)
-{
-  const UnitGfxSpec& gspec = unitSpecs.find(spec)->second;
-  return gspec;
-}
-
-SpriteInfo GfxData::heroGfxSpec(const UnitSpec *spec)
-{
-  assert(heroPortraits.find(spec) != heroPortraits.end());
-  return heroPortraits.find(spec)->second;
 }
 
 SpriteInfo GfxData::itemGfxSpec(items::TypeID type, int index)

@@ -45,7 +45,7 @@ void SpellEffect::step()
 #pragma mark SummonEffect
 
 SummonAnimation::SummonAnimation(WizardID wizard, const SummonSpec* spec)
-: ContinuousEndlessAnimation(5000), spec(spec), wizard(GfxData::wizardGfxSpec(wizard).summonPose), creature(GfxData::unitGfxSpec(spec).summonFigure),
+: ContinuousEndlessAnimation(5000), spec(spec), wizard(GfxData::wizardGfxSpec(wizard).summonPose), creature(GfxData::unitGfx(spec).fantastic.summonFigure),
   palette(GfxData::schoolGfxSpec(spec->as<SummonSpec>()->school).summonPalette.palette())
 {
 }

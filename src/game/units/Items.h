@@ -57,20 +57,8 @@ namespace items
   class Slots
   {
   public:
-    enum class Type : u8
-    {
-      RANGED = 0,
-      BATTLE_MAGE,
-      MAGE,
-      WARRIOR
-    };
-    
-    const std::array<std::vector<Class>, 3> types;
-    const std::array<u16, 3> sprites;
-    
-    Slots(std::array<std::vector<Class>, 3> types, std::array<u16, 3> sprites) : types(types), sprites(sprites) { }
-    
-    static const Slots* slotsFor(Slots::Type type);
+    const std::array<Class, 3> types;
+    Slots(Class c1, Class c2, Class c3) : types({c1,c2,c3}) { }
   };
   
   class PropertyAffixSpec

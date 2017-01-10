@@ -53,11 +53,23 @@ struct UnitGfxSpec
 {
   SpriteInfo still;
   SpriteInfo fullFigure;
-  SpriteInfo summonFigure;
-  bool isFlyingFigure;
   
+  union
+  {
+    struct
+    {
+      SpriteInfo summonFigure;
+    } fantastic;
+    struct
+    {
+      SpriteInfo portrait;
+    } hero;
+  };
+  
+  bool isFlyingFigure;
+
   UnitGfxSpec(SpriteInfo still, SpriteInfo fullFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), isFlyingFigure(isFlyingFigure) { }
-  UnitGfxSpec(SpriteInfo still, SpriteInfo fullFigure, SpriteInfo summonFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), summonFigure(summonFigure), isFlyingFigure(isFlyingFigure) { }
+  UnitGfxSpec(SpriteInfo still, SpriteInfo fullFigure, SpriteInfo summonFigure, bool isFlyingFigure = false) : still(still), fullFigure(fullFigure), fantastic({summonFigure}), isFlyingFigure(isFlyingFigure) { }
 
 };
 
@@ -207,10 +219,6 @@ private:
   static gfx_map<PlayerColor, PlayerGfxSpec, 6> playerSpecs;
   static gfx_map<RaceID, RaceGfxSpec, 14> raceSpecs;
   static gfx_map<HouseType, RaceHouseGfxSpec, 3> raceHouseSpecs;
-
-  
-  static gfx_map<const UnitSpec*, UnitGfxSpec> unitSpecs;
-  static gfx_map<const UnitSpec*, SpriteInfo> heroPortraits;
   
   static gfx_map<School, SchoolGfxSpec, 6> schoolSpecs;
   static gfx_map<UpkeepSymbol, UpkeepSymbolSpec, 5> upkeepSymbolSpec;
@@ -222,8 +230,6 @@ private:
   static std::unordered_map<const Spell*, sprite_ref> specialSpellGfxEffects;
   
   template<typename K, typename V> static gfx_map<K,V>& containerFor();
-  template<typename K, typename V> static void registerData(K k, V v) { containerFor<K,V>().insert(std::make_pair(k,v)); }
-  
   
 public:
   static const TileGfxSpec& tileGfxSpec(TileType type) { return specs[type]; }
@@ -239,14 +245,14 @@ public:
 
   static const SchoolGfxSpec& schoolGfxSpec(School school) { return schoolSpecs.find(school)->second; }
   static const UpkeepSymbolSpec& upkeepGfxSpec(UpkeepSymbol symbol) { return upkeepSymbolSpec.find(symbol)->second; }
-
-  
-  static const UnitGfxSpec& unitGfxSpec(const UnitSpec* spec);
-  static SpriteInfo heroGfxSpec(const UnitSpec* spec);
   
   static SpriteInfo specialSpellGfxEffect(const Spell* spell);
   
-  template<typename K, typename V> static const V& gfxDataFor(K k) { return containerFor<K,V>(k); }
+  
+  static const UnitGfxSpec& unitGfx(const UnitSpec* spec) { return gfxDataFor<const UnitSpec*, UnitGfxSpec>(spec); }
+  
+  template<typename K, typename V> static const V& gfxDataFor(K k) { return containerFor<K,V>().find(k)->second; }
+  template<typename K, typename V> static void registerData(K k, V v) { containerFor<K,V>().insert(std::make_pair(k,v)); }
   
   friend class Data;
 };

@@ -12,6 +12,7 @@
 #include "UnitSpec.h"
 #include "Skill.h"
 #include "Effects.h"
+#include "Items.h"
 
 #define PARSE_ERROR(x, ...) do { LOGD("[yaml] parse error: " x, __VA_ARGS__); } while (false)
 
@@ -109,6 +110,22 @@ template<> LBXID yaml::parse(const N& node)
   };
   
   FETCH_OR_FAIL("LBXID", mapping, node);
+}
+
+//  enum class Class : u8 { MELEE = 0, RANGED, MELEE_STAFF, STAFF_WAND, ARMOR, MISC };
+
+template<> items::Class yaml::parse(const N& node)
+{
+  static const std::unordered_map<std::string, items::Class> mapping = {
+    { "melee", items::Class::MELEE },
+    { "ranged", items::Class::RANGED },
+    { "melee_staff", items::Class::MELEE_STAFF},
+    { "staff_wand", items::Class::STAFF_WAND },
+    { "armor", items::Class::ARMOR },
+    { "jewelry", items::Class::MISC }
+  };
+
+  FETCH_OR_FAIL("items::Class", mapping, node);
 }
 
 template<> School yaml::parse(const N& node)
@@ -262,10 +279,13 @@ template<> const UnitSpec* yaml::parse(const N& node)
   s16 cost = node["cost"];
   RangedInfo ranged = parse<RangedInfo>(node["ranged"]);
 
-  SpriteInfo gfxIcon = parse<SpriteInfo>(node["visuals"]["icon"]);
-  SpriteInfo gfxFigure = parse<SpriteInfo>(node["visuals"]["figure"]);
-  I18 gfxName = i18n::keyForString(node["visuals"]["i18n"]);
-  bool gfxIsFlying = optionalParse(node["visuals"]["is_flying"], false);
+  const N visuals = node["visuals"];
+  SpriteInfo gfxIcon = parse<SpriteInfo>(visuals["icon"]);
+  SpriteInfo gfxFigure = parse<SpriteInfo>(visuals["figure"]);
+  I18 gfxName = i18n::keyForString(visuals["i18n"]);
+  bool gfxIsFlying = optionalParse(visuals["is_flying"], false);
+  
+  UnitGfxSpec gfxSpec = UnitGfxSpec(gfxIcon, gfxFigure, gfxIsFlying);
   
   /* create racial unit spec */
   if (type == "racial")
@@ -289,7 +309,33 @@ template<> const UnitSpec* yaml::parse(const N& node)
   }
   else if (type == "hero")
   {
-    SpriteInfo gfxPortrait = parse<SpriteInfo>(node["visuals"]["portrait"]);
+    gfxSpec.hero.portrait = parse<SpriteInfo>(visuals["portrait"]);
+    
+    s32 requiredFame = node["required_fame"];
+    
+    const N yslots = node["slots"];
+    using iclass = items::Class;
+    items::Slots slots = items::Slots({parse<iclass>(yslots[0]), parse<iclass>(yslots[1]), parse<iclass>(yslots[2])});
+    
+    // HeroSpec(HeroType type, u32 requiredFame, items::Slots::Type items, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+
+    spec = new HeroSpec(
+                        HeroType::HERO,
+                        requiredFame,
+                        slots,
+                        upkeep,
+                        cost,
+                        melee,
+                        ranged,
+                        defense,
+                        resistance,
+                        hits,
+                        figures,
+                        movement,
+                        sight,
+                        { } // TODO
+    );
+    
     
   }
   else if (type == "fantastic")
@@ -297,8 +343,10 @@ template<> const UnitSpec* yaml::parse(const N& node)
     School school = parse<School>(node["school"]);
     
     
-    SpriteInfo gfxSummon = parse<SpriteInfo>(node["visuals"]["summon"]);
+    gfxSpec.fantastic.summonFigure = parse<SpriteInfo>(visuals["summon"]);
   }
+  
+  GfxData::registerData(spec, gfxSpec);
   
   return spec;
 }
@@ -325,6 +373,7 @@ void yaml::parseUnits()
   {
     const std::string& identifier = yunit["identifier"];
     const UnitSpec* unit = parse<const UnitSpec*>(yunit);
+    Data::registerData(identifier, unit);
   }
 
 }

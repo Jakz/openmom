@@ -60,6 +60,11 @@ template<> std::unordered_map<Data::key_type, const Skill*>& Data::containerFor(
   return skillsMap;
 }
 
+template<> std::unordered_map<Data::key_type, const UnitSpec*>& Data::containerFor() {
+  static map_t<const UnitSpec*> unitsMap;
+  return unitsMap;
+}
+
 template<> std::unordered_map<Data::key_type, const Race*>& Data::containerFor() {
   //TODO: hardcoded for now, then YAML will be used
   

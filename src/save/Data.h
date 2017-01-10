@@ -4,6 +4,8 @@
 
 #include <unordered_map>
 
+class UnitSpec;
+
 class Data
 {
 public:
@@ -31,6 +33,8 @@ public:
   {
     return containerFor<T>()[ident];
   }
+  
+  static const UnitSpec* unit(const key_type& ident) { return get<const UnitSpec*>(ident); }
   
 #if defined(DEBUG)
   template<typename T> static void getInfo()

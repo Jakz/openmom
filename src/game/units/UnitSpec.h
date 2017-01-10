@@ -198,7 +198,6 @@ public:
   
   static const UnitSpec* unitSpec(UnitID unit, RaceID race = RaceID::BARBARIANS);
   static const RaceUnitSpec* raceSpec(UnitID unit, RaceID race);
-  static const HeroSpec* heroSpec(UnitID unit);
   static const SummonSpec* summonSpec(UnitID unit);
   static const std::vector<const RaceUnitSpec*> unitsForRace(RaceID race);
   
@@ -234,11 +233,11 @@ public:
 class HeroSpec : public UnitSpec
 {
 public:
-  HeroSpec(UnitID ident, HeroType type, u32 requiredFame, items::Slots::Type items, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(ident, Upkeep(upkeep,0,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items), requiredFame(requiredFame) { }
+  HeroSpec(HeroType type, u32 requiredFame, items::Slots items, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+    UnitSpec(UnitID::SETTLERS, Upkeep(upkeep,0,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items), requiredFame(requiredFame) { }
   
   const HeroType type;
-  const items::Slots::Type items;
+  const items::Slots items;
   const u32 requiredFame;
   
   Type productionType() const override { return Type::HERO; }

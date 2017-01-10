@@ -135,18 +135,4 @@ const Item::Type* Item::typeForItem(TypeID type)
   return &types[static_cast<u16>(type)];
 }
 
-//enum class Class : u8 { MELEE = 0, RANGED, MELEE_STAFF, STAFF_WAND, ARMOR, MISC };
-
-static Slots slots[] = {
-  Slots({{ {Class::MELEE,Class::RANGED}, {Class::ARMOR}, {Class::MISC} }}, {{145, 149, 148}}),
-  Slots({{ {Class::MELEE,Class::STAFF_WAND}, {Class::ARMOR}, {Class::MISC} }}, {{146, 149, 148}}),
-  Slots({{ {Class::STAFF_WAND}, {Class::MISC}, {Class::MISC} }}, {{147, 148, 148}}),
-  Slots({{ {Class::MELEE},{Class::ARMOR},{Class::MISC} }}, {{144, 149, 148}})
-};
-
-const Slots* Slots::slotsFor(Slots::Type type)
-{
-  return &slots[static_cast<u16>(type)];
-}
-
 

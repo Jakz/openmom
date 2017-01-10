@@ -62,6 +62,7 @@ class YAML_CPP_API Node {
   bool operator!() const { return !IsDefined(); }
   
   // custom conversions
+  operator int32_t() const { return this->as<int32_t>(); }
   operator int16_t() const { return this->as<int16_t>(); }
   operator uint16_t() const { return this->as<uint16_t>(); }
   const std::string& asString() const { return this->Scalar(); }

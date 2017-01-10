@@ -58,12 +58,6 @@ static const RaceUnitSpec raceSpecs[] = {
 
 // HeroSpec(UnitID ident, HeroType type, u32 requiredFame, items::Slots::Type items, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
 
-
-static const HeroSpec heroSpecs[] = {
-  HeroSpec(UnitID::HERO_DWARF, HeroType::HERO, 0, items::Slots::Type::WARRIOR, 2, -1,    5, RangedInfo(),     4, 10, 11, 1,    1, 1,   {Skills::LUCKY, Skills::MOUNTAINWALK}),
-  HeroSpec(UnitID::HERO_ORC_WARRIOR, HeroType::HERO, 0, items::Slots::Type::WARRIOR, 2, -1,   6, RangedInfo(),    4, 6, 8, 1,    1, 1,   {Skills::MOUNTAINWALK})
-};
-
 // SummonSpec(UnitID ident, s16 upkeep, s16 cost, s16 melee, s16 ranged, Ranged rangedType, s16 ammo, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
 static const SummonSpec summonSpecs[] = {
   SummonSpec(UnitID::MAGIC_SPIRIT, School::ARCANE, 1, 30,    5, RangedInfo(),    4, 8, 10, 1,     1, 2,   {Skills::MELD, Skills::SWIMMING, Skills::NON_CORPOREAL}),
@@ -95,12 +89,6 @@ const RaceUnitSpec* UnitSpec::raceSpec(UnitID unit, RaceID race)
   return spec != end(raceSpecs) ? spec : nullptr;
 }
 
-const HeroSpec* UnitSpec::heroSpec(UnitID unit)
-{
-  const HeroSpec* spec =  find_if(begin(heroSpecs), end(heroSpecs), [&](const HeroSpec& spec) { return spec.ident == unit; } );
-  return spec != end(heroSpecs) ? spec : nullptr;
-}
-
 const SummonSpec* UnitSpec::summonSpec(UnitID unit)
 {
   const SummonSpec* spec =  find_if(begin(summonSpecs), end(summonSpecs), [&](const SummonSpec& spec) { return spec.ident == unit; } );
@@ -109,10 +97,7 @@ const SummonSpec* UnitSpec::summonSpec(UnitID unit)
 
 const UnitSpec* UnitSpec::unitSpec(UnitID unit, RaceID race)
 {
-  const UnitSpec* spec = heroSpec(unit);
-  if (spec) return spec;
-  
-  spec = summonSpec(unit);
+  const UnitSpec* spec = summonSpec(unit);
   if (spec) return spec;
   
   spec = raceSpec(unit, race);

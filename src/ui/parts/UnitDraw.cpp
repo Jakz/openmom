@@ -53,7 +53,7 @@ void UnitDraw::drawStatic(const Army *army, s16 x, s16 y, bool forceDraw)
     
     bindPlayerColorPalette(army->getOwner()->color);
     
-    const SpriteInfo& info = GfxData::unitGfxSpec(first->spec).still;
+    const SpriteInfo& info = GfxData::unitGfx(first->spec).still;
     
     if (!army->isPatrolling())
       Gfx::draw(info, x+1, y+1);
@@ -76,7 +76,7 @@ void UnitDraw::drawStatic(const Unit *unit, s16 x, s16 y, bool backdrop, bool gr
   
   bindPlayerColorPalette(unit->getArmy()->getOwner()->color);
   
-  const SpriteInfo& info = GfxData::unitGfxSpec(unit->spec).still;
+  const SpriteInfo& info = GfxData::unitGfx(unit->spec).still;
   
   if (grayScale)
     Gfx::drawGrayScale(info, x+1, y+1);
@@ -98,7 +98,7 @@ void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
   
   bindPlayerColorPalette(army->getOwner()->color);
 
-  const SpriteInfo& info = GfxData::unitGfxSpec(first->spec).still;
+  const SpriteInfo& info = GfxData::unitGfx(first->spec).still;
   Gfx::draw(info, x+1, y+1);
   
   School school = first->glow();
@@ -110,7 +110,7 @@ void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
 
 void UnitDraw::drawHeroPortrait(const Hero *unit, s16 x, s16 y)
 {
-  Gfx::draw(GfxData::heroGfxSpec(unit->spec), x, y);
+  Gfx::draw(GfxData::unitGfx(unit->spec).hero.portrait, x, y);
 }
 
 
@@ -155,7 +155,7 @@ void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realU
   
   for (int i = 0; i < unit->figures; ++i)
   {    
-    Gfx::draw(GfxData::unitGfxSpec(unit).fullFigure.frame(2, 2), x+o[i].x, y+o[i].y);
+    Gfx::draw(GfxData::unitGfx(unit).fullFigure.frame(2, 2), x+o[i].x, y+o[i].y);
     
     //FIXME: commented to test lbx
     /*if (glow != NO_SCHOOL)
@@ -173,7 +173,7 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
 {
   int action = 1;
   
-  if (caction == CombatAction::MOVE || (caction == CombatAction::STAY && GfxData::unitGfxSpec(unit->spec).isFlyingFigure))
+  if (caction == CombatAction::MOVE || (caction == CombatAction::STAY && GfxData::unitGfx(unit->spec).isFlyingFigure))
   {
     if (Gfx::fticks%6 < 2)
       action = 0;
@@ -192,7 +192,7 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
   
   bindPlayerColorPalette(unit->getArmy()->getOwner()->color);
 
-  SpriteInfo sprite = GfxData::unitGfxSpec(unit->spec).fullFigure.relative(static_cast<u8>(facing));
+  SpriteInfo sprite = GfxData::unitGfx(unit->spec).fullFigure.relative(static_cast<u8>(facing));
   
   School glow = unit->glow();
   

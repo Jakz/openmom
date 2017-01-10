@@ -38,7 +38,10 @@ void SkillDraw::draw(const Unit* unit)
     for (int i = 0; i < 3; ++i, ++curOffset)
     {
       if (!hero->itemAt(i))
-        drawSkill(curOffset, items::Slots::slotsFor(hero->getSpec()->items)->sprites[i], "", base.x, base.y);
+      {
+        // TODO: fix with new management
+        //drawSkill(curOffset, items::Slots::slotsFor(hero->getSpec()->items)->sprites[i], "", base.x, base.y);
+      }
     }
   }
   else
