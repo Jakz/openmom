@@ -303,7 +303,7 @@ public:
   bool is(SkillBase base) const override { return this->base == base || existingSkill.is(base); }
 };
 
-using skill_init_list = std::initializer_list<const Skill*>;
+using skill_init_list = std::vector<const Skill*>;
 
 struct skill_list
 {
@@ -316,7 +316,6 @@ public:
   
   skill_list() : skills() { }
   skill_list(const skill_init_list& skills) : skills(skills) { }
-  skill_list(const decltype(skills)& skills) : skills(skills) { }
   
   void push_back(const Skill* skill) { skills.push_back(skill); }
   

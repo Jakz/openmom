@@ -139,6 +139,34 @@ skills:
     visuals:
       icon: [lbx, special2, 19]
       i18n: skill_thrown
+  - identifier: fire_breath_3
+    type: native
+    effects:
+      - type: special_attack
+        kind: fire_breath
+        value: 3
+    visuals:
+      icon: [lbx, special2, 27]
+      i18n: skill_fire_breath
+  - identifier: fire_breath_30
+    type: native
+    effects:
+      - type: special_attack
+        kind: fire_breath
+        value: 30
+    visuals:
+      icon: [lbx, special2, 27]
+      i18n: skill_fire_breath
+  - identifier: resistance_to_all_1
+    type: native
+    effects:
+      - type: army_bonus
+        property: resistance
+        value: 1
+        stackable_group: resistance_to_all
+    visuals:
+      icon: [lbx, special, 33]
+      i18n: skill_resistance_to_all
 # hero abilities
   - identifier: constitution
     type: hero

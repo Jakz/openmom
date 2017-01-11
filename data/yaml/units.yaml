@@ -187,7 +187,7 @@ units:
     figures: 1
     movement: 1
     sight: 2
-    skills: [ meld_with_node, swimming, non_corporeal, resistance_to_all ]
+    skills: [ meld_with_node, swimming, non_corporeal, resistance_to_all_1 ]
     visuals:
       i18n: funit_guardian_spirit
       icon: [lbx, units2, 56]
@@ -207,7 +207,7 @@ units:
     figures: 4
     movement: 2
     sight: 1
-    skills: [ to_hit_1, fiery_breath_3 ]
+    skills: [ to_hit_1, fire_breath_3 ]
     visuals:
       i18n: funit_hell_hounds
       icon: [lbx, units2, 45]

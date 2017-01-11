@@ -256,10 +256,39 @@ template<> const SkillEffect* yaml::parse(const N& node)
     float multiplier = parse<float>(node["multiplier"]);
     return new UnitLevelBonus(property, multiplier);
   }
+  else if (type == "army_bonus")
+  {
+    using sgroup_t = ArmyBonus::StackableGroup;
+    
+    static sgroup_t base = sgroup_t::START;
+    static std::unordered_map<std::string, sgroup_t> groups = { };
+    
+    bool hasStackableGroup = node.getWithoutCheck("stackable_group").IsDefined();
+    sgroup_t groupId = sgroup_t::NONE;
+    
+    if (hasStackableGroup)
+    {
+      const std::string& groupName = node["stackable_group"];
+      if (groups.find(groupName) == groups.end())
+      {
+        groups[groupName] = base;
+        groupId = base;
+        base = static_cast<sgroup_t>(static_cast<size_t>(base)+1);
+      }
+      else
+        base = groups[groupName];
+    }
+    
+    Property property = parse<Property>(node["property"]);
+    s16 value = parse<s16>(node["value"]);
+    
+    return new ArmyBonus(property, value, ArmyBonus::Type::WHOLE_ARMY, groupId);
+  }
   else if (type == "special_attack")
   {
     static std::unordered_map<std::string, SimpleEffect::Type> mapping = {
-      { "thrown_weapon", SimpleEffect::Type::THROWN_ATTACK }
+      { "thrown_weapon", SimpleEffect::Type::THROWN_ATTACK },
+      { "fire_breath", SimpleEffect::Type::FIRE_BREATH }
     };
     
     if (mapping.find(node["kind"]) == mapping.end())
@@ -303,7 +332,6 @@ template<> const SkillEffect* yaml::parse(const N& node)
     
     return new MovementEffect(kind);
   }
-  
   else
   {
     assert(false);
@@ -332,15 +360,12 @@ template<> const Skill* yaml::parse(const N& node)
   return new skills::ConcreteSkill(type, effects, visualInfo);
 }
 
-template<> void yaml::parse(const N& node, skill_list& skills)
+template<> void yaml::parse(const N& node, skill_init_list& skills)
 {
   assert(node.IsSequence());
-  std::vector<const Skill*> skills_vector;
-  std::transform(node.begin(), node.end(), std::back_inserter(skills_vector), [](const std::string& identifier) {
+  std::transform(node.begin(), node.end(), std::back_inserter(skills), [](const std::string& identifier) {
     return Data::skill(identifier);
   });
-  
-  skills = skills_vector;
 }
 
 template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
@@ -360,7 +385,7 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
   s16 upkeep = node["upkeep"];
   s16 cost = node["cost"];
   RangedInfo ranged = parse<RangedInfo>(node["ranged"]);
-  skill_list skills = optionalParse<skill_list>(node, "skills", skill_list());
+  skill_init_list skills = optionalParse<skill_init_list>(node, "skills", skill_init_list());
 
   const N visuals = node["visuals"];
   SpriteInfo gfxIcon = parse<SpriteInfo>(visuals["icon"]);
@@ -387,7 +412,7 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
                             figures,
                             movement,
                             sight,
-                            { } // TODO
+                            skills // TODO
     );
   }
   else if (type == "hero")
@@ -412,7 +437,7 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
                         figures,
                         movement,
                         sight,
-                        { } // TODO
+                        skills // TODO
     );
     
     data.second.hero.portrait = parse<SpriteInfo>(visuals["portrait"]);
@@ -433,7 +458,7 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
                                 figures,
                                 movement,
                                 sight,
-                                { } // TODO
+                                skills // TODO
     );
     
     data.second.fantastic.summonFigure = parse<SpriteInfo>(visuals["summon"]);

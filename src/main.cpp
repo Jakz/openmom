@@ -71,6 +71,8 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::RESOURCE);
   lbx::Repository::loadLBX(LBXID::SCROLL);
   lbx::Repository::loadLBX(LBXID::SPECFX);
+  lbx::Repository::loadLBX(LBXID::SPECIAL);
+  lbx::Repository::loadLBX(LBXID::SPECIAL2);
   lbx::Repository::loadLBX(LBXID::SPELLS);
   lbx::Repository::loadLBX(LBXID::SPELLSCR);
   lbx::Repository::loadLBX(LBXID::UNITVIEW);

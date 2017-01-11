@@ -116,7 +116,7 @@ public:
   
   bool sameProperty(Property property) const { return this->property == property; }
   
-  virtual const s16 getValue(const Unit* unit) const { return value; }
+  virtual s16 getValue(const Unit* unit) const { return value; }
   
   // TODO: finish
 };
@@ -144,7 +144,7 @@ private:
 public:
   UnitLevelBonus(Property property, float multiplier) : UnitBonus(property, 0), multiplier(multiplier) { }
 
-  const s16 getValue(const Unit* unit) const override;
+  s16 getValue(const Unit* unit) const override;
 };
 
 class FilterUnitBonus : public UnitBonus
@@ -153,22 +153,26 @@ public:
   
   FilterUnitBonus(Property property, s16 value, School school) : UnitBonus(property, value), school(school) { }
 
-  const s16 getValue(const Unit* unit) const override;
+  s16 getValue(const Unit* unit) const override;
   
   const School school;
 };
 
 class ArmyBonus : public PropertyBonus
 {
+public:
+  enum class StackableGroup : u16 { NONE = 0, START = 1 };
+  
 protected:
+  StackableGroup group;
   bool applicableOn(const Unit* unit) const;
   
 public:
   const enum class Type { WHOLE_ARMY, NORMAL_UNITS } target;
   
-  ArmyBonus(Property property, s16 value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, value), target(target) { }
+  ArmyBonus(Property property, s16 value, Type target, StackableGroup group = StackableGroup::NONE) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, value), target(target), group(group) { }
   
-  const s16 getValue(const Unit* unit) const override;
+  s16 getValue(const Unit* unit) const override;
 };
 
 class ArmyLevelBonus : public ArmyBonus
@@ -179,7 +183,7 @@ private:
 public:
   ArmyLevelBonus(Property property, float multiplier, Type target) : ArmyBonus(property, 0, target), multiplier(multiplier) { }
   
-  const s16 getValue(const Unit* unit) const override;
+  s16 getValue(const Unit* unit) const override;
 };
 
 class CombatBonus : public SkillEffect
