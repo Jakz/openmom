@@ -251,6 +251,7 @@ namespace skills
     SpriteInfo icon;
     I18 name;
     bool hideValue;
+    bool hidden;
   };
   
   class ConcreteSkill : public Skill

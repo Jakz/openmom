@@ -228,11 +228,16 @@ template<typename T> T yaml::optionalParse(const N& node, const char* key, T def
 
 template<> void yaml::parse(const N& node, SpriteInfo& v)
 {
-  assert(node.IsSequence());
-  if (node[0] == "lbx")
-    v = SpriteInfo(parse<LBXID>(node[1]), node[2]);
+  if (node.asString() == "none")
+    v = LSI_PLACEHOLD;
   else
-    assert(false);
+  {
+    assert(node.IsSequence());
+    if (node[0] == "lbx")
+      v = SpriteInfo(parse<LBXID>(node[1]), node[2]);
+    else
+      assert(false);
+  }
 }
 
 template<> const SkillEffect* yaml::parse(const N& node)
@@ -286,6 +291,9 @@ template<> const SkillEffect* yaml::parse(const N& node)
   {
     static std::unordered_map<std::string, SimpleEffect::Type> mapping = {
       { "mountaineer", SimpleEffect::Type::MOUNTAINWALK },
+      { "flying", SimpleEffect::Type::FLYING },
+      { "swimming", SimpleEffect::Type::SWIMMING },
+      { "non_corporeal", SimpleEffect::Type::NON_CORPOREAL }
     };
     
     if (mapping.find(node["kind"]) == mapping.end())
@@ -313,9 +321,13 @@ template<> const Skill* yaml::parse(const N& node)
   auto visuals = node["visuals"];
   
   skills::VisualInfo visualInfo;
-  visualInfo.name = i18n::keyForString(visuals["i18n"]);
-  visualInfo.hideValue =  optionalParse(visuals, "hideValue", false);
-  visualInfo.icon = parse<SpriteInfo>(visuals["icon"]);
+  visualInfo.hidden = optionalParse(visuals, "hidden", false);
+  if (!visualInfo.hidden)
+  {
+    visualInfo.name = i18n::keyForString(visuals["i18n"]);
+    visualInfo.hideValue =  optionalParse(visuals, "hideValue", false);
+    visualInfo.icon = parse<SpriteInfo>(visuals["icon"]);
+  }
   
   return new skills::ConcreteSkill(type, effects, visualInfo);
 }

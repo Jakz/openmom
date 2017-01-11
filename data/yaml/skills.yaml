@@ -7,6 +7,28 @@ skills:
     visuals:
       icon: [lbx, special, 2]
       i18n: skill_mountaineer
+  - identifier: non_corporeal
+    type: native
+    effects:
+      - type: movement
+        kind: non_corporeal
+    visuals:
+      icon: [lbx, special, 22]
+      i18n: skill_non_corporeal
+  - identifier: swimming
+    type: native
+    effects:
+      - type: movement
+        kind: swimming
+    visuals:
+      hidden: true
+  - identifier: flying
+    type: native
+    effects:
+      - type: movement
+        kind: flying
+    visuals:
+      hidden: true
   - identifier: to_hit_1
     type: native
     effects:
