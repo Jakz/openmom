@@ -31,19 +31,19 @@ const s16 FilterUnitBonus::getValue(const Unit* unit) const {
 
 namespace movement_effect_impl
 {
-  const MovementEffect FORESTWALK = MovementEffect(SimpleEffect::Type::FORESTWALK, true);
-  const MovementEffect FLYING = MovementEffect(SimpleEffect::Type::FLYING, false);
-  const MovementEffect UNDERGROUND = MovementEffect(SimpleEffect::Type::UNDERGROUND, false);
-  const MovementEffect MOUNTAINWALK = MovementEffect(SimpleEffect::Type::MOUNTAINWALK, true);
-  const MovementEffect NON_CORPOREAL = MovementEffect(SimpleEffect::Type::NON_CORPOREAL, false);
-  const MovementEffect PATH_FINDER = MovementEffect(SimpleEffect::Type::PATH_FINDER, true);
-  const MovementEffect PLANAR_TRAVEL = MovementEffect(SimpleEffect::Type::PLANAR_TRAVEL, false);
-  const MovementEffect TELEPORT = MovementEffect(SimpleEffect::Type::TELEPORT, false);
-  const MovementEffect SWIMMING = MovementEffect(SimpleEffect::Type::SWIMMING, false);
-  const MovementEffect WINDWALK = MovementEffect(SimpleEffect::Type::WINDWALK, true);
-  const MovementEffect SAILING = MovementEffect(SimpleEffect::Type::SAILING, true);
-  const MovementEffect DESERTWALK = MovementEffect(SimpleEffect::Type::DESERTWALK, true);
-  const MovementEffect SWAMPWALK = MovementEffect(SimpleEffect::Type::SWAMPWALK, true);
+  const MovementEffect FORESTWALK = MovementEffect(SimpleEffect::Type::FORESTWALK);
+  const MovementEffect FLYING = MovementEffect(SimpleEffect::Type::FLYING);
+  const MovementEffect UNDERGROUND = MovementEffect(SimpleEffect::Type::UNDERGROUND);
+  const MovementEffect MOUNTAINWALK = MovementEffect(SimpleEffect::Type::MOUNTAINWALK);
+  const MovementEffect NON_CORPOREAL = MovementEffect(SimpleEffect::Type::NON_CORPOREAL);
+  const MovementEffect PATH_FINDER = MovementEffect(SimpleEffect::Type::PATH_FINDER);
+  const MovementEffect PLANAR_TRAVEL = MovementEffect(SimpleEffect::Type::PLANAR_TRAVEL);
+  const MovementEffect TELEPORT = MovementEffect(SimpleEffect::Type::TELEPORT);
+  const MovementEffect SWIMMING = MovementEffect(SimpleEffect::Type::SWIMMING);
+  const MovementEffect WINDWALK = MovementEffect(SimpleEffect::Type::WINDWALK);
+  const MovementEffect SAILING = MovementEffect(SimpleEffect::Type::SAILING);
+  const MovementEffect DESERTWALK = MovementEffect(SimpleEffect::Type::DESERTWALK);
+  const MovementEffect SWAMPWALK = MovementEffect(SimpleEffect::Type::SWAMPWALK);
 }
 
 

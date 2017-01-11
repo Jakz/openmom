@@ -1,3 +1,21 @@
 entries:
-  - skill_to_hit: To Hit
+  unit_racial_spearmen: Spearmen
+  unit_racial_swordsmen: Swordsmen
+  unit_racial_bowmen: Bowmen
+  unit_racial_cavalry: Cavalry
+  unit_racial_shamans: Shamans
+  unit_racial_settlers: Settlers
+  
+  unit_racial_berserkers: Berserkers
+
+  funit_magic_spirit: Magic Spirit
+  funit_guardian_spriti: Guardian Spriti
+  
+  funit_hell_hounds: Hell Hounds
+  funit_great_drake: Great Drake
+  
+  hero_dwarf: Dwarf
+  hero_orc_warrior: Orc Warrior
+  
+  skill_to_hit: To Hit
   

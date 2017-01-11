@@ -1,4 +1,12 @@
 skills:
+  - identifier: mountaineer
+    type: native
+    effects:
+      - type: movement
+        kind: mountaineer
+    visuals:
+      icon: [lbx, special, 2]
+      i18n: skill_mountaineer
   - identifier: to_hit_1
     type: native
     effects:
@@ -27,6 +35,46 @@ skills:
     visuals:
       icon: [lbx, special2, 14]
       i18n: skill_to_hit
+  - identifier: first_strike
+    type: native
+    effects:
+      - type: ability
+        kind: first_strike
+    visuals:
+      icon: [lbx, special, 29]
+      i18n: skill_first_strike
+  - identifier: healer
+    type: native
+    effects:
+      - type: ability
+        kind: healer
+    visuals:
+      icon: [lbx, special, 16]
+      i18n: skill_healer
+  - identifier: purify
+    type: native
+    effects:
+      - type: ability
+        kind: purify
+    visuals:
+      icon: [lbx, special, 25]
+      i18n: skill_purify
+  - identifier: create_outpost
+    type: native
+    effects:
+      - type: ability
+        kind: create_outpost
+    visuals:
+      icon: [lbx, special, 17]
+      i18n: skill_create_outpost
+  - identifier: meld_with_node
+    type: native
+    effects:
+      - type: ability
+        kind: meld_with_node
+    visuals:
+      icon: [lbx, special, 40]
+      i18n: skill_meld_with_node
   - identifier: large_shield
     type: native
     effects:
@@ -51,3 +99,32 @@ skills:
     visuals:
       icon: [lbx, special, 14]
       i18n: skill_large_shield
+  - identifier: thrown_1
+    type: native
+    effects:
+      - type: special_attack
+        kind: thrown_weapon
+        value: 1
+    visuals:
+      icon: [lbx, special2, 19]
+      i18n: skill_thrown
+  - identifier: thrown_3
+    type: native
+    effects:
+      - type: special_attack
+        kind: thrown_weapon
+        value: 3
+    visuals:
+      icon: [lbx, special2, 19]
+      i18n: skill_thrown
+# hero abilities
+  - identifier: constitution
+    type: hero
+    effects:
+      - type: unit_level_bonus
+        property: hits
+        multiplier: 1.0
+    visuals:
+      icon: [lbx, special, 50]
+      i18n: skill_constitution
+  

@@ -14,7 +14,6 @@
 #include <unordered_map>
 #include <string>
 
-enum class UnitID : u16;
 enum class RaceID : u8;
 enum class SkillBase : u16;
 
@@ -242,7 +241,6 @@ private:
   static std::unordered_map<std::string, I18> customMapping;
   
   static std::unordered_map<I18, std::string, enum_hash> data;
-  static std::unordered_map<UnitID, std::string, enum_hash> units;
   static std::unordered_map<RaceID, race_names, enum_hash> races;
   static std::unordered_map<SkillBase, std::string, enum_hash> skills;
   static std::unordered_map<TileType, std::vector<std::string>, enum_hash> surveyorDescs;
@@ -253,7 +251,6 @@ public:
   
   static const char* c(I18 ident) { return data[ident].c_str(); }
   static const std::string& s(I18 ident) { return data[ident]; }
-  static const std::string& s(UnitID unit) { return units[unit]; }
   static const race_names& s(RaceID race) { return races[race]; }
   static const std::string& s(SkillBase skill) { return skills[skill]; }
   

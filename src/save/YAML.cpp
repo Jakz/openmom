@@ -80,6 +80,7 @@ std::string yaml::yamlPath(const std::string& fileName)
 
 template<> s16 yaml::parse(const N& node) { return node.operator s16(); }
 template<> u16 yaml::parse(const N& node) { return node.operator u16(); }
+template<> float yaml::parse(const N& node) { return node.as<float>(); }
 template<> bool yaml::parse(const N& node) { return node.as<bool>(); }
 
 template<typename T, typename std::enable_if<!std::is_pointer<T>::value, int>::type> T yaml::parse(const N& node)
@@ -205,6 +206,8 @@ template<> skills::Type yaml::parse(const N& node)
 {
   if (node == "native")
     return skills::Type::NATIVE;
+  else if (node == "hero")
+    return skills::Type::HERO;
   else
     assert(false);
 }
@@ -242,6 +245,57 @@ template<> const SkillEffect* yaml::parse(const N& node)
     s16 value = parse<s16>(node["value"]);
     return new UnitBonus(property, value);
   }
+  else if (type == "unit_level_bonus")
+  {
+    Property property = parse<Property>(node["property"]);
+    float multiplier = parse<float>(node["multiplier"]);
+    return new UnitLevelBonus(property, multiplier);
+  }
+  else if (type == "special_attack")
+  {
+    static std::unordered_map<std::string, SimpleEffect::Type> mapping = {
+      { "thrown_weapon", SimpleEffect::Type::THROWN_ATTACK }
+    };
+    
+    if (mapping.find(node["kind"]) == mapping.end())
+      assert(false);
+    
+    s16 value = parse<s16>(node["value"]);
+    SimpleEffect::Type kind = mapping[node["kind"]];
+    
+    return new SpecialAttackEffect(kind, value);
+  }
+  else if (type == "ability")
+  {
+    static std::unordered_map<std::string, SimpleEffect::Type> mapping = {
+      { "first_strike", SimpleEffect::Type::FIRST_STRIKE },
+      { "healer", SimpleEffect::Type::HEALER },
+      { "purify", SimpleEffect::Type::PURIFY },
+      { "create_outpost", SimpleEffect::Type::CREATE_OUTPOST },
+      { "meld_with_node", SimpleEffect::Type::MELD_NODE }
+    };
+    
+    if (mapping.find(node["kind"]) == mapping.end())
+      assert(false);
+    
+    SimpleEffect::Type kind = mapping[node["kind"]];
+
+    return new SimpleEffect(SkillEffect::Type::ABILITY, kind);
+  }
+  else if (type == "movement")
+  {
+    static std::unordered_map<std::string, SimpleEffect::Type> mapping = {
+      { "mountaineer", SimpleEffect::Type::MOUNTAINWALK },
+    };
+    
+    if (mapping.find(node["kind"]) == mapping.end())
+      assert(false);
+    
+    SimpleEffect::Type kind = mapping[node["kind"]];
+    
+    return new MovementEffect(kind);
+  }
+  
   else
   {
     assert(false);
@@ -266,6 +320,17 @@ template<> const Skill* yaml::parse(const N& node)
   return new skills::ConcreteSkill(type, effects, visualInfo);
 }
 
+template<> void yaml::parse(const N& node, skill_list& skills)
+{
+  assert(node.IsSequence());
+  std::vector<const Skill*> skills_vector;
+  std::transform(node.begin(), node.end(), std::back_inserter(skills_vector), [](const std::string& identifier) {
+    return Data::skill(identifier);
+  });
+  
+  skills = skills_vector;
+}
+
 template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
 {
   assert(node.IsMap());
@@ -283,6 +348,7 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
   s16 upkeep = node["upkeep"];
   s16 cost = node["cost"];
   RangedInfo ranged = parse<RangedInfo>(node["ranged"]);
+  skill_list skills = optionalParse<skill_list>(node, "skills", skill_list());
 
   const N visuals = node["visuals"];
   SpriteInfo gfxIcon = parse<SpriteInfo>(visuals["icon"]);
@@ -410,12 +476,9 @@ void yaml::parseLocalization()
   
   for (const auto entry : entries)
   {
-    for (const auto& map : entry)
-    {
-      const std::string& key = map.first;
-      const std::string& value = map.second;
-      i18n::mapCustomEntry(key, value);
-    }
+    const std::string& key = entry.first;
+    const std::string& value = entry.second;
+    i18n::mapCustomEntry(key, value);
   }
 }
 

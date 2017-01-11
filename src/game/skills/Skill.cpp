@@ -165,7 +165,7 @@ namespace skillimpl
   static const ConcreteSkill STONE_TOUCH3 = ConcreteSkill(SkillBase::STONE_TOUCH, {new SpecialAttackEffect(SpecialAttackEffect::Type::STONE_TOUCH, -3)}, false);
 
   // TODO: a parametric throw weapon is needed for hero ability
-  static const ConcreteSkill THROW_WEAPON1 = ConcreteSkill(SkillBase::THROW_WEAPON, {new SpecialAttackEffect(SpecialAttackEffect::Type::THROWN_ATTACK, 1)}, false);
+  /**/static const ConcreteSkill THROW_WEAPON1 = ConcreteSkill(SkillBase::THROW_WEAPON, {new SpecialAttackEffect(SpecialAttackEffect::Type::THROWN_ATTACK, 1)}, false);
   static const ConcreteSkill THROW_WEAPON2 = ConcreteSkill(SkillBase::THROW_WEAPON, {new SpecialAttackEffect(SpecialAttackEffect::Type::THROWN_ATTACK, 2)}, false);
 
   static const ConcreteSkill SCOUTING1 = ConcreteSkill(SkillBase::SCOUTING, {new UnitBonus(Property::SIGHT,1)}, false);

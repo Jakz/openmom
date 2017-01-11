@@ -79,7 +79,7 @@ public:
     DEATH_GAZE,
     STONE_GAZE,
     
-    
+    HEALER, 
     
     CREATE_OUTPOST,
     CREATE_ROAD,
@@ -204,8 +204,7 @@ public:
 class MovementEffect : public SimpleEffect
 {
 public:
-  MovementEffect(SimpleEffect::Type movement, bool shared) : SimpleEffect(SkillEffect::Type::MOVEMENT, movement), shared(shared) { }
-  const bool shared;
+  MovementEffect(SimpleEffect::Type movement) : SimpleEffect(SkillEffect::Type::MOVEMENT, movement) { }
 };
 
 class Effects

@@ -242,6 +242,7 @@ namespace skills
   enum class Type
   {
     NATIVE,
+    HERO,
     SPELL,
   };
   
@@ -314,6 +315,7 @@ public:
   
   skill_list() : skills() { }
   skill_list(const skill_init_list& skills) : skills(skills) { }
+  skill_list(const decltype(skills)& skills) : skills(skills) { }
   
   void push_back(const Skill* skill) { skills.push_back(skill); }
   

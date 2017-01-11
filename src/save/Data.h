@@ -2,6 +2,7 @@
 
 #include "Common.h"
 
+#include <string>
 #include <map>
 #include <unordered_map>
 #include <list>
@@ -10,6 +11,7 @@ class UnitSpec;
 class RaceUnitSpec;
 class Race;
 class Building;
+class Skill;
 
 class Data
 {
@@ -45,9 +47,13 @@ public:
     if (it != map.end())
       return it->second;
     else
+    {
+      LOGD("Data value not found for %s", ident.c_str());
       assert(false);
+    }
   }
   
+  static const Skill* skill(const key_type& ident) { return get<const Skill*>(ident); }
   static const Building* building(const key_type& ident) { return get<const Building*>(ident); }
   static const UnitSpec* unit(const key_type& ident) { return get<const UnitSpec*>(ident); }
   static const Race* race(const key_type& ident) { return get<const Race*>(ident); }

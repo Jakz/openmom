@@ -250,29 +250,6 @@ unordered_map<RaceID, i18n::race_names, enum_hash> i18n::races =
   {RaceID::TROLLS, { "Trolls", "Troll"} }
 };
 
-unordered_map<UnitID, string, enum_hash> i18n::units =
-{
-  {UnitID::SPEARMEN,"Spearmen"},
-  {UnitID::SWORDSMEN,"Swordsmen"},
-  {UnitID::BOWMEN,"Bowmen"},
-  {UnitID::CAVALRY,"Cavalry"},
-  {UnitID::SHAMANS,"Shaman"},
-  {UnitID::HALBERDIERS,"Helberdiers"},
-  {UnitID::PRIESTS,"Priests"},
-  {UnitID::MAGICIANS,"Magicians"},
-  {UnitID::ENGINEERS,"Engineers"},
-  {UnitID::SETTLERS,"Settlers"},
-  
-  {UnitID::BERSERKERS,"Berserkers"},
-  
-  {UnitID::HERO_DWARF,"Dwarf"},
-  {UnitID::HERO_ORC_WARRIOR,"Orc Warrior"},
-  
-  {UnitID::MAGIC_SPIRIT,"Magic Spirit"},
-  {UnitID::HELL_HOUNDS,"Hell Hounds"},
-  {UnitID::GREAT_DRAKE,"Great Drake"},
-};
-
 unordered_map<SkillBase, string, enum_hash> i18n::skills =
 {
   {SkillBase::HERO_AGILITY, "Agility"},

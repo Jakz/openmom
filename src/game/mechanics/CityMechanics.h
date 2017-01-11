@@ -14,7 +14,6 @@ class RaceUnitSpec;
 class Tile;
 
 enum class RaceID: u8;
-enum class UnitID : u16;
 
 namespace std
 {
