@@ -2,7 +2,10 @@
 #define _LEVEL_H_
 
 #include "Common.h"
+#include "Data.h"
+
 #include "Localization.h"
+
 
 #include <array>
 
@@ -27,48 +30,71 @@ enum class HeroLevelID : u8
   DEMIGOD
 };
 
-using level_bonuses = std::array<s16,5>;
+using level_bonuses = std::unordered_map<Property, s16, enum_hash>;
 
 class Level
 {
 protected:
-  s32 maxXP;
-
-public:
-  Level(I18 name, const Level* next, s32 maxXP, level_bonuses bonuses) : name(name), next(next), maxXP(maxXP), bonuses(bonuses) { }
-  
-  bool hasLeveled(s32 xp) const { return xp > maxXP && next; }
-  
-  const Level* next;
-  const I18 name;
+  s16 _index;
+  s32 _minXP;
+  bool _canAdvanceToNext;
   const level_bonuses bonuses;
-  virtual s16 index() const = 0;
+  const Level* const next;
+
+public:
+  Level(s16 index, I18 name, SpriteInfo icon, const Level* next, s32 minXP, level_bonuses bonuses, bool canAdvanceToNext = true) :
+  _index(index), visuals({name,icon}), next(next), _minXP(minXP), bonuses(bonuses), _canAdvanceToNext(canAdvanceToNext)
+  { }
+  
+  bool hasLeveled(s32 xp) const { return next && _canAdvanceToNext && xp >= next->_minXP; }
+  
+  s16 index() const { return _index; }
   s16 ordinal() const { return index() + 1; }
+  
+  s16 getBonusProperty(Property property) const { auto it = bonuses.find(property); return it != bonuses.end() ? it->second : 0; }
+  
+  struct
+  {
+    const I18 name;
+    const SpriteInfo icon;
+  } visuals;
+  
+  friend class experience_level;
 };
 
-class UnitLevel : public Level
+class experience_level
 {
-public:
-  UnitLevel(UnitLevelID ident, I18 name, const Level* next, s32 maxXP, level_bonuses bonuses) : Level(name,next,maxXP,bonuses), ident(ident) { }
-  
-  const UnitLevelID ident;
-  s16 index() const { return static_cast<s16>(ident); }
-  
-  static const UnitLevel RECRUIT, REGULAR, VETERAN, ELITE;
-  static constexpr const UnitLevel* const LEVELS[] = {&RECRUIT, &REGULAR, &VETERAN, &ELITE};
-};
+private:
+  const experience_levels* _levels;
+  const Level* _level;
+  s32 _xp;
 
-class HeroLevel : public Level
-{
+  void tryToLevelUp()
+  {
+    while (_levels && _level->hasLeveled(_xp))
+      _level = _level->next;
+  }
+  
 public:
-  HeroLevel(HeroLevelID ident, I18 name, const Level* next, s32 maxXP, level_bonuses bonuses) : Level(name,next,maxXP,bonuses), ident(ident) { }
-  
-  const HeroLevelID ident;
-  s16 index() const { return static_cast<s16>(ident); }
-  
-  static const HeroLevel HERO, MYRMIDON, CAPTAIN, COMMANDER, CHAMPION, LORD, GRAND_LORD, SUPER_HERO, DEMIGOD;
-  static constexpr const HeroLevel* const LEVELS[] = {&HERO, &MYRMIDON, &CAPTAIN, &COMMANDER, &CHAMPION, &LORD, &GRAND_LORD, &SUPER_HERO, &DEMIGOD};
+  experience_level(s32 startingXP, const experience_levels* levels) : _xp(startingXP), _levels(levels), _level(nullptr)
+  {
+    if (_levels)
+    {
+      _level = levels->front().get();
+      tryToLevelUp();
+    }
+  }
 
+  void increaseExperience(s32 amount)
+  {
+    _xp += amount;
+    tryToLevelUp();
+  }
+  
+  bool isValid() const { return _levels != nullptr; }
+  s32 xp() const { return _xp; }
+  const Level* level() const { return _level; }
+  s16 getBonusProperty(Property property) const { return _level ? _level->getBonusProperty(property) : 0; }
 };
 
 #endif

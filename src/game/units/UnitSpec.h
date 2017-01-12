@@ -146,7 +146,8 @@ enum class Property : u8
   FIGURES,
   AMMO,
   ALIVE_FIGURES,
-  THROWN_ATTACK //TODO: implement to get it from skills
+  THROWN_ATTACK, //TODO: implement to get it from skills
+  BREATH_ATTACK // TODO: implement to get it from skills
 };
 
 enum class MovementBaseType

@@ -34,7 +34,7 @@ void SkillDraw::draw(const Unit* unit)
   {
     const Hero* hero = static_cast<const Hero*>(unit);
     
-    drawSkill(curOffset++, unit->level->index(), i18n::s(unit->level->name)+Fonts::format(" (%u xp)",unit->getExperience()), base.x, base.y);
+    drawSkill(curOffset++, unit->level->visuals.icon, i18n::s(unit->level->visuals.name)+Fonts::format(" (%u xp)",unit->getExperience()), base.x, base.y);
     for (int i = 0; i < 3; ++i, ++curOffset)
     {
       if (!hero->itemAt(i))
@@ -49,7 +49,7 @@ void SkillDraw::draw(const Unit* unit)
     s16 p = unit->type() == Productable::Type::HERO ? page - 1 : page;
     
     if (unit->type() != Productable::Type::SUMMON && page == 0)
-      drawSkill(curOffset++, unit->level->index(), i18n::s(unit->level->name)+Fonts::format(" (%u xp)",unit->getExperience()), base.x, base.y);
+      drawSkill(curOffset++, unit->level->visuals.icon, i18n::s(unit->level->visuals.name)+Fonts::format(" (%u xp)",unit->getExperience()), base.x, base.y);
     
     for (int i = p*8; i < unit->skills()->size(); ++i)
     {

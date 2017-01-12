@@ -55,6 +55,10 @@ const Wizard& Data::wizard(const WizardID wizard)
 #include "Skill.h"
 #include "Race.h"
 #include "UnitSpec.h"
+#include "Level.h"
+
+experience_levels Data::normalUnitLevels;
+experience_levels Data::heroLevels;
 
 Data::unit_dependency_map_t Data::unitDependsOnBuilding;
 

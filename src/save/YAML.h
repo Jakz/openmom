@@ -27,4 +27,5 @@ public:
   static void parseLocalization();
   static void parseSkills();
   static void parseUnits();
+  static void parseLevels();
 };

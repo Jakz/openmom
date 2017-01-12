@@ -12,6 +12,9 @@ class RaceUnitSpec;
 class Race;
 class Building;
 class Skill;
+class Level;
+
+using experience_levels = std::vector<std::unique_ptr<const Level>>;
 
 class Data
 {
@@ -20,6 +23,8 @@ public:
   template<typename T> using map_t = std::unordered_map<key_type, T>;
   
   using unit_dependency_map_t = std::unordered_map<const UnitSpec*, const Building*>;
+  
+  static experience_levels normalUnitLevels, heroLevels;
   
 private:
   template<typename T> static std::unordered_map<key_type, T>& containerFor();
@@ -52,6 +57,9 @@ public:
       assert(false);
     }
   }
+  
+  static const experience_levels& experienceLevelsForUnits() { return normalUnitLevels; }
+  static const experience_levels& experienceLevelsForHeroes() { return heroLevels; }
   
   static const Skill* skill(const key_type& ident) { return get<const Skill*>(ident); }
   static const Building* building(const key_type& ident) { return get<const Building*>(ident); }

@@ -9,6 +9,7 @@
 #include "GfxData.h"
 #include "Localization.h"
 
+#include "Level.h"
 #include "UnitSpec.h"
 #include "Skill.h"
 #include "Effects.h"
@@ -33,6 +34,8 @@ public:
   Node(const YAML::Node& node) : YAML::Node(node) { }
   
   template<typename T> void keyNotFoundError(const T& key) const;
+  
+  template<typename T> void hasChild(const T& key) const { return YAML::Node::operator[](key).IsDefined(); }
   
   template<typename T> const YAML::Node getWithoutCheck(const T& key) const
   {
@@ -78,6 +81,7 @@ std::string yaml::yamlPath(const std::string& fileName)
   return Platform::instance()->getResourcePath() + "/data/yaml/" + fileName;
 }
 
+template<> s32 yaml::parse(const N& node) { return node.as<s32>(); }
 template<> s16 yaml::parse(const N& node) { return node.operator s16(); }
 template<> u16 yaml::parse(const N& node) { return node.operator u16(); }
 template<> float yaml::parse(const N& node) { return node.as<float>(); }
@@ -478,6 +482,40 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
   return data;
 }
 
+void yaml::parseLevels()
+{
+  N file = parse("levels.yaml");
+  auto node = file["levels"];
+  assert(node.IsMap());
+  
+  for (size_t i = 0; i < 2; ++i)
+  {
+    const N levels = i == 0 ? node["units"] : node["heroes"];
+    experience_levels& dest = i == 0 ? Data::normalUnitLevels : Data::heroLevels;
+    
+    assert(levels.IsSequence());
+    dest.resize(levels.size());
+  
+    const Level* next = nullptr;
+    for (ssize_t i = levels.size() - 1; i >= 0; --i)
+    {
+      const N node = levels[i];
+      
+      //const std::string& identifier = node["identifier"];
+      const s32 xp = optionalParse(node,"experience", 0);
+      bool canAdvanceToNext = optionalParse(node, "can_advance_to_next", true);
+      
+      SpriteInfo icon = parse<SpriteInfo>(node["visuals"]["icon"]);
+      I18 name = i18n::keyForString(node["visuals"]["i18n"]);
+      
+      const Level* level = new Level(i, name, icon, next, xp, level_bonuses(), canAdvanceToNext);
+      dest[i] = std::unique_ptr<const Level>(level);
+      next = level;
+    }
+  }
+  
+}
+
 void yaml::parseSkills()
 {
   N file = parse("skills.yaml");
@@ -523,6 +561,7 @@ void yaml::parse()
 {
   parseLocalization();
   parseSkills();
+  parseLevels();
   parseUnits();
   
   Data::getInfo<const Skill*>();

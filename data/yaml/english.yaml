@@ -26,6 +26,13 @@ entries:
   skill_resistance_to_all: Resistance To All
   skill_to_hit: To Hit
   skill_thrown: Thrown
+  
+  unit_level_recruit: Recruit
+  unit_level_regular: Regular
+  unit_level_veteran: Veteran
+  unit_level_elite: Elite
+  unit_level_ultra_elite: Ultra-Elite
+  unit_level_champion: Champion
 
 
   

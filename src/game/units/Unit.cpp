@@ -104,18 +104,8 @@ s16 Unit::getBonusProperty(Property property) const
   if (property == Property::FIGURES || property == Property::MOVEMENT_BASE_TYPE)
     return 0;
   
-  if (spec->productionType() != Productable::Type::SUMMON)
-  {
-    switch (property)
-    {
-      case Property::MELEE: bonus += level->bonuses[0]; break;
-      case Property::RANGED: bonus += level->bonuses[0]; break;
-      case Property::SHIELDS: bonus += level->bonuses[1]; break;
-      case Property::RESIST: bonus  += level->bonuses[2]; break;
-      case Property::HIT_POINTS: bonus += level->bonuses[3]; break;
-      default: break;
-    }
-  }
+
+  bonus += experience.getBonusProperty(property);
   
   switch (property)
   {

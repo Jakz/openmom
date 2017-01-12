@@ -7,6 +7,7 @@
 #include "Level.h"
 #include "UnitSpec.h"
 #include "SkillSet.h"
+#include "Data.h"
 
 enum class Property : u8;
 
@@ -52,7 +53,8 @@ private:
   Army* army;
 
 protected:
-  Unit(const UnitSpec* spec, const Level* level) : spec(spec), army(nullptr), _skills(*this), _health(*this), xp(0), selected(true), level(level)
+  Unit(const UnitSpec* spec, const Level* level) : spec(spec), army(nullptr), _skills(*this), _health(*this), selected(true), level(level),
+  experience(0, spec->type == UnitType::RACIAL ? &Data::experienceLevelsForUnits() : (spec->type == UnitType::HERO ? &Data::experienceLevelsForHeroes() : nullptr))
   {
     resetMoves();
     _health.healAll();
@@ -64,7 +66,7 @@ protected:
   
   bool selected;
   
-  s32 xp;
+  experience_level experience;
   s16 availableMoves;
 
 public:
@@ -72,7 +74,7 @@ public:
   void setArmy(Army* army) { this->army = army; }
   Army* getArmy() const { return army; }
   
-  s32 getExperience() const { return xp; }
+  s32 getExperience() const { return experience.xp(); }
   
   Productable::Type type() const { return spec->productionType(); }
   
@@ -94,13 +96,11 @@ public:
   void removeSpell(const Spell* spell);
   
   void turnBegin() {
-    xp += getProperty(Property::XP);
-    if (level && level->hasLeveled(xp))
-      level = level->next;
+    experience.increaseExperience(getProperty(Property::XP));
   }
   
   const Level* level;
-  const School school() const { return CHAOS; } // TODO
+  const School school() const { return School::CHAOS; } // TODO
   
   SkillSet* skills() { return &_skills; }
   const SkillSet* skills() const { return &_skills; }
@@ -118,7 +118,7 @@ protected:
   std::array<items::Item*, 3> items;
   
 public:
-  Hero(const HeroSpec* spec) : Unit(spec, &HeroLevel::HERO), items({nullptr}) { }
+  Hero(const HeroSpec* spec) : Unit(spec, Data::experienceLevelsForHeroes().front().get()), items({nullptr}) { }
   
   // const std::string name() const; TODO: name management
   const std::string title() const;
@@ -130,7 +130,7 @@ public:
 class RaceUnit : public Unit
 {
 public:
-  RaceUnit(const RaceUnitSpec* spec) : Unit(spec, &UnitLevel::RECRUIT) { } //TODO: starting level may change (according to buildings e wizard traits
+  RaceUnit(const RaceUnitSpec* spec) : Unit(spec, Data::experienceLevelsForUnits().front().get()) { } //TODO: starting level may change (according to buildings e wizard traits)
   
   const std::string name() const override;
 };

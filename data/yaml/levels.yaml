@@ -1,0 +1,80 @@
+levels:
+  units:
+    - identifier: level_recruit
+      experience: 0
+      bonuses: none
+      visuals:
+        i18n: unit_level_recruit
+        icon: [lbx, special, 102]
+    - identifier: level_regular
+      experience: 20
+      bonuses:
+        melee: 1
+        ranged: 1
+        thrown: 1
+        fire_breath: 1
+        resist: 1
+      visuals:
+        i18n: unit_level_regular
+        icon: [lbx, special, 103]
+    - identifier: level_veteran
+      experience: 60
+      bonuses:
+        melee: 1
+        ranged: 1
+        thrown: 1
+        fire_breath: 1
+        resist: 2
+      visuals:
+        i18n: unit_level_veteran
+        icon: [lbx, special, 104]        
+    - identifier: level_elite
+      experience: 120
+      can_advance_to_next: false
+      bonuses:
+        melee: 2
+        ranged: 2
+        thrown: 2
+        fire_breath: 2
+        defense: 1
+        resist: 3
+        hits: 1
+        to_hit: 1
+      visuals:
+        i18n: unit_level_elite
+        icon: [lbx, special, 105]        
+    - identifier: level_ultra_elite
+      can_advance_to_next: false
+      bonuses:
+        melee: 2
+        ranged: 2
+        thrown: 2
+        fire_breath: 2
+        defense: 2
+        resist: 4
+        hits: 1
+        to_hit: 2
+      visuals:
+        i18n: unit_level_ultra_elite
+        icon: [lbx, special, 106]    
+    - identifier: level_champion
+      can_advance_to_next: false
+      bonuses:
+        melee: 3
+        ranged: 3
+        thrown: 3
+        fire_breath: 3
+        defense: 2
+        resist: 5
+        hits: 2
+        to_hit: 3
+      visuals:
+        i18n: unit_level_champion
+        icon: [lbx, special, 107]   
+  heroes:
+    - identifier: level_hero
+      experience: 0
+      bonuses: none
+      visuals:
+        i18n: unit_level_recruit
+        icon: [lbx, special, 102]
