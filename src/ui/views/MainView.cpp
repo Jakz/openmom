@@ -159,21 +159,20 @@ void MainView::updateBuildButton()
 		buttons[BUILD]->deactivate();
 }
 
-SpriteInfo MainView::movementIconForType(const MovementEffect* effect)
+SpriteInfo MainView::movementIconForType(const MovementType effect)
 {
-  if (!effect) return LBXI(MAIN, 38);
-  else if (effect == Effects::SWIMMING) return LBXI(MAIN, 19);
-  else if (effect == Effects::FLYING) return LBXI(MAIN, 22);
-  else if (effect == Effects::SAILING) return LBXI(MAIN, 18);
-  else if (effect == Effects::FORESTWALK) return LBXI(MAIN, 21);
-  else if (effect == Effects::MOUNTAINWALK) return LBXI(MAIN, 20);
-  else if (effect == Effects::PATH_FINDER) return LBXI(MAIN, 23);
-  else if (effect == Effects::PLANAR_TRAVEL) return LBXI(MAIN, 36);
-  else if (effect == Effects::WINDWALK) return LBXI(MAIN, 37);
-  
-  //TODO: is it correct? since non corporeal is swimming implicitly
-  else if (effect == Effects::NON_CORPOREAL) return LBXI(MAIN, 19);
-
+  switch (effect)
+  {
+    case MovementType::NORMAL: return LBXI(MAIN, 38);
+    case MovementType::SWIMMING: return LBXI(MAIN, 19);
+    case MovementType::FLYING: return LBXI(MAIN, 22);
+    case MovementType::SAILING: return LBXI(MAIN, 18);
+    case MovementType::FORESTWALK: return LBXI(MAIN, 21);
+    case MovementType::MOUNTAINWALK: return LBXI(MAIN, 20);
+    case MovementType::PATH_FINDER: return LBXI(MAIN, 23);
+    case MovementType::PLANAR_TRAVEL: return LBXI(MAIN, 36);
+    case MovementType::WINDWALK: return LBXI(MAIN, 37);
+  }
   
   assert(false);
   return 0;
@@ -227,18 +226,18 @@ void MainView::draw()
       if (movement.size() > 0)
       {
         size_t i = 0;
-        bool hasFlying = movement.contains(Effects::FLYING);
-        for (const auto* effect : movement)
+        bool hasFlying = movement.contains(MovementType::FLYING);
+        for (const auto& effect : movement)
         {
           //TODO: maybe this should be decided by the algorithm which computes the movement type
-          if (effect == Effects::SWIMMING && hasFlying)
+          if (effect == MovementType::SWIMMING && hasFlying)
             continue;
           
           Gfx::draw(movementIconForType(effect), 306-10*i++, 167);
         }
       }
       else
-        Gfx::draw(movementIconForType(nullptr), 306, 167);
+        Gfx::draw(movementIconForType(MovementType::NORMAL), 306, 167);
     }
   }
   else if (substate == SURVEYOR)

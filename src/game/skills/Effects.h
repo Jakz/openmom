@@ -38,6 +38,7 @@ public:
   } type;
   
   SkillEffect(Type type) : type(type) { }
+  template<typename T> const T* as() const { return static_cast<const T*>(this); }
 };
 
 class SimpleEffect : public SkillEffect
@@ -45,20 +46,6 @@ class SimpleEffect : public SkillEffect
 public:
   const enum class Type : u16
   {
-    FORESTWALK = 0,
-    FLYING,
-    UNDERGROUND,
-    MOUNTAINWALK,
-    NON_CORPOREAL,
-    PATH_FINDER,
-    PLANAR_TRAVEL,
-    TELEPORT,
-    SWIMMING,
-    WINDWALK,
-    SAILING,
-    DESERTWALK,
-    SWAMPWALK,
-    
     IMMUNITY_MAGIC,
     IMMUNITY_ILLUSIONS,
     IMMUNITY_MISSILE,
@@ -204,17 +191,31 @@ public:
 };
 
 
-
-class MovementEffect : public SimpleEffect
+enum class MovementType
 {
-public:
-  MovementEffect(SimpleEffect::Type movement) : SimpleEffect(SkillEffect::Type::MOVEMENT, movement) { }
+  NORMAL = 0,
+  FORESTWALK,
+  FLYING,
+  UNDERGROUND,
+  MOUNTAINWALK,
+  NON_CORPOREAL,
+  PATH_FINDER,
+  PLANAR_TRAVEL,
+  TELEPORT,
+  SWIMMING,
+  WINDWALK,
+  SAILING,
 };
 
-class Effects
+class MovementEffect : public SkillEffect
 {
+private:
+  const MovementType _type;
+  
 public:
-  static const MovementEffect *FORESTWALK, *FLYING, *UNDERGROUND, *MOUNTAINWALK, *NON_CORPOREAL, *PATH_FINDER, *PLANAR_TRAVEL, *TELEPORT, *SWIMMING, *WINDWALK, *SAILING, *DESERTWALK, *SWAMPWALK;
+  MovementEffect(MovementType type) : SkillEffect(SkillEffect::Type::MOVEMENT), _type(type) { }
+  bool operator==(MovementType type) const { return _type == type; }
+  MovementType type() const { return _type; }
 };
 
 

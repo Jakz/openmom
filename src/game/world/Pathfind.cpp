@@ -18,7 +18,7 @@ bool MovementStrategy::movementAllowed(const movement_list& movement, const unit
   Tile* t = world->get(position);
   
   if ((t->type == TILE_WATER || t->type == TILE_SHORE))
-    return movement.contains(Effects::NON_CORPOREAL) || movement.contains(Effects::FLYING);
+    return movement.contains(MovementType::NON_CORPOREAL) || movement.contains(MovementType::FLYING);
   else
     return true;
 }
@@ -40,7 +40,7 @@ s16 MovementStrategy::cost(const movement_list& movement, const unit_list& units
   if (t->hasEnchantedRoad)
     return 0;
   
-  if (movement.contains(Effects::FLYING)) // TODO: check values, things are missing too?
+  if (movement.contains(MovementType::FLYING)) // TODO: check values, things are missing too?
     return 2;
   
   return 2;

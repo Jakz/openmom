@@ -16,6 +16,16 @@ entries:
   
   hero_dwarf: Dwarf
   hero_orc_warrior: Orc Warrior
-  
+
+  skill_constitution: Constitution  
+  skill_fire_breath: Fire Breath
+  skill_first_strike: First Strike
+  skill_large_shield: Large Shield
+  skill_meld_with_node: Meld With Node
+  skill_mountaineer: Mountaineer
+  skill_resistance_to_all: Resistance To All
   skill_to_hit: To Hit
+  skill_thrown: Thrown
+
+
   

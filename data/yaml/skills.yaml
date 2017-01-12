@@ -38,7 +38,7 @@ skills:
     visuals:
       icon: [lbx, special2, 14]
       i18n: skill_to_hit
-      hideValue: true
+      hide_value: true
   - identifier: to_hit_2
     type: native
     effects:
@@ -121,6 +121,7 @@ skills:
     visuals:
       icon: [lbx, special, 14]
       i18n: skill_large_shield
+      hide_value: true
   - identifier: thrown_1
     type: native
     effects:
@@ -175,6 +176,7 @@ skills:
         property: hits
         multiplier: 1.0
     visuals:
+      hide_value: true
       icon: [lbx, special, 50]
       i18n: skill_constitution
   

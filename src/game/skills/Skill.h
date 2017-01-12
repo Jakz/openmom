@@ -232,9 +232,6 @@ public:
   {
     bool operator() (const Skill *b1, const Skill* b2);
   } comparator;
-  
-  static bool isHeroBase(SkillBase base);
-  static bool isMovementBase(SkillBase base);
 };
 
 namespace skills
@@ -267,6 +264,7 @@ namespace skills
     Type type() const { return _type; }
     const effect_list& getEffects() const override { return _effects; }
     
+    const std::string name() const override;
     SpriteInfo icon() const override { return _visual.icon; }
   };
 }
@@ -343,8 +341,6 @@ public:
   static const Skill *DOOM_GAZE4, *DEATH_GAZE2, *DEATH_GAZE4, *STONE_GAZE1, *STONE_GAZE3, *STONE_GAZE4, *STONE_TOUCH3, *THROW_WEAPON1, *THROW_WEAPON2;
   
   static const Skill *SCOUTING1, *SCOUTING2, *SCOUTING3, *TO_HIT1, *TO_HIT2, *TO_HIT3, *MITHRIL_WEAPONS, *ADAMANTIUM_WEAPONS;
-
-  static const Skill *FORESTWALK, *FLYING, *UNDERGROUND, *MOUNTAINWALK, *NON_CORPOREAL, *PATH_FINDER, *PLANAR_TRAVEL, *TELEPORT, *SWIMMING, *WINDWALK, *SAILING, *DESERTWALK, *SWAMPWALK;
   
   static const Skill *IMMUNITY_MISSILE, *IMMUNITY_MAGIC, *IMMUNITY_ILLUSIONS;
   

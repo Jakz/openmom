@@ -98,6 +98,21 @@ bool SkillSet::hasSkill(const Skill* skill) const
   return std::find(this->begin(), this->end(), skill) != this->end();
 }
 
+bool SkillSet::has(const std::function<bool(const SkillEffect*)>& predicate) const
+{
+  return std::any_of(this->begin(), this->end(), [&predicate] (const Skill* skill) {
+    return std::any_of(skill->getEffects().begin(), skill->getEffects().end(), [&predicate] (const SkillEffect* effect) {
+      return predicate(effect);
+    });
+  });
+}
+
+bool SkillSet::has(MovementType type) const {
+  return has([type](const SkillEffect* effect) {
+    return effect->type == SkillEffect::Type::MOVEMENT && effect->as<MovementEffect>()->type() == type;
+  });
+}
+
 bool SkillSet::hasSkillEffect(const SkillEffect* effect) const
 {
   for (auto skill : *this)

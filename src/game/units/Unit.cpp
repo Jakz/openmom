@@ -70,9 +70,9 @@ s16 Unit::getBaseProperty(Property property) const
       return _health.aliveCount();
     case Property::MOVEMENT_BASE_TYPE:
     {
-      if (skills()->hasSkillEffect(Effects::FLYING))
+      if (skills()->has(MovementType::FLYING))
         return static_cast<s16>(MovementBaseType::FLYING);
-      else if (skills()->hasSkillEffect(Effects::SWIMMING))
+      else if (skills()->has(MovementType::SWIMMING))
         return static_cast<s16>(MovementBaseType::SWIMMING);
       else
         return static_cast<s16>(MovementBaseType::WALKING);

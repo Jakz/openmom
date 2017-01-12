@@ -318,17 +318,17 @@ template<> const SkillEffect* yaml::parse(const N& node)
   }
   else if (type == "movement")
   {
-    static std::unordered_map<std::string, SimpleEffect::Type> mapping = {
-      { "mountaineer", SimpleEffect::Type::MOUNTAINWALK },
-      { "flying", SimpleEffect::Type::FLYING },
-      { "swimming", SimpleEffect::Type::SWIMMING },
-      { "non_corporeal", SimpleEffect::Type::NON_CORPOREAL }
+    static std::unordered_map<std::string, MovementType> mapping = {
+      { "mountaineer", MovementType::MOUNTAINWALK },
+      { "flying", MovementType::FLYING },
+      { "swimming", MovementType::SWIMMING },
+      { "non_corporeal", MovementType::NON_CORPOREAL }
     };
     
     if (mapping.find(node["kind"]) == mapping.end())
       assert(false);
     
-    SimpleEffect::Type kind = mapping[node["kind"]];
+    MovementType kind = mapping[node["kind"]];
     
     return new MovementEffect(kind);
   }
@@ -353,7 +353,7 @@ template<> const Skill* yaml::parse(const N& node)
   if (!visualInfo.hidden)
   {
     visualInfo.name = i18n::keyForString(visuals["i18n"]);
-    visualInfo.hideValue =  optionalParse(visuals, "hideValue", false);
+    visualInfo.hideValue =  optionalParse(visuals, "hide_value", false);
     visualInfo.icon = parse<SpriteInfo>(visuals["icon"]);
   }
   

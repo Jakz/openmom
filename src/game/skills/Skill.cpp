@@ -8,58 +8,31 @@
 
 using namespace std;
 
-bool Skill::isHeroBase(SkillBase base)
+const std::string skills::ConcreteSkill::name() const
 {
-  switch (base) {
-    case SkillBase::HERO_AGILITY:
-    case SkillBase::HERO_ARCANE_POWER:
-    case SkillBase::HERO_ARMS_MASTER:
-    case SkillBase::HERO_BLADE_MASTER:
-    case SkillBase::HERO_CHARMED:
-    case SkillBase::HERO_CONSTITUTION:
-    case SkillBase::HERO_LEADERSHIP:
-    case SkillBase::HERO_LEGENDARY:
-    case SkillBase::HERO_LUCK:
-    case SkillBase::HERO_MIGHT:
-    case SkillBase::HERO_NOBLE:
-    case SkillBase::HERO_PRAYER_MASTER:
-    case SkillBase::HERO_SAGE:
-    case SkillBase::HERO_SPELL_CASTER:
-      return true;
-      
-    default: return false;
+  std::string base = i18n::s(_visual.name);
+  if (_visual.hideValue) return base;
+  else
+  {
+    const SkillEffect *effect = _effects[0];
+    
+    if (effect->type == SkillEffect::Type::UNIT_BONUS)
+      return string("+") + to_string(static_cast<const PropertyBonus*>(effect)->value) + " " + base;
+    else if (_effects[0]->type == SkillEffect::Type::SPECIAL_ATTACK)
+      return base + " (" + to_string(static_cast<const SpecialAttackEffect*>(effect)->strength) + ")";
   }
-}
-
-bool Skill::isMovementBase(SkillBase base)
-{
-  switch (base) {
-    case SkillBase::FORESTWALK:
-    case SkillBase::FLYING:
-    case SkillBase::UNDERGROUND:
-    case SkillBase::MOUNTAINWALK:
-    case SkillBase::NON_CORPOREAL:
-    case SkillBase::PATH_FINDER:
-    case SkillBase::PLANAR_TRAVEL:
-    case SkillBase::TELEPORT:
-    case SkillBase::SWIMMING:
-    case SkillBase::WINDWALK:
-    case SkillBase::SAILING:
-    case SkillBase::DESERTWALK:
-    case SkillBase::SWAMPWALK:
-      return true;
-      
-    default: return false;
-  }
+  
+  return base;
 }
 
 bool Skill::Comparator::operator()(const Skill *b1, const Skill *b2)
 {
-  if (isHeroBase(b1->base)) return true;
+  /* TODO: reenable after new management is complete by using skill->type */
+  /*if (isHeroBase(b1->base)) return true;
   else if (isHeroBase(b2->base)) return false;
   
   if (isMovementBase(b1->base)) return true;
-  else if (isMovementBase(b2->base)) return false;
+  else if (isMovementBase(b2->base)) return false;*/
   
   return i18n::s(b1->base).compare(i18n::s(b2->base)) < 0;
 }
@@ -119,18 +92,11 @@ const SpecialAttackEffect* ConcreteSkill::hasEffect(SimpleEffect::Type ident)
 
 namespace skillimpl
 {
-  static const ConcreteSkill MELD = ConcreteSkill(SkillBase::MELD, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::MELD_NODE)});
-  static const ConcreteSkill CREATE_OUTPOST = ConcreteSkill(SkillBase::CREATE_OUTPOST, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::CREATE_OUTPOST)});
   static const ConcreteSkill CREATE_ROAD = ConcreteSkill(SkillBase::CREATE_ROAD, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::CREATE_ROAD)});
   static const ConcreteSkill WALL_CRUSHING = ConcreteSkill(SkillBase::WALL_CRUSHING, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::WALL_CRUSHING)}); // maybe should be combat?
-  static const ConcreteSkill PURIFY = ConcreteSkill(SkillBase::MELD, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::PURIFY)});
   
   static const ConcreteSkill LUCKY = ConcreteSkill(SkillBase::LUCKY, UnitBonus::build({Property::TO_HIT, Property::TO_DEFEND, Property::RESIST}, 1));
   
-  /**/static const ConcreteSkill LARGE_SHIELD = ConcreteSkill(SkillBase::LARGE_SHIELD, {new UnitBonus(Property::SHIELDS_RANGED,2), new UnitBonus(Property::SHIELDS_CHAOS,2), new UnitBonus(Property::SHIELDS_LIFE,2), new UnitBonus(Property::SHIELDS_DEATH,2), new UnitBonus(Property::SHIELDS_NATURE,2), new UnitBonus(Property::SHIELDS_SORCERY,2)} );
-  static const ConcreteSkill RESISTANCE_TO_ALL = ConcreteSkill(SkillBase::RESISTANCE_TO_ALL, {new UnitBonus(Property::RESIST,1)});
-  
-  static const ConcreteSkill FIRST_STRIKE = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::FIRST_STRIKE)} );
   static const ConcreteSkill NEGATE_FIRST_STRIKE = ConcreteSkill(SkillBase::NEGATE_FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::NEGATE_FIRST_STRIKE)} );
   static const ConcreteSkill ARMOR_PIERCING = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::ARMOR_PIERCING)} );
   static const ConcreteSkill LONG_RANGE = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::LONG_RANGE)} );
@@ -179,25 +145,9 @@ namespace skillimpl
   static const ConcreteSkill MITHRIL_WEAPONS = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,1)});
   static const ConcreteSkill ADAMANTIUM_WEAPONS = ConcreteSkill(SkillBase::ADAMANTIUM_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,2)});
   
-  static const ConcreteSkill FORESTWALK = ConcreteSkill(SkillBase::FORESTWALK, {Effects::FORESTWALK});
-  static const ConcreteSkill FLYING = ConcreteSkill(SkillBase::FLYING, {Effects::FLYING});
-  static const ConcreteSkill UNDERGROUND = ConcreteSkill(SkillBase::UNDERGROUND, {Effects::UNDERGROUND});
-  static const ConcreteSkill MOUNTAINWALK = ConcreteSkill(SkillBase::MOUNTAINWALK, {Effects::MOUNTAINWALK});
-  static const ConcreteSkill NON_CORPOREAL = ConcreteSkill(SkillBase::NON_CORPOREAL, {Effects::NON_CORPOREAL});
-  static const ConcreteSkill PATH_FINDER = ConcreteSkill(SkillBase::PATH_FINDER, {Effects::PATH_FINDER});
-  static const ConcreteSkill PLANAR_TRAVEL = ConcreteSkill(SkillBase::PLANAR_TRAVEL, {Effects::PLANAR_TRAVEL});
-  static const ConcreteSkill TELEPORT = ConcreteSkill(SkillBase::TELEPORT, {Effects::TELEPORT});
-  static const ConcreteSkill SWIMMING = ConcreteSkill(SkillBase::SWIMMING, {Effects::SWIMMING});
-  static const ConcreteSkill WINDWALK = ConcreteSkill(SkillBase::WINDWALK, {Effects::WINDWALK});
-  static const ConcreteSkill DESERTWALK = ConcreteSkill(SkillBase::DESERTWALK, {Effects::DESERTWALK});
-  static const ConcreteSkill SWAMPWALK = ConcreteSkill(SkillBase::SWAMPWALK, {Effects::SWAMPWALK});
-
-  
   static const ConcreteSkill IMMUNITY_MAGIC = ConcreteSkill(SkillBase::IMMUNITY_MAGIC, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MAGIC), new UnitBonus(Property::RESIST, 50)} );
   static const ConcreteSkill IMMUNITY_MISSILE = ConcreteSkill(SkillBase::IMMUNITY_MISSILE, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MISSILE), new UnitBonus(Property::SHIELDS_RANGED, 50)} );
   static const ConcreteSkill IMMUNITY_ILLUSIONS = ConcreteSkill(SkillBase::IMMUNITY_ILLUSIONS, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_ILLUSIONS)} );
-  
-  
   
   static const ConcreteSkill HERO_AGILITY = ConcreteSkill(SkillBase::HERO_AGILITY, {new UnitLevelBonus(Property::SHIELDS, 1.0f)});
   // TODO: ARCANE_POWER
@@ -221,36 +171,27 @@ namespace skillimpl
   static const ConcreteSkill SPELL_RESIST_ELEMENTS = ConcreteSkill(SkillBase::SPELL_RESIST_ELEMENTS, UnitBonus::build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 3));
   static const ConcreteSkill SPELL_GIANT_STRENGTH = ConcreteSkill(SkillBase::SPELL_GIANT_STRENGTH, {new UnitBonus(Property::MELEE,1)} );
   static const ConcreteSkill SPELL_STONE_SKIN = ConcreteSkill(SkillBase::SPELL_STONE_SKIN, {new UnitBonus(Property::SHIELDS,1)} );
-  static const WrapSkill SPELL_SWIMMING = WrapSkill(SkillBase::SPELL_SWIMMING, SWIMMING);
-  static const WrapSkill SPELL_PATH_FINDER = WrapSkill(SkillBase::SPELL_PATH_FINDER, PATH_FINDER);
+  static const ConcreteSkill SPELL_SWIMMING = ConcreteSkill(SkillBase::SPELL_SWIMMING, {new MovementEffect(MovementType::SWIMMING)});
+  static const ConcreteSkill SPELL_PATH_FINDER = ConcreteSkill(SkillBase::SPELL_PATH_FINDER, {new MovementEffect(MovementType::PATH_FINDER)});
   static const ConcreteSkill SPELL_ELEMENTAL_ARMOR = ConcreteSkill(SkillBase::SPELL_ELEMENTAL_ARMOR, UnitBonus::build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 10));
   static const ConcreteSkill SPELL_IRON_SKIN = ConcreteSkill(SkillBase::SPELL_IRON_SKIN, {new UnitBonus(Property::SHIELDS,10)} );
 
   static const ConcreteSkill SPELL_RESIST_MAGIC = ConcreteSkill(SkillBase::SPELL_RESIST_MAGIC, {new UnitBonus(Property::RESIST,3)} );
   static const WrapSkill SPELL_GUARDIAN_WIND = WrapSkill(SkillBase::SPELL_GUARDIAN_WIND, IMMUNITY_MISSILE);
-  static const WrapSkill SPELL_FLYING = WrapSkill(SkillBase::SPELL_FLYING, FLYING);
   
   static const ConcreteSkill SPELL_BLESS = ConcreteSkill(SkillBase::SPELL_BLESS, UnitBonus::build({Property::RESIST_DEATH, Property::RESIST_CHAOS, Property::SHIELDS_DEATH, Property::SHIELDS_CHAOS}, 3));
   static const ConcreteSkill SPELL_ENDURANCE = ConcreteSkill(SkillBase::SPELL_ENDURANCE, {new UnitBonus(Property::MOVEMENT,1)} );
-  static const WrapSkill SPELL_HEROISM = WrapSkill(SkillBase::SPELL_HEROISM, FLYING); // TODO
   static const ConcreteSkill SPELL_HOLY_ARMOR = ConcreteSkill(SkillBase::SPELL_HOLY_ARMOR, {new UnitBonus(Property::SHIELDS,2)}); // TODO: should be correct
   static const ConcreteSkill SPELL_HOLY_WEAPON = ConcreteSkill(SkillBase::SPELL_HOLY_WEAPON, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::TO_HIT,1)});
-  static const WrapSkill SPELL_PLANAR_TRAVEL = WrapSkill(SkillBase::SPELL_PLANAR_TRAVEL, PLANAR_TRAVEL);
   static const WrapSkill SPELL_TRUE_SIGHT = WrapSkill(SkillBase::SPELL_TRUE_SIGHT, IMMUNITY_ILLUSIONS);
 
 }
 
-const Skill* Skills::MELD = &skillimpl::MELD;
-const Skill* Skills::CREATE_OUTPOST = &skillimpl::CREATE_OUTPOST;
 const Skill* Skills::CREATE_ROAD = &skillimpl::CREATE_ROAD;
 const Skill* Skills::WALL_CRUSHING = &skillimpl::WALL_CRUSHING; // maybe should be combat?
-const Skill* Skills::PURIFY = &skillimpl::PURIFY;
 
 const Skill* Skills::LUCKY = &skillimpl::LUCKY;
-const Skill* Skills::RESISTANCE_TO_ALL = &skillimpl::RESISTANCE_TO_ALL;
 
-const Skill* Skills::LARGE_SHIELD = &skillimpl::LARGE_SHIELD;
-const Skill* Skills::FIRST_STRIKE = &skillimpl::FIRST_STRIKE;
 const Skill* Skills::NEGATE_FIRST_STRIKE = &skillimpl::NEGATE_FIRST_STRIKE;
 const Skill* Skills::ARMOR_PIERCING = &skillimpl::ARMOR_PIERCING;
 const Skill* Skills::LONG_RANGE = &skillimpl::LONG_RANGE;
@@ -294,20 +235,6 @@ const Skill* Skills::TO_HIT3 = &skillimpl::TO_HIT3;
 const Skill* Skills::MITHRIL_WEAPONS = &skillimpl::MITHRIL_WEAPONS;
 const Skill* Skills::ADAMANTIUM_WEAPONS = &skillimpl::ADAMANTIUM_WEAPONS;
 
-const Skill* Skills::FORESTWALK = &skillimpl::FORESTWALK;
-const Skill* Skills::FLYING = &skillimpl::FLYING;
-const Skill* Skills::UNDERGROUND = &skillimpl::UNDERGROUND;
-const Skill* Skills::MOUNTAINWALK = &skillimpl::MOUNTAINWALK;
-const Skill* Skills::NON_CORPOREAL = &skillimpl::NON_CORPOREAL;
-const Skill* Skills::PATH_FINDER = &skillimpl::PATH_FINDER;
-const Skill* Skills::PLANAR_TRAVEL = &skillimpl::PLANAR_TRAVEL;
-const Skill* Skills::TELEPORT = &skillimpl::TELEPORT;
-const Skill* Skills::SWIMMING = &skillimpl::SWIMMING;
-const Skill* Skills::WINDWALK = &skillimpl::WINDWALK;
-const Skill* Skills::DESERTWALK = &skillimpl::DESERTWALK;
-const Skill* Skills::SWAMPWALK = &skillimpl::SWAMPWALK;
-
-
 const Skill* Skills::IMMUNITY_MAGIC = &skillimpl::IMMUNITY_MAGIC;
 const Skill* Skills::IMMUNITY_MISSILE = &skillimpl::IMMUNITY_MISSILE;
 const Skill* Skills::IMMUNITY_ILLUSIONS = &skillimpl::IMMUNITY_ILLUSIONS;
@@ -326,14 +253,14 @@ const Skill* Skills::SPELL_IRON_SKIN = &skillimpl::SPELL_IRON_SKIN;
 
 const Skill* Skills::SPELL_RESIST_MAGIC = &skillimpl::SPELL_RESIST_MAGIC;
 const Skill* Skills::SPELL_GUARDIAN_WIND = &skillimpl::SPELL_GUARDIAN_WIND;
-const Skill* Skills::SPELL_FLYING = &skillimpl::SPELL_FLYING;
+const Skill* Skills::SPELL_FLYING = nullptr;//TODO &skillimpl::SPELL_FLYING;
 
 const Skill* Skills::SPELL_BLESS = &skillimpl::SPELL_BLESS;
 const Skill* Skills::SPELL_ENDURANCE = &skillimpl::SPELL_ENDURANCE;
-const Skill* Skills::SPELL_HEROISM = &skillimpl::SPELL_HEROISM;
+const Skill* Skills::SPELL_HEROISM = nullptr;//TODO &skillimpl::SPELL_HEROISM;
 const Skill* Skills::SPELL_HOLY_ARMOR = &skillimpl::SPELL_HOLY_ARMOR;
 const Skill* Skills::SPELL_HOLY_WEAPON = &skillimpl::SPELL_HOLY_WEAPON;
-const Skill* Skills::SPELL_PLANAR_TRAVEL = &skillimpl::SPELL_PLANAR_TRAVEL;
+const Skill* Skills::SPELL_PLANAR_TRAVEL = nullptr;//TODO &skillimpl::SPELL_PLANAR_TRAVEL;
 const Skill* Skills::SPELL_TRUE_SIGHT = &skillimpl::SPELL_TRUE_SIGHT;
 
 const Skill* Skills::HERO_AGILITY = &skillimpl::HERO_AGILITY;

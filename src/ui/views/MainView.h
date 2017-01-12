@@ -15,7 +15,7 @@ class ViewManager;
 
 class Army;
 class Tile;
-class MovementEffect;
+enum class MovementType;
 
 class MainView : public View
 {
@@ -73,7 +73,7 @@ private:
   
   Surveyor surveyor = Surveyor(*this);
   
-  SpriteInfo movementIconForType(const MovementEffect* effect);
+  SpriteInfo movementIconForType(MovementType effect);
     
 public:
   MainView(ViewManager* gvm);

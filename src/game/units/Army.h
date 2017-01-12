@@ -2,6 +2,7 @@
 #define _ARMY_H_
 
 #include "Common.h"
+#include "Effects.h"
 
 #include <list>
 #include <unordered_set>
@@ -14,26 +15,29 @@ class Player;
 class movement_list
 {
 private:
-  std::unordered_set<const MovementEffect*> data;
+  std::unordered_set<MovementType, enum_hash> data;
   
 public:
   using value_type = decltype(data)::value_type;
+  using iterator = decltype(data)::iterator;
+  using const_iterator = decltype(data)::const_iterator;
 
   movement_list() = default;
   movement_list(const decltype(data)& data) : data(data) { }
   movement_list(const movement_list& other) : data(other.data) { }
-  
-  using iterator = decltype(data)::iterator;
-  using const_iterator = decltype(data)::const_iterator;
+  movement_list(const std::vector<const MovementEffect*>& effects) {
+    for (const auto* e : effects) data.insert(e->type());
+  }
+
   size_t size() const { return data.size(); }
   
-  void insert(iterator it, const MovementEffect* effect) { data.insert(it, effect); }
-  void add(const MovementEffect* effect) { data.insert(effect); }
+  void insert(iterator it, MovementType effect) { data.insert(it, effect); }
+  void add(MovementType effect) { data.insert(effect); }
     
   const_iterator begin() const{ return data.begin(); }
   const_iterator end() const { return data.end(); }
-  
-  bool contains(const MovementEffect* effect) const { return std::find(data.begin(), data.end(), effect) != data.end(); }
+
+  bool contains(MovementType type) const { return std::find(data.begin(), data.end(), type) != data.end(); }
 };
 
 class movement_list_group
@@ -41,7 +45,7 @@ class movement_list_group
 public:
   using predicate_t = std::function<bool(const movement_list&)>;
   
-  inline predicate_t simplePredicate(const MovementEffect* effect) const
+  inline predicate_t simplePredicate(MovementType effect) const
   {
     return [effect] (const movement_list& l) { return l.contains(effect); };
   }
@@ -68,9 +72,9 @@ public:
   bool any_of(const predicate_t& predicate) const { return std::any_of(data.begin(), data.end(), predicate); }
   bool none_of(const predicate_t& predicate) const { return std::none_of(data.begin(), data.end(), predicate); }
   
-  bool all_of(const MovementEffect* e) const { return all_of(simplePredicate(e)); }
-  bool any_of(const MovementEffect* e) const { return any_of(simplePredicate(e)); }
-  bool none_of(const MovementEffect* e) const { return none_of(simplePredicate(e)); }
+  bool all_of(MovementType e) const { return all_of(simplePredicate(e)); }
+  bool any_of(MovementType e) const { return any_of(simplePredicate(e)); }
+  bool none_of(MovementType e) const { return none_of(simplePredicate(e)); }
 
 };
 
@@ -102,7 +106,7 @@ public:
   void resetMoves();
   
   const movement_list& getMovementType() { return movementType; }
-  bool hasMovement(const MovementEffect* movement) const { return movementType.contains(movement); }
+  bool hasMovement(MovementType movement) const { return movementType.contains(movement); }
   
   const Unit* firstSelected() { return !units.empty() ? units.front() : nullptr; }
   void merge(Army* army);

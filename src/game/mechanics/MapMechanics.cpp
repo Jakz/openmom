@@ -130,38 +130,38 @@ s16 MapMechanics::movementCost(World* world, const Position& position, const mov
 {
   Tile* t = world->get(position);
   
-  bool canMakeUseOfRoads = !movement.contains(Effects::NON_CORPOREAL) && !movement.contains(Effects::FLYING);
+  bool canMakeUseOfRoads = !movement.contains(MovementType::NON_CORPOREAL) && !movement.contains(MovementType::FLYING);
   
   if (canMakeUseOfRoads && t->hasEnchantedRoad)
     return 0;
   else if (canMakeUseOfRoads && t->hasRoad)
     return 1;
-  else if (movement.contains(Effects::NON_CORPOREAL))
+  else if (movement.contains(MovementType::NON_CORPOREAL))
     return 1;
-  else if (movement.contains(Effects::FLYING))
+  else if (movement.contains(MovementType::FLYING))
     return 2;
   else
   {
     switch (t->type) {
       case TILE_GRASS:
-        return movement.contains(Effects::MOUNTAINWALK) ? 6 : 2;
+        return movement.contains(MovementType::MOUNTAINWALK) ? 6 : 2;
       case TILE_DESERT:
       case TILE_WATER:
       case TILE_SHORE:
         return 1;
       case TILE_FOREST:
-        return movement.contains(Effects::FORESTWALK) ? 2 : 4;
+        return movement.contains(MovementType::FORESTWALK) ? 2 : 4;
       case TILE_RIVER:
       case TILE_RIVER_MOUTH:
       case TILE_TUNDRA:
-        return movement.contains(Effects::SWIMMING) ? 2 : 4;
+        return movement.contains(MovementType::SWIMMING) ? 2 : 4;
       case TILE_SWAMP:
-        return movement.contains(Effects::SWIMMING) ? 2 : 6;
+        return movement.contains(MovementType::SWIMMING) ? 2 : 6;
       case TILE_HILL:
-        return movement.contains(Effects::MOUNTAINWALK) ? 2 : 6;
+        return movement.contains(MovementType::MOUNTAINWALK) ? 2 : 6;
       case TILE_MOUNTAIN:
       case TILE_VOLCANO:
-        return movement.contains(Effects::MOUNTAINWALK) ? 2 : 8;
+        return movement.contains(MovementType::MOUNTAINWALK) ? 2 : 8;
       case TILE_TYPES:
         assert(false);
         return 0;
@@ -177,42 +177,44 @@ s16 MapMechanics::movementCost(World* world, const Position& position, const mov
 //TODO: check behavior
 const movement_list MapMechanics::movementTypeForSetOfEffects(const movement_list_group& u) const
 {  
+  using Type = MovementType;
+  
   movement_list movements;
   
   /* if all units has either SWIMMING or FLYING and no unit has SAILING or WIND_WALKING */
-  if (u.all_of([](const movement_list& l) { return l.contains(Effects::SWIMMING) || l.contains(Effects::FLYING); }) &&
-      u.none_of([](const movement_list& l) { return l.contains(Effects::SAILING) || l.contains(Effects::WINDWALK); }))
-    movements.add(Effects::SWIMMING);
+  if (u.all_of([](const movement_list& l) { return l.contains(Type::SWIMMING) || l.contains(Type::FLYING); }) &&
+      u.none_of([](const movement_list& l) { return l.contains(Type::SAILING) || l.contains(Type::WINDWALK); }))
+    movements.add(Type::SWIMMING);
   
-  if (u.any_of(Effects::WINDWALK) || u.all_of(Effects::FLYING))
-    movements.add(Effects::FLYING);
+  if (u.any_of(Type::WINDWALK) || u.all_of(Type::FLYING))
+    movements.add(Type::FLYING);
   
-  if (u.any_of(Effects::SAILING))
-    movements.add(Effects::SAILING);
+  if (u.any_of(Type::SAILING))
+    movements.add(Type::SAILING);
   
-  if (u.any_of(Effects::FORESTWALK) &&
-      u.none_of([](const movement_list& l){ return l.contains(Effects::WINDWALK) || l.contains(Effects::SAILING) || l.contains(Effects::MOUNTAINWALK); }))
-    movements.add(Effects::FORESTWALK);
+  if (u.any_of(Type::FORESTWALK) &&
+      u.none_of([](const movement_list& l){ return l.contains(Type::WINDWALK) || l.contains(Type::SAILING) || l.contains(Type::MOUNTAINWALK); }))
+    movements.add(Type::FORESTWALK);
   
-  if (u.any_of(Effects::MOUNTAINWALK) &&
-      u.none_of([](const movement_list& l){ return l.contains(Effects::WINDWALK) || l.contains(Effects::SAILING) || l.contains(Effects::FORESTWALK); }))
-    movements.add(Effects::MOUNTAINWALK);
+  if (u.any_of(Type::MOUNTAINWALK) &&
+      u.none_of([](const movement_list& l){ return l.contains(Type::WINDWALK) || l.contains(Type::SAILING) || l.contains(Type::FORESTWALK); }))
+    movements.add(Type::MOUNTAINWALK);
   
-  if (!movements.contains(Effects::FLYING) && !movements.contains(Effects::SAILING))
+  if (!movements.contains(Type::FLYING) && !movements.contains(Type::SAILING))
   {
-    bool allNonCorporeal = u.all_of(Effects::NON_CORPOREAL);
-    bool anyPathFinder = u.any_of(Effects::PATH_FINDER);
-    bool anyMountainerAndForestwalker = u.any_of(Effects::MOUNTAINWALK) && u.any_of(Effects::FORESTWALK);
+    bool allNonCorporeal = u.all_of(Type::NON_CORPOREAL);
+    bool anyPathFinder = u.any_of(Type::PATH_FINDER);
+    bool anyMountainerAndForestwalker = u.any_of(Type::MOUNTAINWALK) && u.any_of(Type::FORESTWALK);
     
     if (allNonCorporeal || anyPathFinder || anyMountainerAndForestwalker)
-      movements.add(Effects::PATH_FINDER);
+      movements.add(Type::PATH_FINDER);
   }
   
-  if (u.all_of(Effects::PLANAR_TRAVEL))
-    movements.add(Effects::PLANAR_TRAVEL);
+  if (u.all_of(Type::PLANAR_TRAVEL))
+    movements.add(Type::PLANAR_TRAVEL);
   
-  if (u.any_of(Effects::WINDWALK))
-    movements.add(Effects::WINDWALK);
+  if (u.any_of(Type::WINDWALK))
+    movements.add(Type::WINDWALK);
   
   return movements;
 }
@@ -222,9 +224,9 @@ const movement_list MapMechanics::movementTypeOfArmy(const unit_list& units) con
   movement_list_group umovements(units.size());
   
   std::transform(units.begin(), units.end(), std::back_inserter(umovements), [] (const Unit* unit) {
-    movement_list movements;
-    unit->skills()->findAllEffectsOftype(movements, SkillEffect::Type::MOVEMENT);
-    return movements;
+    std::vector<const MovementEffect*> effects;
+    unit->skills()->findAllEffectsOftype(effects, SkillEffect::Type::MOVEMENT);
+    return movement_list(effects);
   });
   
   return movementTypeForSetOfEffects(umovements);
