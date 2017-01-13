@@ -200,7 +200,7 @@ void MainView::draw()
       UnitDraw::drawStatic(unit, x+1, y+1, player->isSelectedUnit(unit), false);
       
       /* draw unit level */
-      s16 levelIndex = unit->level ? unit->level->index(): -1;
+      s16 levelIndex = unit->getExperienceLevel() ? unit->getExperienceLevel()->index(): -1;
       if (levelIndex > 0)
       {
         --levelIndex;

@@ -114,9 +114,6 @@ namespace skillimpl
   
   static const ConcreteSkill IMMOLATION = ConcreteSkill(SkillBase::IMMOLATION, {new SpecialAttackEffect(SpecialAttackEffect::Type::IMMOLATION, 4)});
   
-  static const ConcreteSkill FIERY_BREATH5 = ConcreteSkill(SkillBase::FIERY_BREATH, {new SpecialAttackEffect(SpecialAttackEffect::Type::FIRE_BREATH, 5)}, false);
-  static const ConcreteSkill FIERY_BREATH20 = ConcreteSkill(SkillBase::FIERY_BREATH, {new SpecialAttackEffect(SpecialAttackEffect::Type::FIRE_BREATH, 20)}, false);
-
   static const ConcreteSkill LIGHTING_BREATH20 = ConcreteSkill(SkillBase::LIGHTING_BREATH, {new SpecialAttackEffect(SpecialAttackEffect::Type::LIGHTING_BREATH, 20)}, false);
   
   static const ConcreteSkill DOOM_GAZE4 = ConcreteSkill(SkillBase::DOOM_GAZE, {new SpecialAttackEffect(SpecialAttackEffect::Type::DOOM_GAZE, 4)}, false);
@@ -131,16 +128,10 @@ namespace skillimpl
   static const ConcreteSkill STONE_TOUCH3 = ConcreteSkill(SkillBase::STONE_TOUCH, {new SpecialAttackEffect(SpecialAttackEffect::Type::STONE_TOUCH, -3)}, false);
 
   // TODO: a parametric throw weapon is needed for hero ability
-  /**/static const ConcreteSkill THROW_WEAPON1 = ConcreteSkill(SkillBase::THROW_WEAPON, {new SpecialAttackEffect(SpecialAttackEffect::Type::THROWN_ATTACK, 1)}, false);
-  static const ConcreteSkill THROW_WEAPON2 = ConcreteSkill(SkillBase::THROW_WEAPON, {new SpecialAttackEffect(SpecialAttackEffect::Type::THROWN_ATTACK, 2)}, false);
 
   static const ConcreteSkill SCOUTING1 = ConcreteSkill(SkillBase::SCOUTING, {new UnitBonus(Property::SIGHT,1)}, false);
   static const ConcreteSkill SCOUTING2 = ConcreteSkill(SkillBase::SCOUTING, {new UnitBonus(Property::SIGHT,2)}, false);
   static const ConcreteSkill SCOUTING3 = ConcreteSkill(SkillBase::SCOUTING, {new UnitBonus(Property::SIGHT,3)}, false);
-  
-  /**/static const ConcreteSkill TO_HIT1 = ConcreteSkill(SkillBase::TO_HIT, {new UnitBonus(Property::TO_HIT,1)}, false);
-  /**/static const ConcreteSkill TO_HIT2 = ConcreteSkill(SkillBase::TO_HIT, {new UnitBonus(Property::TO_HIT,2)}, false);
-  /**/static const ConcreteSkill TO_HIT3 = ConcreteSkill(SkillBase::TO_HIT, {new UnitBonus(Property::TO_HIT,3)}, false);
   
   static const ConcreteSkill MITHRIL_WEAPONS = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,1)});
   static const ConcreteSkill ADAMANTIUM_WEAPONS = ConcreteSkill(SkillBase::ADAMANTIUM_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,2)});
@@ -209,8 +200,6 @@ const Skill* Skills::LIFE_STEALING5 = &skillimpl::LIFE_STEALING5;
 
 const Skill* Skills::IMMOLATION = &skillimpl::IMMOLATION;
 
-const Skill* Skills::FIERY_BREATH5 = &skillimpl::FIERY_BREATH5;
-const Skill* Skills::FIERY_BREATH20 = &skillimpl::FIERY_BREATH20;
 const Skill* Skills::LIGHTING_BREATH20 = &skillimpl::LIGHTING_BREATH20;
 
 const Skill* Skills::DOOM_GAZE4 = &skillimpl::DOOM_GAZE4;
@@ -221,16 +210,10 @@ const Skill* Skills::STONE_GAZE3 = &skillimpl::STONE_GAZE3;
 const Skill* Skills::STONE_GAZE4 = &skillimpl::STONE_GAZE4;
 const Skill* Skills::STONE_TOUCH3 = &skillimpl::STONE_TOUCH3;
 
-const Skill* Skills::THROW_WEAPON1 = &skillimpl::THROW_WEAPON1;
-const Skill* Skills::THROW_WEAPON2 = &skillimpl::THROW_WEAPON2;
 
 const Skill* Skills::SCOUTING1 = &skillimpl::SCOUTING1;
 const Skill* Skills::SCOUTING2 = &skillimpl::SCOUTING2;
 const Skill* Skills::SCOUTING3 = &skillimpl::SCOUTING3;
-
-const Skill* Skills::TO_HIT1 = &skillimpl::TO_HIT1;
-const Skill* Skills::TO_HIT2 = &skillimpl::TO_HIT2;
-const Skill* Skills::TO_HIT3 = &skillimpl::TO_HIT3;
 
 const Skill* Skills::MITHRIL_WEAPONS = &skillimpl::MITHRIL_WEAPONS;
 const Skill* Skills::ADAMANTIUM_WEAPONS = &skillimpl::ADAMANTIUM_WEAPONS;

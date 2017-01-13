@@ -3,7 +3,7 @@ units:
   - identifier: barbarian_spearmen
     type: racial
     race: barbarians
-    upkeep: #
+    upkeep: 0 #
     cost: 15
     melee: 1 #
     ranged: none

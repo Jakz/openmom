@@ -158,7 +158,7 @@ std::vector<const RaceUnitSpec*> Data::unitsForRace(const Race* race)
   const auto& units = containerFor<const UnitSpec*>();
   for (const auto& entry : units)
   {
-    if (entry.second->type == UnitType::RACIAL)
+    if (entry.second->productionType() == Productable::Type::UNIT)
     {
       const RaceUnitSpec* rspec = static_cast<const RaceUnitSpec*>(entry.second);
       if (rspec->race == race)

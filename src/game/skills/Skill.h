@@ -222,6 +222,7 @@ public:
   
   virtual SpriteInfo icon() const;
   virtual const std::string name() const;
+  virtual bool isHidden() const { return false; }
   
   virtual const effect_list& getEffects() const = 0;
   
@@ -266,6 +267,7 @@ namespace skills
     
     const std::string name() const override;
     SpriteInfo icon() const override { return _visual.icon; }
+    bool isHidden() const override { return _visual.hidden; }
   };
 }
 
@@ -336,11 +338,11 @@ public:
   
   static const Skill *LARGE_SHIELD, *FIRST_STRIKE, *NEGATE_FIRST_STRIKE, *ARMOR_PIERCING, *LONG_RANGE, *ILLUSIONARY_ATTACK;
   
-  static const Skill *POISON_ATTACK1, *POISON_ATTACK4, *POISON_ATTACK6, *POISON_ATTACK15, *IMMOLATION, *FIERY_BREATH5, *FIERY_BREATH20;
+  static const Skill *POISON_ATTACK1, *POISON_ATTACK4, *POISON_ATTACK6, *POISON_ATTACK15, *IMMOLATION;
   static const Skill *LIFE_STEALING0, *LIFE_STEALING3, *LIFE_STEALING4, *LIFE_STEALING5, *LIGHTING_BREATH20;
-  static const Skill *DOOM_GAZE4, *DEATH_GAZE2, *DEATH_GAZE4, *STONE_GAZE1, *STONE_GAZE3, *STONE_GAZE4, *STONE_TOUCH3, *THROW_WEAPON1, *THROW_WEAPON2;
+  static const Skill *DOOM_GAZE4, *DEATH_GAZE2, *DEATH_GAZE4, *STONE_GAZE1, *STONE_GAZE3, *STONE_GAZE4, *STONE_TOUCH3;
   
-  static const Skill *SCOUTING1, *SCOUTING2, *SCOUTING3, *TO_HIT1, *TO_HIT2, *TO_HIT3, *MITHRIL_WEAPONS, *ADAMANTIUM_WEAPONS;
+  static const Skill *SCOUTING1, *SCOUTING2, *SCOUTING3, *MITHRIL_WEAPONS, *ADAMANTIUM_WEAPONS;
   
   static const Skill *IMMUNITY_MISSILE, *IMMUNITY_MAGIC, *IMMUNITY_ILLUSIONS;
   

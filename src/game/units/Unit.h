@@ -53,7 +53,7 @@ private:
   Army* army;
 
 protected:
-  Unit(const UnitSpec* spec, const Level* level) : spec(spec), army(nullptr), _skills(*this), _health(*this), selected(true), level(level),
+  Unit(const UnitSpec* spec) : spec(spec), army(nullptr), _skills(*this), _health(*this), selected(true),
   experience(0, spec->type == UnitType::RACIAL ? &Data::experienceLevelsForUnits() : (spec->type == UnitType::HERO ? &Data::experienceLevelsForHeroes() : nullptr))
   {
     resetMoves();
@@ -74,6 +74,8 @@ public:
   void setArmy(Army* army) { this->army = army; }
   Army* getArmy() const { return army; }
   
+  //TODO: manage bonus levels with retorts and such through getBonusProperty
+  const Level* getExperienceLevel() const { return experience.level(); }
   s32 getExperience() const { return experience.xp(); }
   
   Productable::Type type() const { return spec->productionType(); }
@@ -99,7 +101,6 @@ public:
     experience.increaseExperience(getProperty(Property::XP));
   }
   
-  const Level* level;
   const School school() const { return School::CHAOS; } // TODO
   
   SkillSet* skills() { return &_skills; }
@@ -118,7 +119,7 @@ protected:
   std::array<items::Item*, 3> items;
   
 public:
-  Hero(const HeroSpec* spec) : Unit(spec, Data::experienceLevelsForHeroes().front().get()), items({nullptr}) { }
+  Hero(const HeroSpec* spec) : Unit(spec), items({nullptr}) { }
   
   // const std::string name() const; TODO: name management
   const std::string title() const;
@@ -130,7 +131,7 @@ public:
 class RaceUnit : public Unit
 {
 public:
-  RaceUnit(const RaceUnitSpec* spec) : Unit(spec, Data::experienceLevelsForUnits().front().get()) { } //TODO: starting level may change (according to buildings e wizard traits)
+  RaceUnit(const RaceUnitSpec* spec) : Unit(spec) { } //TODO: starting level may change (according to buildings e wizard traits)
   
   const std::string name() const override;
 };
@@ -138,7 +139,7 @@ public:
 class FantasticUnit : public Unit
 {
 public:
-  FantasticUnit(const SummonSpec* spec) : Unit(spec, nullptr) { }
+  FantasticUnit(const SummonSpec* spec) : Unit(spec) { }
 };
 
 #endif

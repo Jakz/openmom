@@ -179,36 +179,69 @@ struct UnitPropGfxSpec
 
 using SkillGfxSpec = SpriteInfo;
 
-template<typename K, typename V, size_t SIZE>
-class enum_simple_map
+
+template<typename K, typename V, typename M, template<class> class S>
+class multi_enum_map
 {
 public:
-  static constexpr size_t size = SIZE;
-  using init_element = std::pair<K, V>;
+  using mapped_type = V;
+  using key_type = K;
+  using value_type = std::pair<key_type, mapped_type>;
+  using map_t = std::unordered_map<key_type, mapped_type>;
+  using iterator = typename map_t::const_iterator;
   
-  struct dummy_pair
+private:
+  template<typename T> static constexpr K build_key(T value, M master) {
+    static_assert(sizeof(M) + sizeof(T) <= sizeof(K), "Size of master enum + specific enum must be small enough");
+    return (static_cast<K>(master) << (sizeof(K)*8)/2) | static_cast<K>(value);
+  }
+  
+  template<typename T> static constexpr K build_key(T value) {
+    return build_key(value, S<T>::value);
+  }
+  
+  struct initializer_key
   {
-    const V& second;
-    const dummy_pair* operator->() const { return this; }
+    key_type key;
+    template<typename T> initializer_key(M master, T value) : key(build_key(value, master)) { }
+    template<typename T> initializer_key(T value) : key(build_key(value)) { }
   };
   
 private:
-  std::array<V, size> data;
+  
+  map_t data;
+  
 public:
-  enum_simple_map(const std::initializer_list<init_element>& elements)
+  multi_enum_map() = default;
+  multi_enum_map(std::initializer_list<std::pair<initializer_key, V>> data)
   {
-    assert(elements.size() == size);
-    size_t i = 0;
-    for (auto it = elements.begin(); it != elements.end(); ++i, ++it)
-    {
-      assert(static_cast<size_t>(it->first) < size);
-      data[static_cast<size_t>(it->first)] = it->second;
-    }
+    for (const auto& entry : data)
+      this->data[entry.first.key] = entry.second;
   }
   
-  const V& operator[](K key) const { return data[static_cast<size_t>(key)]; }
-  dummy_pair find(K key) const { return { operator[](key) }; }
+  template<typename T> iterator find(T value) const { return data.find(build_key(value)); }
+  template<typename T> iterator find(M master, T value) const { return data.find(build_key(value, master)); }
+  
+  template<typename T> const V& operator[](T value) { return data[build_key(value)]; }
 };
+
+enum class multi_enum_master_key
+{
+  ITEM_SLOTS_IN_SKILL_VIEW,
+  ITEM_SLOTS_IN_ITEMS_VIEW
+};
+
+template<typename T> struct multi_enum_specializer : std::false_type { };
+template<> struct multi_enum_specializer<items::Class> { static constexpr multi_enum_master_key value = multi_enum_master_key::ITEM_SLOTS_IN_SKILL_VIEW; };
+
+/* 
+multi_enum_map<u64, Value, Master, enum_specializer> map = {
+ { Foo::FOO, { 1.0f, 2.0f } },
+ { Bar::BAR, { 5.0f, 7.0f } },
+ { Foo::BAR, { 10.0f, 7.0f } }
+ };
+ */
+
 
 template<typename K, typename V, size_t SIZE = 0> using gfx_map = typename std::conditional<(std::is_enum<K>::value && SIZE > 0), enum_simple_map<K, V, SIZE>, std::unordered_map<K,V>>::type;
 

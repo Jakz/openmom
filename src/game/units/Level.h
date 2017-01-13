@@ -6,30 +6,6 @@
 
 #include "Localization.h"
 
-
-#include <array>
-
-enum class UnitLevelID : u8
-{
-  RECRUIT = 0,
-  REGULAR,
-  VETERAN,
-  ELITE
-};
-
-enum class HeroLevelID : u8
-{
-  HERO = 0,
-  MYRMIDON,
-  CAPTAIN,
-  COMMANDER,
-  CHAMPION,
-  LORD,
-  GRAND_LORD,
-  SUPER_HERO,
-  DEMIGOD
-};
-
 using level_bonuses = std::unordered_map<Property, s16, enum_hash>;
 
 class Level

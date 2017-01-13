@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstdint>
 #include <type_traits>
+#include <array>
 #include "SDL.h"
 
 #ifdef DEBUG
@@ -68,6 +69,37 @@ struct enum_hash
   {
     return static_cast<size_t>(static_cast<size_t>(value));
   }
+};
+
+template<typename K, typename V, size_t SIZE>
+class enum_simple_map
+{
+public:
+  static constexpr size_t size = SIZE;
+  using init_element = std::pair<K, V>;
+  
+  struct dummy_pair
+  {
+    const V& second;
+    const dummy_pair* operator->() const { return this; }
+  };
+  
+private:
+  std::array<V, size> data;
+public:
+  enum_simple_map(const std::initializer_list<init_element>& elements)
+  {
+    assert(elements.size() == size);
+    size_t i = 0;
+    for (auto it = elements.begin(); it != elements.end(); ++i, ++it)
+    {
+      assert(static_cast<size_t>(it->first) < size);
+      data[static_cast<size_t>(it->first)] = it->second;
+    }
+  }
+  
+  const V& operator[](K key) const { return data[static_cast<size_t>(key)]; }
+  dummy_pair find(K key) const { return { operator[](key) }; }
 };
 
 typedef u32 Color;

@@ -5,6 +5,15 @@
 #include "Localization.h"
 #include "Items.h"
 
+enum_simple_map<items::Class, SpriteInfo, 6> itemSprites = {
+  { items::Class::MELEE, LBXI(ITEMISC, 27) },
+  { items::Class::RANGED, LBXI(ITEMISC, 28) },
+  { items::Class::MELEE_STAFF, LBXI(ITEMISC, 29) },
+  { items::Class::STAFF_WAND, LBXI(ITEMISC, 30) },
+  { items::Class::ARMOR, LBXI(ITEMISC, 32 ) },
+  { items::Class::MISC, LBXI(ITEMISC, 31 ) }
+};
+
 void SkillDraw::openHelpForSkill(const Unit* unit, int i)
 {
   // TODO
@@ -29,32 +38,35 @@ void SkillDraw::draw(const Unit* unit)
 {
   s16 curOffset = 0;
   
+  const Level* level = unit->getExperienceLevel();
+  
+  if (level && page == 0)
+    drawSkill(curOffset++, level->visuals.icon, i18n::s(level->visuals.name)+Fonts::format(" (%u xp)",unit->getExperience()), base.x, base.y);
+  
   // if the unit is a hero and we are on first page we should draw the experience and the items
   if (unit->type() == Productable::Type::HERO && page == 0)
   {
     const Hero* hero = static_cast<const Hero*>(unit);
     
-    drawSkill(curOffset++, unit->level->visuals.icon, i18n::s(unit->level->visuals.name)+Fonts::format(" (%u xp)",unit->getExperience()), base.x, base.y);
     for (int i = 0; i < 3; ++i, ++curOffset)
     {
       if (!hero->itemAt(i))
       {
-        // TODO: fix with new management
-        //drawSkill(curOffset, items::Slots::slotsFor(hero->getSpec()->items)->sprites[i], "", base.x, base.y);
+        const items::Class itemType = hero->getSpec()->items.types[i];
+        drawSkill(curOffset, itemSprites[itemType], "", base.x, base.y);
       }
     }
   }
   else
   {
     s16 p = unit->type() == Productable::Type::HERO ? page - 1 : page;
-    
-    if (unit->type() != Productable::Type::SUMMON && page == 0)
-      drawSkill(curOffset++, unit->level->visuals.icon, i18n::s(unit->level->visuals.name)+Fonts::format(" (%u xp)",unit->getExperience()), base.x, base.y);
-    
+
     for (int i = p*8; i < unit->skills()->size(); ++i)
     {
       const Skill* s = unit->skills()->get(i);
-      drawSkill(curOffset++, s->icon(), s->name(), base.x, base.y);
+      
+      if (!s->isHidden())
+        drawSkill(curOffset++, s->icon(), s->name(), base.x, base.y);
     }
   }
 }

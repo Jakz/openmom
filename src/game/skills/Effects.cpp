@@ -4,7 +4,7 @@
 
 s16 UnitLevelBonus::getValue(const Unit* unit) const
 {
-  return static_cast<u16>(std::floor((unit->level->index()+1)*multiplier)); // TODO: is +1 intended behavior? According to OSG it is.
+  return static_cast<u16>(std::floor((unit->getExperienceLevel()->index()+1)*multiplier)); // TODO: is +1 intended behavior? According to OSG it is.
 }
 
 
@@ -18,7 +18,7 @@ s16 ArmyBonus::getValue(const Unit* unit) const {
 }
 s16 ArmyLevelBonus::getValue(const Unit* unit) const
 {
-  return applicableOn(unit) ? static_cast<u16>(std::floor((unit->level->index()+1)*multiplier)) : 0;
+  return applicableOn(unit) ? static_cast<u16>(std::floor((unit->getExperienceLevel()->index()+1)*multiplier)) : 0;
   // TODO: is +1 intended behavior? According to OSG it is.
 }
 
