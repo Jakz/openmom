@@ -26,7 +26,6 @@ protected:
 public:
   HitPoints(const Unit& unit) : unit(unit)
   {
-    
   }
   
   s16 aliveCount() const { return data.size(); }
