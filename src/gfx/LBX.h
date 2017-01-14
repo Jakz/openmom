@@ -152,7 +152,7 @@ namespace lbx
     u8 unknown2;
     u8 unknown3;
     
-    Color at(u16 x, u16 y, u16 c, u16 r) const override { return data[c+r][x+y*width]; }
+    u32 at(u16 x, u16 y, u16 c, u16 r) const override { return data[c+r][x+y*width]; }
 
     u16 tw() const override { return count*width; }
     u16 th() const override { return height; }
@@ -214,6 +214,8 @@ namespace lbx
   class Repository
   {
   private:
+    static Palette* _mainPalette;
+    
     static std::vector<LBXTerrainSpriteSpecs> terrainData;
     static LBXFile data[LBX_COUNT];
     static LBXFile& file(LBXID ident) { return data[static_cast<size_t>(ident)]; }
@@ -233,7 +235,7 @@ namespace lbx
     
     static const LBXFile& loadLBXTerrain();
     static const LBXFile& loadLBXTerrainMap();
-    static const LBXFile& loadLBXFonts();
+    static const LBXFile& loadLBXFontsAndPalettes();
     static const LBXFile& loadLBXHelp();
     
     static bool shouldAllocateSprite(SpriteInfo info) { return file(info.lbx()).sprites[info.index()] == nullptr; }
@@ -293,7 +295,8 @@ namespace lbx
 
     static void loadText(const LBXHeader& header, offset_list& offsets, FILE *in);
     static void loadFonts(const LBXHeader& header, offset_list& offsets, FILE *in);
-      
+    static void loadPalettes(const LBXHeader& header, offset_list& offsets, FILE* in);
+    
     static FILE* getDescriptor(const LBXFile& ident);
 
     static std::string getLBXPath(const std::string& ident);

@@ -439,15 +439,14 @@ public:
             {
               u8* base = palette+(PW*3*3)*i;
               Color pixel = p == 0 ? Gfx::PALETTE[i] : sprite->palette->get(i);
-              u8 r = GET_RED(pixel), g = GET_GREEN(pixel), b = GET_BLUE(pixel);
               
               for (size_t x = 0; x < PW; ++x)
               {
                 for (size_t y = 0; y < 3; ++y)
                 {
-                  base[0+x*3+y*(PW*3)] = r;
-                  base[1+x*3+y*(PW*3)] = g;
-                  base[2+x*3+y*(PW*3)] = b;
+                  base[0+x*3+y*(PW*3)] = pixel.r;
+                  base[1+x*3+y*(PW*3)] = pixel.g;
+                  base[2+x*3+y*(PW*3)] = pixel.b;
                 }
               }
             }
@@ -645,7 +644,7 @@ public:
         {
           const auto& terrainInfo = lbx::Repository::terrainInfo()[ROW];
           const Color c = Gfx::PALETTE[terrainInfo.minimapColor];
-          bgcol = fl_rgb_color(GET_RED(c), GET_GREEN(c), GET_BLUE(c));
+          bgcol = fl_rgb_color(c.r,c.g,c.b);
           fgcol = FL_WHITE;
         }
         

@@ -588,6 +588,23 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
   delete [] widths;
 }
 
+void LBX::loadPalettes(const LBXHeader &header, offset_list &offsets, FILE *in)
+{
+  /* palettes reside in FONTS.LBX */
+  /* entry at index 2: main game palette */
+  /*                3: load/save palette */
+  
+  LBXOffset offset = offsets[2];
+  
+  fseek(in, offset, SEEK_SET);
+  
+  LBXPaletteEntry* palette = new LBXPaletteEntry[256];
+  fread(palette, sizeof(LBXPaletteEntry), 256, in);
+  
+  for (size_t i = 0; i < 256; ++i)
+    Gfx::PALETTE[i] = Color(palette[i].r << 2, palette[i].g << 2, palette[i].b << 2);
+}
+
 std::string LBX::getLBXPath(const std::string& name)
 {
   return Platform::instance()->getResourcePath() + "/data/lbx/" + name + ".lbx";
@@ -712,7 +729,7 @@ const LBXFile& Repository::loadLBX(LBXID ident)
   else if (ident == LBXID::HELP)
     return loadLBXHelp();
   else if (ident == LBXID::FONTS)
-    return loadLBXFonts();
+    return loadLBXFontsAndPalettes();
   
   
   LBXFile& lbx = file(ident);
@@ -818,13 +835,14 @@ LBXArrayData* Repository::loadLBXSpriteTerrainMappingData(LBXFile& lbx, size_t i
   return array;
 }
 
-const LBXFile& Repository::loadLBXFonts()
+const LBXFile& Repository::loadLBXFontsAndPalettes()
 {
   LBXFile& lbx = file(LBXID::FONTS);
   FILE* in = LBX::getDescriptor(lbx);
   
   LBX::loadHeader(lbx.info, in);
   LBX::loadFonts(lbx.info.header, lbx.info.offsets, in);
+  LBX::loadPalettes(lbx.info.header, lbx.info.offsets, in);
   
   /*string_list names;
   LBX::scanFileNames(lbx.info, names, in);

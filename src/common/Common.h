@@ -317,7 +317,7 @@ class Palette;
 class SpriteSheet
 {
 public:
-  virtual Color at(u16 x, u16 y, u16 c = 0, u16 r = 0) const { return 0x00000000; }
+  virtual u32 at(u16 x, u16 y, u16 c = 0, u16 r = 0) const { return 0x00000000; }
   virtual void set(u16 x, u16 y, Color c) { }
   virtual ~SpriteSheet() { }
   virtual u16 tw() const = 0;

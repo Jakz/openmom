@@ -110,7 +110,7 @@ public:
 
   ~FontSpriteSheet() { delete palette; }
   
-  Color at(u16 x, u16 y, u16 r = 0, u16 c = 0) const override
+  u32 at(u16 x, u16 y, u16 r = 0, u16 c = 0) const override
   {
     const u8* data = rawData->dataAt(r,c);
     u8 value = data[x + y*rawData->tw()];

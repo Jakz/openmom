@@ -48,7 +48,7 @@ public:
   void lock() const override { SDL_LockSurface(data); }
   void unlock() const override { SDL_UnlockSurface(data); }
   
-  Color at(u16 x, u16 y, u16 c = 0, u16 r = 0) const override { return pixels[x + y*data->w]; }
+  u32 at(u16 x, u16 y, u16 c = 0, u16 r = 0) const override { return pixels[x + y*data->w]; }
   void set(u16 x, u16 y, Color c) override { pixels[x + y*data->w] = c; }
   
   friend class Gfx;
@@ -143,7 +143,7 @@ public:
   static u32 ticks;
   static u32 fticks;
 
-  static const Color PALETTE[256];
+  static Color PALETTE[256];
 };
 
 

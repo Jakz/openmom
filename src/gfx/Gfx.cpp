@@ -25,7 +25,7 @@ SurfaceWrapper* Gfx::canvas = nullptr;
 const ColorMap* Gfx::map = nullptr;
 const Palette* Gfx::palette = nullptr;
 
-const Color Gfx::PALETTE[256] =
+Color Gfx::PALETTE[256] =
 {
   {0x0,0x0,0x0},
   {0x8,0x4,0x4},
@@ -389,15 +389,13 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
         {
           Color pd = gdst->at(tx+x,ty+y);
           
-          int r = (pd & 0x00FF0000) >> 16;
-          int g = (pd & 0x0000FF00) >> 8;
-          int b = (pd & 0x000000FF);
+          u8 r = pd.r, g = pd.g, b = pd.b;
           
           r >>= ALPHA_SHIFT;
           g >>= ALPHA_SHIFT;
           b >>= ALPHA_SHIFT;
           
-          gdst->set(tx+x, ty+y, 0xFF000000 | (r << 16) | (g << 8) | b);
+          gdst->set(tx+x, ty+y, {r,g,b});
         }
         else if (ps == 0xFFFF00FF)
           continue;
@@ -473,12 +471,12 @@ void Gfx::drawLine(Color color, u16 x1, u16 y1, u16 x2, u16 y2)
     if (y1 == y2)
     {
       for (u16 x = x1; x < x2; ++x)
-        activeBuffer->set(x, y1, activeBuffer->at(x, y1).blend(color, alpha));
+        activeBuffer->set(x, y1, Color(activeBuffer->at(x, y1)).blend(color, alpha));
     }
     else if (x1 == x2)
     {
       for (u16 y = y1; y < y2; ++y)
-        activeBuffer->set(x1, y, activeBuffer->at(x1, y).blend(color, alpha));
+        activeBuffer->set(x1, y, Color(activeBuffer->at(x1, y)).blend(color, alpha));
     }
   }
   

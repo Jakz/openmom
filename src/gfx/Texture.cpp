@@ -81,7 +81,7 @@ const Texture Texture::textures[] =
   Texture(TextureID::DARKNER,"static/darkner.png",1,1,320,200),
 };
 
-Color Texture::at(u16 x, u16 y, u16 r, u16 c) const
+u32 Texture::at(u16 x, u16 y, u16 r, u16 c) const
 {
   static_assert(sizeof(textures)/sizeof(textures[0]) == static_cast<size_t>(TextureID::TEXTURES_COUNT), "");
   
