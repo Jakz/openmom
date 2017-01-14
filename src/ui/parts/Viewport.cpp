@@ -12,6 +12,7 @@
 #include "Army.h"
 #include "Util.h"
 #include "Game.h"
+#include "GUISettings.h"
 
 #include "Game.h"
 
@@ -300,6 +301,23 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
     }
     sy += tileHeight;
     sx = ttx;
+  }
+  
+  if (GUISettings::drawOverlandGrid)
+  {
+    for (s16 y = 1; y < h; ++y)
+    {
+      Gfx::drawLine(RGBA(0, 0, 0, 40), ttx, tty + y*tileHeight, ttx + w*tileWidth, tty + y*tileHeight);
+      Gfx::drawLine(RGBA(0, 0, 0, 40), ttx, tty + y*tileHeight - 1, ttx + w*tileWidth, tty + y*tileHeight - 1);
+    }
+
+    
+    for (s16 x = 1; x < w; ++x)
+    {
+      Gfx::drawLine(RGBA(0, 0, 0, 40), ttx + x*tileWidth, tty, ttx + x*tileWidth, tty + h*tileHeight);
+      Gfx::drawLine(RGBA(0, 0, 0, 40), ttx + x*tileWidth - 1, tty, ttx + x*tileWidth - 1, tty + h*tileHeight);
+    }
+
   }
   
   /* draw thing on the map: cities, which goes over the boundaries of the sprite, mana node auras, pathfinding infos .. */

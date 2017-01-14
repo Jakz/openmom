@@ -18,4 +18,16 @@ namespace dialogs
     
     void draw();
   };
+  
+  class ItemDetailDialog
+  {
+  private:
+    ScreenCoord b;
+    
+  public:
+    ItemDetailDialog(ScreenCoord base) : b(base) { }
+    void draw();
+    
+    
+  };
 }

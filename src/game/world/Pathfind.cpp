@@ -71,8 +71,8 @@ void Route::consumeMovement(World *world)
 {
   Tile* tile = world->get(army->getPosition());
   
-  if (army->isPlaced())
-    tile->unplaceArmy();
+  //if (army->isPlaced())
+  //  tile->unplaceArmy();
   
   pending.emplace_back(army->getPosition(), 0);
   

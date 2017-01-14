@@ -28,6 +28,17 @@ enum lbx_indices
   hero_items_backdrop = LBXI(ARMYLIST, 5)
 };
 
+enum_simple_map<items::Class, SpriteInfo, 6> emptyItemBackground = {
+  { items::Class::MELEE, LBXI(ITEMISC, 19) },
+  { items::Class::RANGED, LBXI(ITEMISC, 20) },
+  { items::Class::MELEE_STAFF, LBXI(ITEMISC, 21) },
+  { items::Class::STAFF_WAND, LBXI(ITEMISC, 22) },
+  { items::Class::ARMOR, LBXI(ITEMISC, 24 ) },
+  { items::Class::MISC, LBXI(ITEMISC, 23 ) }
+};
+
+static const ScreenCoord heroPositions[] = {{32,15},{32,61},{32,107},{167,15},{167,61},{167,107}};
+
 ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
@@ -41,7 +52,7 @@ void ArmiesItemsView::draw()
   Gfx::draw(hero_items_backdrop, 17, 2);
   
   // draw heroes portraits
-  u16 heroPositions[][2] = {{32,15},{32,61},{32,107},{167,15},{167,61},{167,107}};
+  
   
   auto heroes = player->getHeroes();
   
@@ -52,21 +63,17 @@ void ArmiesItemsView::draw()
     // TODO: unit names and items
     
     // TODO: real colors
-    Fonts::drawString(hero->name(), FontFaces::Small::YELLOW, heroPositions[i][0]+35, heroPositions[i][1]-2, ALIGN_LEFT);
+    Fonts::drawString(hero->name(), FontFaces::Small::YELLOW, heroPositions[i].x+35, heroPositions[i].y-2, ALIGN_LEFT);
     
-    Gfx::draw(hero_gold_portrait, heroPositions[i][0]-1, heroPositions[i][1]-1);
-    UnitDraw::drawHeroPortrait(hero, heroPositions[i][0], heroPositions[i][1]);
+    Gfx::draw(hero_gold_portrait, heroPositions[i].x-1, heroPositions[i].y-1);
+    UnitDraw::drawHeroPortrait(hero, heroPositions[i].x, heroPositions[i].y);
     
+    const auto& slots = hero->getSpec()->items;
     for (int j = 0; j < items::Item::MAX_SLOTS; ++j)
     {
       const items::Item* item = hero->itemAt(j);
-      
-      u8 indices[] = {0,4,5};
-      // TODO: real slots
       if (!item)
-      {
-        Gfx::draw(TextureID::UNIT_HERO_ITEM_BACKGROUND, 0, indices[j], heroPositions[i][0]+40+29*j, heroPositions[i][1]+16);
-      }
+        Gfx::draw(emptyItemBackground[slots.types[j]], heroPositions[i].x+40+29*j, heroPositions[i].y+16);
     }
     
   }

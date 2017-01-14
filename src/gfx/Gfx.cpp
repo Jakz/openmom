@@ -452,16 +452,36 @@ void Gfx::drawPixel(u32 color, u16 x, u16 y)
 void Gfx::drawLine(u32 color, u16 x1, u16 y1, u16 x2, u16 y2)
 {
   lock(activeBuffer);
-  if (y1 == y2)
+  
+  u8 alpha = GET_ALPHA(color);
+  
+  if (alpha == 255)
   {
-    for (u16 x = x1; x < x2; ++x)
-      activeBuffer->set(x, y1, color);
+    if (y1 == y2)
+    {
+      for (u16 x = x1; x < x2; ++x)
+        activeBuffer->set(x, y1, color);
+    }
+    else if (x1 == x2)
+    {
+      for (u16 y = y1; y < y2; ++y)
+        activeBuffer->set(x1, y, color);
+    }
   }
-  else if (x1 == x2)
+  else
   {
-    for (u16 y = y1; y < y2; ++y)
-      activeBuffer->set(x1, y, color);
+    if (y1 == y2)
+    {
+      for (u16 x = x1; x < x2; ++x)
+        activeBuffer->set(x, y1, COLOR_MIX(activeBuffer->at(x, y1), color, alpha));
+    }
+    else if (x1 == x2)
+    {
+      for (u16 y = y1; y < y2; ++y)
+        activeBuffer->set(x1, y, COLOR_MIX(activeBuffer->at(x1, y), color, alpha));
+    }
   }
+  
   unlock(activeBuffer);
 }
 

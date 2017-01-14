@@ -110,6 +110,18 @@ constexpr Color RGBA(u32 r, u32 g, u32 b, u32 a) { return (a << 24) | (r << 16) 
 constexpr u8 GET_RED(Color color) { return (color & 0x00FF0000) >> 16; }
 constexpr u8 GET_GREEN(Color color) { return (color & 0x0000FF00) >> 8; }
 constexpr u8 GET_BLUE(Color color) { return (color & 0x000000FF); }
+constexpr u8 GET_ALPHA(Color color) { return (color & 0xFF000000) >> 24; }
+inline Color COLOR_MIX(Color src, Color dst, u8 dstAlpha)
+{
+  u8 r1 = GET_RED(src), g1 = GET_GREEN(src), b1 = GET_BLUE(src);
+  u8 r2 = GET_RED(dst), g2 = GET_GREEN(dst), b2 = GET_BLUE(dst);
+  
+  float sa = (255 - dstAlpha) / 255.0f;
+  float da = dstAlpha / 255.0f;
+  
+  return RGB(r1*sa + r2*da, g1*sa + g2*da, b1*sa + b2*da);
+}
+
 
 enum class I18 : u32;
 enum class TextureID : u16;
@@ -401,7 +413,10 @@ struct ScreenCoord
   ScreenCoord() : x(-1), y(-1) { }
   ScreenCoord(s16 x, s16 y) : x(x), y(y) { }
   bool operator==(const ScreenCoord& o) const { return x == o.x && y == o.y; }
+  
   ScreenCoord& operator+=(s16 i) { x += i; y += i; return *this; }
+  
+  ScreenCoord operator-(s16 v) const { return ScreenCoord(x+v, y+v); }
   
   bool isValid() const { return x != -1; }
   

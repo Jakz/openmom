@@ -22,7 +22,7 @@ void Army::setRoute(Route* route)
 {
   this->route.reset(route);
   if (route)
-    route->setArmy(this);
+    this->route->setArmy(this);
 }
 
 void Army::clearRoute() { setRoute(nullptr); }

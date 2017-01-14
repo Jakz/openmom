@@ -64,7 +64,7 @@ void LocalPlayer::push(anims::Animation* animation)
 
 void LocalPlayer::computeRoute(const Position goal)
 {
-  selectedRoute.reset(g->world->pathfinder.computeRoute(g->world, selectedArmy, goal));
+  selectedRoute.reset(g->world->pathfinder.computeRoute(g->world, selectedArmy->getPosition(), selectedUnits, this, goal));
 }
 
 bool LocalPlayer::consumeRoute()
@@ -73,7 +73,10 @@ bool LocalPlayer::consumeRoute()
   if (!wholeSelected())
     army = splitAndSelect();
   else
+  {
+    g->world->get(army->getPosition())->unplaceArmy();
     army = selectedArmy;
+  }
   
   army->setRoute(selectedRoute.release());
   return g->consumeMovement(army);
@@ -93,12 +96,14 @@ Army* LocalPlayer::splitAndSelect()
   for (auto u : *newArmy)
   {
     selectedArmy->remove(u);
-    selectUnit(u);
+    selectedUnits.push_back(u);
   }
   
   newArmy->setPosition(selectedArmy->getPosition());
   selectArmy(newArmy);
   
+  
+  this->selectedArmy = newArmy;
   return newArmy;
 }
 

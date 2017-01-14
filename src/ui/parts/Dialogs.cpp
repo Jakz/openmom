@@ -47,3 +47,10 @@ void InfoMenu::draw()
   Gfx::drawClipped(bottom, b.x + leftBottom.sw(), b.y + h - bottom.sh(), 0, 0, w - leftBottom.sw() - rightBottom.sw(), bottom.sh());
   Gfx::unbindPalette();
 }
+
+
+void ItemDetailDialog::draw()
+{
+  static const SpriteInfo background = LSI(ITEMISC, 25);
+  static const SpriteInfo pin = LSI(ITEMISC, 26);
+}

@@ -114,7 +114,7 @@ public:
   void patrol();
   void unpatrol() { isPatrol = false; }
   bool isPatrolling() const { return isPatrol; }
-  bool isPlaced() const { return position.x != -1; }
+  bool isPlaced() const { return position.x != -1; } //TODO: maybe useless?
   const Position& getPosition() const { return position; }
   void setPosition(const Position& position) { this->position = position; }
   

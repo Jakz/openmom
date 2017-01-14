@@ -14,6 +14,7 @@ class GUISettings
 public:
   static constexpr bool customUnitProps = true;
   static constexpr bool hideCombatEdges = true;
+  static constexpr bool drawOverlandGrid = true;
 };
 
 #endif
