@@ -115,7 +115,7 @@ public:
     const u8* data = rawData->dataAt(r,c);
     u8 value = data[x + y*rawData->tw()];
     
-    //return RGB(255,0,0);
+    //return {255,0,0};
     
     return value;
   }

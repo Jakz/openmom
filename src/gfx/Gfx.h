@@ -86,10 +86,10 @@ public:
 
   static void alphaBlend(const SDL_Rect& r, Color color);
 
-  static void fillRect(u16 x, u16 y, u16 w, u16 h, u32 color);
-  static void rect(u16 x, u16 y, u16 w, u16 h, u32 color);
-  static void drawPixel(u32 color, u16 x, u16 y);
-  static void drawLine(u32 color, u16 x1, u16 y1, u16 x2, u16 y2);
+  static void fillRect(u16 x, u16 y, u16 w, u16 h, Color color);
+  static void rect(u16 x, u16 y, u16 w, u16 h, Color color);
+  static void drawPixel(Color color, u16 x, u16 y);
+  static void drawLine(Color color, u16 x1, u16 y1, u16 x2, u16 y2);
 
   
   static void canvasBlit(SpriteSheet* gsrc, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 c = 0, u16 r = 0) { blit(gsrc, canvas, fx, fy, tx, ty, w, h); }

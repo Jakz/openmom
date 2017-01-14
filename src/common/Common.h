@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstdint>
 #include <type_traits>
+#include <unordered_map>
 #include <array>
 #include "SDL.h"
 
@@ -102,26 +103,33 @@ public:
   dummy_pair find(K key) const { return { operator[](key) }; }
 };
 
-typedef u32 Color;
-
-constexpr Color RGB(u32 r, u32 g, u32 b) { return 0xFF000000 | (r << 16) | (g << 8) | b; }
-constexpr Color RGB16(u32 r, u32 g, u32 b) { return RGB(r<<2, g<<2, b<<2); }
-constexpr Color RGBA(u32 r, u32 g, u32 b, u32 a) { return (a << 24) | (r << 16) | (g << 8) | b; }
-constexpr u8 GET_RED(Color color) { return (color & 0x00FF0000) >> 16; }
-constexpr u8 GET_GREEN(Color color) { return (color & 0x0000FF00) >> 8; }
-constexpr u8 GET_BLUE(Color color) { return (color & 0x000000FF); }
-constexpr u8 GET_ALPHA(Color color) { return (color & 0xFF000000) >> 24; }
-inline Color COLOR_MIX(Color src, Color dst, u8 dstAlpha)
+using color_d = u32;
+struct Color
 {
-  u8 r1 = GET_RED(src), g1 = GET_GREEN(src), b1 = GET_BLUE(src);
-  u8 r2 = GET_RED(dst), g2 = GET_GREEN(dst), b2 = GET_BLUE(dst);
+  union
+  {
+    struct { u8 b,g,r,a; };
+    u32 data;
+  };
   
-  float sa = (255 - dstAlpha) / 255.0f;
-  float da = dstAlpha / 255.0f;
-  
-  return RGB(r1*sa + r2*da, g1*sa + g2*da, b1*sa + b2*da);
-}
+  Color() = default;
+  Color(u8 r, u8 g, u8 b, u8 a = 0xFF) : b(b), g(g), r(r), a(a) { }
+  Color(u32 data) : data(data) { }
+  Color blend(Color dst, u8 dstAlpha) const {
+    float sa = (255 - dstAlpha) / 255.0f;
+    float da = dstAlpha / 255.0f;
+    return Color(r*sa + dst.r*da, g*sa + dst.g*da, b*sa + dst.b*da);
+  }
+  operator u32() const { return data; }
+};
 
+namespace std
+{
+  template<> struct hash<Color>
+  {
+    size_t operator()(const Color& color) const { return std::hash<u32>()(color.data); }
+  };
+}
 
 enum class I18 : u32;
 enum class TextureID : u16;

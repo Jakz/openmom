@@ -40,16 +40,16 @@ Color MiniMap::minimapColor(const Tile *tile)
     //TODO: finish
     switch(tile->city->getOwner()->color)
     {
-      case GREEN: return RGB(0, 190, 0);
+      case GREEN: return {0,190,0};
       case BLUE: return 0xFFFFFFFF;
       case RED: return 0xFFFFFFFF;
-      case PURPLE: return RGB(227,125,255);
+      case PURPLE: return {227,125,255};
       case YELLOW: return 0xFFFFFFFF;
-      case NEUTRAL: return RGB(190,154,117);
+      case NEUTRAL: return {190,154,117};
     }
   }
   
-  if (tile->node && tile->node->school == SORCERY) return RGB(42, 45, 72);
-  else if (tile->node && tile->node->school == NATURE) return RGB(53,92,17);
+  if (tile->node && tile->node->school == SORCERY) return {42,45,72};
+  else if (tile->node && tile->node->school == NATURE) return {53,92,17};
   else return GfxData::tileGfxSpec(tile->type).minimapColor(tile->position.plane, tile->subtype ? 1 : 0);
 }

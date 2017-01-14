@@ -307,15 +307,15 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
   {
     for (s16 y = 1; y < h; ++y)
     {
-      Gfx::drawLine(RGBA(0, 0, 0, 40), ttx, tty + y*tileHeight, ttx + w*tileWidth, tty + y*tileHeight);
-      Gfx::drawLine(RGBA(0, 0, 0, 40), ttx, tty + y*tileHeight - 1, ttx + w*tileWidth, tty + y*tileHeight - 1);
+      Gfx::drawLine({0, 0, 0, 40}, ttx, tty + y*tileHeight, ttx + w*tileWidth, tty + y*tileHeight);
+      Gfx::drawLine({0, 0, 0, 40}, ttx, tty + y*tileHeight - 1, ttx + w*tileWidth, tty + y*tileHeight - 1);
     }
 
     
     for (s16 x = 1; x < w; ++x)
     {
-      Gfx::drawLine(RGBA(0, 0, 0, 40), ttx + x*tileWidth, tty, ttx + x*tileWidth, tty + h*tileHeight);
-      Gfx::drawLine(RGBA(0, 0, 0, 40), ttx + x*tileWidth - 1, tty, ttx + x*tileWidth - 1, tty + h*tileHeight);
+      Gfx::drawLine({0, 0, 0, 40}, ttx + x*tileWidth, tty, ttx + x*tileWidth, tty + h*tileHeight);
+      Gfx::drawLine({0, 0, 0, 40}, ttx + x*tileWidth - 1, tty, ttx + x*tileWidth - 1, tty + h*tileHeight);
     }
 
   }
@@ -402,7 +402,7 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
       {
         if (route->passesBy(t->position))
         {
-          Gfx::rect(sx+10-3, sy+9-3, 5, 5, RGB(255,0,0));
+          Gfx::rect(sx+10-3, sy+9-3, 5, 5, {255,0,0});
         }
       }
       

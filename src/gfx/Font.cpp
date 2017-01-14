@@ -95,81 +95,81 @@ s8 yadjust[] = {  -1,    0,     0,    0,       0,          0};
 
 void FontFaces::buildFonts()
 {
-  Palettes::SMALL_WHITE_PALE = new IndexedPalette({0,0,RGB(93,93,121),RGB(142,134,130),RGB(255,255,255)});
-  Palettes::SMALL_YELLOW_PALE = new IndexedPalette({0,0,RGB(93,93,121),RGB(142,134,130),RGB(249,232,67)});
-  Palettes::WHITE_PRODUCTION = new IndexedPalette({0, /*RGB(73,65,60)*/0, 0, RGB(121,93,77), RGB(255,255,255)}); // TODO: bugged, stroke is different
+  Palettes::SMALL_WHITE_PALE = new IndexedPalette({0,0, {93,93,121}, {142,134,130}, {255,255,255}});
+  Palettes::SMALL_YELLOW_PALE = new IndexedPalette({0,0,{93,93,121},{142,134,130},{249,232,67}});
+  Palettes::WHITE_PRODUCTION = new IndexedPalette({0, /*{73,65,60}*/0, 0, {121,93,77}, {255,255,255}}); // TODO: bugged, stroke is different
   
   FontData::fonts[FONT_MEDIUM]->setGlyphWidth(' '-' ', 1);
   FontData::fonts[FONT_SERIF_CRYPT]->setGlyphWidth(' '-' ', 3);
 
-  Tiny::WHITE = buildTiny({0, 0, RGB(0,0,0), RGB(143, 133, 130), RGB(255, 255, 255)});
-  Tiny::WHITE_STROKE = buildTiny({0, RGB(0,0,0), RGB(0,0,0), RGB(143, 133, 130), RGB(255, 255, 255)});
-  Tiny::YELLOW_STROKE = buildTiny({0, RGB(0,0,0), RGB(0,0,0), RGB(124,82,36), RGB(213,133,27)});
-  Tiny::RED_STROKE = buildTiny({0, RGB(0,0,0), RGB(0,0,0), RGB(128,0,0), RGB(255,0,0)});
-  Tiny::BROWN = buildTiny({0, 0, 0, RGB(121,85,36), RGB(97,69,36)});
+  Tiny::WHITE = buildTiny({0, 0, {0,0,0}, {143,133,130}, {255,255,255}});
+  Tiny::WHITE_STROKE = buildTiny({0, {0,0,0}, {0,0,0}, {143,133,130}, {255,255,255}});
+  Tiny::YELLOW_STROKE = buildTiny({0, {0,0,0}, {0,0,0}, {124,82,36}, {213,133,27}});
+  Tiny::RED_STROKE = buildTiny({0, {0,0,0}, {0,0,0}, {128,0,0}, {255,0,0}});
+  Tiny::BROWN = buildTiny({0, 0, 0, {121,85,36}, {97,69,36}});
   
-  Small::YELLOW = buildSmall({0,0,RGB(81,60,48),RGB(150,109,52),RGB(223,150,28)});
-  Small::BLUE_MAGIC = buildSmall({0,0,RGB(40,40,65),RGB(97,97,125),RGB(146,146,166)});
+  Small::YELLOW = buildSmall({0,0,{81,60,48},{150,109,52},{223,150,28}});
+  Small::BLUE_MAGIC = buildSmall({0,0,{40,40,65},{97,97,125},{146,146,166}});
   Small::WHITE_PALE = buildSmall(Palettes::SMALL_WHITE_PALE);
   Small::YELLOW_PALE = buildSmall(Palettes::SMALL_YELLOW_PALE);
-  Small::RED_PALE = buildSmall({0,0,RGB(16,12,32),RGB(81,77,113),RGB(195,178,178)});
-  Small::WHITE = buildSmall({0,0,RGB(0,0,0),RGB(143,133,130),RGB(255,255,255)});
-  Small::TEAL = buildSmall({0,0,RGB(20,69,69),RGB(85,166,166),RGB(190,239,239)});
-  Small::BROWN = buildSmall({0,0,0,RGB(119,85,23),RGB(51,40,26)});
-  Small::BROWN_HELP = new FontSpriteSheet(FontData::fonts[FONT_SMALL], {0,0,0,RGB(121,85,36),RGB(69,36,4)}, 1, 1);
-  Small::GREENW = buildSmall({0,0,RGB(0,0,0),RGB(21,71,45),RGB(42,141,97)});
-  Small::BLUEW = buildSmall({0,0,RGB(0,0,0),RGB(24,79,116),RGB(78,127,166)});
-  Small::REDW = buildSmall({0,0,RGB(0,0,0),RGB(128,0,4),RGB(255,0,8)});
-  Small::PURPLEW = buildSmall({0,0,RGB(0,0,0),RGB(95,20,92),RGB(145,59,141)});
-  Small::YELLOWW = buildSmall({0,0,RGB(0,0,0),RGB(117,103,8),RGB(235,207,17)});
-  Small::GRAY_ITEM_CRAFT = buildSmall({0,0,0,0,RGB(158,150,146)});
+  Small::RED_PALE = buildSmall({0,0,{16,12,32},{81,77,113},{195,178,178}});
+  Small::WHITE = buildSmall({0,0,{0,0,0},{143,133,130},{255,255,255}});
+  Small::TEAL = buildSmall({0,0,{20,69,69},{85,166,166},{190,239,239}});
+  Small::BROWN = buildSmall({0,0,0,{119,85,23},{51,40,26}});
+  Small::BROWN_HELP = new FontSpriteSheet(FontData::fonts[FONT_SMALL], {0,0,0,{121,85,36},{69,36,4}}, 1, 1);
+  Small::GREENW = buildSmall({0,0,{0,0,0},{21,71,45},{42,141,97}});
+  Small::BLUEW = buildSmall({0,0,{0,0,0},{24,79,116},{78,127,166}});
+  Small::REDW = buildSmall({0,0,{0,0,0},{128,0,4},{255,0,8}});
+  Small::PURPLEW = buildSmall({0,0,{0,0,0},{95,20,92},{145,59,141}});
+  Small::YELLOWW = buildSmall({0,0,{0,0,0},{117,103,8},{235,207,17}});
+  Small::GRAY_ITEM_CRAFT = buildSmall({0,0,0,0,{158,150,146}});
   Small::BLINK_WHITE_GREY = buildSmall(new BlinkingPalette({3,4}, 200, 180, 180, 172, 148, 130, 600));
   
-  Medium::TEAL = buildMedium({0, RGB(0,121,123), RGB(0,68,68), RGB(57,166,166), RGB(180,240,240)});
-  Medium::TEAL_STROKE = buildMedium({0, RGB(0,68,68), RGB(0,68,68), RGB(57,166,166), RGB(180,240,240)});
-  Medium::TEAL_BRIGHT = buildMedium({0, 0, RGB(22,97,97), RGB(90,166,166), RGB(185,240,240)});
-  Medium::BLACK = buildMedium({0, 0, RGB(90,154,154), RGB(6,69,69), RGB(6,2,2)});
-  Medium::BLUE_MAGIC = buildMedium({0, 0, RGB(81,60,48), RGB(97,69,36), RGB(146,146,166)});
+  Medium::TEAL = buildMedium({0, {0,121,123}, {0,68,68}, {57,166,166}, {180,240,240}});
+  Medium::TEAL_STROKE = buildMedium({0, {0,68,68}, {0,68,68}, {57,166,166}, {180,240,240}});
+  Medium::TEAL_BRIGHT = buildMedium({0, 0, {22,97,97}, {90,166,166}, {185,240,240}});
+  Medium::BLACK = buildMedium({0, 0, {90,154,154}, {6,69,69}, {6,2,2}});
+  Medium::BLUE_MAGIC = buildMedium({0, 0, {81,60,48}, {97,69,36}, {146,146,166}});
   
   /* color indices: background, high shadow, low shadow, unused?, main color, middle dots, single pixels */
-  MediumBold::BROWN_START = buildMediumBold({0, 0, RGB(166,134,105), RGB(52,40,28), RGB(52,40,28), RGB(52,40,28), RGB(52,40,28)}); // TODO: fix last color
-  MediumBold::BROWN_ITEM_CRAFT = buildMediumBold({0, RGB(73,52,44), RGB(56,32,28), 0, RGB(166,134,105), RGB(150,117,93), RGB(142,113,89)});
-  MediumBold::GOLD_ITEM_CRAFT = buildMediumBold({0, RGB(73,52,44), RGB(56,32,28), 0, RGB(255,182,43), RGB(239,166,35), RGB(223,150,27)});
-  MediumBold::GRAY_ITEM_CRAFT = buildMediumBold({0, 0, RGB(65,43,35), 0, RGB(158,150,146), RGB(142,134,130), RGB(142,134,130)});
+  MediumBold::BROWN_START = buildMediumBold({0, 0, {166,134,105}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28}}); // TODO: fix last color
+  MediumBold::BROWN_ITEM_CRAFT = buildMediumBold({0, {73,52,44}, {56,32,28}, 0, {166,134,105}, {150,117,93}, {142,113,89}});
+  MediumBold::GOLD_ITEM_CRAFT = buildMediumBold({0, {73,52,44}, {56,32,28}, 0, {255,182,43}, {239,166,35}, {223,150,27}});
+  MediumBold::GRAY_ITEM_CRAFT = buildMediumBold({0, 0, {65,43,35}, 0, {158,150,146}, {142,134,130}, {142,134,130}});
 
   
   /* color indices: background, high shadow, low shadow, single pixels, stripes x 4 (low to high) */
   
-  Serif::TEAL = buildSerif({0, RGB(24,68,68), RGB(24,68,68), RGB(58,166,166), RGB(243,235,231), RGB(188,238,218), RGB(197,239,217), RGB(193,239,240)});
-  Serif::BROWN = buildSerif({0, 0, 0, RGB(120,74,36), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14), RGB(96,8,14)});
-  Serif::BROWN_HELP = buildSerif({0, 0, 0, RGB(97,69,36), RGB(69,4,4), RGB(69,4,4), RGB(69,4,4), RGB(69,4,4)});
-  Serif::YELLOW_SHADOW = buildSerif({0, 0, RGB(15,49,56), RGB(115,84,69), RGB(245,161,39), RGB(229,145,31), RGB(213,133,27), RGB(213,133,27)});
+  Serif::TEAL = buildSerif({0, {24,68,68}, {24,68,68}, {58,166,166}, {243,235,231}, {188,238,218}, {197,239,217}, {193,239,240}});
+  Serif::BROWN = buildSerif({0, 0, 0, {120,74,36}, {96,8,14}, {96,8,14}, {96,8,14}, {96,8,14}});
+  Serif::BROWN_HELP = buildSerif({0, 0, 0, {97,69,36}, {69,4,4}, {69,4,4}, {69,4,4}, {69,4,4}});
+  Serif::YELLOW_SHADOW = buildSerif({0, 0, {15,49,56}, {115,84,69}, {245,161,39}, {229,145,31}, {213,133,27}, {213,133,27}});
   
-  Serif::GOLD_ERROR_MESSAGE = buildSerif({0, 0, RGB(128,13,4),RGB(121,85,36), RGB(207,138,24), RGB(245,161,39), RGB(255,199,103), RGB(255,243,127)});
+  Serif::GOLD_ERROR_MESSAGE = buildSerif({0, 0, {128,13,4},{121,85,36}, {207,138,24}, {245,161,39}, {255,199,103}, {255,243,127}});
   
-  Serif::GOLD_SHADOW = buildSerif({0,  0, RGB(67,43,36),RGB(74,51,44), RGB(213,133,27), RGB(245,161,39), RGB(255,199,103), RGB(255,243,127)});
-  Serif::GOLD = buildSerif({0, 0, 0, RGB(255,174,12), RGB(213,133,27), RGB(245,161,39), RGB(255,199,103), RGB(255,243,127)});
-  Serif::SILVER_SHADOW = buildSerif({0, 0, RGB(67,43,36), RGB(106,97,93), RGB(159,150,146), RGB(196,186,182), RGB(228,219,215), RGB(255,255,255)});  // TODO: take from fontColors map
-  Serif::WHITE_SURVEY = buildSerif({0, 0, RGB(93,93,121), RGB(142,134,130), RGB(255,255,255), RGB(255,255,255), RGB(255,255,215), RGB(255,255,255)});
-  Serif::DARK_BROWN = buildSerif({0, 0, 0, RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36), RGB(73, 56, 36)});
+  Serif::GOLD_SHADOW = buildSerif({0,  0, {67,43,36},{74,51,44}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
+  Serif::GOLD = buildSerif({0, 0, 0, {255,174,12}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
+  Serif::SILVER_SHADOW = buildSerif({0, 0, {67,43,36}, {106,97,93}, {159,150,146}, {196,186,182}, {228,219,215}, {255,255,255}});  // TODO: take from fontColors map
+  Serif::WHITE_SURVEY = buildSerif({0, 0, {93,93,121}, {142,134,130}, {255,255,255}, {255,255,255}, {255,255,215}, {255,255,255}});
+  Serif::DARK_BROWN = buildSerif({0, 0, 0, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}});
   
-  Crypt::SERIF_BROWN = buildSerifCrypt({0,0,0,RGB(73, 56, 36), RGB(73, 56, 36)}); // TODO: single pixels are of same brown?
-  Crypt::TINY_BROWN = buildTinyCrypt({0,0,0,RGB(97,69,36), RGB(97,69,36)}); // TODO: don't kno why main pixels are on second palette index, not first
+  Crypt::SERIF_BROWN = buildSerifCrypt({0,0,0,{73,56,36}, {73,56,36}}); // TODO: single pixels are of same brown?
+  Crypt::TINY_BROWN = buildTinyCrypt({0,0,0,{97,69,36}, {97,69,36}}); // TODO: don't kno why main pixels are on second palette index, not first
   
   color_list hugeGoldPalette = {
-    0, 0, RGB(0,0,0), 0,
-    RGB(215,182,154),
-    RGB(255,203,101),
-    RGB(255,203,36),
-    RGB(239,166,36),
-    RGB(223,159,28),
-    RGB(166,125,85),
-    RGB(207,138,24),
-    RGB(166,109,28),
-    RGB(121,85,36),
-    RGB(97,69,36),
-    RGB(101,89,0),
-    RGB(73,56,36)
+    0, 0, {0,0,0}, 0,
+    {215,182,154},
+    {255,203,101},
+    {255,203,36},
+    {239,166,36},
+    {223,159,28},
+    {166,125,85},
+    {207,138,24},
+    {166,109,28},
+    {121,85,36},
+    {97,69,36},
+    {101,89,0},
+    {73,56,36}
   };
   
   Huge::GOLD = new FontSpriteSheet(FontData::fonts[FONT_HUGE], hugeGoldPalette, 1, 0);
@@ -185,7 +185,7 @@ const Palette* Fonts::palette = nullptr;
 const Palette* Fonts::opalette = nullptr;
 const FontSpriteSheet* Fonts::font = nullptr;
 unordered_map<char, const Palette*> Fonts::fontColors = {
-  {'s', new IndexedPalette({0, 0, RGB(67,43,36), RGB(106,97,93), RGB(159,150,146), RGB(196,186,182), RGB(228,219,215), RGB(255,255,255)})},
+  {'s', new IndexedPalette({0, 0, {67,43,36}, {106,97,93}, {159,150,146}, {196,186,182}, {228,219,215}, {255,255,255}})},
   {'w', FontFaces::Palettes::SMALL_WHITE_PALE},
   {'y', FontFaces::Palettes::SMALL_YELLOW_PALE}
 };

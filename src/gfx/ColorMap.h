@@ -78,7 +78,7 @@ class HashColorMap : public ColorMap
       
         color_map::const_iterator it = map.find(k);
       
-        return it != map.end() ? it->second : k;
+        return it != map.end() ? it->second.data : k;
       }
       
       return k;

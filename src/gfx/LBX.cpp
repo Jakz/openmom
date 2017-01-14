@@ -45,8 +45,8 @@ struct LBXTerrainInfo
 using namespace std;
 using namespace lbx;
 
-const Color BLACK_ALPHA = RGB(0, 255, 0);
-const Color TRANSPARENT = RGB(255, 0, 255);
+const Color BLACK_ALPHA = {0,255,0};
+const Color TRANSPARENT = {255,0,255};
 
 constexpr size_t TERRAIN_COUNT_PER_PLANE = 0x2FA;
 constexpr size_t TERRAIN_BASE = 768;

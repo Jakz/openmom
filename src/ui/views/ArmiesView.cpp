@@ -94,7 +94,7 @@ void ArmiesView::draw()
   Fonts::setFace(FontFaces::Small::RED_PALE, 0, 1);
   
   /* fill minimap background */
-  Gfx::fillRect(86, 164, 48, 32, RGB16(2,1,1));
+  Gfx::fillRect(86, 164, 48, 32, Gfx::PALETTE[1]);
   
   if (army)
   {
@@ -104,7 +104,7 @@ void ArmiesView::draw()
     const Position& apos = army->getPosition();
     Viewport::drawMicroMap(player, 86, 164, 48, 32, apos.x, apos.y, apos.plane);
     if (Gfx::fticks%4 == 0)
-      Gfx::drawPixel(RGB(255, 255, 255), 86 + 48/2, 164 + 32/2);
+      Gfx::drawPixel({255,255,255}, 86 + 48/2, 164 + 32/2);
     
     // draw unit name
     // TODO: space dello SmallCompactFont è 1 in meno di quanto è nel gioco originale

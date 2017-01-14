@@ -33,18 +33,18 @@ constexpr s8 GfxData::PROPERTY_INDEX[];
 
 const TileGfxSpec GfxData::specs[] =
 {
-  TileGfxSpec(0,6,RGB(56,94,18),RGB(81,60,48)), // GRASS
-  TileGfxSpec(0,0,{RGB(0, 14, 90),RGB(7, 25, 95)},{RGB(8,4,4),RGB(36,28,24)}), // WATER
-  TileGfxSpec(0,0,{RGB(0, 14, 90),RGB(7, 25, 95)},{RGB(8,4,4),RGB(36,28,24)}), // SHORE
-  TileGfxSpec(0,0,{RGB(105,96,93),RGB(126, 116, 113)},{RGB(255, 255, 255)}), // MOUNTAIN
-  TileGfxSpec(0,0,{RGB(105,96,93),RGB(126, 116, 113)},{RGB(255, 255, 255)}), // VOLCANO
-  TileGfxSpec(0,0,RGB(53,92,17),RGB(115,83,69)), // HILL
-  TileGfxSpec(1,3,RGB(0, 94, 19),RGB(0, 94, 19)),  // FOREST
-  TileGfxSpec(2,3,RGB(56,47,43),RGB(56,47,43)), // SWAMP
-  TileGfxSpec(3,4,{RGB(190,154,117),RGB(142,113,89)},{RGB(255,255,255)}), // DESERT
-  TileGfxSpec(4,3,RGB(56,47,43),RGB(255,255,255)), // TUNDRA
-  TileGfxSpec(0,0,RGB(255, 255, 255),RGB(255, 255, 255)), // RIVER
-  TileGfxSpec(0,0,{RGB(0, 14, 90),RGB(7, 25, 95)},{RGB(8,4,4),RGB(36,28,24)}) // RIVER_MOUTH TODO: check colors
+  TileGfxSpec(0,6,{56,94,18},{81,60,48}), // GRASS
+  TileGfxSpec(0,0,{{0,14,90},{7,25,95}},{{8,4,4},{36,28,24}}), // WATER
+  TileGfxSpec(0,0,{{0,14,90},{7,25,95}},{{8,4,4},{36,28,24}}), // SHORE
+  TileGfxSpec(0,0,{{105,96,93},{126,116,113}},{{255,255,255}}), // MOUNTAIN
+  TileGfxSpec(0,0,{{105,96,93},{126,116,113}},{{255,255,255}}), // VOLCANO
+  TileGfxSpec(0,0,{53,92,17},{115,83,69}), // HILL
+  TileGfxSpec(1,3,{0,94,19},{0,94,19}),  // FOREST
+  TileGfxSpec(2,3,{56,47,43},{56,47,43}), // SWAMP
+  TileGfxSpec(3,4,{{190,154,117},{142,113,89}},{{255,255,255}}), // DESERT
+  TileGfxSpec(4,3,{56,47,43},{255,255,255}), // TUNDRA
+  TileGfxSpec(0,0,{255,255,255},{255,255,255}), // RIVER
+  TileGfxSpec(0,0,{{0,14,90},{7,25,95}},{{8,4,4},{36,28,24}}) // RIVER_MOUTH TODO: check colors
 };
 
 gfx_map<const Spell*, sprite_ref> GfxData::specialSpellGfxEffects = {
@@ -104,12 +104,12 @@ decltype(GfxData::raceHouseSpecs) GfxData::raceHouseSpecs = {
 
 //TODO: LIFE SPELL (SPECFX, 3) uses palette with multiple white alphas, understand how to manage it
 decltype(GfxData::schoolSpecs) GfxData::schoolSpecs = {
-  { School::ARCANE, { RGB(0,0,0), LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD, LSI_PLACEHOLD, LSI(MAGIC, 48), LSI(SPECFX, 5) } },
-  { School::NATURE, { RGB(0,255,0), LSI(SPELLSCR, 62), LSI(SPELLS, 4), LSI(WIZLAB, 14), LSI(NEWGAME,30), LSI(MAGIC, 33), LSI(SPECFX, 0) } },
-  { School::SORCERY, { RGB(0,0,255), LSI(SPELLSCR, 63), LSI(SPELLS, 5), LSI(WIZLAB, 15), LSI(NEWGAME, 27), LSI(MAGIC, 36), LSI(SPECFX, 1) } },
-  { School::CHAOS, { RGB(255,0,0), LSI(SPELLSCR, 64), LSI(SPELLS, 6), LSI(WIZLAB, 16), LSI(NEWGAME, 36), LSI(MAGIC, 39), LSI(SPECFX, 2) } },
-  { School::LIFE, { RGB(255,255,255), LSI(SPELLSCR, 65), LSI(SPELLS, 7), LSI(WIZLAB, 17), LSI(NEWGAME, 24), LSI(MAGIC, 42), LSI(SPECFX, 3) } },
-  { School::DEATH, { RGB(0,0,0), LSI(SPELLSCR, 66), LSI(SPELLS, 8), LSI(WIZLAB, 18), LSI(NEWGAME, 33), LSI(MAGIC, 45), LSI(SPECFX, 4) } },
+  { School::ARCANE, { {0,0,0}, LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD, LSI_PLACEHOLD, LSI(MAGIC, 48), LSI(SPECFX, 5) } },
+  { School::NATURE, { {0,255,0}, LSI(SPELLSCR, 62), LSI(SPELLS, 4), LSI(WIZLAB, 14), LSI(NEWGAME,30), LSI(MAGIC, 33), LSI(SPECFX, 0) } },
+  { School::SORCERY, { {0,0,255}, LSI(SPELLSCR, 63), LSI(SPELLS, 5), LSI(WIZLAB, 15), LSI(NEWGAME, 27), LSI(MAGIC, 36), LSI(SPECFX, 1) } },
+  { School::CHAOS, { {255,0,0}, LSI(SPELLSCR, 64), LSI(SPELLS, 6), LSI(WIZLAB, 16), LSI(NEWGAME, 36), LSI(MAGIC, 39), LSI(SPECFX, 2) } },
+  { School::LIFE, { {255,255,255}, LSI(SPELLSCR, 65), LSI(SPELLS, 7), LSI(WIZLAB, 17), LSI(NEWGAME, 24), LSI(MAGIC, 42), LSI(SPECFX, 3) } },
+  { School::DEATH, { {0,0,0}, LSI(SPELLSCR, 66), LSI(SPELLS, 8), LSI(WIZLAB, 18), LSI(NEWGAME, 33), LSI(MAGIC, 45), LSI(SPECFX, 4) } },
 };
 
 decltype(GfxData::upkeepSymbolSpec) GfxData::upkeepSymbolSpec = {

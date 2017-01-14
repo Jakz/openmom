@@ -94,7 +94,7 @@ namespace anims
     u8 maxAlpha;
     
     // TODO: true colors and maybe check duration/alpha
-    static constexpr const Color SCHOOL_COLORS[] = {RGB(0, 0, 0), RGB(255,0,0), RGB(0,0,0), RGB(255,255,255), RGB(0,255,0), RGB(0,0,255)};
+    static const Color SCHOOL_COLORS[];
     
   public:
     Blink(School school) : Blink(800, SCHOOL_COLORS[school], {0,0,320,200}, 220) { }

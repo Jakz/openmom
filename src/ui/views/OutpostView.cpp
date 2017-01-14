@@ -48,10 +48,10 @@ void OutpostView::draw()
   */
   
   // black bounding box around city scape
-  Gfx::drawLine(RGB(0, 0, 0), BX, BY, BX, BY+66);
-  Gfx::drawLine(RGB(0, 0, 0), BX+71, BY, BX+71, BY+66);
-  Gfx::drawLine(RGB(0, 0, 0), BX, BY, BX+72, BY);
-  Gfx::drawLine(RGB(0, 0, 0), BX, BY+65, BX+72, BY+65);
+  Gfx::drawLine({0,0,0}, BX, BY, BX, BY+66);
+  Gfx::drawLine({0,0,0}, BX+71, BY, BX+71, BY+66);
+  Gfx::drawLine({0,0,0}, BX, BY, BX+72, BY);
+  Gfx::drawLine({0,0,0}, BX, BY+65, BX+72, BY+65);
   
   Gfx::draw(houseSpec.cityScapeHouse, BX + 30, BY + 30);
   

@@ -16,7 +16,8 @@
 using namespace std;
 using namespace anims;
 
-constexpr const Color Blink::SCHOOL_COLORS[];
+const Color anims::Blink::SCHOOL_COLORS[] = {{0,0,0}, {255,0,0}, {0,0,0}, {255,255,255}, {0,255,0}, {0,0,255}};
+
 
 void Blink::step()
 {

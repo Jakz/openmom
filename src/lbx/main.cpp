@@ -265,15 +265,14 @@ void drawSprite(const u8* data, int w, int h, int& sx, int& sy, int S, const Pal
       u8 index = data[x + y*w];
       
       Color pixel = !palette ? Gfx::PALETTE[index] : palette->get(index);
-      u8 r = GET_RED(pixel), g = GET_GREEN(pixel), b = GET_BLUE(pixel);
       
       for (size_t ix = 0; ix < S; ++ix)
         for (size_t iy = 0; iy < S; ++iy)
         {
           u8* base = &tdata[(x*S+ix)*3 + (y*S+iy)*cw*3*S];
-          base[0] = r;
-          base[1] = g;
-          base[2] = b;
+          base[0] = pixel.r;
+          base[1] = pixel.g;
+          base[2] = pixel.b;
         }
     }
   }
@@ -463,7 +462,7 @@ public:
         {
           Color pixel = !sprite->palette ? Gfx::PALETTE[hi] : sprite->palette->get(hi);
 
-          fl_draw(fmt::sprintf("(%d,%d) = %d = RGB(%d,%d,%d) = #%02X%02X%02X", hx, hy, hi, GET_RED(pixel), GET_GREEN(pixel), GET_BLUE(pixel), GET_RED(pixel), GET_GREEN(pixel), GET_BLUE(pixel)).c_str(), this->sx, 30);
+          fl_draw(fmt::sprintf("(%d,%d) = %d = RGB(%d,%d,%d) = #%02X%02X%02X", hx, hy, hi, pixel.r, pixel.g, pixel.b, pixel.r, pixel.b, pixel.g).c_str(), this->sx, 30);
           fl_draw("<", FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+16*2, hi*3+10);
         }
       }
@@ -665,7 +664,7 @@ public:
           if (type != LBXFileType::TILES)
           {
             const LBXFileName& entry = assetNames[currentLBX->ident][ROW];
-            fl_draw(fmt::sprintf("%6Xh\n%s/%s",currentLBX->info.offsets[ROW],entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
+            fl_draw(fmt::sprintf("%6Xh %d bytes\n%s/%s",currentLBX->info.offsets[ROW], currentLBX->info.offsets[ROW+1]-currentLBX->info.offsets[ROW],entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
           }
           else
           {
@@ -802,7 +801,7 @@ public:
       if (currentLBX->info.header.type == LBXFileType::TILES || currentLBX->info.header.type == LBXFileType::GRAPHICS)
         tableSprites->row_height_all(20*2+2);
       else
-        tableSprites->row_height_all(ROW_HEIGHT);
+        tableSprites->row_height_all(20*2+2);
 
       
       if (currentLBX->info.header.type == LBXFileType::TILES_MAPPING)
