@@ -26,6 +26,7 @@ const ColorMap* Gfx::map = nullptr;
 const Palette* Gfx::palette = nullptr;
 
 IndexedPalette* Gfx::mainPalette = new IndexedPalette(256);
+IndexedPalette* Gfx::mainPaletteOpaque = new IndexedPalette(256);
 IndexedPalette* Gfx::loadPalette = new IndexedPalette(256);
 
 

@@ -590,9 +590,13 @@ void LBX::loadPalettes(const LBXHeader &header, offset_list &offsets, FILE *in)
   /*                3: load/save palette */
     
   loadPalette(offsets[2], Gfx::mainPalette, in);
+  
   Gfx::mainPalette->set(232, BLACK_ALPHA);
   Gfx::mainPalette->set(233, BLACK_ALPHA);
   Gfx::mainPalette->set(0, TRANSPARENT);
+  
+  loadPalette(offsets[2], Gfx::mainPaletteOpaque, in);
+
   
   //loadPalette(offsets[3], Gfx::loadPalette, in);
 }

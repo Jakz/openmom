@@ -30,14 +30,31 @@ LoadView::LoadView(ViewManager* gvm) : View(gvm)
   
   buttons.resize(bts::COUNT);
   
-  buttons[LOAD] = Button::buildOffsetted("load", 50, 50, LSI(LOAD,1));
+  buttons[LOAD] = Button::buildOffsetted("load", 83, 171, LSI(LOAD,1), LSI(LOAD,5));
   buttons[LOAD]->setPalette(palette);
   
+  buttons[QUIT] = Button::buildOffsetted("quit", 43, 171, LSI(LOAD,2), LSI(LOAD,6));
+  buttons[QUIT]->setPalette(palette);
+  
+  buttons[SAVE] = Button::buildOffsetted("save", 122, 171, LSI(LOAD,3), LSI(LOAD,7));
+  buttons[SAVE]->setPalette(palette);
+  
+  buttons[OK] = Button::buildOffsetted("ok", 231, 171, LSI(LOAD,4), LSI(LOAD,8));
+  buttons[OK]->setPalette(palette);
+  buttons[OK]->setAction([this](){ this->gvm->switchView(VIEW_MAIN); });
+  
+  buttons[SETTINGS] = Button::buildOffsetted("settings", 172, 171, LSI(LOAD,12));
+  buttons[SETTINGS]->setPalette(palette);
+  buttons[SETTINGS]->setAction([this](){ this->gvm->switchView(VIEW_OPTIONS); });
+
 }
 
 void LoadView::draw()
 {
   Gfx::draw(background, 0, 0);
+  Gfx::fillRect(43, 171, 117, 13, Gfx::mainPaletteOpaque->get(0));
+  Gfx::fillRect(172, 171, 99, 13, Gfx::mainPaletteOpaque->get(0));
+
 }
 
 void LoadView::mouseReleased(u16 x, u16 y, MouseButton b)

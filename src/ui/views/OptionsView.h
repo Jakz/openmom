@@ -19,6 +19,13 @@ private:
   void draw() override;
   void drawPost() override { }
   
+  enum bts
+  {
+    OK = 0,
+    
+    COUNT
+  };
+  
 public:
   OptionsView(ViewManager* gvm);
   

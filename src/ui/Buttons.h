@@ -121,7 +121,7 @@ public:
   void draw() override;
   void setPosition(u16 x, u16 y) override;
   
-  void setPalette(const Palette* palette) { gfx.palette = nullptr; }
+  void setPalette(const Palette* palette) { gfx.palette = palette; }
   
   inline void execute() { if (action) action(); }
   virtual void click() { execute(); }
@@ -149,6 +149,7 @@ public:
   }
   
   static Button* buildOffsetted(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new Button(name, x, y, normal, true); }
+  static Button* buildOffsetted(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo inactive) { auto* bt = new Button(name, x, y, normal, true); bt->gfx.inactive = inactive; return bt; }
   
   static Button* buildBistate(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) { return new Button(name, x, y, normal, pressed); }
   static Button* buildBistate(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new Button(name, x, y, normal, normal.frame(1)); }

@@ -22,6 +22,7 @@ private:
     QUIT,
     SAVE,
     OK,
+    SETTINGS, 
     
     COUNT
   };

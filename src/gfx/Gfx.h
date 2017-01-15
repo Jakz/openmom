@@ -144,6 +144,7 @@ public:
   static u32 fticks;
 
   static IndexedPalette* mainPalette;
+  static IndexedPalette* mainPaletteOpaque;
   static IndexedPalette* loadPalette;
 };
 
