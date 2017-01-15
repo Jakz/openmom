@@ -61,6 +61,7 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
   buttons[BUILD] = Button::buildTristate("Build", 280, 186, LSI(MAIN, 11), LSI(MAIN,15));
   // CANCEL BUTTON MISSING
   
+  buttons[GAME]->setAction([gvm](){ gvm->switchView(VIEW_LOAD); });
   buttons[SPELLS]->setAction([gvm](){ gvm->switchOverview(VIEW_SPELL_BOOK); });
   buttons[MAGIC]->setAction([gvm](){ gvm->switchView(VIEW_MAGIC); });
   buttons[ARMIES]->setAction([gvm](){ gvm->switchView(VIEW_ARMIES); });

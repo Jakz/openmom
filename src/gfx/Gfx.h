@@ -109,10 +109,10 @@ public:
 
   static void draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r = 0, u16 c = 0);
   
-  static void draw(SpriteInfo info, const Palette* palette, s16 x, s16 y, u16 f) { bindPalette(palette); draw(info.sheet(), x, y, 0, f); unbindPalette(); }
   static void draw(SpriteInfo info, s16 x, s16 y) { draw(info.sheet(), x, y, info.x(), info.y()); }
   static void draw(SpriteInfo info, ScreenCoord coord) { draw(info, coord.x, coord.y); }
-  
+
+  static void draw(SpriteInfo info, const Palette* palette, s16 x, s16 y, u16 f) { bindPalette(palette); draw(info.sheet(), x, y, 0, f); unbindPalette(); }
   static void draw(SpriteInfo info, const Palette* palette, s16 x, s16 y) { bindPalette(palette); draw(info.sheet(), x, y, info.x(), info.y()); unbindPalette(); }
 
   //static void draw(SpriteInfo info, s16 x, s16 y, u8 c) { draw(info.sheet(), x, y, info.x(), c); }

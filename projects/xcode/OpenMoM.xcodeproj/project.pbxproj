@@ -164,6 +164,8 @@
 		0493DA931E1B55FA0088FF42 /* ConsoleView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */; };
 		0493DA941E1B56040088FF42 /* Help.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428FC1E117C2D003A76D8 /* Help.cpp */; };
 		0493DA971E1DFB0C0088FF42 /* YAML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0493DA951E1DFB0C0088FF42 /* YAML.cpp */; };
+		049B1CF01E2B3D8500A2A449 /* LoadView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CEC1E2B3D8500A2A449 /* LoadView.cpp */; };
+		049B1CF11E2B3D8500A2A449 /* OptionsView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CEE1E2B3D8500A2A449 /* OptionsView.cpp */; };
 		04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B11983286E00291B82 /* Viewport.cpp */; };
 		04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B419833C1E00291B82 /* UnitDraw.cpp */; };
 		04C1F47F1B25290C00F7688A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C1F44B1B25270300F7688A /* main.cpp */; };
@@ -391,6 +393,10 @@
 		048E08BB1982B20A009AED0A /* WorldGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldGenerator.h; sourceTree = "<group>"; };
 		0493DA951E1DFB0C0088FF42 /* YAML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YAML.cpp; sourceTree = "<group>"; };
 		0493DA961E1DFB0C0088FF42 /* YAML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YAML.h; sourceTree = "<group>"; };
+		049B1CEC1E2B3D8500A2A449 /* LoadView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoadView.cpp; sourceTree = "<group>"; };
+		049B1CED1E2B3D8500A2A449 /* LoadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadView.h; sourceTree = "<group>"; };
+		049B1CEE1E2B3D8500A2A449 /* OptionsView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionsView.cpp; sourceTree = "<group>"; };
+		049B1CEF1E2B3D8500A2A449 /* OptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionsView.h; sourceTree = "<group>"; };
 		04ABF7B11983286E00291B82 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Viewport.cpp; sourceTree = "<group>"; };
 		04ABF7B21983286E00291B82 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		04ABF7B419833C1E00291B82 /* UnitDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitDraw.cpp; sourceTree = "<group>"; };
@@ -680,6 +686,10 @@
 				0439E9A91986912D0009BFF7 /* SpellBookView.h */,
 				0439E9AB198691530009BFF7 /* UnitDetailView.cpp */,
 				0439E9AC198691530009BFF7 /* UnitDetailView.h */,
+				049B1CEC1E2B3D8500A2A449 /* LoadView.cpp */,
+				049B1CED1E2B3D8500A2A449 /* LoadView.h */,
+				049B1CEE1E2B3D8500A2A449 /* OptionsView.cpp */,
+				049B1CEF1E2B3D8500A2A449 /* OptionsView.h */,
 				046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */,
 				046428EF1E0AC4DC003A76D8 /* ConsoleView.h */,
 			);
@@ -1008,6 +1018,7 @@
 				04037621197B539400A5B5FC /* Tile.cpp in Sources */,
 				046428FE1E117C2D003A76D8 /* Help.cpp in Sources */,
 				0464E11419813E1A009C91ED /* CityMechanics.cpp in Sources */,
+				049B1CF01E2B3D8500A2A449 /* LoadView.cpp in Sources */,
 				048204A5198893BA00D4B699 /* CombatMechanics.cpp in Sources */,
 				040375DE197990B900A5B5FC /* Font.cpp in Sources */,
 				04243F2B197ED3F500E8A716 /* Combat.cpp in Sources */,
@@ -1032,6 +1043,7 @@
 				040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */,
 				0439E99B1986903A0009BFF7 /* MessageView.cpp in Sources */,
 				040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */,
+				049B1CF11E2B3D8500A2A449 /* OptionsView.cpp in Sources */,
 				04E2829C1E01A7DB00DD673D /* OriginalSave.cpp in Sources */,
 				04E218861C02A386005784E1 /* format.cc in Sources */,
 				048616561E02E758004B62B7 /* hq2x.cpp in Sources */,

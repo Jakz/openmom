@@ -575,11 +575,12 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
 
 void LBX::loadPalette(LBXOffset offset, IndexedPalette* palette, FILE* in)
 {
+  fseek(in, offset, SEEK_SET);
   LBXPaletteEntry* lpalette = new LBXPaletteEntry[256];
   fread(lpalette, sizeof(LBXPaletteEntry), 256, in);
   
   for (size_t i = 0; i < 256; ++i)
-    Gfx::mainPalette->set(i, Color(lpalette[i].r << 2, lpalette[i].g << 2, lpalette[i].b << 2));
+    palette->set(i, Color(lpalette[i].r << 2, lpalette[i].g << 2, lpalette[i].b << 2));
 }
 
 void LBX::loadPalettes(const LBXHeader &header, offset_list &offsets, FILE *in)
@@ -593,7 +594,7 @@ void LBX::loadPalettes(const LBXHeader &header, offset_list &offsets, FILE *in)
   Gfx::mainPalette->set(233, BLACK_ALPHA);
   Gfx::mainPalette->set(0, TRANSPARENT);
   
-  loadPalette(offsets[3], Gfx::loadPalette, in);
+  //loadPalette(offsets[3], Gfx::loadPalette, in);
 }
 
 std::string LBX::getLBXPath(const std::string& name)

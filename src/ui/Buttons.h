@@ -78,14 +78,15 @@ public:
 
 struct ButtonGfx
 {
+  const Palette* palette;
   optional<SpriteInfo> normal;
   optional<SpriteInfo> pressed;
   optional<SpriteInfo> inactive;
   
-  ButtonGfx() = default;
-  ButtonGfx(SpriteInfo normal) : normal(normal) { }
-  ButtonGfx(SpriteInfo normal, SpriteInfo pressed) : normal(normal), pressed(pressed) { }
-  ButtonGfx(SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : normal(normal), pressed(pressed), inactive(inactive) { }
+  ButtonGfx() : palette(nullptr) { }
+  ButtonGfx(SpriteInfo normal) : normal(normal), palette(nullptr) { }
+  ButtonGfx(SpriteInfo normal, SpriteInfo pressed) : normal(normal), pressed(pressed), palette(nullptr) { }
+  ButtonGfx(SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : normal(normal), pressed(pressed), inactive(inactive), palette(nullptr) { }
 };
 
 struct TextInfo
@@ -119,6 +120,8 @@ public:
   
   void draw() override;
   void setPosition(u16 x, u16 y) override;
+  
+  void setPalette(const Palette* palette) { gfx.palette = nullptr; }
   
   inline void execute() { if (action) action(); }
   virtual void click() { execute(); }

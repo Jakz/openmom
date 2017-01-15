@@ -27,6 +27,8 @@ class ProductionView;
 class ResearchView;
 class SpellBookView;
 class UnitDetailView;
+class LoadView;
+class OptionsView;
 class ConsoleView;
 
 class LocalPlayer;

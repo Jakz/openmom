@@ -29,7 +29,7 @@ void Button::draw()
        since it's required
      */
     if (gfx.inactive.isPresent())
-      Gfx::draw(gfx.inactive, x, y);
+      Gfx::draw(gfx.inactive, gfx.palette, x, y);
     else { assert(false); }
     return;
   }
@@ -38,18 +38,18 @@ void Button::draw()
   {
     /* if a sprite for pressed gfx is specified use it */
     if (gfx.pressed.isPresent())
-      Gfx::draw(gfx.pressed, x, y);
+      Gfx::draw(gfx.pressed, gfx.palette, x, y);
     /* otherwise it's an offset button so draw normal gfx ofsetted by 1 */
     else if (gfx.normal.isPresent())
     {
       if (shouldOffsetNormal)
-        Gfx::draw(gfx.normal, x+1, y+1);
+        Gfx::draw(gfx.normal, gfx.palette, x+1, y+1);
       else
-        Gfx::draw(gfx.normal, x, y);
+        Gfx::draw(gfx.normal, gfx.palette, x, y);
     }
   }
   else if (gfx.normal.isPresent())
-    Gfx::draw(gfx.normal, x, y);
+    Gfx::draw(gfx.normal, gfx.palette, x, y);
   
   /* if there is a label draw it accordingly */
   if (labelGfx.isPresent())

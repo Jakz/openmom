@@ -20,6 +20,8 @@
 #include "MessageView.h"
 #include "MirrorView.h"
 #include "NewGameView.h"
+#include "LoadView.h"
+#include "OptionsView.h"
 #include "OutpostView.h"
 #include "ProductionView.h"
 #include "ResearchView.h"
@@ -50,6 +52,8 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_RESEARCH] = new ResearchView(this);
   views[VIEW_SPELL_BOOK] = new SpellBookView(this);
   views[VIEW_UNIT] = new UnitDetailView(this);
+  views[VIEW_LOAD] = new LoadView(this);
+  views[VIEW_OPTIONS] = new OptionsView(this);
   
   views[VIEW_CONSOLE] = new ConsoleView(this);
 }
