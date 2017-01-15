@@ -143,7 +143,8 @@ public:
   static u32 ticks;
   static u32 fticks;
 
-  static Color PALETTE[256];
+  static IndexedPalette* mainPalette;
+  static IndexedPalette* loadPalette;
 };
 
 

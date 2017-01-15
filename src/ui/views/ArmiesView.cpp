@@ -94,7 +94,7 @@ void ArmiesView::draw()
   Fonts::setFace(FontFaces::Small::RED_PALE, 0, 1);
   
   /* fill minimap background */
-  Gfx::fillRect(86, 164, 48, 32, Gfx::PALETTE[1]);
+  Gfx::fillRect(86, 164, 48, 32, Gfx::mainPalette->get(1));
   
   if (army)
   {

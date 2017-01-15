@@ -264,7 +264,7 @@ void drawSprite(const u8* data, int w, int h, int& sx, int& sy, int S, const Pal
     {
       u8 index = data[x + y*w];
       
-      Color pixel = !palette ? Gfx::PALETTE[index] : palette->get(index);
+      Color pixel = !palette ? Gfx::mainPalette->get(index) : palette->get(index);
       
       for (size_t ix = 0; ix < S; ++ix)
         for (size_t iy = 0; iy < S; ++iy)
@@ -438,7 +438,7 @@ public:
             for (size_t i = 0; i < 256; ++i)
             {
               u8* base = palette+(PW*3*3)*i;
-              Color pixel = p == 0 ? Gfx::PALETTE[i] : sprite->palette->get(i);
+              Color pixel = p == 0 ? Gfx::mainPalette->get(i) : sprite->palette->get(i);
               
               for (size_t x = 0; x < PW; ++x)
               {
@@ -459,7 +459,7 @@ public:
         
         if (hx != -1)
         {
-          Color pixel = !sprite->palette ? Gfx::PALETTE[hi] : sprite->palette->get(hi);
+          Color pixel = !sprite->palette ? Gfx::mainPalette->get(hi) : sprite->palette->get(hi);
 
           fl_draw(fmt::sprintf("(%d,%d) = %d = RGB(%d,%d,%d) = #%02X%02X%02X", hx, hy, hi, pixel.r, pixel.g, pixel.b, pixel.r, pixel.b, pixel.g).c_str(), this->sx, 30);
           fl_draw("<", FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+16*2, hi*3+10);
@@ -643,7 +643,7 @@ public:
         if (COL == 3 && type == LBXFileType::TILES)
         {
           const auto& terrainInfo = lbx::Repository::terrainInfo()[ROW];
-          const Color c = Gfx::PALETTE[terrainInfo.minimapColor];
+          const Color c = Gfx::mainPalette->get(terrainInfo.minimapColor);
           bgcol = fl_rgb_color(c.r,c.g,c.b);
           fgcol = FL_WHITE;
         }

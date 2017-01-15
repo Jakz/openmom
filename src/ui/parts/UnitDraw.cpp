@@ -19,8 +19,7 @@
 #include "LocalPlayer.h"
 #include "Game.h"
 
-const static SharedPalette* basePalette = new SharedPalette(Gfx::PALETTE);
-const static OverridePalette* bluePalette = new OverridePalette(basePalette, 214, 5, {Gfx::PALETTE[219], Gfx::PALETTE[220], Gfx::PALETTE[221], Gfx::PALETTE[222], Gfx::PALETTE[223]});
+/*const static OverridePalette* bluePalette = new OverridePalette(basePalette, 214, 5, {Gfx::PALETTE[219], Gfx::PALETTE[220], Gfx::PALETTE[221], Gfx::PALETTE[222], Gfx::PALETTE[223]});*/
 
 void UnitDraw::bindPlayerColorPalette(PlayerColor color)
 {

@@ -267,9 +267,9 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
   fread(frameOffsets, sizeof(LBXOffset), gfxHeader.count+1, in);
   
   // create palette from standard palette
-  const u16 PALETTE_SIZE = std::extent<decltype(Gfx::PALETTE)>::value;
+  const u16 PALETTE_SIZE = 256;
   Color* palette = new Color[PALETTE_SIZE];
-  memcpy(palette, Gfx::PALETTE, sizeof(Color)*PALETTE_SIZE);
+  memcpy(palette, Gfx::mainPalette->raw(), sizeof(Color)*PALETTE_SIZE);
   
   LBXSpriteData *sprite = new LBXSpriteData(new IndexedPalette(palette), gfxHeader.count, gfxHeader.frameLoopRestart, gfxHeader.width, gfxHeader.height, gfxHeader.paletteOffset > 0);
   LBXPaletteHeader paletteHeader = {0,0,256};
@@ -312,17 +312,7 @@ LBXSpriteData* LBX::scanGfx(const LBXHeader& header, LBXOffset offset, FILE *in)
     
     delete [] data;
   }
-  
-  // fix palette colors
-  //TODO: if frame doesn't have transparent pixel then use defaul palette without override
-  for (int i = 0; i < 256; ++i)
-  {
-    if (palette[i] == 0xFFA0A0B4 || palette[i] == 0xFF8888A4)
-      palette[i] = BLACK_ALPHA; //palette[i] = 0x80000000;
-    else if (i == 0)
-      palette[i] = TRANSPARENT; //palette[i] = 0x00000000;
-  }
-  
+
   delete [] frameOffsets;
   
   return sprite;
@@ -349,13 +339,8 @@ LBXSpriteData* LBX::scanTerrainGfx(LBXOffset offset, size_t count, FILE* in)
 {
   constexpr size_t width = 20;
   constexpr size_t height = 18;
-  
-  // create palette from standard palette
-  const u16 PALETTE_SIZE = std::extent<decltype(Gfx::PALETTE)>::value;
-  Color* palette = new Color[PALETTE_SIZE];
-  memcpy(palette, Gfx::PALETTE, sizeof(Color)*PALETTE_SIZE);
-  
-  LBXSpriteData* sprite = new LBXSpriteData(new IndexedPalette(palette), count, 0, 20, 18, false);
+
+  LBXSpriteData* sprite = new LBXSpriteData(new SharedPalette(Gfx::mainPalette), count, 0, 20, 18, false);
   
   u8* buffer = new u8[width*height];
 
@@ -588,21 +573,27 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
   delete [] widths;
 }
 
+void LBX::loadPalette(LBXOffset offset, IndexedPalette* palette, FILE* in)
+{
+  LBXPaletteEntry* lpalette = new LBXPaletteEntry[256];
+  fread(lpalette, sizeof(LBXPaletteEntry), 256, in);
+  
+  for (size_t i = 0; i < 256; ++i)
+    Gfx::mainPalette->set(i, Color(lpalette[i].r << 2, lpalette[i].g << 2, lpalette[i].b << 2));
+}
+
 void LBX::loadPalettes(const LBXHeader &header, offset_list &offsets, FILE *in)
 {
   /* palettes reside in FONTS.LBX */
   /* entry at index 2: main game palette */
   /*                3: load/save palette */
+    
+  loadPalette(offsets[2], Gfx::mainPalette, in);
+  Gfx::mainPalette->set(232, BLACK_ALPHA);
+  Gfx::mainPalette->set(233, BLACK_ALPHA);
+  Gfx::mainPalette->set(0, TRANSPARENT);
   
-  LBXOffset offset = offsets[2];
-  
-  fseek(in, offset, SEEK_SET);
-  
-  LBXPaletteEntry* palette = new LBXPaletteEntry[256];
-  fread(palette, sizeof(LBXPaletteEntry), 256, in);
-  
-  for (size_t i = 0; i < 256; ++i)
-    Gfx::PALETTE[i] = Color(palette[i].r << 2, palette[i].g << 2, palette[i].b << 2);
+  loadPalette(offsets[3], Gfx::loadPalette, in);
 }
 
 std::string LBX::getLBXPath(const std::string& name)

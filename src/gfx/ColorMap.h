@@ -143,9 +143,11 @@ public:
       this->colors[i] = *std::next(colors.begin(), i);
   }
   
+  const Color* raw() const { return colors; }
+  
   void set(u8 index, Color color) { colors[index] = color; }
   Color get(u8 index) const override { return colors[index]; }
-  
+    
   ~IndexedPalette() { delete [] colors; }
 };
 
@@ -154,6 +156,7 @@ class SharedPalette : public Palette
 private:
   const Color* colors;
 public:
+  SharedPalette(const IndexedPalette* palette) : colors(palette->raw()) { }
   SharedPalette(const Color* colors) : colors(colors) { }
   
   Color get(u8 index) const override { return colors[index]; }
@@ -177,7 +180,7 @@ public:
   Color get(u8 index) const override;
 };
 
-class OverridePalette : public Palette
+class DerivedPalette : public Palette
 {
 private:
   const Palette* palette;
@@ -185,13 +188,17 @@ private:
   size_t start;
   size_t end;
 public:
-  OverridePalette(const Palette* palette, size_t start, size_t length, color_list colors) : palette(palette), colors(new Color[length]), start(start), end(start+length)
+  DerivedPalette(const Palette* palette, size_t start, size_t length) : palette(palette), colors(new Color[length]), start(start), end(start+length)
+  { }
+  
+  DerivedPalette(const Palette* palette, size_t start, size_t length, color_list colors) : DerivedPalette(palette, start, length)
   {
     assert(colors.size() == length);
     for (size_t i = 0; i < colors.size(); ++i)
       this->colors[i] = *std::next(colors.begin(), i);
   }
   
+  void set(u8 index, Color color) { assert(index >= start && index < end); colors[index - start] = color; }
   void setPalette(const Palette* palette) { this->palette = palette; }
   
   Color get(u8 index) const override { return index >= start && index < end ? colors[index - start] : palette->get(index); }

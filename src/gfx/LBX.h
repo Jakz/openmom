@@ -295,6 +295,7 @@ namespace lbx
 
     static void loadText(const LBXHeader& header, offset_list& offsets, FILE *in);
     static void loadFonts(const LBXHeader& header, offset_list& offsets, FILE *in);
+    static void loadPalette(LBXOffset offset, IndexedPalette* palette, FILE* in);
     static void loadPalettes(const LBXHeader& header, offset_list& offsets, FILE* in);
     
     static FILE* getDescriptor(const LBXFile& ident);
