@@ -82,9 +82,12 @@ struct ButtonGfx
   optional<SpriteInfo> normal;
   optional<SpriteInfo> pressed;
   optional<SpriteInfo> inactive;
+  bool shouldOffsetNormal;
+  
+  void draw(u16 x, u16 y, bool isActive, bool isPressed) const;
   
   ButtonGfx() : palette(nullptr) { }
-  ButtonGfx(SpriteInfo normal) : normal(normal), palette(nullptr) { }
+  ButtonGfx(SpriteInfo normal, bool shouldOffsetNormal = false) : normal(normal), palette(nullptr), shouldOffsetNormal(shouldOffsetNormal) { }
   ButtonGfx(SpriteInfo normal, SpriteInfo pressed) : normal(normal), pressed(pressed), palette(nullptr) { }
   ButtonGfx(SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : normal(normal), pressed(pressed), inactive(inactive), palette(nullptr) { }
 };
@@ -105,13 +108,12 @@ protected:
   const std::string name;
   bool pressed, visible;
   
-  bool shouldOffsetNormal;
   ButtonGfx gfx;
   optional<TextInfo> labelGfx;
   
 public:
   Button(const std::string& name, u16 x, u16 y, u16 w, u16 h) : Clickable(x, y, w, h), name(name), pressed(false), visible(true) { }
-  Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, bool shouldOffsetNormal) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal), shouldOffsetNormal(shouldOffsetNormal) { }
+  Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, bool shouldOffsetNormal) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal, shouldOffsetNormal) { }
   Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal, pressed) { }
   Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal, pressed, inactive) { }
 

@@ -74,8 +74,8 @@ bool LocalPlayer::consumeRoute()
     army = splitAndSelect();
   else
   {
-    g->world->get(army->getPosition())->unplaceArmy();
     army = selectedArmy;
+    g->world->get(army->getPosition())->unplaceArmy();
   }
   
   army->setRoute(selectedRoute.release());

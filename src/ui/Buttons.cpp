@@ -16,41 +16,47 @@ void Clickable::draw()
   Gfx::rect(x, y, w, h, Gfx::color(255, 0, 0));
 }
 
+void ButtonGfx::draw(u16 x, u16 y, bool isActive, bool isPressed) const
+{
+  /* if not active */
+  if (!isActive)
+  {
+    /* if a sprite for inactive gfx is specified use it, otherwise assert false
+     since it's required
+     */
+    if (inactive.isPresent())
+      Gfx::draw(inactive, palette, x, y);
+    else { assert(false); }
+    return;
+  }
+  
+  if (isPressed)
+  {
+    /* if a sprite for pressed gfx is specified use it */
+    if (pressed.isPresent())
+      Gfx::draw(pressed, palette, x, y);
+    /* otherwise it's an offset button so draw normal gfx ofsetted by 1 */
+    else if (normal.isPresent())
+    {
+      if (shouldOffsetNormal)
+        Gfx::draw(normal, palette, x+1, y+1);
+      else
+        Gfx::draw(normal, palette, x, y);
+    }
+  }
+  else if (normal.isPresent())
+    Gfx::draw(normal, palette, x, y);
+}
+
+
 void Button::draw()
 {
   /* if not visible don't draw anything */
   if (!isVisible())
     return;
   
-  /* if not active */
-  if (!isActive())
-  {
-    /* if a sprite for inactive gfx is specified use it, otherwise assert false
-       since it's required
-     */
-    if (gfx.inactive.isPresent())
-      Gfx::draw(gfx.inactive, gfx.palette, x, y);
-    else { assert(false); }
-    return;
-  }
+  gfx.draw(x, y, isActive(), pressed);
 
-  if (pressed)
-  {
-    /* if a sprite for pressed gfx is specified use it */
-    if (gfx.pressed.isPresent())
-      Gfx::draw(gfx.pressed, gfx.palette, x, y);
-    /* otherwise it's an offset button so draw normal gfx ofsetted by 1 */
-    else if (gfx.normal.isPresent())
-    {
-      if (shouldOffsetNormal)
-        Gfx::draw(gfx.normal, gfx.palette, x+1, y+1);
-      else
-        Gfx::draw(gfx.normal, gfx.palette, x, y);
-    }
-  }
-  else if (gfx.normal.isPresent())
-    Gfx::draw(gfx.normal, gfx.palette, x, y);
-  
   /* if there is a label draw it accordingly */
   if (labelGfx.isPresent())
   {

@@ -14,6 +14,7 @@
 
 #include "Gfx.h"
 #include "GfxData.h"
+#include "LBX.h"
 #include "Texture.h"
 #include "Buttons.h"
 #include "Font.h"
@@ -39,7 +40,9 @@ enum
   
   staff_mana_full = LBXI(MAGIC, 8),
   staff_research_full = LBXI(MAGIC, 10),
-  staff_skill_full = LBXI(MAGIC, 12)
+  staff_skill_full = LBXI(MAGIC, 12),
+  
+  background = LBXI(MAGIC, 0)
 };
 
 SpriteInfo wands[][3] = {
@@ -52,9 +55,14 @@ MagicView::MagicView(ViewManager* gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
   
-  //TODO: for these buttons alpha and darkening should be disabled but engine doesn't support specifying it
-  buttons[ALCHEMY] = Button::buildBistate("Alchemy", 234, 183, LSI(MAGIC,13))->setAction([gvm](){ gvm->switchOverview(VIEW_ALCHEMY); });
-  buttons[OK] = Button::buildBistate("Ok", 294, 183, LSI(MAGIC,14))->setAction([gvm](){ gvm->switchView(VIEW_MAIN); });
+  const Palette* palette = lbx::Repository::spriteFor(background)->palette;
+  
+  //TODO: check positioning of buttons
+  buttons[ALCHEMY] = Button::buildBistate("Alchemy", 234, 181, LSI(MAGIC,13))->setAction([gvm](){ gvm->switchOverview(VIEW_ALCHEMY); });
+  buttons[ALCHEMY]->setPalette(palette);
+
+  buttons[OK] = Button::buildBistate("Ok", 290, 181, LSI(MAGIC,14))->setAction([gvm](){ gvm->switchView(VIEW_MAIN); });
+  buttons[OK]->setPalette(palette);
 
 }
 
@@ -68,7 +76,7 @@ void MagicView::activate()
 
 void MagicView::draw()
 {
-  Gfx::draw(LSI(MAGIC, 0), 0, 0);
+  Gfx::draw(background, 0, 0);
   
   //draw gems of enemy wizards
   s16 c = 0;
