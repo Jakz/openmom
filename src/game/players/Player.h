@@ -13,6 +13,7 @@
 #include "Diplomacy.h"
 #include "Spells.h"
 #include "SpellBook.h"
+#include "Army.h"
 
 #include <list>
 #include <string>
@@ -63,6 +64,8 @@ class PlayerInterface
 public:
   virtual void selectAll() = 0;
   virtual Army* getSelectedArmy() const = 0;
+  virtual const unit_list& getSelectedUnits() const = 0;
+  
   virtual void push(anims::Animation* animation) = 0;
   virtual void send(msgs::Message* message) = 0;
   virtual s16 selectedCount() const = 0;

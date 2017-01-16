@@ -394,19 +394,20 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
       }
       else
       {
-        Army* army = player->getSelectedArmy();
+        const unit_list& selectedUnits = player->getSelectedUnits();;
         const auto& route = player->getRoute();
+        const bool hasSelectedUnits = !selectedUnits.empty();
         
-        if (army && !route)
+        if (hasSelectedUnits && !route)
           player->computeRoute(t->position);
-        else if (army && !route->completed() && route->dx() == t->x() && route->dy() == t->y() && player->selectedAvailMoves() > 0)
+        else if (hasSelectedUnits && !route->completed() && route->dx() == t->x() && route->dy() == t->y() && player->selectedAvailMoves() > 0)
         {
           player->consumeRoute();
-          player->push(new anims::UnitMovement(player, army, army->getRoute()->pendingPositions()));
+          //player->push(new anims::UnitMovement(player, army, army->getRoute()->pendingPositions()));
 
           updateBuildButton();
         }
-        else if (army)
+        else if (hasSelectedUnits)
           player->computeRoute(t->position);
         
         /*if (route != null && !route.completed())

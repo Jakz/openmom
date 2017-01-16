@@ -89,7 +89,10 @@ Army* LocalPlayer::splitAndSelect()
   for (auto u : *selectedArmy)
   {
     if (isSelectedUnit(u))
+    {
       newArmy->add(u);
+      u->setArmy(newArmy);
+    }
   }
   
   selectNone();

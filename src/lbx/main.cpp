@@ -15,6 +15,7 @@
 #include <string>
 #include <functional>
 #include <unordered_map>
+#include <map>
 #include <thread>
 #include <array>
 
@@ -144,7 +145,7 @@ enum class state : u32
 };
 
 std::unordered_map<LBXID, u32, enum_hash> usedSpritesCount;
-std::unordered_map<u32, state> usedSprites;
+std::map<u32, state> usedSprites;
 state isUsed(LBXID id, u32 index) { auto it = usedSprites.find((static_cast<u32>(id) << 16) | index); return it != usedSprites.end() ? it->second : state::none; }
 bool isTotallyUsed(LBXID id) { return usedSpritesCount[id] == Repository::holderForID(id).size(); }
 
