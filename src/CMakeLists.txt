@@ -1,15 +1,26 @@
-set(srcs
-  ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-)
+set(srcs ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 
+set(LIBRARY_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/../libs)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "../cmake")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_Image REQUIRED)
 
+set(YAML_INCLUDE_DIR ${LIBRARY_FOLDER}/yaml/include)
+add_library(YAML_LIBRARY STATIC IMPORTED)
+
+if (APPLE)
+  set_target_properties(YAML_LIBRARY PROPERTIES IMPORTED_LOCATION
+    ${LIBRARY_FOLDER}/yaml/lib/osx/libyaml-cpp.a
+  )
+elseif (UNIX)
+  
+endif()
+
 include_directories(
   ${SDL2_INCLUDE_DIR}
   ${SDL2_IMAGE_INCLUDE_DIR}  
+  ${YAML_INCLUDE_DIR}
   .
   common
   game
@@ -22,11 +33,13 @@ include_directories(
   game/units
   game/world
   gfx
+  gfx/filters
   i18n
   lbx
   platform
   save
   ui
+  ui/animations
   ui/parts
   ui/views
 )
@@ -42,6 +55,9 @@ add_subdirectory(ui)
 add_executable(openmom ${srcs})
 
 target_link_libraries(openmom
+  ${SDL2_LIBRARY}
+  ${SDL2_IMAGE_LIBRARIES}
+  ${LIBRARY_FOLDER}/yaml/lib/osx/libyaml-cpp.a
   COMMON_LIB
   GAME_LIB
   CITIES_LIB
@@ -58,7 +74,6 @@ target_link_libraries(openmom
   SAVE_LIB
   UI_LIB
   UI_PARTS_LIB
+  UI_ANIMATIONS_LIB
   VIEWS_LIB
-  ${SDL2_LIBRARY}
-  ${SDL2_IMAGE_LIBRARIES}
 )
