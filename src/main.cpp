@@ -51,7 +51,10 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::ARMYLIST);
   lbx::Repository::loadLBX(LBXID::BACKGRND);
   lbx::Repository::loadLBX(LBXID::CITYSCAP);
+  lbx::Repository::loadLBX(LBXID::CITYWALL);
   lbx::Repository::loadLBX(LBXID::CMBTCITY);
+  lbx::Repository::loadLBX(LBXID::CMBGRASS);
+  lbx::Repository::loadLBX(LBXID::FIGURES1);
   lbx::Repository::loadLBX(LBXID::FIGURES3);
   lbx::Repository::loadLBX(LBXID::FIGURES4);
   lbx::Repository::loadLBX(LBXID::FIGURE10);
@@ -102,7 +105,7 @@ int main(int argc, char * arg[])
   
   //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
 
-  SDL::gvm->switchView(VIEW_MAIN);
+  //SDL::gvm->switchView(VIEW_MAIN);
 
   //SDL::gvm->switchView(VIEW_ITEM_CRAFT);
   
@@ -110,7 +113,7 @@ int main(int argc, char * arg[])
   SDL::gvm->unitDetailView()->setHeroHire(unit, 200);
   SDL::gvm->switchOverview(VIEW_UNIT);*/
   
-  //SDL::gvm->switchView(VIEW_COMBAT);
+  SDL::gvm->switchView(VIEW_COMBAT);
   //SDL::gvm->switchView(VIEW_LBX);
   
   SDL::loop();

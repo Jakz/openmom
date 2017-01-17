@@ -11,6 +11,7 @@
 #include "Game.h"
 #include "LocalPlayer.h"
 #include "Combat.h"
+#include "CombatMap.h"
 
 #include "SDLHelper.h"
 #include "UnitDetailView.h"
@@ -26,15 +27,53 @@ enum combat_lbx_statics : lbx_index
 
 
 
-constexpr u16 W = 10;
-constexpr u16 H = 20;
+constexpr u16 W = Combat::W;
+constexpr u16 H = Combat::H;
 constexpr u16 OX = 0;
 constexpr u16 OY = 8;
 const int dirs[][2] = {{0,-2},{0,-1},{1,-1},{1,0},{0,1},{1,1},{0,2},{-1,1},{0,1},{-1,0},{-1,-1},{0,-1}};
 
+constexpr int TILE_WIDTH = 32;
+constexpr int TILE_HEIGHT = 16;
+
+enum wall_section
+{
+  stone_wall_north_tower = 0,
+  stone_wall_north_east_wall_1,
+  stone_wall_north_east_wall_2,
+  stone_wall_east_tower,
+  stone_wall_south_east_wall,
+  stone_wall_south_east_gate,
+  stone_wall_south_tower,
+  stone_wall_south_west_wall_1,
+  stone_wall_south_west_wall_2,
+  stone_wall_west_tower,
+  stone_wall_north_west_wall_1,
+  stone_wall_north_west_wall_2,
+  
+  stone_wall_sections = 12
+};
+
+struct WallGfxSpec
+{
+  SpriteInfo gfx;
+  
+  WallGfxSpec(u16 index) : gfx(LSI(CITYWALL, index)) { }
+  WallGfxSpec() = default;
+};
+
+struct StoneWallGfxSpec
+{
+  WallGfxSpec data[stone_wall_sections];
+};
+
+StoneWallGfxSpec stoneWalls[3] = {
+  { 0, 4, 5, 6, 10, 11, 9, 7, 8, 3, 1, 2 }
+};
+
+
 
 ScreenCoord coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
-
 
 struct entry_comparator
 {
@@ -81,21 +120,29 @@ public:
 class StaticGfxEntry : public CombatView::TileGfxEntry
 {
 private:
+  bool animated;
   SpriteInfo info;
   u16 _x, _y;
+  ScreenCoord _anchor;
   
 public:
-  StaticGfxEntry(SpriteInfo info, u16 x, u16 y) : CombatView::TileGfxEntry(0), info(info), _x(x), _y(y) { }
+  StaticGfxEntry(SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) : CombatView::TileGfxEntry(0), info(info), _x(x), _y(y), _anchor(-ax, TILE_HEIGHT/2 - info.sh() + ay) { }
   
   u16 x() const override { return _x; }
   u16 y() const override { return _y; }
   
+  /*void setAnchorY(s16 offset) { _anchor.y = TILE_HEIGHT/2 - info.sh() + offset; }
+  void setOffsetX(s16 offset) { _anchor.x = -offset; }
+  void setOffset(s16 x, s16 y) { _anchor = ScreenCoord(-x, TILE_HEIGHT/2 - info.sh() + y); }*/
+
   void draw() override
   {
-    u16 height = info.sh();
-    u16 offset = info.sh() <= 26 ? 16 : 20;
     ScreenCoord coords = coordsForTile(_x, _y);
-    Gfx::drawAnimated(info, coords.x, coords.y - height + offset);
+    
+    if (animated)
+      Gfx::drawAnimated(info, coords + _anchor);
+    else
+      Gfx::draw(info, coords + _anchor);
   }
 };
 
@@ -131,19 +178,44 @@ void CombatView::activate()
   this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin(), &g->combatMechanics);
   this->entriesDirty = true;
   
-  /*for (CombatUnit* unit : combat->getUnits())
-    addGfxEntry(new UnitGfxEntry(unit));*/
-  
-  //addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 22), 2, 6));
-  addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 2), 1, 6));
-  addMainBuilding(LSI(CMBTCITY, 17));
-  addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 18), 4, 6));
+  //for (CombatUnit* unit : combat->getUnits())
+  //  addGfxEntry(new UnitGfxEntry(unit));
 
+  /*addMainBuilding(LSI(CMBTCITY, 17));
+
+  addHouse(LSI(CMBTCITY, 2), 2, 7);
+  addHouse(LSI(CMBTCITY, 3), 3, 6);
+  addHouse(LSI(CMBTCITY, 4), 5, 6); */
   
-  addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 3), 3, 6));
-  addGfxEntry(new StaticGfxEntry(LSI(CMBTCITY, 4), 5, 6));
+  int bx = 2, by = 4;
+  int ox = 2, oy = 9;
   
-  addRoads();
+  auto* wall = new StaticGfxEntry(LSI(CITYWALL, 0), bx, by, ox, oy);
+  wall->setPriority(5);
+  addGfxEntry(wall);
+  
+  wall = new StaticGfxEntry(LSI(CITYWALL, 4), bx, by+1, ox, oy+1);
+  wall->setPriority(5);
+  addGfxEntry(wall);
+  
+  wall = new StaticGfxEntry(LSI(CITYWALL, 5), bx+1, by+2, ox, oy+1);
+  addGfxEntry(wall);
+  
+  wall = new StaticGfxEntry(LSI(CITYWALL, 6), bx+1, by+3, ox, oy-1);
+  addGfxEntry(wall);
+
+  wall = new StaticGfxEntry(LSI(CITYWALL, 10), bx+1, by+4, ox, oy);
+  addGfxEntry(wall);
+  
+  wall = new StaticGfxEntry(LSI(CITYWALL, 11), bx, by+5, ox, oy);
+  addGfxEntry(wall);
+  
+  /*
+  wall = new StaticGfxEntry(LSI(CITYWALL, 9), 6, 10);
+  wall->setOffset(-2, 18);
+  addGfxEntry(wall);*/
+  
+  //addRoads();
 
 
 }
@@ -154,7 +226,9 @@ void CombatView::deactivate()
 }
 
 void CombatView::addRoads() { addGfxEntry(new FixedGfxEntry(LSI(CMBTCITY, cmbt_roads), 14, 40)); }
-void CombatView::addMainBuilding(SpriteInfo info) { addGfxEntry(new StaticGfxEntry(info, 2, 6)); }
+void CombatView::addMainBuilding(SpriteInfo info) { addGfxEntry(new StaticGfxEntry(info, 2, 6, -1, 14)); }
+void CombatView::addHouse(SpriteInfo info, int x, int y) { addGfxEntry(new StaticGfxEntry(info, x, y, 0, 8)); }
+
 
 void CombatView::draw()
 {
@@ -188,22 +262,16 @@ void CombatView::draw()
       if (x != 9 || y%2 == 0)
       {
         const auto coords = coordsForTile(x, y);
+        const auto& tile = combat->tileAt(x, y);
         
         //TODO: not 0,0 but player.combat.tiles[x][y]/8 %8
-        Gfx::draw(TextureID::COMBAT_GRASS_ARCANUS, 0, 0, coords.x, coords.y);
+        Gfx::draw(LSI(CMBGRASS,tile.type), coords);
         Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
       }
     }
   
-  if (hover.x != -1)
-  {
-    ScreenCoord hoverCoords = coordsForTile(hover.x, hover.y);
-    //TODO: working?
-    Gfx::drawAnimated(TSI(COMBAT_MISC_TILES, 0, 1), hoverCoords.x, hoverCoords.y,0);
-    
-    Fonts::drawString(Fonts::format("%u,%u", hover.x, hover.y), FontFaces::Small::WHITE, 5, 5, ALIGN_LEFT);
-  }
-  
+  /*auto c = coordsForTile(2, 6);
+  Gfx::rect(c.x, c.y, 30, 16, {255,0,0});*/
 
   /*
   if (reachable != null)
@@ -248,6 +316,15 @@ void CombatView::draw()
   
   for (const auto& entry : entries)
     entry->draw();
+  
+  if (hover.x != -1)
+  {
+    ScreenCoord hoverCoords = coordsForTile(hover.x, hover.y);
+    //TODO: working?
+    Gfx::drawAnimated(LSI(CMBTCITY, 67), hoverCoords.x, hoverCoords.y, 0);
+    
+    Fonts::drawString(Fonts::format("%u,%u", hover.x, hover.y), FontFaces::Small::WHITE, 5, 5, ALIGN_LEFT);
+  }
 
   Gfx::drawClipped(TSI(COMBAT_BACKDROP,0,0), 0, 200-36, 0, 0, 320, 36);
 

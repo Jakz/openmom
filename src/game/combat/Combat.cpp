@@ -10,22 +10,14 @@
 
 #include "Util.h"
 
+#include "CombatMap.h"
 #include "Player.h"
 
 #include "Animations.h"
 
 using namespace std;
 
-constexpr const s16 Combat::DIRS[12][2];
-constexpr const u16 Combat::DIRS_LENGTH;
-
-CombatTile CombatTile::neighbour(Dir facing) const
-{
-  const s16* offsets = Combat::dirs(facing, this->y % 2 == 0);
-  return CombatTile(this->x + offsets[0], this->y + offsets[1]);
-}
-
-Combat::Combat(Army* a1, Army* a2, CombatMechanics* mechanics) : players{a1->getOwner(),a2->getOwner()}, selectedUnit(nullptr), current(a1->getOwner()), mechanics(mechanics)
+Combat::Combat(Army* a1, Army* a2, CombatMechanics* mechanics) : players{a1->getOwner(),a2->getOwner()}, selectedUnit(nullptr), current(a1->getOwner()), mechanics(mechanics), map(new CombatMap(W,H))
 {
   for (auto u1 : a1->getUnits())
   {
@@ -44,10 +36,11 @@ Combat::Combat(Army* a1, Army* a2, CombatMechanics* mechanics) : players{a1->get
   deployUnits();
   
   current->combatTurnBegun();
+}
+
+Combat::~Combat()
+{
   
-  for (int i = 0; i < W; ++i)
-    for (int j = 0; j < H; ++j)
-      tiles[i][j] = Util::randomIntUpTo(32);
 }
 
 void Combat::endTurn()
@@ -60,6 +53,8 @@ void Combat::endTurn()
   //TODO: check if (current instanceof LocalPlayer)
   //  current.game.nextLocal();
 }
+
+const CombatTile& Combat::tileAt(u16 x, u16 y) { return map->tileAt(x,y); }
 
 CombatUnit* Combat::unitAtTile(u16 x, u16 y)
 {
@@ -80,7 +75,7 @@ void Combat::attack(CombatUnit *u1, CombatUnit *u2)
 Dir Combat::relativeFacing(CombatUnit *u1, CombatUnit *u2)
 {
   for (int i = 0; i < 8; ++i)
-    if (u1->x()+dirs(i,u1->y()%2 == 0)[0] == u2->x() && u1->y()+dirs(i,u1->y()%2 == 0)[1] == u2->y())
+    if (u1->x()+CombatCoord::dirs(i,u1->y()%2 == 0)[0] == u2->x() && u1->y()+CombatCoord::dirs(i,u1->y()%2 == 0)[1] == u2->y())
       return static_cast<Dir>(i);
   
   return Dir::NORTH;
@@ -89,7 +84,7 @@ Dir Combat::relativeFacing(CombatUnit *u1, CombatUnit *u2)
 void Combat::deployUnits()
 {
   // TODO
-  CombatTile tile = CombatTile(2, 3);
+  CombatCoord tile = CombatCoord(2, 3);
   
   for (auto* unit : allUnits)
   {

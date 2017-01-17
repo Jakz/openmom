@@ -123,6 +123,7 @@ public:
   static void drawGrayScale(SpriteInfo info, s16 x, s16 y) { drawGrayScale(info.sheet(), info.x(), info.y(), x, y); }
   static void drawGrayScale(const SpriteSheet* src, u16 r, u16 c, u16 x, u16 y);
   
+  static void drawAnimated(SpriteInfo info, ScreenCoord c, s16 offset = 0, s16 animFactor = 1) { drawAnimated(info, c.x, c.y, offset, animFactor); }
   static void drawAnimated(SpriteInfo info, u16 x, u16 y, s16 offset = 0, s16 animFactor = 1);
   
   static void rawDraw(SpriteInfo info, u16 x, u16 y);

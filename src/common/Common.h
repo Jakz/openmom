@@ -407,6 +407,8 @@ public:
   SpriteInfo frame(s16 offset, u8 f) const { return SpriteInfo(lbx(), index()+offset, f); }
   SpriteInfo frame(u8 f) const { return SpriteInfo(lbx(), index(), f); }
   
+  bool isValid() const { return lbx() < LBXID::COUNT; }
+  
   const SpriteSheet* sheet() const;
 };
 
@@ -422,7 +424,12 @@ struct ScreenCoord
   ScreenCoord(s16 x, s16 y) : x(x), y(y) { }
   bool operator==(const ScreenCoord& o) const { return x == o.x && y == o.y; }
   
+  
   ScreenCoord& operator+=(s16 i) { x += i; y += i; return *this; }
+  
+  ScreenCoord operator+(const ScreenCoord& o) const { return ScreenCoord(x + o.x, y + o.y); }
+  ScreenCoord operator-(const ScreenCoord& o) const { return ScreenCoord(x - o.x, y - o.y); }
+
   
   ScreenCoord operator-(s16 v) const { return ScreenCoord(x+v, y+v); }
   

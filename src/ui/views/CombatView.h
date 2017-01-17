@@ -28,6 +28,7 @@ public:
     TileGfxEntry(s16 priority) : _priority(priority) { }
   public:
     u16 priority() const { return _priority; }
+    void setPriority(s16 priority) { _priority = priority; }
     virtual u16 x() const = 0;
     virtual u16 y() const = 0;
 
@@ -74,6 +75,7 @@ private:
   
   void addRoads();
   void addMainBuilding(SpriteInfo info);
+  void addHouse(SpriteInfo info, int x, int y);
   
 public:
   CombatView(ViewManager* gvm);

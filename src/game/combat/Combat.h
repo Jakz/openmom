@@ -4,33 +4,19 @@
 #include "Common.h"
 #include "Unit.h"
 #include "Army.h"
+#include "CombatUtils.h"
 
 #include <unordered_map>
 
 class HitPoints;
 class CombatMechanics;
+class CombatMap;
+struct CombatTile;
 
 enum class CombatModifier : u8
 {
   MOD_HALF,
   MOD_NONE
-};
-
-struct CombatTile
-{
-  s8 x, y;
-  CombatTile(s8 x, s8 y) : x(x), y(y) { }
-  
-  operator bool() const { return x != -1; }
-  CombatTile neighbour(Dir facing) const;
-};
-
-struct CombatPosition
-{
-  CombatTile position;
-  Dir facing;
-  
-  CombatPosition(s8 x = -1, s8 y = -1, Dir f = Dir::NORTH) : position(x, y), facing(f) { }
 };
 
 class CombatUnit
@@ -49,9 +35,9 @@ public:
   Unit* getUnit() const { return unit; }
   s16 getProperty(Property property) const { return unit->getProperty(property); }
   
-  void setPosition(u16 x, u16 y) { position.position = CombatTile(x,y); }
+  void setPosition(u16 x, u16 y) { position.position = CombatCoord(x,y); }
   void setPosition(u16 x, u16 y, Dir facing) { position = CombatPosition(x,y,facing); }
-  void setPosition(CombatTile tile) { position.position = tile; }
+  void setPosition(CombatCoord tile) { position.position = tile; }
   void setFacing(Dir facing) { position.facing = facing; }
   
   u16 x() const { return position.position.x; }
@@ -77,23 +63,10 @@ public:
   virtual void endTurn();
 };
 
-namespace std
-{
-  template<>
-  struct hash<CombatPosition>
-  {
-    std::size_t operator()(const CombatPosition& k) const { return static_cast<u16>(k.position.x<<8 | k.position.y); }
-  };
-}
-
-typedef std::unordered_map<CombatPosition,CombatPosition> position_map;
 
 class Combat
 {
 private:
-  static constexpr u8 W = 11;
-  static constexpr u8 H = 19;
-  
   cast_list spells;
   Player* players[2];
   std::vector<CombatUnit*> allUnits;
@@ -104,15 +77,20 @@ private:
   CombatUnit* selectedUnit;
   Player* current;
   
-  s16 tiles[W][H];
+  std::unique_ptr<CombatMap> map;
   
   position_map currents, visited, incoming;
   
 public:
+  static constexpr size_t W = 10;
+  static constexpr size_t H = 20;
+  
   Combat(Army* a1, Army* a2, CombatMechanics* mechanics);
+  ~Combat();
   
   void endTurn();
   
+  const CombatTile& tileAt(u16 x, u16 y);
   CombatUnit* unitAtTile(u16 x, u16 y);
   bool isTileEmpty(u16 x, u16 y) { return !unitAtTile(x, y); }
   
@@ -148,27 +126,6 @@ public:
   }
   
   const cast_list& getSpells() const { return spells; }
-  
-  
-  
-  static constexpr const s16 DIRS[12][2] = {{0,-2},{0,-1},{1,-1},{1,0},{0,1},{1,1},{0,2},{-1,1},{0,1},{-1,0},{-1,-1},{0,-1}};
-  static constexpr const u16 DIRS_LENGTH = std::extent<decltype(DIRS)>::value;
-  
-  static const s16* dirs(int facing, bool even) { return dirs(static_cast<Dir>(facing), even); }
-  static const s16* dirs(Dir facing, bool even)
-  {
-    switch (facing) {
-      case Dir::NORTH: return DIRS[0];
-			case Dir::NORTH_EAST: return even ? DIRS[1] : DIRS[2];
-			case Dir::EAST: return DIRS[3];
-			case Dir::SOUTH_EAST: return even ? DIRS[4] : DIRS[5];
-			case Dir::SOUTH: return DIRS[6];
-			case Dir::SOUTH_WEST: return even ? DIRS[7] : DIRS[8];
-			case Dir::WEST: return DIRS[9];
-			case Dir::NORTH_WEST: return even ? DIRS[10] : DIRS[11];
-			default: return nullptr;
-		}
-  }
 };
 
 #endif
