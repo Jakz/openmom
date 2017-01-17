@@ -17,7 +17,7 @@
 
 using namespace std;
 
-Combat::Combat(Army* a1, Army* a2, CombatMechanics* mechanics) : players{a1->getOwner(),a2->getOwner()}, selectedUnit(nullptr), current(a1->getOwner()), mechanics(mechanics), map(new CombatMap(W,H))
+Combat::Combat(Army* a1, Army* a2, CombatMechanics* mechanics) : players{a1->getOwner(),a2->getOwner()}, selectedUnit(nullptr), current(a1->getOwner()), mechanics(mechanics), _map(new CombatMap(W,H))
 {
   for (auto u1 : a1->getUnits())
   {
@@ -54,7 +54,7 @@ void Combat::endTurn()
   //  current.game.nextLocal();
 }
 
-const CombatTile& Combat::tileAt(u16 x, u16 y) { return map->tileAt(x,y); }
+const CombatTile* Combat::tileAt(u16 x, u16 y) { return _map->tileAt(x,y); }
 
 CombatUnit* Combat::unitAtTile(u16 x, u16 y)
 {

@@ -77,7 +77,7 @@ private:
   CombatUnit* selectedUnit;
   Player* current;
   
-  std::unique_ptr<CombatMap> map;
+  std::unique_ptr<CombatMap> _map;
   
   position_map currents, visited, incoming;
   
@@ -90,10 +90,12 @@ public:
   
   void endTurn();
   
-  const CombatTile& tileAt(u16 x, u16 y);
+  
+  const CombatTile* tileAt(u16 x, u16 y);
   CombatUnit* unitAtTile(u16 x, u16 y);
   bool isTileEmpty(u16 x, u16 y) { return !unitAtTile(x, y); }
-  
+
+  CombatMap* map() { return _map.get(); }
   const std::list<CombatUnit*>& enemyUnits(Player* player) { return player == players[0] ? units[1] : units[0]; }
   const std::list<CombatUnit*>& friendlyUnits(Player* player) { return player == players[1] ? units[0] : units[1]; }
   

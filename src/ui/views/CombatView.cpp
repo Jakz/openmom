@@ -31,47 +31,79 @@ constexpr u16 W = Combat::W;
 constexpr u16 H = Combat::H;
 constexpr u16 OX = 0;
 constexpr u16 OY = 8;
-const int dirs[][2] = {{0,-2},{0,-1},{1,-1},{1,0},{0,1},{1,1},{0,2},{-1,1},{0,1},{-1,0},{-1,-1},{0,-1}};
 
 constexpr int TILE_WIDTH = 32;
 constexpr int TILE_HEIGHT = 16;
 
-enum wall_section
+enum priority : priority_t
 {
-  stone_wall_north_tower = 0,
-  stone_wall_north_east_wall_1,
-  stone_wall_north_east_wall_2,
-  stone_wall_east_tower,
-  stone_wall_south_east_wall,
-  stone_wall_south_east_gate,
-  stone_wall_south_tower,
-  stone_wall_south_west_wall_1,
-  stone_wall_south_west_wall_2,
-  stone_wall_west_tower,
-  stone_wall_north_west_wall_1,
-  stone_wall_north_west_wall_2,
+  priority_fixed = -1,
+  priority_behind_units = 100,
+  priority_static = priority_behind_units,
+  priority_units = 200,
+  priority_front_units = 300,
   
-  stone_wall_sections = 12
-};
-
-struct WallGfxSpec
-{
-  SpriteInfo gfx;
+  priority_stone_wall_behind = priority_behind_units,
+  priority_stone_wall_front = priority_front_units,
   
-  WallGfxSpec(u16 index) : gfx(LSI(CITYWALL, index)) { }
-  WallGfxSpec() = default;
+  priority_fire_wall_behind = priority_stone_wall_behind - 2,
+  priority_fire_wall_front = priority_stone_wall_front + 2,
+  
+  priority_darkness_wall_behind = priority_stone_wall_behind - 1,
+  priority_darkness_wall_front = priority_stone_wall_front + 1,
 };
 
 struct StoneWallGfxSpec
 {
-  WallGfxSpec data[stone_wall_sections];
+  SpriteInfo sprite;
+  priority_t priority;
+  ScreenCoord anchor;
+  StoneWallGfxSpec() = default;
+  //TODO: anchors must be fixed
+  StoneWallGfxSpec(SpriteInfo sprite, priority_t priority) : sprite(sprite), priority(priority), anchor(2,9) { }
 };
 
-StoneWallGfxSpec stoneWalls[3] = {
-  { 0, 4, 5, 6, 10, 11, 9, 7, 8, 3, 1, 2 }
+std::unordered_map<WallType, StoneWallGfxSpec, enum_hash> stoneWall = {
+  { WallType::NORTH_CORNER, { LSI(CITYWALL, 0), priority_stone_wall_behind } },
+  { WallType::NORTH_EAST_WALL1, { LSI(CITYWALL, 4), priority_stone_wall_behind } },
+  { WallType::NORTH_EAST_WALL2, { LSI(CITYWALL, 5), priority_stone_wall_behind } },
+  { WallType::EAST_CORNER, { LSI(CITYWALL, 6), priority_stone_wall_front } },
+  { WallType::SOUTH_EAST_WALL1, { LSI(CITYWALL, 10), priority_stone_wall_front } },
+  { WallType::SOUTH_EAST_GATE, { LSI(CITYWALL, 11), priority_stone_wall_front } },
+  { WallType::SOUTH_CORNER, { LSI(CITYWALL, 9), priority_stone_wall_front } },
+  { WallType::SOUTH_WEST_WALL1, { LSI(CITYWALL, 7), priority_stone_wall_front } },
+  { WallType::SOUTH_WEST_WALL2, { LSI(CITYWALL, 8), priority_stone_wall_front } },
+  { WallType::WEST_CORNER, { LSI(CITYWALL, 3), priority_stone_wall_front } },
+  { WallType::NORTH_WEST_WALL1, { LSI(CITYWALL, 1), priority_stone_wall_behind } },
+  { WallType::NORTH_WEST_WALL2, { LSI(CITYWALL, 2), priority_stone_wall_behind } }
 };
 
+struct NonSolidWallSpec
+{
+  SpriteInfo sprite1, sprite2;
+  bool behind1, behind2;
+  ScreenCoord anchor1, anchor2;
+  
+  NonSolidWallSpec() = default;
+  //TODO: anchors must be fixed
+  NonSolidWallSpec(SpriteInfo sprite1, bool behind1) : sprite1(sprite1), behind1(behind1), sprite2(LSI_PLACEHOLD), anchor1(2,11) { }
+  NonSolidWallSpec(SpriteInfo sprite1, bool behind1, SpriteInfo sprite2, bool behind2) : sprite1(sprite1), behind1(behind1), sprite2(sprite2), behind2(behind2), anchor1(2,9), anchor2(2,11) { }
+};
 
+std::unordered_map<WallType, NonSolidWallSpec, enum_hash> nonSolidWall = {
+  { WallType::NORTH_CORNER, { LSI(CITYWALL, 36), true } },
+  { WallType::NORTH_EAST_WALL1, { LSI(CITYWALL, 40), true } },
+  { WallType::NORTH_EAST_WALL2, { LSI(CITYWALL, 41), true } },
+  { WallType::EAST_CORNER, { LSI(CITYWALL, 42), true, LSI(CITYWALL, 49), false } },
+  { WallType::SOUTH_EAST_WALL1, { LSI(CITYWALL, 46), false } },
+  { WallType::SOUTH_EAST_GATE, { LSI(CITYWALL, 47), false } },
+  { WallType::SOUTH_CORNER, { LSI(CITYWALL, 45), false } },
+  { WallType::SOUTH_WEST_WALL1, { LSI(CITYWALL, 43), false } },
+  { WallType::SOUTH_WEST_WALL2, { LSI(CITYWALL, 44), false } },
+  { WallType::WEST_CORNER, { LSI(CITYWALL, 39), true, LSI(CITYWALL, 48), false } },
+  { WallType::NORTH_WEST_WALL1, { LSI(CITYWALL, 38), true } },
+  { WallType::NORTH_WEST_WALL2, { LSI(CITYWALL, 37), true } }
+};
 
 ScreenCoord coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
 
@@ -81,13 +113,18 @@ struct entry_comparator
   {
     if (e1->priority() < 0 && e2->priority() >= 0)
       return true;
+    else if (e1 == e2)
+      return false;
     
-    if (e1->x() < e2->x())
-      return true;
-    else if (e1->y() < e2->y())
-      return true;
+    if (e1->x() != e2->x())
+      return e1->x() < e2->x();
+    else if (e1->y() != e2->y())
+      return e1->y() < e2->y();
     else
-      return e1->priority() > e2->priority();
+    {
+      assert(e1->priority() != e2->priority());
+      return e1->priority() < e2->priority();
+    }
   }
 };
 
@@ -98,7 +135,7 @@ private:
   CombatUnit* unit;
   
 public:
-  UnitGfxEntry(CombatUnit* unit) : CombatView::TileGfxEntry(10), unit(unit) { }
+  UnitGfxEntry(CombatUnit* unit) : CombatView::TileGfxEntry(priority_units), unit(unit) { }
   
   u16 x() const override { return unit->x(); }
   u16 y() const override { return unit->y(); }
@@ -119,23 +156,13 @@ public:
 
 class StaticGfxEntry : public CombatView::TileGfxEntry
 {
-private:
+protected:
   bool animated;
   SpriteInfo info;
   u16 _x, _y;
   ScreenCoord _anchor;
-  
-public:
-  StaticGfxEntry(SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) : CombatView::TileGfxEntry(0), info(info), _x(x), _y(y), _anchor(-ax, TILE_HEIGHT/2 - info.sh() + ay) { }
-  
-  u16 x() const override { return _x; }
-  u16 y() const override { return _y; }
-  
-  /*void setAnchorY(s16 offset) { _anchor.y = TILE_HEIGHT/2 - info.sh() + offset; }
-  void setOffsetX(s16 offset) { _anchor.x = -offset; }
-  void setOffset(s16 x, s16 y) { _anchor = ScreenCoord(-x, TILE_HEIGHT/2 - info.sh() + y); }*/
 
-  void draw() override
+  void draw(SpriteInfo info)
   {
     ScreenCoord coords = coordsForTile(_x, _y);
     
@@ -144,6 +171,58 @@ public:
     else
       Gfx::draw(info, coords + _anchor);
   }
+  
+public:
+  StaticGfxEntry(priority_t priority, SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) :
+  CombatView::TileGfxEntry(priority), info(info), _x(x), _y(y), _anchor(-ax, TILE_HEIGHT/2 - info.sh() + ay), animated(animated) { }
+  
+  StaticGfxEntry(SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) : StaticGfxEntry(priority_static, info, x, y, ax, ay, animated) { }
+  
+  u16 x() const override { return _x; }
+  u16 y() const override { return _y; }
+  
+  /*void setAnchorY(s16 offset) { _anchor.y = TILE_HEIGHT/2 - info.sh() + offset; }
+  void setOffsetX(s16 offset) { _anchor.x = -offset; }
+  void setOffset(s16 x, s16 y) { _anchor = ScreenCoord(-x, TILE_HEIGHT/2 - info.sh() + y); }*/
+
+  void draw() override { draw(info); }
+};
+
+class StoneWallGfxEntry : public StaticGfxEntry
+{
+private:
+  /* TODO: 3 types of stone wall are present in LBX, probably one per kind of housing? */
+  static s16 offsetForHouseType(HouseType type)
+  {
+    switch (type)
+    {
+      case HouseType::NORMAL: return 0;
+      case HouseType::MUD: return 12;
+      case HouseType::TREE: return 24;
+    }
+  }
+  
+  
+  const CombatTile* const tile;
+public:
+  StoneWallGfxEntry(const CombatTile* tile, HouseType houseType) : StoneWallGfxEntry(stoneWall[tile->stoneWall], tile, houseType) { }
+
+  StoneWallGfxEntry(const StoneWallGfxSpec& spec, const CombatTile* tile, HouseType houseType) :
+  StaticGfxEntry(spec.priority, spec.sprite.relative(offsetForHouseType(houseType)), tile->x(), tile->y(), spec.anchor.x, spec.anchor.y), tile(tile) { }
+
+  using StaticGfxEntry::draw;
+  void draw() override {
+    draw(tile->isStoneWallDestroyed ? info.frame(1) : info);
+  }
+};
+
+class NonSolidWallGfxEntry : public StaticGfxEntry
+{
+  const CombatTile* const tile;
+  
+public:
+  NonSolidWallGfxEntry(const CombatTile* tile, SpriteInfo info, priority_t priority, ScreenCoord anchor) :
+  StaticGfxEntry(priority, info, tile->x(), tile->y(), anchor.x, anchor.y, true), tile(tile) { }
 };
 
 class FixedGfxEntry : public CombatView::TileGfxEntry
@@ -170,13 +249,61 @@ CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1)), entri
   
 }
 
+void CombatView::prepareGraphics()
+{
+  for (u16 y = 0; y < H; ++y)
+    for (u16 x = 0; x < W; ++x)
+    {
+      if (x != 9 || y%2 == 0)
+      {
+        const auto& tile = combat->tileAt(x, y);
+
+        if (tile->stoneWall != WallType::NO_WALL)
+        {
+          //TODO: determine real house type
+          addGfxEntry(new StoneWallGfxEntry(tile, HouseType::NORMAL));
+        }
+        
+        if (tile->fireWall != WallType::NO_WALL)
+        {
+          const auto& spec = nonSolidWall[tile->fireWall];
+          addGfxEntry(new NonSolidWallGfxEntry(tile, spec.sprite1, spec.behind1 ? priority_fire_wall_behind : priority_fire_wall_front, spec.anchor1));
+
+          if (spec.sprite2.isValid())
+          {
+            addGfxEntry(new NonSolidWallGfxEntry(tile, spec.sprite2, spec.behind2 ? priority_fire_wall_behind : priority_fire_wall_front, spec.anchor2));
+          }
+        }
+        
+        if (tile->darknessWall != WallType::NO_WALL)
+        {
+          const auto& spec = nonSolidWall[tile->darknessWall];
+          addGfxEntry(new NonSolidWallGfxEntry(tile, spec.sprite1.relative(14), spec.behind1 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor1));
+
+          if (spec.sprite2.isValid())
+          {
+            addGfxEntry(new NonSolidWallGfxEntry(tile, spec.sprite2.relative(14), spec.behind2 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor2));
+          }
+        }
+      }
+    }
+}
+
 void CombatView::activate()
 {
   Player* p1 = *g->getPlayers().begin();
   Player* p2 = *std::next(g->getPlayers().begin());
   
   this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin(), &g->combatMechanics);
+  this->combat->map()->placeFireWall(2, 4);
+  //this->combat->map()->placeDarknessWall(2, 4);
+  //this->combat->map()->placeStoneWall(2, 4);
+
   this->entriesDirty = true;
+  
+  //addGfxEntry(dummyUnit(2, 4));
+  //addGfxEntry(dummyUnit(3, 7));
+
   
   //for (CombatUnit* unit : combat->getUnits())
   //  addGfxEntry(new UnitGfxEntry(unit));
@@ -190,7 +317,7 @@ void CombatView::activate()
   int bx = 2, by = 4;
   int ox = 2, oy = 9;
   
-  auto* wall = new StaticGfxEntry(LSI(CITYWALL, 0), bx, by, ox, oy);
+  /*auto* wall = new StaticGfxEntry(LSI(CITYWALL, 0), bx, by, ox, oy);
   wall->setPriority(5);
   addGfxEntry(wall);
   
@@ -208,7 +335,7 @@ void CombatView::activate()
   addGfxEntry(wall);
   
   wall = new StaticGfxEntry(LSI(CITYWALL, 11), bx, by+5, ox, oy);
-  addGfxEntry(wall);
+  addGfxEntry(wall);*/
   
   /*
   wall = new StaticGfxEntry(LSI(CITYWALL, 9), 6, 10);
@@ -217,6 +344,7 @@ void CombatView::activate()
   
   //addRoads();
 
+  prepareGraphics();
 
 }
 
@@ -265,7 +393,7 @@ void CombatView::draw()
         const auto& tile = combat->tileAt(x, y);
         
         //TODO: not 0,0 but player.combat.tiles[x][y]/8 %8
-        Gfx::draw(LSI(CMBGRASS,tile.type), coords);
+        Gfx::draw(LSI(CMBGRASS,tile->type), coords);
         Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
       }
     }
@@ -348,6 +476,16 @@ void CombatView::draw()
     Gfx.draw(TextureIDs.get(cast.spell), pp[0]+pp[2]++*17, pp[1]);
   }
   */
+}
+
+UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
+{
+  Unit* unit = new RaceUnit(Data::unit("barbarian_spearmen")->as<RaceUnitSpec>());
+  Army* army = new Army(player);
+  unit->setArmy(army);
+  CombatUnit* cunit = new CombatUnit(unit);
+  cunit->setPosition(x, y);
+  return new UnitGfxEntry(cunit);
 }
 
 void CombatView::drawUnitProps(CombatUnit *unit, bool onTheLeft)
