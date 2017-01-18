@@ -19,18 +19,6 @@
 #include <string>
 #include <unordered_set>
 
-class Race;
-class Game;
-class City;
-class Army;
-class Hero;
-class ManaNode;
-class Unit;
-class Combat;
-namespace anims { class Animation; }
-namespace msgs { class Message; }
-class CombatUnit;
-
 class FogMap
 {
 private:
@@ -71,7 +59,7 @@ public:
   virtual s16 selectedCount() const = 0;
   virtual void discoverTile(const Position& position) = 0;
   virtual void setSpellTarget(Target target) = 0;
-  virtual void moveCombatUnit(CombatUnit* unit) = 0;
+  virtual void moveCombatUnit(combat::CombatUnit* unit) = 0;
 };
 
 class CombatPlayerInterface
@@ -94,7 +82,7 @@ protected:
 
   SpellBook spellBook;
   Relations relations;
-  const Combat* combat;
+  const combat::Combat* combat;
   mutable FogMap *fogMap;
 
   u8 taxRate; // TODO: maybe enum
@@ -142,8 +130,8 @@ public:
   
   void alchemy(s32 gold, s32 mana) { goldPool += gold; manaPool -= mana; }
   
-  const Combat* getCombat() const { return combat; }
-  void setCombat(Combat* combat) { this->combat = combat; }
+  const combat::Combat* getCombat() const { return combat; }
+  void setCombat(combat::Combat* combat) { this->combat = combat; }
   
   s32 baseResearchPoints() const { return researchGain + manaRatios[1]; }
   s32 researchPoints() const;

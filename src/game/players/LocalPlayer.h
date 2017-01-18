@@ -44,7 +44,7 @@ private:
   
   Target target = Target::NONE;
   
-  CombatUnit *combatSelectedUnit;
+  combat::CombatUnit *combatSelectedUnit;
   bool combatCurrentlyPlaying;
   
   MiniMap map;
@@ -76,7 +76,7 @@ public:
   void setSpellTarget(Target target) override { this->target = target; }
   Target getSpellTarget() const { return target; }
   
-  void moveCombatUnit(CombatUnit* unit) override { combatSelectedUnit = unit; }
+  void moveCombatUnit(combat::CombatUnit* unit) override { combatSelectedUnit = unit; }
   
   void selectUnit(Unit* unit);
   void deselectUnit(Unit* unit);

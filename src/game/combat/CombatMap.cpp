@@ -2,6 +2,8 @@
 
 #include "Util.h"
 
+using namespace combat;
+
 CombatTile* CombatTile::neighbour(Dir facing)
 {
   auto coords = this->coords.neighbour(facing);

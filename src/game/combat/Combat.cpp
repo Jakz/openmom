@@ -16,6 +16,7 @@
 #include "Animations.h"
 
 using namespace std;
+using namespace combat;
 
 Combat::Combat(Army* a1, Army* a2, CombatMechanics* mechanics) : players{a1->getOwner(),a2->getOwner()}, selectedUnit(nullptr), current(a1->getOwner()), mechanics(mechanics), _map(new CombatMap(W,H))
 {

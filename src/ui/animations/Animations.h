@@ -17,7 +17,6 @@
 
 #include <list>
 
-class CombatUnit;
 class LocalPlayer;
 
 namespace anims
@@ -127,7 +126,7 @@ namespace anims
   private:
     
   public:
-    CombatAttack(const CombatUnit* unit) : ContinuousAnimation(300) { }
+    CombatAttack(const combat::CombatUnit* unit) : ContinuousAnimation(300) { }
     void step() override { }
   };
   
@@ -136,7 +135,7 @@ namespace anims
   private:
     
   public:
-    CombatMovement(const CombatUnit* unit) : ContinuousAnimation(500) { }
+    CombatMovement(const combat::CombatUnit* unit) : ContinuousAnimation(500) { }
     void step() override { }
   };
   /*

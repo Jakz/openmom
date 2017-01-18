@@ -20,6 +20,8 @@
 #include "Texture.h"
 #include "UnitDraw.h"
 
+using namespace combat;
+
 enum combat_lbx_statics : lbx_index
 {
   cmbt_roads = 0
@@ -38,6 +40,9 @@ constexpr int TILE_HEIGHT = 16;
 enum priority : priority_t
 {
   priority_fixed = -1,
+  
+  priority_hover_symbol = 20,
+  
   priority_behind_units = 100,
   priority_static = priority_behind_units,
   priority_units = 200,

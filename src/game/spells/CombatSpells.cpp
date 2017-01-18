@@ -5,7 +5,7 @@
 #include "Unit.h"
 
 
-s16 CombatEnchModifier::apply(const Combat* combat, const SpellCast& cast, const Unit* unit, Property property) const
+s16 CombatEnchModifier::apply(const combat::Combat* combat, const SpellCast& cast, const Unit* unit, Property property) const
 {
   if (cast.spell->target == Target::ENEMY_ARMY && cast.player != unit->getArmy()->getOwner())
     return doApply(unit, property);

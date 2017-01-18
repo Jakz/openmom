@@ -13,7 +13,6 @@
 #include "Unit.h"
 
 enum class CombatModifier : u8;
-class CombatUnit;
 
 class Game;
 

@@ -15,8 +15,6 @@
 #include <memory>
 
 class ViewManager;
-class CombatUnit;
-class Combat;
 
 //TODO: required for dummyUnit()
 class UnitGfxEntry;
@@ -64,10 +62,10 @@ private:
   
   Coord hover;
   
-  Combat* combat;
+  combat::Combat* combat;
     
   
-  void drawUnitProps(CombatUnit* unit, bool onTheLeft);
+  void drawUnitProps(combat::CombatUnit* unit, bool onTheLeft);
   
   bool entriesDirty;
   std::vector<std::unique_ptr<TileGfxEntry>> entries;
