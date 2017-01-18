@@ -4,7 +4,7 @@
 
 using namespace combat;
 
-CombatTile* CombatTile::neighbour(Dir facing)
+CombatTile* CombatTile::neighbour(Dir facing) const
 {
   auto coords = this->coords.neighbour(facing);
   return map->tileAt(coords.x, coords.y);
@@ -15,6 +15,22 @@ CombatMap::CombatMap(u16 width, u16 height) : W(width), H(height), tiles(new Com
   for (int i = 0; i < W; ++i)
     for (int j = 0; j < H; ++j)
       *tileAt(i,j) = CombatTile(this, i, j, Util::randomIntUpTo(32));
+}
+
+const CombatTile* CombatMap::tileAt(s16 x, s16 y) const
+{
+  if (x < 0 || x >= W || y < 0 || y >= H)
+    return nullptr;
+  
+  return &tiles[x + y*W];
+}
+
+CombatTile* CombatMap::tileAt(s16 x, s16 y)
+{
+  if (x < 0 || x >= W || y < 0 || y >= H)
+    return nullptr;
+  
+  return &tiles[x + y*W];
 }
 
 void CombatMap::placeWall(u16 x, u16 y, std::function<void(CombatTile*,WallType)> lambda)
@@ -59,6 +75,23 @@ void CombatMap::placeWall(u16 x, u16 y, std::function<void(CombatTile*,WallType)
   }
 }
 
+CombatTile* CombatMap::placeRoadSegment(u16 x, u16 y, Dir dir, u16 length, bool enchanted)
+{
+  auto* tile = tileAt(x, y);
+  auto* ptile = tile;
+  size_t i = 0;
+  
+  do
+  {
+    ptile = tile;
+    tile->road = enchanted ? RoadType::ENCHANTED : RoadType::NORMAL;
+    tile = tile->neighbour(dir);
+    ++i;
+  } while (i < length);
+  
+  return ptile;
+}
+
 void CombatMap::placeStoneWall(u16 x, u16 y)
 {
   placeWall(x, y, [](CombatTile* tile, WallType type) { tile->stoneWall = type; });
@@ -72,4 +105,33 @@ void CombatMap::placeFireWall(u16 x, u16 y)
 void CombatMap::placeDarknessWall(u16 x, u16 y)
 {
   placeWall(x, y, [](CombatTile* tile, WallType type) { tile->darknessWall = type; });
+}
+
+void CombatMap::placeCityRoadExit(Dir direction)
+{
+  // TODO: for now just straight segments, should be fixed by understanding how the original game places roads
+  switch (direction)
+  {
+    case Dir::SOUTH_EAST:
+    {
+      placeRoadSegment(3, 10, Dir::SOUTH_EAST, 10, false);
+      break;
+    }
+      
+    case Dir::SOUTH_WEST:
+    {
+      placeRoadSegment(1, 10, Dir::SOUTH_WEST, 3, false);
+      break;
+    }
+      
+    case Dir::NORTH_EAST:
+    {
+      placeRoadSegment(3, 5, Dir::NORTH_EAST, 6, false);
+      break;
+    }
+      
+    default:
+      assert(false);
+      break;
+  }
 }

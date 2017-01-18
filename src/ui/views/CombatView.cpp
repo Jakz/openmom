@@ -41,6 +41,8 @@ enum priority : priority_t
 {
   priority_fixed = -1,
   
+  priority_roads = 5,
+  
   priority_hover_symbol = 20,
   
   priority_behind_units = 100,
@@ -108,6 +110,42 @@ std::unordered_map<WallType, NonSolidWallSpec, enum_hash> nonSolidWall = {
   { WallType::WEST_CORNER, { LSI(CITYWALL, 39), true, LSI(CITYWALL, 48), false } },
   { WallType::NORTH_WEST_WALL1, { LSI(CITYWALL, 38), true } },
   { WallType::NORTH_WEST_WALL2, { LSI(CITYWALL, 37), true } }
+};
+
+enum class RoadGfxJoin
+{
+  NONE = 0x00,
+  
+  NE = 0x01,
+  SE = 0x02,
+  SW = 0x04,
+  NW = 0x08,
+  
+  HORIZONTAL_NW_SE = NW | SE,
+  HORIZONTAL_NE_SW = NE | SW,
+  
+  CORNER_NW_NE = NW | NE,
+  CORNER_NE_SE = NE | SE,
+  CORNER_SE_SW = SE | SW,
+  CORNER_SW_NW = SW | NW,
+  
+  CROSS = NW | SE | NE | SW
+};
+
+struct RoadGfxSpec
+{
+  std::array<SpriteInfo, 2> normal;
+  std::array<SpriteInfo, 2> enchanted;
+};
+
+std::unordered_map<RoadGfxJoin, RoadGfxSpec, enum_hash> roadGraphics = {
+  { RoadGfxJoin::HORIZONTAL_NW_SE, { { LSI(CMBTCITY, 69), LSI(CMBTCITY, 76) }, { LSI(CMBTCITY, 83), LSI(CMBTCITY, 90) } } },
+  { RoadGfxJoin::HORIZONTAL_NE_SW, { { LSI(CMBTCITY, 70), LSI(CMBTCITY, 77) }, { LSI(CMBTCITY, 84), LSI(CMBTCITY, 91) } } },
+  { RoadGfxJoin::CORNER_NW_NE, { { LSI(CMBTCITY, 71), LSI(CMBTCITY, 78) }, { LSI(CMBTCITY, 85), LSI(CMBTCITY, 92) } } },
+  { RoadGfxJoin::CORNER_NE_SE, { { LSI(CMBTCITY, 72), LSI(CMBTCITY, 79) }, { LSI(CMBTCITY, 86), LSI(CMBTCITY, 93) } } },
+  { RoadGfxJoin::CORNER_SE_SW, { { LSI(CMBTCITY, 73), LSI(CMBTCITY, 80) }, { LSI(CMBTCITY, 87), LSI(CMBTCITY, 94) } } },
+  { RoadGfxJoin::CORNER_SW_NW, { { LSI(CMBTCITY, 74), LSI(CMBTCITY, 81) }, { LSI(CMBTCITY, 88), LSI(CMBTCITY, 95) } } },
+  { RoadGfxJoin::CROSS, { { LSI(CMBTCITY, 75), LSI(CMBTCITY, 82) }, { LSI(CMBTCITY, 89), LSI(CMBTCITY, 96) } } }
 };
 
 ScreenCoord coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
@@ -261,14 +299,16 @@ void CombatView::prepareGraphics()
     {
       if (x != 9 || y%2 == 0)
       {
-        const auto& tile = combat->tileAt(x, y);
+        const auto* tile = combat->tileAt(x, y);
 
+        /* if there is a stone wall generate graphics */
         if (tile->stoneWall != WallType::NO_WALL)
         {
           //TODO: determine real house type
           addGfxEntry(new StoneWallGfxEntry(tile, HouseType::NORMAL));
         }
         
+        /* if there is fire wall generate graphics */
         if (tile->fireWall != WallType::NO_WALL)
         {
           const auto& spec = nonSolidWall[tile->fireWall];
@@ -280,6 +320,7 @@ void CombatView::prepareGraphics()
           }
         }
         
+        /* if there is darkness wall generate graphic */
         if (tile->darknessWall != WallType::NO_WALL)
         {
           const auto& spec = nonSolidWall[tile->darknessWall];
@@ -289,6 +330,35 @@ void CombatView::prepareGraphics()
           {
             addGfxEntry(new NonSolidWallGfxEntry(tile, spec.sprite2.relative(14), spec.behind2 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor2));
           }
+        }
+        
+        /* if there is road calculate tile and generate graphics */
+        if (tile->road != RoadType::NONE)
+        {
+          static const Dir neighbours[] = { Dir::NORTH_EAST, Dir::SOUTH_EAST, Dir::SOUTH_WEST, Dir::NORTH_WEST };
+          static const RoadGfxJoin flags[] = { RoadGfxJoin::NE, RoadGfxJoin::SE, RoadGfxJoin::SW, RoadGfxJoin::NW };
+          
+          RoadGfxJoin mask = RoadGfxJoin::NONE;
+          for (size_t i = 0; i < 4; ++i)
+          {
+            using utype_t = std::underlying_type<RoadGfxJoin>::type;
+            const auto* neigh = tile->neighbour(neighbours[i]);
+            
+            if (neigh && neigh->road != RoadType::NONE)
+              mask = static_cast<RoadGfxJoin>(static_cast<utype_t>(mask) | static_cast<utype_t>(flags[i]));
+          }
+          
+          /* since there is no graphics for road deadends we adjust mask to be horizontal */
+          if (mask == RoadGfxJoin::NW || mask == RoadGfxJoin::SE)
+            mask = RoadGfxJoin::HORIZONTAL_NW_SE;
+          else if (mask == RoadGfxJoin::NE || mask == RoadGfxJoin::SW)
+            mask = RoadGfxJoin::HORIZONTAL_NE_SW;
+          
+          auto it = roadGraphics.find(mask);
+          assert(it != roadGraphics.end());
+          
+          SpriteInfo info = (tile->road == RoadType::NORMAL ? it->second.normal : it->second.enchanted)[Util::oneOfTwoChance()];
+          addGfxEntry(new StaticGfxEntry(priority_roads, info, tile->x(), tile->y(), 0, TILE_HEIGHT/2, true));
         }
       }
     }
@@ -301,6 +371,10 @@ void CombatView::activate()
   
   this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin(), &g->combatMechanics);
   this->combat->map()->placeFireWall(2, 4);
+  this->combat->map()->placeCityRoadExit(Dir::SOUTH_EAST);
+  this->combat->map()->placeCityRoadExit(Dir::SOUTH_WEST);
+  this->combat->map()->placeCityRoadExit(Dir::NORTH_EAST);
+
   //this->combat->map()->placeDarknessWall(2, 4);
   //this->combat->map()->placeStoneWall(2, 4);
 
@@ -318,34 +392,6 @@ void CombatView::activate()
   addHouse(LSI(CMBTCITY, 2), 2, 7);
   addHouse(LSI(CMBTCITY, 3), 3, 6);
   addHouse(LSI(CMBTCITY, 4), 5, 6); */
-  
-  int bx = 2, by = 4;
-  int ox = 2, oy = 9;
-  
-  /*auto* wall = new StaticGfxEntry(LSI(CITYWALL, 0), bx, by, ox, oy);
-  wall->setPriority(5);
-  addGfxEntry(wall);
-  
-  wall = new StaticGfxEntry(LSI(CITYWALL, 4), bx, by+1, ox, oy+1);
-  wall->setPriority(5);
-  addGfxEntry(wall);
-  
-  wall = new StaticGfxEntry(LSI(CITYWALL, 5), bx+1, by+2, ox, oy+1);
-  addGfxEntry(wall);
-  
-  wall = new StaticGfxEntry(LSI(CITYWALL, 6), bx+1, by+3, ox, oy-1);
-  addGfxEntry(wall);
-
-  wall = new StaticGfxEntry(LSI(CITYWALL, 10), bx+1, by+4, ox, oy);
-  addGfxEntry(wall);
-  
-  wall = new StaticGfxEntry(LSI(CITYWALL, 11), bx, by+5, ox, oy);
-  addGfxEntry(wall);*/
-  
-  /*
-  wall = new StaticGfxEntry(LSI(CITYWALL, 9), 6, 10);
-  wall->setOffset(-2, 18);
-  addGfxEntry(wall);*/
   
   //addRoads();
 

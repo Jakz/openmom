@@ -94,7 +94,7 @@ namespace combat
     void endTurn();
     
     
-    const CombatTile* tileAt(u16 x, u16 y);
+    const CombatTile* tileAt(s16 x, s16 y);
     CombatUnit* unitAtTile(u16 x, u16 y);
     bool isTileEmpty(u16 x, u16 y) { return !unitAtTile(x, y); }
 

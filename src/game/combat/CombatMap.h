@@ -50,9 +50,9 @@ namespace combat
 
     CombatTile() = default;
     CombatTile(CombatMap* map, s8 x, s8 y, s16 type) : map(map), type(type), coords(x,y),
-    stoneWall(WallType::NO_WALL), fireWall(WallType::NO_WALL), darknessWall(WallType::NO_WALL), isStoneWallDestroyed(false) { }
+    stoneWall(WallType::NO_WALL), fireWall(WallType::NO_WALL), darknessWall(WallType::NO_WALL), road(RoadType::NONE), isStoneWallDestroyed(false) { }
     
-    CombatTile* neighbour(Dir facing);
+    CombatTile* neighbour(Dir facing) const;
     
     s16 x() const { return coords.x; }
     s16 y() const { return coords.y; }
@@ -67,17 +67,20 @@ namespace combat
     /* this util function is used to be able to place different kind of walls with a single function */
     void placeWall(u16 x, u16 y, std::function<void(CombatTile*,WallType)> lambda);
     
+    CombatTile* placeRoadSegment(u16 x, u16 y, Dir dir, u16 length, bool enchanted);
+    
   public:
     CombatMap(u16 width, u16 height);
     ~CombatMap() { delete [] tiles; }
     
-    const CombatTile* tileAt(u16 x, u16 y) const { return &tiles[x + y*W]; }
-    CombatTile* tileAt(u16 x, u16 y) { return &tiles[x + y*W]; }
+    const CombatTile* tileAt(s16 x, s16 y) const;
+    CombatTile* tileAt(s16 x, s16 y);
     
     void placeStoneWall(u16 x, u16 y);
     void placeFireWall(u16 x, u16 y);
     void placeDarknessWall(u16 x, u16 y);
-
+    
+    void placeCityRoadExit(Dir direction);
   };
   
 }

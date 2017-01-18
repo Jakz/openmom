@@ -55,7 +55,7 @@ void Combat::endTurn()
   //  current.game.nextLocal();
 }
 
-const CombatTile* Combat::tileAt(u16 x, u16 y) { return _map->tileAt(x,y); }
+const CombatTile* Combat::tileAt(s16 x, s16 y) { return _map->tileAt(x,y); }
 
 CombatUnit* Combat::unitAtTile(u16 x, u16 y)
 {
