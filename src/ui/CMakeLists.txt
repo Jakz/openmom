@@ -3,3 +3,4 @@ add_library(UI_LIB ${UI_SOURCE})
 
 add_subdirectory(parts)
 add_subdirectory(views)
+add_subdirectory(animations)
