@@ -27,6 +27,15 @@ enum combat_lbx_statics : lbx_index
   cmbt_roads = 0
 };
 
+/* default combat tiles lbx is made by 58 tiles
+  4 default grass
+  4 rough grass
+  24 default/rough grass joinings
+  16 hills
+  5 trees
+  5 rocks
+*/
+
 
 
 constexpr u16 W = Combat::W;
@@ -294,6 +303,11 @@ CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1)), entri
 
 void CombatView::prepareGraphics()
 {
+  combat->map()->tileAt(6, 7)->type = 33;
+  combat->map()->tileAt(6, 8)->type = 38;
+  
+
+  
   for (u16 y = 0; y < H; ++y)
     for (u16 x = 0; x < W; ++x)
     {
@@ -445,7 +459,7 @@ void CombatView::draw()
         
         //TODO: not 0,0 but player.combat.tiles[x][y]/8 %8
         Gfx::draw(LSI(CMBGRASS,tile->type), coords);
-        Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
+        //Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
       }
     }
   

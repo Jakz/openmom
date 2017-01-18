@@ -14,7 +14,7 @@ CombatMap::CombatMap(u16 width, u16 height) : W(width), H(height), tiles(new Com
 {
   for (int i = 0; i < W; ++i)
     for (int j = 0; j < H; ++j)
-      *tileAt(i,j) = CombatTile(this, i, j, Util::randomIntUpTo(32));
+      *tileAt(i,j) = CombatTile(this, i, j, Util::randomIntUpTo(4));
 }
 
 const CombatTile* CombatMap::tileAt(s16 x, s16 y) const
