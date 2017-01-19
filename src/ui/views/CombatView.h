@@ -25,18 +25,18 @@ using priority_t = s16;
 class CombatView : public View
 {
 public:
-  class TileGfxEntry
+  class GfxEntry
   {
     priority_t _priority;
   protected:
-    TileGfxEntry(priority_t priority) : _priority(priority) { }
+    GfxEntry(priority_t priority) : _priority(priority) { }
   public:
     priority_t priority() const { return _priority; }
     void setPriority(priority_t priority) { _priority = priority; }
     virtual u16 x() const = 0;
     virtual u16 y() const = 0;
 
-    virtual void draw() = 0;
+    virtual void draw() const = 0;
   };
   
 private:
@@ -69,12 +69,12 @@ private:
   void drawUnitProps(combat::CombatUnit* unit, bool onTheLeft);
   
   bool entriesDirty;
-  std::vector<std::unique_ptr<TileGfxEntry>> entries;
+  std::vector<std::unique_ptr<GfxEntry>> entries;
   
-  void addGfxEntry(TileGfxEntry* entry)
+  void addGfxEntry(GfxEntry* entry)
   {
     entriesDirty = true;
-    entries.push_back(std::unique_ptr<TileGfxEntry>(entry));
+    entries.push_back(std::unique_ptr<GfxEntry>(entry));
   }
   
   void addRoads();

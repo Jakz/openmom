@@ -49,8 +49,10 @@ constexpr int TILE_HEIGHT = 16;
 
 enum priority : priority_t
 {
-  priority_fixed = -1,
+  //priority_fixed = -1,
   
+  priority_tile = -100,
+  priority_fixed = -10,
   priority_roads = 5,
   
   priority_hover_symbol = 20,
@@ -68,6 +70,92 @@ enum priority : priority_t
   
   priority_darkness_wall_behind = priority_stone_wall_behind - 1,
   priority_darkness_wall_front = priority_stone_wall_front + 1,
+};
+
+#pragma mark Tile Joins management
+
+enum class DirJoin
+{
+  NONE = 0x00,
+  
+  N  = 0x01,
+  NE = 0x02,
+  E  = 0x04,
+  SE = 0x08,
+  S  = 0x10,
+  SW = 0x20,
+  W  = 0x40,
+  NW = 0x80,
+  
+  HORIZONTAL_NW_SE = NW | SE,
+  HORIZONTAL_NE_SW = NE | SW,
+  
+  CORNER_NW_NE = NW | NE,
+  CORNER_NE_SE = NE | SE,
+  CORNER_SE_SW = SE | SW,
+  CORNER_SW_NW = SW | NW,
+  
+  HALF_NW = NW | NE | SW,
+  HALF_NE = NW | NE | SE,
+  HALF_SW = SW | SE | NW,
+  HALF_SE = SE | SW | NE,
+  
+  CROSS = NW | SE | NE | SW,
+  
+  ALL = 0xFF
+};
+
+inline DirJoin operator~(const DirJoin& lhs)
+{
+  using utype_t = std::underlying_type<DirJoin>::type;
+  return static_cast<DirJoin>(~static_cast<utype_t>(lhs));
+}
+
+inline DirJoin operator&(const DirJoin& lhs, const DirJoin& rhs) {
+  using utype_t = std::underlying_type<DirJoin>::type;
+  return static_cast<DirJoin>(static_cast<utype_t>(lhs) & static_cast<utype_t>(rhs));
+}
+
+inline bool contains(const DirJoin& value, const DirJoin& mask)
+{
+  using utype_t = std::underlying_type<DirJoin>::type;
+  return (static_cast<utype_t>(value) & static_cast<utype_t>(mask)) == static_cast<utype_t>(mask);
+}
+
+inline DirJoin operator|(const DirJoin& lhs, const DirJoin& rhs) {
+  using utype_t = std::underlying_type<DirJoin>::type;
+  return static_cast<DirJoin>(static_cast<utype_t>(lhs) | static_cast<utype_t>(rhs));
+}
+
+inline void operator|=(DirJoin& lhs, const DirJoin& rhs) {
+  using utype_t = std::underlying_type<DirJoin>::type;
+  lhs = static_cast<DirJoin>(static_cast<utype_t>(lhs) | static_cast<utype_t>(rhs));
+}
+
+enum class MaskMode
+{
+  ALL,
+  DIAGONAL,
+  ORTHO
+};
+
+DirJoin computeMask(MaskMode mode, const CombatTile* tile, std::function<bool(CombatTile*)> lambda)
+{
+  static const Dir neighbours[] = { Dir::NORTH, Dir::NORTH_EAST, Dir::EAST, Dir::SOUTH_EAST, Dir::SOUTH, Dir::SOUTH_WEST, Dir::WEST, Dir::NORTH_WEST };
+  static const DirJoin flags[] = { DirJoin::N, DirJoin::NE, DirJoin::E, DirJoin::SE, DirJoin::S, DirJoin::SW, DirJoin::W, DirJoin::NW };
+  
+  size_t startIndex = mode == MaskMode::DIAGONAL ? 1 : 0;
+  size_t increment = mode == MaskMode::ALL ? 1 : 2;
+  
+  DirJoin mask = DirJoin::NONE;
+  for (size_t i = startIndex; i < 8; i += increment)
+  {
+    auto* ntile = tile->neighbour(neighbours[i]);
+    if (lambda(ntile))
+      mask |= flags[i];
+  }
+  
+  return mask;
 };
 
 #pragma mark Environments
@@ -90,6 +178,74 @@ std::unordered_map<CombatEnvironment, LBXID, combat_env_hash> environments = {
   { { CombatEnvironment::Type::TUNDRA, Plane::ARCANUS }, LBXID::CMBTUNDR },
   { { CombatEnvironment::Type::TUNDRA, Plane::MYRRAN }, LBXID::CMBTUNDC },
 };
+
+#pragma mark Rough Terrain
+
+class rough_terrain_map
+{
+  enum joinings
+  {
+    full = 4,
+    corner_south = 8,
+    horizontal_sw = 10,
+    empty_corner_north = 12,
+    corner_west = 14,
+    empty_corner_east = 16,
+    horizontal_nw = 18,
+    corner_north = 20,
+    empty_corner_south = 22,
+    horizontal_ne = 24,
+    corner_east = 26,
+    empty_corner_west = 28,
+    horizontal_se = 30,
+  };
+  
+public:
+  rough_terrain_map()
+  {
+    
+  };
+  
+  SpriteInfo operator[](DirJoin mask)
+  {
+    DirJoin omask = mask & DirJoin::CROSS;
+    SpriteInfo info;
+    
+    switch (omask)
+    {
+      case DirJoin::CORNER_SE_SW: info = LSI(CMBGRASS, corner_south); break;
+      case DirJoin::CORNER_NE_SE: info = LSI(CMBGRASS, corner_east); break;
+      case DirJoin::CORNER_NW_NE: info = LSI(CMBGRASS, corner_north); break;
+      case DirJoin::CORNER_SW_NW: info = LSI(CMBGRASS, corner_west); break;
+        
+      case DirJoin::HALF_NE: info = LSI(CMBGRASS, horizontal_ne); break;
+      case DirJoin::HALF_NW: info = LSI(CMBGRASS, horizontal_nw); break;
+      case DirJoin::HALF_SE: info = LSI(CMBGRASS, horizontal_se); break;
+      case DirJoin::HALF_SW: info = LSI(CMBGRASS, horizontal_sw); break;
+        
+      default:
+      {
+        if (mask == DirJoin::ALL)
+          info = LSI(CMBGRASS, full);
+        else
+        {
+          DirJoin nmask = ~mask;
+          
+          if ((nmask & DirJoin::S) == DirJoin::S) info = LSI(CMBGRASS, empty_corner_south);
+          else if ((nmask & DirJoin::E) == DirJoin::E) info = LSI(CMBGRASS, empty_corner_east);
+          else if ((nmask & DirJoin::W) == DirJoin::W) info = LSI(CMBGRASS, empty_corner_west);
+          else if ((nmask & DirJoin::N) == DirJoin::N) info = LSI(CMBGRASS, empty_corner_north);
+        }
+       
+        break;
+      }
+    }
+    
+    return info.index() == full ?
+      info.relative(Util::randomIntUpTo(4)) :
+      info.relative(Util::randomIntUpTo(1));
+  }
+} roughTerrainMap;
 
 #pragma mark Walls
 
@@ -145,26 +301,6 @@ std::unordered_map<WallType, NonSolidWallSpec, enum_hash> nonSolidWall = {
   { WallType::NORTH_WEST_WALL2, { LSI(CITYWALL, 37), true } }
 };
 
-enum class DirJoin
-{
-  NONE = 0x00,
-  
-  NE = 0x01,
-  SE = 0x02,
-  SW = 0x04,
-  NW = 0x08,
-  
-  HORIZONTAL_NW_SE = NW | SE,
-  HORIZONTAL_NE_SW = NE | SW,
-  
-  CORNER_NW_NE = NW | NE,
-  CORNER_NE_SE = NE | SE,
-  CORNER_SE_SW = SE | SW,
-  CORNER_SW_NW = SW | NW,
-  
-  CROSS = NW | SE | NE | SW
-};
-
 #pragma mark Roads
 
 struct RoadGfxSpec
@@ -186,19 +322,18 @@ std::unordered_map<DirJoin, RoadGfxSpec, enum_hash> roadGraphics = {
 
 #pragma mark Rivers
 
-struct RiverGfxSpec
-{
-  
-};
-
 ScreenCoord coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
 
 struct entry_comparator
 {
-  bool operator()(const std::unique_ptr<CombatView::TileGfxEntry>& e1, const std::unique_ptr<CombatView::TileGfxEntry>& e2) const
+  bool operator()(const std::unique_ptr<CombatView::GfxEntry>& e1, const std::unique_ptr<CombatView::GfxEntry>& e2) const
   {
     if (e1->priority() < 0 && e2->priority() >= 0)
       return true;
+    else if (e1->priority() >= 0 && e2->priority() < 0)
+      return false;
+    else if (e1->priority() < 0 && e2->priority() < 0)
+      return e1->priority() < e2->priority();
     else if (e1 == e2)
       return false;
     
@@ -215,18 +350,18 @@ struct entry_comparator
 };
 
 
-class UnitGfxEntry : public CombatView::TileGfxEntry
+class UnitGfxEntry : public CombatView::GfxEntry
 {
 private:
   CombatUnit* unit;
   
 public:
-  UnitGfxEntry(CombatUnit* unit) : CombatView::TileGfxEntry(priority_units), unit(unit) { }
+  UnitGfxEntry(CombatUnit* unit) : CombatView::GfxEntry(priority_units), unit(unit) { }
   
   u16 x() const override { return unit->x(); }
   u16 y() const override { return unit->y(); }
   
-  void draw() override
+  void draw() const override
   {
     ScreenCoord coords = coordsForTile(unit->x(), unit->y());
     
@@ -240,7 +375,27 @@ public:
   }
 };
 
-class StaticGfxEntry : public CombatView::TileGfxEntry
+class TileGfxEntry : public CombatView::GfxEntry
+{
+private:
+  SpriteInfo info;
+  u16 _x, _y;
+  
+public:
+  TileGfxEntry(SpriteInfo info, u16 x, u16 y) : CombatView::GfxEntry(priority_tile), info(info), _x(x), _y(y) { }
+  
+  void draw() const override
+  {
+    ScreenCoord coords = coordsForTile(_x, _y);
+    Gfx::drawAnimated(info, coords);
+    //Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
+  }
+  
+  u16 x() const override { return _x; }
+  u16 y() const override { return _y; }
+};
+
+class StaticGfxEntry : public CombatView::GfxEntry
 {
 protected:
   bool animated;
@@ -248,7 +403,7 @@ protected:
   u16 _x, _y;
   ScreenCoord _anchor;
 
-  void draw(SpriteInfo info)
+  void draw(SpriteInfo info) const
   {
     ScreenCoord coords = coordsForTile(_x, _y);
     
@@ -260,18 +415,14 @@ protected:
   
 public:
   StaticGfxEntry(priority_t priority, SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) :
-  CombatView::TileGfxEntry(priority), info(info), _x(x), _y(y), _anchor(-ax, TILE_HEIGHT/2 - info.sh() + ay), animated(animated) { }
+  CombatView::GfxEntry(priority), info(info), _x(x), _y(y), _anchor(-ax, TILE_HEIGHT/2 - info.sh() + ay), animated(animated) { }
   
   StaticGfxEntry(SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) : StaticGfxEntry(priority_static, info, x, y, ax, ay, animated) { }
   
   u16 x() const override { return _x; }
   u16 y() const override { return _y; }
-  
-  /*void setAnchorY(s16 offset) { _anchor.y = TILE_HEIGHT/2 - info.sh() + offset; }
-  void setOffsetX(s16 offset) { _anchor.x = -offset; }
-  void setOffset(s16 x, s16 y) { _anchor = ScreenCoord(-x, TILE_HEIGHT/2 - info.sh() + y); }*/
 
-  void draw() override { draw(info); }
+  void draw() const override { draw(info); }
 };
 
 class StoneWallGfxEntry : public StaticGfxEntry
@@ -297,7 +448,7 @@ public:
   StaticGfxEntry(spec.priority, spec.sprite.relative(offsetForHouseType(houseType)), tile->x(), tile->y(), spec.anchor.x, spec.anchor.y), tile(tile) { }
 
   using StaticGfxEntry::draw;
-  void draw() override {
+  void draw() const override {
     draw(tile->isStoneWallDestroyed ? info.frame(1) : info);
   }
 };
@@ -311,19 +462,19 @@ public:
   StaticGfxEntry(priority, info, tile->x(), tile->y(), anchor.x, anchor.y, true), tile(tile) { }
 };
 
-class FixedGfxEntry : public CombatView::TileGfxEntry
+class FixedGfxEntry : public CombatView::GfxEntry
 {
 private:
   SpriteInfo info;
   u16 _x, _y;
   
 public:
-  FixedGfxEntry(SpriteInfo info, u16 x, u16 y) : CombatView::TileGfxEntry(-1), info(info), _x(x), _y(y) { }
+  FixedGfxEntry(SpriteInfo info, u16 x, u16 y) : CombatView::GfxEntry(priority_fixed), info(info), _x(x), _y(y) { }
   
   u16 x() const override { return 0; }
   u16 y() const override { return 0; }
   
-  void draw() override
+  void draw() const override
   {
     Gfx::draw(info, _x, _y);
   }
@@ -346,8 +497,8 @@ void CombatView::prepareGraphics()
   for (size_t i = 0; i < 8; ++i)
     combat->map()->tileAt(7, i)->type = 16+8+i;*/
   
-  this->combat->map()->placeRect(4, 4, 3, 3, 4);
-
+  this->combat->map()->placeRect(4, 4, 7, 3, combat::TileType::ROUGH);
+  this->combat->map()->placeRect(6, 4, 3, 7, combat::TileType::ROUGH);
 
   
   for (u16 y = 0; y < H; ++y)
@@ -355,7 +506,7 @@ void CombatView::prepareGraphics()
     {
       if (x != 9 || y%2 == 0)
       {
-        const auto* tile = combat->tileAt(x, y);
+        const CombatTile* tile = combat->tileAt(x, y);
 
         /* if there is a stone wall generate graphics */
         if (tile->stoneWall != WallType::NO_WALL)
@@ -391,18 +542,7 @@ void CombatView::prepareGraphics()
         /* if there is road calculate tile and generate graphics */
         if (tile->road != RoadType::NONE)
         {
-          static const Dir neighbours[] = { Dir::NORTH_EAST, Dir::SOUTH_EAST, Dir::SOUTH_WEST, Dir::NORTH_WEST };
-          static const DirJoin flags[] = { DirJoin::NE, DirJoin::SE, DirJoin::SW, DirJoin::NW };
-          
-          DirJoin mask = DirJoin::NONE;
-          for (size_t i = 0; i < 4; ++i)
-          {
-            using utype_t = std::underlying_type<DirJoin>::type;
-            const auto* neigh = tile->neighbour(neighbours[i]);
-            
-            if (neigh && neigh->road != RoadType::NONE)
-              mask = static_cast<DirJoin>(static_cast<utype_t>(mask) | static_cast<utype_t>(flags[i]));
-          }
+          DirJoin mask = computeMask(MaskMode::DIAGONAL, tile, [](const CombatTile* tile) {return tile && tile->road != RoadType::NONE; });
           
           /* since there is no graphics for road deadends we adjust mask to be horizontal */
           if (mask == DirJoin::NW || mask == DirJoin::SE)
@@ -416,6 +556,15 @@ void CombatView::prepareGraphics()
           SpriteInfo info = (tile->road == RoadType::NORMAL ? it->second.normal : it->second.enchanted)[Util::oneOfTwoChance()];
           addGfxEntry(new StaticGfxEntry(priority_roads, info, tile->x(), tile->y(), 0, TILE_HEIGHT/2, true));
         }
+        
+        if (tile->type == combat::TileType::ROUGH)
+        {
+          DirJoin mask = computeMask(MaskMode::ALL, tile, [](const CombatTile* tile) { return !tile || tile->type == combat::TileType::ROUGH; });
+          SpriteInfo info = roughTerrainMap[mask];
+          addGfxEntry(new TileGfxEntry(info.lbx(environmentLBX), x, y));
+        }
+        else
+          addGfxEntry(new TileGfxEntry(SpriteInfo(environmentLBX, Util::randomIntUpTo(4)), x, y));
       }
     }
 }
@@ -433,12 +582,12 @@ void CombatView::activate()
   
   this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin(), &g->combatMechanics);
   
-  setEnvironment({CombatEnvironment::Type::GRASS, Plane::ARCANUS});
+  setEnvironment({CombatEnvironment::Type::DESERT, Plane::ARCANUS});
   
-  /*this->combat->map()->placeFireWall(2, 4);
-  this->combat->map()->placeCityRoadExit(Dir::SOUTH_EAST);
-  this->combat->map()->placeCityRoadExit(Dir::SOUTH_WEST);
-  this->combat->map()->placeCityRoadExit(Dir::NORTH_EAST);*/
+  //this->combat->map()->placeFireWall(2, 4);
+  //this->combat->map()->placeCityRoadExit(Dir::SOUTH_EAST);
+  //this->combat->map()->placeCityRoadExit(Dir::SOUTH_WEST);
+  //this->combat->map()->placeCityRoadExit(Dir::NORTH_EAST);
 
   //this->combat->map()->placeDarknessWall(2, 4);
   //this->combat->map()->placeStoneWall(2, 4);
@@ -501,20 +650,6 @@ void CombatView::draw()
   if (player.combat == null)
     player.combat = new Combat(player.armies.get(0),player.game.players.get(1).armies.get(0));
    */
-
-  for (u16 y = 0; y < H; ++y)
-    for (u16 x = 0; x < W; ++x)
-    {
-      if (x != 9 || y%2 == 0)
-      {
-        const auto coords = coordsForTile(x, y);
-        const auto& tile = combat->tileAt(x, y);
-        
-        //TODO: not 0,0 but player.combat.tiles[x][y]/8 %8
-        Gfx::draw(SpriteInfo(environmentLBX, tile->type), coords);
-        Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
-      }
-    }
   
   /*auto c = coordsForTile(2, 6);
   Gfx::rect(c.x, c.y, 30, 16, {255,0,0});*/

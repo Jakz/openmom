@@ -14,7 +14,7 @@ CombatMap::CombatMap(u16 width, u16 height) : W(width), H(height), tiles(new Com
 {
   for (int i = 0; i < W; ++i)
     for (int j = 0; j < H; ++j)
-      *tileAt(i,j) = CombatTile(this, i, j, Util::randomIntUpTo(4));
+      *tileAt(i,j) = CombatTile(this, i, j);
 }
 
 const CombatTile* CombatMap::tileAt(s16 x, s16 y) const
@@ -75,7 +75,7 @@ void CombatMap::placeWall(u16 x, u16 y, std::function<void(CombatTile*,WallType)
   }
 }
 
-CombatTile* CombatMap::placeRoadSegment(u16 x, u16 y, Dir dir, u16 length, bool enchanted)
+CombatTile* CombatMap::functorOnSegment(u16 x, u16 y, Dir dir, u16 length, tile_functor lambda)
 {
   auto* tile = tileAt(x, y);
   auto* ptile = tile;
@@ -84,7 +84,7 @@ CombatTile* CombatMap::placeRoadSegment(u16 x, u16 y, Dir dir, u16 length, bool 
   do
   {
     ptile = tile;
-    tile->road = enchanted ? RoadType::ENCHANTED : RoadType::NORMAL;
+    lambda(tile);
     tile = tile->neighbour(dir);
     ++i;
   } while (i < length);
@@ -92,8 +92,7 @@ CombatTile* CombatMap::placeRoadSegment(u16 x, u16 y, Dir dir, u16 length, bool 
   return ptile;
 }
 
-
-void CombatMap::placeRect(u16 x, u16 y, u16 w, u16 h, u16 type)
+void CombatMap::functorOnRect(u16 x, u16 y, u16 w, u16 h, tile_functor lambda)
 {
   auto* tile = tileAt(x, y);
   
@@ -105,7 +104,7 @@ void CombatMap::placeRect(u16 x, u16 y, u16 w, u16 h, u16 type)
     
     do
     {
-      ctile->type = type;
+      lambda(ctile);
       ctile = ctile->neighbour(Dir::SOUTH_EAST);
       ++j;
     } while (j < w);
@@ -115,6 +114,24 @@ void CombatMap::placeRect(u16 x, u16 y, u16 w, u16 h, u16 type)
   } while (i < h);
 }
 
+CombatTile* CombatMap::placeRoadSegment(u16 x, u16 y, Dir dir, u16 length, bool enchanted)
+{
+  return functorOnSegment(x, y, dir, length, [enchanted](CombatTile* tile) {
+    tile->road = enchanted ? RoadType::ENCHANTED : RoadType::NORMAL;
+  });
+}
+
+CombatTile* CombatMap::placeRiverSegment(u16 x, u16 y, Dir dir, u16 length)
+{
+  //TODO
+  return nullptr;
+}
+
+
+void CombatMap::placeRect(u16 x, u16 y, u16 w, u16 h, TileType type)
+{
+  functorOnRect(x, y, w, h, [type](CombatTile* tile) { tile->type = type; });
+}
 
 void CombatMap::placeStoneWall(u16 x, u16 y)
 {

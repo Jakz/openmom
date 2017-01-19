@@ -32,6 +32,15 @@ namespace combat
     NONE
   };
   
+  enum class TileType
+  {
+    GRASS,
+    ROUGH,
+    HILLS
+  };
+  
+  using TileSubType = u16;
+  
   struct CombatEnvironment
   {
     enum class Type
@@ -58,7 +67,7 @@ namespace combat
     CombatMap* map;
     CombatCoord coords;
 
-    s16 type;
+    TileType type;
     
     WallType stoneWall;
     WallType fireWall;
@@ -68,7 +77,7 @@ namespace combat
     bool isStoneWallDestroyed;
 
     CombatTile() = default;
-    CombatTile(CombatMap* map, s8 x, s8 y, s16 type) : map(map), type(type), coords(x,y),
+    CombatTile(CombatMap* map, s8 x, s8 y) : map(map), type(TileType::GRASS), coords(x,y),
     stoneWall(WallType::NO_WALL), fireWall(WallType::NO_WALL), darknessWall(WallType::NO_WALL), road(RoadType::NONE), isStoneWallDestroyed(false) { }
     
     CombatTile* neighbour(Dir facing) const;
@@ -80,11 +89,16 @@ namespace combat
   class CombatMap
   {
   private:
+    using tile_functor = std::function<void(CombatTile*)>;
+    
     CombatTile* tiles;
     const int W, H;
 
     /* this util function is used to be able to place different kind of walls with a single function */
     void placeWall(u16 x, u16 y, std::function<void(CombatTile*,WallType)> lambda);
+    
+    CombatTile* functorOnSegment(u16 x, u16 y, Dir dir, u16 length, tile_functor lambda);
+    void functorOnRect(u16 x, u16 y, u16 w, u16 h, tile_functor lambda);
     
     CombatTile* placeRoadSegment(u16 x, u16 y, Dir dir, u16 length, bool enchanted);
     
@@ -101,7 +115,9 @@ namespace combat
     
     void placeCityRoadExit(Dir direction);
     
-    void placeRect(u16 x, u16 y, u16 w, u16 h, u16 type);
+    void placeRect(u16 x, u16 y, u16 w, u16 h, TileType type);
+    
+    CombatTile* placeRiverSegment(u16 x, u16 y, Dir dir, u16 length);
   };
   
 }

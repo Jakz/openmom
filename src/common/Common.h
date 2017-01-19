@@ -406,6 +406,7 @@ public:
   SpriteInfo relative(s16 offset) const { return SpriteInfo(lbx(), index()+offset); }
   SpriteInfo frame(s16 offset, u8 f) const { return SpriteInfo(lbx(), index()+offset, f); }
   SpriteInfo frame(u8 f) const { return SpriteInfo(lbx(), index(), f); }
+  SpriteInfo lbx(LBXID l) const { return SpriteInfo(l, index(), frame()); }
   
   bool isValid() const { return lbx() < LBXID::COUNT; }
   
