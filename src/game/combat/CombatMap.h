@@ -100,6 +100,8 @@ namespace combat
     void placeDarknessWall(u16 x, u16 y);
     
     void placeCityRoadExit(Dir direction);
+    
+    void placeRect(u16 x, u16 y, u16 w, u16 h, u16 type);
   };
   
 }

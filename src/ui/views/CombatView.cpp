@@ -340,12 +340,14 @@ void CombatView::prepareGraphics()
   /*combat->map()->tileAt(6, 7)->type = 33;
   combat->map()->tileAt(6, 8)->type = 38;*/
   
-  for (size_t i = 0; i < 16; ++i)
+  /*for (size_t i = 0; i < 16; ++i)
     combat->map()->tileAt(5, i)->type = 8+i;
   
   for (size_t i = 0; i < 8; ++i)
-    combat->map()->tileAt(7, i)->type = 16+8+i;
+    combat->map()->tileAt(7, i)->type = 16+8+i;*/
   
+  this->combat->map()->placeRect(4, 4, 3, 3, 4);
+
 
   
   for (u16 y = 0; y < H; ++y)
@@ -431,7 +433,7 @@ void CombatView::activate()
   
   this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin(), &g->combatMechanics);
   
-  setEnvironment({CombatEnvironment::Type::MOUNTAIN, Plane::MYRRAN});
+  setEnvironment({CombatEnvironment::Type::GRASS, Plane::ARCANUS});
   
   /*this->combat->map()->placeFireWall(2, 4);
   this->combat->map()->placeCityRoadExit(Dir::SOUTH_EAST);

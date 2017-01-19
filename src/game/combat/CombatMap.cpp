@@ -92,6 +92,30 @@ CombatTile* CombatMap::placeRoadSegment(u16 x, u16 y, Dir dir, u16 length, bool 
   return ptile;
 }
 
+
+void CombatMap::placeRect(u16 x, u16 y, u16 w, u16 h, u16 type)
+{
+  auto* tile = tileAt(x, y);
+  
+  size_t i = 0;
+  do
+  {
+    size_t j = 0;
+    auto* ctile = tile;
+    
+    do
+    {
+      ctile->type = type;
+      ctile = ctile->neighbour(Dir::SOUTH_EAST);
+      ++j;
+    } while (j < w);
+    
+    tile = tile->neighbour(Dir::SOUTH_WEST);
+    ++i;
+  } while (i < h);
+}
+
+
 void CombatMap::placeStoneWall(u16 x, u16 y)
 {
   placeWall(x, y, [](CombatTile* tile, WallType type) { tile->stoneWall = type; });
