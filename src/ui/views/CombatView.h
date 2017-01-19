@@ -10,6 +10,7 @@
 #define _COMBAT_VIEW_H_
 
 #include "View.h"
+#include "CombatMap.h"
 
 #include <vector>
 #include <memory>
@@ -77,17 +78,23 @@ private:
   }
   
   void addRoads();
+  void addFlyingFortress();
   void addMainBuilding(SpriteInfo info);
   void addHouse(SpriteInfo info, int x, int y);
   void prepareGraphics();
   
   UnitGfxEntry* dummyUnit(s16 x, s16 y);
   
+  combat::CombatEnvironment environment;
+  LBXID environmentLBX;
+  
 public:
   CombatView(ViewManager* gvm);
   
   void activate() override;
   void deactivate() override;
+  
+  void setEnvironment(combat::CombatEnvironment env);
   
   //ScreenCoord coordsForTile(u16 x, u16 y);
 

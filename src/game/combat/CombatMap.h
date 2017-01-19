@@ -31,6 +31,25 @@ namespace combat
     ENCHANTED,
     NONE
   };
+  
+  struct CombatEnvironment
+  {
+    enum class Type
+    {
+      GRASS,
+      DESERT,
+      MOUNTAIN,
+      TUNDRA
+    };
+    
+    Type type;
+    Plane plane;
+    
+    bool operator==(const CombatEnvironment& other) const
+    {
+      return type == other.type && plane == other.plane;
+    }
+  };
 
   class CombatMap;
 

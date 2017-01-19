@@ -51,9 +51,18 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::ARMYLIST);
   lbx::Repository::loadLBX(LBXID::BACKGRND);
   lbx::Repository::loadLBX(LBXID::CITYSCAP);
+  
   lbx::Repository::loadLBX(LBXID::CITYWALL);
   lbx::Repository::loadLBX(LBXID::CMBTCITY);
+  lbx::Repository::loadLBX(LBXID::CMBDESRC);
+  lbx::Repository::loadLBX(LBXID::CMBDESRT);
+  lbx::Repository::loadLBX(LBXID::CMBGRASC);
   lbx::Repository::loadLBX(LBXID::CMBGRASS);
+  lbx::Repository::loadLBX(LBXID::CMBMOUNC);
+  lbx::Repository::loadLBX(LBXID::CMBMOUNT);
+  lbx::Repository::loadLBX(LBXID::CMBTUNDR);
+  lbx::Repository::loadLBX(LBXID::CMBTUNDC);
+  
   lbx::Repository::loadLBX(LBXID::FIGURES1);
   lbx::Repository::loadLBX(LBXID::FIGURES3);
   lbx::Repository::loadLBX(LBXID::FIGURES4);
