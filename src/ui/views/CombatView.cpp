@@ -15,6 +15,7 @@
 
 #include "SDLHelper.h"
 #include "UnitDetailView.h"
+#include "SpellEffectAnim.h"
 #include "ViewManager.h"
 #include "Gfx.h"
 #include "Texture.h"
@@ -48,9 +49,6 @@ constexpr u16 W = Combat::W;
 constexpr u16 H = Combat::H;
 constexpr u16 OX = 0;
 constexpr u16 OY = 8;
-
-constexpr int TILE_WIDTH = 32;
-constexpr int TILE_HEIGHT = 16;
 
 /* all graphical elements of the battlefield are kept in a list of sorted
    items, this allows to draw things in correct order: negative priorities
@@ -382,7 +380,7 @@ static const std::unordered_map<DirJoin, RoadGfxSpec, enum_hash> roadGraphics = 
 
 #pragma mark Rivers
 
-ScreenCoord coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
+ScreenCoord CombatView::coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
 
 class UnitGfxEntry : public CombatView::GfxEntry
 {
@@ -397,7 +395,7 @@ public:
   
   void draw() const override
   {
-    ScreenCoord coords = coordsForTile(unit->x(), unit->y());
+    ScreenCoord coords = CombatView::coordsForTile(unit->x(), unit->y());
     
     if (unit->selected)
     {
@@ -421,7 +419,7 @@ public:
   
   void draw() const override
   {
-    ScreenCoord coords = coordsForTile(_x, _y);
+    ScreenCoord coords = CombatView::coordsForTile(_x, _y);
     Gfx::drawAnimated(info, coords, _animOffset);
     //Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
   }
@@ -475,7 +473,7 @@ public:
     static const ScreenCoord TREE_OFFSET = ScreenCoord(-6, -13);
     static const ScreenCoord ROCK_OFFSET = ScreenCoord(-8, -11);
     
-    ScreenCoord coords = coordsForTile(_x, _y) + ScreenCoord(TILE_WIDTH/2, TILE_HEIGHT/2);
+    ScreenCoord coords = CombatView::coordsForTile(_x, _y) + ScreenCoord(CombatView::TILE_WIDTH/2, CombatView::TILE_HEIGHT/2);
 
     for (size_t i = 0; i < MAX_SPRITES; ++i)
     {
@@ -498,7 +496,7 @@ protected:
 
   void draw(SpriteInfo info) const
   {
-    ScreenCoord coords = coordsForTile(_x, _y);
+    ScreenCoord coords = CombatView::coordsForTile(_x, _y);
     
     if (animated)
       Gfx::drawAnimated(info, coords + _anchor);
@@ -508,7 +506,7 @@ protected:
   
 public:
   StaticGfxEntry(priority_t priority, SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) :
-  CombatView::GfxEntry(priority), info(info), _x(x), _y(y), _anchor(-ax, TILE_HEIGHT/2 - info.sh() + ay), animated(animated) { }
+  CombatView::GfxEntry(priority), info(info), _x(x), _y(y), _anchor(-ax, CombatView::TILE_HEIGHT/2 - info.sh() + ay), animated(animated) { }
   
   StaticGfxEntry(SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) : StaticGfxEntry(priority_static, info, x, y, ax, ay, animated) { }
   
@@ -901,6 +899,9 @@ void CombatView::drawUnitProps(CombatUnit *unit, bool onTheLeft)
 
 void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
+  //player->push(new anims::SpellEffect(LSI(CMBTFX, 22), CombatCoord(hover.x,hover.y)));
+  
+  
   CombatUnit* unit = combat->unitAtTile(hover.x, hover.y);
   
   if (b == MouseButton::BUTTON_LEFT /* && player->isCurrentlyPlaying()*/)

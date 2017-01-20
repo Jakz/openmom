@@ -2,8 +2,11 @@
 
 #include "Animations.h"
 #include "Common.h"
+#include "CombatUtils.h"
 
 class SummonSpec;
+
+
 
 namespace anims
 {
@@ -17,10 +20,12 @@ namespace anims
     bool force;
 
     ScreenCoord coords;
+    u16 counter;
     u16 frame;
     
   public:
     SpellEffect(LocalPlayer* player, SpriteInfo effectId, Position tile);
+    SpellEffect(SpriteInfo effectId, CombatCoord tile);
     SpellEffect(LocalPlayer* player, SpriteInfo effectId, int tx, int ty);
     
     void step() override;

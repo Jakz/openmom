@@ -5,6 +5,7 @@
 #include "Font.h"
 
 #include "Unit.h"
+#include "CombatView.h"
 
 #include "LBX.h"
 
@@ -13,7 +14,7 @@ using namespace anims;
 
 #pragma mark SpellEffect
 
-SpellEffect::SpellEffect(LocalPlayer* player, SpriteInfo effectId, Position tile) : DiscreteAnimation(TICKS_PER_FRAME*effectId.count()), effect(effectId), frame(0)
+SpellEffect::SpellEffect(LocalPlayer* player, SpriteInfo effectId, Position tile) : DiscreteAnimation(TICKS_PER_FRAME*effectId.count()), effect(effectId), frame(0), counter(0)
 {
   u16 w = effectId.sw(), h = effectId.sh();
   
@@ -21,25 +22,28 @@ SpellEffect::SpellEffect(LocalPlayer* player, SpriteInfo effectId, Position tile
   coords.x = coords.x - w/2 + Viewport::tileWidth/2;
   coords.y = coords.y - h/2 + Viewport::tileHeight/2;
   
-  if (!coords.isValid())
-    force = true;
-  else
-  {
-    force = false;
-  }
+  force = coords.isValid();
+}
+
+SpellEffect::SpellEffect(SpriteInfo effectId, CombatCoord tile) : DiscreteAnimation(TICKS_PER_FRAME*effectId.count()), effect(effectId), frame(0), counter(0), force(false)
+{
+  u16 w = effectId.sw(), h = effectId.sh();
+
+  coords = CombatView::coordsForTile(tile.x, tile.y) + ScreenCoord(CombatView::TILE_WIDTH/2 - w/2 - 1, - h + CombatView::TILE_HEIGHT);
 }
 
 SpellEffect::SpellEffect(LocalPlayer* player, SpriteInfo effectId, int tx, int ty)
-: DiscreteAnimation(TICKS_PER_FRAME*effectId.count()), effect(effectId), frame(0)
+: DiscreteAnimation(TICKS_PER_FRAME*effectId.count()), effect(effectId), frame(0), counter(0), force(false)
 {
   coords = ScreenCoord(tx-15, ty-25);
-  force = false;
 }
 
 void SpellEffect::step()
 {
   if (!force)
-    Gfx::drawAnimated(effect, coords.x, coords.y, 0, TICKS_PER_FRAME);
+  {
+    Gfx::draw(effect.frame(elapsed / TICKS_PER_FRAME), coords);
+  }
 }
 
 #pragma mark SummonEffect

@@ -62,6 +62,8 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::CMBMOUNT);
   lbx::Repository::loadLBX(LBXID::CMBTUNDR);
   lbx::Repository::loadLBX(LBXID::CMBTUNDC);
+  lbx::Repository::loadLBX(LBXID::CMBTFX);
+
   
   lbx::Repository::loadLBX(LBXID::FIGURES1);
   lbx::Repository::loadLBX(LBXID::FIGURES3);

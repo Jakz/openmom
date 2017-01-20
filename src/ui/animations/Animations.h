@@ -27,11 +27,12 @@ namespace anims
     bool forceFinished;
     std::unique_ptr<Animation> nextAnim;
     
+    virtual void step() = 0;
+
   public:
     Animation() : forceFinished(false) { }
     
     virtual bool hasFinished() = 0;
-    virtual void step() = 0;
     
     std::unique_ptr<Animation>& next() { return nextAnim; }
     void setNext(Animation *animation) { this->nextAnim = std::unique_ptr<Animation>(animation); }
@@ -39,6 +40,8 @@ namespace anims
     void finish() { forceFinished = true; }
     
     virtual void reset() = 0;
+    
+    virtual void doStep() = 0;
     
     virtual ~Animation() { }
   };
@@ -48,11 +51,19 @@ namespace anims
   protected:
     u32 start;
     u32 duration;
+    u32 elapsed;
     
   public:
-    DiscreteAnimation(u32 duration) : start(Gfx::fticks), duration(duration) { }
+    DiscreteAnimation(u32 duration) : start(Gfx::fticks), duration(duration), elapsed(0) { }
     void reset() override { start = Gfx::fticks; }
-    bool hasFinished() override { return forceFinished || Gfx::fticks >= duration + start; }
+    bool hasFinished() override { return forceFinished || elapsed >= duration; }
+    
+    void doStep() override
+    {
+      elapsed = Gfx::fticks - start;
+      if (!hasFinished())
+        step();
+    }
   };
   
   class ContinuousAnimation : public Animation
@@ -70,6 +81,7 @@ namespace anims
       return std::min(1.0f, (Gfx::ticks - start) / (float)duration);
     }
     
+    void doStep() override { step(); }
     bool hasFinished() override { return forceFinished || Gfx::ticks > duration + start; }
   };
   

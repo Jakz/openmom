@@ -101,6 +101,11 @@ public:
   void mouseReleased(u16 x, u16 y, MouseButton b) override;
   void mouseMoved(u16 x, u16 y, MouseButton b) override;
   
+  
+  static ScreenCoord coordsForTile(u16 x, u16 y);
+  constexpr static int TILE_WIDTH = 32;
+  constexpr static int TILE_HEIGHT = 16;
+
 };
 
 #endif 

@@ -140,7 +140,7 @@ void ViewManager::draw()
   }
   
   for (const auto& a : animations)
-    a->step();
+    a->doStep();
   
   current->drawPost();
 }
