@@ -9,11 +9,11 @@
 #include <unordered_map>
 
 class HitPoints;
-class CombatMechanics;
 
 namespace combat
 {
   class CombatMap;
+  class CombatMechanics;
   struct CombatTile;
 
   enum class CombatModifier : u8

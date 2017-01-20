@@ -44,7 +44,7 @@ public:
   }
   
   static u32 randomIntUpTo(u32 i) { return integer(rng)%i; }
-  static u32 randomIntInclusive(u32 l, u32 h) { return l + integer(rng)%(h-l+1); }
+  static u32 randomIntInclusive(s32 l, s32 h) { return l + integer(rng)%(h-l+1); }
 
   static bool oneOfTwoChance() { return rand() <= 0.50f; }
   static bool chance(u32 percent) { return randomIntUpTo(101) <= percent; }

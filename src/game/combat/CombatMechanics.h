@@ -16,16 +16,22 @@ enum class CombatModifier : u8;
 
 class Game;
 
-class CombatMechanics
-{
-private:
-  Game* const game;
-public:
-  CombatMechanics(Game* game) : game(game) { }
-};
-
 namespace combat
 {
+  class CombatTile;
+  struct CombatEnvironment;
+  
+  class CombatMechanics
+  {
+  private:
+    Game* const game;
+  public:
+    CombatMechanics(Game* game) : game(game) { }
+    
+    u16 movementCostForTile(const CombatTile* tile, Dir from);
+  };
+
+  
   class Damage
   {
   public:

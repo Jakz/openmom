@@ -25,7 +25,12 @@ using namespace combat;
 enum combat_lbx_statics
 {
   roads_static = LBXI(CMBTCITY, 0),
-  flying_fortess = LBXI(CMBTCITY, 113)
+  flying_fortess = LBXI(CMBTCITY, 113),
+  
+  water_tile = LBXI(CMBTCITY, 109),
+  
+  tree = LBXI(CMBGRASS, 48),
+  rock = LBXI(CMBGRASS, 53)
 };
 
 /* default combat tiles lbx is made by 58 tiles
@@ -425,6 +430,64 @@ public:
   u16 y() const override { return _y; }
 };
 
+class PropGfxEntry : public CombatView::GfxEntry
+{
+private:
+  static constexpr size_t MAX_SPRITES = 4;
+  static constexpr s32 MAX_OFFSET_X = 5;
+  static constexpr s32 MAX_OFFSET_Y = 4;
+  static constexpr size_t VARIANTS_COUNT = 5;
+  
+  struct PropGfx
+  {
+    SpriteInfo gfx;
+    ScreenCoord offset;
+  };
+  
+  TileProp _type;
+  std::array<PropGfx, MAX_SPRITES> sprites;
+  u16 _x, _y;
+  
+public:
+  PropGfxEntry(u16 x, u16 y, TileProp type, SpriteInfo info, size_t count)
+  : GfxEntry(priority_prop), _x(x), _y(y), _type(type)
+  {
+    for (size_t i = 0; i < MAX_SPRITES; ++i)
+      if (i < count)
+      {
+        sprites[i] = { info.relative(Util::randomIntUpTo(VARIANTS_COUNT)),
+          ScreenCoord(Util::randomIntInclusive(-MAX_OFFSET_X, MAX_OFFSET_X), Util::randomIntInclusive(-MAX_OFFSET_Y, MAX_OFFSET_Y)) };
+      }
+      else
+        sprites[i] = { LSI_PLACEHOLD };
+    
+    std::sort(begin(sprites), end(sprites), [](const PropGfx& p1, const PropGfx& p2) {
+      if (p1.gfx == LSI_PLACEHOLD) return false;
+      else if (p1.gfx == LSI_PLACEHOLD) return true;
+      else if (p1.offset.y < p2.offset.y) return true;
+      else if (p1.offset.x < p2.offset.x) return true;
+      else return false;
+    });
+  }
+  
+  void draw() const override
+  {
+    static const ScreenCoord TREE_OFFSET = ScreenCoord(-6, -13);
+    static const ScreenCoord ROCK_OFFSET = ScreenCoord(-8, -11);
+    
+    ScreenCoord coords = coordsForTile(_x, _y) + ScreenCoord(TILE_WIDTH/2, TILE_HEIGHT/2);
+
+    for (size_t i = 0; i < MAX_SPRITES; ++i)
+    {
+      if (sprites[i].gfx != LSI_PLACEHOLD)
+        Gfx::draw(sprites[i].gfx, coords + (_type == TileProp::ROCK ? ROCK_OFFSET : TREE_OFFSET) + sprites[i].offset);
+    }
+  }
+  
+  u16 x() const override { return _x; }
+  u16 y() const override { return _y; }
+};
+
 class StaticGfxEntry : public CombatView::GfxEntry
 {
 protected:
@@ -527,14 +590,16 @@ void CombatView::prepareGraphics()
   for (size_t i = 0; i < 8; ++i)
     combat->map()->tileAt(7, i)->type = 16+8+i;*/
   
-  this->combat->map()->placeSegment(4, 4, Dir::SOUTH_EAST, 3, combat::TileType::HILLS);
-  this->combat->map()->placeSegment(5, 6, Dir::SOUTH_WEST, 4, combat::TileType::HILLS);
-  this->combat->map()->placeSegment(3, 6, Dir::SOUTH_EAST, 3, combat::TileType::HILLS);
+  //this->combat->map()->placeSegment(4, 4, Dir::SOUTH_EAST, 3, combat::TileType::HILLS);
+  //this->combat->map()->placeSegment(5, 6, Dir::SOUTH_WEST, 4, combat::TileType::HILLS);
+  //this->combat->map()->placeSegment(3, 6, Dir::SOUTH_EAST, 3, combat::TileType::HILLS);
+  
+  this->combat->map()->functorOnRect(4, 4, 4, 4, [](CombatTile* tile) { tile->prop = Util::oneOfTwoChance() ? TileProp::TREE : TileProp::TREES; });
 
   //this->combat->map()->placeRect(6, 4, 3, 7, combat::TileType::ROUGH);
   
   
-  setEnvironment({CombatEnvironment::Type::MOUNTAIN, Plane::ARCANUS});
+  setEnvironment({CombatEnvironment::Type::DESERT, Plane::MYRRAN});
   
   //this->combat->map()->placeFireWall(2, 4);
   
@@ -618,6 +683,7 @@ void CombatView::prepareGraphics()
           addGfxEntry(new StaticGfxEntry(priority_roads, info, tile->x(), tile->y(), 0, TILE_HEIGHT/2, true));
         }
 
+        /* manage base tile graphics */
         if (tile->type == combat::TileType::ROUGH)
         {
           /* rough terrain graphics is computed through mask with the neighbours */
@@ -639,8 +705,15 @@ void CombatView::prepareGraphics()
             addGfxEntry(new TileGfxEntry(SpriteInfo(environmentLBX, Util::randomIntUpTo(4)), x, y));
           else
           /* ocean environment graphics is special as it has just these 4 tiles */
-            addGfxEntry(new TileGfxEntry(LSI(CMBTCITY, 109).relative(Util::randomIntUpTo(4)), x, y, Util::randomIntUpTo(4)));
+            addGfxEntry(new TileGfxEntry(SpriteInfo(water_tile).relative(Util::randomIntUpTo(4)), x, y, Util::randomIntUpTo(4)));
 
+        }
+        
+        if (tile->prop != TileProp::NONE)
+        {
+          size_t count = tile->prop == TileProp::TREES ? Util::randomIntInclusive(2, 3) : 1;
+          SpriteInfo info = tile->prop == TileProp::ROCK ? rock : tree;
+          addGfxEntry(new PropGfxEntry(tile->x(), tile->y(), tile->prop, info.lbx(environmentLBX) ,count));
         }
       }
     }

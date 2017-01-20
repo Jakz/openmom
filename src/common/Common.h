@@ -410,6 +410,9 @@ public:
   
   bool isValid() const { return lbx() < LBXID::COUNT; }
   
+  bool operator==(const SpriteInfo& other) const { return data == other.data; }
+  bool operator!=(const SpriteInfo& other) const { return data != other.data; }
+  
   const SpriteSheet* sheet() const;
 };
 

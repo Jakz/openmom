@@ -98,7 +98,7 @@ public:
   EventMechanics eventMechanics;
   CityMechanics cityMechanics;
   PlayerMechanics playerMechanics;
-  CombatMechanics combatMechanics;
+  combat::CombatMechanics combatMechanics;
   LairMechanics lairMechanics;
   World* const world;
   

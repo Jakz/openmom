@@ -9,6 +9,25 @@
 #include "CombatMechanics.h"
 
 #include "Combat.h"
+#include "CombatMap.h"
 #include "Util.h"
 
 using namespace combat;
+
+u16 CombatMechanics::movementCostForTile(const CombatTile* tile, Dir from)
+{
+  bool isLongMove = from == Dir::EAST || from == Dir::WEST || from == Dir::SOUTH || from == Dir::NORTH;
+  
+  if (tile->road != RoadType::NONE)
+    return isLongMove ? 2 : 1;
+  else if (tile->prop == TileProp::TREE)
+    return isLongMove ? 4 : 3;
+  else if (tile->prop == TileProp::ROCK)
+    return isLongMove ? 4 : 3;
+  else if (tile->prop == TileProp::TREES)
+    return isLongMove ? 5 : 4;
+  else if (tile->type == TileType::HILLS)
+    return isLongMove ? 5 : 4;
+  else
+    return isLongMove ? 3 : 2;
+}
