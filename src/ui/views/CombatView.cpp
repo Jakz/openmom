@@ -31,7 +31,7 @@ enum combat_lbx_statics
 /* default combat tiles lbx is made by 58 tiles
   4 default grass
   4 rough grass
-  24 default/rough grass joinings
+  12*2 default/rough grass joinings
   16 hills
   5 trees
   5 rocks
@@ -47,13 +47,18 @@ constexpr u16 OY = 8;
 constexpr int TILE_WIDTH = 32;
 constexpr int TILE_HEIGHT = 16;
 
+/* all graphical elements of the battlefield are kept in a list of sorted
+   items, this allows to draw things in correct order: negative priorities
+   are always drawn before all others, then positive priorities are drawn in
+   order from lowest to highest
+*/
 enum priority : priority_t
 {
-  //priority_fixed = -1,
-  
   priority_tile = -100,
   priority_fixed = -10,
   priority_roads = 5,
+  
+  priority_prop = 50,
   
   priority_hover_symbol = 20,
   
@@ -71,6 +76,32 @@ enum priority : priority_t
   priority_darkness_wall_behind = priority_stone_wall_behind - 1,
   priority_darkness_wall_front = priority_stone_wall_front + 1,
 };
+
+struct entry_comparator
+{
+  bool operator()(const std::unique_ptr<CombatView::GfxEntry>& e1, const std::unique_ptr<CombatView::GfxEntry>& e2) const
+  {
+    if (e1->priority() < 0 && e2->priority() >= 0)
+      return true;
+    else if (e1->priority() >= 0 && e2->priority() < 0)
+      return false;
+    else if (e1->priority() < 0 && e2->priority() < 0)
+      return e1->priority() < e2->priority();
+    else if (e1 == e2)
+      return false;
+    
+    if (e1->x() != e2->x())
+      return e1->x() < e2->x();
+    else if (e1->y() != e2->y())
+      return e1->y() < e2->y();
+    else
+    {
+      assert(e1->priority() != e2->priority());
+      return e1->priority() < e2->priority();
+    }
+  }
+};
+
 
 #pragma mark Tile Joins management
 
@@ -90,6 +121,9 @@ enum class DirJoin
   HORIZONTAL_NW_SE = NW | SE,
   HORIZONTAL_NE_SW = NE | SW,
   
+  DIAGONAL_NW_SE = NW | SE,
+  DIAGONAL_NE_SW = NE | SW,
+  
   CORNER_NW_NE = NW | NE,
   CORNER_NE_SE = NE | SE,
   CORNER_SE_SW = SE | SW,
@@ -105,6 +139,9 @@ enum class DirJoin
   ALL = 0xFF
 };
 
+/* these utility functions are used to work with enum class through standard
+   boolean operators
+*/
 inline DirJoin operator~(const DirJoin& lhs)
 {
   using utype_t = std::underlying_type<DirJoin>::type;
@@ -114,12 +151,6 @@ inline DirJoin operator~(const DirJoin& lhs)
 inline DirJoin operator&(const DirJoin& lhs, const DirJoin& rhs) {
   using utype_t = std::underlying_type<DirJoin>::type;
   return static_cast<DirJoin>(static_cast<utype_t>(lhs) & static_cast<utype_t>(rhs));
-}
-
-inline bool contains(const DirJoin& value, const DirJoin& mask)
-{
-  using utype_t = std::underlying_type<DirJoin>::type;
-  return (static_cast<utype_t>(value) & static_cast<utype_t>(mask)) == static_cast<utype_t>(mask);
 }
 
 inline DirJoin operator|(const DirJoin& lhs, const DirJoin& rhs) {
@@ -139,6 +170,9 @@ enum class MaskMode
   ORTHO
 };
 
+/* this utility functions computes the bitfield mask of neighbours, optionally
+   computing it only on orthogonal or diagonal directions
+*/
 DirJoin computeMask(MaskMode mode, const CombatTile* tile, std::function<bool(CombatTile*)> lambda)
 {
   static const Dir neighbours[] = { Dir::NORTH, Dir::NORTH_EAST, Dir::EAST, Dir::SOUTH_EAST, Dir::SOUTH, Dir::SOUTH_WEST, Dir::WEST, Dir::NORTH_WEST };
@@ -168,7 +202,7 @@ struct combat_env_hash
   }
 };
 
-std::unordered_map<CombatEnvironment, LBXID, combat_env_hash> environments = {
+static const std::unordered_map<CombatEnvironment, LBXID, combat_env_hash> environments = {
   { { CombatEnvironment::Type::GRASS, Plane::ARCANUS }, LBXID::CMBGRASS },
   { { CombatEnvironment::Type::GRASS, Plane::MYRRAN }, LBXID::CMBGRASC },
   { { CombatEnvironment::Type::DESERT, Plane::ARCANUS }, LBXID::CMBDESRT },
@@ -247,6 +281,27 @@ public:
   }
 } roughTerrainMap;
 
+#pragma mark Hills
+
+static const std::unordered_map<DirJoin, SpriteInfo, enum_hash> hillsMap = {
+  { DirJoin::SW, LSI(CMBGRASS, 32) },
+  { DirJoin::DIAGONAL_NE_SW, LSI(CMBGRASS, 33) },
+  { DirJoin::SE, LSI(CMBGRASS, 34) },
+  { DirJoin::DIAGONAL_NW_SE, LSI(CMBGRASS, 35) },
+  { DirJoin::CROSS, LSI(CMBGRASS, 36) },
+  { DirJoin::NE, LSI(CMBGRASS, 37) },
+  { DirJoin::NW, LSI(CMBGRASS, 38) },
+  { DirJoin::CORNER_SE_SW, LSI(CMBGRASS, 39) },
+  { DirJoin::HALF_SW, LSI(CMBGRASS, 40) },
+  { DirJoin::CORNER_SW_NW, LSI(CMBGRASS, 41) },
+  { DirJoin::HALF_SE, LSI(CMBGRASS, 42) },
+  { DirJoin::HALF_NW, LSI(CMBGRASS, 43) },
+  { DirJoin::CORNER_NE_SE, LSI(CMBGRASS, 44) },
+  { DirJoin::HALF_NE, LSI(CMBGRASS, 45) },
+  { DirJoin::CORNER_NW_NE, LSI(CMBGRASS, 46) },
+  { DirJoin::NONE, LSI(CMBGRASS, 47) }
+};
+
 #pragma mark Walls
 
 struct StoneWallGfxSpec
@@ -259,7 +314,7 @@ struct StoneWallGfxSpec
   StoneWallGfxSpec(SpriteInfo sprite, priority_t priority) : sprite(sprite), priority(priority), anchor(2,9) { }
 };
 
-std::unordered_map<WallType, StoneWallGfxSpec, enum_hash> stoneWall = {
+static const std::unordered_map<WallType, StoneWallGfxSpec, enum_hash> stoneWall = {
   { WallType::NORTH_CORNER, { LSI(CITYWALL, 0), priority_stone_wall_behind } },
   { WallType::NORTH_EAST_WALL1, { LSI(CITYWALL, 4), priority_stone_wall_behind } },
   { WallType::NORTH_EAST_WALL2, { LSI(CITYWALL, 5), priority_stone_wall_behind } },
@@ -286,7 +341,7 @@ struct NonSolidWallSpec
   NonSolidWallSpec(SpriteInfo sprite1, bool behind1, SpriteInfo sprite2, bool behind2) : sprite1(sprite1), behind1(behind1), sprite2(sprite2), behind2(behind2), anchor1(2,9), anchor2(2,11) { }
 };
 
-std::unordered_map<WallType, NonSolidWallSpec, enum_hash> nonSolidWall = {
+static const std::unordered_map<WallType, NonSolidWallSpec, enum_hash> nonSolidWall = {
   { WallType::NORTH_CORNER, { LSI(CITYWALL, 36), true } },
   { WallType::NORTH_EAST_WALL1, { LSI(CITYWALL, 40), true } },
   { WallType::NORTH_EAST_WALL2, { LSI(CITYWALL, 41), true } },
@@ -310,7 +365,7 @@ struct RoadGfxSpec
 };
 
 
-std::unordered_map<DirJoin, RoadGfxSpec, enum_hash> roadGraphics = {
+static const std::unordered_map<DirJoin, RoadGfxSpec, enum_hash> roadGraphics = {
   { DirJoin::HORIZONTAL_NW_SE, { { LSI(CMBTCITY, 69), LSI(CMBTCITY, 76) }, { LSI(CMBTCITY, 83), LSI(CMBTCITY, 90) } } },
   { DirJoin::HORIZONTAL_NE_SW, { { LSI(CMBTCITY, 70), LSI(CMBTCITY, 77) }, { LSI(CMBTCITY, 84), LSI(CMBTCITY, 91) } } },
   { DirJoin::CORNER_NW_NE, { { LSI(CMBTCITY, 71), LSI(CMBTCITY, 78) }, { LSI(CMBTCITY, 85), LSI(CMBTCITY, 92) } } },
@@ -323,32 +378,6 @@ std::unordered_map<DirJoin, RoadGfxSpec, enum_hash> roadGraphics = {
 #pragma mark Rivers
 
 ScreenCoord coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
-
-struct entry_comparator
-{
-  bool operator()(const std::unique_ptr<CombatView::GfxEntry>& e1, const std::unique_ptr<CombatView::GfxEntry>& e2) const
-  {
-    if (e1->priority() < 0 && e2->priority() >= 0)
-      return true;
-    else if (e1->priority() >= 0 && e2->priority() < 0)
-      return false;
-    else if (e1->priority() < 0 && e2->priority() < 0)
-      return e1->priority() < e2->priority();
-    else if (e1 == e2)
-      return false;
-    
-    if (e1->x() != e2->x())
-      return e1->x() < e2->x();
-    else if (e1->y() != e2->y())
-      return e1->y() < e2->y();
-    else
-    {
-      assert(e1->priority() != e2->priority());
-      return e1->priority() < e2->priority();
-    }
-  }
-};
-
 
 class UnitGfxEntry : public CombatView::GfxEntry
 {
@@ -380,14 +409,15 @@ class TileGfxEntry : public CombatView::GfxEntry
 private:
   SpriteInfo info;
   u16 _x, _y;
+  u16 _animOffset;
   
 public:
-  TileGfxEntry(SpriteInfo info, u16 x, u16 y) : CombatView::GfxEntry(priority_tile), info(info), _x(x), _y(y) { }
+  TileGfxEntry(SpriteInfo info, u16 x, u16 y, u16 animOffset = 0) : CombatView::GfxEntry(priority_tile), info(info), _x(x), _y(y), _animOffset(animOffset) { }
   
   void draw() const override
   {
     ScreenCoord coords = coordsForTile(_x, _y);
-    Gfx::drawAnimated(info, coords);
+    Gfx::drawAnimated(info, coords, _animOffset);
     //Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
   }
   
@@ -442,7 +472,7 @@ private:
   
   const CombatTile* const tile;
 public:
-  StoneWallGfxEntry(const CombatTile* tile, HouseType houseType) : StoneWallGfxEntry(stoneWall[tile->stoneWall], tile, houseType) { }
+  StoneWallGfxEntry(const CombatTile* tile, HouseType houseType) : StoneWallGfxEntry(stoneWall.find(tile->stoneWall)->second, tile, houseType) { }
 
   StoneWallGfxEntry(const StoneWallGfxSpec& spec, const CombatTile* tile, HouseType houseType) :
   StaticGfxEntry(spec.priority, spec.sprite.relative(offsetForHouseType(houseType)), tile->x(), tile->y(), spec.anchor.x, spec.anchor.y), tile(tile) { }
@@ -497,8 +527,38 @@ void CombatView::prepareGraphics()
   for (size_t i = 0; i < 8; ++i)
     combat->map()->tileAt(7, i)->type = 16+8+i;*/
   
-  this->combat->map()->placeRect(4, 4, 7, 3, combat::TileType::ROUGH);
-  this->combat->map()->placeRect(6, 4, 3, 7, combat::TileType::ROUGH);
+  this->combat->map()->placeSegment(4, 4, Dir::SOUTH_EAST, 3, combat::TileType::HILLS);
+  this->combat->map()->placeSegment(5, 6, Dir::SOUTH_WEST, 4, combat::TileType::HILLS);
+  this->combat->map()->placeSegment(3, 6, Dir::SOUTH_EAST, 3, combat::TileType::HILLS);
+
+  //this->combat->map()->placeRect(6, 4, 3, 7, combat::TileType::ROUGH);
+  
+  
+  setEnvironment({CombatEnvironment::Type::MOUNTAIN, Plane::ARCANUS});
+  
+  //this->combat->map()->placeFireWall(2, 4);
+  
+  /*this->combat->map()->placeCityRoadExit(Dir::SOUTH_EAST);
+  this->combat->map()->placeCityRoadExit(Dir::SOUTH_WEST);
+  this->combat->map()->placeCityRoadExit(Dir::NORTH_EAST);*/
+  
+  //this->combat->map()->placeDarknessWall(2, 4);
+  //this->combat->map()->placeStoneWall(2, 4);
+  
+  //addGfxEntry(dummyUnit(2, 4));
+  //addGfxEntry(dummyUnit(3, 7));
+  
+  
+  //for (CombatUnit* unit : combat->getUnits())
+  //  addGfxEntry(new UnitGfxEntry(unit));
+  
+  /*addMainBuilding(LSI(CMBTCITY, 17));
+   
+   addHouse(LSI(CMBTCITY, 2), 2, 7);
+   addHouse(LSI(CMBTCITY, 3), 3, 6);
+   addHouse(LSI(CMBTCITY, 4), 5, 6); */
+  
+  //addRoads();
 
   
   for (u16 y = 0; y < H; ++y)
@@ -518,7 +578,7 @@ void CombatView::prepareGraphics()
         /* if there is fire wall generate graphics */
         if (tile->fireWall != WallType::NO_WALL)
         {
-          const auto& spec = nonSolidWall[tile->fireWall];
+          const auto& spec = nonSolidWall.find(tile->fireWall)->second;
           addGfxEntry(new NonSolidWallGfxEntry(tile, spec.sprite1, spec.behind1 ? priority_fire_wall_behind : priority_fire_wall_front, spec.anchor1));
 
           if (spec.sprite2.isValid())
@@ -530,7 +590,7 @@ void CombatView::prepareGraphics()
         /* if there is darkness wall generate graphic */
         if (tile->darknessWall != WallType::NO_WALL)
         {
-          const auto& spec = nonSolidWall[tile->darknessWall];
+          const auto& spec = nonSolidWall.find(tile->darknessWall)->second;
           addGfxEntry(new NonSolidWallGfxEntry(tile, spec.sprite1.relative(14), spec.behind1 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor1));
 
           if (spec.sprite2.isValid())
@@ -542,6 +602,7 @@ void CombatView::prepareGraphics()
         /* if there is road calculate tile and generate graphics */
         if (tile->road != RoadType::NONE)
         {
+          /* mask is computed only on diagonal directions as roads can't go orthogonally */
           DirJoin mask = computeMask(MaskMode::DIAGONAL, tile, [](const CombatTile* tile) {return tile && tile->road != RoadType::NONE; });
           
           /* since there is no graphics for road deadends we adjust mask to be horizontal */
@@ -556,15 +617,31 @@ void CombatView::prepareGraphics()
           SpriteInfo info = (tile->road == RoadType::NORMAL ? it->second.normal : it->second.enchanted)[Util::oneOfTwoChance()];
           addGfxEntry(new StaticGfxEntry(priority_roads, info, tile->x(), tile->y(), 0, TILE_HEIGHT/2, true));
         }
-        
+
         if (tile->type == combat::TileType::ROUGH)
         {
+          /* rough terrain graphics is computed through mask with the neighbours */
           DirJoin mask = computeMask(MaskMode::ALL, tile, [](const CombatTile* tile) { return !tile || tile->type == combat::TileType::ROUGH; });
           SpriteInfo info = roughTerrainMap[mask];
           addGfxEntry(new TileGfxEntry(info.lbx(environmentLBX), x, y));
         }
+        else if (tile->type == combat::TileType::HILLS)
+        {
+          /* hills terrain graphics is computed through mask with the neighbours */
+          DirJoin mask = computeMask(MaskMode::DIAGONAL, tile, [](const CombatTile* tile) { return !tile || tile->type == combat::TileType::HILLS; });
+          SpriteInfo info = hillsMap.find(mask)->second;
+          addGfxEntry(new TileGfxEntry(info.lbx(environmentLBX), x, y));
+        }
         else
-          addGfxEntry(new TileGfxEntry(SpriteInfo(environmentLBX, Util::randomIntUpTo(4)), x, y));
+        {
+          /* standard environment has 4 possible tiles for normal ground */
+          if (environment.type != CombatEnvironment::Type::OCEAN)
+            addGfxEntry(new TileGfxEntry(SpriteInfo(environmentLBX, Util::randomIntUpTo(4)), x, y));
+          else
+          /* ocean environment graphics is special as it has just these 4 tiles */
+            addGfxEntry(new TileGfxEntry(LSI(CMBTCITY, 109).relative(Util::randomIntUpTo(4)), x, y, Util::randomIntUpTo(4)));
+
+        }
       }
     }
 }
@@ -572,7 +649,7 @@ void CombatView::prepareGraphics()
 void CombatView::setEnvironment(combat::CombatEnvironment env)
 {
   this->environment = env;
-  this->environmentLBX = environments[env];
+  this->environmentLBX = environments.find(env)->second;
 }
 
 void CombatView::activate()
@@ -582,35 +659,8 @@ void CombatView::activate()
   
   this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin(), &g->combatMechanics);
   
-  setEnvironment({CombatEnvironment::Type::DESERT, Plane::ARCANUS});
-  
-  //this->combat->map()->placeFireWall(2, 4);
-  //this->combat->map()->placeCityRoadExit(Dir::SOUTH_EAST);
-  //this->combat->map()->placeCityRoadExit(Dir::SOUTH_WEST);
-  //this->combat->map()->placeCityRoadExit(Dir::NORTH_EAST);
-
-  //this->combat->map()->placeDarknessWall(2, 4);
-  //this->combat->map()->placeStoneWall(2, 4);
-
-  this->entriesDirty = true;
-  
-  //addGfxEntry(dummyUnit(2, 4));
-  //addGfxEntry(dummyUnit(3, 7));
-
-  
-  //for (CombatUnit* unit : combat->getUnits())
-  //  addGfxEntry(new UnitGfxEntry(unit));
-
-  /*addMainBuilding(LSI(CMBTCITY, 17));
-
-  addHouse(LSI(CMBTCITY, 2), 2, 7);
-  addHouse(LSI(CMBTCITY, 3), 3, 6);
-  addHouse(LSI(CMBTCITY, 4), 5, 6); */
-  
-  //addRoads();
-
   prepareGraphics();
-
+  this->entriesDirty = true;
 }
 
 void CombatView::deactivate()

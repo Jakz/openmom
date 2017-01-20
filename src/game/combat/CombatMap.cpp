@@ -133,6 +133,11 @@ void CombatMap::placeRect(u16 x, u16 y, u16 w, u16 h, TileType type)
   functorOnRect(x, y, w, h, [type](CombatTile* tile) { tile->type = type; });
 }
 
+void CombatMap::placeSegment(u16 x, u16 y, Dir dir, u16 length, TileType type)
+{
+  functorOnSegment(x, y, dir, length, [type](CombatTile* tile) { tile->type = type; });
+}
+
 void CombatMap::placeStoneWall(u16 x, u16 y)
 {
   placeWall(x, y, [](CombatTile* tile, WallType type) { tile->stoneWall = type; });

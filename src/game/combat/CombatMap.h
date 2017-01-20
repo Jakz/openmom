@@ -39,6 +39,14 @@ namespace combat
     HILLS
   };
   
+  enum class TileProp
+  {
+    NONE,
+    ROCK,
+    TREE,
+    TREES
+  };
+  
   using TileSubType = u16;
   
   struct CombatEnvironment
@@ -48,7 +56,8 @@ namespace combat
       GRASS,
       DESERT,
       MOUNTAIN,
-      TUNDRA
+      TUNDRA,
+      OCEAN
     };
     
     Type type;
@@ -68,6 +77,7 @@ namespace combat
     CombatCoord coords;
 
     TileType type;
+    TileProp prop;
     
     WallType stoneWall;
     WallType fireWall;
@@ -77,7 +87,7 @@ namespace combat
     bool isStoneWallDestroyed;
 
     CombatTile() = default;
-    CombatTile(CombatMap* map, s8 x, s8 y) : map(map), type(TileType::GRASS), coords(x,y),
+    CombatTile(CombatMap* map, s8 x, s8 y) : map(map), type(TileType::GRASS), prop(TileProp::NONE), coords(x,y),
     stoneWall(WallType::NO_WALL), fireWall(WallType::NO_WALL), darknessWall(WallType::NO_WALL), road(RoadType::NONE), isStoneWallDestroyed(false) { }
     
     CombatTile* neighbour(Dir facing) const;
@@ -115,6 +125,7 @@ namespace combat
     
     void placeCityRoadExit(Dir direction);
     
+    void placeSegment(u16 x, u16 y, Dir dir, u16 length, TileType type);
     void placeRect(u16 x, u16 y, u16 w, u16 h, TileType type);
     
     CombatTile* placeRiverSegment(u16 x, u16 y, Dir dir, u16 length);
