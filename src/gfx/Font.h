@@ -153,7 +153,7 @@ class FontFaces
 public:
   class Tiny {
   public:
-    const static FontSpriteSheet *WHITE, *WHITE_STROKE, *YELLOW_STROKE, *RED_STROKE, *BROWN;
+    const static FontSpriteSheet *WHITE, *WHITE_STROKE, *YELLOW_STROKE, *RED_STROKE, *BROWN, *GOLD_COMBAT;
   };
   
   class Small {

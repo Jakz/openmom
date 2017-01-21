@@ -31,6 +31,28 @@ void UnitDraw::unbindPlayerColorPalette()
   Gfx::unbindColorMap();
 }
 
+Color UnitDraw::colorForHealth(float percent)
+{
+  static const Color greenColor = Color(0,172,0);
+  static const Color yellowColor = Color(238,210,0);
+  static const Color redColor = Color(172,0,0);
+  
+  if (percent > 0.8f)
+    return greenColor;
+  else if (percent > 0.5)
+  {
+    float dx = (0.8f - percent) / 0.3f;
+    return greenColor.blend(yellowColor, dx);
+  }
+  else if (percent > 0.2f)
+  {
+    float dx = (0.5f - percent) / 0.3f;
+    return yellowColor.blend(redColor, dx);
+  }
+  else
+    return redColor;
+}
+
 void UnitDraw::drawStatic(const Army *army, s16 x, s16 y, bool forceDraw)
 {
   if (forceDraw || (army != LocalGame::i->currentPlayer()->getSelectedArmy()) || (Gfx::fticks % 6) < 3)

@@ -572,6 +572,11 @@ CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1)), entri
   buttons.resize(bt_count);
   
   buttons[bt_spell] = Button::buildTristate("spell", 144, 168, LSI(COMPIX, 1), LSI(COMPIX, 23));
+  buttons[bt_wait] = Button::buildTristate("wait", 144+26, 168, LSI(COMPIX, 2), LSI(COMPIX, 24));
+  buttons[bt_info] = Button::buildTristate("info", 144, 168+10, LSI(COMPIX, 20), LSI(COMPIX, 25));
+  buttons[bt_auto] = Button::buildTristate("auto", 144+26, 168+10, LSI(COMPIX, 4), LSI(COMPIX, 26));
+  buttons[bt_flee] = Button::buildTristate("free", 144, 168+20, LSI(COMPIX, 21), LSI(COMPIX, 27));
+  buttons[bt_done] = Button::buildTristate("done", 144+26, 168+20, LSI(COMPIX, 3), LSI(COMPIX, 28));
 }
 
 void CombatView::prepareGraphics()
@@ -593,7 +598,7 @@ void CombatView::prepareGraphics()
   //this->combat->map()->placeRect(6, 4, 3, 7, combat::TileType::ROUGH);
   
   
-  setEnvironment({CombatEnvironment::Type::OCEAN, Plane::MYRRAN});
+  setEnvironment({CombatEnvironment::Type::GRASS, Plane::ARCANUS});
   
   //this->combat->map()->placeFireWall(2, 4);
   
@@ -846,6 +851,8 @@ void CombatView::draw()
     Gfx.draw(TextureIDs.get(cast.spell), pp[0]+pp[2]++*17, pp[1]);
   }
   */
+  
+  drawUnitProps(nullptr, false);
 }
 
 UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
@@ -860,7 +867,44 @@ UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
 
 void CombatView::drawUnitProps(CombatUnit *unit, bool onTheLeft)
 {
-  const ScreenCoord coords = onTheLeft ? ScreenCoord(235, 5) : ScreenCoord(5, 5);
+  const int DW = 69, DH = 40;
+  const int RX = WIDTH/2;//WIDTH - DW - 1;
+  const int RY = HEIGHT/2;//5;
+  
+  const Color darkBorder = Color(62,82,94);
+  const Color brightBorder = Color(88,114,140);
+  const Color bgColor = Color(0,0,0,80);
+  
+  const Color greenColor = Color(0,172,0);
+  const Color yellowColor = Color(238,210,0);
+  const Color redColor = Color(172,0,0);
+  
+  /* draw props panel */
+  Gfx::fillRect(RX+1, RY+1, DW-2, DH-2, bgColor);
+  Gfx::drawLine(brightBorder, RX, RY, RX, RY+DH);
+  Gfx::drawLine(brightBorder, RX, RY, RX+DW-1, RY);
+  Gfx::drawLine(darkBorder, RX+DW-1, RY, RX+DW-1, RY+DH);
+  Gfx::drawLine(darkBorder, RX+1, RY+DH-1, RX+DW-1, RY+DH-1);
+
+  std::string unitName = "Phantom Warriors";
+  
+  // TODO: on Phantom Warriors example it's aligned by 1 pixel to the left, maybe it's an original rounding issue
+  Fonts::drawString(unitName, FontFaces::Tiny::GOLD_COMBAT, RX + DW/2 - 1, RY+5 - 4, ALIGN_CENTER);
+  
+  /* draw hits */
+  const int BAR_LENGTH = 20;
+  
+  static float health = 1.0f;
+  
+  int currentBarLength = health*BAR_LENGTH;
+  Fonts::drawString("Hits", FontFaces::Tiny::GOLD_COMBAT, RX + 2, RY+DH - 9, ALIGN_LEFT);
+  Gfx::drawLine(UnitDraw::colorForHealth(health), RX + 19, RY + DH - 6, RX + 19 + currentBarLength , RY + DH - 6);
+  Gfx::drawLine({0,0,0,120}, RX + 19 + currentBarLength, RY + DH - 6, RX + 19 + 20, RY + DH - 6);
+  Gfx::drawLine({0,0,0}, RX + 19, RY + DH - 5, RX + 19 + BAR_LENGTH , RY + DH - 5);
+
+  health -= 0.005;
+  if (health < 0.0f)
+    health = 1.0f;
   
   /*
   Gfx.canvas.fill(0xA0101010);

@@ -46,8 +46,55 @@ void Gfx::deinit()
 
 void Gfx::fillRect(u16 x, u16 y, u16 w, u16 h, Color color)
 {
-  const SDL_Rect rect { x, y, w, h };
-  SDL_FillRect(canvas->data, &rect, color);
+  if (color.a == 0xFF)
+  {
+    const SDL_Rect rect { x, y, w, h };
+    SDL_FillRect(canvas->data, &rect, color);
+  }
+  else
+  {
+    for (size_t i = 0; i < w; ++i)
+      for (size_t j = 0; j < h; ++j)
+      {
+        activeBuffer->set(x+i, y+j, Color(activeBuffer->at(x+i, y+j)).blend(color));
+      }
+  }
+}
+
+void Gfx::drawLine(Color color, u16 x1, u16 y1, u16 x2, u16 y2)
+{
+  lock(activeBuffer);
+  
+  u8 alpha = color.a;
+  
+  if (alpha == 255)
+  {
+    if (y1 == y2)
+    {
+      for (u16 x = x1; x < x2; ++x)
+        activeBuffer->set(x, y1, color);
+    }
+    else if (x1 == x2)
+    {
+      for (u16 y = y1; y < y2; ++y)
+        activeBuffer->set(x1, y, color);
+    }
+  }
+  else
+  {
+    if (y1 == y2)
+    {
+      for (u16 x = x1; x < x2; ++x)
+        activeBuffer->set(x, y1, Color(activeBuffer->at(x, y1)).blend(color, alpha));
+    }
+    else if (x1 == x2)
+    {
+      for (u16 y = y1; y < y2; ++y)
+        activeBuffer->set(x1, y, Color(activeBuffer->at(x1, y)).blend(color, alpha));
+    }
+  }
+  
+  unlock(activeBuffer);
 }
 
 void Gfx::rect(u16 x, u16 y, u16 w, u16 h, Color color)
@@ -187,42 +234,6 @@ void Gfx::drawPixel(Color color, u16 x, u16 y)
 {
   lock(activeBuffer);
   activeBuffer->set(x, y, color);
-  unlock(activeBuffer);
-}
-
-void Gfx::drawLine(Color color, u16 x1, u16 y1, u16 x2, u16 y2)
-{
-  lock(activeBuffer);
-  
-  u8 alpha = color.a;
-  
-  if (alpha == 255)
-  {
-    if (y1 == y2)
-    {
-      for (u16 x = x1; x < x2; ++x)
-        activeBuffer->set(x, y1, color);
-    }
-    else if (x1 == x2)
-    {
-      for (u16 y = y1; y < y2; ++y)
-        activeBuffer->set(x1, y, color);
-    }
-  }
-  else
-  {
-    if (y1 == y2)
-    {
-      for (u16 x = x1; x < x2; ++x)
-        activeBuffer->set(x, y1, Color(activeBuffer->at(x, y1)).blend(color, alpha));
-    }
-    else if (x1 == x2)
-    {
-      for (u16 y = y1; y < y2; ++y)
-        activeBuffer->set(x1, y, Color(activeBuffer->at(x1, y)).blend(color, alpha));
-    }
-  }
-  
   unlock(activeBuffer);
 }
 

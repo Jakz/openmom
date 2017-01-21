@@ -115,6 +115,14 @@ struct Color
   Color() = default;
   Color(u8 r, u8 g, u8 b, u8 a = 0xFF) : b(b), g(g), r(r), a(a) { }
   Color(u32 data) : data(data) { }
+  
+  Color blend(Color dst) const { return blend(dst, dst.a); }
+  
+  Color blend(Color dst, float dstAlpha) const {
+    float da = dstAlpha, sa = 1.0f - dstAlpha;
+    return Color(r*sa + dst.r*da, g*sa + dst.g*da, b*sa + dst.b*da);
+  }
+
   Color blend(Color dst, u8 dstAlpha) const {
     float sa = (255 - dstAlpha) / 255.0f;
     float da = dstAlpha / 255.0f;

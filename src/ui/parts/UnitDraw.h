@@ -39,6 +39,8 @@ public:
 	static void drawHeroPortrait(const Hero* unit, s16 x, s16 y);
 
   static void drawUnitIsoCombat(const Unit* unit, s16 x, s16 y, Dir facing, CombatAction caction);
+  
+  static Color colorForHealth(float percent);
 
 };
 

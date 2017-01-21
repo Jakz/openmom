@@ -43,6 +43,11 @@ private:
   enum
   {
     bt_spell,
+    bt_wait,
+    bt_info,
+    bt_auto,
+    bt_flee,
+    bt_done,
     
     bt_count
   };
