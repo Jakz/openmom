@@ -73,7 +73,6 @@ enum class TextureID : u16
   /* altezza max help: 200 + 23 pezzo di chiusura da sovrapporre */
   HELP_BACKDROP,
   
-  COMBAT_BACKDROP,
   COMBAT_BUTTONS,
     
   COMBAT_GRASS_ARCANUS,

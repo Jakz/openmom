@@ -72,7 +72,6 @@ const Texture Texture::textures[] =
   /* altezza max help: 200 + 23 pezzo di chiusura da sovrapporre */
   Texture(TextureID::HELP_BACKDROP,"static/help-backdrop.png",1,1,217,223),
   
-  Texture(TextureID::COMBAT_BACKDROP,"static/backdrop-combat.png",1,1,402,36),
   Texture(TextureID::COMBAT_BUTTONS,"combat/combat-buttons.png",3,6,26,10),
     
   Texture(TextureID::COMBAT_GRASS_ARCANUS,"combat/arcanus/grass.png",6,8,30,16),

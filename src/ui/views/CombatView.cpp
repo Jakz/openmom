@@ -28,7 +28,8 @@ enum combat_lbx_statics
   roads_static = LBXI(CMBTCITY, 0),
   flying_fortess = LBXI(CMBTCITY, 113),
   
-  water_tile = LBXI(CMBTCITY, 109),
+  water_tile_arcanus = LBXI(CMBTCITY, 109),
+  water_tile_myrran = LBXI(RESOURCE, 71),
   
   tree = LBXI(CMBGRASS, 48),
   rock = LBXI(CMBGRASS, 53)
@@ -42,13 +43,6 @@ enum combat_lbx_statics
   5 trees
   5 rocks
 */
-
-
-
-constexpr u16 W = Combat::W;
-constexpr u16 H = Combat::H;
-constexpr u16 OX = 0;
-constexpr u16 OY = 8;
 
 /* all graphical elements of the battlefield are kept in a list of sorted
    items, this allows to draw things in correct order: negative priorities
@@ -214,6 +208,9 @@ static const std::unordered_map<CombatEnvironment, LBXID, combat_env_hash> envir
   { { CombatEnvironment::Type::MOUNTAIN, Plane::MYRRAN }, LBXID::CMBMOUNC },
   { { CombatEnvironment::Type::TUNDRA, Plane::ARCANUS }, LBXID::CMBTUNDR },
   { { CombatEnvironment::Type::TUNDRA, Plane::MYRRAN }, LBXID::CMBTUNDC },
+  /* placeholders, not used */
+  { { CombatEnvironment::Type::OCEAN, Plane::ARCANUS }, LBXID::CMBGRASS },
+  { { CombatEnvironment::Type::OCEAN, Plane::MYRRAN }, LBXID::CMBGRASC }
 };
 
 #pragma mark Rough Terrain
@@ -379,8 +376,6 @@ static const std::unordered_map<DirJoin, RoadGfxSpec, enum_hash> roadGraphics = 
 };
 
 #pragma mark Rivers
-
-ScreenCoord CombatView::coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
 
 class UnitGfxEntry : public CombatView::GfxEntry
 {
@@ -574,7 +569,9 @@ public:
 
 CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1)), entriesDirty(true)
 {
+  buttons.resize(bt_count);
   
+  buttons[bt_spell] = Button::buildTristate("spell", 144, 168, LSI(COMPIX, 1), LSI(COMPIX, 23));
 }
 
 void CombatView::prepareGraphics()
@@ -592,12 +589,11 @@ void CombatView::prepareGraphics()
   //this->combat->map()->placeSegment(5, 6, Dir::SOUTH_WEST, 4, combat::TileType::HILLS);
   //this->combat->map()->placeSegment(3, 6, Dir::SOUTH_EAST, 3, combat::TileType::HILLS);
   
-  this->combat->map()->functorOnRect(4, 4, 4, 4, [](CombatTile* tile) { tile->prop = Util::oneOfTwoChance() ? TileProp::TREE : TileProp::TREES; });
 
   //this->combat->map()->placeRect(6, 4, 3, 7, combat::TileType::ROUGH);
   
   
-  setEnvironment({CombatEnvironment::Type::DESERT, Plane::MYRRAN});
+  setEnvironment({CombatEnvironment::Type::OCEAN, Plane::MYRRAN});
   
   //this->combat->map()->placeFireWall(2, 4);
   
@@ -605,7 +601,7 @@ void CombatView::prepareGraphics()
   this->combat->map()->placeCityRoadExit(Dir::SOUTH_WEST);
   this->combat->map()->placeCityRoadExit(Dir::NORTH_EAST);*/
   
-  //this->combat->map()->placeDarknessWall(2, 4);
+  this->combat->map()->placeDarknessWall(2, 4);
   //this->combat->map()->placeStoneWall(2, 4);
   
   //addGfxEntry(dummyUnit(2, 4));
@@ -624,8 +620,8 @@ void CombatView::prepareGraphics()
   //addRoads();
 
   
-  for (u16 y = 0; y < H; ++y)
-    for (u16 x = 0; x < W; ++x)
+  for (u16 y = 0; y < Combat::H; ++y)
+    for (u16 x = 0; x < Combat::W; ++x)
     {
       if (x != 9 || y%2 == 0)
       {
@@ -703,7 +699,7 @@ void CombatView::prepareGraphics()
             addGfxEntry(new TileGfxEntry(SpriteInfo(environmentLBX, Util::randomIntUpTo(4)), x, y));
           else
           /* ocean environment graphics is special as it has just these 4 tiles */
-            addGfxEntry(new TileGfxEntry(SpriteInfo(water_tile).relative(Util::randomIntUpTo(4)), x, y, Util::randomIntUpTo(4)));
+            addGfxEntry(new TileGfxEntry(SpriteInfo(environment.plane == Plane::ARCANUS ? water_tile_arcanus : water_tile_myrran).relative(Util::randomIntUpTo(4)), x, y, Util::randomIntUpTo(4)));
 
         }
         
@@ -828,8 +824,8 @@ void CombatView::draw()
     Fonts::drawString(Fonts::format("%u,%u", hover.x, hover.y), FontFaces::Small::WHITE, 5, 5, ALIGN_LEFT);
   }
 
-  Gfx::drawClipped(TSI(COMBAT_BACKDROP,0,0), 0, 200-36, 0, 0, 320, 36);
-
+  Gfx::draw(LSI(BACKGRND, 3), 0, 200-36);
+  
   /*
   if (subState == SubState.SPELL_CAST)
   {
@@ -954,11 +950,22 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
    */
 }
 
+constexpr int OX = 0;//-16 -32;
+constexpr int OY = 8;//0 - 16;
 
-void CombatView::mouseMoved(u16 x, u16 y, MouseButton b)
+ScreenCoord CombatView::coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
+
+Coord CombatView::tileForCoords(u16 x, u16 y)
 {
+  //const int TH = CombatView::TILE_HEIGHT;
+  //const int TW = CombatView::TILE_WIDTH;
+  const int H = Combat::H;
+  const int W = Combat::W;
+  
   int th = 16;
   int tw = 32;
+  
+  Coord hover = Coord(-1,-1);
   
   if (x >= OX && x < tw*W + OX && y > OY && y < th*10 + OY)
   {
@@ -971,7 +978,7 @@ void CombatView::mouseMoved(u16 x, u16 y, MouseButton b)
     int my = cy % (th/2);
     
     hover = Coord(rx/2, ry);
-
+    
     if ((rx+ry)%2 == 0)
     {
       if (mx <= ratio*(th/2 - my))
@@ -1001,4 +1008,12 @@ void CombatView::mouseMoved(u16 x, u16 y, MouseButton b)
     
     //printf("HOVER: %d %d\n", hover.x, hover.y);
   }
+  
+  return hover;
+}
+
+
+void CombatView::mouseMoved(u16 x, u16 y, MouseButton b)
+{
+  hover = tileForCoords(x, y);
 }

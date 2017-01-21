@@ -42,14 +42,9 @@ public:
 private:
   enum
   {
-    OPTIONS_OK,
-    OPTIONS_CANCEL,
-    OPTIONS_DIFFICULTY,
-    OPTIONS_OPPONENTS,
-    OPTIONS_LAND_SIZE,
-    OPTIONS_MAGIC,
+    bt_spell,
     
-    BUTTON_COUNT
+    bt_count
   };
   
   enum class SubState
@@ -103,6 +98,9 @@ public:
   
   
   static ScreenCoord coordsForTile(u16 x, u16 y);
+  static Coord tileForCoords(u16 x, u16 y);
+
+  
   constexpr static int TILE_WIDTH = 32;
   constexpr static int TILE_HEIGHT = 16;
 
