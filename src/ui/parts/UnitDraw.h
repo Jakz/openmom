@@ -15,6 +15,7 @@ class Army;
 class Unit;
 class UnitSpec;
 class Hero;
+class Level;
 
 enum class Dir;
 
@@ -39,6 +40,8 @@ public:
 	static void drawHeroPortrait(const Hero* unit, s16 x, s16 y);
 
   static void drawUnitIsoCombat(const Unit* unit, s16 x, s16 y, Dir facing, CombatAction caction);
+  
+  static void drawUnitLevel(const Level* level, u16 x, u16 y, u16 spacing, bool shadowed);
   
   static Color colorForHealth(float percent);
 

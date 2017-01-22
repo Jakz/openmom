@@ -888,6 +888,10 @@ void CombatView::drawUnitProps(const CombatUnit* unit, bool onTheLeft)
   MeleeInfo melee = MeleeInfo(MeleeType::NORMAL, 9);
   RangedInfo ranged = RangedInfo(Ranged::ARROW, 8, 8);
   MovementInfo movement = MovementInfo(MovementBaseType::WALKING, 2);
+  s16 defense = 2;
+  s16 resistance = 8;
+  const Level* level = Data::experienceLevelsForHeroes()[5].get();
+
 
   // TODO: on Phantom Warriors example it's aligned by 1 pixel to the left, maybe it's an original rounding issue
   Fonts::drawString(unitName, FontFaces::Tiny::GOLD_COMBAT, RX + DW/2 - 1, RY+5 - 4, ALIGN_CENTER);
@@ -900,21 +904,42 @@ void CombatView::drawUnitProps(const CombatUnit* unit, bool onTheLeft)
   Gfx::drawLine({0,0,0,120}, RX + 19 + currentBarLength, RY + DH - 6, RX + 19 + 20, RY + DH - 6);
   Gfx::drawLine({0,0,0}, RX + 19, RY + DH - 5, RX + 19 + BAR_LENGTH , RY + DH - 5);
   
+  const int propy[3] = {RY+9, RY+16, RY+23};
+  
   /* draw props */
   /* melee */
-  Fonts::drawString(Fonts::format("%d", melee.strength), FontFaces::Tiny::GOLD_COMBAT, RX + 10, RY + 9, ALIGN_RIGHT);
-  Gfx::draw(GfxData::propGfx()[melee.type].blackShadow, RX + 11, RY + 8);
+  Fonts::drawString(Fonts::format("%d", melee.strength), FontFaces::Tiny::GOLD_COMBAT, RX + 10, propy[0], ALIGN_RIGHT);
+  Gfx::draw(GfxData::propGfx()[melee.type].blackShadow, RX + 11, propy[0]-1);
   
   /* ranged */
   if (ranged.isPresent())
   {
-    Fonts::drawString(Fonts::format("%d", ranged.strength), FontFaces::Tiny::GOLD_COMBAT, RX + 10, RY + 16, ALIGN_RIGHT);
-    Gfx::draw(GfxData::propGfx()[ranged.type].blackShadow, RX + 11, RY + 15);
+    Fonts::drawString(Fonts::format("%d", ranged.strength), FontFaces::Tiny::GOLD_COMBAT, RX + 10, propy[1], ALIGN_RIGHT);
+    Gfx::draw(GfxData::propGfx()[ranged.type].blackShadow, RX + 11, propy[1]-1);
+    
+    if (ranged.ammo != 0)
+    {
+      Fonts::drawString(Fonts::format("%d", ranged.ammo), FontFaces::Tiny::GOLD_COMBAT, RX + 49, propy[2], ALIGN_RIGHT);
+      Fonts::drawString("ammo", FontFaces::Tiny::GOLD_COMBAT, RX + 50, propy[2], ALIGN_LEFT);
+    }
   }
 
   /* movement */
-  Fonts::drawString(Fonts::format("%d", movement.moves), FontFaces::Tiny::GOLD_COMBAT, RX + 10, RY + 16 + 7, ALIGN_RIGHT);
-  Gfx::draw(GfxData::propGfx()[movement.type].blackShadow, RX + 11, RY + 15 + 7);
+  Fonts::drawString(Fonts::format("%d", movement.moves), FontFaces::Tiny::GOLD_COMBAT, RX + 10, propy[2], ALIGN_RIGHT);
+  Gfx::draw(GfxData::propGfx()[movement.type].blackShadow, RX + 11, propy[2]-1);
+  
+  /* defense */
+  Fonts::drawString(Fonts::format("%d", defense), FontFaces::Tiny::GOLD_COMBAT, RX + 49, propy[0], ALIGN_RIGHT);
+  Gfx::draw(GfxData::propGfx()[Property::SHIELDS].blackShadow, RX + 50, propy[0]-1);
+  
+  /* resistance */
+  /* defense */
+  Fonts::drawString(Fonts::format("%d", resistance), FontFaces::Tiny::GOLD_COMBAT, RX + 49, propy[1], ALIGN_RIGHT);
+  Gfx::draw(GfxData::propGfx()[Property::RESIST].blackShadow, RX + 50, propy[1]-1);
+  
+  
+  //TODO: check spacing
+  UnitDraw::drawUnitLevel(level, RX + 48, RY + DH - 7, 5, true);
 }
 
 void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)

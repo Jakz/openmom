@@ -235,3 +235,22 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
 
   unbindPlayerColorPalette();
 }
+
+void UnitDraw::drawUnitLevel(const Level* level, u16 x, u16 y, u16 spacing, bool shadowed)
+{
+  if (level)
+  {
+    u16 index = level->index();
+    
+    if (index > 0)
+    {
+      u16 count = ((index-1) % 3) + 1;
+      u16 rank = (index-1) / 3;
+      
+      const SpriteInfo badge_lbx = shadowed ? LSI(COMPIX,76) : LSI(MAIN,51);
+
+      for (int u = 0; u < count; ++u)
+        Gfx::draw(badge_lbx.relative(rank), x + spacing*u, y);
+    }
+  }
+}

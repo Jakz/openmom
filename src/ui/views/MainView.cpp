@@ -201,19 +201,7 @@ void MainView::draw()
       UnitDraw::drawStatic(unit, x+1, y+1, player->isSelectedUnit(unit), false);
       
       /* draw unit level */
-      s16 levelIndex = unit->getExperienceLevel() ? unit->getExperienceLevel()->index(): -1;
-      if (levelIndex > 0)
-      {
-        --levelIndex;
-        s16 badge = levelIndex / 3;
-        s16 badgeCount = levelIndex % 3;
-        
-        static const SpriteInfo badge_lbx = LSI(MAIN,51);
-        
-        // TODO: in realtà le icone non hanno bordo nero nel gioco anche se nelle png sì
-        for (int u = 0; u < badgeCount+1; ++u)
-          Gfx::draw(badge_lbx.relative(badge), x + 3 + 4*u, y + 22);
-      }
+      UnitDraw::drawUnitLevel(unit->getExperienceLevel(), x + 3, y + 22, 4, false);
     }
     
     /* compute and draw movement of current selection */
