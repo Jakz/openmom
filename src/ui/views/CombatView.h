@@ -103,7 +103,7 @@ public:
   
   
   static ScreenCoord coordsForTile(u16 x, u16 y);
-  static Coord tileForCoords(u16 x, u16 y);
+  static Coord tileForCoords(s16 x, s16 y);
 
   
   constexpr static int TILE_WIDTH = 32;

@@ -417,7 +417,7 @@ public:
   {
     ScreenCoord coords = CombatView::coordsForTile(_x, _y);
     Gfx::drawAnimated(info, coords, _animOffset);
-    //Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
+    Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
   }
   
   u16 x() const override { return _x; }
@@ -607,7 +607,7 @@ void CombatView::prepareGraphics()
   this->combat->map()->placeCityRoadExit(Dir::SOUTH_WEST);
   this->combat->map()->placeCityRoadExit(Dir::NORTH_EAST);*/
   
-  this->combat->map()->placeDarknessWall(2, 4);
+  this->combat->map()->placeDarknessWall(3, 6);
   //this->combat->map()->placeStoneWall(2, 4);
   
   //addGfxEntry(dummyUnit(2, 4));
@@ -629,7 +629,7 @@ void CombatView::prepareGraphics()
   for (u16 y = 0; y < Combat::H; ++y)
     for (u16 x = 0; x < Combat::W; ++x)
     {
-      if (x != 9 || y%2 == 0)
+      //if (x != 9 || y%2 == 0)
       {
         const CombatTile* tile = combat->tileAt(x, y);
 
@@ -853,7 +853,7 @@ void CombatView::draw()
   }
   */
   
-  drawUnitProps(nullptr, false);
+  //drawUnitProps(nullptr, false);
 }
 
 UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
@@ -999,12 +999,12 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
    */
 }
 
-constexpr int OX = 0;//-16 -32;
-constexpr int OY = 8;//0 - 16;
+constexpr int OX = -CombatView::TILE_WIDTH;// 0;
+constexpr int OY = -CombatView::TILE_HEIGHT/2;//8;
 
 ScreenCoord CombatView::coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
 
-Coord CombatView::tileForCoords(u16 x, u16 y)
+Coord CombatView::tileForCoords(s16 x, s16 y)
 {
   //const int TH = CombatView::TILE_HEIGHT;
   //const int TW = CombatView::TILE_WIDTH;
@@ -1016,7 +1016,7 @@ Coord CombatView::tileForCoords(u16 x, u16 y)
   
   Coord hover = Coord(-1,-1);
   
-  if (x >= OX && x < tw*W + OX && y > OY && y < th*10 + OY)
+  if (x >= OX && x < tw*W + OX && y > OY && y < th*H + OY)
   {
     int cx = x - OX;
     int cy = y - OY;
@@ -1052,10 +1052,10 @@ Coord CombatView::tileForCoords(u16 x, u16 y)
       }
     }
     
-    if (hover.x < 0 || hover.y < 0 || hover.y > H-1 || (hover.y%2 == 1 && hover.x == 9))
+    if (hover.x < 0 || hover.y < 0 || hover.y > H-1 || hover.x > W-1 || !Combat::isValidTile(hover.x, hover.y))
       hover.x = -1;
     
-    //printf("HOVER: %d %d\n", hover.x, hover.y);
+    printf("HOVER: %d %d\n", hover.x, hover.y);
   }
   
   return hover;

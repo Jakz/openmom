@@ -85,8 +85,11 @@ namespace combat
     position_map currents, visited, incoming;
     
   public:
-    static constexpr size_t W = 10;
-    static constexpr size_t H = 20;
+    static constexpr size_t W = 11;
+    static constexpr size_t H = 22;
+    static bool isValidTile(u16 x, u16 y) {
+      return x > 0 && y > 1 && (x != 10 || (y % 2 == 0));
+    }
     
     Combat(Army* a1, Army* a2, CombatMechanics* mechanics);
     ~Combat();
