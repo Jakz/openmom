@@ -19,6 +19,7 @@ enum class Ranged : u16;
 enum class Property : u8;
 enum class RaceID : u8;
 enum class HouseType : u8;
+enum class MeleeType;
 
 class HeroSpec;
 class UnitSpec;
@@ -143,40 +144,6 @@ struct RaceHouseGfxSpec
   SpriteInfo housingBuilding;
 };
 
-struct UnitPropGfxSpec
-{
-  enum class Type
-  {
-    SWORD,
-    MITHRIL_SWORD,
-    MAGIC_SWORD,
-    ADAMANTIUM_SWORD,
-    RANGED_MAGIC,
-    RANGED_BOW,
-    RANGED_ROCK,
-    RANGED_BREATH,
-    RANGED_THROWN,
-    SHIELDS,
-    HITS,
-    RESIST,
-    TO_HIT,
-    ARCANE,
-    CHAOS,
-    DEATH,
-    LIFE,
-    NATURE,
-    SORCERY,
-    FIGURES,
-    TO_DEF,
-    UNKNOWN,
-    SHIELDS_RANGED
-  };
-  
-  SpriteInfo standard;
-  SpriteInfo bonus;
-  SpriteInfo borderless;
-};
-
 using SkillGfxSpec = SpriteInfo;
 
 
@@ -245,17 +212,56 @@ multi_enum_map<u64, Value, Master, enum_specializer> map = {
 
 template<typename K, typename V, size_t SIZE = 0> using gfx_map = typename std::conditional<(std::is_enum<K>::value && SIZE > 0), enum_simple_map<K, V, SIZE>, std::unordered_map<K,V>>::type;
 
+class UnitPropGfxMap
+{
+public:
+  struct Data
+  {
+    SpriteInfo blackShadow;
+    SpriteInfo blueShadow;
+  };
+  
+private:
+  enum class Type
+  {
+    SWORD,
+    SWORD_MAGIC,
+    SWORD_MITHRIL,
+    SWORD_ADAMANTIUM,
+    SHIELD,
+    RESIST,
+    
+    RANGED_BOW,
+    RANGED_ROCK,
+    RANGED_MAGIC,
+    
+    MOVEMENT_FOOT,
+    MOVEMENT_WATER,
+    MOVEMENT_FLYING,
+    
+    COUNT,
+  };
+  
+  gfx_map<Type, Data, static_cast<size_t>(Type::COUNT)> map;
+  
+public:
+  UnitPropGfxMap();
+  template<typename T> const Data& operator[](T property) const;
+};
+
 
 class GfxData
 {
 private:
-  static gfx_map<WizardID, WizardGfxSpec, 14> wizardSpecs;
-  static gfx_map<PlayerColor, PlayerGfxSpec, 6> playerSpecs;
-  static gfx_map<RaceID, RaceGfxSpec, 14> raceSpecs;
-  static gfx_map<HouseType, RaceHouseGfxSpec, 3> raceHouseSpecs;
+  static const gfx_map<WizardID, WizardGfxSpec, 14> wizardSpecs;
+  static const gfx_map<PlayerColor, PlayerGfxSpec, 6> playerSpecs;
+  static const gfx_map<RaceID, RaceGfxSpec, 14> raceSpecs;
+  static const gfx_map<HouseType, RaceHouseGfxSpec, 3> raceHouseSpecs;
   
-  static gfx_map<School, SchoolGfxSpec, 6> schoolSpecs;
-  static gfx_map<UpkeepSymbol, UpkeepSymbolSpec, 5> upkeepSymbolSpec;
+  static const gfx_map<School, SchoolGfxSpec, 6> schoolSpecs;
+  static const gfx_map<UpkeepSymbol, UpkeepSymbolSpec, 5> upkeepSymbolSpec;
+  
+  static const UnitPropGfxMap unitPropSpecs;
   
   static const TileGfxSpec specs[];
   static constexpr s8 RANGED_INDEX[] = {-1,6,5,6,14,15,16,17,18};
@@ -282,6 +288,7 @@ public:
   
   static SpriteInfo specialSpellGfxEffect(const Spell* spell);
   
+  static const UnitPropGfxMap& propGfx() { return unitPropSpecs; }
   
   static const UnitGfxSpec& unitGfx(const UnitSpec* spec) { return gfxDataFor<const UnitSpec*, UnitGfxSpec>(spec); }
   

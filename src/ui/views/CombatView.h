@@ -66,7 +66,7 @@ private:
   combat::Combat* combat;
     
   
-  void drawUnitProps(combat::CombatUnit* unit, bool onTheLeft);
+  void drawUnitProps(const combat::CombatUnit* unit, bool onTheLeft);
   
   bool entriesDirty;
   std::vector<std::unique_ptr<GfxEntry>> entries;

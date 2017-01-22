@@ -17,6 +17,7 @@
 #include "UnitDetailView.h"
 #include "SpellEffectAnim.h"
 #include "ViewManager.h"
+#include "GfxData.h"
 #include "Gfx.h"
 #include "Texture.h"
 #include "UnitDraw.h"
@@ -865,7 +866,7 @@ UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
   return new UnitGfxEntry(cunit);
 }
 
-void CombatView::drawUnitProps(CombatUnit *unit, bool onTheLeft)
+void CombatView::drawUnitProps(const CombatUnit* unit, bool onTheLeft)
 {
   const int DW = 69, DH = 40;
   const int RX = WIDTH/2;//WIDTH - DW - 1;
@@ -875,10 +876,6 @@ void CombatView::drawUnitProps(CombatUnit *unit, bool onTheLeft)
   const Color brightBorder = Color(88,114,140);
   const Color bgColor = Color(0,0,0,80);
   
-  const Color greenColor = Color(0,172,0);
-  const Color yellowColor = Color(238,210,0);
-  const Color redColor = Color(172,0,0);
-  
   /* draw props panel */
   Gfx::fillRect(RX+1, RY+1, DW-2, DH-2, bgColor);
   Gfx::drawLine(brightBorder, RX, RY, RX, RY+DH);
@@ -887,54 +884,37 @@ void CombatView::drawUnitProps(CombatUnit *unit, bool onTheLeft)
   Gfx::drawLine(darkBorder, RX+1, RY+DH-1, RX+DW-1, RY+DH-1);
 
   std::string unitName = "Phantom Warriors";
-  
+  float health = 1.0f;
+  MeleeInfo melee = MeleeInfo(MeleeType::NORMAL, 9);
+  RangedInfo ranged = RangedInfo(Ranged::ARROW, 8, 8);
+  MovementInfo movement = MovementInfo(MovementBaseType::WALKING, 2);
+
   // TODO: on Phantom Warriors example it's aligned by 1 pixel to the left, maybe it's an original rounding issue
   Fonts::drawString(unitName, FontFaces::Tiny::GOLD_COMBAT, RX + DW/2 - 1, RY+5 - 4, ALIGN_CENTER);
   
   /* draw hits */
   const int BAR_LENGTH = 20;
-  
-  static float health = 1.0f;
-  
   int currentBarLength = health*BAR_LENGTH;
   Fonts::drawString("Hits", FontFaces::Tiny::GOLD_COMBAT, RX + 2, RY+DH - 9, ALIGN_LEFT);
   Gfx::drawLine(UnitDraw::colorForHealth(health), RX + 19, RY + DH - 6, RX + 19 + currentBarLength , RY + DH - 6);
   Gfx::drawLine({0,0,0,120}, RX + 19 + currentBarLength, RY + DH - 6, RX + 19 + 20, RY + DH - 6);
   Gfx::drawLine({0,0,0}, RX + 19, RY + DH - 5, RX + 19 + BAR_LENGTH , RY + DH - 5);
+  
+  /* draw props */
+  /* melee */
+  Fonts::drawString(Fonts::format("%d", melee.strength), FontFaces::Tiny::GOLD_COMBAT, RX + 10, RY + 9, ALIGN_RIGHT);
+  Gfx::draw(GfxData::propGfx()[melee.type].blackShadow, RX + 11, RY + 8);
+  
+  /* ranged */
+  if (ranged.isPresent())
+  {
+    Fonts::drawString(Fonts::format("%d", ranged.strength), FontFaces::Tiny::GOLD_COMBAT, RX + 10, RY + 16, ALIGN_RIGHT);
+    Gfx::draw(GfxData::propGfx()[ranged.type].blackShadow, RX + 11, RY + 15);
+  }
 
-  health -= 0.005;
-  if (health < 0.0f)
-    health = 1.0f;
-  
-  /*
-  Gfx.canvas.fill(0xA0101010);
-  Gfx.canvas.stroke(94,114,138,255);
-  Gfx.canvas.strokeWeight(2.0f);
-  //Gfx.canvas.rect(ox,oy,80,50);
-  Fonts.drawString(Integer.toString(unitProps.unit.getProperty(Property.MELEE)), Fonts.Face.YELLOW_TINY_STROKE, ox+7, oy+13, Align.RIGHT);
-  Fonts.drawString(Integer.toString(unitProps.unit.getProperty(Property.RANGED)), Fonts.Face.YELLOW_TINY_STROKE, ox+7, oy+21, Align.RIGHT);
-  Fonts.drawString(Integer.toString(unitProps.unit.getProperty(Property.SHIELDS)), Fonts.Face.YELLOW_TINY_STROKE, ox+55, oy+13, Align.RIGHT);
-  Fonts.drawString(Integer.toString(unitProps.unit.getProperty(Property.RESIST)), Fonts.Face.YELLOW_TINY_STROKE, ox+55, oy+21, Align.RIGHT);
-  // movement
-  float percent = unitProps.unit.percentHealth();
-  int wi = (int)(80 * percent);
-  Fonts.drawString("Health", Fonts.Face.YELLOW_TINY_STROKE, ox+7, 42, Align.LEFT);
-  Gfx.canvas.stroke(1.5f);
-  Gfx.canvas.fill(0xFFD02000);
-  Gfx.canvas.stroke(0xFFFF4000);
-  //Gfx.canvas.rect(ox+33+wi, oy+39, 80-wi, 8);
-  Gfx.canvas.fill(0xFF00D020);
-  Gfx.canvas.stroke(0xFF00FF40);
-  //Gfx.canvas.rect(ox+33, oy+39, wi, 8);
-  
-  
-  Fonts.drawString(unitProps.unit.name(), Fonts.Face.YELLOW_TINY_STROKE, ox+37, oy+5, Align.CENTER);
-  
-  Gfx.draw(Texture.UNIT_DETAIL_PROPS_EMPTY, 0, 0, ox+15, oy+13);
-  Gfx.draw(Texture.UNIT_DETAIL_PROPS_EMPTY, 0, 4, ox+15, oy+21);
-  Gfx.draw(Texture.UNIT_DETAIL_PROPS_EMPTY, 0, 9, ox+63, oy+13);
-  Gfx.draw(Texture.UNIT_DETAIL_PROPS_EMPTY, 0, 11, ox+63, oy+21);
-   */
+  /* movement */
+  Fonts::drawString(Fonts::format("%d", movement.moves), FontFaces::Tiny::GOLD_COMBAT, RX + 10, RY + 16 + 7, ALIGN_RIGHT);
+  Gfx::draw(GfxData::propGfx()[movement.type].blackShadow, RX + 11, RY + 15 + 7);
 }
 
 void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)

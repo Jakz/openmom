@@ -159,7 +159,7 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
         {
           int row = j > unit->getBaseProperty(propDetails[i].property) - 1 ? 1 : 0;
           
-          if (propDetails[i].property == Property::RANGED && static_cast<Ranged>(unit->getProperty(Property::RANGED_TYPE)) != Ranged::NONE)
+          if (propDetails[i].property == Property::RANGED && unit->getEnumProperty<Ranged>(Property::RANGED_TYPE) != Ranged::NONE)
             Gfx::draw(TextureID::UNIT_DETAIL_PROPS, row, GfxData::rangedGfxIndex(static_cast<Ranged>(unit->getProperty(Property::RANGED_TYPE))), xx, yy);
           else
             Gfx::draw(TextureID::UNIT_DETAIL_PROPS, row, propDetails[i].index, xx, yy);

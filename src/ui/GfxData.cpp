@@ -28,6 +28,78 @@ template<> gfx_map<const UnitSpec*, UnitGfxSpec>& GfxData::containerFor<const Un
   return unitGfxSpec;
 }
 
+#pragma mark Unit Props
+
+UnitPropGfxMap::UnitPropGfxMap() : map({
+  { Type::SWORD, { LSI(COMPIX, 61), LSI(COMPIX, 29) } },
+  { Type::SWORD_MAGIC, { LSI(COMPIX, 64), LSI(COMPIX, 32) } },
+  { Type::SWORD_MITHRIL, { LSI(COMPIX, 63), LSI(COMPIX, 31) } },
+  { Type::SWORD_ADAMANTIUM, { LSI(COMPIX, 65), LSI(COMPIX, 33) } },
+  
+  { Type::RANGED_BOW, { LSI(COMPIX, 66), LSI(COMPIX, 34) } },
+  { Type::RANGED_ROCK, { LSI(COMPIX, 67), LSI(COMPIX, 35) } },
+  { Type::RANGED_MAGIC, { LSI(COMPIX, 62), LSI(COMPIX, 30) } },
+
+  { Type::SHIELD, { LSI(COMPIX, 70), LSI_PLACEHOLD } },
+  { Type::RESIST, { LSI(COMPIX, 75), LSI_PLACEHOLD } },
+  
+  { Type::MOVEMENT_FOOT, { LSI(COMPIX, 72), LSI(COMPIX, 38) } },
+  { Type::MOVEMENT_WATER, { LSI(COMPIX, 74), LSI(COMPIX, 40) } },
+  { Type::MOVEMENT_FLYING, { LSI(COMPIX, 73), LSI(COMPIX, 39) } }
+
+})
+{
+  
+}
+
+template<> const UnitPropGfxMap::Data& UnitPropGfxMap::operator[](MovementBaseType type) const
+{
+  switch (type)
+  {
+    case MovementBaseType::WALKING: return map[Type::MOVEMENT_FOOT];
+    case MovementBaseType::SWIMMING: return map[Type::MOVEMENT_WATER];
+    case MovementBaseType::FLYING: return map[Type::MOVEMENT_FLYING];
+  }
+  assert(false);
+}
+
+template<> const UnitPropGfxMap::Data& UnitPropGfxMap::operator[](MeleeType type) const
+{
+  switch (type)
+  {
+    case MeleeType::NORMAL: return map[Type::SWORD];
+    case MeleeType::MAGIC: return map[Type::SWORD_MAGIC];
+    case MeleeType::MITHRIL: return map[Type::SWORD_MITHRIL];
+    case MeleeType::ADAMANTIUM: return map[Type::SWORD_ADAMANTIUM];
+  }
+  assert(false);
+}
+
+template<> const UnitPropGfxMap::Data& UnitPropGfxMap::operator[](Ranged type) const
+{
+  switch (type)
+  {
+    case Ranged::NONE: assert(false); break;
+    case Ranged::ARROW: return map[Type::RANGED_BOW];
+    case Ranged::ROCK: return map[Type::RANGED_ROCK];
+    case Ranged::BULLET: return map[Type::RANGED_ROCK];
+    /* TODO: add custom option to use specific icon for ranged attack according to school */
+    default: return map[Type::RANGED_MAGIC];
+  }
+}
+
+template<> const UnitPropGfxMap::Data& UnitPropGfxMap::operator[](Property property) const
+{
+  switch (property)
+  {
+    case Property::MELEE: return map[Type::SWORD];
+    case Property::SHIELDS: return map[Type::SHIELD];
+    case Property::RESIST: return map[Type::RESIST];
+    
+    default: assert(false);
+  }
+}
+
 constexpr s8 GfxData::RANGED_INDEX[];
 constexpr s8 GfxData::PROPERTY_INDEX[];
 
@@ -119,6 +191,8 @@ decltype(GfxData::upkeepSymbolSpec) GfxData::upkeepSymbolSpec = {
   { UpkeepSymbol::MANA, { LSI(BACKGRND, 43), LSI_PLACEHOLD, LSI(BACKGRND, 91), LSI_PLACEHOLD } },
   { UpkeepSymbol::RESEARCH, { LSI(BACKGRND, 44), LSI_PLACEHOLD, LSI(BACKGRND, 92), LSI_PLACEHOLD } }
 };
+
+decltype(GfxData::unitPropSpecs) GfxData::unitPropSpecs;
 
 SpriteInfo WizardGfxSpec::getGemmedPortrait(PlayerColor color) const
 {

@@ -105,6 +105,21 @@ enum class Ranged : u16
   SORCERY
 };
 
+enum class MeleeType
+{
+  NORMAL,
+  MAGIC,
+  MITHRIL,
+  ADAMANTIUM
+};
+
+enum class MovementBaseType
+{
+  WALKING,
+  SWIMMING,
+  FLYING
+};
+
 struct RangedInfo
 {
   Ranged type;
@@ -113,6 +128,27 @@ struct RangedInfo
   
   RangedInfo(Ranged type, s16 strength, s16 ammo) : type(type), strength(strength), ammo(ammo) { }
   RangedInfo() : RangedInfo(Ranged::NONE, 0, 0) { }
+  bool isPresent() const { return type != Ranged::NONE; }
+};
+
+struct MeleeInfo
+{
+  MeleeType type;
+  s16 strength;
+  
+  MeleeInfo(MeleeType type, s16 strength) : type(type), strength(strength) { }
+  MeleeInfo(s16 strength) : MeleeInfo(MeleeType::NORMAL, strength) { }
+  MeleeInfo() : MeleeInfo(1) { }
+};
+
+struct MovementInfo
+{
+  MovementBaseType type;
+  s16 moves;
+  
+  MovementInfo(MovementBaseType type, s16 moves) : type(type), moves(moves) { }
+  MovementInfo(s16 moves) : MovementInfo(MovementBaseType::WALKING, moves) { }
+  MovementInfo() : MovementInfo(2) { }
 };
 
 enum class Property : u8
@@ -148,13 +184,6 @@ enum class Property : u8
   ALIVE_FIGURES,
   THROWN_ATTACK, //TODO: implement to get it from skills
   BREATH_ATTACK // TODO: implement to get it from skills
-};
-
-enum class MovementBaseType
-{
-  WALKING,
-  SWIMMING,
-  FLYING
 };
 
 enum class HeroType : u8
