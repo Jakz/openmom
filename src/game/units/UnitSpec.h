@@ -186,6 +186,16 @@ enum class Property : u8
   BREATH_ATTACK // TODO: implement to get it from skills
 };
 
+class Properties
+{
+public:
+  virtual s16 getBaseProperty(Property property) const { return 1; }
+  virtual s16 getBonusProperty(Property property) const { return 1; }
+  
+  s16 getProperty(Property property) const { return getBaseProperty(property) + getBonusProperty(property); }
+  template<typename T> T getEnumProperty(Property property) const { return static_cast<T>(getProperty(property)); }
+};
+
 enum class HeroType : u8
 {
   HERO,
