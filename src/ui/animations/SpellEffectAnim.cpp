@@ -25,7 +25,7 @@ SpellEffect::SpellEffect(LocalPlayer* player, SpriteInfo effectId, Position tile
   force = coords.isValid();
 }
 
-SpellEffect::SpellEffect(SpriteInfo effectId, CombatCoord tile) : DiscreteAnimation(TICKS_PER_FRAME*effectId.count()), effect(effectId), frame(0), counter(0), force(false)
+SpellEffect::SpellEffect(SpriteInfo effectId, combat::CombatCoord tile) : DiscreteAnimation(TICKS_PER_FRAME*effectId.count()), effect(effectId), frame(0), counter(0), force(false)
 {
   u16 w = effectId.sw(), h = effectId.sh();
 

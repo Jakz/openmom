@@ -25,7 +25,7 @@ namespace anims
     
   public:
     SpellEffect(LocalPlayer* player, SpriteInfo effectId, Position tile);
-    SpellEffect(SpriteInfo effectId, CombatCoord tile);
+    SpellEffect(SpriteInfo effectId, combat::CombatCoord tile);
     SpellEffect(LocalPlayer* player, SpriteInfo effectId, int tx, int ty);
     
     void step() override;

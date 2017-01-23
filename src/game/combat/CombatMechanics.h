@@ -33,8 +33,9 @@ namespace combat
     
     /* map related functions */
     u16 movementCostForTile(const CombatTile* tile, Dir from);
-    CombatPosition coordForDeployedUnit(CombatMap* map, u16 index, CombatSide side);
+    CombatPosition positionForDeployedUnit(CombatMap* map, u16 index, Side side);
     CombatCoord defaultPositionForObject(CombatObject object);
+    bool isTileBlocked(const CombatTile* tile);
   };
 
   

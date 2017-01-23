@@ -41,6 +41,7 @@ namespace combat
     void setPosition(u16 x, u16 y) { position.position = CombatCoord(x,y); }
     void setPosition(u16 x, u16 y, Dir facing) { position = CombatPosition(x,y,facing); }
     void setPosition(CombatCoord tile) { position.position = tile; }
+    void setPosition(CombatPosition pos) { position = pos; }
     void setFacing(Dir facing) { position.facing = facing; }
     
     u16 x() const { return position.position.x; }

@@ -10,6 +10,7 @@
 
 #include "Util.h"
 
+#include "CombatMechanics.h"
 #include "CombatMap.h"
 #include "Player.h"
 
@@ -33,9 +34,7 @@ Combat::Combat(Army* a1, Army* a2, CombatMechanics* mechanics) : players{a1->get
     units[1].push_back(cu2);
     allUnits.push_back(cu2);
   }
-  
-  deployUnits();
-  
+    
   current->combatTurnBegun();
 }
 
@@ -85,12 +84,19 @@ Dir Combat::relativeFacing(CombatUnit *u1, CombatUnit *u2)
 void Combat::deployUnits()
 {
   // TODO
-  CombatCoord tile = CombatCoord(2, 3);
   
-  for (auto* unit : allUnits)
+  auto it = units[0].begin();
+  for (size_t i = 0; i < units[0].size(); ++i, ++it)
   {
-    unit->setPosition(tile);
-    tile = tile.neighbour(Dir::SOUTH_EAST);
+    auto position = mechanics->positionForDeployedUnit(_map.get(), i, Side::DEFENDER);
+    (*it)->setPosition(position);
+  }
+  
+  it = units[1].begin();
+  for (size_t i = 0; i < units[1].size(); ++i, ++it)
+  {
+    auto position = mechanics->positionForDeployedUnit(_map.get(), i, Side::ATTACKER);
+    (*it)->setPosition(position);
   }
 }
 

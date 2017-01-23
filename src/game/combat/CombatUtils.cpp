@@ -1,5 +1,7 @@
 #include "CombatUtils.h"
 
+using namespace combat;
+
 constexpr const s16 CombatCoord::DIRS[12][2];
 constexpr const u16 CombatCoord::DIRS_LENGTH;
 

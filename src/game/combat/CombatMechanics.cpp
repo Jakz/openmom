@@ -32,9 +32,47 @@ u16 CombatMechanics::movementCostForTile(const CombatTile* tile, Dir from)
     return isLongMove ? 3 : 2;
 }
 
-CombatPosition CombatMechanics::coordForDeployedUnit(CombatMap* map, u16 index, CombatSide side)
+CombatPosition CombatMechanics::positionForDeployedUnit(CombatMap* map, u16 index, Side side)
 {
-  return CombatPosition();
+  static const CombatCoord attackerBase = {7,16};
+  static const Dir attackerRowDirection = Dir::SOUTH_EAST;
+  
+  static const CombatCoord defenderBase = {4,10};
+  static const Dir defenderRowDirection = Dir::NORTH_WEST;
+  
+  static const CoordJump jumps[] = { { Dir::SOUTH_WEST }, { Dir::NORTH_EAST, 2 }, { Dir::SOUTH_WEST, 3 } };
+  
+  const auto base = side == Side::DEFENDER ? defenderBase : attackerBase;
+  const auto dir = side == Side::DEFENDER ? defenderRowDirection : attackerRowDirection;
+  const auto facing = side == Side::DEFENDER ? Dir::SOUTH_EAST : Dir::NORTH_WEST;
+  
+  auto rowStart = base;
+  auto current = rowStart;
+  for (u16 i = 0, r = 1; i < index; ++r)
+  {
+    if (r == 3)
+    {
+      rowStart = rowStart.neighbour(dir);
+      current = rowStart;
+      r = 0;
+    }
+    else
+    {
+      for (u16 c = 0; c < jumps[r-1].length; ++c)
+        current = current.neighbour(jumps[r-1].direction);
+    }
+    
+    
+    const CombatTile* tile = map->tileAt(current.x, current.y);
+    
+    if (!isTileBlocked(tile))
+      ++i;
+    else
+      continue;
+  }
+
+  printf("deploy %d at %d, %d\n", index, current.x, current.y);
+  return CombatPosition(current, facing);
 }
 
 CombatCoord CombatMechanics::defaultPositionForObject(CombatObject object)
@@ -44,4 +82,15 @@ CombatCoord CombatMechanics::defaultPositionForObject(CombatObject object)
     case CombatObject::MAIN_BUILDING: return {3,8};
     case CombatObject::WALL: return {3, 6};
   }
+}
+
+bool CombatMechanics::isTileBlocked(const CombatTile* tile)
+{
+  const auto building = tile->building;
+  const auto stoneWall = tile->stoneWall;
+  
+  bool hasBuilding = building != TileBuilding::HOUSE && building != TileBuilding::NONE;
+  bool isBlockedByStoneWall = stoneWall == WallType::EAST_CORNER || stoneWall == WallType::WEST_CORNER || stoneWall == WallType::SOUTH_CORNER || stoneWall == WallType::NORTH_CORNER;
+  
+  return hasBuilding || isBlockedByStoneWall;
 }

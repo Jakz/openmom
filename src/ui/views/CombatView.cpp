@@ -89,7 +89,14 @@ struct entry_comparator
       return false;
     
     if (e1->x() != e2->x())
+    {
+      /* this special condition is needed because of how coordinates are used
+         in the isometric map
+       */
+      if (std::abs(e1->x() - e2->x()) == 1)
+        return e1->y() < e2->y();
       return e1->x() < e2->x();
+    }
     else if (e1->y() != e2->y())
       return e1->y() < e2->y();
     else
@@ -420,7 +427,7 @@ public:
     }
     
     //if (player->shouldDrawSelectedArmy() || player->)
-    UnitDraw::drawUnitIsoCombat(unit->getUnit(), coords.x, coords.y - 17, Dir::EAST, UnitDraw::CombatAction::STAY);
+    UnitDraw::drawUnitIsoCombat(unit->getUnit(), coords.x, coords.y - 17, unit->facing(), UnitDraw::CombatAction::STAY);
   }
 };
 
@@ -630,20 +637,16 @@ void CombatView::prepareGraphics()
   this->combat->map()->placeCityRoadExit(Dir::SOUTH_WEST);
   this->combat->map()->placeCityRoadExit(Dir::NORTH_EAST);*/
   
-  this->combat->map()->placeDarknessWall(3, 6);
-  //this->combat->map()->placeStoneWall(2, 4);
-  
-  //addGfxEntry(dummyUnit(2, 4));
+  //this->combat->map()->placeDarknessWall(3, 6);
+  this->combat->map()->placeStoneWall(3, 6);
+ 
   //addGfxEntry(dummyUnit(3, 7));
   
-  
-  //for (CombatUnit* unit : combat->getUnits())
-  //  addGfxEntry(new UnitGfxEntry(unit));
-  
-  /* addHouse(LSI(CMBTCITY, 2), 2, 7);
-   addHouse(LSI(CMBTCITY, 3), 3, 6);
-   addHouse(LSI(CMBTCITY, 4), 5, 6); */
-  
+  this->combat->deployUnits();
+
+  for (CombatUnit* unit : combat->getUnits())
+    addGfxEntry(new UnitGfxEntry(unit));
+
   //addRoads();
 
   
@@ -704,7 +707,21 @@ void CombatView::prepareGraphics()
           SpriteInfo info = (tile->road == RoadType::NORMAL ? it->second.normal : it->second.enchanted)[Util::oneOfTwoChance()];
           addGfxEntry(new StaticGfxEntry(priority_roads, info, tile->x(), tile->y(), 0, TILE_HEIGHT/2, true));
         }
-
+        
+        if (tile->prop != TileProp::NONE)
+        {
+          size_t count = tile->prop == TileProp::TREES ? Util::randomIntInclusive(2, 3) : 1;
+          SpriteInfo info = tile->prop == TileProp::ROCK ? rock : tree;
+          addGfxEntry(new PropGfxEntry(tile->x(), tile->y(), tile->prop, info.lbx(environmentLBX) ,count));
+        }
+        
+        if (tile->building != TileBuilding::NONE)
+        {
+          const auto& spec = buildingGraphics.find(tile->building)->second;
+          SpriteInfo gfx = tile->building == TileBuilding::HOUSE ? GfxData::raceHouseGfxSpec(houseType).combatHouse : spec.info;
+          addGfxEntry(new StaticGfxEntry(gfx.relative(Util::randomIntUpTo(spec.count)), tile->x(), tile->y(), spec.offset.x, spec.offset.y));
+        }
+        
         /* manage base tile graphics */
         if (tile->type == combat::TileType::ROUGH)
         {
@@ -731,19 +748,7 @@ void CombatView::prepareGraphics()
 
         }
         
-        if (tile->prop != TileProp::NONE)
-        {
-          size_t count = tile->prop == TileProp::TREES ? Util::randomIntInclusive(2, 3) : 1;
-          SpriteInfo info = tile->prop == TileProp::ROCK ? rock : tree;
-          addGfxEntry(new PropGfxEntry(tile->x(), tile->y(), tile->prop, info.lbx(environmentLBX) ,count));
-        }
-        
-        if (tile->building != TileBuilding::NONE)
-        {
-          const auto& spec = buildingGraphics.find(tile->building)->second;
-          SpriteInfo gfx = tile->building == TileBuilding::HOUSE ? GfxData::raceHouseGfxSpec(houseType).combatHouse : spec.info;
-          addGfxEntry(new StaticGfxEntry(gfx.relative(Util::randomIntUpTo(spec.count)), tile->x(), tile->y(), spec.offset.x, spec.offset.y));
-        }
+
       }
     }
 }
