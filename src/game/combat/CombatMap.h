@@ -123,6 +123,7 @@ namespace combat
   private:
     using tile_functor = std::function<void(CombatTile*)>;
     
+    Combat* const _combat;
     CombatTile* tiles;
     const int W, H;
 
@@ -137,7 +138,7 @@ namespace combat
     void functorOnRect(u16 x, u16 y, u16 w, u16 h, tile_functor lambda);
     
   public:
-    CombatMap(u16 width, u16 height);
+    CombatMap(Combat* combat, u16 width, u16 height);
     ~CombatMap() { delete [] tiles; }
     
     const CombatTile* tileAt(s16 x, s16 y) const;
@@ -155,6 +156,8 @@ namespace combat
     void placeRect(u16 x, u16 y, u16 w, u16 h, TileType type);
     
     CombatTile* placeRiverSegment(u16 x, u16 y, Dir dir, u16 length);
+    
+    Combat* combat() const { return _combat; }
   };
   
 }

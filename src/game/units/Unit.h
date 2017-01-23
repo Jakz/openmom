@@ -84,6 +84,9 @@ public:
   s16 getBaseProperty(Property property) const;
   s16 getBonusProperty(Property property) const;
   
+  MeleeInfo getMeleeInfo() const { return MeleeInfo(getEnumProperty<MeleeType>(Property::MELEE_TYPE), getProperty(Property::MELEE)); }
+  RangedInfo getRangedInfo() const { return RangedInfo(getEnumProperty<Ranged>(Property::RANGED_TYPE), getProperty(Property::RANGED), getProperty(Property::AMMO)); }
+  
   void resetMoves() { availableMoves = getProperty(Property::MOVEMENT)*2; }
   s16 getAvailableMoves() const { return availableMoves; }
   void useMoves(s16 moves) { availableMoves -= moves; }

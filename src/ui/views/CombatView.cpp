@@ -413,6 +413,10 @@ private:
   
 public:
   UnitGfxEntry(CombatUnit* unit) : CombatView::GfxEntry(priority_units), unit(unit) { }
+  ~UnitGfxEntry()
+  {
+    //TODO: combatView->unitsMap.erase(this);
+  }
   
   u16 x() const override { return unit->x(); }
   u16 y() const override { return unit->y(); }
@@ -645,7 +649,11 @@ void CombatView::prepareGraphics()
   this->combat->deployUnits();
 
   for (CombatUnit* unit : combat->getUnits())
-    addGfxEntry(new UnitGfxEntry(unit));
+  {
+    auto* gfx = new UnitGfxEntry(unit);
+    unitsMap[unit] = gfx;
+    addGfxEntry(gfx);
+  }
 
   //addRoads();
 
@@ -886,7 +894,12 @@ void CombatView::draw()
   }
   */
   
-  //drawUnitProps(nullptr, false);
+  if (hover.isValid())
+  {
+    const CombatUnit* unit = combat->unitAtTile(hover.x, hover.y);
+    if (unit)
+      drawUnitProps(unit, false);
+  }
 }
 
 UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
@@ -899,11 +912,11 @@ UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
   return new UnitGfxEntry(cunit);
 }
 
-void CombatView::drawUnitProps(const CombatUnit* unit, bool onTheLeft)
+void CombatView::drawUnitProps(const CombatUnit* cunit, bool onTheLeft)
 {
   const int DW = 69, DH = 40;
-  const int RX = WIDTH/2;//WIDTH - DW - 1;
-  const int RY = HEIGHT/2;//5;
+  const int RX = WIDTH - DW - 1;
+  const int RY = 5;
   
   const Color darkBorder = Color(62,82,94);
   const Color brightBorder = Color(88,114,140);
@@ -916,14 +929,15 @@ void CombatView::drawUnitProps(const CombatUnit* unit, bool onTheLeft)
   Gfx::drawLine(darkBorder, RX+DW-1, RY, RX+DW-1, RY+DH);
   Gfx::drawLine(darkBorder, RX+1, RY+DH-1, RX+DW-1, RY+DH-1);
 
-  std::string unitName = "Phantom Warriors";
-  float health = 1.0f;
-  MeleeInfo melee = MeleeInfo(MeleeType::NORMAL, 9);
-  RangedInfo ranged = RangedInfo(Ranged::ARROW, 8, 8);
+  const Unit* unit = cunit->getUnit();
+  const std::string unitName = unit->name();
+  float health = unit->health()->percentHealth();
+  MeleeInfo melee = unit->getMeleeInfo();
+  RangedInfo ranged = unit->getRangedInfo();
   MovementInfo movement = MovementInfo(MovementBaseType::WALKING, 2);
   s16 defense = 2;
   s16 resistance = 8;
-  const Level* level = Data::experienceLevelsForHeroes()[5].get();
+  const Level* level = unit->getExperienceLevel();
 
 
   // TODO: on Phantom Warriors example it's aligned by 1 pixel to the left, maybe it's an original rounding issue

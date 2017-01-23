@@ -70,6 +70,8 @@ private:
   
   bool entriesDirty;
   std::vector<std::unique_ptr<GfxEntry>> entries;
+  std::unordered_map<const combat::CombatUnit*, UnitGfxEntry*> unitsMap;
+  
   
   void addGfxEntry(GfxEntry* entry)
   {

@@ -10,7 +10,7 @@ CombatTile* CombatTile::neighbour(Dir facing) const
   return map->tileAt(coords.x, coords.y);
 }
 
-CombatMap::CombatMap(u16 width, u16 height) : W(width), H(height), tiles(new CombatTile[width*height])
+CombatMap::CombatMap(Combat* combat, u16 width, u16 height) : _combat(combat), W(width), H(height), tiles(new CombatTile[width*height])
 {
   for (int i = 0; i < W; ++i)
     for (int j = 0; j < H; ++j)

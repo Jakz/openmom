@@ -11,7 +11,7 @@ using namespace std;
 
 float HitPoints::percentHealth() const
 {
-  return accumulate(data.begin(), data.end(), 0);
+  return accumulate(data.begin(), data.end(), 0) / (float) (unit.getProperty(Property::FIGURES) * unit.getProperty(Property::HIT_POINTS) );
 }
 
 void HitPoints::healAll()
