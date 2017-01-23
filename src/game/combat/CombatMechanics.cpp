@@ -31,3 +31,17 @@ u16 CombatMechanics::movementCostForTile(const CombatTile* tile, Dir from)
   else
     return isLongMove ? 3 : 2;
 }
+
+CombatPosition CombatMechanics::coordForDeployedUnit(CombatMap* map, u16 index, CombatSide side)
+{
+  return CombatPosition();
+}
+
+CombatCoord CombatMechanics::defaultPositionForObject(CombatObject object)
+{
+  switch (object)
+  {
+    case CombatObject::MAIN_BUILDING: return {3,8};
+    case CombatObject::WALL: return {3, 6};
+  }
+}

@@ -142,6 +142,7 @@ struct RaceHouseGfxSpec
   SpriteInfo outpostFull;
   SpriteInfo cityScapeHouse; // 5 relative
   SpriteInfo housingBuilding;
+  SpriteInfo combatHouse;
 };
 
 using SkillGfxSpec = SpriteInfo;

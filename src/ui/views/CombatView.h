@@ -79,7 +79,6 @@ private:
   
   void addRoads();
   void addFlyingFortress();
-  void addMainBuilding(SpriteInfo info);
   void addHouse(SpriteInfo info, int x, int y);
   void prepareGraphics();
   

@@ -2,6 +2,12 @@
 
 #include "Common.h"
 
+enum class CombatSide
+{
+  ATTACKER,
+  DEFENDER
+};
+
 struct CombatCoord
 {
   s8 x, y;

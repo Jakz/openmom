@@ -47,6 +47,26 @@ namespace combat
     TREES
   };
   
+  enum class TileBuilding
+  {
+    NONE,
+    FORTRESS,
+    TOWER_WIZARDRY,
+    CAVE,
+    RUINS,
+    KEEP,
+    TEMPLE,
+    ANCIENT_RUINS,
+    
+    HOUSE
+  };
+  
+  enum class CombatObject
+  {
+    MAIN_BUILDING,
+    WALL
+  };
+  
   using TileSubType = u16;
   
   struct CombatEnvironment
@@ -78,17 +98,19 @@ namespace combat
 
     TileType type;
     TileProp prop;
+    TileBuilding building;
     
     WallType stoneWall;
     WallType fireWall;
     WallType darknessWall;
     RoadType road;
     
+    
     bool isStoneWallDestroyed;
 
     CombatTile() = default;
     CombatTile(CombatMap* map, s8 x, s8 y) : map(map), type(TileType::GRASS), prop(TileProp::NONE), coords(x,y),
-    stoneWall(WallType::NO_WALL), fireWall(WallType::NO_WALL), darknessWall(WallType::NO_WALL), road(RoadType::NONE), isStoneWallDestroyed(false) { }
+    stoneWall(WallType::NO_WALL), fireWall(WallType::NO_WALL), darknessWall(WallType::NO_WALL), building(TileBuilding::NONE), road(RoadType::NONE), isStoneWallDestroyed(false) { }
     
     CombatTile* neighbour(Dir facing) const;
     
@@ -124,6 +146,8 @@ namespace combat
     void placeStoneWall(u16 x, u16 y);
     void placeFireWall(u16 x, u16 y);
     void placeDarknessWall(u16 x, u16 y);
+    
+    void placeBuilding(u16 x, u16 y, TileBuilding building) { tileAt(x,y)->building = building; }
     
     void placeCityRoadExit(Dir direction);
     

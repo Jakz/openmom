@@ -169,9 +169,9 @@ decltype(GfxData::raceSpecs) GfxData::raceSpecs = {
 };
 
 decltype(GfxData::raceHouseSpecs) GfxData::raceHouseSpecs = {
-  { HouseType::NORMAL, { LSI(BACKGRND, 37), LSI(BACKGRND, 34), LSI(CITYSCAP, 25), LSI(CITYSCAP, 42) } },
-  { HouseType::TREE, { LSI(BACKGRND, 38), LSI(BACKGRND, 35), LSI(CITYSCAP, 30), LSI(CITYSCAP, 43) } },
-  { HouseType::MUD, { LSI(BACKGRND, 39), LSI(BACKGRND, 36), LSI(CITYSCAP, 35), LSI(CITYSCAP, 44) } }
+  { HouseType::NORMAL, { LSI(BACKGRND, 37), LSI(BACKGRND, 34), LSI(CITYSCAP, 25), LSI(CITYSCAP, 42), LSI(CMBTCITY, 2) } },
+  { HouseType::TREE, { LSI(BACKGRND, 38), LSI(BACKGRND, 35), LSI(CITYSCAP, 30), LSI(CITYSCAP, 43), LSI(CMBTCITY, 12) } },
+  { HouseType::MUD, { LSI(BACKGRND, 39), LSI(BACKGRND, 36), LSI(CITYSCAP, 35), LSI(CITYSCAP, 44), LSI(CMBTCITY, 7) } }
 };
 
 //TODO: LIFE SPELL (SPECFX, 3) uses palette with multiple white alphas, understand how to manage it

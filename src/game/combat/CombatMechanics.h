@@ -11,6 +11,7 @@
 
 #include "Common.h"
 #include "Unit.h"
+#include "CombatUtils.h"
 
 enum class CombatModifier : u8;
 
@@ -19,7 +20,9 @@ class Game;
 namespace combat
 {
   class CombatTile;
+  class CombatMap;
   struct CombatEnvironment;
+  enum class CombatObject;
   
   class CombatMechanics
   {
@@ -28,7 +31,10 @@ namespace combat
   public:
     CombatMechanics(Game* game) : game(game) { }
     
+    /* map related functions */
     u16 movementCostForTile(const CombatTile* tile, Dir from);
+    CombatPosition coordForDeployedUnit(CombatMap* map, u16 index, CombatSide side);
+    CombatCoord defaultPositionForObject(CombatObject object);
   };
 
   

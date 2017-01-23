@@ -376,6 +376,27 @@ static const std::unordered_map<DirJoin, RoadGfxSpec, enum_hash> roadGraphics = 
   { DirJoin::CROSS, { { LSI(CMBTCITY, 75), LSI(CMBTCITY, 82) }, { LSI(CMBTCITY, 89), LSI(CMBTCITY, 96) } } }
 };
 
+#pragma mark Buildings
+
+struct BuildingGfxSpec
+{
+  SpriteInfo info;
+  u32 count;
+  ScreenCoord offset;
+};
+
+static const std::unordered_map<TileBuilding, BuildingGfxSpec, enum_hash> buildingGraphics = {
+  { TileBuilding::FORTRESS, { LSI(CMBTCITY, 17), 1, {-1, 14} } },
+  { TileBuilding::TOWER_WIZARDRY, { LSI(CMBTCITY, 20), 1, {-1, 14} } },
+  { TileBuilding::CAVE, { LSI(CMBTCITY, 19), 1, {-1, 14} } },
+  { TileBuilding::RUINS, { LSI(CMBTCITY, 21), 1, {-1, 14} } },
+  { TileBuilding::KEEP, { LSI(CMBTCITY, 22), 1, {-1, 14} } },
+  { TileBuilding::TEMPLE, { LSI(CMBTCITY, 23), 1, {-1, 14} } },
+  { TileBuilding::ANCIENT_RUINS, { LSI(CMBTCITY, 121), 1, {-1, 14} } },
+  
+  { TileBuilding::HOUSE, { LSI_PLACEHOLD, 5, {0, 8} } } /* no sprite info specified because it depends on race */
+};
+
 #pragma mark Rivers
 
 class UnitGfxEntry : public CombatView::GfxEntry
@@ -582,6 +603,9 @@ CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1)), entri
 
 void CombatView::prepareGraphics()
 {
+  auto mp = g->combatMechanics.defaultPositionForObject(CombatObject::MAIN_BUILDING);
+  this->combat->map()->placeBuilding(mp.x, mp.y, TileBuilding::FORTRESS);
+  
   /*combat->map()->tileAt(6, 7)->type = 33;
   combat->map()->tileAt(6, 8)->type = 38;*/
   
@@ -597,7 +621,6 @@ void CombatView::prepareGraphics()
   
 
   //this->combat->map()->placeRect(6, 4, 3, 7, combat::TileType::ROUGH);
-  
   
   setEnvironment({CombatEnvironment::Type::GRASS, Plane::ARCANUS});
   
@@ -617,15 +640,14 @@ void CombatView::prepareGraphics()
   //for (CombatUnit* unit : combat->getUnits())
   //  addGfxEntry(new UnitGfxEntry(unit));
   
-  /*addMainBuilding(LSI(CMBTCITY, 17));
-   
-   addHouse(LSI(CMBTCITY, 2), 2, 7);
+  /* addHouse(LSI(CMBTCITY, 2), 2, 7);
    addHouse(LSI(CMBTCITY, 3), 3, 6);
    addHouse(LSI(CMBTCITY, 4), 5, 6); */
   
   //addRoads();
 
   
+  const HouseType houseType = HouseType::TREE;
   for (u16 y = 0; y < Combat::H; ++y)
     for (u16 x = 0; x < Combat::W; ++x)
     {
@@ -637,7 +659,7 @@ void CombatView::prepareGraphics()
         if (tile->stoneWall != WallType::NO_WALL)
         {
           //TODO: determine real house type
-          addGfxEntry(new StoneWallGfxEntry(tile, HouseType::NORMAL));
+          addGfxEntry(new StoneWallGfxEntry(tile, houseType));
         }
         
         /* if there is fire wall generate graphics */
@@ -715,6 +737,13 @@ void CombatView::prepareGraphics()
           SpriteInfo info = tile->prop == TileProp::ROCK ? rock : tree;
           addGfxEntry(new PropGfxEntry(tile->x(), tile->y(), tile->prop, info.lbx(environmentLBX) ,count));
         }
+        
+        if (tile->building != TileBuilding::NONE)
+        {
+          const auto& spec = buildingGraphics.find(tile->building)->second;
+          SpriteInfo gfx = tile->building == TileBuilding::HOUSE ? GfxData::raceHouseGfxSpec(houseType).combatHouse : spec.info;
+          addGfxEntry(new StaticGfxEntry(gfx.relative(Util::randomIntUpTo(spec.count)), tile->x(), tile->y(), spec.offset.x, spec.offset.y));
+        }
       }
     }
 }
@@ -744,7 +773,6 @@ void CombatView::deactivate()
 void CombatView::addRoads() { addGfxEntry(new FixedGfxEntry(roads_static, 16, 40)); }
 void CombatView::addFlyingFortress() { addGfxEntry(new FixedGfxEntry(flying_fortess, 16, 40)); }
 
-void CombatView::addMainBuilding(SpriteInfo info) { addGfxEntry(new StaticGfxEntry(info, 2, 6, -1, 14)); }
 void CombatView::addHouse(SpriteInfo info, int x, int y) { addGfxEntry(new StaticGfxEntry(info, x, y, 0, 8)); }
 
 
@@ -1054,8 +1082,6 @@ Coord CombatView::tileForCoords(s16 x, s16 y)
     
     if (hover.x < 0 || hover.y < 0 || hover.y > H-1 || hover.x > W-1 || !Combat::isValidTile(hover.x, hover.y))
       hover.x = -1;
-    
-    printf("HOVER: %d %d\n", hover.x, hover.y);
   }
   
   return hover;
