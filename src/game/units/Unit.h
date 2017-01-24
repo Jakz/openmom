@@ -43,7 +43,7 @@ public:
   void killFigures(const unit_figure_flag& indices);
 };
 
-class Unit
+class Unit : public Propertable
 {
 public:
   const UnitSpec* const spec;
@@ -79,13 +79,8 @@ public:
   
   Productable::Type type() const { return spec->productionType(); }
   
-  template<typename T> T getEnumProperty(Property property) const { return static_cast<T>(getProperty(property)); }
-  s16 getProperty(Property property) const { return getBaseProperty(property) + getBonusProperty(property); };
-  s16 getBaseProperty(Property property) const;
-  s16 getBonusProperty(Property property) const;
-  
-  MeleeInfo getMeleeInfo() const { return MeleeInfo(getEnumProperty<MeleeType>(Property::MELEE_TYPE), getProperty(Property::MELEE)); }
-  RangedInfo getRangedInfo() const { return RangedInfo(getEnumProperty<Ranged>(Property::RANGED_TYPE), getProperty(Property::RANGED), getProperty(Property::AMMO)); }
+  s16 getBaseProperty(Property property) const override;
+  s16 getBonusProperty(Property property) const override;
   
   void resetMoves() { availableMoves = getProperty(Property::MOVEMENT)*2; }
   s16 getAvailableMoves() const { return availableMoves; }

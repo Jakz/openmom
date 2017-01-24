@@ -22,6 +22,7 @@
 #include "Unit.h"
 
 static const ScreenCoord normalBaseCoords = ScreenCoord(31, 6);
+static const ScreenCoord viewOnlyBaseCoord = ScreenCoord(61, 6);
 static const ScreenCoord heroHireCoords = ScreenCoord(25, 17);
 
 
@@ -107,6 +108,14 @@ void UnitDetailView::switchMode(Mode mode)
     buttons[HIGH_ACTION]->setLabel("Hire");
     buttons[LOW_ACTION]->setLabel("Reject");
   }
+  else if (mode == Mode::VIEW_ONLY)
+  {
+    this->c = viewOnlyBaseCoord;
+  }
+  
+  /* hide if mode is view only */
+  buttons[HIGH_ACTION]->showIf(mode != Mode::VIEW_ONLY);
+  buttons[LOW_ACTION]->showIf(mode != Mode::VIEW_ONLY);
   
   /* adjust button positions according to mode */
   buttons[HIGH_ACTION]->setPosition(c.x + 222, c.y + 143);
@@ -121,7 +130,9 @@ void UnitDetailView::switchMode(Mode mode)
 void UnitDetailView::draw()
 {
   Gfx::draw(full_unit_backdrop, c.x, c.y);
-  Gfx::draw(buttons_backdrop, c.x + 213, c.y + 133);
+  
+  if (mode != Mode::VIEW_ONLY)
+    Gfx::draw(buttons_backdrop, c.x + 213, c.y + 133);
   
   if (mode == Mode::HERO_HIRE)
   {
@@ -174,9 +185,20 @@ void UnitDetailView::setHeroHire(Hero* hero, u32 cost)
   skillDraw.reset(unit);
 }
 
-void UnitDetailView::setUnit(Unit *unit)
+void UnitDetailView::setUnit(Unit *unit, bool withButtons)
 {
   this->unit = unit;
-  switchMode(Mode::NORMAL);
+  switchMode(withButtons ? Mode::NORMAL : Mode::VIEW_ONLY);
   skillDraw.reset(unit);
+}
+
+void UnitDetailView::mousePressed(u16 x, u16 y, MouseButton b)
+{
+  SpriteInfo bg = full_unit_backdrop;
+  
+  bool isOutside = (x < c.x || x >= c.x + bg.sw()) || (y < c.y || y >= c.y + bg.sh());
+  
+  if (isOutside && (mode == Mode::NORMAL || mode == Mode::VIEW_ONLY))
+    gvm->closeOverview();
+  
 }

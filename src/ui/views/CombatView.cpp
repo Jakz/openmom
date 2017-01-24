@@ -33,7 +33,11 @@ enum combat_lbx_statics
   water_tile_myrran = LBXI(RESOURCE, 71),
   
   tree = LBXI(CMBGRASS, 48),
-  rock = LBXI(CMBGRASS, 53)
+  rock = LBXI(CMBGRASS, 53),
+  
+  hover_tile = LBXI(CMBTCITY, 67),
+  
+  lower_backdrop = LBXI(BACKGRND, 3),
 };
 
 /* default combat tiles lbx is made by 58 tiles
@@ -866,12 +870,13 @@ void CombatView::draw()
   {
     ScreenCoord hoverCoords = coordsForTile(hover.x, hover.y);
     //TODO: working?
-    Gfx::drawAnimated(LSI(CMBTCITY, 67), hoverCoords.x, hoverCoords.y, 0);
+    Gfx::drawAnimated(hover_tile, hoverCoords.x, hoverCoords.y, 0);
     
     Fonts::drawString(Fonts::format("%u,%u", hover.x, hover.y), FontFaces::Small::WHITE, 5, 5, ALIGN_LEFT);
   }
 
-  Gfx::draw(LSI(BACKGRND, 3), 0, 200-36);
+  SpriteInfo lowerBg = lower_backdrop;
+  Gfx::draw(lowerBg, 0, HEIGHT - lowerBg.sh());
   
   /*
   if (subState == SubState.SPELL_CAST)
@@ -1035,7 +1040,7 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
   {
     if (unit)
     {
-      SDL::gvm->unitDetailView()->setUnit(unit->getUnit());
+      SDL::gvm->unitDetailView()->setUnit(unit->getUnit(), false);
       SDL::gvm->switchOverview(VIEW_UNIT);
     }
   }
@@ -1109,5 +1114,8 @@ Coord CombatView::tileForCoords(s16 x, s16 y)
 
 void CombatView::mouseMoved(u16 x, u16 y, MouseButton b)
 {
-  hover = tileForCoords(x, y);
+  if (y < HEIGHT - SpriteInfo(lower_backdrop).sh())
+    hover = tileForCoords(x, y);
+  else
+    hover.x = -1;
 }

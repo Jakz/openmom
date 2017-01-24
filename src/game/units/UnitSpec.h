@@ -186,14 +186,17 @@ enum class Property : u8
   BREATH_ATTACK // TODO: implement to get it from skills
 };
 
-class Properties
+class Propertable
 {
 public:
-  virtual s16 getBaseProperty(Property property) const { return 1; }
-  virtual s16 getBonusProperty(Property property) const { return 1; }
+  virtual s16 getBaseProperty(Property property) const { return 0; }
+  virtual s16 getBonusProperty(Property property) const { return 0; }
   
   s16 getProperty(Property property) const { return getBaseProperty(property) + getBonusProperty(property); }
   template<typename T> T getEnumProperty(Property property) const { return static_cast<T>(getProperty(property)); }
+  
+  MeleeInfo getMeleeInfo() const { return MeleeInfo(getEnumProperty<MeleeType>(Property::MELEE_TYPE), getProperty(Property::MELEE)); }
+  RangedInfo getRangedInfo() const { return RangedInfo(getEnumProperty<Ranged>(Property::RANGED_TYPE), getProperty(Property::RANGED), getProperty(Property::AMMO)); }
 };
 
 enum class HeroType : u8
