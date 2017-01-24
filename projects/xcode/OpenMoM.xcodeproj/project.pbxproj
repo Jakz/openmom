@@ -185,6 +185,7 @@
 		04C1F4911B25373000F7688A /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
 		04C729C119853F4E002F16E6 /* MainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729BF19853F4E002F16E6 /* MainView.cpp */; };
 		04C729C41985F1B1002F16E6 /* BookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729C21985F1B1002F16E6 /* BookView.cpp */; };
+		04CE420E1E37DA2A00CFD3B9 /* DrawQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CE420C1E37DA2A00CFD3B9 /* DrawQueue.cpp */; };
 		04E218861C02A386005784E1 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04E218841C02A386005784E1 /* format.cc */; };
 		04E218871C02A386005784E1 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04E218841C02A386005784E1 /* format.cc */; };
 		04E2829C1E01A7DB00DD673D /* OriginalSave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */; };
@@ -413,6 +414,8 @@
 		04C729C019853F4E002F16E6 /* MainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainView.h; sourceTree = "<group>"; };
 		04C729C21985F1B1002F16E6 /* BookView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BookView.cpp; sourceTree = "<group>"; };
 		04C729C31985F1B1002F16E6 /* BookView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BookView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		04CE420C1E37DA2A00CFD3B9 /* DrawQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawQueue.cpp; sourceTree = "<group>"; };
+		04CE420D1E37DA2A00CFD3B9 /* DrawQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawQueue.h; sourceTree = "<group>"; };
 		04E218841C02A386005784E1 /* format.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = format.cc; sourceTree = "<group>"; };
 		04E218851C02A386005784E1 /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = format.h; sourceTree = "<group>"; };
 		04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OriginalSave.cpp; sourceTree = "<group>"; };
@@ -756,6 +759,8 @@
 			children = (
 				046428F11E0CE6CB003A76D8 /* Dialogs.cpp */,
 				046428F21E0CE6CB003A76D8 /* Dialogs.h */,
+				04CE420C1E37DA2A00CFD3B9 /* DrawQueue.cpp */,
+				04CE420D1E37DA2A00CFD3B9 /* DrawQueue.h */,
 				044E466B1980202D00E396AD /* MiniMap.cpp */,
 				044E466C1980202D00E396AD /* MiniMap.h */,
 				0464E1181981D1EF009C91ED /* CityScape.cpp */,
@@ -1025,6 +1030,7 @@
 				04243F2E197EE9E700E8A716 /* SpellBook.cpp in Sources */,
 				044247121980B97900A8D7CC /* EventMechanics.cpp in Sources */,
 				0439E98C19868F8A0009BFF7 /* ArmyView.cpp in Sources */,
+				04CE420E1E37DA2A00CFD3B9 /* DrawQueue.cpp in Sources */,
 				04037621197B539400A5B5FC /* Tile.cpp in Sources */,
 				046428FE1E117C2D003A76D8 /* Help.cpp in Sources */,
 				0464E11419813E1A009C91ED /* CityMechanics.cpp in Sources */,

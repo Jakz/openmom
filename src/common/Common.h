@@ -427,31 +427,34 @@ public:
 using lbx_index = s16;
 using sprite_ref = SpriteInfo::data_type;
 
-struct ScreenCoord
+struct Point
 {
   s16 x;
   s16 y;
   
-  ScreenCoord() : x(-1), y(-1) { }
-  ScreenCoord(s16 x, s16 y) : x(x), y(y) { }
-  bool operator==(const ScreenCoord& o) const { return x == o.x && y == o.y; }
+  Point() : x(-1), y(-1) { }
+  Point(s16 x, s16 y) : x(x), y(y) { }
+  template<typename T, typename std::enable_if<std::is_base_of<Point, T>::value, int>::type = 0>
+  Point(const T& other) : x(other.x), y(other.y) { }
+  
+  bool operator==(const Point& o) const { return x == o.x && y == o.y; }
   
   
-  ScreenCoord& operator+=(s16 i) { x += i; y += i; return *this; }
+  Point& operator+=(s16 i) { x += i; y += i; return *this; }
   
-  ScreenCoord operator+(const ScreenCoord& o) const { return ScreenCoord(x + o.x, y + o.y); }
-  ScreenCoord operator-(const ScreenCoord& o) const { return ScreenCoord(x - o.x, y - o.y); }
+  Point operator+(const Point& o) const { return Point(x + o.x, y + o.y); }
+  Point operator-(const Point& o) const { return Point(x - o.x, y - o.y); }
 
   
-  ScreenCoord operator-(s16 v) const { return ScreenCoord(x+v, y+v); }
+  Point operator-(s16 v) const { return Point(x+v, y+v); }
   
   bool isValid() const { return x != -1; }
   
-  static ScreenCoord INVALID;
-  static ScreenCoord ZERO;
+  static Point INVALID;
+  static Point ZERO;
 };
 
-using Coord = ScreenCoord;
+using Coord = Point;
 
 class Upkeep
 {

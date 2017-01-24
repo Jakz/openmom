@@ -71,14 +71,14 @@ private:
 public:
   struct LayoutZone
   {
-    ScreenCoord coords;
+    Point coords;
     s16 x, y;
     s16 w, h;
     
     bool central, seaside;
     
     LayoutZone() : coords(0,0) { }
-    LayoutZone(ScreenCoord coords, s16 x, s16 y, s16 w, s16 h, bool central = false, bool seaside = false) : coords(coords), x(x), y(y), w(w), h(h), central(central), seaside(seaside) { }
+    LayoutZone(Point coords, s16 x, s16 y, s16 w, s16 h, bool central = false, bool seaside = false) : coords(coords), x(x), y(y), w(w), h(h), central(central), seaside(seaside) { }
     LayoutZone(s16 x, s16 y, s16 w, s16 h, bool central = false, bool seaside = false) : coords(x,y), x(0), y(0), w(w), h(h), central(central), seaside(seaside) { }
     
     bool operator==(const LayoutZone& z2) const

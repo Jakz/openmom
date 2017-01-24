@@ -11,9 +11,11 @@
 
 #include "View.h"
 #include "CombatMap.h"
+#include "DrawQueue.h"
 
 #include <vector>
 #include <memory>
+#include <cmath>
 
 class ViewManager;
 
@@ -68,16 +70,41 @@ private:
   
   void drawUnitProps(const combat::CombatUnit* unit, bool onTheLeft);
   
-  bool entriesDirty;
-  std::vector<std::unique_ptr<GfxEntry>> entries;
-  std::unordered_map<const combat::CombatUnit*, UnitGfxEntry*> unitsMap;
   
-  
-  void addGfxEntry(GfxEntry* entry)
+  struct entry_comparator
   {
-    entriesDirty = true;
-    entries.push_back(std::unique_ptr<GfxEntry>(entry));
-  }
+    bool operator()(const std::unique_ptr<CombatView::GfxEntry>& e1, const std::unique_ptr<CombatView::GfxEntry>& e2) const
+    {
+      if (e1->priority() < 0 && e2->priority() >= 0)
+        return true;
+      else if (e1->priority() >= 0 && e2->priority() < 0)
+        return false;
+      else if (e1->priority() < 0 && e2->priority() < 0)
+        return e1->priority() < e2->priority();
+      else if (e1 == e2)
+        return false;
+      
+      if (e1->x() != e2->x())
+      {
+        /* this special condition is needed because of how coordinates are used
+         in the isometric map
+         */
+        if (abs(e1->x() - e2->x()) == 1)
+          return e1->y() < e2->y();
+        return e1->x() < e2->x();
+      }
+      else if (e1->y() != e2->y())
+        return e1->y() < e2->y();
+      else
+      {
+        assert(e1->priority() != e2->priority());
+        return e1->priority() < e2->priority();
+      }
+    }
+  };
+  
+  DrawQueue<GfxEntry, entry_comparator> entries;
+  std::unordered_map<const combat::CombatUnit*, UnitGfxEntry*> unitsMap;
   
   void addRoads();
   void addFlyingFortress();
@@ -97,13 +124,13 @@ public:
   
   void setEnvironment(combat::CombatEnvironment env);
   
-  //ScreenCoord coordsForTile(u16 x, u16 y);
+  //Point coordsForTile(u16 x, u16 y);
 
   void mouseReleased(u16 x, u16 y, MouseButton b) override;
   void mouseMoved(u16 x, u16 y, MouseButton b) override;
   
   
-  static ScreenCoord coordsForTile(u16 x, u16 y);
+  static Point coordsForTile(u16 x, u16 y);
   static Coord tileForCoords(s16 x, s16 y);
 
   

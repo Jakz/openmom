@@ -21,9 +21,9 @@
 #include "UnitSpec.h"
 #include "Unit.h"
 
-static const ScreenCoord normalBaseCoords = ScreenCoord(31, 6);
-static const ScreenCoord viewOnlyBaseCoord = ScreenCoord(61, 6);
-static const ScreenCoord heroHireCoords = ScreenCoord(25, 17);
+static const Point normalBaseCoords = Point(31, 6);
+static const Point viewOnlyBaseCoord = Point(61, 6);
+static const Point heroHireCoords = Point(25, 17);
 
 
 enum lbx_indices

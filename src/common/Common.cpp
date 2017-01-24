@@ -42,7 +42,7 @@ const Palette* SpriteInfo::palette() const
   return data->palette;
 }
 
-ScreenCoord ScreenCoord::INVALID = ScreenCoord(-1,-1);
-ScreenCoord ScreenCoord::ZERO = ScreenCoord(0,0);
+Point Point::INVALID = Point(-1,-1);
+Point Point::ZERO = Point(0,0);
 
 

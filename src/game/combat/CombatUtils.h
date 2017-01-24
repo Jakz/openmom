@@ -18,14 +18,13 @@ namespace combat
     CoordJump(Dir dir, u16 length = 1) : direction(dir), length(length) { }
   };
 
-  struct CombatCoord
+  struct CombatCoord : public Point
   {
-    s8 x, y;
-    
     CombatCoord() = default;
-    CombatCoord(s8 x, s8 y) : x(x), y(y) { }
+    CombatCoord(s16 x, s16 y) : Point(x,y) { }
+    CombatCoord(const Point& point) : Point(point) { }
     
-    operator bool() const { return x != -1; }
+    operator bool() const { return isValid(); }
     CombatCoord neighbour(Dir facing) const;
     
     static constexpr const s16 DIRS[12][2] = {{0,-2},{0,-1},{1,-1},{1,0},{0,1},{1,1},{0,2},{-1,1},{0,1},{-1,0},{-1,-1},{0,-1}};

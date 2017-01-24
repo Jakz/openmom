@@ -10,7 +10,7 @@ namespace dialogs
   class InfoMenu
   {
   private:
-    ScreenCoord b;
+    Point b;
     u16 w, h;
     
   public:
@@ -22,10 +22,10 @@ namespace dialogs
   class ItemDetailDialog
   {
   private:
-    ScreenCoord b;
+    Point b;
     
   public:
-    ItemDetailDialog(ScreenCoord base) : b(base) { }
+    ItemDetailDialog(Point base) : b(base) { }
     void draw();
     
     

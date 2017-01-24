@@ -79,39 +79,6 @@ enum priority : priority_t
   priority_darkness_wall_front = priority_stone_wall_front + 1,
 };
 
-struct entry_comparator
-{
-  bool operator()(const std::unique_ptr<CombatView::GfxEntry>& e1, const std::unique_ptr<CombatView::GfxEntry>& e2) const
-  {
-    if (e1->priority() < 0 && e2->priority() >= 0)
-      return true;
-    else if (e1->priority() >= 0 && e2->priority() < 0)
-      return false;
-    else if (e1->priority() < 0 && e2->priority() < 0)
-      return e1->priority() < e2->priority();
-    else if (e1 == e2)
-      return false;
-    
-    if (e1->x() != e2->x())
-    {
-      /* this special condition is needed because of how coordinates are used
-         in the isometric map
-       */
-      if (std::abs(e1->x() - e2->x()) == 1)
-        return e1->y() < e2->y();
-      return e1->x() < e2->x();
-    }
-    else if (e1->y() != e2->y())
-      return e1->y() < e2->y();
-    else
-    {
-      assert(e1->priority() != e2->priority());
-      return e1->priority() < e2->priority();
-    }
-  }
-};
-
-
 #pragma mark Tile Joins management
 
 enum class DirJoin
@@ -320,7 +287,7 @@ struct StoneWallGfxSpec
 {
   SpriteInfo sprite;
   priority_t priority;
-  ScreenCoord anchor;
+  Point anchor;
   StoneWallGfxSpec() = default;
   //TODO: anchors must be fixed
   StoneWallGfxSpec(SpriteInfo sprite, priority_t priority) : sprite(sprite), priority(priority), anchor(2,9) { }
@@ -345,7 +312,7 @@ struct NonSolidWallSpec
 {
   SpriteInfo sprite1, sprite2;
   bool behind1, behind2;
-  ScreenCoord anchor1, anchor2;
+  Point anchor1, anchor2;
   
   NonSolidWallSpec() = default;
   //TODO: anchors must be fixed
@@ -393,7 +360,7 @@ struct BuildingGfxSpec
 {
   SpriteInfo info;
   u32 count;
-  ScreenCoord offset;
+  Point offset;
 };
 
 static const std::unordered_map<TileBuilding, BuildingGfxSpec, enum_hash> buildingGraphics = {
@@ -413,21 +380,24 @@ static const std::unordered_map<TileBuilding, BuildingGfxSpec, enum_hash> buildi
 class UnitGfxEntry : public CombatView::GfxEntry
 {
 private:
+  bool isMoving;
+  Point position;
+  Point goal;
   CombatUnit* unit;
   
 public:
-  UnitGfxEntry(CombatUnit* unit) : CombatView::GfxEntry(priority_units), unit(unit) { }
+  UnitGfxEntry(CombatUnit* unit) : CombatView::GfxEntry(priority_units), unit(unit), isMoving(false), position(unit->position.position) { }
   ~UnitGfxEntry()
   {
     //TODO: combatView->unitsMap.erase(this);
   }
   
-  u16 x() const override { return unit->x(); }
-  u16 y() const override { return unit->y(); }
+  u16 x() const override { return position.x; }
+  u16 y() const override { return position.y; }
   
   void draw() const override
   {
-    ScreenCoord coords = CombatView::coordsForTile(unit->x(), unit->y());
+    Point coords = CombatView::coordsForTile(x(), y());
     
     if (unit->selected)
     {
@@ -451,7 +421,7 @@ public:
   
   void draw() const override
   {
-    ScreenCoord coords = CombatView::coordsForTile(_x, _y);
+    Point coords = CombatView::coordsForTile(_x, _y);
     Gfx::drawAnimated(info, coords, _animOffset);
     Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
   }
@@ -471,7 +441,7 @@ private:
   struct PropGfx
   {
     SpriteInfo gfx;
-    ScreenCoord offset;
+    Point offset;
   };
   
   TileProp _type;
@@ -486,7 +456,7 @@ public:
       if (i < count)
       {
         sprites[i] = { info.relative(Util::randomIntUpTo(VARIANTS_COUNT)),
-          ScreenCoord(Util::randomIntInclusive(-MAX_OFFSET_X, MAX_OFFSET_X), Util::randomIntInclusive(-MAX_OFFSET_Y, MAX_OFFSET_Y)) };
+          Point(Util::randomIntInclusive(-MAX_OFFSET_X, MAX_OFFSET_X), Util::randomIntInclusive(-MAX_OFFSET_Y, MAX_OFFSET_Y)) };
       }
       else
         sprites[i] = { LSI_PLACEHOLD };
@@ -502,10 +472,10 @@ public:
   
   void draw() const override
   {
-    static const ScreenCoord TREE_OFFSET = ScreenCoord(-6, -13);
-    static const ScreenCoord ROCK_OFFSET = ScreenCoord(-8, -11);
+    static const Point TREE_OFFSET = Point(-6, -13);
+    static const Point ROCK_OFFSET = Point(-8, -11);
     
-    ScreenCoord coords = CombatView::coordsForTile(_x, _y) + ScreenCoord(CombatView::TILE_WIDTH/2, CombatView::TILE_HEIGHT/2);
+    Point coords = CombatView::coordsForTile(_x, _y) + Point(CombatView::TILE_WIDTH/2, CombatView::TILE_HEIGHT/2);
 
     for (size_t i = 0; i < MAX_SPRITES; ++i)
     {
@@ -524,11 +494,11 @@ protected:
   bool animated;
   SpriteInfo info;
   u16 _x, _y;
-  ScreenCoord _anchor;
+  Point _anchor;
 
   void draw(SpriteInfo info) const
   {
-    ScreenCoord coords = CombatView::coordsForTile(_x, _y);
+    Point coords = CombatView::coordsForTile(_x, _y);
     
     if (animated)
       Gfx::drawAnimated(info, coords + _anchor);
@@ -581,7 +551,7 @@ class NonSolidWallGfxEntry : public StaticGfxEntry
   const CombatTile* const tile;
   
 public:
-  NonSolidWallGfxEntry(const CombatTile* tile, SpriteInfo info, priority_t priority, ScreenCoord anchor) :
+  NonSolidWallGfxEntry(const CombatTile* tile, SpriteInfo info, priority_t priority, Point anchor) :
   StaticGfxEntry(priority, info, tile->x(), tile->y(), anchor.x, anchor.y, true), tile(tile) { }
 };
 
@@ -604,7 +574,7 @@ public:
 };
 
 
-CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1)), entriesDirty(true)
+CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1))
 {
   buttons.resize(bt_count);
   
@@ -656,7 +626,7 @@ void CombatView::prepareGraphics()
   {
     auto* gfx = new UnitGfxEntry(unit);
     unitsMap[unit] = gfx;
-    addGfxEntry(gfx);
+    entries.add(gfx);
   }
 
   //addRoads();
@@ -674,18 +644,18 @@ void CombatView::prepareGraphics()
         if (tile->stoneWall != WallType::NO_WALL)
         {
           //TODO: determine real house type
-          addGfxEntry(new StoneWallGfxEntry(tile, houseType));
+          entries.add(new StoneWallGfxEntry(tile, houseType));
         }
         
         /* if there is fire wall generate graphics */
         if (tile->fireWall != WallType::NO_WALL)
         {
           const auto& spec = nonSolidWall.find(tile->fireWall)->second;
-          addGfxEntry(new NonSolidWallGfxEntry(tile, spec.sprite1, spec.behind1 ? priority_fire_wall_behind : priority_fire_wall_front, spec.anchor1));
+          entries.add(new NonSolidWallGfxEntry(tile, spec.sprite1, spec.behind1 ? priority_fire_wall_behind : priority_fire_wall_front, spec.anchor1));
 
           if (spec.sprite2.isValid())
           {
-            addGfxEntry(new NonSolidWallGfxEntry(tile, spec.sprite2, spec.behind2 ? priority_fire_wall_behind : priority_fire_wall_front, spec.anchor2));
+            entries.add(new NonSolidWallGfxEntry(tile, spec.sprite2, spec.behind2 ? priority_fire_wall_behind : priority_fire_wall_front, spec.anchor2));
           }
         }
         
@@ -693,11 +663,11 @@ void CombatView::prepareGraphics()
         if (tile->darknessWall != WallType::NO_WALL)
         {
           const auto& spec = nonSolidWall.find(tile->darknessWall)->second;
-          addGfxEntry(new NonSolidWallGfxEntry(tile, spec.sprite1.relative(14), spec.behind1 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor1));
+          entries.add(new NonSolidWallGfxEntry(tile, spec.sprite1.relative(14), spec.behind1 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor1));
 
           if (spec.sprite2.isValid())
           {
-            addGfxEntry(new NonSolidWallGfxEntry(tile, spec.sprite2.relative(14), spec.behind2 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor2));
+            entries.add(new NonSolidWallGfxEntry(tile, spec.sprite2.relative(14), spec.behind2 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor2));
           }
         }
         
@@ -717,21 +687,21 @@ void CombatView::prepareGraphics()
           assert(it != roadGraphics.end());
           
           SpriteInfo info = (tile->road == RoadType::NORMAL ? it->second.normal : it->second.enchanted)[Util::oneOfTwoChance()];
-          addGfxEntry(new StaticGfxEntry(priority_roads, info, tile->x(), tile->y(), 0, TILE_HEIGHT/2, true));
+          entries.add(new StaticGfxEntry(priority_roads, info, tile->x(), tile->y(), 0, TILE_HEIGHT/2, true));
         }
         
         if (tile->prop != TileProp::NONE)
         {
           size_t count = tile->prop == TileProp::TREES ? Util::randomIntInclusive(2, 3) : 1;
           SpriteInfo info = tile->prop == TileProp::ROCK ? rock : tree;
-          addGfxEntry(new PropGfxEntry(tile->x(), tile->y(), tile->prop, info.lbx(environmentLBX) ,count));
+          entries.add(new PropGfxEntry(tile->x(), tile->y(), tile->prop, info.lbx(environmentLBX) ,count));
         }
         
         if (tile->building != TileBuilding::NONE)
         {
           const auto& spec = buildingGraphics.find(tile->building)->second;
           SpriteInfo gfx = tile->building == TileBuilding::HOUSE ? GfxData::raceHouseGfxSpec(houseType).combatHouse : spec.info;
-          addGfxEntry(new StaticGfxEntry(gfx.relative(Util::randomIntUpTo(spec.count)), tile->x(), tile->y(), spec.offset.x, spec.offset.y));
+          entries.add(new StaticGfxEntry(gfx.relative(Util::randomIntUpTo(spec.count)), tile->x(), tile->y(), spec.offset.x, spec.offset.y));
         }
         
         /* manage base tile graphics */
@@ -740,23 +710,23 @@ void CombatView::prepareGraphics()
           /* rough terrain graphics is computed through mask with the neighbours */
           DirJoin mask = computeMask(MaskMode::ALL, tile, [](const CombatTile* tile) { return !tile || tile->type == combat::TileType::ROUGH; });
           SpriteInfo info = roughTerrainMap[mask];
-          addGfxEntry(new TileGfxEntry(info.lbx(environmentLBX), x, y));
+          entries.add(new TileGfxEntry(info.lbx(environmentLBX), x, y));
         }
         else if (tile->type == combat::TileType::HILLS)
         {
           /* hills terrain graphics is computed through mask with the neighbours */
           DirJoin mask = computeMask(MaskMode::DIAGONAL, tile, [](const CombatTile* tile) { return !tile || tile->type == combat::TileType::HILLS; });
           SpriteInfo info = hillsMap.find(mask)->second;
-          addGfxEntry(new TileGfxEntry(info.lbx(environmentLBX), x, y));
+          entries.add(new TileGfxEntry(info.lbx(environmentLBX), x, y));
         }
         else
         {
           /* standard environment has 4 possible tiles for normal ground */
           if (environment.type != CombatEnvironment::Type::OCEAN)
-            addGfxEntry(new TileGfxEntry(SpriteInfo(environmentLBX, Util::randomIntUpTo(4)), x, y));
+            entries.add(new TileGfxEntry(SpriteInfo(environmentLBX, Util::randomIntUpTo(4)), x, y));
           else
           /* ocean environment graphics is special as it has just these 4 tiles */
-            addGfxEntry(new TileGfxEntry(SpriteInfo(environment.plane == Plane::ARCANUS ? water_tile_arcanus : water_tile_myrran).relative(Util::randomIntUpTo(4)), x, y, Util::randomIntUpTo(4)));
+            entries.add(new TileGfxEntry(SpriteInfo(environment.plane == Plane::ARCANUS ? water_tile_arcanus : water_tile_myrran).relative(Util::randomIntUpTo(4)), x, y, Util::randomIntUpTo(4)));
 
         }
         
@@ -779,7 +749,7 @@ void CombatView::activate()
   this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin(), &g->combatMechanics);
   
   prepareGraphics();
-  this->entriesDirty = true;
+  entries.setDirty();
 }
 
 void CombatView::deactivate()
@@ -787,19 +757,15 @@ void CombatView::deactivate()
   entries.clear();
 }
 
-void CombatView::addRoads() { addGfxEntry(new FixedGfxEntry(roads_static, 16, 40)); }
-void CombatView::addFlyingFortress() { addGfxEntry(new FixedGfxEntry(flying_fortess, 16, 40)); }
+void CombatView::addRoads() { entries.add(new FixedGfxEntry(roads_static, 16, 40)); }
+void CombatView::addFlyingFortress() { entries.add(new FixedGfxEntry(flying_fortess, 16, 40)); }
 
-void CombatView::addHouse(SpriteInfo info, int x, int y) { addGfxEntry(new StaticGfxEntry(info, x, y, 0, 8)); }
+void CombatView::addHouse(SpriteInfo info, int x, int y) { entries.add(new StaticGfxEntry(info, x, y, 0, 8)); }
 
 
 void CombatView::draw()
 {
-  if (entriesDirty)
-  {
-    std::sort(entries.begin(), entries.end(), entry_comparator());
-    entriesDirty = false;
-  }
+  entries.sortIfNeeded();
   
   /*if (subState != SubState.SPELL_CAST && player.spellTarget() != null)
   {
@@ -863,14 +829,13 @@ void CombatView::draw()
     Fonts.drawString("Spell", Fonts.Face.TEAL_MEDIUM, 20, 20, Align.LEFT);
   */
   
-  for (const auto& entry : entries)
-    entry->draw();
+  entries.draw();
   
   if (hover.x != -1)
   {
-    ScreenCoord hoverCoords = coordsForTile(hover.x, hover.y);
+    Point hoverCoords = coordsForTile(hover.x, hover.y);
     //TODO: working?
-    Gfx::drawAnimated(hover_tile, hoverCoords.x, hoverCoords.y, 0);
+    Gfx::drawAnimated(hover_tile, hoverCoords, 0);
     
     Fonts::drawString(Fonts::format("%u,%u", hover.x, hover.y), FontFaces::Small::WHITE, 5, 5, ALIGN_LEFT);
   }
@@ -1054,7 +1019,7 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 constexpr int OX = -CombatView::TILE_WIDTH;// 0;
 constexpr int OY = -CombatView::TILE_HEIGHT/2;//8;
 
-ScreenCoord CombatView::coordsForTile(u16 x, u16 y) { return ScreenCoord(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
+Point CombatView::coordsForTile(u16 x, u16 y) { return Point(32*x + OX + (y % 2 == 0 ? 0 : 16), 8*y + OY); }
 
 Coord CombatView::tileForCoords(s16 x, s16 y)
 {

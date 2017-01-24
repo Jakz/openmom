@@ -29,13 +29,13 @@ SpellEffect::SpellEffect(SpriteInfo effectId, combat::CombatCoord tile) : Discre
 {
   u16 w = effectId.sw(), h = effectId.sh();
 
-  coords = CombatView::coordsForTile(tile.x, tile.y) + ScreenCoord(CombatView::TILE_WIDTH/2 - w/2 - 1, - h + CombatView::TILE_HEIGHT);
+  coords = CombatView::coordsForTile(tile.x, tile.y) + Point(CombatView::TILE_WIDTH/2 - w/2 - 1, - h + CombatView::TILE_HEIGHT);
 }
 
 SpellEffect::SpellEffect(LocalPlayer* player, SpriteInfo effectId, int tx, int ty)
 : DiscreteAnimation(TICKS_PER_FRAME*effectId.count()), effect(effectId), frame(0), counter(0), force(false)
 {
-  coords = ScreenCoord(tx-15, ty-25);
+  coords = Point(tx-15, ty-25);
 }
 
 void SpellEffect::step()
@@ -56,7 +56,7 @@ SummonAnimation::SummonAnimation(WizardID wizard, const SummonSpec* spec)
 
 void SummonAnimation::step()
 {
-  ScreenCoord base = ScreenCoord(30, 42);
+  Point base = Point(30, 42);
   u16 creatureTopY = 18;
   u16 creatureBottomY = 100;
 

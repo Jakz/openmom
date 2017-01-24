@@ -10,7 +10,7 @@
 class SkillDraw
 {
 private:
-  ScreenCoord base;
+  Point base;
   
   u16 page;
   u16 totalPages;
@@ -19,7 +19,7 @@ private:
   u16 spY(s16 i, s16 sy) { return sy + (17*(i%4)); }
       
 public:
-  SkillDraw(ScreenCoord coord = ScreenCoord(0,0)) : page(0), totalPages(0), base(coord) { }
+  SkillDraw(Point coord = Point(0,0)) : page(0), totalPages(0), base(coord) { }
   
   void reset(const Unit* unit)
   {
@@ -28,7 +28,7 @@ public:
     totalPages = a/8 + (a%8 == 0 ? 0 : 1) + (unit->type() == Productable::Type::HERO ? 1 : 0);
   }
   
-  void setPosition(u16 x, u16 y) { base = ScreenCoord(x,y); }
+  void setPosition(u16 x, u16 y) { base = Point(x,y); }
   
   u16 pages() { return totalPages; }
   bool showTopArrow() { return page > 0; }

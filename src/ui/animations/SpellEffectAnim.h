@@ -19,7 +19,7 @@ namespace anims
     SpriteInfo effect;
     bool force;
 
-    ScreenCoord coords;
+    Point coords;
     u16 counter;
     u16 frame;
     

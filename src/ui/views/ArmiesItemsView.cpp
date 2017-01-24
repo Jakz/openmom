@@ -37,7 +37,7 @@ enum_simple_map<items::Class, SpriteInfo, 6> emptyItemBackground = {
   { items::Class::MISC, LBXI(ITEMISC, 23 ) }
 };
 
-static const ScreenCoord heroPositions[] = {{32,15},{32,61},{32,107},{167,15},{167,61},{167,107}};
+static const Point heroPositions[] = {{32,15},{32,61},{32,107},{167,15},{167,61},{167,107}};
 
 ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
 {

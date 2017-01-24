@@ -110,7 +110,7 @@ public:
   static void draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r = 0, u16 c = 0);
   
   static void draw(SpriteInfo info, s16 x, s16 y) { draw(info.sheet(), x, y, info.x(), info.y()); }
-  static void draw(SpriteInfo info, ScreenCoord coord) { draw(info, coord.x, coord.y); }
+  static void draw(SpriteInfo info, Point coord) { draw(info, coord.x, coord.y); }
 
   static void draw(SpriteInfo info, const Palette* palette, s16 x, s16 y, u16 f) { bindPalette(palette); draw(info.sheet(), x, y, 0, f); unbindPalette(); }
   static void draw(SpriteInfo info, const Palette* palette, s16 x, s16 y) { bindPalette(palette); draw(info.sheet(), x, y, info.x(), info.y()); unbindPalette(); }
@@ -123,7 +123,7 @@ public:
   static void drawGrayScale(SpriteInfo info, s16 x, s16 y) { drawGrayScale(info.sheet(), info.x(), info.y(), x, y); }
   static void drawGrayScale(const SpriteSheet* src, u16 r, u16 c, u16 x, u16 y);
   
-  static void drawAnimated(SpriteInfo info, ScreenCoord c, s16 offset = 0, s16 animFactor = 1) { drawAnimated(info, c.x, c.y, offset, animFactor); }
+  static void drawAnimated(SpriteInfo info, Point c, s16 offset = 0, s16 animFactor = 1) { drawAnimated(info, c.x, c.y, offset, animFactor); }
   static void drawAnimated(SpriteInfo info, u16 x, u16 y, s16 offset = 0, s16 animFactor = 1);
   
   static void rawDraw(SpriteInfo info, u16 x, u16 y);

@@ -45,7 +45,7 @@ private:
   } mode;
   
   SkillDraw skillDraw;
-  ScreenCoord c;
+  Point c;
   
   Unit* unit;
   u32 hireCost;

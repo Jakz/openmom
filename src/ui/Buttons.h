@@ -96,7 +96,7 @@ struct TextInfo
 {
   std::string label;
   const FontSpriteSheet* font;
-  ScreenCoord position;
+  Point position;
   
   TextInfo() = default;
   TextInfo(const std::string& label, const FontSpriteSheet* font) : label(label), font(font) { }

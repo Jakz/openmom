@@ -85,7 +85,7 @@ void Button::setPosition(u16 x, u16 y)
   /* update label position if it was present */
   //TODO: verify offset fomula which is not precise
   if (labelGfx.isPresent())
-    labelGfx->position = ScreenCoord(x + gfx.normal->sw()/2, y + gfx.normal->sh()/2 - labelGfx->font->sh()/2);
+    labelGfx->position = Point(x + gfx.normal->sw()/2, y + gfx.normal->sh()/2 - labelGfx->font->sh()/2);
 }
 
 template<typename T>

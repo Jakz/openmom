@@ -29,7 +29,7 @@ enum lbx_indices
 
 using namespace std;
 
-ProductionView::ProductionView(ViewManager *gvm) : View(gvm), city(nullptr), selected(0), which(SIDE_LEFT), unlockedProductableString(""), skillDraw(ScreenCoord(85,107))
+ProductionView::ProductionView(ViewManager *gvm) : View(gvm), city(nullptr), selected(0), which(SIDE_LEFT), unlockedProductableString(""), skillDraw(Point(85,107))
 {
   buttons.resize(BUTTON_COUNT);
   

@@ -37,8 +37,8 @@ void Blink::step()
 
 UnitMovement::UnitMovement(LocalPlayer* player, const Army* army, const decltype(moves)& moves) : ContinuousAnimation(200), player(player), army(army), moves(moves)
 {
-  ScreenCoord s = Viewport::screenCoordsForTile(player, moves.front());
-  ScreenCoord d = Viewport::screenCoordsForTile(player, *::next(moves.begin()));
+  Point s = Viewport::screenCoordsForTile(player, moves.front());
+  Point d = Viewport::screenCoordsForTile(player, *::next(moves.begin()));
   
   tx = d.x - s.x;
   ty = d.y - s.y;
