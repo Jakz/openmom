@@ -380,10 +380,11 @@ static const std::unordered_map<TileBuilding, BuildingGfxSpec, enum_hash> buildi
 class UnitGfxEntry : public CombatView::GfxEntry
 {
 private:
-  bool isMoving;
-  Point position;
-  Point goal;
   CombatUnit* unit;
+  mutable CombatCoord position;
+  CombatCoord goal;
+  mutable float progress;
+  mutable bool isMoving;
   
 public:
   UnitGfxEntry(CombatUnit* unit) : CombatView::GfxEntry(priority_units), unit(unit), isMoving(false), position(unit->position.position) { }
@@ -398,14 +399,44 @@ public:
   void draw() const override
   {
     Point coords = CombatView::coordsForTile(x(), y());
+    UnitDraw::CombatAction action = UnitDraw::CombatAction::STAY;
     
-    if (unit->selected)
+    if (!isMoving)
     {
-      Gfx::draw(SpriteInfo(TextureID::COMBAT_MISC_TILES, 0, 1), coords.x, coords.y);
+      if (unit->selected)
+        Gfx::draw(SpriteInfo(TextureID::COMBAT_MISC_TILES, 0, 1), coords.x, coords.y);
+    }
+    else
+    {
+      if (progress >= 1.0f)
+      {
+        isMoving = false;
+        position = goal;
+        coords = CombatView::coordsForTile(x(), y());
+      }
+      else
+      {
+        Point destCoords = CombatView::coordsForTile(goal.x, goal.y);
+        Point dx = destCoords - coords;
+        coords += dx * progress;
+        
+        progress += 0.05f;
+        
+        action = UnitDraw::CombatAction::MOVE;
+      }
     }
     
-    //if (player->shouldDrawSelectedArmy() || player->)
-    UnitDraw::drawUnitIsoCombat(unit->getUnit(), coords.x, coords.y - 17, unit->facing(), UnitDraw::CombatAction::STAY);
+    UnitDraw::drawUnitIsoCombat(unit->getUnit(), coords.x, coords.y - 17, unit->facing(), action);
+  }
+  
+  void move(Dir direction)
+  {
+    isMoving = true;
+    progress = 0.0f;
+    
+    goal = position.neighbour(direction);
+    //TODO: should facing be a property just of UnitGfxEntry and not CombatUnit since it's irrelevant for the logic
+    unit->setFacing(direction);
   }
 };
 
@@ -877,7 +908,7 @@ UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
   Unit* unit = new RaceUnit(Data::unit("barbarian_spearmen")->as<RaceUnitSpec>());
   Army* army = new Army(player);
   unit->setArmy(army);
-  CombatUnit* cunit = new CombatUnit(unit);
+  CombatUnit* cunit = new CombatUnit(Side::ATTACKER, unit);
   cunit->setPosition(x, y);
   return new UnitGfxEntry(cunit);
 }
@@ -899,15 +930,15 @@ void CombatView::drawUnitProps(const CombatUnit* cunit, bool onTheLeft)
   Gfx::drawLine(darkBorder, RX+DW-1, RY, RX+DW-1, RY+DH);
   Gfx::drawLine(darkBorder, RX+1, RY+DH-1, RX+DW-1, RY+DH-1);
 
-  const Unit* unit = cunit->getUnit();
-  const std::string unitName = unit->name();
-  float health = unit->health()->percentHealth();
+  const CombatUnit* unit = cunit;
+  const std::string unitName = unit->getUnit()->name();
+  float health = unit->getUnit()->health()->percentHealth();
   MeleeInfo melee = unit->getMeleeInfo();
-  RangedInfo ranged = unit->getRangedInfo();
-  MovementInfo movement = MovementInfo(MovementBaseType::WALKING, 2);
-  s16 defense = 2;
-  s16 resistance = 8;
-  const Level* level = unit->getExperienceLevel();
+  RangedInfo ranged = unit->getRangedInfo(); // TODO: should use actual ranged info to retrieve real ammo
+  MovementInfo movement = unit->getActualMovementInfo();
+  s16 defense = unit->getProperty(Property::SHIELDS);
+  s16 resistance = unit->getProperty(Property::RESIST);
+  const Level* level = unit->getUnit()->getExperienceLevel();
 
 
   // TODO: on Phantom Warriors example it's aligned by 1 pixel to the left, maybe it's an original rounding issue
@@ -934,6 +965,7 @@ void CombatView::drawUnitProps(const CombatUnit* cunit, bool onTheLeft)
     Fonts::drawString(Fonts::format("%d", ranged.strength), FontFaces::Tiny::GOLD_COMBAT, RX + 10, propy[1], ALIGN_RIGHT);
     Gfx::draw(GfxData::propGfx()[ranged.type].blackShadow, RX + 11, propy[1]-1);
     
+    /* TODO: if unit is caster it should show MP */
     if (ranged.ammo != 0)
     {
       Fonts::drawString(Fonts::format("%d", ranged.ammo), FontFaces::Tiny::GOLD_COMBAT, RX + 49, propy[2], ALIGN_RIGHT);
@@ -942,7 +974,7 @@ void CombatView::drawUnitProps(const CombatUnit* cunit, bool onTheLeft)
   }
 
   /* movement */
-  Fonts::drawString(Fonts::format("%d", movement.moves), FontFaces::Tiny::GOLD_COMBAT, RX + 10, propy[2], ALIGN_RIGHT);
+  Fonts::drawString(UnitDraw::stringForDoubleMovement(movement.moves, true), FontFaces::Tiny::GOLD_COMBAT, RX + 10, propy[2], ALIGN_RIGHT);
   Gfx::draw(GfxData::propGfx()[movement.type].blackShadow, RX + 11, propy[2]-1);
   
   /* defense */
@@ -976,6 +1008,8 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
       g->castSpell(unit->getUnit(), player, true);
     else if (unit && unit->hasMoves())
     {
+      unitsMap[unit]->move(Dir::NORTH_WEST);
+
       /*
       if (unit != combat.selectedUnit && unit.owner == player)
       {

@@ -439,12 +439,13 @@ struct Point
   
   bool operator==(const Point& o) const { return x == o.x && y == o.y; }
   
-  
+  Point& operator+=(const Point& other) { x += other.x; y += other.y; return *this; }
   Point& operator+=(s16 i) { x += i; y += i; return *this; }
   
   Point operator+(const Point& o) const { return Point(x + o.x, y + o.y); }
   Point operator-(const Point& o) const { return Point(x - o.x, y - o.y); }
 
+  Point operator*(float v) const { return Point(x*v, y*v); }
   
   Point operator-(s16 v) const { return Point(x+v, y+v); }
   

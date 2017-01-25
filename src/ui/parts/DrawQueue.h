@@ -4,14 +4,20 @@
 
 #include <vector>
 
+template<typename T, typename S> class DrawElement;
+
 template<typename T, typename S>
 class DrawQueue
 {
 private:
   bool _dirty;
   std::vector<std::unique_ptr<T>> _elements;
-  
+
 public:
+  DrawQueue()
+  {
+    static_assert(std::is_base_of<DrawElement<T,S>, T>::value, "Template type must be subclass of DrawElement");
+  }
   
   void sort()
   {
@@ -47,4 +53,15 @@ public:
   }
   
   void setDirty() { _dirty = true; }
+
+};
+
+template<typename T, typename S>
+class DrawElement
+{
+private:
+  DrawQueue<T,S>* queue;
+  
+public:
+  void setDirty() { queue->setDirty(); }
 };

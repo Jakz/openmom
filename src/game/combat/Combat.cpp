@@ -19,18 +19,18 @@
 using namespace std;
 using namespace combat;
 
-Combat::Combat(Army* a1, Army* a2, CombatMechanics* mechanics) : players{a1->getOwner(),a2->getOwner()}, selectedUnit(nullptr), current(a1->getOwner()), mechanics(mechanics), _map(new CombatMap(this, W,H))
+Combat::Combat(Army* defender, Army* attacker, CombatMechanics* mechanics) : players{defender->getOwner(),attacker->getOwner()}, selectedUnit(nullptr), current(defender->getOwner()), mechanics(mechanics), _map(new CombatMap(this, W,H))
 {
-  for (auto u1 : a1->getUnits())
+  for (auto u1 : defender->getUnits())
   {
-    CombatUnit* cu1 = new CombatUnit(u1);
+    CombatUnit* cu1 = new CombatUnit(Side::DEFENDER, u1);
     units[0].push_back(cu1);
     allUnits.push_back(cu1);
   }
   
-  for (auto u2 : a2->getUnits())
+  for (auto u2 : attacker->getUnits())
   {
-    CombatUnit* cu2 = new CombatUnit(u2);
+    CombatUnit* cu2 = new CombatUnit(Side::ATTACKER, u2);
     units[1].push_back(cu2);
     allUnits.push_back(cu2);
   }
@@ -88,14 +88,14 @@ void Combat::deployUnits()
   auto it = units[0].begin();
   for (size_t i = 0; i < units[0].size(); ++i, ++it)
   {
-    auto position = mechanics->positionForDeployedUnit(_map.get(), i, Side::DEFENDER);
+    auto position = mechanics->positionForDeployedUnit(_map.get(), *it, i, Side::DEFENDER);
     (*it)->setPosition(position);
   }
   
   it = units[1].begin();
   for (size_t i = 0; i < units[1].size(); ++i, ++it)
   {
-    auto position = mechanics->positionForDeployedUnit(_map.get(), i, Side::ATTACKER);
+    auto position = mechanics->positionForDeployedUnit(_map.get(), *it, i, Side::ATTACKER);
     (*it)->setPosition(position);
   }
 }

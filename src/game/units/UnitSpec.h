@@ -183,7 +183,10 @@ enum class Property : u8
   AMMO,
   ALIVE_FIGURES,
   THROWN_ATTACK, //TODO: implement to get it from skills
-  BREATH_ATTACK // TODO: implement to get it from skills
+  BREATH_ATTACK, // TODO: implement to get it from skills
+  
+  AVAILABLE_MOVEMENT,
+  AVAILABLE_AMMO
 };
 
 class Propertable
@@ -195,8 +198,13 @@ public:
   s16 getProperty(Property property) const { return getBaseProperty(property) + getBonusProperty(property); }
   template<typename T> T getEnumProperty(Property property) const { return static_cast<T>(getProperty(property)); }
   
+  MovementInfo getActualMovementInfo() const { return MovementInfo(getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE), getProperty(Property::AVAILABLE_MOVEMENT)); }
+  MovementInfo getMovementInfo() const { return MovementInfo(getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE), getProperty(Property::MOVEMENT)); }
+  
   MeleeInfo getMeleeInfo() const { return MeleeInfo(getEnumProperty<MeleeType>(Property::MELEE_TYPE), getProperty(Property::MELEE)); }
+  
   RangedInfo getRangedInfo() const { return RangedInfo(getEnumProperty<Ranged>(Property::RANGED_TYPE), getProperty(Property::RANGED), getProperty(Property::AMMO)); }
+  RangedInfo getActualRangedInfo() const { return RangedInfo(getEnumProperty<Ranged>(Property::RANGED_TYPE), getProperty(Property::RANGED), getProperty(Property::AVAILABLE_AMMO)); }
 };
 
 enum class HeroType : u8

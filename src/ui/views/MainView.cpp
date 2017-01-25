@@ -208,7 +208,7 @@ void MainView::draw()
     s16 moves = player->selectedAvailMoves();
     if (moves > 0)
     {
-      Fonts::drawString(Fonts::format("Moves: %d%s",moves/2, moves%2 == 0 ? "" : ".5" ), FontFaces::Small::WHITE, 245, 166, ALIGN_LEFT);
+      Fonts::drawString(UnitDraw::stringForDoubleMovement(moves), FontFaces::Small::WHITE, 245, 166, ALIGN_LEFT);
       movement_list movement = player->selectedArmyMovementType();
       
       /* draw movement icons */

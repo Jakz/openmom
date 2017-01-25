@@ -22,21 +22,34 @@ namespace combat
     MOD_NONE
   };
 
-  class CombatUnit
+  class CombatUnit : public Propertable
   {
   private:
     Unit* unit;
     Player* player;
+    Side _side;
     
   public:
-    CombatUnit(Unit* unit) : unit(unit), player(unit->getArmy()->getOwner()), moves(unit->getProperty(Property::MOVEMENT)), selected(false) { }
+    CombatUnit(Side side, Unit* unit) : unit(unit), player(unit->getArmy()->getOwner()), _side(side), moves(unit->getProperty(Property::MOVEMENT)*2), selected(false) { }
     
     Player* const getOwner() { return player; }
     
-    void resetMoves() { moves = unit->getProperty(Property::MOVEMENT); }
+    void resetMoves() { moves = unit->getProperty(Property::MOVEMENT)*2; }
     
     Unit* getUnit() const { return unit; }
-    s16 getProperty(Property property) const { return unit->getProperty(property); }
+    
+    s16 getBaseProperty(Property property) const override
+    {
+      if (property == Property::AVAILABLE_MOVEMENT)
+        return moves;
+      else
+        return unit->getBaseProperty(property);
+    }
+    
+    s16 getBonusProperty(Property property) const override
+    {
+      return unit->getBonusProperty(property);
+    }
     
     void setPosition(u16 x, u16 y) { position.position = CombatCoord(x,y); }
     void setPosition(u16 x, u16 y, Dir facing) { position = CombatPosition(x,y,facing); }
@@ -47,9 +60,17 @@ namespace combat
     u16 x() const { return position.position.x; }
     u16 y() const { return position.position.y; }
     Dir facing() const { return position.facing; }
+    Side side() const { return _side; }
+    
+    bool isAttacker() const { return _side == Side::ATTACKER; }
+    bool isDefender() const { return _side == Side::DEFENDER; }
     
     bool hasMoves() const { return moves > 0; }
     
+    /* TODO: maybe a SkillSet for combat unit is needed which wraps the native one to manage combat only effects */
+    const SkillSet* skills() const { return unit->skills(); }
+    SkillSet* skills() { return unit->skills(); }
+
     CombatPosition position;
     u16 moves;
     bool selected;

@@ -27,50 +27,9 @@ using priority_t = s16;
 class CombatView : public View
 {
 public:
-  class GfxEntry
-  {
-    priority_t _priority;
-  protected:
-    GfxEntry(priority_t priority) : _priority(priority) { }
-  public:
-    priority_t priority() const { return _priority; }
-    void setPriority(priority_t priority) { _priority = priority; }
-    virtual u16 x() const = 0;
-    virtual u16 y() const = 0;
+  class GfxEntry;
 
-    virtual void draw() const = 0;
-  };
-  
 private:
-  enum
-  {
-    bt_spell,
-    bt_wait,
-    bt_info,
-    bt_auto,
-    bt_flee,
-    bt_done,
-    
-    bt_count
-  };
-  
-  enum class SubState
-  {
-    COMBAT,
-    SPELL_CAST
-  };
-  
-  void draw() override;
-  void drawPost() override { }
-  
-  Coord hover;
-  
-  combat::Combat* combat;
-    
-  
-  void drawUnitProps(const combat::CombatUnit* unit, bool onTheLeft);
-  
-  
   struct entry_comparator
   {
     bool operator()(const std::unique_ptr<CombatView::GfxEntry>& e1, const std::unique_ptr<CombatView::GfxEntry>& e2) const
@@ -103,8 +62,51 @@ private:
     }
   };
   
+public:
+  class GfxEntry : DrawElement<GfxEntry, entry_comparator>
+  {
+    priority_t _priority;
+  protected:
+    GfxEntry(priority_t priority) : _priority(priority) { }
+  public:
+    priority_t priority() const { return _priority; }
+    void setPriority(priority_t priority) { _priority = priority; }
+    virtual u16 x() const = 0;
+    virtual u16 y() const = 0;
+
+    virtual void draw() const = 0;
+  };
+
+private:
   DrawQueue<GfxEntry, entry_comparator> entries;
   std::unordered_map<const combat::CombatUnit*, UnitGfxEntry*> unitsMap;
+  
+  enum
+  {
+    bt_spell,
+    bt_wait,
+    bt_info,
+    bt_auto,
+    bt_flee,
+    bt_done,
+    
+    bt_count
+  };
+  
+  enum class SubState
+  {
+    COMBAT,
+    SPELL_CAST
+  };
+  
+  void draw() override;
+  void drawPost() override { }
+  
+  Coord hover;
+  
+  combat::Combat* combat;
+  
+  void drawUnitProps(const combat::CombatUnit* unit, bool onTheLeft);
   
   void addRoads();
   void addFlyingFortress();

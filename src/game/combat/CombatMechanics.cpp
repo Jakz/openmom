@@ -32,7 +32,7 @@ u16 CombatMechanics::movementCostForTile(const CombatTile* tile, Dir from)
     return isLongMove ? 3 : 2;
 }
 
-CombatPosition CombatMechanics::positionForDeployedUnit(CombatMap* map, u16 index, Side side)
+CombatPosition CombatMechanics::positionForDeployedUnit(CombatMap* map, const CombatUnit* unit, u16 index, Side side)
 {
   static const CombatCoord attackerBase = {7,16};
   static const Dir attackerRowDirection = Dir::SOUTH_EAST;
@@ -65,7 +65,7 @@ CombatPosition CombatMechanics::positionForDeployedUnit(CombatMap* map, u16 inde
     
     const CombatTile* tile = map->tileAt(current.x, current.y);
     
-    if (!isTileBlocked(tile))
+    if (!isTileBlocked(tile, unit))
       ++i;
     else
       continue;
@@ -84,13 +84,21 @@ CombatCoord CombatMechanics::defaultPositionForObject(CombatObject object)
   }
 }
 
-bool CombatMechanics::isTileBlocked(const CombatTile* tile)
+bool CombatMechanics::isTileBlocked(const CombatTile* tile, const CombatUnit* unit)
 {
+  assert(unit && tile);
   const auto building = tile->building;
   const auto stoneWall = tile->stoneWall;
+  const auto isWallDestroyed = tile->isStoneWallDestroyed;
   
+  /* if tile has a building which is not an house then movement is blocked */
   bool hasBuilding = building != TileBuilding::HOUSE && building != TileBuilding::NONE;
-  bool isBlockedByStoneWall = stoneWall == WallType::EAST_CORNER || stoneWall == WallType::WEST_CORNER || stoneWall == WallType::SOUTH_CORNER || stoneWall == WallType::NORTH_CORNER;
+  /* if tile has a stone wall tower then it is blocked */
+  bool isBlockedByStoneTower = !isWallDestroyed && (stoneWall == WallType::EAST_CORNER || stoneWall == WallType::WEST_CORNER || stoneWall == WallType::SOUTH_CORNER || stoneWall == WallType::NORTH_CORNER);
   
-  return hasBuilding || isBlockedByStoneWall;
+  /* if tile has a non broken stone wall and unit doesn't have flying/non corporeal of teleport*/
+  const auto* skills = unit->skills();
+  bool isBlockedByStoneWall = unit->isAttacker() && stoneWall != WallType::NO_WALL && !isWallDestroyed && !(skills->has(MovementType::FLYING) || skills->has(MovementType::NON_CORPOREAL) || skills->has(MovementType::TELEPORT));
+  
+  return hasBuilding || isBlockedByStoneTower || isBlockedByStoneWall;
 }
