@@ -32,10 +32,11 @@ namespace combat
     CombatMechanics(Game* game) : game(game) { }
     
     /* map related functions */
-    u16 movementCostForTile(const CombatTile* tile, Dir from);
-    CombatPosition positionForDeployedUnit(CombatMap* map, const CombatUnit* unit, u16 index, Side side);
+    u16 movementCostForTile(const CombatUnit* unit, const CombatTile* tile, Dir from);
+    CombatPosition positionForDeployedUnit(CombatMap* map, const CombatUnit* unit, u16 index);
     CombatCoord defaultPositionForObject(CombatObject object);
     bool isTileBlocked(const CombatTile* tile, const CombatUnit* unit);
+    combat_coord_set reachableTiles(const Combat* combat, const CombatUnit* unit, s16 movement);
   };
 
   

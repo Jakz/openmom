@@ -56,9 +56,9 @@ void Combat::endTurn()
 
 const CombatTile* Combat::tileAt(s16 x, s16 y) { return _map->tileAt(x,y); }
 
-CombatUnit* Combat::unitAtTile(u16 x, u16 y)
+CombatUnit* Combat::unitAtTile(CombatCoord position) const
 {
-  auto it = std::find_if(allUnits.begin(), allUnits.end(), [&](const CombatUnit* unit) { return unit->x() == x && unit->y() == y; });
+  auto it = std::find_if(allUnits.begin(), allUnits.end(), [&](const CombatUnit* unit) { return unit->position == position; });
   return it != allUnits.end() ? *it : nullptr;
 }
 
@@ -88,14 +88,14 @@ void Combat::deployUnits()
   auto it = units[0].begin();
   for (size_t i = 0; i < units[0].size(); ++i, ++it)
   {
-    auto position = mechanics->positionForDeployedUnit(_map.get(), *it, i, Side::DEFENDER);
+    auto position = mechanics->positionForDeployedUnit(_map.get(), *it, i);
     (*it)->setPosition(position);
   }
   
   it = units[1].begin();
   for (size_t i = 0; i < units[1].size(); ++i, ++it)
   {
-    auto position = mechanics->positionForDeployedUnit(_map.get(), *it, i, Side::ATTACKER);
+    auto position = mechanics->positionForDeployedUnit(_map.get(), *it, i);
     (*it)->setPosition(position);
   }
 }

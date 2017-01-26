@@ -141,6 +141,7 @@ namespace combat
     CombatMap(Combat* combat, u16 width, u16 height);
     ~CombatMap() { delete [] tiles; }
     
+    const CombatTile* tileAt(const Point& position) const { return tileAt(position.x, position.y); }
     const CombatTile* tileAt(s16 x, s16 y) const;
     CombatTile* tileAt(s16 x, s16 y);
     

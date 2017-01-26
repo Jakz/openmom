@@ -2,6 +2,8 @@
 
 #include "Common.h"
 
+#include <unordered_set>
+
 namespace combat
 {
   enum class Side
@@ -46,6 +48,12 @@ namespace combat
       }
     }
   };
+  
+  struct combat_coord_hash {
+    size_t operator()(const CombatCoord& position) const { return std::hash<size_t>()(position.x || position.y << sizeof(decltype(position.y))*8); }
+  };
+  
+  using combat_coord_set = std::unordered_set<CombatCoord, combat_coord_hash>;
 
   struct CombatPosition
   {
@@ -54,6 +62,8 @@ namespace combat
     
     CombatPosition(CombatCoord coord, Dir f = Dir::NORTH) : position(coord), facing(f) { }
     CombatPosition(s8 x = -1, s8 y = -1, Dir f = Dir::NORTH) : position(x, y), facing(f) { }
+    
+    bool operator==(const CombatCoord& position) const { return this->position == position; }
   };
 
   struct combat_position_hash

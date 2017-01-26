@@ -120,8 +120,8 @@ namespace combat
     
     
     const CombatTile* tileAt(s16 x, s16 y);
-    CombatUnit* unitAtTile(u16 x, u16 y);
-    bool isTileEmpty(u16 x, u16 y) { return !unitAtTile(x, y); }
+    CombatUnit* unitAtTile(CombatCoord position) const;
+    bool isTileEmpty(CombatCoord position) const { return !unitAtTile(position); }
 
     CombatMap* map() { return _map.get(); }
     const std::list<CombatUnit*>& enemyUnits(Player* player) { return player == players[0] ? units[1] : units[0]; }
@@ -156,6 +156,8 @@ namespace combat
     }
     
     const cast_list& getSpells() const { return spells; }
+    
+    friend class CombatMechanics;
   };
 }
 

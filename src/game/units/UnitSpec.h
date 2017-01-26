@@ -200,6 +200,8 @@ public:
   
   MovementInfo getActualMovementInfo() const { return MovementInfo(getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE), getProperty(Property::AVAILABLE_MOVEMENT)); }
   MovementInfo getMovementInfo() const { return MovementInfo(getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE), getProperty(Property::MOVEMENT)); }
+  MovementBaseType getMovementBaseType() const { return getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE); }
+  bool isFlying() const { return getMovementBaseType() == MovementBaseType::FLYING; }
   
   MeleeInfo getMeleeInfo() const { return MeleeInfo(getEnumProperty<MeleeType>(Property::MELEE_TYPE), getProperty(Property::MELEE)); }
   

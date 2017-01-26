@@ -8,17 +8,21 @@
 
 #include "CombatMechanics.h"
 
+#include <limits>
+
 #include "Combat.h"
 #include "CombatMap.h"
 #include "Util.h"
 
 using namespace combat;
 
-u16 CombatMechanics::movementCostForTile(const CombatTile* tile, Dir from)
+u16 CombatMechanics::movementCostForTile(const CombatUnit* unit, const CombatTile* tile, Dir from)
 {
   bool isLongMove = from == Dir::EAST || from == Dir::WEST || from == Dir::SOUTH || from == Dir::NORTH;
   
-  if (tile->road != RoadType::NONE)
+  if (unit->isFlying())
+    return isLongMove ? 3 : 2;
+  else if (tile->road != RoadType::NONE)
     return isLongMove ? 2 : 1;
   else if (tile->prop == TileProp::TREE)
     return isLongMove ? 4 : 3;
@@ -32,7 +36,7 @@ u16 CombatMechanics::movementCostForTile(const CombatTile* tile, Dir from)
     return isLongMove ? 3 : 2;
 }
 
-CombatPosition CombatMechanics::positionForDeployedUnit(CombatMap* map, const CombatUnit* unit, u16 index, Side side)
+CombatPosition CombatMechanics::positionForDeployedUnit(CombatMap* map, const CombatUnit* unit, u16 index)
 {
   static const CombatCoord attackerBase = {7,16};
   static const Dir attackerRowDirection = Dir::SOUTH_EAST;
@@ -42,9 +46,9 @@ CombatPosition CombatMechanics::positionForDeployedUnit(CombatMap* map, const Co
   
   static const CoordJump jumps[] = { { Dir::SOUTH_WEST }, { Dir::NORTH_EAST, 2 }, { Dir::SOUTH_WEST, 3 } };
   
-  const auto base = side == Side::DEFENDER ? defenderBase : attackerBase;
-  const auto dir = side == Side::DEFENDER ? defenderRowDirection : attackerRowDirection;
-  const auto facing = side == Side::DEFENDER ? Dir::SOUTH_EAST : Dir::NORTH_WEST;
+  const auto base = unit->side() == Side::DEFENDER ? defenderBase : attackerBase;
+  const auto dir = unit->side() == Side::DEFENDER ? defenderRowDirection : attackerRowDirection;
+  const auto facing = unit->side() == Side::DEFENDER ? Dir::SOUTH_EAST : Dir::NORTH_WEST;
   
   auto rowStart = base;
   auto current = rowStart;
@@ -71,7 +75,6 @@ CombatPosition CombatMechanics::positionForDeployedUnit(CombatMap* map, const Co
       continue;
   }
 
-  printf("deploy %d at %d, %d\n", index, current.x, current.y);
   return CombatPosition(current, facing);
 }
 
@@ -101,4 +104,75 @@ bool CombatMechanics::isTileBlocked(const CombatTile* tile, const CombatUnit* un
   bool isBlockedByStoneWall = unit->isAttacker() && stoneWall != WallType::NO_WALL && !isWallDestroyed && !(skills->has(MovementType::FLYING) || skills->has(MovementType::NON_CORPOREAL) || skills->has(MovementType::TELEPORT));
   
   return hasBuilding || isBlockedByStoneTower || isBlockedByStoneWall;
+}
+
+combat_coord_set CombatMechanics::reachableTiles(const Combat* combat, const CombatUnit* unit, s16 movement)
+{
+  static constexpr size_t DIRECTIONS = 8;
+  
+  const auto& map = combat->_map;
+  
+  struct node
+  {
+    const CombatTile* tile;
+    s16 cost;
+    Dir from;
+    
+    node() : node(nullptr, std::numeric_limits<s16>::max(), Dir::INVALID) { }
+    node(const CombatTile* tile, s16 cost, Dir from) : tile(tile), cost(cost), from(from) { }
+  };
+
+  std::unordered_set<const CombatTile*> closedSet;
+  std::list<node> openSet;
+  std::unordered_map<const CombatTile*, node> closedMap;
+  
+  
+  LOGD3("[combat][pathfind] computing reachable tiles from (%d,%d)", unit->x(), unit->y())
+  
+  openSet.push_back({ map->tileAt(unit->position.position), 0, Dir::INVALID });
+  
+  while (!openSet.empty())
+  {
+    const auto node = *openSet.begin();
+    openSet.erase(openSet.begin());
+    
+    if (closedSet.find(node.tile) != closedSet.end())
+      continue;
+    
+    closedSet.insert(node.tile);
+    
+    for (size_t i = 0; i < DIRECTIONS; ++i)
+    {
+      const Dir dir = static_cast<Dir>(i);
+      const auto* neighbour = node.tile->neighbour(dir);
+      
+      bool alreadyExplored = closedSet.find(neighbour) != closedSet.end();
+      bool blockedByEnvironment = isTileBlocked(neighbour, unit);
+      bool blockedByOtherUnit = combat->unitAtTile(neighbour->coords) != nullptr;
+      
+      /* tile is available to be reached */
+      if (!alreadyExplored && neighbour && !blockedByEnvironment && !blockedByOtherUnit)
+      {
+        auto& entry = closedMap[neighbour];
+        s16 cost = node.cost + movementCostForTile(unit, neighbour, dir);
+        
+        /* the new path found to reach neighbour is cheaper that previous one 
+           then this route path should be used instead
+         */
+        if (cost < entry.cost)
+          entry = { neighbour, cost, dir };
+        
+        if (cost < movement)
+          openSet.push_back(entry);
+      }
+    }
+  }
+  
+  combat_coord_set reachable;
+
+  std::transform(closedMap.begin(), closedMap.end(), std::inserter(reachable, reachable.end()), [](const decltype(closedMap)::value_type& entry) {
+    return CombatCoord(entry.first->x(), entry.first->y());
+  });
+  
+  return reachable;
 }

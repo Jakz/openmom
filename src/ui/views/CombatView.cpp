@@ -377,7 +377,9 @@ static const std::unordered_map<TileBuilding, BuildingGfxSpec, enum_hash> buildi
 
 #pragma mark Rivers
 
-class UnitGfxEntry : public CombatView::GfxEntry
+using GfxEntry = CombatView::GfxEntry;
+
+class UnitGfxEntry : public GfxEntry
 {
 private:
   CombatUnit* unit;
@@ -387,7 +389,7 @@ private:
   mutable bool isMoving;
   
 public:
-  UnitGfxEntry(CombatUnit* unit) : CombatView::GfxEntry(priority_units), unit(unit), isMoving(false), position(unit->position.position) { }
+  UnitGfxEntry(CombatView* view, CombatUnit* unit) : CombatView::GfxEntry(view, priority_units), unit(unit), isMoving(false), position(unit->position.position) { }
   ~UnitGfxEntry()
   {
     //TODO: combatView->unitsMap.erase(this);
@@ -440,7 +442,7 @@ public:
   }
 };
 
-class TileGfxEntry : public CombatView::GfxEntry
+class TileGfxEntry : public GfxEntry
 {
 private:
   SpriteInfo info;
@@ -448,20 +450,24 @@ private:
   u16 _animOffset;
   
 public:
-  TileGfxEntry(SpriteInfo info, u16 x, u16 y, u16 animOffset = 0) : CombatView::GfxEntry(priority_tile), info(info), _x(x), _y(y), _animOffset(animOffset) { }
+  TileGfxEntry(CombatView* view, SpriteInfo info, u16 x, u16 y, u16 animOffset = 0) : CombatView::GfxEntry(view, priority_tile), info(info), _x(x), _y(y), _animOffset(animOffset) { }
   
   void draw() const override
   {
     Point coords = CombatView::coordsForTile(_x, _y);
     Gfx::drawAnimated(info, coords, _animOffset);
     Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
+    
+    if (_view->getReachableTiles().find(CombatCoord(_x,_y)) != _view->getReachableTiles().end())
+      Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 1, coords.x, coords.y);
+
   }
   
   u16 x() const override { return _x; }
   u16 y() const override { return _y; }
 };
 
-class PropGfxEntry : public CombatView::GfxEntry
+class PropGfxEntry : public GfxEntry
 {
 private:
   static constexpr size_t MAX_SPRITES = 4;
@@ -480,8 +486,8 @@ private:
   u16 _x, _y;
   
 public:
-  PropGfxEntry(u16 x, u16 y, TileProp type, SpriteInfo info, size_t count)
-  : GfxEntry(priority_prop), _x(x), _y(y), _type(type)
+  PropGfxEntry(CombatView* view, u16 x, u16 y, TileProp type, SpriteInfo info, size_t count)
+  : GfxEntry(view, priority_prop), _x(x), _y(y), _type(type)
   {
     for (size_t i = 0; i < MAX_SPRITES; ++i)
       if (i < count)
@@ -519,7 +525,7 @@ public:
   u16 y() const override { return _y; }
 };
 
-class StaticGfxEntry : public CombatView::GfxEntry
+class StaticGfxEntry : public GfxEntry
 {
 protected:
   bool animated;
@@ -538,10 +544,10 @@ protected:
   }
   
 public:
-  StaticGfxEntry(priority_t priority, SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) :
-  CombatView::GfxEntry(priority), info(info), _x(x), _y(y), _anchor(-ax, CombatView::TILE_HEIGHT/2 - info.sh() + ay), animated(animated) { }
+  StaticGfxEntry(CombatView* view, priority_t priority, SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) :
+  CombatView::GfxEntry(view, priority), info(info), _x(x), _y(y), _anchor(-ax, CombatView::TILE_HEIGHT/2 - info.sh() + ay), animated(animated) { }
   
-  StaticGfxEntry(SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) : StaticGfxEntry(priority_static, info, x, y, ax, ay, animated) { }
+  StaticGfxEntry(CombatView* view, SpriteInfo info, u16 x, u16 y, u16 ax, u16 ay, bool animated = false) : StaticGfxEntry(view, priority_static, info, x, y, ax, ay, animated) { }
   
   u16 x() const override { return _x; }
   u16 y() const override { return _y; }
@@ -566,10 +572,10 @@ private:
   
   const CombatTile* const tile;
 public:
-  StoneWallGfxEntry(const CombatTile* tile, HouseType houseType) : StoneWallGfxEntry(stoneWall.find(tile->stoneWall)->second, tile, houseType) { }
+  StoneWallGfxEntry(CombatView* view, const CombatTile* tile, HouseType houseType) : StoneWallGfxEntry(view, stoneWall.find(tile->stoneWall)->second, tile, houseType) { }
 
-  StoneWallGfxEntry(const StoneWallGfxSpec& spec, const CombatTile* tile, HouseType houseType) :
-  StaticGfxEntry(spec.priority, spec.sprite.relative(offsetForHouseType(houseType)), tile->x(), tile->y(), spec.anchor.x, spec.anchor.y), tile(tile) { }
+  StoneWallGfxEntry(CombatView* view, const StoneWallGfxSpec& spec, const CombatTile* tile, HouseType houseType) :
+  StaticGfxEntry(view, spec.priority, spec.sprite.relative(offsetForHouseType(houseType)), tile->x(), tile->y(), spec.anchor.x, spec.anchor.y), tile(tile) { }
 
   using StaticGfxEntry::draw;
   void draw() const override {
@@ -582,18 +588,18 @@ class NonSolidWallGfxEntry : public StaticGfxEntry
   const CombatTile* const tile;
   
 public:
-  NonSolidWallGfxEntry(const CombatTile* tile, SpriteInfo info, priority_t priority, Point anchor) :
-  StaticGfxEntry(priority, info, tile->x(), tile->y(), anchor.x, anchor.y, true), tile(tile) { }
+  NonSolidWallGfxEntry(CombatView* view, const CombatTile* tile, SpriteInfo info, priority_t priority, Point anchor) :
+  StaticGfxEntry(view, priority, info, tile->x(), tile->y(), anchor.x, anchor.y, true), tile(tile) { }
 };
 
-class FixedGfxEntry : public CombatView::GfxEntry
+class FixedGfxEntry : public GfxEntry
 {
 private:
   SpriteInfo info;
   u16 _x, _y;
   
 public:
-  FixedGfxEntry(SpriteInfo info, u16 x, u16 y) : CombatView::GfxEntry(priority_fixed), info(info), _x(x), _y(y) { }
+  FixedGfxEntry(CombatView* view, SpriteInfo info, u16 x, u16 y) : CombatView::GfxEntry(view, priority_fixed), info(info), _x(x), _y(y) { }
   
   u16 x() const override { return 0; }
   u16 y() const override { return 0; }
@@ -642,8 +648,8 @@ void CombatView::prepareGraphics()
   
   //this->combat->map()->placeFireWall(2, 4);
   
-  /*this->combat->map()->placeCityRoadExit(Dir::SOUTH_EAST);
-  this->combat->map()->placeCityRoadExit(Dir::SOUTH_WEST);
+  this->combat->map()->placeCityRoadExit(Dir::SOUTH_EAST);
+  /*this->combat->map()->placeCityRoadExit(Dir::SOUTH_WEST);
   this->combat->map()->placeCityRoadExit(Dir::NORTH_EAST);*/
   
   //this->combat->map()->placeDarknessWall(3, 6);
@@ -655,7 +661,7 @@ void CombatView::prepareGraphics()
 
   for (CombatUnit* unit : combat->getUnits())
   {
-    auto* gfx = new UnitGfxEntry(unit);
+    auto* gfx = new UnitGfxEntry(this, unit);
     unitsMap[unit] = gfx;
     entries.add(gfx);
   }
@@ -675,18 +681,18 @@ void CombatView::prepareGraphics()
         if (tile->stoneWall != WallType::NO_WALL)
         {
           //TODO: determine real house type
-          entries.add(new StoneWallGfxEntry(tile, houseType));
+          entries.add(new StoneWallGfxEntry(this, tile, houseType));
         }
         
         /* if there is fire wall generate graphics */
         if (tile->fireWall != WallType::NO_WALL)
         {
           const auto& spec = nonSolidWall.find(tile->fireWall)->second;
-          entries.add(new NonSolidWallGfxEntry(tile, spec.sprite1, spec.behind1 ? priority_fire_wall_behind : priority_fire_wall_front, spec.anchor1));
+          entries.add(new NonSolidWallGfxEntry(this, tile, spec.sprite1, spec.behind1 ? priority_fire_wall_behind : priority_fire_wall_front, spec.anchor1));
 
           if (spec.sprite2.isValid())
           {
-            entries.add(new NonSolidWallGfxEntry(tile, spec.sprite2, spec.behind2 ? priority_fire_wall_behind : priority_fire_wall_front, spec.anchor2));
+            entries.add(new NonSolidWallGfxEntry(this, tile, spec.sprite2, spec.behind2 ? priority_fire_wall_behind : priority_fire_wall_front, spec.anchor2));
           }
         }
         
@@ -694,11 +700,11 @@ void CombatView::prepareGraphics()
         if (tile->darknessWall != WallType::NO_WALL)
         {
           const auto& spec = nonSolidWall.find(tile->darknessWall)->second;
-          entries.add(new NonSolidWallGfxEntry(tile, spec.sprite1.relative(14), spec.behind1 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor1));
+          entries.add(new NonSolidWallGfxEntry(this, tile, spec.sprite1.relative(14), spec.behind1 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor1));
 
           if (spec.sprite2.isValid())
           {
-            entries.add(new NonSolidWallGfxEntry(tile, spec.sprite2.relative(14), spec.behind2 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor2));
+            entries.add(new NonSolidWallGfxEntry(this, tile, spec.sprite2.relative(14), spec.behind2 ? priority_darkness_wall_behind : priority_darkness_wall_front, spec.anchor2));
           }
         }
         
@@ -718,21 +724,21 @@ void CombatView::prepareGraphics()
           assert(it != roadGraphics.end());
           
           SpriteInfo info = (tile->road == RoadType::NORMAL ? it->second.normal : it->second.enchanted)[Util::oneOfTwoChance()];
-          entries.add(new StaticGfxEntry(priority_roads, info, tile->x(), tile->y(), 0, TILE_HEIGHT/2, true));
+          entries.add(new StaticGfxEntry(this, priority_roads, info, tile->x(), tile->y(), 0, TILE_HEIGHT/2, true));
         }
         
         if (tile->prop != TileProp::NONE)
         {
           size_t count = tile->prop == TileProp::TREES ? Util::randomIntInclusive(2, 3) : 1;
           SpriteInfo info = tile->prop == TileProp::ROCK ? rock : tree;
-          entries.add(new PropGfxEntry(tile->x(), tile->y(), tile->prop, info.lbx(environmentLBX) ,count));
+          entries.add(new PropGfxEntry(this, tile->x(), tile->y(), tile->prop, info.lbx(environmentLBX) ,count));
         }
         
         if (tile->building != TileBuilding::NONE)
         {
           const auto& spec = buildingGraphics.find(tile->building)->second;
           SpriteInfo gfx = tile->building == TileBuilding::HOUSE ? GfxData::raceHouseGfxSpec(houseType).combatHouse : spec.info;
-          entries.add(new StaticGfxEntry(gfx.relative(Util::randomIntUpTo(spec.count)), tile->x(), tile->y(), spec.offset.x, spec.offset.y));
+          entries.add(new StaticGfxEntry(this, gfx.relative(Util::randomIntUpTo(spec.count)), tile->x(), tile->y(), spec.offset.x, spec.offset.y));
         }
         
         /* manage base tile graphics */
@@ -741,23 +747,23 @@ void CombatView::prepareGraphics()
           /* rough terrain graphics is computed through mask with the neighbours */
           DirJoin mask = computeMask(MaskMode::ALL, tile, [](const CombatTile* tile) { return !tile || tile->type == combat::TileType::ROUGH; });
           SpriteInfo info = roughTerrainMap[mask];
-          entries.add(new TileGfxEntry(info.lbx(environmentLBX), x, y));
+          entries.add(new TileGfxEntry(this, info.lbx(environmentLBX), x, y));
         }
         else if (tile->type == combat::TileType::HILLS)
         {
           /* hills terrain graphics is computed through mask with the neighbours */
           DirJoin mask = computeMask(MaskMode::DIAGONAL, tile, [](const CombatTile* tile) { return !tile || tile->type == combat::TileType::HILLS; });
           SpriteInfo info = hillsMap.find(mask)->second;
-          entries.add(new TileGfxEntry(info.lbx(environmentLBX), x, y));
+          entries.add(new TileGfxEntry(this, info.lbx(environmentLBX), x, y));
         }
         else
         {
           /* standard environment has 4 possible tiles for normal ground */
           if (environment.type != CombatEnvironment::Type::OCEAN)
-            entries.add(new TileGfxEntry(SpriteInfo(environmentLBX, Util::randomIntUpTo(4)), x, y));
+            entries.add(new TileGfxEntry(this, SpriteInfo(environmentLBX, Util::randomIntUpTo(4)), x, y));
           else
           /* ocean environment graphics is special as it has just these 4 tiles */
-            entries.add(new TileGfxEntry(SpriteInfo(environment.plane == Plane::ARCANUS ? water_tile_arcanus : water_tile_myrran).relative(Util::randomIntUpTo(4)), x, y, Util::randomIntUpTo(4)));
+            entries.add(new TileGfxEntry(this, SpriteInfo(environment.plane == Plane::ARCANUS ? water_tile_arcanus : water_tile_myrran).relative(Util::randomIntUpTo(4)), x, y, Util::randomIntUpTo(4)));
 
         }
         
@@ -788,10 +794,10 @@ void CombatView::deactivate()
   entries.clear();
 }
 
-void CombatView::addRoads() { entries.add(new FixedGfxEntry(roads_static, 16, 40)); }
-void CombatView::addFlyingFortress() { entries.add(new FixedGfxEntry(flying_fortess, 16, 40)); }
+void CombatView::addRoads() { entries.add(new FixedGfxEntry(this, roads_static, 16, 40)); }
+void CombatView::addFlyingFortress() { entries.add(new FixedGfxEntry(this, flying_fortess, 16, 40)); }
 
-void CombatView::addHouse(SpriteInfo info, int x, int y) { entries.add(new StaticGfxEntry(info, x, y, 0, 8)); }
+void CombatView::addHouse(SpriteInfo info, int x, int y) { entries.add(new StaticGfxEntry(this, info, x, y, 0, 8)); }
 
 
 void CombatView::draw()
@@ -897,7 +903,7 @@ void CombatView::draw()
   
   if (hover.isValid())
   {
-    const CombatUnit* unit = combat->unitAtTile(hover.x, hover.y);
+    const CombatUnit* unit = combat->unitAtTile(hover);
     if (unit)
       drawUnitProps(unit, false);
   }
@@ -910,7 +916,7 @@ UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
   unit->setArmy(army);
   CombatUnit* cunit = new CombatUnit(Side::ATTACKER, unit);
   cunit->setPosition(x, y);
-  return new UnitGfxEntry(cunit);
+  return new UnitGfxEntry(this, cunit);
 }
 
 void CombatView::drawUnitProps(const CombatUnit* cunit, bool onTheLeft)
@@ -996,7 +1002,7 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
   //player->push(new anims::SpellEffect(LSI(CMBTFX, 22), CombatCoord(hover.x,hover.y)));
   
   
-  CombatUnit* unit = combat->unitAtTile(hover.x, hover.y);
+  CombatUnit* unit = combat->unitAtTile(hover);
   
   if (b == MouseButton::BUTTON_LEFT /* && player->isCurrentlyPlaying()*/)
   {
@@ -1008,7 +1014,9 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
       g->castSpell(unit->getUnit(), player, true);
     else if (unit && unit->hasMoves())
     {
-      unitsMap[unit]->move(Dir::NORTH_WEST);
+      reachableTiles = g->combatMechanics.reachableTiles(combat, unit, unit->getProperty(Property::AVAILABLE_MOVEMENT));
+      
+      //unitsMap[unit]->move(Dir::NORTH_WEST);
 
       /*
       if (unit != combat.selectedUnit && unit.owner == player)

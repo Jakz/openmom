@@ -67,7 +67,8 @@ public:
   {
     priority_t _priority;
   protected:
-    GfxEntry(priority_t priority) : _priority(priority) { }
+    CombatView* const _view;
+    GfxEntry(CombatView* view, priority_t priority) : _view(view), _priority(priority) { }
   public:
     priority_t priority() const { return _priority; }
     void setPriority(priority_t priority) { _priority = priority; }
@@ -118,6 +119,8 @@ private:
   combat::CombatEnvironment environment;
   LBXID environmentLBX;
   
+  combat::combat_coord_set reachableTiles;
+  
 public:
   CombatView(ViewManager* gvm);
   
@@ -138,6 +141,8 @@ public:
   
   constexpr static int TILE_WIDTH = 32;
   constexpr static int TILE_HEIGHT = 16;
+  
+  const decltype(reachableTiles)& getReachableTiles() { return reachableTiles; }
 
 };
 
