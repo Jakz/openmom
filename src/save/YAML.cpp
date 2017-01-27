@@ -105,6 +105,7 @@ template<> LBXID yaml::parse(const N& node)
     { "figures1", LBXID::FIGURES1 },
     { "figures3", LBXID::FIGURES3 },
     { "figures4", LBXID::FIGURES4 },
+    { "figures9", LBXID::FIGURES9 },
     { "figure11", LBXID::FIGURE11 },
     { "figure12", LBXID::FIGURE12 },
 

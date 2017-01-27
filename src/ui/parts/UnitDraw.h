@@ -44,6 +44,7 @@ public:
   static void drawUnitLevel(const Level* level, u16 x, u16 y, u16 spacing, bool shadowed);
   
   static Color colorForHealth(float percent);
+  static void drawHealthBar(u16 x, u16 y, u16 width, float percent);
   static std::string stringForDoubleMovement(s16 value, bool hideZero = false);
 
 };

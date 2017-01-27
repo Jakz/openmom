@@ -105,8 +105,8 @@ private:
   FontSpriteSheet(const FontSpriteSheet&) = delete;
 
 public:
-  FontSpriteSheet(FontData *data, const Palette* palette, s8 hor, s8 ver) : rawData(data), palette(palette), hor(hor), ver(ver) { }
-  FontSpriteSheet(FontData *data, color_list palette, s8 hor, s8 ver) : rawData(data), palette(new IndexedPalette(palette)), hor(hor), ver(ver) { }
+  FontSpriteSheet(FontData *data, const Palette* palette, s16 hor, s16 ver) : rawData(data), palette(palette), hor(hor), ver(ver) { }
+  FontSpriteSheet(FontData *data, color_list palette, s16 hor, s16 ver) : rawData(data), palette(new IndexedPalette(palette)), hor(hor), ver(ver) { }
 
   ~FontSpriteSheet() { delete palette; }
   
@@ -126,7 +126,7 @@ public:
   u16 sw(u16 r, u16 c = 0) const override { return rawData->w(); }
   u16 sh(u16 r = 0, u16 c = 0) const override { return rawData->h(); }
   
-  const s8 hor, ver;
+  const s16 hor, ver;
   
   const s8 charWidth(s8 c) const { return rawData->getGlyphWidth(c); }
   
@@ -153,7 +153,14 @@ class FontFaces
 public:
   class Tiny {
   public:
-    const static FontSpriteSheet *WHITE, *WHITE_STROKE, *YELLOW_STROKE, *RED_STROKE, *BROWN, *GOLD_COMBAT;
+    const static FontSpriteSheet *WHITE, *WHITE_STROKE, *YELLOW_STROKE, *RED_STROKE, *BROWN, *GOLD_COMBAT, *BLACK_COMBAT;
+    
+    class Palette : public IndexedPalette
+    {
+      
+    public:
+      Palette(Color highShadow, Color lowShadow, Color singlePixels, Color mainColor) : IndexedPalette({0, highShadow, lowShadow, singlePixels, mainColor}) { }
+    };
   };
   
   class Small {
@@ -193,6 +200,13 @@ public:
     const static Palette *SMALL_WHITE_PALE, *SMALL_YELLOW_PALE;
     const static Palette *WHITE_PRODUCTION;
   };
+  
+  struct Spacings
+  {
+    s16 hor, ver;
+  };
+  
+  static const Spacings& defaultSpacingForType(FontType type);
   
   static void buildFonts();
 };
@@ -240,6 +254,14 @@ public:
     setMap(palette);
     u16 r = drawString(string,x,y,align);
     return r;
+  }
+  
+  /* TODO: doesn't work because FontSpriteSheet destructor tries to deallocate palette */
+  static u16 drawString(const std::string& string, u16 x, u16 y, TextAlign align, FontType font, const Palette* palette)
+  {
+    const auto& spacings = FontFaces::defaultSpacingForType(font);
+    const FontSpriteSheet sheet{FontData::fonts[font], palette, spacings.ver, spacings.hor};
+    return drawString(string, &sheet, x, y, align);
   }
   
   static u16 drawString(const std::string& string, const FontSpriteSheet* face, u16 x, u16 y, TextAlign align, const Palette *palette)

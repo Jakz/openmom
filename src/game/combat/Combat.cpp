@@ -19,7 +19,7 @@
 using namespace std;
 using namespace combat;
 
-Combat::Combat(Army* defender, Army* attacker, CombatMechanics* mechanics) : players{defender->getOwner(),attacker->getOwner()}, selectedUnit(nullptr), current(defender->getOwner()), mechanics(mechanics), _map(new CombatMap(this, W,H))
+Combat::Combat(Army* defender, Army* attacker, CombatMechanics* mechanics) : players{defender->getOwner(),attacker->getOwner()}, selectedUnit(nullptr), current(attacker->getOwner()), mechanics(mechanics), _map(new CombatMap(this, W,H))
 {
   for (auto u1 : defender->getUnits())
   {

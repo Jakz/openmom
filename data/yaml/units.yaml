@@ -1,5 +1,6 @@
 units:
-#thrown is missing to barbarian units
+# racial units
+# barbarians
   - identifier: barbarian_spearmen
     type: racial
     race: barbarians
@@ -131,6 +132,26 @@ units:
       i18n: unit_racial_settlers
       icon: [lbx, units1, 44]
       figure: [lbx, figures3, 112]   
+# lizardmen
+  - identifier: lizardmen_dragon_turtle
+    type: racial
+    race: lizardmen
+    upkeep: 2
+    cost: 100
+    melee: 10
+    ranged: none
+    defense: 8
+    resistance: 8
+    hits: 15
+    figures: 1
+    movement: 2
+    sight: 1
+    skills: [ swimming, fire_breath_5 ]
+    requires: [ armorers_guild, stable ]
+    visuals:
+      i18n: unit_racial_dragon_turtle
+      icon: [lbx, units2, 6]
+      figure: [lbx, figures9, 48] 
 # heroes 
   - identifier: hero_dwarf
     type: hero

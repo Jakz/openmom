@@ -61,6 +61,15 @@ Color UnitDraw::colorForHealth(float percent)
     return redColor;
 }
 
+void UnitDraw::drawHealthBar(u16 x, u16 y, u16 width, float health)
+{
+  /* draw hits */
+  const int BAR_LENGTH = width;
+  int currentBarLength = health*BAR_LENGTH;
+  Gfx::drawLine(UnitDraw::colorForHealth(health), x, y, x + currentBarLength, y);
+  Gfx::drawLine({0,0,0,120}, x + currentBarLength, y, x + BAR_LENGTH, y);
+}
+
 void UnitDraw::drawStatic(const Army *army, s16 x, s16 y, bool forceDraw)
 {
   if (forceDraw || (army != LocalGame::i->currentPlayer()->getSelectedArmy()) || (Gfx::fticks % 6) < 3)

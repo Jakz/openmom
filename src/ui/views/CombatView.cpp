@@ -38,6 +38,7 @@ enum combat_lbx_statics
   hover_tile = LBXI(CMBTCITY, 67),
   selected_tile = LBXI(CMBTCITY, 68),
 
+  hitpoints_background = LBXI(COMPIX, 18),
   
   lower_backdrop = LBXI(BACKGRND, 3),
 };
@@ -645,6 +646,12 @@ CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1))
   buttons[bt_auto] = Button::buildTristate("auto", 144+26, 168+10, LSI(COMPIX, 4), LSI(COMPIX, 26));
   buttons[bt_flee] = Button::buildTristate("free", 144, 168+20, LSI(COMPIX, 21), LSI(COMPIX, 27));
   buttons[bt_done] = Button::buildTristate("done", 144+26, 168+20, LSI(COMPIX, 3), LSI(COMPIX, 28));
+  
+  buttons[bt_wait]->setAction([this](){
+    assert(player == combat->currentPlayer());
+    selectedUnit = findNextUsableUnit();
+    reachableTiles = g->combatMechanics.reachableTiles(combat, selectedUnit, selectedUnit->getProperty(Property::AVAILABLE_MOVEMENT));
+  });
 }
 
 void CombatView::prepareGraphics()
@@ -935,6 +942,9 @@ void CombatView::draw()
     if (unit)
       drawUnitProps(unit, false);
   }
+  
+  if (selectedUnit)
+    drawSelectedUnitProps(selectedUnit);
 }
 
 UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
@@ -945,6 +955,33 @@ UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
   CombatUnit* cunit = new CombatUnit(Side::ATTACKER, unit);
   cunit->setPosition(x, y);
   return new UnitGfxEntry(this, cunit);
+}
+
+CombatUnit* CombatView::findNextUsableUnit()
+{
+  const auto& units = combat->friendlyUnits(player);
+  
+  if (!selectedUnit)
+    return units.front();
+  else
+  {
+    auto it = std::find(units.begin(), units.end(), selectedUnit);
+    ++it;
+
+    do
+    {
+      if (it == units.end())
+        it = units.begin();
+      
+      if ((*it)->getProperty(Property::AVAILABLE_MOVEMENT) > 0)
+        return *it;
+      else
+        ++it;
+      
+    } while (*it != selectedUnit);
+  }
+  
+  return nullptr;
 }
 
 void CombatView::drawUnitProps(const CombatUnit* cunit, bool onTheLeft)
@@ -980,24 +1017,24 @@ void CombatView::drawUnitProps(const CombatUnit* cunit, bool onTheLeft)
   
   /* draw hits */
   const int BAR_LENGTH = 20;
-  int currentBarLength = health*BAR_LENGTH;
   Fonts::drawString("Hits", FontFaces::Tiny::GOLD_COMBAT, RX + 2, RY+DH - 9, ALIGN_LEFT);
-  Gfx::drawLine(UnitDraw::colorForHealth(health), RX + 19, RY + DH - 6, RX + 19 + currentBarLength , RY + DH - 6);
-  Gfx::drawLine({0,0,0,120}, RX + 19 + currentBarLength, RY + DH - 6, RX + 19 + 20, RY + DH - 6);
+  UnitDraw::drawHealthBar(RX + 19, RY + DH - 6, BAR_LENGTH, health);
   Gfx::drawLine({0,0,0}, RX + 19, RY + DH - 5, RX + 19 + BAR_LENGTH , RY + DH - 5);
   
   const int propy[3] = {RY+9, RY+16, RY+23};
   
+  const auto& propGfx = GfxData::propGfx();
+
   /* draw props */
   /* melee */
   Fonts::drawString(Fonts::format("%d", melee.strength), FontFaces::Tiny::GOLD_COMBAT, RX + 10, propy[0], ALIGN_RIGHT);
-  Gfx::draw(GfxData::propGfx()[melee.type].blackShadow, RX + 11, propy[0]-1);
+  Gfx::draw(propGfx[melee.type].blackShadow, RX + 11, propy[0]-1);
   
   /* ranged */
   if (ranged.isPresent())
   {
     Fonts::drawString(Fonts::format("%d", ranged.strength), FontFaces::Tiny::GOLD_COMBAT, RX + 10, propy[1], ALIGN_RIGHT);
-    Gfx::draw(GfxData::propGfx()[ranged.type].blackShadow, RX + 11, propy[1]-1);
+    Gfx::draw(propGfx[ranged.type].blackShadow, RX + 11, propy[1]-1);
     
     /* TODO: if unit is caster it should show MP */
     if (ranged.ammo != 0)
@@ -1009,20 +1046,53 @@ void CombatView::drawUnitProps(const CombatUnit* cunit, bool onTheLeft)
 
   /* movement */
   Fonts::drawString(UnitDraw::stringForDoubleMovement(movement.moves, true), FontFaces::Tiny::GOLD_COMBAT, RX + 10, propy[2], ALIGN_RIGHT);
-  Gfx::draw(GfxData::propGfx()[movement.type].blackShadow, RX + 11, propy[2]-1);
+  Gfx::draw(propGfx[movement.type].blackShadow, RX + 11, propy[2]-1);
   
   /* defense */
   Fonts::drawString(Fonts::format("%d", defense), FontFaces::Tiny::GOLD_COMBAT, RX + 49, propy[0], ALIGN_RIGHT);
-  Gfx::draw(GfxData::propGfx()[Property::SHIELDS].blackShadow, RX + 50, propy[0]-1);
+  Gfx::draw(propGfx[Property::SHIELDS].blackShadow, RX + 50, propy[0]-1);
   
   /* resistance */
   /* defense */
   Fonts::drawString(Fonts::format("%d", resistance), FontFaces::Tiny::GOLD_COMBAT, RX + 49, propy[1], ALIGN_RIGHT);
-  Gfx::draw(GfxData::propGfx()[Property::RESIST].blackShadow, RX + 50, propy[1]-1);
+  Gfx::draw(propGfx[Property::RESIST].blackShadow, RX + 50, propy[1]-1);
   
   
   //TODO: check spacing
   UnitDraw::drawUnitLevel(level, RX + 48, RY + DH - 7, 5, true);
+}
+
+void CombatView::drawSelectedUnitProps(const combat::CombatUnit* unit)
+{
+  const auto& propGfx = GfxData::propGfx();
+  
+  MeleeInfo melee = unit->getMeleeInfo();
+  RangedInfo ranged = unit->getRangedInfo();
+  MovementInfo movement = unit->getActualMovementInfo();
+  float health = unit->getUnit()->health()->percentHealth();
+  
+  /* melee */
+  Gfx::draw(propGfx[melee.type].blueShadow, 128, 172);
+  Fonts::drawString(Fonts::format("%d", melee.strength), FontFaces::Tiny::BLACK_COMBAT, 126+1, 172+1, ALIGN_RIGHT);
+  
+  /* ranged */
+  if (ranged.isPresent())
+  {
+    Gfx::draw(propGfx[ranged.type].blueShadow, 128, 172+7);
+    Fonts::drawString(Fonts::format("%d", ranged.strength), FontFaces::Tiny::BLACK_COMBAT, 126+1, 172+7+1, ALIGN_RIGHT);
+  }
+
+  /* movement */
+  Gfx::draw(propGfx[movement.type].blueShadow, 128, 172+7*2);
+  Fonts::drawString(UnitDraw::stringForDoubleMovement(movement.moves, true), FontFaces::Tiny::BLACK_COMBAT, 126+1, 172+7+7+1, ALIGN_RIGHT);
+
+  /* health */
+  Gfx::draw(hitpoints_background, 117, 194);
+  UnitDraw::drawHealthBar(118, 195, 20, health);
+
+  /* figure */
+  // TODO: vertical position is not correct, probably it varies according to figure height
+  Gfx::draw(GfxData::unitGfx(unit->getUnit()->spec).fullFigure.frame(2, 0), 86, 167);
 }
 
 void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
@@ -1049,8 +1119,8 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
         selectedUnit = unit;
         reachableTiles = g->combatMechanics.reachableTiles(combat, unit, unit->getProperty(Property::AVAILABLE_MOVEMENT));
         
-        unitsMap[unit]->move(Dir::NORTH_WEST);
-        unitsMap[unit]->move(Dir::NORTH);
+        //unitsMap[unit]->move(Dir::NORTH_WEST);
+        //unitsMap[unit]->move(Dir::NORTH);
       }
       
       //unitsMap[unit]->move(Dir::NORTH_WEST);

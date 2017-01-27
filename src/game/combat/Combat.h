@@ -118,14 +118,15 @@ namespace combat
     
     void endTurn();
     
+    Player* currentPlayer() { return current; }
     
     const CombatTile* tileAt(s16 x, s16 y);
     CombatUnit* unitAtTile(CombatCoord position) const;
     bool isTileEmpty(CombatCoord position) const { return !unitAtTile(position); }
 
     CombatMap* map() { return _map.get(); }
-    const std::list<CombatUnit*>& enemyUnits(Player* player) { return player == players[0] ? units[1] : units[0]; }
-    const std::list<CombatUnit*>& friendlyUnits(Player* player) { return player == players[1] ? units[0] : units[1]; }
+    const std::list<CombatUnit*>& enemyUnits(Player* player) { return player == players[0] ? units[0] : units[1]; }
+    const std::list<CombatUnit*>& friendlyUnits(Player* player) { return player == players[1] ? units[1] : units[0]; }
     
     void attack(CombatUnit *u1, CombatUnit *u2);
     

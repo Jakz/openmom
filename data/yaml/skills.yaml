@@ -149,6 +149,15 @@ skills:
     visuals:
       icon: [lbx, special2, 27]
       i18n: skill_fire_breath
+  - identifier: fire_breath_5
+    type: native
+    effects:
+      - type: special_attack
+        kind: fire_breath
+        value: 5
+    visuals:
+      icon: [lbx, special2, 27]
+      i18n: skill_fire_breath
   - identifier: fire_breath_30
     type: native
     effects:

@@ -17,12 +17,29 @@ using namespace std;
 
 FontData* FontData::fonts[FONT_TYPE_COUNT] = {nullptr};
 
+const FontFaces::Spacings& FontFaces::defaultSpacingForType(FontType type)
+{
+  const static Spacings spacings[FONT_TYPE_COUNT] = {
+    { 1, -2 },
+    { 1,  2 },
+    { 1,  3 },
+    { 1,  2 },
+    { 1, -1 },
+    { 1,  0 },
+    { 1, -1 },
+    { 1,  3 }
+  };
+  
+  return spacings[type];
+}
+
 const FontSpriteSheet* FontFaces::Tiny::WHITE = nullptr;
 const FontSpriteSheet* FontFaces::Tiny::WHITE_STROKE = nullptr;
 const FontSpriteSheet* FontFaces::Tiny::YELLOW_STROKE = nullptr;
 const FontSpriteSheet* FontFaces::Tiny::RED_STROKE = nullptr;
 const FontSpriteSheet* FontFaces::Tiny::BROWN = nullptr;
 const FontSpriteSheet* FontFaces::Tiny::GOLD_COMBAT = nullptr;
+const FontSpriteSheet* FontFaces::Tiny::BLACK_COMBAT = nullptr;
 
 const FontSpriteSheet* FontFaces::Small::YELLOW = nullptr;
 const FontSpriteSheet* FontFaces::Small::BLUE_MAGIC = nullptr;
@@ -110,6 +127,8 @@ void FontFaces::buildFonts()
   Tiny::RED_STROKE = buildTiny({0, {0,0,0}, {0,0,0}, {128,0,0}, {255,0,0}});
   Tiny::BROWN = buildTiny({0, 0, 0, {121,85,36}, {97,69,36}});
   Tiny::GOLD_COMBAT = buildTiny({0, 0, {39,27,24}, {185,105,7}, {255,176,6}});
+  Tiny::BLACK_COMBAT = buildTiny({0, 0,{120,132,148},{120,132,148},{32,32,36}});
+
   
   Small::YELLOW = buildSmall({0,0,{81,60,48},{150,109,52},{223,150,28}});
   Small::BLUE_MAGIC = buildSmall({0,0,{40,40,65},{97,97,125},{146,146,166}});

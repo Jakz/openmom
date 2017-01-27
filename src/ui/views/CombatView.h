@@ -108,6 +108,7 @@ private:
   combat::Combat* combat;
   
   void drawUnitProps(const combat::CombatUnit* unit, bool onTheLeft);
+  void drawSelectedUnitProps(const combat::CombatUnit* unit);
   
   void addRoads();
   void addFlyingFortress();
@@ -122,6 +123,8 @@ private:
   combat::combat_coord_set reachableTiles;
   combat::CombatUnit* selectedUnit;
   
+  combat::CombatUnit* findNextUsableUnit();
+    
 public:
   CombatView(ViewManager* gvm);
   
