@@ -147,8 +147,8 @@ combat_coord_set CombatMechanics::reachableTiles(const Combat* combat, const Com
       const auto* neighbour = node.tile->neighbour(dir);
       
       bool alreadyExplored = closedSet.find(neighbour) != closedSet.end();
-      bool blockedByEnvironment = isTileBlocked(neighbour, unit);
-      bool blockedByOtherUnit = combat->unitAtTile(neighbour->coords) != nullptr;
+      bool blockedByEnvironment = !neighbour || isTileBlocked(neighbour, unit);
+      bool blockedByOtherUnit = neighbour && combat->unitAtTile(neighbour->coords) != nullptr;
       
       /* tile is available to be reached */
       if (!alreadyExplored && neighbour && !blockedByEnvironment && !blockedByOtherUnit)

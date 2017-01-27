@@ -120,6 +120,7 @@ private:
   LBXID environmentLBX;
   
   combat::combat_coord_set reachableTiles;
+  combat::CombatUnit* selectedUnit;
   
 public:
   CombatView(ViewManager* gvm);
@@ -143,6 +144,7 @@ public:
   constexpr static int TILE_HEIGHT = 16;
   
   const decltype(reachableTiles)& getReachableTiles() { return reachableTiles; }
+  const combat::CombatUnit* getSelectedUnit() { return selectedUnit; }
 
 };
 

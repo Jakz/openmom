@@ -36,6 +36,8 @@ enum combat_lbx_statics
   rock = LBXI(CMBGRASS, 53),
   
   hover_tile = LBXI(CMBTCITY, 67),
+  selected_tile = LBXI(CMBTCITY, 68),
+
   
   lower_backdrop = LBXI(BACKGRND, 3),
 };
@@ -383,8 +385,9 @@ class UnitGfxEntry : public GfxEntry
 {
 private:
   CombatUnit* unit;
+  
   mutable CombatCoord position;
-  CombatCoord goal;
+  mutable std::list<CombatPosition> goal;
   mutable float progress;
   mutable bool isMoving;
   
@@ -410,15 +413,26 @@ public:
     }
     else
     {
+      /* if we ended current move animation */
       if (progress >= 1.0f)
       {
-        isMoving = false;
-        position = goal;
+        /* remove goal position and assign it to position */
+        position = goal.front().position;
+        goal.pop_front();
         coords = CombatView::coordsForTile(x(), y());
+        
+        /* if there are other moves pending then reset and keep moving */
+        isMoving = !goal.empty();
+        
+        if (isMoving)
+        {
+          progress = 0.0f;
+          unit->setFacing(goal.front().facing);
+        }
       }
       else
       {
-        Point destCoords = CombatView::coordsForTile(goal.x, goal.y);
+        Point destCoords = CombatView::coordsForTile(goal.front().position.x, goal.front().position.y);
         Point dx = destCoords - coords;
         coords += dx * progress;
         
@@ -433,12 +447,18 @@ public:
   
   void move(Dir direction)
   {
-    isMoving = true;
-    progress = 0.0f;
+    if (!isMoving)
+    {
+      progress = 0.0f;
+      //TODO: should facing be a property just of UnitGfxEntry and not CombatUnit since it's irrelevant for the logic
+      unit->setFacing(direction);
+    }
     
-    goal = position.neighbour(direction);
-    //TODO: should facing be a property just of UnitGfxEntry and not CombatUnit since it's irrelevant for the logic
-    unit->setFacing(direction);
+    isMoving = true;
+    
+    /* if unit wasn't moving then compute the destination position according to current position
+       otherwise use last position in queue of moves */
+    goal.push_back(CombatPosition((goal.empty() ? position : goal.back().position).neighbour(direction), direction));
   }
 };
 
@@ -446,25 +466,29 @@ class TileGfxEntry : public GfxEntry
 {
 private:
   SpriteInfo info;
-  u16 _x, _y;
+  CombatCoord _position;
   u16 _animOffset;
   
 public:
-  TileGfxEntry(CombatView* view, SpriteInfo info, u16 x, u16 y, u16 animOffset = 0) : CombatView::GfxEntry(view, priority_tile), info(info), _x(x), _y(y), _animOffset(animOffset) { }
+  TileGfxEntry(CombatView* view, SpriteInfo info, u16 x, u16 y, u16 animOffset = 0) : CombatView::GfxEntry(view, priority_tile), info(info), _position(x,y), _animOffset(animOffset) { }
   
   void draw() const override
   {
-    Point coords = CombatView::coordsForTile(_x, _y);
+    Point coords = CombatView::coordsForTile(_position.x, _position.y);
     Gfx::drawAnimated(info, coords, _animOffset);
-    Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 0, coords.x, coords.y);
+    Gfx::draw(TSI(COMBAT_MISC_TILES, 0, 0), coords.x, coords.y);
     
-    if (_view->getReachableTiles().find(CombatCoord(_x,_y)) != _view->getReachableTiles().end())
-      Gfx::draw(TextureID::COMBAT_MISC_TILES, 0, 1, coords.x, coords.y);
-
+    /* these special tile hover things should have their own priority and GfxEntry */
+    if (_view->getReachableTiles().find(_position) != _view->getReachableTiles().end())
+      Gfx::draw(TSI(COMBAT_MISC_TILES, 0, 1), coords.x, coords.y);
+      
+    const CombatUnit* selectedUnit = _view->getSelectedUnit();
+    if (selectedUnit && selectedUnit->position == _position)
+      Gfx::drawAnimated(selected_tile, coords.x, coords.y);
   }
   
-  u16 x() const override { return _x; }
-  u16 y() const override { return _y; }
+  u16 x() const override { return _position.x; }
+  u16 y() const override { return _position.y; }
 };
 
 class PropGfxEntry : public GfxEntry
@@ -783,7 +807,9 @@ void CombatView::activate()
   Player* p1 = *g->getPlayers().begin();
   Player* p2 = *std::next(g->getPlayers().begin());
   
-  this->combat = new Combat(*p1->getArmies().begin(), *p2->getArmies().begin(), &g->combatMechanics);
+  this->combat = new Combat(*p2->getArmies().begin(), *p1->getArmies().begin(), &g->combatMechanics);
+  
+  selectedUnit = nullptr;
   
   prepareGraphics();
   entries.setDirty();
@@ -792,6 +818,8 @@ void CombatView::activate()
 void CombatView::deactivate()
 {
   entries.clear();
+  selectedUnit = nullptr;
+  reachableTiles.clear();
 }
 
 void CombatView::addRoads() { entries.add(new FixedGfxEntry(this, roads_static, 16, 40)); }
@@ -1014,7 +1042,16 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
       g->castSpell(unit->getUnit(), player, true);
     else if (unit && unit->hasMoves())
     {
-      reachableTiles = g->combatMechanics.reachableTiles(combat, unit, unit->getProperty(Property::AVAILABLE_MOVEMENT));
+      const bool ownedUnit = unit->getOwner() == player;
+      
+      if (ownedUnit && selectedUnit != unit)
+      {
+        selectedUnit = unit;
+        reachableTiles = g->combatMechanics.reachableTiles(combat, unit, unit->getProperty(Property::AVAILABLE_MOVEMENT));
+        
+        unitsMap[unit]->move(Dir::NORTH_WEST);
+        unitsMap[unit]->move(Dir::NORTH);
+      }
       
       //unitsMap[unit]->move(Dir::NORTH_WEST);
 
