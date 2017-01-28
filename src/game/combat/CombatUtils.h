@@ -49,12 +49,7 @@ namespace combat
     }
   };
   
-  struct combat_coord_hash {
-    size_t operator()(const CombatCoord& position) const { return std::hash<size_t>()(position.x || position.y << sizeof(decltype(position.y))*8); }
-  };
   
-  using combat_coord_set = std::unordered_set<CombatCoord, combat_coord_hash>;
-
   struct CombatPosition
   {
     CombatCoord position;
@@ -63,14 +58,19 @@ namespace combat
     CombatPosition(CombatCoord coord, Dir f = Dir::NORTH) : position(coord), facing(f) { }
     CombatPosition(s8 x = -1, s8 y = -1, Dir f = Dir::NORTH) : position(x, y), facing(f) { }
     
+    bool operator==(const CombatPosition& position) const { return this->position == position.position; }
     bool operator==(const CombatCoord& position) const { return this->position == position; }
   };
-
+  
+  struct combat_coord_hash
+  {
+    size_t operator()(const CombatCoord& position) const { return std::hash<size_t>()(position.x || position.y << sizeof(decltype(position.y))*8); }
+  };
+  
   struct combat_position_hash
   {
-    std::size_t operator()(const CombatPosition& k) const { return static_cast<u16>(k.position.x<<8 | k.position.y); }
+    size_t operator()(const CombatPosition& position) const { return std::hash<size_t>()(position.position.x || position.position.y << sizeof(decltype(position.position.y))*8); }
   };
 
-  using position_map = std::unordered_map<CombatPosition,CombatPosition,combat_position_hash>;
-
+  using combat_coord_set = std::unordered_set<CombatPosition, combat_position_hash>;
 }

@@ -1118,27 +1118,13 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
       {
         selectedUnit = unit;
         reachableTiles = g->combatMechanics.reachableTiles(combat, unit, unit->getProperty(Property::AVAILABLE_MOVEMENT));
-        
-        //unitsMap[unit]->move(Dir::NORTH_WEST);
-        //unitsMap[unit]->move(Dir::NORTH);
       }
-      
-      //unitsMap[unit]->move(Dir::NORTH_WEST);
-
-      /*
-      if (unit != combat.selectedUnit && unit.owner == player)
-      {
-        combat.select(unit);
-        reachable = combat.reachable(unit);
-      }
-      else if (combat.selectedUnit != null && unit != combat.selectedUnit && combat.relativeFacing(combat.selectedUnit, unit) != -1)
-      {
-        combat.attack(combat.selectedUnit,unit);
-      }
-      else if (combat.selectedUnit == unit)
-        combat.deselect();
-       */
     }
+    else if (selectedUnit && reachableTiles.find(CombatPosition(hover)) != reachableTiles.end())
+    {
+      LOGD("[combat][movement] Moving unit from (%d,%d) to (%d,%d)", selectedUnit->x(), selectedUnit->y(), hover.x, hover.y);
+    }
+    
     /*
     else if (combat.selectedUnit != null && combat.selectedUnit.moves > 0)
     {

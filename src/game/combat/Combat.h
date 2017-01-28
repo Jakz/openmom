@@ -79,17 +79,16 @@ namespace combat
   class CombatInterface
   {
   public:
-    virtual CombatUnit* unitAtTile(u16 x, u16 y) = 0;
-    virtual bool isPositionEmpty(u16 x, u16 y) = 0;
+    virtual CombatUnit* unitAtTile(CombatCoord position) const = 0;
+    virtual bool isTileEmpty(CombatCoord position) const = 0;
     
     virtual void attack(CombatUnit* u1, CombatUnit* u2) = 0;
-    virtual void moveUnit(CombatUnit* u1, u16 x, u16 y) = 0;
+    virtual void moveUnit(CombatUnit* u1, CombatPosition position) = 0;
     
-    virtual void endTurn();
+    virtual void endTurn() = 0;
   };
 
-
-  class Combat
+  class Combat : public CombatInterface
   {
   private:
     cast_list spells;
@@ -103,9 +102,7 @@ namespace combat
     Player* current;
     
     std::unique_ptr<CombatMap> _map;
-    
-    position_map currents, visited, incoming;
-    
+        
   public:
     static constexpr size_t W = 11;
     static constexpr size_t H = 22;
@@ -129,15 +126,12 @@ namespace combat
     const std::list<CombatUnit*>& friendlyUnits(Player* player) { return player == players[1] ? units[1] : units[0]; }
     
     void attack(CombatUnit *u1, CombatUnit *u2);
+    void moveUnit(CombatUnit *unit, CombatPosition position);
     
     Dir relativeFacing(CombatUnit *u1, CombatUnit *u2);
     
-    void moveUnit(CombatUnit *unit, u16 x, u16 y);
-    
     void castEnchantment(const SpellCast &cast) { spells.push_back(cast); }
-    
-    const position_map& reachable(CombatUnit* unit);
-    
+        
     void deployUnits();
     
     const std::vector<CombatUnit*>& getUnits() { return allUnits; }

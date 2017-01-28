@@ -100,70 +100,7 @@ void Combat::deployUnits()
   }
 }
 
-const position_map& Combat::reachable(CombatUnit *unit)
+void Combat::moveUnit(CombatUnit *unit, CombatPosition position)
 {
-  /*visited.clear();
-  currents.clear();
-  incoming.clear();
-  
-  s16 moves = unit->moves;
-  
-  incoming.emplace(CombatPosition(unit), CombatPosition());
-  
-  while (moves + 1 > 0)
-  {
-    currents.insert(incoming.begin(), incoming.end());
-    incoming.clear();
-    
-    for (const auto& e : currents)
-    {
-      visited.insert(e);
-      
-      for (int j = 0; j < 8; ++j)
-      {
-        int i = j < 4 ? 1 + j*2 : (j-4)*2;
-        int ny = e.first.y;
-        int nx = e.first.x;
-        nx += dirs(i,ny%2 == 0)[0];
-        ny += dirs(i,ny%2 == 0)[1];
-      
-        if (nx >= 0 && nx < W && ny >= 0 && ny < H)
-        {
-          if (unitAtTile(nx,ny) && unitAtTile(nx,ny)->getOwner() == unit->getOwner())
-            continue;
-          
-          auto lambda = [&](const pair<CombatPosition,CombatPosition> &p) { return p.first.x == nx && p.first.y == ny; };
-          
-          if (find_if(visited.begin(), visited.end(), lambda) == visited.end() && find_if(currents.begin(), currents.end(), lambda) == currents.end())
-          {
-            CombatPosition np = CombatPosition(e.first);
-            np.f = i;
-            incoming.emplace(CombatPosition(nx,ny), np);
-          }
-          //else if (v != null && ((v.intValue() & 0xFF000000) >> 24) % 2 == 0)
-          // incoming.put(buildPosition(nx,ny), (i << 24) | c.getKey());
-          // else if (o != null && ((o.intValue() & 0xFF000000) >> 24) % 2 == 0)
-          // incoming.put(buildPosition(nx,ny), (i << 24) | c.getKey());
-        }
-        
-        
-      }
-      
-      currents.clear();
-      --moves;
-    }
-  }
-  */
-  return visited;
-}
-
-void Combat::moveUnit(CombatUnit *unit, u16 x, u16 y)
-{
-  if (unit && unit != selectedUnit)
-    select(unit);
-  
-  CombatPosition pos = CombatPosition(unit->x(), unit->y());
-  
-  //           auto lambda = [&](const pair<CombatPosition,CombatPosition> &p) { return p.first.x == nx && p.first.y == ny; };
-
+  unit->setPosition(position);
 }

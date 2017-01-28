@@ -171,7 +171,7 @@ combat_coord_set CombatMechanics::reachableTiles(const Combat* combat, const Com
   combat_coord_set reachable;
 
   std::transform(closedMap.begin(), closedMap.end(), std::inserter(reachable, reachable.end()), [](const decltype(closedMap)::value_type& entry) {
-    return CombatCoord(entry.first->x(), entry.first->y());
+    return CombatPosition(entry.first->x(), entry.first->y(), entry.second.from);
   });
   
   return reachable;

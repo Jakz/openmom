@@ -46,6 +46,33 @@ namespace anims
     virtual ~Animation() { }
   };
   
+  class InstantAnimation : public Animation
+  {
+  protected:
+    bool _called;
+    
+  public:
+    InstantAnimation() : _called(false) { }
+    
+    void reset() override { _called = false; }
+    void doStep() override { _called = true; }
+    bool hasFinished() override { return _called; }
+  };
+  
+  class LambdaAnimation : public InstantAnimation
+  {
+  protected:
+    std::function<void(void)> lambda;
+    
+  public:
+    LambdaAnimation(std::function<void(void)> lambda) : lambda(lambda) { }
+    
+    void doStep() override {
+      lambda();
+      InstantAnimation::doStep();
+    }
+  };
+  
   class DiscreteAnimation : public Animation
   {
   protected:
