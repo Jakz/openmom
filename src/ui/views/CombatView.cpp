@@ -480,7 +480,7 @@ public:
     Gfx::draw(TSI(COMBAT_MISC_TILES, 0, 0), coords.x, coords.y);
     
     /* these special tile hover things should have their own priority and GfxEntry */
-    if (_view->getReachableTiles().find(_position) != _view->getReachableTiles().end())
+    if (_view->getReachableTiles().contains(_position))
       Gfx::draw(TSI(COMBAT_MISC_TILES, 0, 1), coords.x, coords.y);
       
     const CombatUnit* selectedUnit = _view->getSelectedUnit();
@@ -1120,7 +1120,7 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
         reachableTiles = g->combatMechanics.reachableTiles(combat, unit, unit->getProperty(Property::AVAILABLE_MOVEMENT));
       }
     }
-    else if (selectedUnit && reachableTiles.find(CombatPosition(hover)) != reachableTiles.end())
+    else if (selectedUnit && reachableTiles.contains(hover))
     {
       LOGD("[combat][movement] Moving unit from (%d,%d) to (%d,%d)", selectedUnit->x(), selectedUnit->y(), hover.x, hover.y);
     }

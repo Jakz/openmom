@@ -106,7 +106,7 @@ bool CombatMechanics::isTileBlocked(const CombatTile* tile, const CombatUnit* un
   return hasBuilding || isBlockedByStoneTower || isBlockedByStoneWall;
 }
 
-combat_coord_set CombatMechanics::reachableTiles(const Combat* combat, const CombatUnit* unit, s16 movement)
+combat_pathfind_info CombatMechanics::reachableTiles(const Combat* combat, const CombatUnit* unit, s16 movement)
 {
   static constexpr size_t DIRECTIONS = 8;
   
@@ -168,11 +168,11 @@ combat_coord_set CombatMechanics::reachableTiles(const Combat* combat, const Com
     }
   }
   
-  combat_coord_set reachable;
+  combat_pathfind_info::set_t reachable;
 
   std::transform(closedMap.begin(), closedMap.end(), std::inserter(reachable, reachable.end()), [](const decltype(closedMap)::value_type& entry) {
     return CombatPosition(entry.first->x(), entry.first->y(), entry.second.from);
   });
   
-  return reachable;
+  return combat_pathfind_info(CombatCoord(unit->position.position), reachable);
 }

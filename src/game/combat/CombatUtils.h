@@ -71,6 +71,34 @@ namespace combat
   {
     size_t operator()(const CombatPosition& position) const { return std::hash<size_t>()(position.position.x || position.position.y << sizeof(decltype(position.position.y))*8); }
   };
-
-  using combat_coord_set = std::unordered_set<CombatPosition, combat_position_hash>;
+  
+  class combat_pathfind_info
+  {
+  public:
+    using set_t = std::unordered_set<CombatPosition, combat_position_hash>;
+    
+  private:
+    CombatCoord start;
+    set_t reachable;
+    
+  public:
+    combat_pathfind_info() = default;
+    combat_pathfind_info(CombatCoord start, set_t reachable) : start(start), reachable(reachable) { }
+    
+    using iterator = set_t::const_iterator;
+    
+    const iterator begin() const { return reachable.begin(); }
+    const iterator end() const { return reachable.end(); }
+    
+    void clear()
+    {
+      reachable.clear();
+      start = CombatCoord();
+    }
+    
+    bool contains(CombatCoord position) const
+    {
+      return std::find(begin(), end(), position) != end();
+    }
+  };
 }

@@ -36,7 +36,7 @@ namespace combat
     CombatPosition positionForDeployedUnit(CombatMap* map, const CombatUnit* unit, u16 index);
     CombatCoord defaultPositionForObject(CombatObject object);
     bool isTileBlocked(const CombatTile* tile, const CombatUnit* unit);
-    combat_coord_set reachableTiles(const Combat* combat, const CombatUnit* unit, s16 movement);
+    combat_pathfind_info reachableTiles(const Combat* combat, const CombatUnit* unit, s16 movement);
   };
 
   

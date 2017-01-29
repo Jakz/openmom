@@ -120,7 +120,7 @@ private:
   combat::CombatEnvironment environment;
   LBXID environmentLBX;
   
-  combat::combat_coord_set reachableTiles;
+  combat::combat_pathfind_info reachableTiles;
   combat::CombatUnit* selectedUnit;
   
   combat::CombatUnit* findNextUsableUnit();
