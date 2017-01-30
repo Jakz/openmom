@@ -393,7 +393,7 @@ private:
   mutable bool isMoving;
   
 public:
-  UnitGfxEntry(CombatView* view, CombatUnit* unit) : CombatView::GfxEntry(view, priority_units), unit(unit), isMoving(false), position(unit->position.position) { }
+  UnitGfxEntry(CombatView* view, CombatUnit* unit) : CombatView::GfxEntry(view, priority_units), unit(unit), isMoving(false), position(unit->position) { }
   ~UnitGfxEntry()
   {
     //TODO: combatView->unitsMap.erase(this);
@@ -418,7 +418,7 @@ public:
       if (progress >= 1.0f)
       {
         /* remove goal position and assign it to position */
-        position = goal.front().position;
+        position = goal.front();
         goal.pop_front();
         coords = CombatView::coordsForTile(x(), y());
         
@@ -433,7 +433,7 @@ public:
       }
       else
       {
-        Point destCoords = CombatView::coordsForTile(goal.front().position.x, goal.front().position.y);
+        Point destCoords = CombatView::coordsForTile(goal.front().x, goal.front().y);
         Point dx = destCoords - coords;
         coords += dx * progress;
         
@@ -459,7 +459,7 @@ public:
     
     /* if unit wasn't moving then compute the destination position according to current position
        otherwise use last position in queue of moves */
-    goal.push_back(CombatPosition((goal.empty() ? position : goal.back().position).neighbour(direction), direction));
+    goal.push_back(CombatPosition((goal.empty() ? position : goal.back()).neighbour(direction), direction));
   }
 };
 
@@ -1123,6 +1123,8 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
     else if (selectedUnit && reachableTiles.contains(hover))
     {
       LOGD("[combat][movement] Moving unit from (%d,%d) to (%d,%d)", selectedUnit->x(), selectedUnit->y(), hover.x, hover.y);
+      
+      combat_moves_list path = reachableTiles.buildRoute(hover);
     }
     
     /*

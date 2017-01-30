@@ -129,7 +129,7 @@ combat_pathfind_info CombatMechanics::reachableTiles(const Combat* combat, const
   
   LOGD3("[combat][pathfind] computing reachable tiles from (%d,%d)", unit->x(), unit->y())
   
-  openSet.push_back({ map->tileAt(unit->position.position), 0, Dir::INVALID });
+  openSet.push_back({ map->tileAt(unit->position), 0, Dir::INVALID });
   
   while (!openSet.empty())
   {
@@ -174,5 +174,5 @@ combat_pathfind_info CombatMechanics::reachableTiles(const Combat* combat, const
     return CombatPosition(entry.first->x(), entry.first->y(), entry.second.from);
   });
   
-  return combat_pathfind_info(CombatCoord(unit->position.position), reachable);
+  return combat_pathfind_info(unit->position, reachable);
 }

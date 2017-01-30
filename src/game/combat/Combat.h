@@ -51,14 +51,14 @@ namespace combat
       return unit->getBonusProperty(property);
     }
     
-    void setPosition(u16 x, u16 y) { position.position = CombatCoord(x,y); }
-    void setPosition(u16 x, u16 y, Dir facing) { position = CombatPosition(x,y,facing); }
-    void setPosition(CombatCoord tile) { position.position = tile; }
+    void setPosition(u16 x, u16 y) { setPosition(x, y, position.facing); }
+    void setPosition(u16 x, u16 y, Dir facing) { position = CombatPosition(x, y, facing); }
+    void setPosition(CombatCoord tile) { position = tile; }
     void setPosition(CombatPosition pos) { position = pos; }
     void setFacing(Dir facing) { position.facing = facing; }
     
-    u16 x() const { return position.position.x; }
-    u16 y() const { return position.position.y; }
+    u16 x() const { return position.x; }
+    u16 y() const { return position.y; }
     Dir facing() const { return position.facing; }
     Side side() const { return _side; }
     

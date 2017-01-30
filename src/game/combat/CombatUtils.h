@@ -50,16 +50,17 @@ namespace combat
   };
   
   
-  struct CombatPosition
+  struct CombatPosition : public CombatCoord
   {
-    CombatCoord position;
     Dir facing;
     
-    CombatPosition(CombatCoord coord, Dir f = Dir::NORTH) : position(coord), facing(f) { }
-    CombatPosition(s8 x = -1, s8 y = -1, Dir f = Dir::NORTH) : position(x, y), facing(f) { }
+    CombatPosition(CombatCoord coord, Dir f = Dir::NORTH) : CombatCoord(coord), facing(f) { }
+    CombatPosition(s8 x = -1, s8 y = -1, Dir f = Dir::NORTH) : CombatCoord(x, y), facing(f) { }
     
-    bool operator==(const CombatPosition& position) const { return this->position == position.position; }
-    bool operator==(const CombatCoord& position) const { return this->position == position; }
+    CombatPosition& operator=(const CombatCoord& coord) { this->x = coord.x; this->y = coord.y; return *this; }
+    
+    //bool operator==(const CombatPosition& position) const { return this->position == position.position; }
+    //bool operator==(const CombatCoord& position) const { return this->position == position; }
   };
   
   struct combat_coord_hash
@@ -67,23 +68,21 @@ namespace combat
     size_t operator()(const CombatCoord& position) const { return std::hash<size_t>()(position.x || position.y << sizeof(decltype(position.y))*8); }
   };
   
-  struct combat_position_hash
-  {
-    size_t operator()(const CombatPosition& position) const { return std::hash<size_t>()(position.position.x || position.position.y << sizeof(decltype(position.position.y))*8); }
-  };
+  
+  using combat_moves_list = std::vector<CombatPosition>;
   
   class combat_pathfind_info
   {
   public:
-    using set_t = std::unordered_set<CombatPosition, combat_position_hash>;
+    using set_t = std::unordered_set<CombatPosition, combat_coord_hash>;
     
   private:
-    CombatCoord start;
+    CombatPosition start;
     set_t reachable;
     
   public:
     combat_pathfind_info() = default;
-    combat_pathfind_info(CombatCoord start, set_t reachable) : start(start), reachable(reachable) { }
+    combat_pathfind_info(CombatPosition start, set_t reachable) : start(start), reachable(reachable) { }
     
     using iterator = set_t::const_iterator;
     
@@ -99,6 +98,21 @@ namespace combat
     bool contains(CombatCoord position) const
     {
       return std::find(begin(), end(), position) != end();
+    }
+    
+    combat_moves_list buildRoute(CombatCoord position)
+    {
+      assert(contains(position));
+      
+      combat_moves_list moves;
+      
+      //while (position != start)
+      {
+        
+      }
+      
+      return moves;
+      
     }
   };
 }
