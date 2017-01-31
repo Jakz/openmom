@@ -26,7 +26,6 @@ namespace combat
     CombatCoord(s16 x, s16 y) : Point(x,y) { }
     CombatCoord(const Point& point) : Point(point) { }
     
-    operator bool() const { return isValid(); }
     CombatCoord neighbour(Dir facing) const;
     
     static constexpr const s16 DIRS[12][2] = {{0,-2},{0,-1},{1,-1},{1,0},{0,1},{1,1},{0,2},{-1,1},{0,1},{-1,0},{-1,-1},{0,-1}};
@@ -106,10 +105,22 @@ namespace combat
       
       combat_moves_list moves;
       
-      //while (position != start)
+      Dir dir = Dir::INVALID;
+      
+      while (position != start)
       {
+        CombatPosition pathCell = *reachable.find(position);
         
+        CombatPosition move = CombatPosition(position, dir);
+        moves.push_back(move);
+        
+        position = pathCell.neighbour(~pathCell.facing);
+        dir = pathCell.facing;
       }
+      
+      moves.push_back(CombatPosition(start, dir));
+      
+      std::reverse(moves.begin(), moves.end());
       
       return moves;
       

@@ -1125,6 +1125,9 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
       LOGD("[combat][movement] Moving unit from (%d,%d) to (%d,%d)", selectedUnit->x(), selectedUnit->y(), hover.x, hover.y);
       
       combat_moves_list path = reachableTiles.buildRoute(hover);
+      
+      for (auto it = path.begin(); it != path.end()-1; ++it)
+        unitsMap[selectedUnit]->move(it->facing);
     }
     
     /*

@@ -320,6 +320,22 @@ enum class Dir
   INVALID = -1
 };
 
+inline Dir operator~(const Dir& dir)
+{
+  switch (dir)
+  {
+    case Dir::NORTH: return Dir::SOUTH;
+    case Dir::NORTH_EAST: return Dir::SOUTH_WEST;
+    case Dir::EAST: return Dir::WEST;
+    case Dir::SOUTH_EAST: return Dir::NORTH_WEST;
+    case Dir::SOUTH: return Dir::NORTH;
+    case Dir::SOUTH_WEST: return Dir::NORTH_EAST;
+    case Dir::WEST: return Dir::EAST;
+    case Dir::NORTH_WEST: return Dir::SOUTH_EAST;
+    default: return Dir::INVALID;
+  }
+}
+
 class Palette;
 
 class SpriteSheet
@@ -437,6 +453,7 @@ struct Point
   template<typename T, typename std::enable_if<std::is_base_of<Point, T>::value, int>::type = 0>
   Point(const T& other) : x(other.x), y(other.y) { }
   
+  bool operator!=(const Point& o) const { return !(*this == o); }
   bool operator==(const Point& o) const { return x == o.x && y == o.y; }
   
   Point& operator+=(const Point& other) { x += other.x; y += other.y; return *this; }
