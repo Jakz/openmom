@@ -61,7 +61,7 @@ enum priority : priority_t
 {
   priority_tile = -100,
   priority_fixed = -10,
-  priority_roads = 5,
+  priority_roads = -50,
   
   priority_prop = 50,
   
@@ -1126,8 +1126,16 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
       
       combat_moves_list path = reachableTiles.buildRoute(hover);
       
+      combat->moveUnit(selectedUnit, path);
       for (auto it = path.begin(); it != path.end()-1; ++it)
         unitsMap[selectedUnit]->move(it->facing);
+      
+      if (selectedUnit->getAvailableMoves() == 0)
+        selectedUnit = findNextUsableUnit();
+        
+      if (selectedUnit && selectedUnit->getAvailableMoves() > 0)
+        reachableTiles = g->combatMechanics.reachableTiles(combat, selectedUnit, selectedUnit->getAvailableMoves());
+      
     }
     
     /*

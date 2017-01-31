@@ -200,6 +200,7 @@ public:
   
   MovementInfo getActualMovementInfo() const { return MovementInfo(getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE), getProperty(Property::AVAILABLE_MOVEMENT)); }
   MovementInfo getMovementInfo() const { return MovementInfo(getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE), getProperty(Property::MOVEMENT)); }
+  s16 getAvailableMoves() const { return getProperty(Property::AVAILABLE_MOVEMENT); }
   MovementBaseType getMovementBaseType() const { return getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE); }
   bool isFlying() const { return getMovementBaseType() == MovementBaseType::FLYING; }
   

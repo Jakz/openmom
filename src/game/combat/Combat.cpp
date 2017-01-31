@@ -100,7 +100,18 @@ void Combat::deployUnits()
   }
 }
 
-void Combat::moveUnit(CombatUnit *unit, CombatPosition position)
+void Combat::moveUnit(CombatUnit *unit, const combat_moves_list& moves)
 {
-  unit->setPosition(position);
+  assert(moves.front() == unit->position);
+         
+  for (auto it = moves.begin(); it != moves.end()-1; ++it)
+  {
+    const auto* next = _map->tileAt(*(it+1));
+    s16 cost = mechanics->movementCostForTile(unit, next, it->facing);
+    
+    assert(unit->getAvailableMoves() > 0);
+    unit->consumeMoves(cost);
+  }
+  
+  unit->setPosition(moves.back());
 }

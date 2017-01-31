@@ -28,6 +28,8 @@ namespace combat
     Unit* unit;
     Player* player;
     Side _side;
+    s16 moves;
+
     
   public:
     CombatUnit(Side side, Unit* unit) : unit(unit), player(unit->getArmy()->getOwner()), _side(side), moves(unit->getProperty(Property::MOVEMENT)*2), selected(false) { }
@@ -66,13 +68,13 @@ namespace combat
     bool isDefender() const { return _side == Side::DEFENDER; }
     
     bool hasMoves() const { return moves > 0; }
+    void consumeMoves(s16 amount) { moves -= std::min(amount, moves); }
     
     /* TODO: maybe a SkillSet for combat unit is needed which wraps the native one to manage combat only effects */
     const SkillSet* skills() const { return unit->skills(); }
     SkillSet* skills() { return unit->skills(); }
 
     CombatPosition position;
-    u16 moves;
     bool selected;
   };
 
@@ -83,7 +85,7 @@ namespace combat
     virtual bool isTileEmpty(CombatCoord position) const = 0;
     
     virtual void attack(CombatUnit* u1, CombatUnit* u2) = 0;
-    virtual void moveUnit(CombatUnit* u1, CombatPosition position) = 0;
+    virtual void moveUnit(CombatUnit *unit, const combat_moves_list& moves) = 0;
     
     virtual void endTurn() = 0;
   };
@@ -125,8 +127,8 @@ namespace combat
     const std::list<CombatUnit*>& enemyUnits(Player* player) { return player == players[0] ? units[0] : units[1]; }
     const std::list<CombatUnit*>& friendlyUnits(Player* player) { return player == players[1] ? units[1] : units[0]; }
     
-    void attack(CombatUnit *u1, CombatUnit *u2);
-    void moveUnit(CombatUnit *unit, CombatPosition position);
+    void attack(CombatUnit *u1, CombatUnit *u2) override;
+    void moveUnit(CombatUnit *unit, const combat_moves_list& moves) override;
     
     Dir relativeFacing(CombatUnit *u1, CombatUnit *u2);
     
