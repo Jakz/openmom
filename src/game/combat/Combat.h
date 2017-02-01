@@ -14,6 +14,7 @@ namespace combat
 {
   class CombatMap;
   class CombatMechanics;
+  class Combat;
   struct CombatTile;
 
   enum class CombatModifier : u8
@@ -25,6 +26,7 @@ namespace combat
   class CombatUnit : public Propertable
   {
   private:
+    Combat* const _combat;
     Unit* unit;
     Player* player;
     Side _side;
@@ -32,11 +34,10 @@ namespace combat
 
     
   public:
-    CombatUnit(Side side, Unit* unit) : unit(unit), player(unit->getArmy()->getOwner()), _side(side), moves(unit->getProperty(Property::MOVEMENT)*2), selected(false) { }
+    CombatUnit(Combat* combat, Side side, Unit* unit) : _combat(combat), unit(unit), player(unit->getArmy()->getOwner()), _side(side), moves(unit->getProperty(Property::MOVEMENT)*2), selected(false) { }
     
     Player* const getOwner() { return player; }
     
-    void resetMoves() { moves = unit->getProperty(Property::MOVEMENT)*2; }
     
     Unit* getUnit() const { return unit; }
     
@@ -59,6 +60,8 @@ namespace combat
     void setPosition(CombatPosition pos) { position = pos; }
     void setFacing(Dir facing) { position.facing = facing; }
     
+    const CombatTile* tile();
+    
     u16 x() const { return position.x; }
     u16 y() const { return position.y; }
     Dir facing() const { return position.facing; }
@@ -69,6 +72,7 @@ namespace combat
     
     bool hasMoves() const { return moves > 0; }
     void consumeMoves(s16 amount) { moves -= std::min(amount, moves); }
+    void resetMoves() { moves = unit->getProperty(Property::MOVEMENT)*2; }
     
     /* TODO: maybe a SkillSet for combat unit is needed which wraps the native one to manage combat only effects */
     const SkillSet* skills() const { return unit->skills(); }
@@ -119,6 +123,7 @@ namespace combat
     
     Player* currentPlayer() { return current; }
     
+    const CombatTile* tileAt(const Point& position);
     const CombatTile* tileAt(s16 x, s16 y);
     CombatUnit* unitAtTile(CombatCoord position) const;
     bool isTileEmpty(CombatCoord position) const { return !unitAtTile(position); }

@@ -19,18 +19,20 @@
 using namespace std;
 using namespace combat;
 
+const CombatTile* CombatUnit::tile() { return _combat->tileAt(position); }
+
 Combat::Combat(Army* defender, Army* attacker, CombatMechanics* mechanics) : players{defender->getOwner(),attacker->getOwner()}, selectedUnit(nullptr), current(attacker->getOwner()), mechanics(mechanics), _map(new CombatMap(this, W,H))
 {
   for (auto u1 : defender->getUnits())
   {
-    CombatUnit* cu1 = new CombatUnit(Side::DEFENDER, u1);
+    CombatUnit* cu1 = new CombatUnit(this, Side::DEFENDER, u1);
     units[0].push_back(cu1);
     allUnits.push_back(cu1);
   }
   
   for (auto u2 : attacker->getUnits())
   {
-    CombatUnit* cu2 = new CombatUnit(Side::ATTACKER, u2);
+    CombatUnit* cu2 = new CombatUnit(this, Side::ATTACKER, u2);
     units[1].push_back(cu2);
     allUnits.push_back(cu2);
   }
@@ -54,6 +56,7 @@ void Combat::endTurn()
   //  current.game.nextLocal();
 }
 
+const CombatTile* Combat::tileAt(const Point& position) { return _map->tileAt(position); }
 const CombatTile* Combat::tileAt(s16 x, s16 y) { return _map->tileAt(x,y); }
 
 CombatUnit* Combat::unitAtTile(CombatCoord position) const

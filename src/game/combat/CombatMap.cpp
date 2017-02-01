@@ -181,3 +181,16 @@ void CombatMap::placeCityRoadExit(Dir direction)
       break;
   }
 }
+
+Dir CombatMap::adjacentDirection(const CombatTile* from, const CombatTile* to) const
+{
+  for (size_t i = 0; i < COMBAT_DIRS; ++i)
+  {
+    Dir dir = static_cast<Dir>(i);
+    
+    if (from->neighbour(dir) == to)
+      return dir;
+  }
+  
+  return Dir::INVALID;
+}

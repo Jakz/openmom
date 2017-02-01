@@ -31,12 +31,17 @@ namespace combat
   public:
     CombatMechanics(Game* game) : game(game) { }
     
+    /* attack related functions */
+    bool canMeleeAttack(const CombatUnit* attacker, const CombatUnit* defender) { return true; }
+    
     /* map related functions */
     u16 movementCostForTile(const CombatUnit* unit, const CombatTile* tile, Dir from);
     CombatPosition positionForDeployedUnit(CombatMap* map, const CombatUnit* unit, u16 index);
     CombatCoord defaultPositionForObject(CombatObject object);
     bool isTileBlocked(const CombatTile* tile, const CombatUnit* unit);
     combat_pathfind_info reachableTiles(const Combat* combat, const CombatUnit* unit, s16 movement);
+    
+    
   };
 
   

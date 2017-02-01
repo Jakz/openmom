@@ -155,9 +155,11 @@ namespace combat
     
     void placeSegment(u16 x, u16 y, Dir dir, u16 length, TileType type);
     void placeRect(u16 x, u16 y, u16 w, u16 h, TileType type);
-    
+        
     CombatTile* placeRiverSegment(u16 x, u16 y, Dir dir, u16 length);
     
+    Dir adjacentDirection(const CombatTile* from, const CombatTile* to) const;
+
     Combat* combat() const { return _combat; }
   };
   

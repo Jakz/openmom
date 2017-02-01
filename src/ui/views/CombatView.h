@@ -124,6 +124,8 @@ private:
   combat::CombatUnit* selectedUnit;
   
   combat::CombatUnit* findNextUsableUnit();
+  
+  
     
 public:
   CombatView(ViewManager* gvm);
@@ -148,7 +150,6 @@ public:
   
   const decltype(reachableTiles)& getReachableTiles() { return reachableTiles; }
   const combat::CombatUnit* getSelectedUnit() { return selectedUnit; }
-
 };
 
 #endif 

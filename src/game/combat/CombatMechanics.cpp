@@ -38,7 +38,7 @@ u16 CombatMechanics::movementCostForTile(const CombatUnit* unit, const CombatTil
 
 CombatPosition CombatMechanics::positionForDeployedUnit(CombatMap* map, const CombatUnit* unit, u16 index)
 {
-  static const CombatCoord attackerBase = {7,16};
+  static const CombatCoord attackerBase = {4,13};//{7,16};
   static const Dir attackerRowDirection = Dir::SOUTH_EAST;
   
   static const CombatCoord defenderBase = {4,10};

@@ -387,17 +387,21 @@ class UnitGfxEntry : public GfxEntry
 private:
   CombatUnit* unit;
   
+  mutable UnitDraw::CombatAction action;
   mutable CombatCoord position;
   mutable std::list<CombatPosition> goal;
   mutable float progress;
-  mutable bool isMoving;
+  
+  static constexpr float PROGRESS_PER_TICK = 0.05f;
   
 public:
-  UnitGfxEntry(CombatView* view, CombatUnit* unit) : CombatView::GfxEntry(view, priority_units), unit(unit), isMoving(false), position(unit->position) { }
+  UnitGfxEntry(CombatView* view, CombatUnit* unit) : CombatView::GfxEntry(view, priority_units), unit(unit), action(UnitDraw::CombatAction::STAY), position(unit->position) { }
   ~UnitGfxEntry()
   {
     //TODO: combatView->unitsMap.erase(this);
   }
+  
+  bool isAnimating() const { return action != UnitDraw::CombatAction::STAY; }
   
   u16 x() const override { return position.x; }
   u16 y() const override { return position.y; }
@@ -405,14 +409,13 @@ public:
   void draw() const override
   {
     Point coords = CombatView::coordsForTile(x(), y());
-    UnitDraw::CombatAction action = UnitDraw::CombatAction::STAY;
     
-    if (!isMoving)
+    if (action == UnitDraw::CombatAction::STAY)
     {
       if (unit->selected)
         Gfx::draw(SpriteInfo(TextureID::COMBAT_MISC_TILES, 0, 1), coords.x, coords.y);
     }
-    else
+    else if (action == UnitDraw::CombatAction::MOVE)
     {
       /* if we ended current move animation */
       if (progress >= 1.0f)
@@ -423,9 +426,9 @@ public:
         coords = CombatView::coordsForTile(x(), y());
         
         /* if there are other moves pending then reset and keep moving */
-        isMoving = !goal.empty();
+        action = !goal.empty() ? UnitDraw::CombatAction::MOVE : UnitDraw::CombatAction::STAY;
         
-        if (isMoving)
+        if (action == UnitDraw::CombatAction::MOVE)
         {
           progress = 0.0f;
           unit->setFacing(goal.front().facing);
@@ -437,25 +440,41 @@ public:
         Point dx = destCoords - coords;
         coords += dx * progress;
         
-        progress += 0.05f;
-        
-        action = UnitDraw::CombatAction::MOVE;
+        progress += PROGRESS_PER_TICK;
       }
+    }
+    else if (action == UnitDraw::CombatAction::ATTACK)
+    {
+      if (progress >= 1.0f)
+      {
+        progress = 0.0f;
+        action = UnitDraw::CombatAction::STAY;
+      }
+      else
+        progress += PROGRESS_PER_TICK;
     }
     
     UnitDraw::drawUnitIsoCombat(unit->getUnit(), coords.x, coords.y - 17, unit->facing(), action);
   }
   
+  void attack(Dir direction)
+  {
+    progress = 0.0f;
+    //TODO: should facing be a property just of UnitGfxEntry and not CombatUnit since it's irrelevant for the logic
+    action = UnitDraw::CombatAction::ATTACK;
+    unit->setFacing(direction);
+  }
+  
   void move(Dir direction)
   {
-    if (!isMoving)
+    if (action == UnitDraw::CombatAction::STAY)
     {
       progress = 0.0f;
       //TODO: should facing be a property just of UnitGfxEntry and not CombatUnit since it's irrelevant for the logic
       unit->setFacing(direction);
     }
     
-    isMoving = true;
+    action = UnitDraw::CombatAction::MOVE;
     
     /* if unit wasn't moving then compute the destination position according to current position
        otherwise use last position in queue of moves */
@@ -646,11 +665,16 @@ CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1))
   buttons[bt_auto] = Button::buildTristate("auto", 144+26, 168+10, LSI(COMPIX, 4), LSI(COMPIX, 26));
   buttons[bt_flee] = Button::buildTristate("free", 144, 168+20, LSI(COMPIX, 21), LSI(COMPIX, 27));
   buttons[bt_done] = Button::buildTristate("done", 144+26, 168+20, LSI(COMPIX, 3), LSI(COMPIX, 28));
-  
+
   buttons[bt_wait]->setAction([this](){
     assert(player == combat->currentPlayer());
     selectedUnit = findNextUsableUnit();
     reachableTiles = g->combatMechanics.reachableTiles(combat, selectedUnit, selectedUnit->getProperty(Property::AVAILABLE_MOVEMENT));
+  });
+  
+  buttons[bt_done]->setAction([this](){
+    auto units = combat->friendlyUnits(player);
+    std::for_each(units.begin(), units.end(), [](CombatUnit* unit) { unit->resetMoves(); });
   });
 }
 
@@ -684,7 +708,7 @@ void CombatView::prepareGraphics()
   this->combat->map()->placeCityRoadExit(Dir::NORTH_EAST);*/
   
   //this->combat->map()->placeDarknessWall(3, 6);
-  this->combat->map()->placeStoneWall(3, 6);
+  //this->combat->map()->placeStoneWall(3, 6);
  
   //addGfxEntry(dummyUnit(3, 7));
   
@@ -952,7 +976,7 @@ UnitGfxEntry* CombatView::dummyUnit(s16 x, s16 y)
   Unit* unit = new RaceUnit(Data::unit("barbarian_spearmen")->as<RaceUnitSpec>());
   Army* army = new Army(player);
   unit->setArmy(army);
-  CombatUnit* cunit = new CombatUnit(Side::ATTACKER, unit);
+  CombatUnit* cunit = new CombatUnit(combat, Side::ATTACKER, unit);
   cunit->setPosition(x, y);
   return new UnitGfxEntry(this, cunit);
 }
@@ -1099,6 +1123,8 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   //player->push(new anims::SpellEffect(LSI(CMBTFX, 22), CombatCoord(hover.x,hover.y)));
   
+  if (std::any_of(unitsMap.begin(), unitsMap.end(), [](const decltype(unitsMap)::value_type& entry) { return entry.second->isAnimating(); }))
+    return;
   
   CombatUnit* unit = combat->unitAtTile(hover);
   
@@ -1110,11 +1136,9 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
       g->castSpell(unit->getUnit(), player, true);
     else if (unit && target == Target::ENEMY_UNIT && unit->getOwner() != player)
       g->castSpell(unit->getUnit(), player, true);
-    else if (unit && unit->hasMoves())
+    else if (unit && unit->hasMoves() && unit->getOwner() == player)
     {
-      const bool ownedUnit = unit->getOwner() == player;
-      
-      if (ownedUnit && selectedUnit != unit)
+      if (selectedUnit != unit)
       {
         selectedUnit = unit;
         reachableTiles = g->combatMechanics.reachableTiles(combat, unit, unit->getProperty(Property::AVAILABLE_MOVEMENT));
@@ -1137,17 +1161,17 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
         reachableTiles = g->combatMechanics.reachableTiles(combat, selectedUnit, selectedUnit->getAvailableMoves());
       
     }
-    
-    /*
-    else if (combat.selectedUnit != null && combat.selectedUnit.moves > 0)
+    else if (selectedUnit && unit && unit->getOwner() != selectedUnit->getOwner())
     {
-      // request unit movement
-      combat.moveUnit(null, hoverX, hoverY);
+      Dir relativeFacing = combat->map()->adjacentDirection(selectedUnit->tile(), unit->tile());
       
-      // recompute reachable if there are available moves
-      if (combat.selectedUnit != null)
-        reachable = combat.reachable(combat.selectedUnit);
-    }*/
+      if (relativeFacing != Dir::INVALID && g->combatMechanics.canMeleeAttack(selectedUnit, unit))
+      {
+        LOGD("[combat][attack] Melee attack from %s at (%d,%d) to %s at (%d,%d)", selectedUnit->getUnit()->name().c_str(), selectedUnit->x(), selectedUnit->y(), unit->getUnit()->name().c_str(), unit->x(), unit->y());
+        unitsMap[selectedUnit]->attack(relativeFacing);
+      }
+    }
+
   }
   else if (b == MouseButton::BUTTON_RIGHT)
   {

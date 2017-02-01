@@ -320,6 +320,8 @@ enum class Dir
   INVALID = -1
 };
 
+static size_t COMBAT_DIRS = 8;
+
 inline Dir operator~(const Dir& dir)
 {
   switch (dir)
