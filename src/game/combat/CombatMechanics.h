@@ -32,7 +32,8 @@ namespace combat
     CombatMechanics(Game* game) : game(game) { }
     
     /* attack related functions */
-    bool canMeleeAttack(const CombatUnit* attacker, const CombatUnit* defender) { return true; }
+    bool canMeleeAttack(const Combat* combat, const CombatUnit* attacker, const CombatUnit* defender) { return true; }
+    bool canRangedAttack(const Combat* combat, const CombatUnit* attacker, const CombatUnit* defender) { return true; }
     
     /* map related functions */
     u16 movementCostForTile(const CombatUnit* unit, const CombatTile* tile, Dir from);
