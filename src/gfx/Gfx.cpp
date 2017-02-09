@@ -467,3 +467,12 @@ void Gfx::drawGrayScale(const SpriteSheet* src, u16 r, u16 c, u16 x, u16 y)
 
 }
 
+void CursorManager::hideCursor()
+{
+  SDL_ShowCursor(false);
+}
+
+void CursorManager::showDefaultCursor()
+{
+  SDL_ShowCursor(true);
+}

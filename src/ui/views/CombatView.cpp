@@ -844,6 +844,8 @@ void CombatView::activate()
   
   prepareGraphics();
   entries.setDirty();
+  
+  CursorManager::hideCursor();
 }
 
 void CombatView::deactivate()
