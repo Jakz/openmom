@@ -72,6 +72,8 @@ namespace combat
     
     bool hasMoves() const { return moves > 0; }
     void consumeMoves(s16 amount) { moves -= std::min(amount, moves); }
+    void consumeHalfMoves() { moves = moves % 2 == 0 ? (moves / 2) : (moves / 2 + 1); }
+    void consumeAllMoves() { moves = 0; }
     void resetMoves() { moves = unit->getProperty(Property::MOVEMENT)*2; }
     
     /* TODO: maybe a SkillSet for combat unit is needed which wraps the native one to manage combat only effects */

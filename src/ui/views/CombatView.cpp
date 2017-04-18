@@ -844,6 +844,8 @@ void CombatView::activate()
   
   prepareGraphics();
   entries.setDirty();
+  
+  CursorManager::hideCursor();
 }
 
 void CombatView::deactivate()
@@ -1165,9 +1167,11 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
     {
       Dir relativeFacing = combat->map()->adjacentDirection(selectedUnit->tile(), unit->tile());
       
-      if (relativeFacing != Dir::INVALID && g->combatMechanics.canMeleeAttack(selectedUnit, unit))
+      if (relativeFacing != Dir::INVALID && g->combatMechanics.canMeleeAttack(combat, selectedUnit, unit))
       {
         LOGD("[combat][attack] Melee attack from %s at (%d,%d) to %s at (%d,%d)", selectedUnit->getUnit()->name().c_str(), selectedUnit->x(), selectedUnit->y(), unit->getUnit()->name().c_str(), unit->x(), unit->y());
+        
+        selectedUnit->consumeHalfMoves();
         unitsMap[selectedUnit]->attack(relativeFacing);
       }
     }

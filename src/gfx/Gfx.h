@@ -54,6 +54,13 @@ public:
   friend class Gfx;
 };
 
+class CursorManager
+{
+public:
+  static void hideCursor();
+  static void showDefaultCursor();
+};
+
 class Gfx
 {
   static SurfaceWrapper *buffer, *canvas, *activeBuffer;
