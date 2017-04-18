@@ -12,7 +12,7 @@
 #include "View.h"
 #include "BookView.h"
 
-enum SpellKind : u8;
+enum class SpellKind : u8;
 
 class ViewManager;
 

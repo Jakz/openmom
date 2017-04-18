@@ -34,14 +34,23 @@
 
 #include "Lbx.h"
 
+constexpr size_t CITY_ENCHANT_PER_PAGE = 6;
+
 CityView::CityView(ViewManager* gvm) : View(gvm)
 {
+  cityEnchantPage = 0;
+  
   buttons.resize(BUTTON_COUNT);
   
   buttons[BUY] = Button::buildTristate("Buy", 214, 188, LSI(BACKGRND, 7), LSI(BACKGRND, 14));
   buttons[CHANGE] = Button::buildBistate("Change", 247, 188, LSI(BACKGRND, 8));
   buttons[OK] = Button::buildBistate("Ok", 286, 188, LSI(BACKGRND, 9));
+  
+  /* TODO: add behavior */
+  buttons[PREV_CITY_ENCHANT] = Button::buildBistate("Prev City Enchant", 201, 50, LSI(BACKGRND,15));
+  buttons[NEXT_CITY_ENCHANT] = Button::buildBistate("Prev City Enchant", 201, 85, LSI(BACKGRND,16));
 
+  
   buttons[BUY]->deactivate();
   
   buttons[BUY]->setAction([this](){
@@ -74,8 +83,14 @@ CityView::CityView(ViewManager* gvm) : View(gvm)
 void CityView::setCity(City *city)
 {
   this->city = city;
+  cityEnchantPage = 0;
+  const size_t spellsCount = city->getSpells().size();
+
   
   buttons[BUY]->activateIf(g->cityMechanics.isProductionBuyable(city));
+  
+  buttons[PREV_CITY_ENCHANT]->showIf(spellsCount > CITY_ENCHANT_PER_PAGE);
+  buttons[NEXT_CITY_ENCHANT]->showIf(spellsCount > CITY_ENCHANT_PER_PAGE);
 
   if (!CityLayout::contains(city))
     CityLayout::createLayout(city);
@@ -224,16 +239,13 @@ void CityView::draw()
   
   
   /* draw city enchantments */
-  int i = 0;
-  for (const SpellCast& cast : city->getSpells())
+  const auto spells = city->getSpells();
+  auto it = spells.begin();
+  std::advance(it, cityEnchantPage*CITY_ENCHANT_PER_PAGE);
+  for (int i = 0; i < CITY_ENCHANT_PER_PAGE && it != spells.end(); ++i, ++it)
   {
+    const SpellCast& cast = *it;
     const FontSpriteSheet* face = Fonts::fontForColor(cast.player->color);
     Fonts::drawString(i18n::s(cast.spell->name), face, 138, 50+7*i, ALIGN_LEFT);
-    ++i;
   }
-  
-  /*for (int i = 0; i < 5; ++i)
-   {
-   Fonts::drawString("Dark Rituals", Fonts::fontForColor(Color.values()[i]), 138, 50+7*i, ALIGN_LEFT);
-   }*/
 }

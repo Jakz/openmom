@@ -11,6 +11,7 @@
 
 #include "Level.h"
 #include "UnitSpec.h"
+#include "Spells.h"
 #include "Skill.h"
 #include "Effects.h"
 #include "Items.h"
@@ -141,6 +142,14 @@ template<> items::Class yaml::parse(const N& node)
   FETCH_OR_FAIL("items::Class", mapping, node);
 }
 
+/*template<> SpellRarity yaml::parse(const N& node)
+{
+  static const std::unordered_map<std::string, SpellRarity> mapping = {
+    { "common", SpellRarity::COMMON },
+    
+  }
+}*/
+
 template<> School yaml::parse(const N& node)
 {
   static const std::unordered_map<std::string, School> mapping = {
@@ -243,6 +252,11 @@ template<> void yaml::parse(const N& node, SpriteInfo& v)
     else
       assert(false);
   }
+}
+
+template<> const Spell* yaml::parse(const N& node)
+{
+  return nullptr;
 }
 
 template<> const SkillEffect* yaml::parse(const N& node)
@@ -530,6 +544,19 @@ void yaml::parseSkills()
   }
 }
 
+void yaml::parseSpells()
+{
+  N file = parse("spells.yaml");
+  auto spells = file["spells"];
+  
+  for (const auto& yspell : spells)
+  {
+    const std::string& identifier = yspell["identifier"];
+    const Spell* spell = parse<const Spell*>(yspell);
+    Data::registerData(identifier, spell);
+  }
+}
+
 void yaml::parseUnits()
 {
   N file = parse("units.yaml");
@@ -562,6 +589,7 @@ void yaml::parse()
 {
   parseLocalization();
   parseSkills();
+  parseSpells();
   parseLevels();
   parseUnits();
   

@@ -13,7 +13,7 @@
 
 void Clickable::draw()
 {
-  Gfx::rect(x, y, w, h, Gfx::color(255, 0, 0));
+  //Gfx::rect(x, y, w, h, Gfx::color(255, 0, 0));
 }
 
 void ButtonGfx::draw(u16 x, u16 y, bool isActive, bool isPressed) const

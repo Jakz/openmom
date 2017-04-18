@@ -14,11 +14,11 @@ u16 SpellBook::guaranteedSpellAmountForRarity(SpellRarity rarity, u16 books)
   if (books > 11)
     books = 11;
   
-  if (rarity == RARITY_COMMON)
+  if (rarity == SpellRarity::COMMON)
     return books - 1;
-  else if (rarity == RARITY_UNCOMMON && books == 11)
+  else if (rarity == SpellRarity::UNCOMMON && books == 11)
     return 2;
-  else if (rarity == RARITY_RARE && books == 11)
+  else if (rarity == SpellRarity::RARE && books == 11)
     return 1;
   else
     return 0;
@@ -39,10 +39,10 @@ u16 SpellBook::researchableSpellAmountForRarity(SpellRarity rarity, School schoo
   
   switch (rarity)
   {
-    case RARITY_COMMON: ptr = common; break;
-    case RARITY_UNCOMMON: ptr = uncommon; break;
-    case RARITY_RARE: ptr = rare; break;
-    case RARITY_VERY_RARE: ptr = very_rare; break;
+    case SpellRarity::COMMON: ptr = common; break;
+    case SpellRarity::UNCOMMON: ptr = uncommon; break;
+    case SpellRarity::RARE: ptr = rare; break;
+    case SpellRarity::VERY_RARE: ptr = very_rare; break;
     default: return 0;
   }
   
@@ -88,21 +88,21 @@ void SpellBook::startCast(const Spell* spell)
 
 void SpellBook::fillPool()
 {
-  s8 currentStatus[SCHOOL_COUNT][RARITY_COUNT] = {};
-  s8 requiredStatus[SCHOOL_COUNT][RARITY_COUNT] = {};
+  s8 currentStatus[SCHOOL_COUNT][(size_t)SpellRarity::COUNT] = {};
+  s8 requiredStatus[SCHOOL_COUNT][(size_t)SpellRarity::COUNT] = {};
   
   for (auto s : spells)
-    ++currentStatus[s.first->school][s.first->rarity];
+    ++currentStatus[s.first->school][(size_t)s.first->rarity];
   
   for (int i = 0; i < SCHOOL_COUNT; ++i)
-    for (int j = 0; j < RARITY_COUNT; ++j)
+    for (int j = 0; j < (size_t)SpellRarity::COUNT; ++j)
     {
       requiredStatus[i][j] = researchableSpellAmountForRarity(static_cast<SpellRarity>(j), static_cast<School>(i), booksForSchool(static_cast<School>(i)));
       requiredStatus[i][j] -= currentStatus[i][j];
     }
   
   for (int i = 0; i < SCHOOL_COUNT; ++i)
-    for (int j = 0; j < RARITY_COUNT; ++j)
+    for (int j = 0; j < (size_t)SpellRarity::COUNT; ++j)
     {
       if (requiredStatus[i][j] > 0)
       {

@@ -1,0 +1,12 @@
+spells:
+# city spells
+  - identifier: spell_earth_gate
+    rarity: very_rare
+    school: nature
+    duration: continuous
+    target: friendly_city
+    research_cost: 4000
+    mana_cost: 250
+    upkeep: 5
+    visuals:
+      building: [lbx, cityscap, 83]

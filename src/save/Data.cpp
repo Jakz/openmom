@@ -52,6 +52,7 @@ const Wizard& Data::wizard(const WizardID wizard)
 
 #include <unordered_map>
 
+#include "Spells.h"
 #include "Skill.h"
 #include "Race.h"
 #include "UnitSpec.h"
@@ -70,6 +71,11 @@ template<> Data::map_t<const Skill*>& Data::containerFor() {
 template<> Data::map_t<const UnitSpec*>& Data::containerFor() {
   static map_t<const UnitSpec*> unitsMap;
   return unitsMap;
+}
+
+template<> Data::map_t<const Spell*>& Data::containerFor() {
+  static map_t<const Spell*> spellMap;
+  return spellMap;
 }
 
 template<> Data::map_t<const Building*>& Data::containerFor() {

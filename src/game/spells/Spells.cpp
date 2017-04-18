@@ -9,24 +9,24 @@ using namespace std;
 namespace spellimpl
 {
   /* LIFE - COMMON */
-  static UnitSpell BLESS = UnitSpell(I18::SPELL_BLESS, RARITY_COMMON, LIFE, COMBAT_CONTINUOUS, 20, 25, 5, 1, Skills::SPELL_BLESS);
-  static UnitSpell ENDURANCE = UnitSpell(I18::SPELL_ENDURANCE, RARITY_COMMON, LIFE, CONTINUOUS, 60, 30, -1, 1, Skills::SPELL_ENDURANCE);
-  static SummonSpell GUARDIAN_SPIRIT = SummonSpell(I18::SPELL_GUARDIAN_SPIRIT, RARITY_COMMON, LIFE, 220, 80, -1, UnitID::GUARDIAN_SPIRIT);
+  static UnitSpell BLESS = UnitSpell(I18::SPELL_BLESS, SpellRarity::COMMON, LIFE, SpellDuration::COMBAT_CONTINUOUS, 20, 25, 5, 1, Skills::SPELL_BLESS);
+  static UnitSpell ENDURANCE = UnitSpell(I18::SPELL_ENDURANCE, SpellRarity::COMMON, LIFE, SpellDuration::CONTINUOUS, 60, 30, -1, 1, Skills::SPELL_ENDURANCE);
+  static SummonSpell GUARDIAN_SPIRIT = SummonSpell(I18::SPELL_GUARDIAN_SPIRIT, SpellRarity::COMMON, LIFE, 220, 80, -1, UnitID::GUARDIAN_SPIRIT);
   
   
   
   
   
-  static SpecialSpell CORRUPTION = SpecialSpell(I18::SPELL_CORRUPTION, RARITY_COMMON, CHAOS, UNDEFINED, 100, 40, 0, Target::MAP_TILE);
-  static SpecialSpell CHANGE_TERRAIN = SpecialSpell(I18::SPELL_CHANGE_TERRAIN, RARITY_UNCOMMON, NATURE, UNDEFINED, 500, 50, 0, Target::MAP_TILE);
-  static SpecialSpell RAISE_VOLCANO = SpecialSpell(I18::SPELL_RAISE_VOLCANO, RARITY_UNCOMMON, CHAOS, UNDEFINED, 680, 200, 0, Target::MAP_TILE);
+  static SpecialSpell CORRUPTION = SpecialSpell(I18::SPELL_CORRUPTION, SpellRarity::COMMON, CHAOS, SpellDuration::UNDEFINED, 100, 40, 0, Target::MAP_TILE);
+  static SpecialSpell CHANGE_TERRAIN = SpecialSpell(I18::SPELL_CHANGE_TERRAIN, SpellRarity::UNCOMMON, NATURE, SpellDuration::UNDEFINED, 500, 50, 0, Target::MAP_TILE);
+  static SpecialSpell RAISE_VOLCANO = SpecialSpell(I18::SPELL_RAISE_VOLCANO, SpellRarity::UNCOMMON, CHAOS, SpellDuration::UNDEFINED, 680, 200, 0, Target::MAP_TILE);
 
 }
 
 const vector<const SpellKind>& Spells::spellKinds(bool combat)
 {
-  static const vector<const SpellKind> overland = {KIND_SUMMONING,KIND_SPECIAL,KIND_ENCHANTMENT,KIND_UNIT_SPELL};
-  static const vector<const SpellKind> combatb = {KIND_SUMMONING,KIND_SPECIAL,KIND_ENCHANTMENT,KIND_UNIT_SPELL,KIND_COMBAT_SPELL};
+  static const vector<const SpellKind> overland = {SpellKind::SUMMONING,SpellKind::SPECIAL,SpellKind::ENCHANTMENT,SpellKind::UNIT_SPELL};
+  static const vector<const SpellKind> combatb = {SpellKind::SUMMONING,SpellKind::SPECIAL,SpellKind::ENCHANTMENT,SpellKind::UNIT_SPELL,SpellKind::COMBAT_SPELL};
   return combat ? combatb : overland;
 }
 
@@ -57,7 +57,7 @@ vector<vector<vector<const Spell*> > > SPELLS =
 
 spell_list& Spells::spellsByRarityAndSchool(SpellRarity rarity, School school)
 {
-  return SPELLS[school][rarity];
+  return SPELLS[(size_t)school][(size_t)rarity];
 }
 
 Spell::Spell(I18 name, SpellType type, SpellRarity rarity, SpellKind kind, SpellDuration duration, School school, Target target, const ManaInfo mana) :

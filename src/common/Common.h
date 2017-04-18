@@ -143,7 +143,7 @@ enum class I18 : u32;
 enum class TextureID : u16;
 enum Plane : u8;
 
-enum SpellKind : u8;
+enum class SpellKind : u8;
 
 enum MouseButton : u8
 {

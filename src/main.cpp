@@ -118,7 +118,7 @@ int main(int argc, char * arg[])
   
   //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
 
-  //SDL::gvm->switchView(VIEW_MAIN);
+  SDL::gvm->switchView(VIEW_MAIN);
 
   //SDL::gvm->switchView(VIEW_ITEM_CRAFT);
   
@@ -126,7 +126,7 @@ int main(int argc, char * arg[])
   SDL::gvm->unitDetailView()->setHeroHire(unit, 200);
   SDL::gvm->switchOverview(VIEW_UNIT);*/
   
-  SDL::gvm->switchView(VIEW_COMBAT);
+  //SDL::gvm->switchView(VIEW_COMBAT);
   //SDL::gvm->switchView(VIEW_LBX);
   
   SDL::loop();

@@ -121,7 +121,7 @@ s32 SpellMechanics::actualResearchGain(const Player *player, const Spell *spell)
   if (spell)
   {
     // 25% bonus by Conjurer if Summoning spell
-    if (player->hasTrait(TraitID::CONJURER) && spell->kind == KIND_SUMMONING)
+    if (player->hasTrait(TraitID::CONJURER) && spell->kind == SpellKind::SUMMONING)
       research += std::floor(research * 0.25f);
     
     // 15% for misc School mastery if spell of same school

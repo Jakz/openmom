@@ -26,6 +26,7 @@ public:
   static void parse();
   static void parseLocalization();
   static void parseSkills();
+  static void parseSpells();
   static void parseUnits();
   static void parseLevels();
 };

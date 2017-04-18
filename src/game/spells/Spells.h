@@ -13,14 +13,14 @@ class Skill;
 
 
 
-enum SpellRarity : u8
+enum class SpellRarity : u8
 {
-  RARITY_COMMON = 0,
-  RARITY_UNCOMMON,
-  RARITY_RARE,
-  RARITY_VERY_RARE,
+  COMMON = 0,
+  UNCOMMON,
+  RARE,
+  VERY_RARE,
   
-  RARITY_COUNT
+  COUNT
 };
 
 enum class SpellType : u8
@@ -38,21 +38,21 @@ enum class SpellType : u8
   COMBAT_INSTANT
 };
 
-enum SpellKind : u8
+enum class SpellKind : u8
 {
-  KIND_SUMMONING = 0,
-  KIND_SPECIAL,
-  KIND_CITY,
-  KIND_ENCHANTMENT,
-  KIND_UNIT_SPELL,
-  KIND_COMBAT_SPELL,
+  SUMMONING = 0,
+  SPECIAL,
+  CITY,
+  ENCHANTMENT,
+  UNIT_SPELL,
+  COMBAT_SPELL,
   
-  KIND_COUNT,
+  COUNT,
   
-  KIND_NONE
+  NONE
 };
 
-enum SpellDuration : u8
+enum class SpellDuration : u8
 {
   COMBAT_INSTANT = 0,
   CONTINUOUS,
@@ -118,7 +118,7 @@ class UnitSpell : public Spell
 {
 public:
 	UnitSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost , s16 manaCost, s16 combatManaCost, s16 upkeep, const Skill* skill) :
-    Spell(name,SpellType::UNIT_SKILL,rarity,KIND_UNIT_SPELL,duration,school,Target::FRIENDLY_UNIT, ManaInfo{researchCost,manaCost,-1,combatManaCost,-1,upkeep}), skill(skill) { }
+  Spell(name,SpellType::UNIT_SKILL,rarity, SpellKind::UNIT_SPELL,duration,school,Target::FRIENDLY_UNIT, ManaInfo{researchCost,manaCost,-1,combatManaCost,-1,upkeep}), skill(skill) { }
 
   const Skill* skill;
 };
@@ -127,7 +127,7 @@ class CitySpell : public Spell
 {
 public:
   CitySpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, Target target, s16 researchCost, s16 manaCost, s16 combatManaCost, s16 upkeep) :
-  Spell(name, SpellType::CITY, rarity, KIND_CITY, duration, school, target, ManaInfo{researchCost, manaCost, -1, combatManaCost, -1, upkeep}) { }
+  Spell(name, SpellType::CITY, rarity, SpellKind::CITY, duration, school, target, ManaInfo{researchCost, manaCost, -1, combatManaCost, -1, upkeep}) { }
 };
 
 class GlobalSpell : public Spell
@@ -141,7 +141,7 @@ class SkillGlobalSpell : public GlobalSpell
 {
 public:
   SkillGlobalSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 upkeep, const Skill* skill) :
-    GlobalSpell(name, SpellType::GLOBAL_SKILL, rarity, KIND_ENCHANTMENT, school, duration, Target::GLOBAL, researchCost, manaCost, upkeep), skill(skill) { }
+    GlobalSpell(name, SpellType::GLOBAL_SKILL, rarity, SpellKind::ENCHANTMENT, school, duration, Target::GLOBAL, researchCost, manaCost, upkeep), skill(skill) { }
   
   const Skill* skill;
 };
@@ -150,14 +150,14 @@ class StaticGlobalSpell : public GlobalSpell
 {
 public:
   StaticGlobalSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 upkeep) :
-    GlobalSpell(name, SpellType::GLOBAL, rarity, KIND_ENCHANTMENT, school, duration, Target::GLOBAL, researchCost, manaCost, upkeep) { }
+    GlobalSpell(name, SpellType::GLOBAL, rarity, SpellKind::ENCHANTMENT, school, duration, Target::GLOBAL, researchCost, manaCost, upkeep) { }
 };
 
 class CombatEnchSpell : public Spell
 {
 public:
   CombatEnchSpell(I18 name, SpellRarity rarity, School school, s16 researchCost, s16 combatManaCost, s16 combatManaCostDelta, Target target, const CombatEnchEffect& effect) :
-  Spell(name, SpellType::COMBAT_INSTANT, rarity, KIND_ENCHANTMENT, COMBAT_ENCHANTMENT, school, target, {researchCost, -1, -1, combatManaCost, combatManaCostDelta, 0}), effect(effect) { }
+  Spell(name, SpellType::COMBAT_INSTANT, rarity, SpellKind::ENCHANTMENT, SpellDuration::COMBAT_ENCHANTMENT, school, target, {researchCost, -1, -1, combatManaCost, combatManaCostDelta, 0}), effect(effect) { }
   
   const CombatEnchEffect& effect;
 };
@@ -166,7 +166,7 @@ class CombatSpell : public Spell
 {
 public:
   CombatSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 combatManaCost, s16 combatManaCostDelta, Target target, const CombatSpellEffect& effect) :
-  Spell(name, SpellType::COMBAT_INSTANT, rarity, KIND_COMBAT_SPELL, duration, school, target, {researchCost, -1, -1, combatManaCost, combatManaCostDelta, 0}), effect(effect) { }
+  Spell(name, SpellType::COMBAT_INSTANT, rarity, SpellKind::COMBAT_SPELL, duration, school, target, {researchCost, -1, -1, combatManaCost, combatManaCostDelta, 0}), effect(effect) { }
   
   const CombatSpellEffect& effect;
 };
@@ -175,17 +175,17 @@ class SpecialSpell : public Spell
 {
 public:
   SpecialSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 manaCostDelta, Target target) :
-    Spell(name, SpellType::SPECIAL, rarity, KIND_SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, -1, -1, 0}) { }
+    Spell(name, SpellType::SPECIAL, rarity, SpellKind::SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, -1, -1, 0}) { }
   
   SpecialSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost, s16 manaCost, s16 manaCostDelta, s16 combatManaCost, s16 combatManaCostDelta, Target target) :
-    Spell(name, SpellType::SPECIAL, rarity, KIND_SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, combatManaCost, combatManaCostDelta, 0}) { } // TODO: will upkeep be always 0?
+    Spell(name, SpellType::SPECIAL, rarity, SpellKind::SPECIAL, duration, school, target, {researchCost, manaCost, manaCostDelta, combatManaCost, combatManaCostDelta, 0}) { } // TODO: will upkeep be always 0?
 };
 
 class SummonSpell : public Spell
 {
 public:
   SummonSpell(I18 name, SpellRarity rarity, School school, s16 researchCost, s16 manaCost, s16 combatManaCost, UnitID unit) :
-    Spell(name, SpellType::SUMMON, rarity, KIND_SUMMONING, UNDEFINED, school, Target::NONE, {researchCost, manaCost, -1, combatManaCost, -1, 0}), unit(unit) { }
+  Spell(name, SpellType::SUMMON, rarity, SpellKind::SUMMONING, SpellDuration::UNDEFINED, school, Target::NONE, {researchCost, manaCost, -1, combatManaCost, -1, 0}), unit(unit) { }
 
   const UnitID unit;
 };

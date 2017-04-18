@@ -13,14 +13,14 @@ void BookView::populate(const Player *player, SpellBook::Type type)
   auto totalPool = player->book()->bookSpells(type);
   
   vector<vector<ResearchStatus>> spellsByKind;
-  spellsByKind.resize(KIND_COUNT, vector<ResearchStatus>());
+  spellsByKind.resize((size_t)SpellKind::COUNT, vector<ResearchStatus>());
   
   for (auto s : totalPool)
-    spellsByKind[s.spell->kind].push_back(s);
+    spellsByKind[(size_t)s.spell->kind].push_back(s);
   
   std::unique_ptr<Page> page = nullptr; // TODO: should be done avoiding heap allocations
   
-  for (s16 i = 0; i < KIND_COUNT; ++i)
+  for (s16 i = 0; i < (size_t)SpellKind::COUNT; ++i)
   {
     for (auto s : spellsByKind[i])
     {

@@ -26,8 +26,13 @@ private:
     CHANGE,
     OK,
     
+    NEXT_CITY_ENCHANT,
+    PREV_CITY_ENCHANT,
+    
     BUTTON_COUNT
   };
+  
+  u16 cityEnchantPage;
   
   City* city;
   CityLayout *cityScape;
