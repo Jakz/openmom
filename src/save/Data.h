@@ -12,6 +12,7 @@ class RaceUnitSpec;
 class Race;
 class Building;
 class Skill;
+class Spell;
 class Level;
 
 using experience_levels = std::vector<std::unique_ptr<const Level>>;
@@ -64,6 +65,7 @@ public:
   static const Skill* skill(const key_type& ident) { return get<const Skill*>(ident); }
   static const Building* building(const key_type& ident) { return get<const Building*>(ident); }
   static const UnitSpec* unit(const key_type& ident) { return get<const UnitSpec*>(ident); }
+  static const Spell* spell(const key_type& ident) { return get<const Spell*>(ident); }
   static const Race* race(const key_type& ident) { return get<const Race*>(ident); }
   
   static std::vector<const RaceUnitSpec*> unitsForRace(const Race* race);

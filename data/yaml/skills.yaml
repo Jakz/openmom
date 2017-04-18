@@ -188,4 +188,23 @@ skills:
       hide_value: true
       icon: [lbx, special, 50]
       i18n: skill_constitution
-  
+# spell skills
+  - identifier: spell_bless
+    type: spell
+    effects:
+      - type: unit_bonus
+        property: resist_chaos
+        value: 3
+      - type: unit_bonus
+        property: resist_death
+        value: 3
+      - type: unit_bonus
+        property: defense_death
+        value: 3
+      - type: unit_bonus
+        property: defense_chaos
+        value: 3
+    visuals:
+      hide_value: true
+      icon: [lbx, special, 88]
+      i18n: skill_spell_blessz

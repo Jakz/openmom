@@ -23,6 +23,9 @@ I18 i18n::keyForString(std::string key)
   I18 nkey = customMappingFreeIndex;
   customMapping[key] = nkey;
   customMappingFreeIndex = static_cast<I18>(static_cast<u32>(customMappingFreeIndex) + 1);
+  
+  data[nkey] = "#"+key+"#";
+  
   return nkey;
 }
 
@@ -163,7 +166,6 @@ unordered_map<I18, string, enum_hash> i18n::data =
   {I18::SPELL_KIND_RESEARCH,"Research"},
   {I18::SPELL_KIND_SPELLS,"Spells"},
   
-  {I18::SPELL_BLESS, "Bless"},
   {I18::SPELL_ENDURANCE, "Endurance"},
   {I18::SPELL_GUARDIAN_SPIRIT, "Guardian Spirit"},
   {I18::SPELL_HEALING, "Healing"},
@@ -352,7 +354,6 @@ unordered_map<SkillBase, string, enum_hash> i18n::skills =
   {SkillBase::SPELL_HASTE, "Haste"},
   
   {SkillBase::SPELL_HOLY_WEAPON, "Holy Weapon"},
-  {SkillBase::SPELL_BLESS, "Bless"},
   {SkillBase::SPELL_ENDURANCE, "Endurance"},
   {SkillBase::SPELL_TRUE_SIGHT, "True Sight"},
   {SkillBase::SPELL_HEROISM, "Heroism"},

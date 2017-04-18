@@ -96,7 +96,7 @@ void Game::dummyInit()
 		new RaceUnit(Data::unit("barbarian_berserkers")->as<RaceUnitSpec>()),
   });
   
-  SpellCast cast = SpellCast(player, Spells::BLESS);
+  SpellCast cast = SpellCast(player, Data::spell("bless"));
   a->get(0)->skills()->add(cast);
   
   //map.get(5, 5, ARCANUS).placeManaNode(mapMechanics.generateManaNode(world, 5, 5, ARCANUS));
@@ -123,11 +123,11 @@ void Game::dummyInit()
   player->fog()->setRect(0, 0, 60, 40, MYRRAN);
   player->setViewport(5, 5);
   
-  player->book()->discoverSpell(Spells::BLESS);
+  player->book()->discoverSpell(Data::spell("bless"));
   player->book()->discoverSpell(Spells::CORRUPTION);
   player->book()->discoverSpell(Spells::CHANGE_TERRAIN);
   player->book()->discoverSpell(Spells::RAISE_VOLCANO);
-  player->book()->discoverSpell(Spells::GUARDIAN_SPIRIT);
+  player->book()->discoverSpell(Data::spell("guardian_spirit"));
   
   new LocalGame(this);
   

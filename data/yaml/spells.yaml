@@ -1,6 +1,30 @@
 spells:
+# summon spells
+  - identifier: guardian_spirit
+    kind: summoning
+    rarity: common
+    school: life
+    research_cost: 220
+    mana_cost: 80
+    unit: funit_guardian_spirit
+    visuals:
+      i18n: spell_guardian_spirit
+# unit enchantment
+  - identifier: bless
+    kind: unit_enchantment
+    rarity: common
+    school: life
+    research_cost: 20
+    mana_cost: 25
+    combat_mana_cost: 5
+    upkeep: 1
+    skill: spell_bless
+    visuals:
+      i18n: spell_bless
+  
 # city spells
-  - identifier: spell_earth_gate
+  - identifier: earth_gate
+    kind: city_enchantment
     rarity: very_rare
     school: nature
     duration: continuous
@@ -9,4 +33,5 @@ spells:
     mana_cost: 250
     upkeep: 5
     visuals:
+      i18n: spell_earth_gate
       building: [lbx, cityscap, 83]

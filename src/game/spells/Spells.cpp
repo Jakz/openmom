@@ -9,9 +9,7 @@ using namespace std;
 namespace spellimpl
 {
   /* LIFE - COMMON */
-  static UnitSpell BLESS = UnitSpell(I18::SPELL_BLESS, SpellRarity::COMMON, LIFE, SpellDuration::COMBAT_CONTINUOUS, 20, 25, 5, 1, Skills::SPELL_BLESS);
-  static UnitSpell ENDURANCE = UnitSpell(I18::SPELL_ENDURANCE, SpellRarity::COMMON, LIFE, SpellDuration::CONTINUOUS, 60, 30, -1, 1, Skills::SPELL_ENDURANCE);
-  static SummonSpell GUARDIAN_SPIRIT = SummonSpell(I18::SPELL_GUARDIAN_SPIRIT, SpellRarity::COMMON, LIFE, 220, 80, -1, UnitID::GUARDIAN_SPIRIT);
+  static UnitSpell ENDURANCE = UnitSpell(I18::SPELL_ENDURANCE, SpellRarity::COMMON, LIFE, 60, 30, -1, 1, Skills::SPELL_ENDURANCE);
   
   
   
@@ -30,9 +28,7 @@ const vector<const SpellKind>& Spells::spellKinds(bool combat)
   return combat ? combatb : overland;
 }
 
-const Spell* Spells::BLESS = &spellimpl::BLESS;
 const Spell* Spells::ENDURANCE = &spellimpl::ENDURANCE;
-const Spell* Spells::GUARDIAN_SPIRIT = &spellimpl::GUARDIAN_SPIRIT;
 
 const Spell* Spells::CORRUPTION = &spellimpl::CORRUPTION;
 const Spell* Spells::CHANGE_TERRAIN = &spellimpl::CHANGE_TERRAIN;

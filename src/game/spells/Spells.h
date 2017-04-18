@@ -56,7 +56,6 @@ enum class SpellDuration : u8
 {
   COMBAT_INSTANT = 0,
   CONTINUOUS,
-  COMBAT_CONTINUOUS,
   COMBAT_ENCHANTMENT,
   PERMANENT,
   UNDEFINED
@@ -117,8 +116,8 @@ class Spell
 class UnitSpell : public Spell
 {
 public:
-	UnitSpell(I18 name, SpellRarity rarity, School school, SpellDuration duration, s16 researchCost , s16 manaCost, s16 combatManaCost, s16 upkeep, const Skill* skill) :
-  Spell(name,SpellType::UNIT_SKILL,rarity, SpellKind::UNIT_SPELL,duration,school,Target::FRIENDLY_UNIT, ManaInfo{researchCost,manaCost,-1,combatManaCost,-1,upkeep}), skill(skill) { }
+	UnitSpell(I18 name, SpellRarity rarity, School school, s16 researchCost , s16 manaCost, s16 combatManaCost, s16 upkeep, const Skill* skill) :
+  Spell(name,SpellType::UNIT_SKILL,rarity, SpellKind::UNIT_SPELL, SpellDuration::CONTINUOUS, school,Target::FRIENDLY_UNIT, ManaInfo{researchCost,manaCost,-1,combatManaCost,-1,upkeep}), skill(skill) { }
 
   const Skill* skill;
 };
@@ -184,10 +183,10 @@ public:
 class SummonSpell : public Spell
 {
 public:
-  SummonSpell(I18 name, SpellRarity rarity, School school, s16 researchCost, s16 manaCost, s16 combatManaCost, UnitID unit) :
+  SummonSpell(I18 name, SpellRarity rarity, School school, s16 researchCost, s16 manaCost, s16 combatManaCost, const SummonSpec* unit) :
   Spell(name, SpellType::SUMMON, rarity, SpellKind::SUMMONING, SpellDuration::UNDEFINED, school, Target::NONE, {researchCost, manaCost, -1, combatManaCost, -1, 0}), unit(unit) { }
 
-  const UnitID unit;
+  const SummonSpec* unit;
 };
 
 
@@ -224,7 +223,7 @@ public:
   static const std::vector<const SpellKind>& spellKinds(bool combat);
   static spell_list& spellsByRarityAndSchool(SpellRarity rarity, School school);
   
-  static const Spell *BLESS, *ENDURANCE, *GUARDIAN_SPIRIT;
+  static const Spell *ENDURANCE;
   
   
   

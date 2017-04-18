@@ -28,6 +28,9 @@
 using namespace YAML;
 using N = yaml::N;
 
+static std::string currentFile = "";
+static std::string currentEntry = "";
+
 class yaml::Node : public YAML::Node
 {
   
@@ -36,7 +39,7 @@ public:
   
   template<typename T> void keyNotFoundError(const T& key) const;
   
-  template<typename T> void hasChild(const T& key) const { return YAML::Node::operator[](key).IsDefined(); }
+  template<typename T> bool hasChild(const T& key) const { return YAML::Node::operator[](key).IsDefined(); }
   
   template<typename T> const YAML::Node getWithoutCheck(const T& key) const
   {
@@ -60,12 +63,12 @@ public:
 
 template<> void yaml::Node::keyNotFoundError(const int& key) const
 {
-  PARSE_ERROR("index '%d' not found", key);
+  PARSE_ERROR("index '%d' not found while parsing %s from %s", key, currentEntry.c_str(), currentFile.c_str());
 }
 
 template<typename T> void yaml::Node::keyNotFoundError(const T& key) const
 {
-  PARSE_ERROR("key '%s' not found", key);
+  PARSE_ERROR("key '%s' not found while parsing %s from %s", key, currentEntry.c_str(), currentFile.c_str());
 }
 
 using NNN = YAML::Node;
@@ -74,6 +77,7 @@ bool operator==(const N& n, const std::string& string) { return n.Scalar() == st
 
 N yaml::parse(const std::string& fileName)
 {
+  currentFile = fileName;
   return N(YAML::LoadFile(yamlPath(fileName)));
 }
 
@@ -142,13 +146,52 @@ template<> items::Class yaml::parse(const N& node)
   FETCH_OR_FAIL("items::Class", mapping, node);
 }
 
-/*template<> SpellRarity yaml::parse(const N& node)
+template<> SpellRarity yaml::parse(const N& node)
 {
   static const std::unordered_map<std::string, SpellRarity> mapping = {
     { "common", SpellRarity::COMMON },
+    { "uncommon", SpellRarity::UNCOMMON },
+    { "rare", SpellRarity::RARE },
+    { "very_rare", SpellRarity::VERY_RARE },
+  };
+  
+  FETCH_OR_FAIL("SpellRarity", mapping, node);
+}
+
+template<> SpellKind yaml::parse(const N& node)
+{
+  static const std::unordered_map<std::string, SpellKind> mapping = {
+    { "city_enchantment", SpellKind::CITY },
+    { "unit_enchantment", SpellKind::UNIT_SPELL },
+    { "summoning", SpellKind::SUMMONING }
+  };
+  
+  FETCH_OR_FAIL("SpellKind", mapping, node);
+}
+
+template<> Target yaml::parse(const N& node)
+{
+  static const std::unordered_map<std::string, Target> mapping = {
+    { "friendly_city", Target::FRIENDLY_CITY },
+    { "friendly_unit", Target::FRIENDLY_UNIT },
+    { "friendly_army", Target::FRIENDLY_ARMY },
     
-  }
-}*/
+    { "enemy_city", Target::ENEMY_CITY },
+    { "enemy_unit", Target::ENEMY_UNIT },
+    { "enemy_army", Target::ENEMY_ARMY },
+    { "enemy_unit_spell", Target::ENEMY_UNIT_SPELL },
+    
+    { "both_armies", Target::BOTH_ARMIES },
+    { "map_tile", Target::MAP_TILE },
+    { "viewport", Target::VIEWPORT },
+    
+    { "global", Target::GLOBAL },
+    { "none", Target::NONE },
+  };
+  
+  FETCH_OR_FAIL("SpellTarget", mapping, node);
+}
+
 
 template<> School yaml::parse(const N& node)
 {
@@ -194,6 +237,8 @@ template<> Property yaml::parse(const N& node)
     { "defense_life", Property::SHIELDS_LIFE },
     { "defense_death", Property::SHIELDS_DEATH },
     { "resistance", Property::RESIST },
+    { "resist_chaos", Property::RESIST_CHAOS },
+    { "resist_death", Property::RESIST_DEATH },
     { "hits", Property::HIT_POINTS },
     { "figures", Property::FIGURES }
   };
@@ -222,6 +267,8 @@ template<> skills::Type yaml::parse(const N& node)
     return skills::Type::NATIVE;
   else if (node == "hero")
     return skills::Type::HERO;
+  else if (node == "spell")
+    return skills::Type::SPELL;
   else
     assert(false);
 }
@@ -254,11 +301,46 @@ template<> void yaml::parse(const N& node, SpriteInfo& v)
   }
 }
 
+#pragma mark Spell
 template<> const Spell* yaml::parse(const N& node)
 {
+  assert(node.IsMap());
+  
+  I18 name = i18n::keyForString(N(node["visuals"])["i18n"]);
+  
+  SpellKind kind = parse<SpellKind>(node["kind"]);
+  SpellRarity rarity = parse<SpellRarity>(node["rarity"]);
+  School school = parse<School>(node["school"]);
+  
+  s16 manaCost = parse<s16>(node["mana_cost"]);
+  s16 combatManaCost = optionalParse<s16>(node, "combat_mana_cost", -1);
+  s16 researchCost = parse<s16>(node["research_cost"]);
+  s16 upkeep = optionalParse<s16>(node, "upkeep", -1);
+  
+  switch (kind)
+  {
+    case SpellKind::SUMMONING:
+    {
+      const std::string unitIdentifier = node["unit"];
+      const SummonSpec* spec = Data::unit(unitIdentifier)->as<SummonSpec>();
+      return new SummonSpell(name, rarity, school, researchCost, manaCost, combatManaCost, spec);
+    }
+      
+    case SpellKind::UNIT_SPELL:
+    {
+      const std::string skillIdentifier = node["skill"];
+      const Skill* skill = Data::skill(skillIdentifier);
+      return new UnitSpell(name, rarity, school, researchCost, manaCost, combatManaCost, upkeep, skill);
+    }
+      
+    default:
+      break;
+  }
+  
   return nullptr;
 }
 
+#pragma mark SkillEffect
 template<> const SkillEffect* yaml::parse(const N& node)
 {
   const std::string& type = node["type"];
@@ -358,6 +440,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
   }
 }
 
+#pragma mark Skill
 template<> const Skill* yaml::parse(const N& node)
 {
   skills::Type type = optionalParse(node, "type", skills::Type::NATIVE);
@@ -528,7 +611,19 @@ void yaml::parseLevels()
       next = level;
     }
   }
+}
+
+const std::string& yaml::getIdentifier(const N& node, const char* key)
+{
+  if (!node.hasChild(key))
+  {
+    PARSE_ERROR("Identifier field not found for entry in file %s", currentFile.c_str());
+    assert(false);
+  }
   
+  const std::string& identifier = node[key];
+  currentEntry = identifier;
+  return identifier;
 }
 
 void yaml::parseSkills()
@@ -538,7 +633,7 @@ void yaml::parseSkills()
   
   for (const auto& yskill : skills)
   {
-    const std::string& identifier = yskill["identifier"];
+    const std::string& identifier = getIdentifier(yskill);
     const Skill* skill = parse<const Skill*>(yskill);
     Data::registerData(identifier, skill);
   }
@@ -551,7 +646,7 @@ void yaml::parseSpells()
   
   for (const auto& yspell : spells)
   {
-    const std::string& identifier = yspell["identifier"];
+    const std::string& identifier = getIdentifier(yspell);
     const Spell* spell = parse<const Spell*>(yspell);
     Data::registerData(identifier, spell);
   }
@@ -564,7 +659,7 @@ void yaml::parseUnits()
   
   for (const auto& yunit : units)
   {
-    const std::string& identifier = yunit["identifier"];
+    const std::string& identifier = getIdentifier(yunit);
     const std::pair<const UnitSpec*, UnitGfxSpec> unit = parse<std::pair<const UnitSpec*, UnitGfxSpec>>(yunit);
     Data::registerData(identifier, unit.first);
     GfxData::registerData(unit.first, unit.second);
@@ -589,9 +684,9 @@ void yaml::parse()
 {
   parseLocalization();
   parseSkills();
-  parseSpells();
   parseLevels();
   parseUnits();
+  parseSpells();
   
   Data::getInfo<const Skill*>();
 }
