@@ -47,12 +47,12 @@ ResearchView::ResearchView(ViewManager* gvm) : View(gvm), book(new BookView(4))
   u16 ww = 123, hh = 36;
   
   for (u16 i = 0; i < 8; ++i)
-    areas.push_back((new Clickable(sx + (i/4)*dx, sy + (i%4)*dy, ww, hh))->setAction([this,i](){ indexClicked(i); }));
+    addArea((new Clickable(sx + (i/4)*dx, sy + (i%4)*dy, ww, hh))->setAction([this,i](){ indexClicked(i); }));
   
   auto backToMap = [gvm](){ gvm->switchView(VIEW_MAIN); };
-  areas.push_back((new Clickable(0,10, 5, 189))->setAction(backToMap));
-  areas.push_back((new Clickable(315,10, 5, 189))->setAction(backToMap));
-  areas.push_back((new Clickable(6,180, 308, 19))->setAction(backToMap));
+  addArea((new Clickable(0,10, 5, 189))->setAction(backToMap));
+  addArea((new Clickable(315,10, 5, 189))->setAction(backToMap));
+  addArea((new Clickable(6,180, 308, 19))->setAction(backToMap));
 }
 
 void ResearchView::activate()

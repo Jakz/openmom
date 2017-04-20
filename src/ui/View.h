@@ -10,6 +10,7 @@
 #define _VIEW_H_
 
 #include "EventListener.h"
+#include "Buttons.h"
 
 #include <functional>
 #include <vector>
@@ -26,7 +27,7 @@ class View : public EventListener
 {
 protected:
   std::vector<Button*> buttons;
-  std::vector<Clickable*> areas;
+  std::vector<std::unique_ptr<Clickable>> areas;
   
   Button* curButton;
   
@@ -41,13 +42,16 @@ protected:
   
   void setPlayer(LocalPlayer* player) { this->player = player; }
   
+  Clickable* addArea(Clickable* clickable) { areas.push_back(std::unique_ptr<Clickable>(clickable)); return clickable; }
+  void addButton(Button* button) { buttons.push_back(button); }
+  
   ViewManager *gvm;
   
 public:
   View(ViewManager *gvm) : gvm(gvm), curButton(nullptr) { }
   
   Button* buttonAt(u16 index) { return buttons[index]; }
-  Clickable* areaAt(u16 index) { return areas[index]; }
+  const std::unique_ptr<Clickable>& areaAt(u16 index) { return areas[index]; }
   
   void doActivate(LocalPlayer* player);
   void doDeactivate() { deactivate(); }

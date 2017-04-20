@@ -63,7 +63,7 @@ CityView::CityView(ViewManager* gvm) : View(gvm)
   buttons[CHANGE]->setAction([gvm,this]{ gvm->productionView()->setCity(city); gvm->switchOverview(VIEW_PRODUCTION); });
   
   for (int i = 0; i < 6; ++i)
-    areas.push_back((new Clickable(139, 51 + 7*i, 68, 7))->setAction([this,i](){
+    addArea((new Clickable(139, 50 + 7*i, 60, 7))->setAction([this,i](){
       const cast_list& spells = city->getSpells();
       
       

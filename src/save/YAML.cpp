@@ -333,6 +333,13 @@ template<> const Spell* yaml::parse(const N& node)
       return new UnitSpell(name, rarity, school, researchCost, manaCost, combatManaCost, upkeep, skill);
     }
       
+    case SpellKind::CITY:
+    {
+      //SpellDuration duration = parse<SpellDuration>(node["duration"]);
+      Target target = parse<Target>(node["target"]);
+      return new CitySpell(name, rarity, school, SpellDuration::CONTINUOUS, target, researchCost, manaCost, combatManaCost, upkeep);
+    }
+      
     default:
       break;
   }

@@ -38,7 +38,9 @@ entries:
   unit_level_ultra_elite: Ultra-Elite
   unit_level_champion: Champion
 
-  spell_guardian_spirit: Guardian Spirit
   spell_bless: Bless
+  spell_earth_gate: Earth Gate
+  spell_guardian_spirit: Guardian Spirit
+
 
   

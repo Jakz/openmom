@@ -35,7 +35,7 @@ void View::drawButtons()
   for (const auto b : buttons)
     if (b && b->isVisible())
       b->draw();
-  for (const auto c : areas)
+  for (const auto& c : areas)
     if (c && c->isActive())
       c->draw();
 }
@@ -61,7 +61,7 @@ void View::doMouseReleased(u16 x, u16 y, MouseButton b)
     }
   }
   
-  for (const auto c : areas)
+  for (const auto& c : areas)
   {
     if (c && c->isActive() && c->isCorrectButton(b) && c->isInside(x,y))
     {

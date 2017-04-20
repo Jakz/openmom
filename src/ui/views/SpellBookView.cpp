@@ -46,13 +46,13 @@ SpellBookView::SpellBookView(ViewManager* gvm) : View(gvm), book(new BookView(6)
     buttons[NEXT_PAGE]->showIf(book->hasNextPage());
   });
   
-  areas.push_back((new Clickable(175,165,18,29))->setAction([gvm](){ gvm->closeOverview(); }));
+  addArea((new Clickable(175,165,18,29))->setAction([gvm](){ gvm->closeOverview(); }));
 
 
   
   for (u16 k = 0; k < 2; ++k)
     for (u16 i = 0; i < 6;++i)
-      areas.push_back((new Clickable(topLeftX[k]-2,topLeftY[k]+22*i-2,125,22))->setAction([k,i,this](){
+      addArea((new Clickable(topLeftX[k]-2,topLeftY[k]+22*i-2,125,22))->setAction([k,i,this](){
         startCast(book->getEntry(k*6 + i));
       }));
 }

@@ -143,6 +143,10 @@ void Game::dummyInit()
   florence->addBuilding(Building::FIGHTERS_GUILD);
   florence->addBuilding(Building::SUMMONING_CIRCLE);
   florence->addBuilding(Building::ALCHEMISTS_GUILD);
+  
+  for (size_t i = 0; i < 10; ++i)
+    florence->addSpell(SpellCast(player, Data::spell("earth_gate")));
+  
   settleCity(florence);
   
   world->get(7,6,ARCANUS)->placePlace(new Place(PLACE_TOWER_OF_WIZARDRY, false));
