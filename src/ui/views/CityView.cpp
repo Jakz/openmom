@@ -71,20 +71,25 @@ CityView::CityView(ViewManager* gvm) : View(gvm)
   
   for (int i = 0; i < 6; ++i)
     addArea((new Clickable(139, 50 + 7*i, 60, 7))->setAction([this,i](){
-      const cast_list& spells = city->getSpells();
-      
-      
-      if (i < spells.size())
-      {
-        const SpellCast& cast = *next(spells.begin(), i);
-        if (cast.player == player)
-        {
-          player->send(new msgs::Confirm(Fonts::format("Do you wish to turn off ^s%s^^?", i18n::s(cast.spell->name).c_str()), [&]() {
-            city->removeSpell(cast);
-          }));
-        }
-      }
+      this->clickOnCitySpell(i);
     }));
+}
+
+void CityView::clickOnCitySpell(size_t index)
+{
+  const size_t realIndex = CITY_ENCHANT_PER_PAGE*cityEnchantPage + index;
+  const cast_list& spells = city->getSpells();
+  
+  if (realIndex < spells.size())
+  {
+    const SpellCast& cast = *next(spells.begin(), realIndex);
+    if (cast.player == player)
+    {
+      player->send(new msgs::Confirm(Fonts::format("Do you wish to turn off ^s%s^^?", i18n::s(cast.spell->name).c_str()), [&]() {
+        city->removeSpell(cast);
+      }));
+    }
+  }
 }
 
 void CityView::setCity(City *city)

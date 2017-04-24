@@ -27,6 +27,8 @@
 #include "ResearchView.h"
 #include "SpellBookView.h"
 #include "UnitDetailView.h"
+#include "StartView.h"
+#include "IntroView.h"
 
 #include "ConsoleView.h"
 
@@ -53,6 +55,8 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_SPELL_BOOK] = new SpellBookView(this);
   views[VIEW_UNIT] = new UnitDetailView(this);
   views[VIEW_LOAD] = new LoadView(this);
+  views[VIEW_START] = new StartView(this);
+  views[VIEW_INTRO] = new IntroView(this);
   views[VIEW_OPTIONS] = new OptionsView(this);
   
   views[VIEW_CONSOLE] = new ConsoleView(this);
@@ -75,6 +79,8 @@ ProductionView* ViewManager::productionView() { return static_cast<ProductionVie
 ResearchView* ViewManager::researchView() { return static_cast<ResearchView*>(views[VIEW_RESEARCH]); }
 SpellBookView* ViewManager::spellBookView() { return static_cast<SpellBookView*>(views[VIEW_SPELL_BOOK]); }
 UnitDetailView* ViewManager::unitDetailView() { return static_cast<UnitDetailView*>(views[VIEW_UNIT]); }
+StartView* ViewManager::startView() { return static_cast<StartView*>(views[VIEW_START]); }
+IntroView* ViewManager::introView() { return static_cast<IntroView*>(views[VIEW_INTRO]); }
 
 ConsoleView* ViewManager::consoleView() { return static_cast<ConsoleView*>(views[VIEW_CONSOLE]); }
 

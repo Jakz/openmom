@@ -38,6 +38,8 @@
 		04243F2B197ED3F500E8A716 /* Combat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04243F29197ED3F500E8A716 /* Combat.cpp */; };
 		04243F2E197EE9E700E8A716 /* SpellBook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04243F2C197EE9E700E8A716 /* SpellBook.cpp */; };
 		042C4810198B3E75009C7E22 /* LairMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 042C480E198B3E75009C7E22 /* LairMechanics.cpp */; };
+		0438DFF31EAE682300981CFB /* StartView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0438DFF11EAE682300981CFB /* StartView.cpp */; };
+		0438DFF61EAE757500981CFB /* IntroView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0438DFF41EAE757500981CFB /* IntroView.cpp */; };
 		0439E98319868F1B0009BFF7 /* AlchemyView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E98119868F1B0009BFF7 /* AlchemyView.cpp */; };
 		0439E98619868F400009BFF7 /* ArmiesItemsView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E98419868F400009BFF7 /* ArmiesItemsView.cpp */; };
 		0439E98919868F6D0009BFF7 /* ArmiesView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E98719868F6D0009BFF7 /* ArmiesView.cpp */; };
@@ -311,6 +313,10 @@
 		04243F2D197EE9E700E8A716 /* SpellBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpellBook.h; sourceTree = "<group>"; };
 		042C480E198B3E75009C7E22 /* LairMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = LairMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		042C480F198B3E75009C7E22 /* LairMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LairMechanics.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		0438DFF11EAE682300981CFB /* StartView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StartView.cpp; sourceTree = "<group>"; };
+		0438DFF21EAE682300981CFB /* StartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartView.h; sourceTree = "<group>"; };
+		0438DFF41EAE757500981CFB /* IntroView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntroView.cpp; sourceTree = "<group>"; };
+		0438DFF51EAE757500981CFB /* IntroView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroView.h; sourceTree = "<group>"; };
 		0439E98119868F1B0009BFF7 /* AlchemyView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = AlchemyView.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0439E98219868F1B0009BFF7 /* AlchemyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlchemyView.h; sourceTree = "<group>"; };
 		0439E98419868F400009BFF7 /* ArmiesItemsView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = ArmiesItemsView.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -673,8 +679,14 @@
 				0439E98E19868FAD0009BFF7 /* CityView.h */,
 				0439E99019868FCB0009BFF7 /* CombatView.cpp */,
 				0439E99119868FCB0009BFF7 /* CombatView.h */,
+				046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */,
+				046428EF1E0AC4DC003A76D8 /* ConsoleView.h */,
+				0438DFF41EAE757500981CFB /* IntroView.cpp */,
+				0438DFF51EAE757500981CFB /* IntroView.h */,
 				0439E99319868FF60009BFF7 /* ItemCraftView.cpp */,
 				0439E99419868FF60009BFF7 /* ItemCraftView.h */,
+				049B1CEC1E2B3D8500A2A449 /* LoadView.cpp */,
+				049B1CED1E2B3D8500A2A449 /* LoadView.h */,
 				0439E996198690150009BFF7 /* MagicView.cpp */,
 				0439E997198690150009BFF7 /* MagicView.h */,
 				04C729BF19853F4E002F16E6 /* MainView.cpp */,
@@ -685,6 +697,8 @@
 				0439E99D198690580009BFF7 /* MirrorView.h */,
 				04037616197AF93600A5B5FC /* NewGameView.cpp */,
 				04037617197AF93600A5B5FC /* NewGameView.h */,
+				049B1CEE1E2B3D8500A2A449 /* OptionsView.cpp */,
+				049B1CEF1E2B3D8500A2A449 /* OptionsView.h */,
 				0439E99F198690B70009BFF7 /* OutpostView.cpp */,
 				0439E9A0198690B70009BFF7 /* OutpostView.h */,
 				0439E9A2198690DB0009BFF7 /* ProductionView.cpp */,
@@ -693,14 +707,10 @@
 				0439E9A6198691070009BFF7 /* ResearchView.h */,
 				0439E9A81986912D0009BFF7 /* SpellBookView.cpp */,
 				0439E9A91986912D0009BFF7 /* SpellBookView.h */,
+				0438DFF11EAE682300981CFB /* StartView.cpp */,
+				0438DFF21EAE682300981CFB /* StartView.h */,
 				0439E9AB198691530009BFF7 /* UnitDetailView.cpp */,
 				0439E9AC198691530009BFF7 /* UnitDetailView.h */,
-				049B1CEC1E2B3D8500A2A449 /* LoadView.cpp */,
-				049B1CED1E2B3D8500A2A449 /* LoadView.h */,
-				049B1CEE1E2B3D8500A2A449 /* OptionsView.cpp */,
-				049B1CEF1E2B3D8500A2A449 /* OptionsView.h */,
-				046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */,
-				046428EF1E0AC4DC003A76D8 /* ConsoleView.h */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -1010,6 +1020,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				046428F41E0CE81D003A76D8 /* Dialogs.cpp in Sources */,
+				0438DFF61EAE757500981CFB /* IntroView.cpp in Sources */,
 				0439E9B019869F6D0009BFF7 /* CommonDraw.cpp in Sources */,
 				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
 				043C01441E218A4E00E035D8 /* Data.cpp in Sources */,
@@ -1092,6 +1103,7 @@
 				0420539B197DCDB300B4C2CA /* MapMechanics.cpp in Sources */,
 				048E08BC1982B20A009AED0A /* WorldGenerator.cpp in Sources */,
 				0403760A197AD00800A5B5FC /* Buildings.cpp in Sources */,
+				0438DFF31EAE682300981CFB /* StartView.cpp in Sources */,
 				0439E98619868F400009BFF7 /* ArmiesItemsView.cpp in Sources */,
 				048616571E02E758004B62B7 /* hq3x.cpp in Sources */,
 				04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */,

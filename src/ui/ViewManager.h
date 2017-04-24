@@ -29,7 +29,10 @@ class SpellBookView;
 class UnitDetailView;
 class LoadView;
 class OptionsView;
+class StartView;
+class IntroView;
 class ConsoleView;
+
 
 class LocalPlayer;
 
@@ -90,6 +93,8 @@ public:
   ResearchView* researchView();
   SpellBookView* spellBookView();
   UnitDetailView* unitDetailView();
+  StartView* startView();
+  IntroView* introView();
   
   ConsoleView* consoleView();
 };

@@ -42,6 +42,8 @@ private:
   
   s16 drawCityProp(s16 value, UpkeepSymbol type, s16 sx, s16 sy);
   
+  void clickOnCitySpell(size_t index);
+  
 public:
   CityView(ViewManager* gvm);
   

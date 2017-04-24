@@ -663,7 +663,7 @@ CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1))
   buttons[bt_wait] = Button::buildTristate("wait", 144+26, 168, LSI(COMPIX, 2), LSI(COMPIX, 24));
   buttons[bt_info] = Button::buildTristate("info", 144, 168+10, LSI(COMPIX, 20), LSI(COMPIX, 25));
   buttons[bt_auto] = Button::buildTristate("auto", 144+26, 168+10, LSI(COMPIX, 4), LSI(COMPIX, 26));
-  buttons[bt_flee] = Button::buildTristate("free", 144, 168+20, LSI(COMPIX, 21), LSI(COMPIX, 27));
+  buttons[bt_flee] = Button::buildTristate("flee", 144, 168+20, LSI(COMPIX, 21), LSI(COMPIX, 27));
   buttons[bt_done] = Button::buildTristate("done", 144+26, 168+20, LSI(COMPIX, 3), LSI(COMPIX, 28));
 
   buttons[bt_wait]->setAction([this](){

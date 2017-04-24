@@ -76,12 +76,14 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::FONTS);
   lbx::Repository::loadLBX(LBXID::HELP);
   lbx::Repository::loadLBX(LBXID::HIRE);
+  lbx::Repository::loadLBX(LBXID::INTRO);
   lbx::Repository::loadLBX(LBXID::ITEMS);
   lbx::Repository::loadLBX(LBXID::ITEMISC);
   lbx::Repository::loadLBX(LBXID::LILWIZ);
   lbx::Repository::loadLBX(LBXID::LOAD);
   lbx::Repository::loadLBX(LBXID::MAGIC);
   lbx::Repository::loadLBX(LBXID::MAIN);
+  lbx::Repository::loadLBX(LBXID::MAINSCRN);
   lbx::Repository::loadLBX(LBXID::MAPBACK);
   lbx::Repository::loadLBX(LBXID::MONSTER);
   lbx::Repository::loadLBX(LBXID::NEWGAME);
@@ -118,7 +120,7 @@ int main(int argc, char * arg[])
   
   //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
 
-  SDL::gvm->switchView(VIEW_MAIN);
+  SDL::gvm->switchView(VIEW_INTRO);
 
   //SDL::gvm->switchView(VIEW_ITEM_CRAFT);
   
