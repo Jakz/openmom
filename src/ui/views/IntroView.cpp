@@ -11,17 +11,30 @@
 #include "Gfx.h"
 #include "ViewManager.h"
 
-IntroView::IntroView(ViewManager* gvm) : View(gvm), currentFrame(0)
+constexpr u32 TICKS_PER_FRAME = 4;
+
+u32 framesForStep;
+
+IntroView::IntroView(ViewManager* gvm) : View(gvm), currentFrame(0), currentStep(0), counter(0), splitCounter(0)
 {
 
 }
 
 void IntroView::activate()
 {
-
+  currentFrame = 0;
+  currentStep = 0;
+  framesForStep = SpriteInfo(LSI(INTRO,3)).count();
 }
 
 void IntroView::draw()
 {
-  Gfx::drawAnimated(LSI(INTRO, 3), 0, 0, 0, 2);
+  u32 fticks = Gfx::fticks;
+  u32 delta = fticks - counter;
+  splitCounter += delta;
+  counter = fticks;
+  
+  const SpriteInfo step = LSI(INTRO,3);
+  
+  Gfx::draw(step.frame(splitCounter % framesForStep), 0, 0);
 }
