@@ -47,8 +47,15 @@ CityView::CityView(ViewManager* gvm) : View(gvm)
   buttons[OK] = Button::buildBistate("Ok", 286, 188, LSI(BACKGRND, 9));
   
   /* TODO: add behavior */
-  buttons[PREV_CITY_ENCHANT] = Button::buildBistate("Prev City Enchant", 201, 50, LSI(BACKGRND,15));
-  buttons[NEXT_CITY_ENCHANT] = Button::buildBistate("Prev City Enchant", 201, 85, LSI(BACKGRND,16));
+  buttons[PREV_CITY_ENCHANT] = Button::buildBistate("Prev City Enchant", 201, 50, LSI(BACKGRND,15))->setAction([this](){
+    const size_t pageCount = Util::roundWithMod(city->getSpells().size(), CITY_ENCHANT_PER_PAGE);
+    cityEnchantPage = Util::negativeWrap(cityEnchantPage, pageCount);
+  });
+  
+  buttons[NEXT_CITY_ENCHANT] = Button::buildBistate("Prev City Enchant", 201, 85, LSI(BACKGRND,16))->setAction([this](){
+    const size_t pageCount = Util::roundWithMod(city->getSpells().size(), CITY_ENCHANT_PER_PAGE);
+    cityEnchantPage = (cityEnchantPage + 1) % pageCount;
+  });
 
   
   buttons[BUY]->deactivate();
@@ -246,6 +253,7 @@ void CityView::draw()
   {
     const SpellCast& cast = *it;
     const FontSpriteSheet* face = Fonts::fontForColor(cast.player->color);
-    Fonts::drawString(i18n::s(cast.spell->name), face, 138, 50+7*i, ALIGN_LEFT);
+    //Fonts::drawString(i18n::s(cast.spell->name), face, 138, 50+7*i, ALIGN_LEFT);
+    Fonts::drawString(Fonts::format("%s%d", i18n::s(cast.spell->name).c_str(), cityEnchantPage*CITY_ENCHANT_PER_PAGE + i), face, 138, 50+7*i, ALIGN_LEFT);
   }
 }

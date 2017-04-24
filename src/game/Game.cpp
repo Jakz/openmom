@@ -144,7 +144,7 @@ void Game::dummyInit()
   florence->addBuilding(Building::SUMMONING_CIRCLE);
   florence->addBuilding(Building::ALCHEMISTS_GUILD);
   
-  for (size_t i = 0; i < 10; ++i)
+  for (size_t i = 0; i < 8; ++i)
     florence->addSpell(SpellCast(player, Data::spell("earth_gate")));
   
   settleCity(florence);

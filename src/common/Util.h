@@ -43,6 +43,9 @@ public:
     return passed;
   }
   
+  template <typename T, typename S> inline static T negativeWrap(T value, S total) { return value > 0 ? (value - 1) : (total - 1); }
+  template <typename T, typename S> inline static T roundWithMod(T total, S size) { return total / size + (total % size != 0 ? 1 : 0); }
+  
   static u32 randomIntUpTo(u32 i) { return integer(rng)%i; }
   static u32 randomIntInclusive(s32 l, s32 h) { return l + integer(rng)%(h-l+1); }
 
