@@ -704,6 +704,7 @@ void LBX::load()
  }*/
 
 size_t Repository::bytesUsed;
+size_t Repository::spritesUsed;
 LBXFile Repository::data[LBX_COUNT];
 std::vector<LBXTerrainSpriteSpecs> Repository::terrainData;
 
@@ -767,7 +768,7 @@ const LBXSpriteData* Repository::loadLBXSpriteData(SpriteInfo info)
   LOGD("[lbx] loading gfx entry %u from %s", info.index(), file(info.lbx()).fileName.c_str());
   LBXSpriteData* spriteData = LBX::scanGfx(lbx.info.header, lbx.info.offsets[info.index()], in);
   gfxAllocated(spriteData);
-  LOGD3("[lbx] lbx cache size: %zu", bytesUsed);
+  LOGD3("[lbx] lbx cache size: %zu sprites in %zu bytes", spritesUsed, bytesUsed);
   
   lbx.sprites[info.index()] = spriteData;
   
@@ -1008,16 +1009,19 @@ const LBXFile& Repository::loadLBXHelp()
 void Repository::gfxAllocated(const LBXSpriteData* data)
 {
   bytesUsed += data->memoryUsedInBytes();
+  ++spritesUsed;
 }
 
 void Repository::gfxDeallocated(const LBXSpriteData* data)
 {
   bytesUsed -= data->memoryUsedInBytes();
+  --spritesUsed;
 }
 
 void Repository::init()
 {
   bytesUsed = 0;
+  spritesUsed = 0;
   
   static const char* names[] = {
     "armylist",

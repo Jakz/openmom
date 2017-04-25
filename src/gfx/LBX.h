@@ -136,7 +136,7 @@ namespace lbx
     
     ~LBXSpriteData()
     {
-      delete [] palette;
+      delete palette;
       std::for_each(data, data+count, [](const u8* sprite) { delete sprite; });
       delete [] data;
     }
@@ -222,6 +222,7 @@ namespace lbx
     static LBXFile& file(const std::string& name);
     
     static size_t bytesUsed;
+    static size_t spritesUsed;
     static void gfxAllocated(const LBXSpriteData* data);
     static void gfxDeallocated(const LBXSpriteData* data);
     
@@ -247,6 +248,18 @@ namespace lbx
     static LBXArrayData* loadLBXSpriteTerrainMappingData(LBXFile& lbx, size_t i, FILE* in);
     
     static const std::vector<LBXTerrainSpriteSpecs>& terrainInfo() { return terrainData; }
+    
+    static void clearCache(LBXID ident)
+    {
+      const LBXFile& f = file(ident);
+      for (size_t i = 0; i < f.size(); ++i)
+        if (f.sprites[i])
+        {
+          gfxDeallocated(f.sprites[i]);
+          delete f.sprites[i];
+          f.sprites[i] = nullptr;
+        }
+    }
     
     static const LBXSpriteData* spriteFor(SpriteInfo info) {
       assert(static_cast<u32>(info.lbx()) < LBX_COUNT);

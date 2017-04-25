@@ -8,15 +8,20 @@
 
 #include "IntroView.h"
 
+#include "LBX.h"
 #include "Gfx.h"
 #include "ViewManager.h"
 
-bool shouldBlendFrame(u32 frame) { return frame <= 2; }
+constexpr u32 BLEND_DURATION = 10;
+constexpr u32 FRAME_COUNT = 13;
 
+bool shouldBlendFrame(u32 frame) { return frame <= 2; }
 
 IntroView::IntroView(ViewManager* gvm) : View(gvm), timer(2), currentFrameCount(0), currentFrame(0)
 {
-
+  addArea(new Clickable(0, 0, WIDTH, HEIGHT))->setAction([this](){
+    this->gvm->switchView(VIEW_START);
+  });
 }
 
 void IntroView::activate()
@@ -30,10 +35,9 @@ void IntroView::activate()
 
 void IntroView::deactivate()
 {
-
+  lbx::Repository::clearCache(LBXID::INTRO);
 }
 
-constexpr u32 BLEND_DURATION = 10;
 
 void IntroView::draw()
 {
@@ -69,6 +73,12 @@ void IntroView::draw()
     }
     
     timer.resetCounter();
+  }
+  
+  if (currentFrame == FRAME_COUNT)
+  {
+    gvm->switchView(VIEW_START);
+    return;
   }
   
   const SpriteInfo step = LSI(INTRO, currentFrame);
