@@ -10,7 +10,7 @@ class ViewManager;
 class NewGameView : public View
 {
   private:
-    enum Phase
+    enum class Phase
     {
       GAME_OPTIONS = 0,
       WIZARD_CHOICE
@@ -31,15 +31,15 @@ class NewGameView : public View
     Phase phase;
     Settings settings;
   
+    void switchToPhase(Phase phase);
+  
     void draw() override;
     void drawPost() override { }
   
   public:
     NewGameView(ViewManager* gvm);
-  
-    void updateLabelsOptions();
-  
-    void activate() override { updateLabelsOptions(); }
+    
+    void activate() override;
     void deactivate() override { }
 };
 

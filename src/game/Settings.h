@@ -73,7 +73,7 @@ private:
 public:
   Settings();
 
-  SettingGroup &group(SettingGroupID ident) { return *std::find_if(settings.begin(), settings.end(), [&](SettingGroup &group) { return group.ident == ident; });  }
+  SettingGroup& group(SettingGroupID ident) { return *std::find_if(settings.begin(), settings.end(), [&](SettingGroup &group) { return group.ident == ident; });  }
   
   SettingID magicPower() { return group(SETTING_MAGIC_POWER).value(); }
 };

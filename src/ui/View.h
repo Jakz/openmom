@@ -30,6 +30,7 @@ protected:
   std::vector<std::unique_ptr<Clickable>> areas;
   
   Button* curButton;
+  Button* currentHoverButton;
   
   LocalPlayer *player;
   Game *g;
@@ -43,12 +44,12 @@ protected:
   void setPlayer(LocalPlayer* player) { this->player = player; }
   
   Clickable* addArea(Clickable* clickable) { areas.push_back(std::unique_ptr<Clickable>(clickable)); return clickable; }
-  void addButton(Button* button) { buttons.push_back(button); }
+  Button* addButton(Button* button) { buttons.push_back(button); return button; }
   
   ViewManager *gvm;
   
 public:
-  View(ViewManager *gvm) : gvm(gvm), curButton(nullptr) { }
+  View(ViewManager *gvm) : gvm(gvm), curButton(nullptr), currentHoverButton(nullptr) { }
   
   Button* buttonAt(u16 index) { return buttons[index]; }
   const std::unique_ptr<Clickable>& areaAt(u16 index) { return areas[index]; }
@@ -68,7 +69,7 @@ public:
   void doMousePressed(u16 x, u16 y, MouseButton b);
   void doMouseDragged(u16 x, u16 y, MouseButton b);
   
-  void doMouseMoved(u16 x, u16 y, MouseButton b) { mouseMoved(x,y,b); }
+  void doMouseMoved(u16 x, u16 y, MouseButton b);
   void doMouseClicked(u16 x, u16 y, MouseButton b) { mouseClicked(x,y,b); }
   
   void doKeyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { keyPressed(key,kkey,mod); }

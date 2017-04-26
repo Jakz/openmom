@@ -42,5 +42,24 @@ entries:
   spell_earth_gate: Earth Gate
   spell_guardian_spirit: Guardian Spirit
 
+  game_option_difficulty_intro: Intro
+  game_option_difficulty_easy: Easy
+  game_option_difficulty_normal: Normal
+  game_option_difficulty_hard: Hard
+  game_option_difficulty_impossible: Impossible
+  
+  game_option_opponents_one: One
+  game_option_opponents_two: Two
+  game_option_opponents_three: Three
+  game_option_opponents_four: Four
+  
+  game_option_land_size_small: Small
+  game_option_land_size_medium: Medium
+  game_option_land_size_large: Large
+  
+  game_option_magic_weak: Weak
+  game_option_magic_normal: Normal
+  game_option_magic_powerful: Powerful
+
 
   

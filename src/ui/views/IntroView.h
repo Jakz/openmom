@@ -70,6 +70,8 @@ private:
   u32 currentFrameCount;
   u32 currentFrame;
   
+  void setNextStep(Phase phase, u32 frame);
+  
   void draw() override;
   void drawPost() override { }
   

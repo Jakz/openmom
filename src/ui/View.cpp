@@ -116,3 +116,23 @@ void View::doMouseDragged(u16 x, u16 y, MouseButton b)
   
   mouseDragged(x,y,b);
 }
+
+void View::doMouseMoved(u16 x, u16 y, MouseButton b)
+{
+  if (currentHoverButton && !currentHoverButton->isInside(x, y))
+  {
+    currentHoverButton->getOnExit()();
+    currentHoverButton = nullptr;
+  }
+
+  for (const auto bt : buttons)
+  {
+    if (bt && bt != currentHoverButton && bt->isActive() && bt->isInside(x, y))
+    {
+      currentHoverButton = bt;
+      currentHoverButton->getOnEnter()();
+    }
+  }
+        
+  mouseMoved(x, y, b);
+}

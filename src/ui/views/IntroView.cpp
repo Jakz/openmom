@@ -27,7 +27,7 @@ IntroView::IntroView(ViewManager* gvm) : View(gvm), timer(2), currentFrameCount(
 void IntroView::activate()
 {
   currentFrame = 0;
-  currentFrameCount = SpriteInfo(LBXID::INTRO, currentFrame).count();
+  currentFrameCount = BLEND_DURATION;
   timer.reset();
   timer.mark(Gfx::fticks);
   phase = Phase::BLEND_IN;
@@ -36,6 +36,23 @@ void IntroView::activate()
 void IntroView::deactivate()
 {
   lbx::Repository::clearCache(LBXID::INTRO);
+}
+
+void IntroView::setNextStep(Phase phase, u32 frame)
+{
+  this->phase = phase;
+  currentFrame = frame;
+  timer.resetCounter();
+  
+  switch (phase)
+  {
+    case Phase::BLEND_IN:
+    case Phase::BLEND_OUT:
+      this->currentFrameCount = BLEND_DURATION;
+      break;
+    case Phase::ANIMATE:
+      this->currentFrameCount = SpriteInfo(LBXID::INTRO, currentFrame).count();
+  }
 }
 
 
@@ -99,4 +116,7 @@ void IntroView::draw()
       Gfx::fillRect(0, 0, WIDTH, HEIGHT, Color(0,0,0,(0xFF/BLEND_DURATION)*timer));
       break;
   }
+  
+  
+  //TODO: missing copyright notice
 }

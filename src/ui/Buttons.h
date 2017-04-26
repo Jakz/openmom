@@ -27,10 +27,15 @@ protected:
   u16 x, y, w, h;
   const MouseButton button;
   Action action;
+  Action onEnter;
+  Action onExit;
   bool active;
   
 public:
-  Clickable(u16 x, u16 y, u16 w, u16 h, MouseButton b = BUTTON_LEFT) : x(x), y(y), w(w), h(h), button(b), active(true) { }
+  Clickable(u16 x, u16 y, u16 w, u16 h, MouseButton b = BUTTON_LEFT) :
+    x(x), y(y), w(w), h(h), button(b), active(true),
+    onEnter([](){}), onExit([](){})
+  { }
   
   bool isCorrectButton(MouseButton b) { return b == button; }
   bool isInside(u16 x, u16 y) { return x >= this->x && x <= this->x+w && y >= this->y && y <= this->y+h; }
@@ -43,6 +48,12 @@ public:
   
   virtual inline Clickable* setAction(Action action) { this->action = action; return this; }
   inline Action getAction() { return action; }
+  
+  void setOnEnterAction(Action action) { this->onEnter = action; }
+  void setOnExitAction(Action action) { this->onExit = action; }
+  
+  inline Action getOnEnter() { return onEnter; }
+  inline Action getOnExit() { return onExit; }
   
   virtual void draw();
 };
