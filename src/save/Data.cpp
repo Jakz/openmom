@@ -24,20 +24,20 @@ static const Trait traitInfo[] = {
 };
 
 static const Wizard wizardInfo[] = {
-  {WizardID::MERLIN, I18::WIZARD_NAME_MERLIN},
-  {WizardID::RAVEN, I18::WIZARD_NAME_RAVEN},
-  {WizardID::SHAREE, I18::WIZARD_NAME_SHAREE},
-  {WizardID::LO_PAN, I18::WIZARD_NAME_LO_PAN},
-  {WizardID::JAFAR, I18::WIZARD_NAME_JAFAR},
-  {WizardID::OBERIC, I18::WIZARD_NAME_OBERIC},
-  {WizardID::RJAK, I18::WIZARD_NAME_RJAK},
-  {WizardID::SSS_RA, I18::WIZARD_NAME_SSS_RA},
-  {WizardID::TAURON, I18::WIZARD_NAME_TAURON},
-  {WizardID::FREYA, I18::WIZARD_NAME_FREYA},
-  {WizardID::HORUS, I18::WIZARD_NAME_HORUS},
-  {WizardID::ARIEL, I18::WIZARD_NAME_ARIEL},
-  {WizardID::TLALOC, I18::WIZARD_NAME_TLALOC},
-  {WizardID::KALI, I18::WIZARD_NAME_KALI}
+  {WizardID::MERLIN, "Merlin"},
+  {WizardID::RAVEN, "Raven"},
+  {WizardID::SHAREE, "Sharee"},
+  {WizardID::LO_PAN, "Lo Pan"},
+  {WizardID::JAFAR, "Jafar"},
+  {WizardID::OBERIC, "Oberic"},
+  {WizardID::RJAK, "Rjak"},
+  {WizardID::SSS_RA, "Sss'ra"},
+  {WizardID::TAURON, "Tauron"},
+  {WizardID::FREYA, "Freya"},
+  {WizardID::HORUS, "Horus"},
+  {WizardID::ARIEL, "Ariel"},
+  {WizardID::TLALOC, "Tlaloc"},
+  {WizardID::KALI, "Kali"}
 };
 
 const Trait& Data::trait(const TraitID trait)

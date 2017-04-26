@@ -584,7 +584,9 @@ enum class WizardID : u8
 struct Wizard
 {
   WizardID ident;
-  I18 name;
+  const char* _name;
+  
+  const char* name() const { return _name; }
 };
 
 enum class TraitID : u8

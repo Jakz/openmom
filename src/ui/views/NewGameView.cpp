@@ -74,8 +74,8 @@ void NewGameView::switchToPhase(Phase phase)
       
       for (size_t i = 0; i < 14; ++i)
       {
-        const auto button = addButton(Button::buildOffsetted(i18n::s(Data::wizard(wizards[i]).name), baseX[i/7], baseY + deltaY*(i%7), LSI(NEWGAME, baseButtonSprite+i)));
-        button->setOnEnterAction([i](){ printf("Entering %zu\n", i); });
+        const auto button = addButton(Button::buildOffsetted(Data::wizard(wizards[i]).name(), baseX[i/7], baseY + deltaY*(i%7), LSI(NEWGAME, baseButtonSprite+i)));
+        button->setOnEnterAction([this,i,wizards]() { this->wizard = wizards[i]; });
         button->setOnExitAction([i](){ printf("Exiting %zu\n", i); });
       }
       
@@ -109,6 +109,9 @@ void NewGameView::draw()
     {
       Fonts::drawString("Select Wizard", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
       Gfx::draw(LSI(NEWGAME, 8), 165, 17);
+      
+      if (wizard.isPresent())
+        Gfx::draw(GfxData::wizardGfxSpec(wizard).portraitLarge, 24, 10);
 
       break;
     }
