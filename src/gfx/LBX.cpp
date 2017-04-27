@@ -559,6 +559,7 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
         }
       
       FontData::fonts[i]->setGlyphWidth(j, widths[i][j]);
+      
     }
     
     LOGD("[lbx] loading font %u, size: %ux%u, colors: %u", i, width-2, heights[i], maxColor)

@@ -74,6 +74,7 @@ const FontSpriteSheet* FontFaces::MediumBold::GOLD_ITEM_CRAFT = nullptr;
 const FontSpriteSheet* FontFaces::Serif::TEAL = nullptr;
 const FontSpriteSheet* FontFaces::Serif::BROWN = nullptr;
 const FontSpriteSheet* FontFaces::Serif::BROWN_HELP = nullptr;
+const FontSpriteSheet* FontFaces::Serif::BROWN_START = nullptr;
 const FontSpriteSheet* FontFaces::Serif::YELLOW_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::GOLD_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::GOLD = nullptr;
@@ -165,10 +166,9 @@ void FontFaces::buildFonts()
   Serif::TEAL = buildSerif({0, {24,68,68}, {24,68,68}, {58,166,166}, {243,235,231}, {188,238,218}, {197,239,217}, {193,239,240}});
   Serif::BROWN = buildSerif({0, 0, 0, {120,74,36}, {96,8,14}, {96,8,14}, {96,8,14}, {96,8,14}});
   Serif::BROWN_HELP = buildSerif({0, 0, 0, {97,69,36}, {69,4,4}, {69,4,4}, {69,4,4}, {69,4,4}});
+  Serif::BROWN_START = buildSerif({ 0, 0, {166, 134, 105}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28} });
   Serif::YELLOW_SHADOW = buildSerif({0, 0, {15,49,56}, {115,84,69}, {245,161,39}, {229,145,31}, {213,133,27}, {213,133,27}});
-  
   Serif::GOLD_ERROR_MESSAGE = buildSerif({0, 0, {128,13,4},{121,85,36}, {207,138,24}, {245,161,39}, {255,199,103}, {255,243,127}});
-  
   Serif::GOLD_SHADOW = buildSerif({0,  0, {67,43,36},{74,51,44}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
   Serif::GOLD = buildSerif({0, 0, 0, {255,174,12}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
   Serif::SILVER_SHADOW = buildSerif({0, 0, {67,43,36}, {106,97,93}, {159,150,146}, {196,186,182}, {228,219,215}, {255,255,255}});  // TODO: take from fontColors map

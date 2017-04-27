@@ -22,6 +22,7 @@ namespace lbx
   enum LBXFileType : u16
   {
     GRAPHICS = 0,
+    FONTS = 2,
     DATA_ARRAY = 5,
     TILES = 111,
     TILES_MAPPING = 112,
@@ -203,7 +204,7 @@ namespace lbx
       LBXArrayData** arrays;
     };
     
-    bool isLoaded() const { return ((info.header.type == LBXFileType::GRAPHICS || info.header.type == LBXFileType::TILES) && sprites) || ((info.header.type == LBXFileType::DATA_ARRAY || info.header.type == LBXFileType::TILES_MAPPING) && arrays); }
+    bool isLoaded() const { return ((info.header.type == LBXFileType::GRAPHICS || info.header.type == LBXFileType::TILES) && sprites) || ((info.header.type == LBXFileType::DATA_ARRAY || info.header.type == LBXFileType::TILES_MAPPING) && arrays) || info.header.type == LBXFileType::FONTS; }
     
     LBXFile() : sprites(nullptr) { }
     LBXFile(LBXID ident, const std::string& fileName) : ident(ident), fileName(fileName), sprites(nullptr) { }

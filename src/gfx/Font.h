@@ -77,7 +77,7 @@ public:
   {
     delete [] data;
   }
-
+  
   void setGlyphWidth(u8 index, s8 width) {  glyphWidth[index] = width; }
   s8 getGlyphWidth(u8 index) const { return glyphWidth[index - ' ']; }
   
@@ -146,8 +146,6 @@ public:
   const Palette* getPalette() const override { return palette; }
 };
 
-
-
 class FontFaces
 {
 public:
@@ -180,7 +178,7 @@ public:
   
   class Serif {
   public:
-    const static FontSpriteSheet *TEAL, *BROWN, *BROWN_HELP, *YELLOW_SHADOW, *GOLD_SHADOW, *GOLD, *GOLD_ERROR_MESSAGE, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
+    const static FontSpriteSheet *TEAL, *BROWN, *BROWN_HELP, *BROWN_START, *YELLOW_SHADOW, *GOLD_SHADOW, *GOLD, *GOLD_ERROR_MESSAGE, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
   };
   
   class Crypt {

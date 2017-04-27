@@ -24,6 +24,7 @@ class ColorMap
 };
 
 using color_list = std::initializer_list<Color>;
+using color_array = std::vector<Color>;
 using color_map = std::unordered_map<Color, Color>;
 
 class BlinkMap : public ColorMap
@@ -135,6 +136,7 @@ public:
   IndexedPalette(Color* colors) : colors(colors) { }
   IndexedPalette(size_t size) : colors(new Color[size]) { }
   
+  IndexedPalette(const color_array& colors) : colors(new Color[colors.size()]) { for (size_t i = 0; i < colors.size(); ++i) this->colors[i] = colors[i]; }
   IndexedPalette(color_list colors) : colors(new Color[colors.size()]) { setPalette(colors); }
   
   void setPalette(color_list colors) const

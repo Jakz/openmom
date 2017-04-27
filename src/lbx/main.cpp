@@ -20,6 +20,7 @@
 #include <array>
 
 #include "Gfx.h"
+#include "Font.h"
 
 #define MAX_ROWS 100
 #define MAX_COLS 100
@@ -299,6 +300,7 @@ void drawSprite(const u8* data, int w, int h, int& sx, int& sy, int S, const Pal
   delete [] tdata;
 }
 
+#pragma mark Main Window
 class MyWindow : public Fl_Double_Window
 {
 private:
@@ -361,13 +363,57 @@ public:
   void setData(const LBXArrayData* array) { this->array = array; this->sprite = nullptr; }
   void setData(const LBXSpriteData* sprite) { this->sprite = sprite; this->array = nullptr; }
   
+  const Palette* palette = new IndexedPalette({ {255,0,0},{0,255,0},{0,0,255},{255,255,0} });
+  
   void draw() override
   {
     Fl_Double_Window::draw();
     
     //fl_color(FL_BLACK);
     
-    if (currentLBX && currentLBX->info.header.type == LBXFileType::TILES_MAPPING)
+    if (currentLBX && currentLBX->info.header.type == LBXFileType::FONTS)
+    {
+      fl_draw("Tiny", FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+20, 20);
+      
+      const int S = 2;
+      const FontData* font = FontData::fonts[FONT_TINY];
+      
+      u8 maxColor = 0;
+      u8* fdata = font->dataAt(0,0);
+      for (int xx = 0; xx < font->tw()*font->h(); ++xx)
+        maxColor = std::max(maxColor, fdata[xx]);
+        
+      color_array colors;
+      colors.push_back({255,0,255});
+      for (int i = 0; i < maxColor; ++i)
+      {
+        u8 c = (255 / maxColor) * i;
+        colors.push_back({ c, c, c });
+      }
+
+      const Palette* palette = new IndexedPalette(colors);
+      
+      u8* buffer = new u8[font->w()*font->h()];
+      
+      for (int i = 0; i < GLYPH_COUNT; ++i)
+      {
+        u8* data = font->dataAt(0, i);
+        
+        for (size_t xx = 0; xx < font->w(); ++xx)
+          for (size_t yy = 0; yy < font->h(); ++yy)
+          {
+            buffer[xx + yy*font->w()] = data[xx + yy*font->tw()];
+          }
+        
+        int sx = FIRST_TABLE_WIDTH + SECOND_TABLE_WIDTH + 20 + (font->w()+1)*i*S;
+        int sy = 40;
+        drawSprite(buffer, font->w(), font->h(), sx, sy, S, palette);
+      }
+      
+      delete [] buffer;
+      delete palette;
+    }
+    else if (currentLBX && currentLBX->info.header.type == LBXFileType::TILES_MAPPING)
     {
       u8 mask = 0;
       
@@ -517,6 +563,7 @@ public:
   }
 };
 
+#pragma mark Entries Table
 class SpriteTable : public Fl_Table
 {
 private:
@@ -750,6 +797,7 @@ public:
 };
 
 
+#pragma mark LBX Table
 class LBXTable : public Fl_Table
 {
 private:
@@ -881,6 +929,7 @@ public:
             case LBXFileType::SOUND: typeName = "SFX"; break;
             case LBXFileType::MUSIC: typeName = "MFX"; break;
             case LBXFileType::HELP: typeName = "HLP"; break;
+            case LBXFileType::FONTS: typeName = "FNT"; break;
           }
           
           fl_draw(typeName, X, Y, W, H, FL_ALIGN_CENTER);
