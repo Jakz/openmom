@@ -530,8 +530,10 @@ enum ViewID
   VIEW_OPTIONS,
   VIEW_START,
   VIEW_INTRO,
+
   VIEW_CONSOLE,
-    
+  VIEW_DATA,
+  
   VIEW_COUNT
 };
 

@@ -30,6 +30,7 @@
 		0403761E197B52F800A5B5FC /* Unit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403761C197B52F800A5B5FC /* Unit.cpp */; };
 		04037621197B539400A5B5FC /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0403761F197B539400A5B5FC /* Tile.cpp */; };
 		04037627197B58C900A5B5FC /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04037625197B58C900A5B5FC /* World.cpp */; };
+		040851EE1EB3BE560082AFF4 /* DataView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040851EC1EB3BE560082AFF4 /* DataView.cpp */; };
 		0420538D197DA9D700B4C2CA /* SkillSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0420538B197DA9D700B4C2CA /* SkillSet.cpp */; };
 		04205392197DA9E900B4C2CA /* Effects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0420538E197DA9E900B4C2CA /* Effects.cpp */; };
 		04205393197DA9E900B4C2CA /* Skill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04205390197DA9E900B4C2CA /* Skill.cpp */; };
@@ -297,6 +298,8 @@
 		04037620197B539400A5B5FC /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
 		04037625197B58C900A5B5FC /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		04037626197B58C900A5B5FC /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
+		040851EC1EB3BE560082AFF4 /* DataView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DataView.cpp; sourceTree = "<group>"; };
+		040851ED1EB3BE560082AFF4 /* DataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataView.h; sourceTree = "<group>"; };
 		0420538B197DA9D700B4C2CA /* SkillSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillSet.cpp; sourceTree = "<group>"; };
 		0420538C197DA9D700B4C2CA /* SkillSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillSet.h; sourceTree = "<group>"; };
 		0420538E197DA9E900B4C2CA /* Effects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Effects.cpp; sourceTree = "<group>"; };
@@ -667,6 +670,7 @@
 		04037615197AF92C00A5B5FC /* views */ = {
 			isa = PBXGroup;
 			children = (
+				040851EB1EB3BE560082AFF4 /* debug */,
 				0439E98119868F1B0009BFF7 /* AlchemyView.cpp */,
 				0439E98219868F1B0009BFF7 /* AlchemyView.h */,
 				0439E98419868F400009BFF7 /* ArmiesItemsView.cpp */,
@@ -713,6 +717,15 @@
 				0439E9AC198691530009BFF7 /* UnitDetailView.h */,
 			);
 			path = views;
+			sourceTree = "<group>";
+		};
+		040851EB1EB3BE560082AFF4 /* debug */ = {
+			isa = PBXGroup;
+			children = (
+				040851EC1EB3BE560082AFF4 /* DataView.cpp */,
+				040851ED1EB3BE560082AFF4 /* DataView.h */,
+			);
+			path = debug;
 			sourceTree = "<group>";
 		};
 		0420538A197DA9B900B4C2CA /* skills */ = {
@@ -1026,6 +1039,7 @@
 				043C01441E218A4E00E035D8 /* Data.cpp in Sources */,
 				04797BEF1C1DCB830026C153 /* ValuesMechanics.cpp in Sources */,
 				0439E998198690150009BFF7 /* MagicView.cpp in Sources */,
+				040851EE1EB3BE560082AFF4 /* DataView.cpp in Sources */,
 				04E282CC1E023BCA00DD673D /* main.cpp in Sources */,
 				040375FE197ABA9100A5B5FC /* ViewManager.cpp in Sources */,
 				04037611197AE1FF00A5B5FC /* Spells.cpp in Sources */,

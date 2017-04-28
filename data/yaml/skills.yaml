@@ -207,4 +207,4 @@ skills:
     visuals:
       hide_value: true
       icon: [lbx, special, 88]
-      i18n: skill_spell_blessz
+      i18n: skill_spell_bless

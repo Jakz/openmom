@@ -31,7 +31,9 @@ class LoadView;
 class OptionsView;
 class StartView;
 class IntroView;
+
 class ConsoleView;
+class DataView;
 
 
 class LocalPlayer;

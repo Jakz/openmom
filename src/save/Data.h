@@ -68,6 +68,8 @@ public:
   static const Spell* spell(const key_type& ident) { return get<const Spell*>(ident); }
   static const Race* race(const key_type& ident) { return get<const Race*>(ident); }
   
+  static const std::unordered_map<key_type, const UnitSpec*> units();
+  
   static std::vector<const RaceUnitSpec*> unitsForRace(const Race* race);
   
   static std::pair<unit_dependency_map_t::const_iterator, unit_dependency_map_t::const_iterator> requiredBuildingsForUnit(const UnitSpec* unit)

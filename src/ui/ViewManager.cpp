@@ -31,6 +31,7 @@
 #include "IntroView.h"
 
 #include "ConsoleView.h"
+#include "DataView.h"
 
 using namespace std;
 using namespace anims;
@@ -60,6 +61,7 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_OPTIONS] = new OptionsView(this);
   
   views[VIEW_CONSOLE] = new ConsoleView(this);
+  views[VIEW_DATA] = new DataView(this);
 }
 
 AlchemyView* ViewManager::alchemyView() { return static_cast<AlchemyView*>(views[VIEW_ALCHEMY]); }

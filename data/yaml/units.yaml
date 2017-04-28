@@ -151,6 +151,24 @@ units:
       i18n: unit_racial_spearmen
       icon: [lbx, units2, 0]
       figure: [lbx, figures9, 0]
+  - identifier: lizardmen_swordsmen
+    type: racial
+    race: lizardmen
+    upkeep: 1
+    cost: 20
+    melee: 3
+    ranged: none
+    defense: 3
+    resistance: 4
+    hits: 2
+    figures: 6
+    movement: 1
+    sight: 1
+    skills: [ swimming, large_shield ]
+    visuals:
+      i18n: unit_racial_swordsmen
+      icon: [lbx, units2, 1]
+      figure: [lbx, figures9, 8]
   - identifier: lizardmen_dragon_turtle
     type: racial
     race: lizardmen
