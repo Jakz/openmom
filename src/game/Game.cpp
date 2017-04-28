@@ -89,7 +89,7 @@ void Game::dummyInit()
   Army* a = new Army(player, {
 		new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>()),
     new RaceUnit(Data::unit("lizardmen_spearmen")->as<RaceUnitSpec>()),
-		new RaceUnit(Data::unit("barbarian_swordsmen")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("lizardmen_swordsmen")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("barbarian_bowmen")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("barbarian_cavalry")->as<RaceUnitSpec>()),
     new RaceUnit(Data::unit("lizardmen_dragon_turtle")->as<RaceUnitSpec>()),

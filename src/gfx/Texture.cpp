@@ -52,9 +52,7 @@ const Texture Texture::textures[] =
   //113 - 29
   Texture(TextureID::MESSAGE_CONFIRM_DIALOG,"static/confirm-dialog.png",1,1,186,142),
   
-  
-  Texture(TextureID::RIGHT_BACKDROP,"static/right_backdrop.gif",2,1,80,124),
-      
+        
   Texture(TextureID::CITY_ROADS,"city/scape/roads.png",4,1,210,75),
   
 
@@ -72,10 +70,7 @@ const Texture Texture::textures[] =
   /* altezza max help: 200 + 23 pezzo di chiusura da sovrapporre */
   Texture(TextureID::HELP_BACKDROP,"static/help-backdrop.png",1,1,217,223),
       
-  Texture(TextureID::COMBAT_GRASS_ARCANUS,"combat/arcanus/grass.png",6,8,30,16),
   Texture(TextureID::COMBAT_MISC_TILES,"combat/misc-tiles.png",3,8,30,16,true,1),
-    
-  Texture(TextureID::DARKNER,"static/darkner.png",1,1,320,200),
 };
 
 u32 Texture::at(u16 x, u16 y, u16 r, u16 c) const

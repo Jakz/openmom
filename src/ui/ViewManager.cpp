@@ -139,7 +139,7 @@ void ViewManager::draw()
   
   if (isThereOverview())
   {
-    Gfx::draw(TextureID::DARKNER, 0, 0);
+    Gfx::fillRect(0, 0, WIDTH, HEIGHT, Color(0,0,0,180));
 
     for (View *v : overviews)
       v->doDraw();

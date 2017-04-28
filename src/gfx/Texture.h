@@ -56,7 +56,6 @@ enum class TextureID : u16
   //113 - 29
   MESSAGE_CONFIRM_DIALOG,
     
-  RIGHT_BACKDROP,
   
   CITY_ROADS,
   
@@ -73,11 +72,8 @@ enum class TextureID : u16
   /* altezza max help: 200 + 23 pezzo di chiusura da sovrapporre */
   HELP_BACKDROP,
       
-  COMBAT_GRASS_ARCANUS,
   COMBAT_MISC_TILES,
-    
-  DARKNER,
-    
+        
   TEXTURES_COUNT
 };
 

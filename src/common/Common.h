@@ -113,8 +113,8 @@ struct Color
   };
   
   Color() = default;
-  Color(u8 r, u8 g, u8 b, u8 a = 0xFF) : b(b), g(g), r(r), a(a) { }
-  Color(u32 data) : data(data) { }
+  constexpr Color(u8 r, u8 g, u8 b, u8 a = 0xFF) : b(b), g(g), r(r), a(a) { }
+  constexpr Color(u32 data) : data(data) { }
   
   Color blend(Color dst) const { return blend(dst, dst.a); }
   

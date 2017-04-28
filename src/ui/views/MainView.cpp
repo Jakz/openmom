@@ -208,7 +208,7 @@ void MainView::draw()
     s16 moves = player->selectedAvailMoves();
     if (moves > 0)
     {
-      Fonts::drawString(UnitDraw::stringForDoubleMovement(moves), FontFaces::Small::WHITE, 245, 166, ALIGN_LEFT);
+      Fonts::drawString(Fonts::format("Moves: %s", UnitDraw::stringForDoubleMovement(moves).c_str()), FontFaces::Small::WHITE, 245, 166, ALIGN_LEFT);
       movement_list movement = player->selectedArmyMovementType();
       
       /* draw movement icons */
@@ -252,7 +252,6 @@ void MainView::draw()
     Gfx::draw(next_button_backdrop, 240, 76+97);
   }
   
-  //Sprites.drawTile(p, Sprites.Texture.RIGHT_BACKDROP, 0, 0, 480, 152);
   Viewport::drawMainViewport(player, g->world);
   //Fonts.drawStringBounded("This shows the current city and the surrounding area. The city does not control/work the darkened corners. If a nearby city and this city control the same square, each city receives only half of the square's value.", Fonts.Face.TEAL_SMALL, 20, 30, 173, Fonts.Align.CENTER);
 
