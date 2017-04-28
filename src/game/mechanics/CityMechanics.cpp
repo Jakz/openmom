@@ -333,13 +333,13 @@ list<const Productable*> CityMechanics::itemsUnlockedByBuilding(const Building* 
   return items;
 }
 
-void CityMechanics::lambdaOnCitySurroundings(const City* city, const std::function<void(const Tile*)>& functor)
+void CityMechanics::lambdaOnCitySurroundings(const City* city, const std::function<void(Tile*)>& functor)
 {
   for (int x = -2; x <= 2; ++x)
     for (int y = -2; y <= 2; ++y)
       if ((x != 2 && x != -2) || (y != 2 && y != -2))
       {
-        const Tile* tile = game->world->get(city->position.x + x, city->position.y + y, city->position.plane);
+        Tile* tile = game->world->get(city->position.x + x, city->position.y + y, city->position.plane);
         if (tile)
           functor(tile);
       }

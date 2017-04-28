@@ -34,6 +34,7 @@ public:
   Army* army;
   
   bool hasRoad, hasEnchantedRoad;
+  std::array<bool, 2> resourceUsed;
   
   std::list<const SpellCast> spells;
   
@@ -42,7 +43,7 @@ public:
   Tile() { }
   
   Tile(World* const world, Position position) : world(world), position(position), subtype(0), tileGfxType(TILE_GFX_NONE), animationOffset(Util::randomIntUpTo(10)),
-    resource(Resource::NONE), city(nullptr), army(nullptr), node(nullptr), place(nullptr), type(TILE_WATER), roads(0), hasRoad(false), hasEnchantedRoad(false)
+    resource(Resource::NONE), city(nullptr), army(nullptr), node(nullptr), place(nullptr), type(TILE_WATER), roads(0), hasRoad(false), hasEnchantedRoad(false), resourceUsed({false})
   {
   }
   
@@ -50,6 +51,9 @@ public:
   u16 y() const { return position.y; }
   
   void settleCity(City* city);
+  void markResourceUsed() { if (resourceUsed[0]) resourceUsed[1] = true; else resourceUsed[0] = true; }
+  void unmarkResourceUsed() { if (resourceUsed[1]) resourceUsed[1] = false; else resourceUsed[0] = false; }
+  bool isResourceShared() const { return resourceUsed[0] && resourceUsed[1]; }
   
   void placeRoad(bool enchanted) { hasRoad = true; hasEnchantedRoad = enchanted; }
   void placeResource(Resource resource) { this->resource = resource; }

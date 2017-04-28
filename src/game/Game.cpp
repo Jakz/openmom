@@ -149,6 +149,9 @@ void Game::dummyInit()
   
   settleCity(florence);
   
+  City* milan = new City(player, "Milan", 6000, Position(7, 3, ARCANUS));
+  settleCity(milan);
+  
   world->get(7,6,ARCANUS)->placePlace(new Place(PLACE_TOWER_OF_WIZARDRY, false));
   world->get(8,6,ARCANUS)->placePlace(new Place(PLACE_CAVE, false));
   
@@ -199,6 +202,11 @@ void Game::settleCity(City* city)
 {
   world->get(city->getPosition())->settleCity(city);
   cities.push_back(city);
+  
+  cityMechanics.lambdaOnCitySurroundings(city, [](Tile* tile) {
+    tile->markResourceUsed();
+  });
+  
   city->getOwner()->fog()->setRange(city->getPosition(), city->sightRange());
 }
 

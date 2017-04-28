@@ -368,9 +368,6 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
           else if (t->army && t->army->isPatrolling() && !t->city)
             UnitDraw::drawStatic(t->army, sx, sy);
           
-          if (darkenEdges && ((y == 0 || y == h-1) && (x == 0 || x == w - 1)))
-            Gfx::draw(TextureID::TILE_FOG, 0, 8, sx, sy);
-          
           // draw the fog sprites
           // TODO: if it is needed to save CPU just don't do it dinamically but with a tileMap
           for (int i = 0; i < Util::DIRS_LENGTH; ++i)
@@ -393,6 +390,18 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
                 Gfx::draw(TextureID::TILE_FOG, 0, i, sx, sy);
             }
           }
+          
+          
+          if (darkenEdges && ((y == 0 || y == h-1) && (x == 0 || x == w - 1)))
+            Gfx::draw(TextureID::TILE_FOG, 0, 8, sx, sy);
+          else
+          {
+            if (t->isResourceShared() && darkenEdges)
+            {
+              const SpriteInfo half = LSI(BACKGRND, 0);
+              Gfx::draw(half, sx + tileWidth/2 - half.sw()/2, sy + tileHeight/2 - half.sh()/2);
+            }
+          }
         }
       }
       
@@ -405,6 +414,8 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
           Gfx::rect(sx+10-3, sy+9-3, 5, 5, {255,0,0});
         }
       }
+      
+
       
       sx += tileWidth;
     }

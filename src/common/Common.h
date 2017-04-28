@@ -407,8 +407,8 @@ public:
   explicit SpriteInfo(TextureID texture, s8 x, s8 y) : data((static_cast<u32>(texture) << texture_id_shift) | (x << texture_x_shift) | (y << texture_y_shift)) { assert(x >= 0 && y >= 0); }
   explicit SpriteInfo(TextureID texture, u16 i);
   
-  explicit SpriteInfo(LBXID lbx, u16 index) : data(lbx_flag_mask | (static_cast<u32>(lbx) << lbx_id_shift) | (index << lbx_index_shift)) { }
-  explicit SpriteInfo(LBXID lbx, u16 index, u8 frame) : data(lbx_flag_mask | (frame << lbx_frame_shift) | (static_cast<u32>(lbx) << lbx_id_shift) | (index << lbx_index_shift)) { assert(frame <= 128); }
+  explicit constexpr SpriteInfo(LBXID lbx, u16 index) : data(lbx_flag_mask | (static_cast<u32>(lbx) << lbx_id_shift) | (index << lbx_index_shift)) { }
+  explicit constexpr SpriteInfo(LBXID lbx, u16 index, u8 frame) : data(lbx_flag_mask | (frame << lbx_frame_shift) | (static_cast<u32>(lbx) << lbx_id_shift) | (index << lbx_index_shift)) { assert(frame <= 128); }
 
   
   bool isLBX() const { return data & lbx_flag_mask; }

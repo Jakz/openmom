@@ -695,5 +695,5 @@ void yaml::parse()
   parseUnits();
   parseSpells();
   
-  Data::getInfo<const Skill*>();
+  //Data::getInfo<const Skill*>();
 }

@@ -363,7 +363,74 @@ public:
   void setData(const LBXArrayData* array) { this->array = array; this->sprite = nullptr; }
   void setData(const LBXSpriteData* sprite) { this->sprite = sprite; this->array = nullptr; }
   
-  const Palette* palette = new IndexedPalette({ {255,0,0},{0,255,0},{0,0,255},{255,255,0} });
+  int drawFont(const char* name, const FontData* font, int BASEY)
+  {
+    const int BASEX = FIRST_TABLE_WIDTH + SECOND_TABLE_WIDTH + 10;
+    const int S = doubleScaleCheckbox->isToggled ? 4 : 2;
+
+    fl_draw(name, BASEX, BASEY);
+    
+    const int SPACING = 1;
+    const int GLYPHS_PER_LINE = (WINDOW_WIDTH - BASEX) / ((font->w()+SPACING)*S);
+    int ry = BASEY;
+    
+    u8 maxColor = 0;
+    u8* fdata = font->dataAt(0,0);
+    for (int xx = 0; xx < font->tw()*font->h(); ++xx)
+      maxColor = std::max(maxColor, fdata[xx]);
+    
+    const Palette* palette;
+    
+    if (defaultPaletteCheckbox->isToggled)
+    {
+      color_array colors;
+      colors.push_back({0,0,0});
+      colors.push_back({255,0,0});
+      colors.push_back({0,255,0});
+      colors.push_back({0,0,255});
+      colors.push_back({255,255,0});
+      colors.push_back({0,255,255});
+      colors.push_back({255,255,255});
+      colors.push_back({255,128,0});
+      colors.push_back({0,255,128});
+      colors.push_back({255,0,128});
+      palette = new IndexedPalette(colors);
+    }
+    else
+    {
+      color_array colors;
+      for (int i = 0; i < maxColor+1; ++i)
+      {
+        u8 c = i == 0 ? 0 : ((196 / (maxColor+1)) * i + (256-196));
+        colors.push_back({ c, c, c });
+      }
+      
+      palette = new IndexedPalette(colors);
+    }
+    
+
+    
+    u8* buffer = new u8[font->w()*font->h()];
+    
+    for (int i = 0; i < GLYPH_COUNT; ++i)
+    {
+      u8* data = font->dataAt(0, i);
+      
+      for (size_t xx = 0; xx < font->w(); ++xx)
+        for (size_t yy = 0; yy < font->h(); ++yy)
+          buffer[xx + yy*font->w()] = data[xx + yy*font->tw()];
+      
+      int sx = BASEX + (i % GLYPHS_PER_LINE)*(font->w()+1)*S;
+      int sy = BASEY + 8 + (i / GLYPHS_PER_LINE)*(font->h()+1)*S;
+      drawSprite(buffer, font->w(), font->h(), sx, sy, S, palette);
+      ry = sy;
+    }
+    
+    delete [] buffer;
+    delete palette;
+    
+    return ry;
+  }
   
   void draw() override
   {
@@ -373,45 +440,14 @@ public:
     
     if (currentLBX && currentLBX->info.header.type == LBXFileType::FONTS)
     {
-      fl_draw("Tiny", FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+20, 20);
-      
-      const int S = 2;
-      const FontData* font = FontData::fonts[FONT_TINY];
-      
-      u8 maxColor = 0;
-      u8* fdata = font->dataAt(0,0);
-      for (int xx = 0; xx < font->tw()*font->h(); ++xx)
-        maxColor = std::max(maxColor, fdata[xx]);
-        
-      color_array colors;
-      colors.push_back({255,0,255});
-      for (int i = 0; i < maxColor; ++i)
-      {
-        u8 c = (255 / maxColor) * i;
-        colors.push_back({ c, c, c });
-      }
+      const int DX = 15;
+      int ry = drawFont("Tiny", FontData::fonts[FONT_TINY], 12);
+      ry = drawFont("Small", FontData::fonts[FONT_SMALL], ry + DX);
+      ry = drawFont("Medium", FontData::fonts[FONT_MEDIUM], ry + DX);
+      ry = drawFont("Medium Thick", FontData::fonts[FONT_MEDIUM_THICK], ry + DX);
+      ry = drawFont("Serif", FontData::fonts[FONT_SERIF], ry + DX);
 
-      const Palette* palette = new IndexedPalette(colors);
-      
-      u8* buffer = new u8[font->w()*font->h()];
-      
-      for (int i = 0; i < GLYPH_COUNT; ++i)
-      {
-        u8* data = font->dataAt(0, i);
-        
-        for (size_t xx = 0; xx < font->w(); ++xx)
-          for (size_t yy = 0; yy < font->h(); ++yy)
-          {
-            buffer[xx + yy*font->w()] = data[xx + yy*font->tw()];
-          }
-        
-        int sx = FIRST_TABLE_WIDTH + SECOND_TABLE_WIDTH + 20 + (font->w()+1)*i*S;
-        int sy = 40;
-        drawSprite(buffer, font->w(), font->h(), sx, sy, S, palette);
-      }
-      
-      delete [] buffer;
-      delete palette;
+
     }
     else if (currentLBX && currentLBX->info.header.type == LBXFileType::TILES_MAPPING)
     {

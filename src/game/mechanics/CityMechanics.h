@@ -30,7 +30,6 @@ private:
   Game* const game;
   
 protected:
-  void lambdaOnCitySurroundings(const City* city, const std::function<void(const Tile*)>& functor);
   
 public:
   CityMechanics(Game* game) : game(game) { }
@@ -45,11 +44,12 @@ public:
   const std::list<const RaceUnitSpec*> availableUnits(const City* city);
   const std::list<const Building*> availableBuildings(const City* city);
   
+  void lambdaOnCitySurroundings(const City* city, const std::function<void(Tile*)>& functor);
+  
   s16 countSurroundTileType(const City* city, TileType type);
   s16 countSurroundResource(const City* city, Resource type);
   s16 countSurroundManaNode(const City* city, School type);
   float resourceBonus(const City* city, Resource resource, float value);
-
   
   s16 computeInitialPopulation(const Player* player, const Position& position) { return 300; } // TODO: real behavior
   s16 computeInitialPopulationGrowth(const City* city);
