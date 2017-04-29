@@ -50,9 +50,7 @@ const Texture Texture::textures[] =
   Texture(TextureID::MESSAGE_LEFT,"static/message-left.png",1,1,249,59),
   Texture(TextureID::MESSAGE_RIGHT,"static/message-right.png",1,1,55,59),
   //113 - 29
-  Texture(TextureID::MESSAGE_CONFIRM_DIALOG,"static/confirm-dialog.png",1,1,186,142),
-  
-        
+          
   Texture(TextureID::CITY_ROADS,"city/scape/roads.png",4,1,210,75),
   
 

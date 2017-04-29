@@ -54,9 +54,7 @@ enum class TextureID : u16
   MESSAGE_LEFT,
   MESSAGE_RIGHT,
   //113 - 29
-  MESSAGE_CONFIRM_DIALOG,
     
-  
   CITY_ROADS,
   
   // units

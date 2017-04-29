@@ -181,9 +181,9 @@ void MessageView::draw()
       int y = 200/2 - (h+29)/2;
       Gfx::bindCanvas();
       // draw backdrop of the dialog by using text height
-      Gfx::drawClipped(TSI(MESSAGE_CONFIRM_DIALOG,0,0), 68, y, 0, 0, 186, h);
+      Gfx::drawClipped(LSI(RESOURCE,0), 68, y, 0, 0, 186, h);
       // draw bottom part of the dialog
-      Gfx::drawClipped(TSI(MESSAGE_CONFIRM_DIALOG,0,0), 68, y+h, 0, 113, 186, 29);
+      Gfx::draw(LSI(RESOURCE,1), 68, y+h);
       
       // enable buttons and position them
       buttons[NO]->setPosition(68 + 18, y+h+5);
