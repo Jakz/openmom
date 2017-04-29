@@ -61,9 +61,7 @@ const Texture Texture::textures[] =
   Texture(TextureID::UNIT_DETAIL_PROPS,"units/props.png",2,12,9,8),
   Texture(TextureID::UNIT_DETAIL_PROPS_EMPTY,"units/props-empty.png",1,12,9,8),
   Texture(TextureID::UNIT_SKILL_ICONS,"units/skill-icons.png",16,16,16,16),
-  
-  Texture(TextureID::UNIT_HERO_ITEM_BACKGROUND,"units/items-background.png",1,6,18,16),
-  
+    
     
   /* altezza max help: 200 + 23 pezzo di chiusura da sovrapporre */
   Texture(TextureID::HELP_BACKDROP,"static/help-backdrop.png",1,1,217,223),

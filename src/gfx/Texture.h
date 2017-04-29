@@ -54,7 +54,7 @@ enum class TextureID : u16
   MESSAGE_LEFT,
   MESSAGE_RIGHT,
   //113 - 29
-    
+  
   CITY_ROADS,
   
   // units
@@ -63,9 +63,7 @@ enum class TextureID : u16
   UNIT_DETAIL_PROPS,
   UNIT_DETAIL_PROPS_EMPTY,
   UNIT_SKILL_ICONS,
-      
-  UNIT_HERO_ITEM_BACKGROUND,
-  
+        
     
   /* altezza max help: 200 + 23 pezzo di chiusura da sovrapporre */
   HELP_BACKDROP,
