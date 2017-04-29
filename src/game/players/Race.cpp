@@ -2,6 +2,9 @@
 
 #include "Localization.h"
 
+const std::string& Race::name() const { return i18n::s(ident).name; }
+const std::string& Race::unitName() const { return i18n::s(ident).unitName; }
+
 const Race Race::races[] = {
   {
     RaceID::BARBARIANS, HouseType::NORMAL, 20, 0.15f,

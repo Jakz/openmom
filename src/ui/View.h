@@ -30,7 +30,7 @@ protected:
   std::vector<std::unique_ptr<Clickable>> areas;
   
   Button* curButton;
-  Button* currentHoverButton;
+  Clickable* currentHoverButton;
   
   LocalPlayer *player;
   Game *g;

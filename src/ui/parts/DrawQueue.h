@@ -6,7 +6,7 @@
 
 template<typename T, typename S> class DrawElement;
 
-template<typename T, typename S>
+template<typename T, typename S = std::less<std::unique_ptr<T>>>
 class DrawQueue
 {
 private:
@@ -56,7 +56,7 @@ public:
 
 };
 
-template<typename T, typename S>
+template<typename T, typename S = std::less<std::unique_ptr<T>>>
 class DrawElement
 {
 private:

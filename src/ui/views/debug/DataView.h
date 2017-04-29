@@ -9,6 +9,8 @@
 #pragma once
 
 #include "View.h"
+#include "DrawQueue.h"
+#include "DrawQueueBasic.h"
 
 class DataView : public View
 {
@@ -18,12 +20,16 @@ private:
     UNITS
   };
   
+  int page;
   Mode mode;
   
+  DrawQueue<BasicDrawEntry> entries;
   std::vector<std::string> keys;
   
   void draw() override;
   void drawPost() override { }
+  
+  void hover(int index);
   
 public:
   DataView(ViewManager* gvm);

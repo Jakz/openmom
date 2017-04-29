@@ -63,7 +63,7 @@ void View::doMouseReleased(u16 x, u16 y, MouseButton b)
   
   for (const auto& c : areas)
   {
-    if (c && c->isActive() && c->isCorrectButton(b) && c->isInside(x,y))
+    if (c && c->isActive() && c->isCorrectButton(b) && c->isInside(x,y) && c->getAction())
     {
       c->getAction()();
       handled = true;
@@ -131,8 +131,19 @@ void View::doMouseMoved(u16 x, u16 y, MouseButton b)
     {
       currentHoverButton = bt;
       currentHoverButton->getOnEnter()();
+      return;
     }
   }
-        
+  
+  for (const auto& bt : areas)
+  {
+    if (bt && bt.get() != currentHoverButton && bt->isActive() && bt->isInside(x, y))
+    {
+      currentHoverButton = bt.get();
+      currentHoverButton->getOnEnter()();
+      return;
+    }
+  }
+  
   mouseMoved(x, y, b);
 }

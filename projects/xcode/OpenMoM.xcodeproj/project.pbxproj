@@ -358,6 +358,7 @@
 		0442470E1980A04800A8D7CC /* SpellMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpellMechanics.h; sourceTree = "<group>"; };
 		044247101980B97900A8D7CC /* EventMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = EventMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		044247111980B97900A8D7CC /* EventMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EventMechanics.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		04488F1E1EB48B4A004D0573 /* DrawQueueBasic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawQueueBasic.h; sourceTree = "<group>"; };
 		044E466B1980202D00E396AD /* MiniMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiniMap.cpp; sourceTree = "<group>"; };
 		044E466C1980202D00E396AD /* MiniMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniMap.h; sourceTree = "<group>"; };
 		046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleView.cpp; sourceTree = "<group>"; };
@@ -784,6 +785,7 @@
 				046428F21E0CE6CB003A76D8 /* Dialogs.h */,
 				04CE420C1E37DA2A00CFD3B9 /* DrawQueue.cpp */,
 				04CE420D1E37DA2A00CFD3B9 /* DrawQueue.h */,
+				04488F1E1EB48B4A004D0573 /* DrawQueueBasic.h */,
 				044E466B1980202D00E396AD /* MiniMap.cpp */,
 				044E466C1980202D00E396AD /* MiniMap.h */,
 				0464E1181981D1EF009C91ED /* CityScape.cpp */,

@@ -49,6 +49,9 @@ class Race
     const float outpostGrowthChance;
     const char* cityNames[20];
   
+    const std::string& name() const;
+    const std::string& unitName() const;
+  
   static const Race& race(RaceID ident) { return races[static_cast<u8>(ident)]; }
 };
 
