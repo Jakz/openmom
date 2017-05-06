@@ -52,6 +52,8 @@ void Game::dummyInit()
     new Hero(Data::unit("hero_dwarf")->as<HeroSpec>()),
     new RaceUnit(Data::unit("barbarian_spearmen")->as<RaceUnitSpec>()),
     new FantasticUnit(Data::unit("funit_magic_spirit")->as<SummonSpec>()),
+    new RaceUnit(Data::unit("barbarian_shamans")->as<RaceUnitSpec>()),
+
   });
   
   player2->add(army2);

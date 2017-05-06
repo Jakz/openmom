@@ -48,6 +48,7 @@ const FontSpriteSheet* FontFaces::Small::YELLOW_PALE = nullptr;
 const FontSpriteSheet* FontFaces::Small::RED_PALE = nullptr;
 const FontSpriteSheet* FontFaces::Small::WHITE = nullptr;
 const FontSpriteSheet* FontFaces::Small::TEAL = nullptr;
+const FontSpriteSheet* FontFaces::Small::TEAL_DARK = nullptr;
 const FontSpriteSheet* FontFaces::Small::BROWN = nullptr;
 const FontSpriteSheet* FontFaces::Small::BROWN_HELP = nullptr;
 const FontSpriteSheet* FontFaces::Small::GREENW = nullptr;
@@ -138,6 +139,7 @@ void FontFaces::buildFonts()
   Small::RED_PALE = buildSmall({0,0,{16,12,32},{81,77,113},{195,178,178}});
   Small::WHITE = buildSmall({0,0,{0,0,0},{143,133,130},{255,255,255}});
   Small::TEAL = buildSmall({0,0,{20,69,69},{85,166,166},{190,239,239}});
+  Small::TEAL_DARK = buildSmall({0,0,0,{39,77,77},{31,60,60}});
   Small::BROWN = buildSmall({0,0,0,{119,85,23},{51,40,26}});
   Small::BROWN_HELP = new FontSpriteSheet(FontData::fonts[FONT_SMALL], {0,0,0,{121,85,36},{69,36,4}}, 1, 1);
   Small::GREENW = buildSmall({0,0,{0,0,0},{21,71,45},{42,141,97}});

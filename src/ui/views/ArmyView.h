@@ -23,6 +23,8 @@ private:
     BUTTON_COUNT
   };
   
+  std::unique_ptr<const Palette> propPalette;
+  
   bool acceptSpellTarget;
   Army* army;
   
@@ -34,7 +36,7 @@ private:
 public:
   ArmyView(ViewManager* gvm);
   
-  void activate() override { }
+  void activate() override;
   void deactivate() override { acceptSpellTarget = false; }
   
   void mouseReleased(u16 x, u16 y, MouseButton b) override;

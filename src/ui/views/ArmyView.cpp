@@ -26,6 +26,16 @@ ArmyView::ArmyView(ViewManager* gvm) : View(gvm), acceptSpellTarget(false), army
   
 }
 
+void ArmyView::activate()
+{
+  if (!propPalette)
+  {
+    const Palette* basePalette = LSI(UNITVIEW, 28).palette();
+    // TODO: color at index 82 must become transparent
+    propPalette = std::unique_ptr<const Palette>(new DerivedPalette(basePalette, 255, 1, Color(0,0,0,0)));
+  }
+}
+
 void ArmyView::draw()
 {
   s16 i = army->size();
@@ -33,30 +43,65 @@ void ArmyView::draw()
   s16 h = 24 + i*19;
   s16 o = (200-(h+5))/2;
   
-  const Palette* palette = LSI(UNITVIEW, 28).palette();
+  const auto& propGfx = GfxData::propGfx();
   
   Gfx::drawClipped(LSI(UNITVIEW, 28), 41, o, 0, 0, 238, h);
   Gfx::draw(LSI(UNITVIEW, 29), 41, o + h);
   
-  const auto& propGfx = GfxData::propGfx();
   const int PROP_BOX_DELTA = 20;
   
   int c = 24;
   for (int j = 0; j < i; ++j)
   {
     const int y = c + o;
-    UnitDraw::drawStatic(army->get(j), 49, y, true, false);
-    Fonts::drawString(army->get(j)->name(), FontFaces::Medium::TEAL_STROKE, 72, y + 4, ALIGN_LEFT);
+    const Unit* unit = army->get(j);
     
-    Gfx::draw(propGfx[MeleeType::NORMAL].blueBoxed, palette, 182, y + 5);
-    Gfx::draw(propGfx[Ranged::NATURE].blueBoxed, palette, 182 + PROP_BOX_DELTA, y + 5);
-    Gfx::draw(propGfx[Property::SHIELDS].blueBoxed, palette, 182 + PROP_BOX_DELTA*2, y + 5);
-    Gfx::draw(propGfx[Property::HIT_POINTS].blueBoxed, palette, 182 + PROP_BOX_DELTA*3, y + 5);
-    Gfx::draw(propGfx[MovementBaseType::WALKING].blueBoxed, palette, 182 + PROP_BOX_DELTA*4, y + 5);
-
+    UnitDraw::drawStatic(unit, 49, y, true, false);
+    Fonts::drawString(unit->name(), FontFaces::Medium::TEAL_STROKE, 72, y + 4, ALIGN_LEFT);
+    
+    /* TODO: should they be spec values of computed values (with bonuses and such) */
+    const MeleeInfo melee = unit->getMeleeInfo();
+    const RangedInfo ranged = unit->getRangedInfo();
+    const prop_value shields = unit->getProperty(Property::SHIELDS);
+    const prop_value hits = unit->getProperty(Property::HIT_POINTS);
+    const MovementInfo movement = unit->getMovementInfo();
+    
+    if (melee.strength > 0)
+    {
+      const int BASE = 182 + PROP_BOX_DELTA*0;
+      Gfx::draw(propGfx[melee.type].blueBoxed, propPalette.get(), BASE, y + 5);
+      Fonts::drawString(std::to_string(melee.strength), FontFaces::Small::TEAL_DARK, BASE, y + 6, ALIGN_RIGHT);
+    }
+    
+    /* TODO: manage schools according to option */
+    if (ranged.isPresent())
+    {
+      const int BASE = 182 + PROP_BOX_DELTA*1;
+      Gfx::draw(propGfx[ranged.type].blueBoxed, propPalette.get(), BASE, y + 5);
+      Fonts::drawString(std::to_string(melee.strength), FontFaces::Small::TEAL_DARK, BASE, y + 6, ALIGN_RIGHT);
+    }
+    
+    {
+      const int BASE = 182 + PROP_BOX_DELTA*2;
+      Gfx::draw(propGfx[Property::SHIELDS].blueBoxed, propPalette.get(), BASE, y + 5);
+      Fonts::drawString(std::to_string(shields), FontFaces::Small::TEAL_DARK, BASE, y + 6, ALIGN_RIGHT);
+    }
+    
+    {
+      const int BASE = 182 + PROP_BOX_DELTA*3;
+      Gfx::draw(propGfx[Property::HIT_POINTS].blueBoxed, propPalette.get(), BASE, y + 5);
+      Fonts::drawString(std::to_string(hits), FontFaces::Small::TEAL_DARK, BASE, y + 6, ALIGN_RIGHT);
+    }
+    
+    {
+      const int BASE = 182 + PROP_BOX_DELTA*4;
+      Gfx::draw(propGfx[movement.type].blueBoxed, propPalette.get(), BASE, y + 5);
+      Fonts::drawString(std::to_string(movement.moves), FontFaces::Small::TEAL_DARK, BASE, y + 6, ALIGN_RIGHT);
+    }
     
     c += 16+3;
   }
+  
   //Texture.drawClipped(texture, x, y, fx, fy, w, h)
 }
 

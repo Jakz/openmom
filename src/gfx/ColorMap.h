@@ -193,6 +193,11 @@ public:
   DerivedPalette(const Palette* palette, size_t start, size_t length) : palette(palette), colors(new Color[length]), start(start), end(start+length)
   { }
   
+  DerivedPalette(const Palette* palette, size_t start, size_t length, Color color) : DerivedPalette(palette, start, length)
+  {
+    std::fill(colors, colors+length, color);
+  }
+  
   DerivedPalette(const Palette* palette, size_t start, size_t length, color_list colors) : DerivedPalette(palette, start, length)
   {
     assert(colors.size() == length);

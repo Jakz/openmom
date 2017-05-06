@@ -189,6 +189,8 @@ enum class Property : u8
   AVAILABLE_AMMO
 };
 
+using prop_value = s16;
+
 class Propertable
 {
 public:
