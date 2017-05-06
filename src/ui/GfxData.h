@@ -233,6 +233,7 @@ private:
     SWORD_ADAMANTIUM,
     SHIELD,
     RESIST,
+    HITS,
     
     RANGED_BOW,
     RANGED_ROCK,

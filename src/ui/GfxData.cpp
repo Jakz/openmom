@@ -42,6 +42,7 @@ UnitPropGfxMap::UnitPropGfxMap() : map({
 
   { Type::SHIELD, { LSI(COMPIX, 70), LSI_PLACEHOLD, LSI(UNITVIEW, 22), LSI(UNITVIEW, 44) } },
   { Type::RESIST, { LSI(COMPIX, 75), LSI_PLACEHOLD, LSI(UNITVIEW, 27), LSI(UNITVIEW, 49) } },
+  { Type::HITS, { LSI(COMPIX, 71), LSI_PLACEHOLD, LSI(UNITVIEW, 23), LSI(UNITVIEW, 45) } },
   
   { Type::MOVEMENT_FOOT, { LSI(COMPIX, 72), LSI(COMPIX, 38), LSI(UNITVIEW, 24), LSI_PLACEHOLD } },
   { Type::MOVEMENT_WATER, { LSI(COMPIX, 74), LSI(COMPIX, 40), LSI(UNITVIEW, 26), LSI_PLACEHOLD } },
@@ -95,6 +96,7 @@ template<> const UnitPropGfxMap::Data& UnitPropGfxMap::operator[](Property prope
     case Property::MELEE: return map[Type::SWORD];
     case Property::SHIELDS: return map[Type::SHIELD];
     case Property::RESIST: return map[Type::RESIST];
+    case Property::HIT_POINTS: return map[Type::HITS];
     
     default: assert(false);
   }

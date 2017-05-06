@@ -13,6 +13,7 @@
 #include "LocalPlayer.h"
 
 #include "Gfx.h"
+#include "GfxData.h"
 #include "Texture.h"
 #include "Buttons.h"
 #include "Font.h"
@@ -37,6 +38,9 @@ void ArmyView::draw()
   Gfx::drawClipped(LSI(UNITVIEW, 28), 41, o, 0, 0, 238, h);
   Gfx::draw(LSI(UNITVIEW, 29), 41, o + h);
   
+  const auto& propGfx = GfxData::propGfx();
+  const int PROP_BOX_DELTA = 20;
+  
   int c = 24;
   for (int j = 0; j < i; ++j)
   {
@@ -44,8 +48,12 @@ void ArmyView::draw()
     UnitDraw::drawStatic(army->get(j), 49, y, true, false);
     Fonts::drawString(army->get(j)->name(), FontFaces::Medium::TEAL_STROKE, 72, y + 4, ALIGN_LEFT);
     
-    Gfx::draw(LSI(UNITVIEW, 13), palette, 182, y + 5);
-    
+    Gfx::draw(propGfx[MeleeType::NORMAL].blueBoxed, palette, 182, y + 5);
+    Gfx::draw(propGfx[Ranged::NATURE].blueBoxed, palette, 182 + PROP_BOX_DELTA, y + 5);
+    Gfx::draw(propGfx[Property::SHIELDS].blueBoxed, palette, 182 + PROP_BOX_DELTA*2, y + 5);
+    Gfx::draw(propGfx[Property::HIT_POINTS].blueBoxed, palette, 182 + PROP_BOX_DELTA*3, y + 5);
+    Gfx::draw(propGfx[MovementBaseType::WALKING].blueBoxed, palette, 182 + PROP_BOX_DELTA*4, y + 5);
+
     
     c += 16+3;
   }
