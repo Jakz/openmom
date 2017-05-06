@@ -10,24 +10,12 @@
 #include "Gfx.h"
 #include "Font.h"
 
-enum lbx_indices
-{
-  walk_icon = LBXI(UNITVIEW,24),
-  fly_icon = LBXI(UNITVIEW,25),
-  swim_icon = LBXI(UNITVIEW,26)
-};
-
 void CommonDraw::drawMovement(u16 v, MovementBaseType type, u16 x, u16 y, u16 c)
 {
   if (v > 0)
   {
-    SpriteInfo icon = walk_icon;
-    
-    if (type == MovementBaseType::FLYING)
-      icon = fly_icon;
-    else if (type == MovementBaseType::SWIMMING)
-      icon = swim_icon;
-    
+    SpriteInfo icon = GfxData::propGfx()[type].blueBoxed;
+
     for (int i = v; i > 0; --i)
     {
       Gfx::draw(icon, x, y);

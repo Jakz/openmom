@@ -325,12 +325,24 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
     
     if (b == BUTTON_RIGHT)
     {
-      if (a && (!c || (c && !a->isPatrolling())))
+      if (a)
       {
-        if (a->getOwner() == player)
+        bool couldBeSelected = (!c || (c && !a->isPatrolling()));
+        
+        if (couldBeSelected && a->getOwner() == player)
+        {
           switchToUnitSelection(a);
+          return;
+        }
+        else if (a->getOwner() != player)
+        {
+          gvm->armyView()->open(a);
+          return;
+        }
       }
-      else if (c)
+      
+      
+      if (c)
       {
         if (!c->isOutpost())
         {

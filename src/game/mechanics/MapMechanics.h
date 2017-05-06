@@ -39,6 +39,11 @@ public:
   
   const movement_list movementTypeForSetOfEffects(const movement_list_group& movements) const;
   const movement_list movementTypeOfArmy(const unit_list& units) const;
+  
+  // TODO: real mechanics
+  bool canSeeEnemyUnitsInCity(const Player* player, const City* city) const { return true; }
+  // TODO: is that even necessary?
+  bool canSeeEnemyUnitsInArmy(const Player* player, const Tile* tile) const { return true; }
 };
 
 

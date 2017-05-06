@@ -39,8 +39,9 @@ public:
   
   void mouseReleased(u16 x, u16 y, MouseButton b) override;
   
+  void open(Army* army, bool acceptSpellTarget = false);
   void setArmy(Army* army);
-  void setAcceptSpellTarget() { acceptSpellTarget = true; }
+  void setAcceptSpellTarget(bool acceptSpellTarget = true) { acceptSpellTarget = true; }
 };
 
 #endif

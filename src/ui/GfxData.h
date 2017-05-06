@@ -220,6 +220,8 @@ public:
   {
     SpriteInfo blackShadow;
     SpriteInfo blueShadow;
+    SpriteInfo blueBoxed;
+    SpriteInfo goldBoxed;
   };
   
 private:
