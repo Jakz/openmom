@@ -42,6 +42,7 @@ include_directories(
   ui/animations
   ui/parts
   ui/views
+  ui/views/debug
 )
 
 add_subdirectory(common)
@@ -76,4 +77,5 @@ target_link_libraries(openmom
   UI_PARTS_LIB
   UI_ANIMATIONS_LIB
   VIEWS_LIB
+  DEBUG_VIEWS_LIB
 )
