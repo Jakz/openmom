@@ -9,7 +9,7 @@
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Table.H>
-#include <FL/FL_Check_Button.h>
+#include <FL/Fl_Check_Button.H>
 #include <FL/fl_draw.H>
 
 #include <string>
