@@ -8,6 +8,8 @@
 
 #include "LBX.h"
 
+#include "strings.h"
+
 #include "Buildings.h"
 #include "Localization.h"
 #include "Help.h"

@@ -177,9 +177,6 @@
 		04C1F4841B25358200F7688A /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
 		04C1F4851B25359D00F7688A /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D2197990B900A5B5FC /* Font.cpp */; };
 		04C1F4861B2535A800F7688A /* Gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D4197990B900A5B5FC /* Gfx.cpp */; };
-		04C1F4871B2535C000F7688A /* Buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375E41979EA6700A5B5FC /* Buttons.cpp */; };
-		04C1F4891B2535D100F7688A /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D9197990B900A5B5FC /* Localization.cpp */; };
-		04C1F48A1B2535DB00F7688A /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D6197990B900A5B5FC /* Texture.cpp */; };
 		04C1F48B1B2535F100F7688A /* ColorMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D0197990B900A5B5FC /* ColorMap.cpp */; };
 		04C1F48C1B25366D00F7688A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A401978374100313BC7 /* Cocoa.framework */; };
 		04C1F48D1B25367800F7688A /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
@@ -209,6 +206,10 @@
 		04E282CF1E023C0B00DD673D /* data in Resources */ = {isa = PBXBuildFile; fileRef = 04E282CD1E023BEB00DD673D /* data */; };
 		04E282D61E0242C000DD673D /* osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04E282D41E0242C000DD673D /* osx.mm */; };
 		04E282D71E0242C000DD673D /* osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04E282D41E0242C000DD673D /* osx.mm */; };
+		04E729041EBF4991009DA0D1 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D6197990B900A5B5FC /* Texture.cpp */; };
+		04E729051EBF4A6B009DA0D1 /* Localization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D9197990B900A5B5FC /* Localization.cpp */; };
+		04E729081EBF4D62009DA0D1 /* strings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E729061EBF4D62009DA0D1 /* strings.cpp */; };
+		04E729091EBF4E14009DA0D1 /* strings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E729061EBF4D62009DA0D1 /* strings.cpp */; };
 		04EDF9341E0819C100739E86 /* libyaml-cpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04EDF9331E0819C100739E86 /* libyaml-cpp.a */; };
 		04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */; };
 		04EE4591197C92C400EA0CC0 /* GfxData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04EE458F197C92C400EA0CC0 /* GfxData.cpp */; };
@@ -446,6 +447,8 @@
 		04E282CD1E023BEB00DD673D /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = ../../data; sourceTree = "<group>"; };
 		04E282D41E0242C000DD673D /* osx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = osx.mm; sourceTree = "<group>"; };
 		04E282D51E0242C000DD673D /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
+		04E729061EBF4D62009DA0D1 /* strings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = strings.cpp; sourceTree = "<group>"; };
+		04E729071EBF4D62009DA0D1 /* strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strings.h; sourceTree = "<group>"; };
 		04EDF9331E0819C100739E86 /* libyaml-cpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libyaml-cpp.a"; path = "../../libs/yaml/lib/osx/libyaml-cpp.a"; sourceTree = "<group>"; };
 		04EE458C197C85C000EA0CC0 /* UnitSpec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitSpec.cpp; sourceTree = "<group>"; };
 		04EE458D197C85C000EA0CC0 /* UnitSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitSpec.h; sourceTree = "<group>"; };
@@ -535,6 +538,8 @@
 				04E282BE1E0227CF00DD673D /* Util.h */,
 				04E282B91E02278700DD673D /* Common.cpp */,
 				04E282BA1E02278700DD673D /* Common.h */,
+				04E729061EBF4D62009DA0D1 /* strings.cpp */,
+				04E729071EBF4D62009DA0D1 /* strings.h */,
 				04E218841C02A386005784E1 /* format.cc */,
 				04E218851C02A386005784E1 /* format.h */,
 			);
@@ -1072,6 +1077,7 @@
 				048616591E02E758004B62B7 /* hqx_init.cpp in Sources */,
 				042C4810198B3E75009C7E22 /* LairMechanics.cpp in Sources */,
 				04C729C41985F1B1002F16E6 /* BookView.cpp in Sources */,
+				04E729081EBF4D62009DA0D1 /* strings.cpp in Sources */,
 				0439E98919868F6D0009BFF7 /* ArmiesView.cpp in Sources */,
 				0439E9A1198690B70009BFF7 /* OutpostView.cpp in Sources */,
 				04E282C61E02343E00DD673D /* SDLHelper.cpp in Sources */,
@@ -1136,6 +1142,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04E729091EBF4E14009DA0D1 /* strings.cpp in Sources */,
+				04E729051EBF4A6B009DA0D1 /* Localization.cpp in Sources */,
+				04E729041EBF4991009DA0D1 /* Texture.cpp in Sources */,
 				04C1F47F1B25290C00F7688A /* main.cpp in Sources */,
 				04C1F4841B25358200F7688A /* LBX.cpp in Sources */,
 				04E218871C02A386005784E1 /* format.cc in Sources */,
@@ -1143,11 +1152,8 @@
 				04E282D71E0242C000DD673D /* osx.mm in Sources */,
 				046428FF1E117C2D003A76D8 /* Help.cpp in Sources */,
 				04C1F4861B2535A800F7688A /* Gfx.cpp in Sources */,
-				04C1F4871B2535C000F7688A /* Buttons.cpp in Sources */,
 				04E282C01E0227CF00DD673D /* Util.cpp in Sources */,
-				04C1F4891B2535D100F7688A /* Localization.cpp in Sources */,
 				04C1F48B1B2535F100F7688A /* ColorMap.cpp in Sources */,
-				04C1F48A1B2535DB00F7688A /* Texture.cpp in Sources */,
 				04E282BC1E02278700DD673D /* Common.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1344,6 +1350,7 @@
 			baseConfigurationReference = 04E282CA1E023AF200DD673D /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1372,6 +1379,7 @@
 			baseConfigurationReference = 04E282CA1E023AF200DD673D /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				HEADER_SEARCH_PATHS = (

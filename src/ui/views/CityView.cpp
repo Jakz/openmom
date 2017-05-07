@@ -8,6 +8,8 @@
 
 #include "CityView.h"
 
+#include "strings.h"
+
 #include "City.h"
 #include "CityScape.h"
 #include "LocalPlayer.h"
@@ -196,7 +198,7 @@ void CityView::draw()
   /* draw city info: race and population */
   Fonts::drawString(i18n::s(city->race->ident).name, FontFaces::Small::YELLOW, 5, 18, ALIGN_LEFT);
   //TODO: localize digits
-  Fonts::drawString(Fonts::format("Population: %s (+%d)", Fonts::groupDigits(city->population).c_str(), city->growthRate), FontFaces::Small::YELLOW, 209, 18, ALIGN_RIGHT);
+  Fonts::drawString(Fonts::format("Population: %s (+%d)", strings::groupDigits(city->population).c_str(), city->growthRate), FontFaces::Small::YELLOW, 209, 18, ALIGN_RIGHT);
   
   const Productable* production = city->getProductable();
   

@@ -9,8 +9,7 @@
 #include "Font.h"
 
 #include "Gfx.h"
-
-#include <numeric>
+#include "strings.h"
 
 using namespace std;
 
@@ -237,59 +236,6 @@ string Fonts::format(const char *fmt_str, ...) {
   return string(formatted.get());
 }
 
-const string Fonts::join(const vector<const string>& tokens, s16 s, s16 e)
-{
-  assert(e <= tokens.size() - 1 && s >= 0 && s <= e);
-  
-  if (tokens.size() == 1)
-    return tokens[0];
-  
-  size_t finalLength = std::accumulate(tokens.begin()+s, tokens.end()-(tokens.size()-e-1), 0, [](size_t v, const std::string& token) { return v + token.length(); });
-  string result;
-  result.reserve(finalLength + (e - s));
-  
-  for (int i = s; i <= e; ++i)
-  {
-    if (i > s)
-      result += ' ';
-    result += tokens[i];
-  }
-  
-  return result;
-}
-
-std::string Fonts::groupDigits(u32 value)
-{
-  constexpr char separator = ',';
-  
-  //TODO: utf8 support?
-  std::string str = std::to_string(value);
-  
-  assert(str.length() > 0);
-  size_t separators = (str.length() - 1) / 3;
-  
-  std::string result = std::string(str.length() + separators, separator);
-  
-  for (size_t i = 0; i < str.length(); ++i)
-  {
-    result[(result.length() - 1) - (i + (i/3))] = str[str.length()-1-i];
-  }
-  
-  return result;
-}
-
-void Fonts::split(string s, vector<const std::string>& tokens, s8 delim)
-{
-  size_t pos = 0;
-  std::string token;
-  while ((pos = s.find(delim)) != std::string::npos) {
-    token = s.substr(0, pos);
-    tokens.push_back(token);
-    s.erase(0, pos + 1);
-  }
-  tokens.push_back(s);
-}
-
 u16 Fonts::drawString(const string& string, u16 x, u16 y, TextAlign align)
 {
   Gfx::bindPalette(palette);
@@ -379,7 +325,7 @@ u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, T
     setMap(palette);
   
   vector<const string> lines;
-  split(str, lines, '\n');
+  strings::split(str, lines, '\n');
   
   if (lines.size() > 1)
   {
@@ -397,34 +343,26 @@ u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, T
   else
   {
     vector<const string> words;
-    split(str, words, ' ');
+    strings::split(str, words, ' ');
     
     int s = 0, e = 0;
     
     while (e < words.size() - 1)
     {
       ++e;
-      int w = stringWidth(font,join(words,s,e));
+      int w = stringWidth(font,strings::join(words,s,e));
       
       if (w > bound)
       {
-        drawString(join(words,s,e-1), x, y, align);
+        drawString(strings::join(words,s,e-1), x, y, align);
         s = e;
         y += vSpace + font->sh();
       }
     }
     
     if (s != e || e < words.size())
-      drawString(join(words,s,e), x, y, align);
+      drawString(strings::join(words,s,e), x, y, align);
     
     return y + vSpace + font->sh();
   }
-}
-
-string strings::tolower(const std::string &text)
-{
-  string lname;
-  lname.resize(text.size());
-  std::transform(text.begin(), text.end(), lname.begin(), ::tolower);
-  return lname;
 }

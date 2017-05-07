@@ -223,10 +223,7 @@ public:
   
   static inline u16 stringWidth(const FontSpriteSheet* face, const std::string& string) { return face->stringWidth(string, hSpace, spaceCharAdj); }
   static inline u16 stringHeight() { return 0; }
-  
-  static inline const std::string join(const std::vector<const std::string>& tokens, s16 s, s16 e);
-  static inline void split(std::string string, std::vector<const std::string>& tokens, s8 delim);
-  
+    
   static inline void setFace(const FontSpriteSheet* face, s16 v, s16 h) { setFace(face); setVerHorSpace(v,h); }
   static inline void setFace(const FontSpriteSheet* face, const Palette* palette, s16 v, s16 h) { setFace(face,v,h); setMap(palette); }
   
@@ -290,9 +287,7 @@ public:
   static u16 drawStringBounded(const std::string& string, const int x, int y, int bound, TextAlign align, const Palette* palette = nullptr);
   
   static const Palette* paletteFor(char c) { return fontColors[c]; }
-  
-  static std::string groupDigits(u32 value);
-  
+    
   static const FontSpriteSheet* fontForColor(PlayerColor color)
   {
     switch (color)
@@ -305,13 +300,6 @@ public:
       default: return FontFaces::Small::WHITE;
     }
   }
-};
-
-class strings
-{
-public:
-  static std::string tolower(const std::string& text);
-  static bool compareInsensitive(const std::string& s1, const std::string& s2) { return tolower(s1) == tolower(s2); }
 };
 
 #endif
