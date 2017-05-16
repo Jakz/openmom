@@ -129,6 +129,8 @@ struct Color
     return Color(r*sa + dst.r*da, g*sa + dst.g*da, b*sa + dst.b*da);
   }
   operator u32() const { return data; }
+  
+  static const Color BLACK, WHITE, NONE;
 };
 
 namespace std

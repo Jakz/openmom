@@ -45,4 +45,6 @@ const Palette* SpriteInfo::palette() const
 Point Point::INVALID = Point(-1,-1);
 Point Point::ZERO = Point(0,0);
 
-
+const Color Color::WHITE = Color(0xFF, 0xFF, 0xFF);
+const Color Color::BLACK = Color(0, 0, 0);
+const Color Color::NONE = Color(0, 0, 0, 0);

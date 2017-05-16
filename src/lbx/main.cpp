@@ -387,6 +387,7 @@ public:
       colors.push_back({0,0,0});
       colors.push_back({255,0,0});
       colors.push_back({0,255,0});
+      colors.push_back({0,0,0});
       colors.push_back({0,0,255});
       colors.push_back({255,255,0});
       colors.push_back({0,255,255});

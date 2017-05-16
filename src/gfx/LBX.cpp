@@ -502,7 +502,7 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
          as before is N is 0 we skip the column, otherwise we have a strain of N pixels of color M */
         else
         {
-          color = low+3;
+          color = low + FontData::FIRST_FREE_COLOR_INDEX;
 #if DEBUG
           maxColor = std::max(low, maxColor);
 #endif

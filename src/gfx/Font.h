@@ -91,7 +91,9 @@ public:
   const FontType type;
   
   static constexpr const u8 LIGHT_STROKE_VALUE = 0x01;
-  static constexpr const u8 DARK_STROKE_VALUE = 0x02;
+  static constexpr const u8 EDGE_STROKE_VALUE = 0x02;
+  static constexpr const u8 DARK_STROKE_VALUE = 0x03;
+  static constexpr const u8 FIRST_FREE_COLOR_INDEX = DARK_STROKE_VALUE + 1;
   
   static FontData* fonts[FONT_TYPE_COUNT];
 };

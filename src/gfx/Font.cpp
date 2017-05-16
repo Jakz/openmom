@@ -95,6 +95,19 @@ const Palette* FontFaces::Palettes::SMALL_YELLOW_PALE = nullptr;
 const Palette* FontFaces::Palettes::WHITE_PRODUCTION = nullptr;
 
 
+/*FONT_TINY = 0,
+FONT_SMALL,
+FONT_MEDIUM,
+FONT_MEDIUM_THICK,
+FONT_SERIF,
+FONT_HUGE,
+FONT_TINY_CRYPT,
+FONT_SERIF_CRYPT,*/
+
+static constexpr int vspacings[FONT_TYPE_COUNT] = {-2, 2, 3, 2, -1, 0, -1, -3 };
+
+const FontSpriteSheet* build(FontType type, const Palette* palette) { return new FontSpriteSheet(FontData::fonts[type], palette, 1, vspacings[type]); }
+
 const FontSpriteSheet* buildTiny(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_TINY], colors, 1, -2); }
 const FontSpriteSheet* buildTinyCrypt(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_TINY_CRYPT], colors, 1, -1); }
 const FontSpriteSheet* buildSmall(color_list colors) { return new FontSpriteSheet(FontData::fonts[FONT_SMALL], colors, 1, 2); }
@@ -112,75 +125,106 @@ s8 xadjust[] = {  -1,   -1,    -1,    0,      -1,         -1};
 s8 yadjust[] = {  -1,    0,     0,    0,       0,          0};
 */
 
+enum color_indices
+{
+  font_background = 0,
+  font_light_stroke = 1,
+  font_edge_stroke = 2,
+  font_dark_stroke = 3,
+  font_first_free = font_dark_stroke + 1,
+  
+  tiny_single = font_first_free,
+  tiny_main = font_first_free + 1,
+};
+
+namespace FontPalettes
+{
+  // bg, light stroke, edge stroke, dark stroke, single, main
+  static const Palette* tiny(Color main) { return new IndexedPalette({0,0,0,0, main, main}); }
+  static const Palette* tiny(Color main, Color single) { return new IndexedPalette({0,0,0,0, single, main}); }
+  //TODO: should edge stroke be part of shadow?
+  static const Palette* tinyWithShadow(Color main, Color single, Color shadow) { return new IndexedPalette({0,0,0, shadow, single, main}); }
+  static const Palette* tinyWithStroke(Color main, Color single, Color stroke) { return new IndexedPalette({0, stroke, stroke, stroke, single, main}); }
+};
+
 void FontFaces::buildFonts()
 {
-  Palettes::SMALL_WHITE_PALE = new IndexedPalette({0,0, {93,93,121}, {142,134,130}, {255,255,255}});
-  Palettes::SMALL_YELLOW_PALE = new IndexedPalette({0,0,{93,93,121},{142,134,130},{249,232,67}});
-  Palettes::WHITE_PRODUCTION = new IndexedPalette({0, /*{73,65,60}*/0, 0, {121,93,77}, {255,255,255}}); // TODO: bugged, stroke is different
+  
+  
+  Palettes::SMALL_WHITE_PALE = new IndexedPalette({0,0,0, {93,93,121}, {142,134,130}, {255,255,255}});
+  Palettes::SMALL_YELLOW_PALE = new IndexedPalette({0,0,0,{93,93,121},{142,134,130},{249,232,67}});
+  Palettes::WHITE_PRODUCTION = new IndexedPalette({0,0, /*{73,65,60}*/0, 0, {121,93,77}, {255,255,255}}); // TODO: bugged, stroke is different
   
   FontData::fonts[FONT_MEDIUM]->setGlyphWidth(' '-' ', 1);
   FontData::fonts[FONT_SERIF_CRYPT]->setGlyphWidth(' '-' ', 3);
 
+  using namespace FontPalettes;
+  
   /* color indices: background, high shadow, low shadow, single pixels, main */
-  Tiny::WHITE = buildTiny({0, 0, {0,0,0}, {143,133,130}, {255,255,255}});
-  Tiny::WHITE_STROKE = buildTiny({0, {0,0,0}, {0,0,0}, {143,133,130}, {255,255,255}});
-  Tiny::YELLOW_STROKE = buildTiny({0, {0,0,0}, {0,0,0}, {124,82,36}, {213,133,27}});
-  Tiny::RED_STROKE = buildTiny({0, {0,0,0}, {0,0,0}, {128,0,0}, {255,0,0}});
-  Tiny::BROWN = buildTiny({0, 0, 0, {121,85,36}, {97,69,36}});
-  Tiny::GOLD_COMBAT = buildTiny({0, 0, {39,27,24}, {185,105,7}, {255,176,6}});
-  Tiny::BLACK_COMBAT = buildTiny({0, 0,{120,132,148},{120,132,148},{32,32,36}});
+  /*Tiny::WHITE = build(FONT_TINY, tinyWithShadow(Color::WHITE, {143,133,130}, Color::BLACK));
+  Tiny::WHITE_STROKE = build(FONT_TINY, tinyWithStroke(Color::WHITE, {144,133,130}, Color::BLACK));
+  Tiny::YELLOW_STROKE = build(FONT_TINY, tinyWithStroke({213,133,27}, {124,82,36}, Color::BLACK));*/
+  
+  
+  Tiny::WHITE = buildTiny({0, 0, 0, {0,0,0}, {143,133,130}, {255,255,255}});
+  Tiny::WHITE_STROKE = buildTiny({0, {0,0,0}, 0, {0,0,0}, {143,133,130}, {255,255,255}});
+  Tiny::YELLOW_STROKE = buildTiny({0, {0,0,0}, 0, {0,0,0}, {124,82,36}, {213,133,27}});
+  Tiny::RED_STROKE = buildTiny({0, {0,0,0}, 0, {0,0,0}, {128,0,0}, {255,0,0}});
+  Tiny::BROWN = buildTiny({0, 0, 0, 0, {121,85,36}, {97,69,36}});
+  Tiny::GOLD_COMBAT = buildTiny({0, 0, 0, {39,27,24}, {185,105,7}, {255,176,6}});
+  Tiny::BLACK_COMBAT = buildTiny({0, 0, 0, {120,132,148},{120,132,148},{32,32,36}});
 
   
-  Small::YELLOW = buildSmall({0,0,{81,60,48},{150,109,52},{223,150,28}});
-  Small::BLUE_MAGIC = buildSmall({0,0,{40,40,65},{97,97,125},{146,146,166}});
+  Small::YELLOW = buildSmall({0,0,0,{81,60,48},{150,109,52},{223,150,28}});
+  Small::BLUE_MAGIC = buildSmall({0,0,0,{40,40,65},{97,97,125},{146,146,166}});
   Small::WHITE_PALE = buildSmall(Palettes::SMALL_WHITE_PALE);
   Small::YELLOW_PALE = buildSmall(Palettes::SMALL_YELLOW_PALE);
-  Small::RED_PALE = buildSmall({0,0,{16,12,32},{81,77,113},{195,178,178}});
-  Small::WHITE = buildSmall({0,0,{0,0,0},{143,133,130},{255,255,255}});
-  Small::TEAL = buildSmall({0,0,{20,69,69},{85,166,166},{190,239,239}});
-  Small::TEAL_DARK = buildSmall({0,0,0,{39,77,77},{31,60,60}});
-  Small::BROWN = buildSmall({0,0,0,{119,85,23},{51,40,26}});
-  Small::BROWN_HELP = new FontSpriteSheet(FontData::fonts[FONT_SMALL], {0,0,0,{121,85,36},{69,36,4}}, 1, 1);
-  Small::GREENW = buildSmall({0,0,{0,0,0},{21,71,45},{42,141,97}});
-  Small::BLUEW = buildSmall({0,0,{0,0,0},{24,79,116},{78,127,166}});
-  Small::REDW = buildSmall({0,0,{0,0,0},{128,0,4},{255,0,8}});
-  Small::PURPLEW = buildSmall({0,0,{0,0,0},{95,20,92},{145,59,141}});
-  Small::YELLOWW = buildSmall({0,0,{0,0,0},{117,103,8},{235,207,17}});
-  Small::GRAY_ITEM_CRAFT = buildSmall({0,0,0,0,{158,150,146}});
+  Small::RED_PALE = buildSmall({0,0,0,{16,12,32},{81,77,113},{195,178,178}});
+  Small::WHITE = buildSmall({0,0,0,{0,0,0},{143,133,130},{255,255,255}});
+  Small::TEAL = buildSmall({0,0,0,{20,69,69},{85,166,166},{190,239,239}});
+  Small::TEAL_DARK = buildSmall({0,0,0,0,{39,77,77},{31,60,60}});
+  Small::BROWN = buildSmall({0,0,0,0,{119,85,23},{51,40,26}});
+  Small::BROWN_HELP = new FontSpriteSheet(FontData::fonts[FONT_SMALL], {0,0,0,0,{121,85,36},{69,36,4}}, 1, 1);
+  Small::GREENW = buildSmall({0,0,0,{0,0,0},{21,71,45},{42,141,97}});
+  Small::BLUEW = buildSmall({0,0,0,{0,0,0},{24,79,116},{78,127,166}});
+  Small::REDW = buildSmall({0,0,0,{0,0,0},{128,0,4},{255,0,8}});
+  Small::PURPLEW = buildSmall({0,0,0,{0,0,0},{95,20,92},{145,59,141}});
+  Small::YELLOWW = buildSmall({0,0,0,{0,0,0},{117,103,8},{235,207,17}});
+  Small::GRAY_ITEM_CRAFT = buildSmall({0,0,0,0,0,{158,150,146}});
   Small::BLINK_WHITE_GREY = buildSmall(new BlinkingPalette({3,4}, 200, 180, 180, 172, 148, 130, 600));
   
-  Medium::TEAL = buildMedium({0, {0,121,123}, {0,68,68}, {57,166,166}, {180,240,240}});
-  Medium::TEAL_STROKE = buildMedium({0, {0,68,68}, {0,68,68}, {57,166,166}, {180,240,240}});
-  Medium::TEAL_BRIGHT = buildMedium({0, 0, {22,97,97}, {90,166,166}, {185,240,240}});
-  Medium::BLACK = buildMedium({0, 0, {90,154,154}, {6,69,69}, {6,2,2}});
-  Medium::BLUE_MAGIC = buildMedium({0, 0, {81,60,48}, {97,69,36}, {146,146,166}});
+  Medium::TEAL = buildMedium({0, {0,121,123}, 0,{0,68,68}, {57,166,166}, {180,240,240}});
+  Medium::TEAL_STROKE = buildMedium({0, {0,68,68}, 0,{0,68,68}, {57,166,166}, {180,240,240}});
+  Medium::TEAL_BRIGHT = buildMedium({0, 0, 0, {22,97,97}, {90,166,166}, {185,240,240}});
+  Medium::BLACK = buildMedium({0, 0, 0, {90,154,154}, {6,69,69}, {6,2,2}});
+  Medium::BLUE_MAGIC = buildMedium({0, 0, 0, {81,60,48}, {97,69,36}, {146,146,166}});
   
   /* color indices: background, high shadow, low shadow, unused?, main color, middle dots, single pixels */
-  MediumBold::BROWN_START = buildMediumBold({0, 0, {166,134,105}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28}}); // TODO: fix last color
-  MediumBold::BROWN_ITEM_CRAFT = buildMediumBold({0, {73,52,44}, {56,32,28}, 0, {166,134,105}, {150,117,93}, {142,113,89}});
-  MediumBold::GOLD_ITEM_CRAFT = buildMediumBold({0, {73,52,44}, {56,32,28}, 0, {255,182,43}, {239,166,35}, {223,150,27}});
-  MediumBold::GRAY_ITEM_CRAFT = buildMediumBold({0, 0, {65,43,35}, 0, {158,150,146}, {142,134,130}, {142,134,130}});
+  MediumBold::BROWN_START = buildMediumBold({0, 0, 0, {166,134,105}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28}}); // TODO: fix last color
+  MediumBold::BROWN_ITEM_CRAFT = buildMediumBold({0, {73,52,44}, 0, {56,32,28}, 0, {166,134,105}, {150,117,93}, {142,113,89}});
+  MediumBold::GOLD_ITEM_CRAFT = buildMediumBold({0, {73,52,44}, 0, {56,32,28}, 0, {255,182,43}, {239,166,35}, {223,150,27}});
+  MediumBold::GRAY_ITEM_CRAFT = buildMediumBold({0, 0, 0, {65,43,35}, 0, {158,150,146}, {142,134,130}, {142,134,130}});
 
   
   /* color indices: background, high shadow, low shadow, single pixels, stripes x 4 (low to high) */
   
-  Serif::TEAL = buildSerif({0, {24,68,68}, {24,68,68}, {58,166,166}, {243,235,231}, {188,238,218}, {197,239,217}, {193,239,240}});
-  Serif::BROWN = buildSerif({0, 0, 0, {120,74,36}, {96,8,14}, {96,8,14}, {96,8,14}, {96,8,14}});
-  Serif::BROWN_HELP = buildSerif({0, 0, 0, {97,69,36}, {69,4,4}, {69,4,4}, {69,4,4}, {69,4,4}});
-  Serif::BROWN_START = buildSerif({ 0, 0, {166, 134, 105}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28} });
-  Serif::YELLOW_SHADOW = buildSerif({0, 0, {15,49,56}, {115,84,69}, {245,161,39}, {229,145,31}, {213,133,27}, {213,133,27}});
-  Serif::GOLD_ERROR_MESSAGE = buildSerif({0, 0, {128,13,4},{121,85,36}, {207,138,24}, {245,161,39}, {255,199,103}, {255,243,127}});
-  Serif::GOLD_SHADOW = buildSerif({0,  0, {67,43,36},{74,51,44}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
-  Serif::GOLD = buildSerif({0, 0, 0, {255,174,12}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
-  Serif::SILVER_SHADOW = buildSerif({0, 0, {67,43,36}, {106,97,93}, {159,150,146}, {196,186,182}, {228,219,215}, {255,255,255}});  // TODO: take from fontColors map
-  Serif::WHITE_SURVEY = buildSerif({0, 0, {93,93,121}, {142,134,130}, {255,255,255}, {255,255,255}, {255,255,215}, {255,255,255}});
-  Serif::DARK_BROWN = buildSerif({0, 0, 0, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}});
+  Serif::TEAL = buildSerif({0, {24,68,68}, 0, {24,68,68}, {58,166,166}, {243,235,231}, {188,238,218}, {197,239,217}, {193,239,240}});
+  Serif::BROWN = buildSerif({0, 0, 0, 0, {120,74,36}, {96,8,14}, {96,8,14}, {96,8,14}, {96,8,14}});
+  Serif::BROWN_HELP = buildSerif({0, 0, 0, 0, {97,69,36}, {69,4,4}, {69,4,4}, {69,4,4}, {69,4,4}});
+  Serif::BROWN_START = buildSerif({ 0, 0, 0, {166, 134, 105}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28} });
+  Serif::YELLOW_SHADOW = buildSerif({0, 0, 0, {15,49,56}, {115,84,69}, {245,161,39}, {229,145,31}, {213,133,27}, {213,133,27}});
+  Serif::GOLD_ERROR_MESSAGE = buildSerif({0, 0, 0, {128,13,4},{121,85,36}, {207,138,24}, {245,161,39}, {255,199,103}, {255,243,127}});
+  Serif::GOLD_SHADOW = buildSerif({0, 0, 0, {67,43,36},{74,51,44}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
+  Serif::GOLD = buildSerif({0, 0, 0, 0, {255,174,12}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
+  Serif::SILVER_SHADOW = buildSerif({0, 0, 0, {67,43,36}, {106,97,93}, {159,150,146}, {196,186,182}, {228,219,215}, {255,255,255}});  // TODO: take from fontColors map
+  Serif::WHITE_SURVEY = buildSerif({0, 0, 0, {93,93,121}, {142,134,130}, {255,255,255}, {255,255,255}, {255,255,215}, {255,255,255}});
+  Serif::DARK_BROWN = buildSerif({0, 0, 0, 0, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}});
   
-  Crypt::SERIF_BROWN = buildSerifCrypt({0,0,0,{73,56,36}, {73,56,36}}); // TODO: single pixels are of same brown?
-  Crypt::TINY_BROWN = buildTinyCrypt({0,0,0,{97,69,36}, {97,69,36}}); // TODO: don't kno why main pixels are on second palette index, not first
+  Crypt::SERIF_BROWN = buildSerifCrypt({0,0,0,0,{73,56,36}, {73,56,36}}); // TODO: single pixels are of same brown?
+  Crypt::TINY_BROWN = buildTinyCrypt({0,0,0,0,{97,69,36}, {97,69,36}}); // TODO: don't kno why main pixels are on second palette index, not first
   
   color_list hugeGoldPalette = {
-    0, 0, {0,0,0}, 0,
+    0, 0, 0, {0,0,0}, 0,
     {215,182,154},
     {255,203,101},
     {255,203,36},
