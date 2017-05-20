@@ -42,8 +42,8 @@ public:
     amount = 0;
   }
   
-  void mouseDragged(u16 x, u16 y, MouseButton b) override;
-  void mouseClicked(u16 x, u16 y, MouseButton b) override { mouseDragged(x, y, b); }
+  bool mouseDragged(u16 x, u16 y, MouseButton b) override;
+  bool mouseClicked(u16 x, u16 y, MouseButton b) override { return mouseDragged(x, y, b); }
   
   void deactivate() override { }
 };

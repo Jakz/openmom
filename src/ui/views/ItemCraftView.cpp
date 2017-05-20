@@ -181,7 +181,7 @@ void ItemCraftView::draw()
   clickables.draw();
 }
 
-void ItemCraftView::mouseReleased(u16 x, u16 y, MouseButton b)
+bool ItemCraftView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-  clickables.handleEvent(x, y, b);
+  return clickables.handleEvent(x, y, b);
 }

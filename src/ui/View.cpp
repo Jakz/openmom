@@ -40,7 +40,7 @@ void View::drawButtons()
       c->draw();
 }
 
-void View::doMouseReleased(u16 x, u16 y, MouseButton b)
+bool View::doMouseReleased(u16 x, u16 y, MouseButton b)
 {
   bool handled = false;
   
@@ -71,10 +71,12 @@ void View::doMouseReleased(u16 x, u16 y, MouseButton b)
   }
   
   if (!handled)
-    mouseReleased(x,y,b);
+    return mouseReleased(x,y,b);
+  else
+    return true;
 }
 
-void View::doMousePressed(u16 x, u16 y, MouseButton b)
+bool View::doMousePressed(u16 x, u16 y, MouseButton b)
 {
   if (!curButton)
   {
@@ -84,15 +86,15 @@ void View::doMousePressed(u16 x, u16 y, MouseButton b)
       {
         bt->press();
         curButton = bt;
-        return;
+        return true;
       }
     }
   }
   
-  mousePressed(x,y,b);
+  return mousePressed(x,y,b);
 }
 
-void View::doMouseDragged(u16 x, u16 y, MouseButton b)
+bool View::doMouseDragged(u16 x, u16 y, MouseButton b)
 {
   if (curButton)
   {
@@ -110,14 +112,14 @@ void View::doMouseDragged(u16 x, u16 y, MouseButton b)
     {
       bt->press();
       curButton = bt;
-      return;
+      return true;
     }
   }
   
-  mouseDragged(x,y,b);
+  return mouseDragged(x,y,b);
 }
 
-void View::doMouseMoved(u16 x, u16 y, MouseButton b)
+bool View::doMouseMoved(u16 x, u16 y, MouseButton b)
 {
   if (currentHoverButton && !currentHoverButton->isInside(x, y))
   {
@@ -131,7 +133,7 @@ void View::doMouseMoved(u16 x, u16 y, MouseButton b)
     {
       currentHoverButton = bt;
       currentHoverButton->getOnEnter()();
-      return;
+      return true;
     }
   }
   
@@ -141,9 +143,9 @@ void View::doMouseMoved(u16 x, u16 y, MouseButton b)
     {
       currentHoverButton = bt.get();
       currentHoverButton->getOnEnter()();
-      return;
+      return true;
     }
   }
   
-  mouseMoved(x, y, b);
+  return mouseMoved(x, y, b);
 }

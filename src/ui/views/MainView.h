@@ -87,11 +87,11 @@ public:
   void switchToSurveyor();
   void updateBuildButton();
   
-  void mouseReleased(u16 x, u16 y, MouseButton b) override;
-  void mouseMoved(u16 x, u16 y, MouseButton b) override;
+  bool mouseReleased(u16 x, u16 y, MouseButton b) override;
+  bool mouseMoved(u16 x, u16 y, MouseButton b) override;
   
-  void keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
-  void keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
+  bool keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
+  bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
 
 };
 

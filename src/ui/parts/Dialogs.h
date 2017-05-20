@@ -14,6 +14,7 @@ namespace dialogs
     u16 w, h;
     
   public:
+    InfoMenu(const Point& position, u16 rows, u16 buttonWidth);
     InfoMenu(u16 x, u16 y, u16 w, u16 h) : b(x,y), w(w), h(h) { }
     
     void draw();

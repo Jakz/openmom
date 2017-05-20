@@ -46,7 +46,7 @@ namespace anims
   public:
     SummonAnimation(WizardID wizard, const SummonSpec* spec);
     void step() override;
-    void mouseReleased(u16 x, u16 y, MouseButton b) override;
+    bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   };
 
   class SpellDiscoverAnimation : public ContinuousEndlessAnimation
@@ -58,7 +58,7 @@ namespace anims
   public:
     SpellDiscoverAnimation(WizardID wizard, School school);
     void step() override;
-    void mouseReleased(u16 x, u16 y, MouseButton b) override;
+    bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   };
   
   

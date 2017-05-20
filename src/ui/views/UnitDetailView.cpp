@@ -192,7 +192,7 @@ void UnitDetailView::setUnit(Unit *unit, bool withButtons)
   skillDraw.reset(unit);
 }
 
-void UnitDetailView::mousePressed(u16 x, u16 y, MouseButton b)
+bool UnitDetailView::mousePressed(u16 x, u16 y, MouseButton b)
 {
   SpriteInfo bg = full_unit_backdrop;
   
@@ -200,5 +200,7 @@ void UnitDetailView::mousePressed(u16 x, u16 y, MouseButton b)
   
   if (isOutside && (mode == Mode::NORMAL || mode == Mode::VIEW_ONLY))
     gvm->closeOverview();
+  
+  return true;
   
 }

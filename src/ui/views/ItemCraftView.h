@@ -86,7 +86,7 @@ public:
   
   void deactivate() override { }
   
-  void mouseReleased(u16 x, u16 y, MouseButton b) override;
+  bool mouseReleased(u16 x, u16 y, MouseButton b) override;
 };
 
 #endif

@@ -65,15 +65,15 @@ public:
   
   void drawButtons();
   
-  void doMouseReleased(u16 x, u16 y, MouseButton b);
-  void doMousePressed(u16 x, u16 y, MouseButton b);
-  void doMouseDragged(u16 x, u16 y, MouseButton b);
+  bool doMouseReleased(u16 x, u16 y, MouseButton b);
+  bool doMousePressed(u16 x, u16 y, MouseButton b);
+  bool doMouseDragged(u16 x, u16 y, MouseButton b);
   
-  void doMouseMoved(u16 x, u16 y, MouseButton b);
-  void doMouseClicked(u16 x, u16 y, MouseButton b) { mouseClicked(x,y,b); }
+  bool doMouseMoved(u16 x, u16 y, MouseButton b);
+  bool doMouseClicked(u16 x, u16 y, MouseButton b) { return mouseClicked(x,y,b); }
   
-  void doKeyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { keyPressed(key,kkey,mod); }
-  void doKeyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { keyReleased(key,kkey,mod); }
+  bool doKeyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { return keyPressed(key,kkey,mod); }
+  bool doKeyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { return keyReleased(key,kkey,mod); }
   
   friend class ViewManager;
   

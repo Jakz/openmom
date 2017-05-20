@@ -88,7 +88,7 @@ void AlchemyView::draw()
   
 }
 
-void AlchemyView::mouseDragged(u16 x, u16 y, MouseButton b)
+bool AlchemyView::mouseDragged(u16 x, u16 y, MouseButton b)
 {
   s32 sx = 133, sy = 91, w = 57, h = 7;
   s32 dx = x - sx;
@@ -107,4 +107,6 @@ void AlchemyView::mouseDragged(u16 x, u16 y, MouseButton b)
     else
       amount = (s32)(player->totalManaPool()*percent);
   }
+  
+  return true;
 }

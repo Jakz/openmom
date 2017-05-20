@@ -34,7 +34,7 @@ void OptionsView::draw()
   Gfx::draw(LSI(LOAD,11), palette, 0, 0);
 }
 
-void OptionsView::mouseReleased(u16 x, u16 y, MouseButton b)
+bool OptionsView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-
+  return true;
 }

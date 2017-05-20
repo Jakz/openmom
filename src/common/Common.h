@@ -447,6 +447,8 @@ public:
 using lbx_index = s16;
 using sprite_ref = SpriteInfo::data_type;
 
+struct Size;
+
 struct Point
 {
   s16 x;
@@ -454,6 +456,7 @@ struct Point
   
   Point() : x(-1), y(-1) { }
   Point(s16 x, s16 y) : x(x), y(y) { }
+  Point(const Size& size);
   template<typename T, typename std::enable_if<std::is_base_of<Point, T>::value, int>::type = 0>
   Point(const T& other) : x(other.x), y(other.y) { }
   
@@ -476,7 +479,22 @@ struct Point
   static Point ZERO;
 };
 
+struct Size
+{
+  s16 w;
+  s16 h;
+  
+  Size() : w(0), h(0) { }
+  Size(s16 w, s16 h) : w(w), h(h) { }
+  Size(const Point& point);
+  template<typename T, typename std::enable_if<std::is_base_of<Size, T>::value, int>::type = 0>
+  Size(const Size& other) : w(other.w), h(other.h) { }
+};
+
 using Coord = Point;
+
+inline Point::Point(const Size& size) : x(size.w), y(size.h) { }
+inline Size::Size(const Point& point) : w(point.x), h(point.y) { }
 
 class Upkeep
 {

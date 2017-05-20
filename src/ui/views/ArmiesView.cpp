@@ -124,7 +124,7 @@ void ArmiesView::draw()
   Fonts::drawString(/*to_string(upkeep.food+*/"11", 45, 191, ALIGN_CENTER);
 }
 
-void ArmiesView::mouseMoved(u16 x, u16 y, MouseButton b)
+bool ArmiesView::mouseMoved(u16 x, u16 y, MouseButton b)
 {
   u8 ap[] = {78,24};
   u8 ayd = 22;
@@ -173,4 +173,6 @@ void ArmiesView::mouseMoved(u16 x, u16 y, MouseButton b)
       }
     }
   }
+  
+  return true;
 }

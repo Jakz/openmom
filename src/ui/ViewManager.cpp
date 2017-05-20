@@ -153,60 +153,60 @@ void ViewManager::draw()
   current->drawPost();
 }
 
-void ViewManager::mouseClicked(u16 x, u16 y, MouseButton b)
+bool ViewManager::mouseClicked(u16 x, u16 y, MouseButton b)
 {
   if (animating)
-    (*animations.begin())->mouseClicked(x, y, b);
+    return (*animations.begin())->mouseClicked(x, y, b);
   else
-    respondingView()->doMouseClicked(x, y, b);
+    return respondingView()->doMouseClicked(x, y, b);
 }
 
-void ViewManager::mouseDragged(u16 x, u16 y, MouseButton b)
+bool ViewManager::mouseDragged(u16 x, u16 y, MouseButton b)
 {
   if (animating)
-    (*animations.begin())->mouseDragged(x, y, b);
+    return (*animations.begin())->mouseDragged(x, y, b);
   else
-    respondingView()->doMouseDragged(x, y, b);
+    return respondingView()->doMouseDragged(x, y, b);
 }
 
-void ViewManager::mouseMoved(u16 x, u16 y, MouseButton b)
+bool ViewManager::mouseMoved(u16 x, u16 y, MouseButton b)
 {
   if (animating)
-    (*animations.begin())->mouseMoved(x, y, b);
+    return (*animations.begin())->mouseMoved(x, y, b);
   else
-    respondingView()->doMouseMoved(x, y, b);
+    return respondingView()->doMouseMoved(x, y, b);
 }
 
-void ViewManager::mouseReleased(u16 x, u16 y, MouseButton b)
+bool ViewManager::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   if (animating)
-    (*animations.begin())->mouseReleased(x, y, b);
+    return (*animations.begin())->mouseReleased(x, y, b);
   else
-    respondingView()->doMouseReleased(x, y, b);
+    return respondingView()->doMouseReleased(x, y, b);
 }
 
-void ViewManager::mousePressed(u16 x, u16 y, MouseButton b)
+bool ViewManager::mousePressed(u16 x, u16 y, MouseButton b)
 {
   if (animating)
-    (*animations.begin())->mousePressed(x, y, b);
+    return (*animations.begin())->mousePressed(x, y, b);
   else
-    respondingView()->doMousePressed(x, y, b);
+    return respondingView()->doMousePressed(x, y, b);
 }
 
-void ViewManager::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
+bool ViewManager::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   if (animating)
-    (*animations.begin())->keyPressed(key, kkey, mod);
+    return (*animations.begin())->keyPressed(key, kkey, mod);
   else
-    respondingView()->doKeyPressed(key, kkey, mod);
+    return respondingView()->doKeyPressed(key, kkey, mod);
 }
 
-void ViewManager::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
+bool ViewManager::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   if (animating)
-    (*animations.begin())->keyReleased(key, kkey, mod);
+    return (*animations.begin())->keyReleased(key, kkey, mod);
   else
-    respondingView()->doKeyReleased(key, kkey, mod);
+    return respondingView()->doKeyReleased(key, kkey, mod);
 }
 
 void ViewManager::setPlayer(LocalPlayer* player)

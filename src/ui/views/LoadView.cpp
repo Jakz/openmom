@@ -57,7 +57,7 @@ void LoadView::draw()
 
 }
 
-void LoadView::mouseReleased(u16 x, u16 y, MouseButton b)
+bool LoadView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-  
+  return true;
 }

@@ -63,7 +63,7 @@ public:
   void activate() override { }
   void deactivate() override { }
   
-  void mousePressed(u16 x, u16 y, MouseButton b) override;
+  bool mousePressed(u16 x, u16 y, MouseButton b) override;
   
   void setHeroHire(Hero* hero, u32 cost);
   void setUnit(Unit* unit, bool withButtons = true);

@@ -292,8 +292,8 @@ void MainView::draw()
 
 void MainView::drawPost()
 {
-  //auto menu = dialogs::InfoMenu(10,10,100,100);
-  //menu.draw();
+  auto menu = dialogs::InfoMenu(10,10,100,100);
+  menu.draw();
   
   /*
   
@@ -308,7 +308,7 @@ void MainView::drawPost()
   //Fonts.drawString("Test Blink", Fonts.Face.YELLOW_SMALL, 50, 50, Fonts.Align.LEFT, blink);
 }
 
-void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
+bool MainView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   //gvm->push(new Blink(1000, Gfx::color(0, 0, 255), {0,0,320,200}, 220));
   /*gvm->cityView()->setCity(g->getCities().front());*/
@@ -332,12 +332,12 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
         if (couldBeSelected && a->getOwner() == player)
         {
           switchToUnitSelection(a);
-          return;
+          return true;
         }
         else if (a->getOwner() != player)
         {
           gvm->armyView()->open(a);
-          return;
+          return true;
         }
       }
       
@@ -459,9 +459,11 @@ void MainView::mouseReleased(u16 x, u16 y, MouseButton b)
       }
     }
   }
+  
+  return true;
 }
 
-void MainView::mouseMoved(u16 x, u16 y, MouseButton b)
+bool MainView::mouseMoved(u16 x, u16 y, MouseButton b)
 {
   //if (substate == SURVEYOR)
   {
@@ -470,9 +472,12 @@ void MainView::mouseMoved(u16 x, u16 y, MouseButton b)
     if (tile && tile != hoveredTile) surveyor.updateInfo(tile);
     hoveredTile = tile;
   }
+  
+  return true;
+
 }
 
-void MainView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
+bool MainView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   switch (key)
   {
@@ -481,9 +486,12 @@ void MainView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
       
     default: break;
   }
+  
+  return true;
+
 }
 
-void MainView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
+bool MainView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   switch (key)
   {
@@ -499,6 +507,9 @@ void MainView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
     default: break;
 
   }
+  
+  return true;
+
 }
 
 void MainView::Surveyor::updateInfo(Tile *t)

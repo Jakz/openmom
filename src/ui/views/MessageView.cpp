@@ -62,7 +62,7 @@ void MessageView::discardAllMessages()
   player->clearMessages();
 }
 
-void MessageView::mouseReleased(u16 x, u16 y, MouseButton b)
+bool MessageView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   if (message->type == msgs::Message::Type::NEW_BUILDING)
   {
@@ -79,6 +79,8 @@ void MessageView::mouseReleased(u16 x, u16 y, MouseButton b)
   {
     handleMessage();
   }
+  
+  return true;
 }
 
 void MessageView::deactivate()

@@ -48,13 +48,19 @@ void MirrorView::draw()
   Fonts::drawString(Fonts::format("%u MP",player->totalManaPool()), FontFaces::Tiny::YELLOW_STROKE, 224, 76, ALIGN_CENTER);
 }
 
-void MirrorView::mousePressed(u16 x, u16 y, MouseButton b)
+bool MirrorView::mousePressed(u16 x, u16 y, MouseButton b)
 {
   gvm->closeOverview();
+  return true;
 }
 
-void MirrorView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
+bool MirrorView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   if (key == SDL_SCANCODE_RETURN)
+  {
     gvm->closeOverview();
+    return true;
+  }
+  
+  return false;
 }

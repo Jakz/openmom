@@ -137,8 +137,8 @@ public:
   
   //Point coordsForTile(u16 x, u16 y);
 
-  void mouseReleased(u16 x, u16 y, MouseButton b) override;
-  void mouseMoved(u16 x, u16 y, MouseButton b) override;
+  bool mouseReleased(u16 x, u16 y, MouseButton b) override;
+  bool mouseMoved(u16 x, u16 y, MouseButton b) override;
   
   
   static Point coordsForTile(u16 x, u16 y);

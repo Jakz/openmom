@@ -39,7 +39,7 @@ public:
   void activate() override;
   void deactivate() override { acceptSpellTarget = false; }
   
-  void mouseReleased(u16 x, u16 y, MouseButton b) override;
+  bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   
   void open(Army* army, bool acceptSpellTarget = false);
   void setArmy(Army* army);

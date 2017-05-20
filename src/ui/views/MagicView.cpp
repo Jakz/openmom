@@ -206,7 +206,7 @@ MagicView::WandHoverInfo MagicView::hoveredWand(u16 x, u16 y)
   return {-1,0.0f,false};
 }
 
-void MagicView::mouseReleased(u16 x, u16 y, MouseButton b)
+bool MagicView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   WandHoverInfo hover = hoveredWand(x, y);
   
@@ -216,10 +216,14 @@ void MagicView::mouseReleased(u16 x, u16 y, MouseButton b)
       dests[hover.index].locked = !dests[hover.index].locked;
     else
       setPercent(hover.index, hover.percent);
+    
+    return true;
   }
+  
+  return false;
 }
 
-void MagicView::mouseDragged(u16 x, u16 y, MouseButton b)
+bool MagicView::mouseDragged(u16 x, u16 y, MouseButton b)
 {
   WandHoverInfo hover = hoveredWand(x, y);
   
@@ -227,7 +231,11 @@ void MagicView::mouseDragged(u16 x, u16 y, MouseButton b)
   {
     if (!hover.top)
       setPercent(hover.index, hover.percent);
+    
+    return true;
   }
+  
+  return false;
 }
 
 void MagicView::updateValues(u16 index)

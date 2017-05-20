@@ -76,7 +76,7 @@ void SummonAnimation::step()
   Fonts::drawString(Fonts::format("%s Summoned", spec->productionName().c_str()), FontFaces::Serif::GOLD_SHADOW, base.x + 90, base.y + 116, ALIGN_CENTER);
 }
 
-void SummonAnimation::mouseReleased(u16 x, u16 y, MouseButton b) { finish(); }
+bool SummonAnimation::mouseReleased(u16 x, u16 y, MouseButton b) { finish(); return true; }
 
 #pragma mark SpellDiscover
 
@@ -104,5 +104,5 @@ void SpellDiscoverAnimation::step()
 }
 
 
-void SpellDiscoverAnimation::mouseReleased(u16 x, u16 y, MouseButton b) { finish(); }
+bool SpellDiscoverAnimation::mouseReleased(u16 x, u16 y, MouseButton b) { finish(); return true; }
 

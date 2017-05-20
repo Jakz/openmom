@@ -1121,12 +1121,12 @@ void CombatView::drawSelectedUnitProps(const combat::CombatUnit* unit)
   Gfx::draw(GfxData::unitGfx(unit->getUnit()->spec).fullFigure.frame(2, 0), 86, 167);
 }
 
-void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
+bool CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   //player->push(new anims::SpellEffect(LSI(CMBTFX, 22), CombatCoord(hover.x,hover.y)));
   
   if (std::any_of(unitsMap.begin(), unitsMap.end(), [](const decltype(unitsMap)::value_type& entry) { return entry.second->isAnimating(); }))
-    return;
+    return true;
   
   CombatUnit* unit = combat->unitAtTile(hover);
   
@@ -1190,6 +1190,8 @@ void CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
    if (combat.selectedUnit == null)
    reachable = null;
    */
+  
+  return true;
 }
 
 constexpr int OX = -CombatView::TILE_WIDTH;// 0;
@@ -1253,10 +1255,12 @@ Coord CombatView::tileForCoords(s16 x, s16 y)
 }
 
 
-void CombatView::mouseMoved(u16 x, u16 y, MouseButton b)
+bool CombatView::mouseMoved(u16 x, u16 y, MouseButton b)
 {
   if (y < HEIGHT - SpriteInfo(lower_backdrop).sh())
     hover = tileForCoords(x, y);
   else
     hover.x = -1;
+  
+  return true;
 }

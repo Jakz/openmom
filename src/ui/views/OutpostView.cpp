@@ -58,7 +58,8 @@ void OutpostView::draw()
   // TODO: draw units
 }
 
-void OutpostView::mouseReleased(u16 x, u16 y, MouseButton b)
+bool OutpostView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   gvm->closeOverview();
+  return true;
 }

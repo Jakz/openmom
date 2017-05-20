@@ -114,7 +114,7 @@ void ProductionView::draw()
   }
 }
 
-void ProductionView::mousePressed(u16 x, u16 y, MouseButton b)
+bool ProductionView::mousePressed(u16 x, u16 y, MouseButton b)
 {
   // 80 - 13
   if (b == BUTTON_LEFT)
@@ -157,6 +157,8 @@ void ProductionView::mousePressed(u16 x, u16 y, MouseButton b)
       which = SIDE_RIGHT;
     }
   }
+  
+  return true;
 }
 
 void ProductionView::setCity(City *city)

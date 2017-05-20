@@ -29,7 +29,7 @@ private:
 public:
   OptionsView(ViewManager* gvm);
   
-  void mouseReleased(u16 x, u16 y, MouseButton b) override;
+  bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   
   void activate() override { }
   void deactivate() override { }

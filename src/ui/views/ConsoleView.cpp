@@ -33,7 +33,7 @@ void ConsoleView::draw()
   Fonts::drawString(line, FontFaces::Small::WHITE, 10, 10, ALIGN_LEFT);
 }
 
-void ConsoleView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
+bool ConsoleView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   if (key == SDL_SCANCODE_BACKSPACE && line.length() > 1)
     line.pop_back();
@@ -42,9 +42,11 @@ void ConsoleView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod
     if (isalpha(kkey) || isdigit(kkey) || isspace(kkey))
       line += kkey;
   }
+  
+  return true;
 }
 
-void ConsoleView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
+bool ConsoleView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   if (key == SDL_SCANCODE_RETURN)
   {
@@ -56,6 +58,8 @@ void ConsoleView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mo
     else
       gvm->closeOverview();
   }
+  
+  return true;
 }
 
 void ConsoleView::activate()

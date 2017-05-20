@@ -43,7 +43,7 @@ public:
   void activate() override { updateScrollButtons(); }
   void deactivate() override { offset = 0; }
   
-  void mouseMoved(u16 x, u16 y, MouseButton b) override;
+  bool mouseMoved(u16 x, u16 y, MouseButton b) override;
   
   void scrollDown() { ++offset; }
   void scrollUp() { --offset; }

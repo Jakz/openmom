@@ -11,17 +11,27 @@
 
 #include "Common.h"
 
-class EventListener
+class MouseEventListener
 {
-  public:
-  virtual void mousePressed(u16 x, u16 y, MouseButton b) { };
-  virtual void mouseClicked(u16 x, u16 y, MouseButton b) { };
-  virtual void mouseReleased(u16 x, u16 y, MouseButton b) { };
-  virtual void mouseMoved(u16 x, u16 y, MouseButton b) { };
-  virtual void mouseDragged(u16 x, u16 y, MouseButton b) { };
+public:
+  virtual bool mousePressed(u16 x, u16 y, MouseButton b) { return true; };
+  virtual bool mouseClicked(u16 x, u16 y, MouseButton b) { return true; };
+  virtual bool mouseReleased(u16 x, u16 y, MouseButton b) { return true; };
+  virtual bool mouseMoved(u16 x, u16 y, MouseButton b) { return true; };
+  virtual bool mouseDragged(u16 x, u16 y, MouseButton b) { return true; };
+};
+
+class KeyEventListener
+{
+public:
+  virtual bool keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { return true; };
+  virtual bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { return true; };
+};
+
+class EventListener : public MouseEventListener, public KeyEventListener
+{
   
-  virtual void keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { };
-  virtual void keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { };
+
 };
 
 #endif

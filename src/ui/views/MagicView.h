@@ -52,8 +52,8 @@ public:
   void activate() override;
   void deactivate() override { }
   
-  void mouseReleased(u16 x, u16 y, MouseButton b) override;
-  void mouseDragged(u16 x, u16 y, MouseButton b) override;
+  bool mouseReleased(u16 x, u16 y, MouseButton b) override;
+  bool mouseDragged(u16 x, u16 y, MouseButton b) override;
   
   void updateValues(u16 dest);
   void setPercent(u16 dest, float v);

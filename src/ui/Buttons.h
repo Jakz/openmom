@@ -73,11 +73,16 @@ public:
   void clear() { areas.clear(); }
   
   void draw() { for (const auto& area : areas) area->draw(); }
-  void handleEvent(u16 x, u16 y, MouseButton b)
+  bool handleEvent(u16 x, u16 y, MouseButton b)
   {
     for (const auto& area : areas)
       if (area->isActive() && area->isCorrectButton(b) && area->isInside(x,y))
+      {
         area->getAction()();
+        return true;
+      }
+    
+    return false;
   }
   
   using iterator = typename decltype(areas)::iterator;

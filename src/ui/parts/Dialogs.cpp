@@ -26,15 +26,20 @@ void dialogs::drawErrorDialog(const std::string& text)
   Gfx::unbindPalette();
 }
 
+static const SpriteInfo leftTop = LSI(RESOURCE, 5);
+static const SpriteInfo leftBottom = LSI(RESOURCE, 6);
+static const SpriteInfo top = LSI(RESOURCE, 7);
+static const SpriteInfo rightTop = LSI(RESOURCE, 8);
+static const SpriteInfo bottom = LSI(RESOURCE, 9);
+static const SpriteInfo rightBottom = LSI(RESOURCE, 10);
+
+InfoMenu::InfoMenu(const Point& position, u16 rows, u16 buttonWidth) : b(position)
+{
+  
+}
+
 void InfoMenu::draw()
 {
-  static const SpriteInfo leftTop = LSI(RESOURCE, 5);
-  static const SpriteInfo leftBottom = LSI(RESOURCE, 6);
-  static const SpriteInfo top = LSI(RESOURCE, 7);
-  static const SpriteInfo rightTop = LSI(RESOURCE, 8);
-  static const SpriteInfo bottom = LSI(RESOURCE, 9);
-  static const SpriteInfo rightBottom = LSI(RESOURCE, 10);
-  
   const Palette* palette = top.palette();
   
   //static const auto leftWidth = leftTop.sw();

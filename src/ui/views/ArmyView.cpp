@@ -112,12 +112,14 @@ void ArmyView::open(Army* army, bool acceptSpellTarget)
   gvm->switchOverview(VIEW_ARMY);
 }
 
-void ArmyView::mouseReleased(u16 x, u16 y, MouseButton b)
+bool ArmyView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   if (b == BUTTON_RIGHT)
     gvm->closeOverview();
   else if (b == BUTTON_LEFT && !acceptSpellTarget)
     gvm->closeOverview();
+  
+  return true;
 }
 
 void ArmyView::clickOnIth(size_t i)

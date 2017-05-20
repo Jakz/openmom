@@ -39,6 +39,6 @@ public:
   void activate() override;
   void deactivate() override { }
   
-  void keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
-  void keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
+  bool keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
+  bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
 };
