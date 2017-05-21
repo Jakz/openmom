@@ -83,6 +83,9 @@ const FontSpriteSheet* FontFaces::Serif::SILVER_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::WHITE_SURVEY = nullptr;
 const FontSpriteSheet* FontFaces::Serif::DARK_BROWN = nullptr;
 
+const FontSpriteSheet* FontFaces::Serif::BLACK_INFO_MENU = nullptr;
+const FontSpriteSheet* FontFaces::Serif::BLACK_INFO_MENU_HOVER = nullptr;
+
 const FontSpriteSheet* FontFaces::Crypt::SERIF_BROWN = nullptr;
 const FontSpriteSheet* FontFaces::Crypt::TINY_BROWN = nullptr;
 
@@ -145,6 +148,13 @@ namespace FontPalettes
   //TODO: should edge stroke be part of shadow?
   static const Palette* tinyWithShadow(Color main, Color single, Color shadow) { return new IndexedPalette({0,0,0, shadow, single, main}); }
   static const Palette* tinyWithStroke(Color main, Color single, Color stroke) { return new IndexedPalette({0, stroke, stroke, stroke, single, main}); }
+  
+  
+  /* color indices: bg, light stroke, edge stroke, dark stroke, stripes x 4 (low to high) */
+  static const Palette* serif(Color main) { return new IndexedPalette({0,0,0,0, main, main, main, main, main} ); }
+  static const Palette* serif(Color main, Color single) { return new IndexedPalette({0,0,0,0, single, main, main, main, main} ); }
+  static const Palette* serifWithShadow(Color main, Color single, Color shadow) { return new IndexedPalette({0,0,0, shadow, single, main, main, main, main} ); }
+
 };
 
 void FontFaces::buildFonts()
@@ -219,6 +229,10 @@ void FontFaces::buildFonts()
   Serif::SILVER_SHADOW = buildSerif({0, 0, 0, {67,43,36}, {106,97,93}, {159,150,146}, {196,186,182}, {228,219,215}, {255,255,255}});  // TODO: take from fontColors map
   Serif::WHITE_SURVEY = buildSerif({0, 0, 0, {93,93,121}, {142,134,130}, {255,255,255}, {255,255,255}, {255,255,215}, {255,255,255}});
   Serif::DARK_BROWN = buildSerif({0, 0, 0, 0, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}});
+  
+  Serif::BLACK_INFO_MENU = build(FONT_SERIF, serifWithShadow({8,4,4}, {117,77,36}, {166, 109, 28}));
+  Serif::BLACK_INFO_MENU_HOVER = build(FONT_SERIF, serifWithShadow({8,4,4}, {166,109,28}, {239, 166, 36}));
+  
   
   Crypt::SERIF_BROWN = buildSerifCrypt({0,0,0,0,{73,56,36}, {73,56,36}}); // TODO: single pixels are of same brown?
   Crypt::TINY_BROWN = buildTinyCrypt({0,0,0,0,{97,69,36}, {97,69,36}}); // TODO: don't kno why main pixels are on second palette index, not first

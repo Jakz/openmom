@@ -181,6 +181,8 @@ public:
   class Serif {
   public:
     const static FontSpriteSheet *TEAL, *BROWN, *BROWN_HELP, *BROWN_START, *YELLOW_SHADOW, *GOLD_SHADOW, *GOLD, *GOLD_ERROR_MESSAGE, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
+    
+    const static FontSpriteSheet *BLACK_INFO_MENU, *BLACK_INFO_MENU_HOVER;
   };
   
   class Crypt {
@@ -260,6 +262,12 @@ public:
     const FontSpriteSheet sheet{FontData::fonts[font], palette, spacings.ver, spacings.hor};
     return drawString(string, &sheet, x, y, align);
   }
+  
+  static u16 drawString(const std::string& string, const FontSpriteSheet* face, const Point& point, TextAlign align)
+  {
+    return drawString(string, face, point.x, point.y, align);
+  }
+
   
   static u16 drawString(const std::string& string, const FontSpriteSheet* face, u16 x, u16 y, TextAlign align, const Palette *palette)
   {

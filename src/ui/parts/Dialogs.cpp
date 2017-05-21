@@ -51,6 +51,22 @@ void InfoMenu::draw()
   Gfx::draw(rightBottom, b.x + w - rightBottom.sw(), b.y + h - rightBottom.sh());
   Gfx::drawClipped(bottom, b.x + leftBottom.sw(), b.y + h - bottom.sh(), 0, 0, w - leftBottom.sw() - rightBottom.sw(), bottom.sh());
   Gfx::unbindPalette();
+  
+  const int rows = 3;
+  const int buttonLength = 100;
+  constexpr s16 BORDER_LENGTH = 2, BUTTON_HEIGHT = 14;
+  for (u16 index = 0; index < rows; ++index)
+  {
+    const auto buttonGfx = LSI(RESOURCE, 12 + index), borderGfx = LSI(RESOURCE, 22 + index);
+    const Point position = Point(b.x + leftTop.sw(), b.y + top.sh() + BUTTON_HEIGHT*index);
+    
+    
+    Gfx::drawClipped(buttonGfx, position.x, position.y, 0, 0, buttonLength - BORDER_LENGTH, buttonGfx.sh());
+    Gfx::draw(borderGfx, position + Point(buttonLength - BORDER_LENGTH, 0));
+    
+    Fonts::drawString(Fonts::format("foobar %d", index), FontFaces::Serif::BLACK_INFO_MENU, position.delta(buttonLength/2, 1), ALIGN_CENTER);
+    
+  }
 }
 
 

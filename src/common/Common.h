@@ -463,6 +463,8 @@ struct Point
   bool operator!=(const Point& o) const { return !(*this == o); }
   bool operator==(const Point& o) const { return x == o.x && y == o.y; }
   
+  Point delta(s16 x, s16 y) const { return Point(this->x + x, this->y + y); }
+  
   Point& operator+=(const Point& other) { x += other.x; y += other.y; return *this; }
   Point& operator+=(s16 i) { x += i; y += i; return *this; }
   
