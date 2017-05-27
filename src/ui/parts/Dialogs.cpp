@@ -32,11 +32,18 @@ static const SpriteInfo top = LSI(RESOURCE, 7);
 static const SpriteInfo rightTop = LSI(RESOURCE, 8);
 static const SpriteInfo bottom = LSI(RESOURCE, 9);
 static const SpriteInfo rightBottom = LSI(RESOURCE, 10);
+static constexpr s16 BORDER_LENGTH = 2;
 
-InfoMenu::InfoMenu(const Point& position, u16 rows, u16 buttonWidth) : b(position)
+
+InfoMenu::InfoMenu(const Point& position, u16 rows, u16 buttonWidth) :
+buttonWidth(buttonWidth), rows(rows), hovered(-1),
+b(position), s(buttonWidth + leftTop.sw() + rightTop.sw() - 2, rows*buttonHeight() + top.sh() + bottom.sh())
 {
-  
+  hovered = 1;
 }
+
+Point InfoMenu::buttonBase() const { return Point( b.x + leftTop.sw(), b.y + top.sh() ); }
+int InfoMenu::buttonHeight() const { return 14; }
 
 void InfoMenu::draw()
 {
@@ -44,27 +51,26 @@ void InfoMenu::draw()
   
   //static const auto leftWidth = leftTop.sw();
   Gfx::bindPalette(palette);
-  Gfx::drawClipped(leftTop, b.x, b.y, 0, 0, leftTop.sw(), h - leftBottom.sh());
-  Gfx::draw(leftBottom, b.x, b.y + h - leftBottom.sh());
-  Gfx::drawClipped(top, b.x + leftTop.sw(), b.y, 0, 0, w - leftTop.sw() - rightTop.sw(), top.sh());
-  Gfx::drawClipped(rightTop, b.x + w - rightTop.sw(), b.y, 0, 0, rightTop.sw(), h - rightBottom.sh());
-  Gfx::draw(rightBottom, b.x + w - rightBottom.sw(), b.y + h - rightBottom.sh());
-  Gfx::drawClipped(bottom, b.x + leftBottom.sw(), b.y + h - bottom.sh(), 0, 0, w - leftBottom.sw() - rightBottom.sw(), bottom.sh());
+  Gfx::drawClipped(leftTop, b.x, b.y, 0, 0, leftTop.sw(), s.h - leftBottom.sh());
+  Gfx::draw(leftBottom, b.x, b.y + s.h - leftBottom.sh());
+  Gfx::drawClipped(top, b.x + leftTop.sw(), b.y, 0, 0, s.w - leftTop.sw() - rightTop.sw(), top.sh());
+  Gfx::drawClipped(rightTop, b.x + s.w - rightTop.sw(), b.y, 0, 0, rightTop.sw(), s.h - rightBottom.sh());
+  Gfx::draw(rightBottom, b.x + s.w - rightBottom.sw(), b.y + s.h - rightBottom.sh());
+  Gfx::drawClipped(bottom, b.x + leftBottom.sw(), b.y + s.h - bottom.sh(), 0, 0, s.w - leftBottom.sw() - rightBottom.sw(), bottom.sh());
   Gfx::unbindPalette();
   
-  const int rows = 3;
-  const int buttonLength = 100;
-  constexpr s16 BORDER_LENGTH = 2, BUTTON_HEIGHT = 14;
   for (u16 index = 0; index < rows; ++index)
   {
-    const auto buttonGfx = LSI(RESOURCE, 12 + index), borderGfx = LSI(RESOURCE, 22 + index);
-    const Point position = Point(b.x + leftTop.sw(), b.y + top.sh() + BUTTON_HEIGHT*index);
+    int frame = hovered == index ? 1 : 0;
+
+    const auto buttonGfx = LSI(RESOURCE, 12 + index).frame(frame), borderGfx = LSI(RESOURCE, 22 + index).frame(frame);
+    const Point position = buttonBase() + Point(0, buttonHeight()*index );
     
     
-    Gfx::drawClipped(buttonGfx, position.x, position.y, 0, 0, buttonLength - BORDER_LENGTH, buttonGfx.sh());
-    Gfx::draw(borderGfx, position + Point(buttonLength - BORDER_LENGTH, 0));
+    Gfx::drawClipped(buttonGfx, position.x, position.y, 0, 0, buttonWidth - BORDER_LENGTH, buttonGfx.sh());
+    Gfx::draw(borderGfx, position + Point(buttonWidth - BORDER_LENGTH, 0));
     
-    Fonts::drawString(Fonts::format("foobar %d", index), FontFaces::Serif::BLACK_INFO_MENU, position.delta(buttonLength/2, 1), ALIGN_CENTER);
+    Fonts::drawString(Fonts::format("foobar %d", index), frame ? FontFaces::Serif::BLACK_INFO_MENU_HOVER : FontFaces::Serif::BLACK_INFO_MENU, position.delta(buttonWidth/2, 1), ALIGN_CENTER);
     
   }
 }

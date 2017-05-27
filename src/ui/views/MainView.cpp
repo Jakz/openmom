@@ -291,10 +291,7 @@ void MainView::draw()
 }
 
 void MainView::drawPost()
-{
-  auto menu = dialogs::InfoMenu(10,10,100,100);
-  menu.draw();
-  
+{  
   /*
   
    Gfx.bindColorMap(ColorMap.researchBeam);

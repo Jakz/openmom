@@ -29,6 +29,7 @@
 #include "UnitDetailView.h"
 #include "StartView.h"
 #include "IntroView.h"
+#include "InfoMenuView.h"
 
 #include "ConsoleView.h"
 #include "DataView.h"
@@ -59,6 +60,7 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_START] = new StartView(this);
   views[VIEW_INTRO] = new IntroView(this);
   views[VIEW_OPTIONS] = new OptionsView(this);
+  views[VIEW_INFO_MENU] = new InfoMenuView(this);
   
   views[VIEW_CONSOLE] = new ConsoleView(this);
   views[VIEW_DATA] = new DataView(this);
@@ -83,6 +85,7 @@ SpellBookView* ViewManager::spellBookView() { return static_cast<SpellBookView*>
 UnitDetailView* ViewManager::unitDetailView() { return static_cast<UnitDetailView*>(views[VIEW_UNIT]); }
 StartView* ViewManager::startView() { return static_cast<StartView*>(views[VIEW_START]); }
 IntroView* ViewManager::introView() { return static_cast<IntroView*>(views[VIEW_INTRO]); }
+InfoMenuView* ViewManager::infoMenuView() { return static_cast<InfoMenuView*>(views[VIEW_INFO_MENU]); }
 
 ConsoleView* ViewManager::consoleView() { return static_cast<ConsoleView*>(views[VIEW_CONSOLE]); }
 

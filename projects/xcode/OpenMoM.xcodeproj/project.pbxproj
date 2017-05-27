@@ -185,6 +185,7 @@
 		04C1F4911B25373000F7688A /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
 		04C729C119853F4E002F16E6 /* MainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729BF19853F4E002F16E6 /* MainView.cpp */; };
 		04C729C41985F1B1002F16E6 /* BookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729C21985F1B1002F16E6 /* BookView.cpp */; };
+		04CD9F6C1ED9F48F002B7570 /* InfoMenuView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CD9F6A1ED9F48F002B7570 /* InfoMenuView.cpp */; };
 		04CE420E1E37DA2A00CFD3B9 /* DrawQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CE420C1E37DA2A00CFD3B9 /* DrawQueue.cpp */; };
 		04E218861C02A386005784E1 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04E218841C02A386005784E1 /* format.cc */; };
 		04E218871C02A386005784E1 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04E218841C02A386005784E1 /* format.cc */; };
@@ -425,6 +426,8 @@
 		04C729C019853F4E002F16E6 /* MainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainView.h; sourceTree = "<group>"; };
 		04C729C21985F1B1002F16E6 /* BookView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BookView.cpp; sourceTree = "<group>"; };
 		04C729C31985F1B1002F16E6 /* BookView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BookView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		04CD9F6A1ED9F48F002B7570 /* InfoMenuView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InfoMenuView.cpp; sourceTree = "<group>"; };
+		04CD9F6B1ED9F48F002B7570 /* InfoMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoMenuView.h; sourceTree = "<group>"; };
 		04CE420C1E37DA2A00CFD3B9 /* DrawQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawQueue.cpp; sourceTree = "<group>"; };
 		04CE420D1E37DA2A00CFD3B9 /* DrawQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawQueue.h; sourceTree = "<group>"; };
 		04E218841C02A386005784E1 /* format.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = format.cc; sourceTree = "<group>"; };
@@ -691,6 +694,8 @@
 				0439E99119868FCB0009BFF7 /* CombatView.h */,
 				046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */,
 				046428EF1E0AC4DC003A76D8 /* ConsoleView.h */,
+				04CD9F6A1ED9F48F002B7570 /* InfoMenuView.cpp */,
+				04CD9F6B1ED9F48F002B7570 /* InfoMenuView.h */,
 				0438DFF41EAE757500981CFB /* IntroView.cpp */,
 				0438DFF51EAE757500981CFB /* IntroView.h */,
 				0439E99319868FF60009BFF7 /* ItemCraftView.cpp */,
@@ -1101,6 +1106,7 @@
 				040375FB197AB09000A5B5FC /* Game.cpp in Sources */,
 				046428F81E0D1ABA003A76D8 /* Animations.cpp in Sources */,
 				04037603197AC90900A5B5FC /* Places.cpp in Sources */,
+				04CD9F6C1ED9F48F002B7570 /* InfoMenuView.cpp in Sources */,
 				04EE458E197C85C000EA0CC0 /* UnitSpec.cpp in Sources */,
 				0439E99219868FCB0009BFF7 /* CombatView.cpp in Sources */,
 				04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */,

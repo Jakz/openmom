@@ -11,13 +11,24 @@ namespace dialogs
   {
   private:
     Point b;
-    u16 w, h;
+    Size s;
+    int buttonWidth;
+    int rows;
+    int hovered;
     
   public:
     InfoMenu(const Point& position, u16 rows, u16 buttonWidth);
-    InfoMenu(u16 x, u16 y, u16 w, u16 h) : b(x,y), w(w), h(h) { }
     
     void draw();
+    
+    Point buttonBase() const;
+    int buttonHeight() const;
+    
+    class Delegate
+    {
+      virtual void buttonClicked(int index) = 0;
+      virtual const std::string& nameForButton(int index) = 0;
+    };
   };
   
   class ItemDetailDialog

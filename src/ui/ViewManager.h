@@ -31,6 +31,7 @@ class LoadView;
 class OptionsView;
 class StartView;
 class IntroView;
+class InfoMenuView;
 
 class ConsoleView;
 class DataView;
@@ -97,6 +98,7 @@ public:
   UnitDetailView* unitDetailView();
   StartView* startView();
   IntroView* introView();
+  InfoMenuView* infoMenuView();
   
   ConsoleView* consoleView();
 };
