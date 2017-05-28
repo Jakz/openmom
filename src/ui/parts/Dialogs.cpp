@@ -45,7 +45,7 @@ b(position), s(buttonWidth + leftTop.sw() + rightTop.sw() - 2, rows*buttonHeight
 Point InfoMenu::buttonBase() const { return Point( b.x + leftTop.sw(), b.y + top.sh() ); }
 int InfoMenu::buttonHeight() const { return 14; }
 
-void InfoMenu::draw()
+void InfoMenu::draw() const
 {
   const Palette* palette = top.palette();
   

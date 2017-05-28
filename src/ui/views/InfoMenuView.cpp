@@ -22,11 +22,11 @@ InfoMenuView::InfoMenuView(ViewManager* gvm) : View(gvm)
 
 void InfoMenuView::activate()
 {
-
+  menus.push_back(dialogs::InfoMenu({10,10},100));
 }
 
 void InfoMenuView::draw()
 {
-  auto menu = dialogs::InfoMenu({10,10},3,100);
-  menu.draw();
+  for (const auto& menu : menus)
+    menu.draw();
 }
