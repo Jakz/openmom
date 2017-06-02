@@ -447,15 +447,16 @@ public:
 using lbx_index = s16;
 using sprite_ref = SpriteInfo::data_type;
 
+using int_type = s16;
 struct Size;
 
 struct Point
 {
-  s16 x;
-  s16 y;
+  int_type x;
+  int_type y;
   
   Point() : x(-1), y(-1) { }
-  Point(s16 x, s16 y) : x(x), y(y) { }
+  Point(int_type x, int_type y) : x(x), y(y) { }
   Point(const Size& size);
   template<typename T, typename std::enable_if<std::is_base_of<Point, T>::value, int>::type = 0>
   Point(const T& other) : x(other.x), y(other.y) { }
@@ -463,17 +464,17 @@ struct Point
   bool operator!=(const Point& o) const { return !(*this == o); }
   bool operator==(const Point& o) const { return x == o.x && y == o.y; }
   
-  Point delta(s16 x, s16 y) const { return Point(this->x + x, this->y + y); }
+  Point delta(int_type x, int_type y) const { return Point(this->x + x, this->y + y); }
   
   Point& operator+=(const Point& other) { x += other.x; y += other.y; return *this; }
-  Point& operator+=(s16 i) { x += i; y += i; return *this; }
+  Point& operator+=(int_type i) { x += i; y += i; return *this; }
   
   Point operator+(const Point& o) const { return Point(x + o.x, y + o.y); }
   Point operator-(const Point& o) const { return Point(x - o.x, y - o.y); }
 
   Point operator*(float v) const { return Point(x*v, y*v); }
   
-  Point operator-(s16 v) const { return Point(x+v, y+v); }
+  Point operator-(int_type v) const { return Point(x+v, y+v); }
   
   bool isValid() const { return x != -1; }
   
@@ -483,17 +484,26 @@ struct Point
 
 struct Size
 {
-  s16 w;
-  s16 h;
+  int_type w;
+  int_type h;
   
   Size() : w(0), h(0) { }
-  Size(s16 w, s16 h) : w(w), h(h) { }
+  Size(int_type w, int_type h) : w(w), h(h) { }
   Size(const Point& point);
   template<typename T, typename std::enable_if<std::is_base_of<Size, T>::value, int>::type = 0>
   Size(const Size& other) : w(other.w), h(other.h) { }
 };
 
 using Coord = Point;
+
+struct Rect
+{
+  Point origin;
+  Size size;
+  
+  Rect(int_type x, int_type y, int_type w, int_type h) : origin(x,y), size(w,h) { }
+  Rect(const Point& origin, const Size& size) : origin(origin), size(size) { }
+};
 
 inline Point::Point(const Size& size) : x(size.w), y(size.h) { }
 inline Size::Size(const Point& point) : w(point.x), h(point.y) { }

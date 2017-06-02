@@ -22,7 +22,26 @@ InfoMenuView::InfoMenuView(ViewManager* gvm) : View(gvm)
 
 void InfoMenuView::activate()
 {
-  menus.push_back(dialogs::InfoMenu({10,10},100));
+  static const std::vector<std::string> mainEntries = {
+    "Surveyor",
+    "Cartographer"
+  };
+  
+  static class MainDelegate : public dialogs::InfoMenu::Delegate
+  {
+    virtual int buttonCount() override { return static_cast<int>(mainEntries.size()); }
+    virtual void buttonClicked(int index) override { }
+    virtual void drawButton(int i, bool hoveref, const Rect& bounds) override
+    {
+      Fonts::drawString(mainEntries[i], FontFaces::Serif::BLACK_INFO_MENU, bounds.origin.x+3, bounds.origin.y+1, ALIGN_LEFT);
+      Fonts::drawString(Fonts::format("(F%d)", i+1), FontFaces::Serif::BLACK_INFO_MENU, bounds.origin.x + bounds.size.w - 5, bounds.origin.y+1, ALIGN_RIGHT);
+
+    }
+    
+  } mainDelegate;
+  
+  menus.push_back(dialogs::InfoMenu(&mainDelegate, 117));
+  menus.back().setPosition(Point(87,22));
 }
 
 void InfoMenuView::draw()

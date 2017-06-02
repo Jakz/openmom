@@ -6,29 +6,34 @@
 namespace dialogs
 {
   void drawErrorDialog(const std::string& text);
-    
+  
   class InfoMenu
   {
+  public:
+    class Delegate
+    {
+    public:
+      virtual int buttonCount() = 0;
+      virtual void buttonClicked(int index) = 0;
+      virtual void drawButton(int index, bool hovered, const Rect& bounds) = 0;
+    };
+  
   private:
+    Delegate* delegate;
     Point b;
     Size s;
     int buttonWidth;
     int hovered;
     
   public:
-    InfoMenu(const Point& position, u16 buttonWidth);
+    InfoMenu(Delegate* delegate, u16 buttonWidth);
     
     void draw() const;
     
     Point buttonBase() const;
     int buttonHeight() const;
     
-    class Delegate
-    {
-      virtual int buttonCount() = 0;
-      virtual void buttonClicked(int index) = 0;
-      virtual const std::string& nameForButton(int index) = 0;
-    };
+    void setPosition(const Point& position) { this->b = position; }
   };
   
   class ItemDetailDialog

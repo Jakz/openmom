@@ -35,14 +35,15 @@ static const SpriteInfo rightBottom = LSI(RESOURCE, 10);
 static constexpr s16 BORDER_LENGTH = 2;
 
 
-InfoMenu::InfoMenu(const Point& position, u16 rows, u16 buttonWidth) :
-buttonWidth(buttonWidth), rows(rows), hovered(-1),
-b(position), s(buttonWidth + leftTop.sw() + rightTop.sw() - 2, rows*buttonHeight() + top.sh() + bottom.sh())
+InfoMenu::InfoMenu(Delegate* delegate, u16 buttonWidth) :
+delegate(delegate), buttonWidth(buttonWidth), hovered(-1),
+s(buttonWidth + leftTop.sw() + rightTop.sw() - 2, delegate->buttonCount()*buttonHeight() + top.sh() + bottom.sh())
 {
   hovered = 1;
 }
 
 Point InfoMenu::buttonBase() const { return Point( b.x + leftTop.sw(), b.y + top.sh() ); }
+
 int InfoMenu::buttonHeight() const { return 14; }
 
 void InfoMenu::draw() const
@@ -59,7 +60,7 @@ void InfoMenu::draw() const
   Gfx::drawClipped(bottom, b.x + leftBottom.sw(), b.y + s.h - bottom.sh(), 0, 0, s.w - leftBottom.sw() - rightBottom.sw(), bottom.sh());
   Gfx::unbindPalette();
   
-  for (u16 index = 0; index < rows; ++index)
+  for (u16 index = 0; index < delegate->buttonCount(); ++index)
   {
     int frame = hovered == index ? 1 : 0;
 
@@ -70,8 +71,8 @@ void InfoMenu::draw() const
     Gfx::drawClipped(buttonGfx, position.x, position.y, 0, 0, buttonWidth - BORDER_LENGTH, buttonGfx.sh());
     Gfx::draw(borderGfx, position + Point(buttonWidth - BORDER_LENGTH, 0));
     
-    Fonts::drawString(Fonts::format("foobar %d", index), frame ? FontFaces::Serif::BLACK_INFO_MENU_HOVER : FontFaces::Serif::BLACK_INFO_MENU, position.delta(buttonWidth/2, 1), ALIGN_CENTER);
-    
+    if (delegate)
+      delegate->drawButton(index, index == hovered, Rect(position, Size(buttonWidth, buttonHeight())));
   }
 }
 
