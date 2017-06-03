@@ -121,6 +121,13 @@ void Player::refreshArmies()
     a->resetMoves();
 }
 
+const TaxRate& Player::getTaxRate()
+{
+  //TODO: manage
+  static const TaxRate rate = {2, 0.2f};
+  return rate;
+}
+
 City* Player::cityWithFortress() const
 {
   for (auto c : cities)

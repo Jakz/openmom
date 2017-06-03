@@ -38,14 +38,11 @@ public:
   ~FogMap();
 };
 
-namespace std
+struct TaxRate
 {
-  template<>
-  struct hash<TraitID>
-  {
-    std::size_t operator()(const TraitID& k) const { return static_cast<u16>(k); }
-  };
-}
+  s16 halfGoldPerCitizen;
+  float unrestPercent;
+};
 
 class PlayerInterface
 {
@@ -78,7 +75,7 @@ protected:
   std::list<ManaNode*> nodes;
   std::list<const SpellCast> spells;
 
-  std::unordered_set<TraitID> traits;
+  std::unordered_set<TraitID, enum_hash> traits;
 
   SpellBook spellBook;
   Relations relations;
@@ -126,6 +123,7 @@ public:
   s32 getAvailableMana() const { return availableMana; }
   s32 getManaGain() const { return manaGain; }
   
+  const TaxRate& getTaxRate();
   s32 getFame() const { return fame; }
   
   void alchemy(s32 gold, s32 mana) { goldPool += gold; manaPool -= mana; }

@@ -64,6 +64,7 @@ public:
   
   s16 computeMaxPopulationForTile(const Tile* tile);
   s16 computeMaxPopulation(const City* city);
+  s16 computeUnrest(const City* city);
   
   void partitionPopulation(City* city);
   

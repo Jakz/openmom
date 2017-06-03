@@ -666,6 +666,11 @@ s16 CityMechanics::computeMaxPopulationForTile(const Tile* tile)
   return std::min(static_cast<int>(std::ceil(maxPop)), 25);
 }
 
+s16 CityMechanics::computeUnrest(const City *city)
+{
+  
+}
+
 s16 CityMechanics::computeMaxPopulation(const City *city)
 {
   float maxPop = computeMaxPopulationForTile(game->world->get(city->position));

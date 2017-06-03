@@ -10,3 +10,6 @@ races:
         rebel: [lbx, backgrnd, 74]
       i18n: race_name_barbarians
       i18n_unit: race_prefix_barbarians
+unrest_relations:
+  - barbarians:
+	  - beastmen: +0.1
