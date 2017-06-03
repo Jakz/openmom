@@ -26,4 +26,7 @@ public:
   
   void activate() override;
   void deactivate() override { }
+  
+  bool mouseMoved(u16 x, u16 y, MouseButton b) override;
+  bool mouseDragged(u16 x, u16 y, MouseButton b) override { return mouseMoved(x, y, b); }
 };

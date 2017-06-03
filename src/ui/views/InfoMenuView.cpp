@@ -49,3 +49,15 @@ void InfoMenuView::draw()
   for (const auto& menu : menus)
     menu.draw();
 }
+
+bool InfoMenuView::mouseMoved(u16 x, u16 y, MouseButton b)
+{
+  if (!menus.empty())
+  {
+    dialogs::InfoMenu& menu = menus.back();
+    int hovered = menu.hoveredButton(Point(x,y));
+    menu.setHovered(hovered);
+  }
+  
+  return true;
+}

@@ -503,6 +503,15 @@ struct Rect
   
   Rect(int_type x, int_type y, int_type w, int_type h) : origin(x,y), size(w,h) { }
   Rect(const Point& origin, const Size& size) : origin(origin), size(size) { }
+  
+  inline int_type right() const { return origin.x + size.w; }
+  inline int_type left() const { return origin.x; }
+  inline int_type top() const { return origin.y; }
+  inline int_type bottom() const { return origin.y + size.h; }
+  
+  bool contains(const Point& point) const
+  {
+    return point.x >= left() && point.x < right() && point.y >= top() && point.y <= bottom(); }
 };
 
 inline Point::Point(const Size& size) : x(size.w), y(size.h) { }

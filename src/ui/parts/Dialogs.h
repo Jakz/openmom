@@ -32,8 +32,10 @@ namespace dialogs
     
     Point buttonBase() const;
     int buttonHeight() const;
+    int hoveredButton(const Point& p);
     
     void setPosition(const Point& position) { this->b = position; }
+    void setHovered(int hovered) { this->hovered = hovered; }
   };
   
   class ItemDetailDialog

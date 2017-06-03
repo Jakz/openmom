@@ -39,12 +39,24 @@ InfoMenu::InfoMenu(Delegate* delegate, u16 buttonWidth) :
 delegate(delegate), buttonWidth(buttonWidth), hovered(-1),
 s(buttonWidth + leftTop.sw() + rightTop.sw() - 2, delegate->buttonCount()*buttonHeight() + top.sh() + bottom.sh())
 {
-  hovered = 1;
 }
 
 Point InfoMenu::buttonBase() const { return Point( b.x + leftTop.sw(), b.y + top.sh() ); }
 
 int InfoMenu::buttonHeight() const { return 14; }
+
+int InfoMenu::hoveredButton(const Point &p)
+{
+  const int count = delegate->buttonCount();
+  const Point base = buttonBase();
+  const Size size = Size(buttonWidth, buttonHeight()*count);
+  
+  if (Rect(base,size).contains(p))
+    return (p.y - base.y) / buttonHeight();
+  else
+    return -1;
+}
+
 
 void InfoMenu::draw() const
 {
