@@ -19,7 +19,7 @@ namespace dialogs
     };
   
   private:
-    Delegate* delegate;
+    Delegate* _delegate;
     Point b;
     Size s;
     int buttonWidth;
@@ -33,6 +33,7 @@ namespace dialogs
     Point buttonBase() const;
     int buttonHeight() const;
     int hoveredButton(const Point& p);
+    Delegate* delegate() const { return _delegate; }
     
     void setPosition(const Point& position) { this->b = position; }
     void setHovered(int hovered) { this->hovered = hovered; }

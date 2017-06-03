@@ -65,6 +65,7 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
   buttons[SPELLS]->setAction([gvm](){ gvm->switchOverview(VIEW_SPELL_BOOK); });
   buttons[MAGIC]->setAction([gvm](){ gvm->switchView(VIEW_MAGIC); });
   buttons[ARMIES]->setAction([gvm](){ gvm->switchView(VIEW_ARMIES); });
+  buttons[INFO]->setAction([gvm](){ gvm->switchOverview(VIEW_INFO_MENU); });
   buttons[PLANE]->setAction([this](){ player->switchPlane(); switchToNormalState(); });
   buttons[NEXT]->setAction([this](){ LocalGame::i->getGame()->nextTurn(); switchToNormalState(); });
   buttons[CANCEL_SURVEYOR]->setAction([this](){ if (substate == SPELL_CAST) g->cancelCast(player); switchToNormalState(); });

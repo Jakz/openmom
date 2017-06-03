@@ -36,7 +36,7 @@ static constexpr s16 BORDER_LENGTH = 2;
 
 
 InfoMenu::InfoMenu(Delegate* delegate, u16 buttonWidth) :
-delegate(delegate), buttonWidth(buttonWidth), hovered(-1),
+_delegate(delegate), buttonWidth(buttonWidth), hovered(-1),
 s(buttonWidth + leftTop.sw() + rightTop.sw() - 2, delegate->buttonCount()*buttonHeight() + top.sh() + bottom.sh())
 {
 }
@@ -47,7 +47,7 @@ int InfoMenu::buttonHeight() const { return 14; }
 
 int InfoMenu::hoveredButton(const Point &p)
 {
-  const int count = delegate->buttonCount();
+  const int count = _delegate->buttonCount();
   const Point base = buttonBase();
   const Size size = Size(buttonWidth, buttonHeight()*count);
   
@@ -72,7 +72,7 @@ void InfoMenu::draw() const
   Gfx::drawClipped(bottom, b.x + leftBottom.sw(), b.y + s.h - bottom.sh(), 0, 0, s.w - leftBottom.sw() - rightBottom.sw(), bottom.sh());
   Gfx::unbindPalette();
   
-  for (u16 index = 0; index < delegate->buttonCount(); ++index)
+  for (u16 index = 0; index < _delegate->buttonCount(); ++index)
   {
     int frame = hovered == index ? 1 : 0;
 
@@ -83,8 +83,8 @@ void InfoMenu::draw() const
     Gfx::drawClipped(buttonGfx, position.x, position.y, 0, 0, buttonWidth - BORDER_LENGTH, buttonGfx.sh());
     Gfx::draw(borderGfx, position + Point(buttonWidth - BORDER_LENGTH, 0));
     
-    if (delegate)
-      delegate->drawButton(index, index == hovered, Rect(position, Size(buttonWidth, buttonHeight())));
+    if (_delegate)
+      _delegate->drawButton(index, index == hovered, Rect(position, Size(buttonWidth, buttonHeight())));
   }
 }
 
