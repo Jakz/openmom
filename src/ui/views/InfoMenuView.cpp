@@ -41,6 +41,12 @@ void InfoMenuView::activate()
     virtual int buttonCount() override { return static_cast<int>(mainEntries.size()); }
     virtual void buttonClicked(int index) override { }
     
+    virtual const std::string& title() override
+    {
+      static const std::string _title = "Select An Advisor";
+      return _title;
+    }
+    
     virtual void drawButton(int i, bool hoveref, const Rect& bounds) override
     {
       Fonts::drawString(mainEntries[i], FontFaces::Serif::BLACK_INFO_MENU, bounds.origin.x+3, bounds.origin.y+1, ALIGN_LEFT);
@@ -70,6 +76,7 @@ void InfoMenuView::mainMenuClicked(int index)
   enum MainEntry
   {
     SURVEYOR = 0,
+    TAX_COLLECTOR = 6,
     MIRROR = 8
   };
   
@@ -80,6 +87,11 @@ void InfoMenuView::mainMenuClicked(int index)
       gvm->closeOverview();
       gvm->mainView()->switchToSurveyor();
       break;
+    }
+      
+    case TAX_COLLECTOR:
+    {
+      
     }
       
     case MIRROR:

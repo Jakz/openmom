@@ -12,7 +12,7 @@
 #include "Common.h"
 #include "EventListener.h"
 
-#include "PathFind.h"
+#include "Pathfind.h"
 #include "Gfx.h"
 
 #include <list>

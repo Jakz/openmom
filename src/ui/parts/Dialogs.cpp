@@ -72,6 +72,10 @@ void InfoMenu::draw() const
   Gfx::drawClipped(bottom, b.x + leftBottom.sw(), b.y + s.h - bottom.sh(), 0, 0, s.w - leftBottom.sw() - rightBottom.sw(), bottom.sh());
   Gfx::unbindPalette();
   
+  const auto& title = _delegate->title();
+  Fonts::drawString(title, FontFaces::Serif::GOLD, b.x + s.w/2, b.y + 3, ALIGN_CENTER); // TODO: check font face
+  
+  
   for (u16 index = 0; index < _delegate->buttonCount(); ++index)
   {
     int frame = hovered == index ? 1 : 0;

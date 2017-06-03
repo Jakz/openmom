@@ -13,6 +13,7 @@ namespace dialogs
     class Delegate
     {
     public:
+      virtual const std::string& title() = 0;
       virtual int buttonCount() = 0;
       virtual void buttonClicked(int index) = 0;
       virtual void drawButton(int index, bool hovered, const Rect& bounds) = 0;

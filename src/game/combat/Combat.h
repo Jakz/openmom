@@ -128,7 +128,7 @@ namespace combat
     const CombatTile* tileAt(const Point& position);
     const CombatTile* tileAt(s16 x, s16 y);
     CombatUnit* unitAtTile(CombatCoord position) const;
-    bool isTileEmpty(CombatCoord position) const { return !unitAtTile(position); }
+    bool isTileEmpty(CombatCoord position) const override { return !unitAtTile(position); }
 
     CombatMap* map() { return _map.get(); }
     const std::list<CombatUnit*>& enemyUnits(Player* player) { return player == players[0] ? units[0] : units[1]; }
