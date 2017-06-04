@@ -78,6 +78,11 @@ template<> Data::map_t<const Spell*>& Data::containerFor() {
   return spellMap;
 }
 
+template<> Data::map_t<const Race*>& Data::containerFor() {
+  static map_t<const Race*> raceMap;
+  return raceMap;
+}
+
 template<> Data::map_t<const Building*>& Data::containerFor() {
   //TODO: hardcoded for now, then YAML will be used
 
@@ -134,28 +139,6 @@ template<> Data::map_t<const Building*>& Data::containerFor() {
     { "summoning_circle", Building::SUMMONING_CIRCLE },
   };
   return buildingMap;
-}
-
-template<> Data::map_t<const Race*>& Data::containerFor() {
-  //TODO: hardcoded for now, then YAML will be used
-  
-  static map_t<const Race*> raceMap = {
-    { "barbarians", &Race::race(RaceID::BARBARIANS) },
-    { "beastmen", &Race::race(RaceID::BEASTMEN) },
-    { "dark_elves", &Race::race(RaceID::DARK_ELVES) },
-    { "draconians", &Race::race(RaceID::DRACONIANS) },
-    { "dwarves", &Race::race(RaceID::DWARVES) },
-    { "gnolls", &Race::race(RaceID::GNOLLS) },
-    { "halflings", &Race::race(RaceID::HALFLINGS) },
-    { "high_elves", &Race::race(RaceID::HIGH_ELVES) },
-    { "high_men", &Race::race(RaceID::HIGH_MEN) },
-    { "klackons", &Race::race(RaceID::KLACKONS) },
-    { "lizardmen", &Race::race(RaceID::LIZARDMEN) },
-    { "nomads", &Race::race(RaceID::NOMADS) },
-    { "orcs", &Race::race(RaceID::ORCS) },
-    { "trolls", &Race::race(RaceID::TROLLS) },
-  };
-  return raceMap;
 }
 
 std::vector<const RaceUnitSpec*> Data::unitsForRace(const Race* race)

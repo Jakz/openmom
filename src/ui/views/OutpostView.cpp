@@ -28,7 +28,7 @@ void OutpostView::draw()
   Gfx::draw(LSI(BACKGRND, 32), 30, 50); // bg
   Fonts::drawString(i18n::s(GfxData::raceGfxSpec(city->race).name), FontFaces::Small::YELLOW, 35, 72, ALIGN_LEFT);
   
-  auto& houseSpec = GfxData::raceHouseGfxSpec(city->race->houseType);
+  auto& houseSpec = GfxData::raceHouseGfxSpec(GfxData::raceGfxSpec(city->race).houseType);
 
   for (int i = 0; i < 10; ++i)
   {

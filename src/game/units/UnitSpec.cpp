@@ -40,3 +40,6 @@ s16 UnitSpec::getProperty(Property property) const
     default: return 0;
   }
 }
+
+
+const std::string RaceUnitSpec::fullName() const { return i18n::s(GfxData::raceGfxSpec(race).unitName) + " " + productionName(); }

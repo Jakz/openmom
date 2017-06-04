@@ -107,13 +107,14 @@ template<typename T, typename std::enable_if<!std::is_pointer<T>::value, int>::t
 template<> LBXID yaml::parse(const N& node)
 {
   static const std::unordered_map<std::string, LBXID> mapping = {
+    { "backgrnd", LBXID::BACKGRND },
+    
     { "figures1", LBXID::FIGURES1 },
     { "figures3", LBXID::FIGURES3 },
     { "figures4", LBXID::FIGURES4 },
     { "figures9", LBXID::FIGURES9 },
     { "figure11", LBXID::FIGURE11 },
     { "figure12", LBXID::FIGURE12 },
-
     
     { "monster", LBXID::MONSTER },
     { "portrait", LBXID::PORTRAIT },
@@ -123,8 +124,6 @@ template<> LBXID yaml::parse(const N& node)
     
     { "units1", LBXID::UNITS1 },
     { "units2", LBXID::UNITS2 },
-
-
   };
   
   FETCH_OR_FAIL("LBXID", mapping, node);
@@ -608,13 +607,28 @@ template<> std::pair<const Race*, RaceGfxSpec> yaml::parse(const N& node)
   
   s16 cityGrowthModifier = node["city_growth_modifier"];
   float outpostGrowthChance = node["outpost_growth_chance"];
-  HouseType houseType = parse<HouseType>(node["house_type"]);
+  s16 baseProduction = node["base_production"];
+  s16 foodProductionPerFramer = node["food_production_per_farmer"];
+  float taxIncomeMultiplier = node["tax_income_multiplier"];
+  float miningBonusMultiplier = node["mining_bonus_multiplier"];
+  float manaProducedPerCitizen = node["mana_produced_per_citizen"];
   
+  const Node& ycityNames = node["city_names"];
+  assert(ycityNames.IsSequence());
+  
+  std::vector<std::string> cityNames;
+  for (size_t i = 0; i < ycityNames.size(); ++i)
+    cityNames.push_back(ycityNames[i].asString());
+  
+  data.first = new Race(cityGrowthModifier, outpostGrowthChance, baseProduction, taxIncomeMultiplier, miningBonusMultiplier, manaProducedPerCitizen, foodProductionPerFramer, cityNames);
   
   /* parse graphics */
+  data.second.houseType = parse<HouseType>(node["visuals"]["house_type"]);
   data.second.cityWorker = parse<SpriteInfo>(node["visuals"]["graphics"]["worker"]);
   data.second.cityFarmer = parse<SpriteInfo>(node["visuals"]["graphics"]["farmer"]);
   data.second.cityRebel = parse<SpriteInfo>(node["visuals"]["graphics"]["rebel"]);
+  data.second.name = i18n::keyForString(node["visuals"]["i18n"]);
+  data.second.unitName = i18n::keyForString(node["visuals"]["i18n_unit"]);
   
   return data;
 }
@@ -736,6 +750,7 @@ void yaml::parseLocalization()
 void yaml::parse()
 {
   parseLocalization();
+  parseRaces();
   parseSkills();
   parseLevels();
   parseUnits();

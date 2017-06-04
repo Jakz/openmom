@@ -270,7 +270,7 @@ public:
   RaceUnitSpec(const Race* race, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
     UnitSpec(UnitType::RACIAL, Upkeep(upkeep,0,1), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), race(race) { }
 
-  const std::string fullName() const override { return race->unitName() + " " + productionName(); }
+  const std::string fullName() const override;
   Type productionType() const override { return Type::UNIT; }
   
   const Race* const race;

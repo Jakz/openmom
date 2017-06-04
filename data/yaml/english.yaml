@@ -1,4 +1,34 @@
 entries:
+  race_name_barbarians: Barbarians
+  race_name_beastmen: Beastmen
+  race_name_dark_elves: Dark Elves
+  race_name_draconians: Draconians
+  race_name_dwarves: Dwarves
+  race_name_gnolls: Gnolls
+  race_name_halflings: Halflings
+  race_name_high_elves: High Elves
+  race_name_high_men: High Men
+  race_name_klackons: Klackons
+  race_name_lizardmen: Lizardmen
+  race_name_nomads: Nomads
+  race_name_orcs: Orcs
+  race_name_trolls: Trolls
+  
+  race_prefix_barbarians: Barbarian
+  race_prefix_beastmen: Beastman
+  race_prefix_dark_elves: Dark Elf
+  race_prefix_draconians: Draconian
+  race_prefix_dwarves: Dwarven
+  race_prefix_gnolls: Gnoll
+  race_prefix_halflings: Halfling
+  race_prefix_high_elves: High Elf
+  race_prefix_high_men: High Man
+  race_prefix_kackons: Klackon
+  race_prefix_lizarmen: Lizardman
+  race_prefix_nomads: Nomad
+  race_prefix_orcs: Orc
+  race_prefix_trolls: Troll
+  
   unit_racial_spearmen: Spearmen
   unit_racial_swordsmen: Swordsmen
   unit_racial_bowmen: Bowmen

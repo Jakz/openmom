@@ -79,30 +79,233 @@ races:
       Firepeak, Azurtfall, Fangrock, High Top, 
       Hillfang, Sorin, Straatus, Icetop ]
     visuals:
-     house_type: normal  
-     graphics:
-       worker: [lbx, backgrnd, 48]
-       farmer: [lbx, backgrnd, 62]
-       rebel: [lbx, backgrnd, 77]
-     i18n: race_name_dark_elves
-     i18n_unit: race_prefix_dark_elves 
+      house_type: normal  
+      graphics:
+        worker: [lbx, backgrnd, 48]
+        farmer: [lbx, backgrnd, 62]
+        rebel: [lbx, backgrnd, 77]
+      i18n: race_name_draconians
+      i18n_unit: race_prefix_draconians
+      
+  - identifier: dwarves
+    city_growth_modifier: -20
+    outpost_growth_chance: 0.07
+    base_production: 3
+    food_production_per_farmer: 2
+    tax_income_multiplier: 2.0 
+    mining_bonus_multiplier: 2.0
+    mana_produced_per_citizen: 0.0
+    city_names: [ Ebonsway, Ultigar, Pyre, Asengard, 
+      Stonegate, Blade Stone, Rockwedge, Abanax, 
+      Ailearth, Fire Keep, Asbraun, Axhome, 
+      Iron Wall, Raug Wall, Stonehome, Finnrock, 
+      Southold, Stony Peak, Crag Keep, Hearth ]
+    visuals:
+      house_type: normal  
+      graphics:
+        worker: [lbx, backgrnd, 49]
+        farmer: [lbx, backgrnd, 63]
+        rebel: [lbx, backgrnd, 78]
+      i18n: race_name_dwarves
+      i18n_unit: race_prefix_dwarves
+      
+  - identifier: gnolls
+    city_growth_modifier: -10
+    outpost_growth_chance: 0.05
+    base_production: 2
+    food_production_per_farmer: 2
+    tax_income_multiplier: 1.0
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 0.0
+    city_names: [ Basel, Aachen, Braunweig, Breslau, 
+      Brunn, Dortmond, Maimz, Nymax, 
+      Ozenwall, Posen, Speger, Steyr, 
+      Trier, Vordinax, Jogrin, Geras, 
+      Megamoria, Melegok, Tiamut, Creymona ]
+    visuals:
+      house_type: mud  
+      graphics:
+        worker: [lbx, backgrnd, 50]
+        farmer: [lbx, backgrnd, 64]
+        rebel: [lbx, backgrnd, 79]
+      i18n: race_name_gnolls
+      i18n_unit: race_prefix_gnolls
+      
+  - identifier: halflings
+    city_growth_modifier: 0
+    outpost_growth_chance: 0.15
+    base_production: 2
+    food_production_per_farmer: 3
+    tax_income_multiplier: 1.0
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 0.0
+    city_names: [ Miroban, Eastway, Palaor, Elyndendale, 
+      Cornwell, Jollyville, Hickorydale, Hialanth, 
+      Ethridge, Myrean, Mirndale, Honeypool, 
+      Eventon, Sunnydale, Bremen, Sacred Vale,
+       Medowdale, Cornberry, Hillshire, Torwell ]
+    visuals:
+      house_type: normal  
+      graphics:
+        worker: [lbx, backgrnd, 51]
+        farmer: [lbx, backgrnd, 65]
+        rebel: [lbx, backgrnd, 80]
+      i18n: race_name_halflings
+      i18n_unit: race_prefix_halflings
+
+  - identifier: high_elves
+    city_growth_modifier: -20
+    outpost_growth_chance: 0.05
+    base_production: 2
+    food_production_per_farmer: 2
+    tax_income_multiplier: 1.0
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 0.5
+    city_names: [ Silverdale, Esterwood, Rivendale, Alm, 
+      Arissawood, Karsol, Prose, Fairwall, 
+      Arairia, Lylros, Lanerell, Venagreen, 
+      Rosewood, Ashenwood, Wooddale, Avalon, 
+      Elmwood, Glendale, Timberland, Gatewood ]
+    visuals:
+      house_type: tree  
+      graphics:
+        worker: [lbx, backgrnd, 52]
+        farmer: [lbx, backgrnd, 66]
+        rebel: [lbx, backgrnd, 81]
+      i18n: race_name_high_elves
+      i18n_unit: race_prefix_high_elves
+
+  - identifier: high_men
+    city_growth_modifier: 0
+    outpost_growth_chance: 0.10
+    base_production: 2
+    food_production_per_farmer: 2
+    tax_income_multiplier: 1.0
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 0.0
+    city_names: [ Coventry, York, Nottingham, Birmingham, 
+      Dover, Liverpool, Brighton, Oxford, 
+      Reading, Exeter, Cambridge, Hastings, 
+      Cantebury, Banbury, Newcastle, Haven, 
+      New Haven, Bremen, Denislin, Newland ]
+    visuals:
+      house_type: normal  
+      graphics:
+        worker: [lbx, backgrnd, 53]
+        farmer: [lbx, backgrnd, 67]
+        rebel: [lbx, backgrnd, 82]
+      i18n: race_name_high_men
+      i18n_unit: race_prefix_high_men
+
+  - identifier: klackons
+    city_growth_modifier: -20
+    outpost_growth_chance: 0.05
+    base_production: 3
+    food_production_per_farmer: 2
+    tax_income_multiplier: 1.0
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 0.0
+    city_names: [ Fa-rul, Niktock, Ixtu, Keltok,
+      Hsi-raz, Cai-ru, Katax, Ni-aru,
+      Chu-wak, Ty-go, Aiym, Tar-reash,
+      Shen-khi, Li-ray, Braxus, Pangor,
+      Thirock, Zho, Tartz, Rakutal ]
+    visuals:
+      house_type: mud  
+      graphics:
+        worker: [lbx, backgrnd, 54]
+        farmer: [lbx, backgrnd, 68]
+        rebel: [lbx, backgrnd, 83]
+      i18n: race_name_klackons
+      i18n_unit: race_prefix_klackons
+
+  - identifier: lizardmen
+    city_growth_modifier: 10
+    outpost_growth_chance: 0.10
+    base_production: 2
+    food_production_per_farmer: 2
+    tax_income_multiplier: 1.0
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 0.0
+    city_names: [ South Wash, Thorn, Ulm, Ulna, 
+      Lizard Caves, Longrift, Lizardmarch, Nar, 
+      Mudspray, Sawtooth, Gore, Dirage, 
+      Sludgehome, Sedge, Rashem, Hob, 
+      Shatterod, Scacrest, Shellford, Hornbrant ]
+    visuals:
+      house_type: mud  
+      graphics:
+        worker: [lbx, backgrnd, 55]
+        farmer: [lbx, backgrnd, 69]
+        rebel: [lbx, backgrnd, 84]
+      i18n: race_name_lizardmens
+      i18n_unit: race_prefix_lizardmen
+
+  - identifier: nomads
+    city_growth_modifier: -10
+    outpost_growth_chance: 0.10
+    base_production: 2
+    food_production_per_farmer: 2
+    tax_income_multiplier: 1.0
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 0.0
+    city_names: [ Mecca, Naples, Sidon, Tyre, 
+      Tarsus, Issus, Cunaxa, Cremona, 
+      Cannae, Capua, Torin, Genoa, 
+      Utica, Damascus, Verona, Salamis, 
+      Blake, Harold, Isseme, Doraat ]
+    visuals:
+      house_type: normal  
+      graphics:
+        worker: [lbx, backgrnd, 56]
+        farmer: [lbx, backgrnd, 70]
+        rebel: [lbx, backgrnd, 85]
+      i18n: race_name_nomads
+      i18n_unit: race_prefix_nomads
+
+  - identifier: orcs
+    city_growth_modifier: 0
+    outpost_growth_chance: 0.10
+    base_production: 2
+    food_production_per_farmer: 2
+    tax_income_multiplier: 1.0
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 0.0
+    city_names: [ Robenaar, Wrrmwood, Xanten, Charack, 
+      Largut, Bangaak, Darkpool, Golcanar, 
+      Skulltop, Gotartop, Zuul, Craagpool, 
+      Krong, Krag Pool, Fell Gorge, Gronk, 
+      Torogaar, Oxenaak, Zom, Rife ]
+    visuals:
+      house_type: normal  
+      graphics:
+        worker: [lbx, backgrnd, 57]
+        farmer: [lbx, backgrnd, 71]
+        rebel: [lbx, backgrnd, 86]
+      i18n: race_name_orcs
+      i18n_unit: race_prefix_orcs
+      
+  - identifier: trolls
+    city_growth_modifier: -20
+    outpost_growth_chance: 0.03
+    base_production: 2
+    food_production_per_farmer: 2
+    tax_income_multiplier: 1.0
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 0.0
+    city_names: [ Erfurt, Gorfite, Goslar, Graz, 
+      Groningen, Koblenz, Mainz, Fauul, 
+      Giant Peaks, Craagut, Bryn, Rothiem, 
+      Phobas, Dang, Zorag, Undermarsh, 
+      Rotwood, Pyth, Muck, Deathmound ]
+    visuals:
+      house_type: mud  
+      graphics:
+        worker: [lbx, backgrnd, 58]
+        farmer: [lbx, backgrnd, 72]
+        rebel: [lbx, backgrnd, 87]
+      i18n: race_name_trolls
+      i18n_unit: race_prefix_trolls
 
       
 # unrest relation, outer race is the fortress race, inner race is the city race
-unrest_relations:
-  - barbarians:
-	  - barbarians: 0.0
-    - beastmen: 0.1
-    - dark_elves: 0.1
-    - draconians: 0.1
-    - dwarves: 0.1
-    - gnolls: 0.1
-    - halflings: 0.1
-    - high_elves: 0.1
-    - high_men: 0.1
-    - klackons: 0.2
-    - lizardmen: 0.1
-    - nomads: 0.0
-    - orcs: 0.0
-    - trolls: 0.1
-

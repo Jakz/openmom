@@ -234,24 +234,6 @@ unordered_map<I18, string, enum_hash> i18n::data =
   {I18::PLACEHOLDER, "Placeholder"},
 };
 
-unordered_map<RaceID, i18n::race_names, enum_hash> i18n::races =
-{
-  {RaceID::BARBARIANS, { "Barbarians", "Barbarian"} },
-  {RaceID::BEASTMEN, { "Beastmen", "Beastman"} },
-  {RaceID::DARK_ELVES, { "Dark Elves", "Dark Elf"} },
-  {RaceID::DRACONIANS, { "Draconians", "Draconian"} },
-  {RaceID::DWARVES, { "Dwarves", "Dwarven"} },
-  {RaceID::GNOLLS, { "Gnolls", "Gnoll"} },
-  {RaceID::HALFLINGS, { "Halflings", "Halfling"} },
-  {RaceID::HIGH_ELVES, { "High Elves", "High Elf" } },
-  {RaceID::HIGH_MEN, { "High Men", "High Man"} },
-  {RaceID::KLACKONS, { "Klackons", "Klackon"} },
-  {RaceID::LIZARDMEN, { "Lizardmen", "Lizardman"} },
-  {RaceID::NOMADS, { "Nomads", "Nomad"} },
-  {RaceID::ORCS, { "Orcs", "Orc" } },
-  {RaceID::TROLLS, { "Trolls", "Troll"} }
-};
-
 unordered_map<SkillBase, string, enum_hash> i18n::skills =
 {
   {SkillBase::HERO_AGILITY, "Agility"},

@@ -141,6 +141,7 @@ const std::multimap<UnitID, const Building*> CityMechanics::unitDependsOn = {
   {UnitID::WARLOCKS, Building::WIZARDS_GUILD}
 };*/
 
+/* TODO FIXME: move to yaml
 const std::multimap<RaceID, const Building*> CityMechanics::disallowedBuildingsByRace = {
   {RaceID::BARBARIANS, Building::ANIMISTS_GUILD},{RaceID::BARBARIANS, Building::CATHEDRAL}, {RaceID::BARBARIANS, Building::UNIVERSITY},
   {RaceID::BEASTMEN, Building::FANTASTIC_STABLE}, {RaceID::BEASTMEN, Building::SHIP_YARD}, {RaceID::BEASTMEN, Building::WAR_COLLEGE},
@@ -157,6 +158,7 @@ const std::multimap<RaceID, const Building*> CityMechanics::disallowedBuildingsB
   // ORCS
   {RaceID::TROLLS, Building::FANTASTIC_STABLE}, {RaceID::TROLLS, Building::MINERS_GUILD}, {RaceID::TROLLS, Building::SAGES_GUILD}, {RaceID::TROLLS, Building::SHIP_YARD}, {RaceID::TROLLS, Building::UNIVERSITY}
 };
+ */
 
 const std::map<const Building*, const Building*> CityMechanics::buildingReplacementMap = {
   { Building::BARRACKS, Building::ARMORY },

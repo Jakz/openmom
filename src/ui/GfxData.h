@@ -133,6 +133,7 @@ struct RaceGfxSpec
 {
   I18 name;
   I18 unitName;
+  HouseType houseType;
   SpriteInfo cityWorker;
   SpriteInfo cityFarmer;
   SpriteInfo cityRebel;
