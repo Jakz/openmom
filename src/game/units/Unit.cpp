@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "Game.h"
 
+#include "GfxData.h" // required for name
+
 #include <numeric>
 
 using namespace std;
@@ -159,7 +161,7 @@ s16 Unit::getBonusProperty(Property property) const
 
 const std::string RaceUnit::name() const {
   const RaceUnitSpec* rspec = static_cast<const RaceUnitSpec*>(spec);
-  return i18n::s(rspec->race->ident).unitName + " " + spec->productionName();
+  return i18n::s(GfxData::raceGfxSpec(rspec->race).unitName) + " " + spec->productionName();
 }
 
 

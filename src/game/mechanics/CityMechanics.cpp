@@ -238,11 +238,12 @@ bool CityMechanics::isBuildingAllowedForTerrain(const City *city, const Building
 
 bool CityMechanics::isBuildingAllowedForRace(const City* city, const Building* building)
 {
-  auto it = disallowedBuildingsByRace.equal_range(city->race->ident);
+  // TODO FIXME: reactivate, removed to introduc new races management with YAML
+  /*auto it = disallowedBuildingsByRace.equal_range(city->race->ident);
   
   for (auto iit = it.first; iit != it.second; ++iit)
     if (iit->second == building)
-      return false;
+      return false;*/
 
   return true;
 }
@@ -453,7 +454,7 @@ Upkeep CityMechanics::computeUpkeep(const City* city)
 s16 CityMechanics::baseGold(const City* city)
 {
   // compute base gold income from taxes
-  s16 bgi = (s16)std::floor((city->population/1000) * Player::TAX_RATES[city->owner->getTaxRate()]);
+  s16 bgi = (s16)std::floor((city->population/1000) * city->owner->getTaxRate().goldPerCitizen);
   
   // add bonus gold from resources surrounding the city
   int bonus = 0;
@@ -468,9 +469,8 @@ s16 CityMechanics::baseGold(const City* city)
   bgi += bonus;
   
   // dwarvens double their tax income
-  if (city->race->ident == RaceID::DWARVES)
-    bgi *= 2;
-  
+  bgi *= city->race->taxIncomeMultiplier;
+
   return bgi;
 }
 
@@ -497,7 +497,7 @@ s16 CityMechanics::computeGold(const City *city)
 
 s16 CityMechanics::baseProduction(const City *city)
 {
-  int multiplier = city->race->ident == RaceID::KLACKONS || city->race->ident == RaceID::DWARVES ? 3 : 2;
+  int multiplier = city->race->baseProduction;
   
   return (city->workers*multiplier) + (s16)std::ceil(city->farmers/2.0);
 }
@@ -550,10 +550,7 @@ s16 CityMechanics::computeMana(const City *city)
   }
   
   // mana bonuses given by racial traits
-  if (city->race->ident == RaceID::DARK_ELVES)
-    totalMana += city->population/1000;
-  else if (city->race->ident == RaceID::BEASTMEN || city->race->ident == RaceID::DRACONIANS || city->race->ident == RaceID::HIGH_ELVES)
-    totalMana += (s16)std::floor((city->population/1000)/2);
+  totalMana += (s16)std::floor((city->population/1000)*city->race->manaProducedPerCitizen);
   
   // mana bonuses given by buildings
   if (city->hasBuilding(Building::SHRINE))
@@ -575,8 +572,7 @@ s16 CityMechanics::computeMana(const City *city)
   bonus += (s16)std::floor(resourceBonus(city, Resource::MITHRIL, 1));
   
   // dwarvens gets double bonuses from these resources
-  if (city->race->ident == RaceID::DWARVES)
-    bonus *= 2;
+  bonus *= city->race->miningBonusMultiplier;
   
   return totalMana + bonus;
 }
@@ -668,7 +664,8 @@ s16 CityMechanics::computeMaxPopulationForTile(const Tile* tile)
 
 s16 CityMechanics::computeUnrest(const City *city)
 {
-  
+  // TODO: finish
+  return 0;
 }
 
 s16 CityMechanics::computeMaxPopulation(const City *city)
@@ -683,12 +680,14 @@ s16 CityMechanics::computeMaxPopulation(const City *city)
   return std::min(static_cast<int>(std::ceil(maxPop)), 25);
 }
 
-void CityMechanics::partitionPopulation(City *city)
+void CityMechanics::partitionPopulation(City* city)
 {
-  int foodPerPopulation = (city->race->ident == RaceID::HALFLINGS) || city->hasBuilding(Building::ANIMISTS_GUILD) ? 3 : 2;
+  // TODO: check why this was done with Animists' Guild
+  //int foodPerPopulation = (city->race->ident == RaceID::HALFLINGS) || city->hasBuilding(Building::ANIMISTS_GUILD) ? 3 : 2;
+  int foodPerCitizen = city->race->foodProductionPerFarmer;
   
   /* TODO: for now it just removes required farmers and set the remainders half workers and half farmers */
-  city->reservedPopulation =  city->necessaryFood / foodPerPopulation;
+  city->reservedPopulation =  city->necessaryFood / foodPerCitizen;
   city->farmers = (city->population/1000 - city->reservedPopulation)/2;
   city->workers = (city->population/1000 - city->reservedPopulation)/2;
   city->unrest = 0;

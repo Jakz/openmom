@@ -65,6 +65,7 @@ class YAML_CPP_API Node {
   operator int32_t() const { return this->as<int32_t>(); }
   operator int16_t() const { return this->as<int16_t>(); }
   operator uint16_t() const { return this->as<uint16_t>(); }
+  operator float() const { return this->as<float>(); }
   const std::string& asString() const { return this->Scalar(); }
   operator const std::string&() const { return this->Scalar(); }
   template<typename T> T getOrDefault(const char* key, T def) const { return operator[](key).IsDefined() ? operator[](key).as<T>() : def; }

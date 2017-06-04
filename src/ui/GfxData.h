@@ -131,6 +131,8 @@ struct UpkeepSymbolSpec
 
 struct RaceGfxSpec
 {
+  I18 name;
+  I18 unitName;
   SpriteInfo cityWorker;
   SpriteInfo cityFarmer;
   SpriteInfo cityRebel;
@@ -284,7 +286,6 @@ public:
   
   static const PlayerGfxSpec& playerGfxSpec(PlayerColor color) { return playerSpecs.find(color)->second; }
   static const WizardGfxSpec& wizardGfxSpec(WizardID wizard) { return wizardSpecs.find(wizard)->second; }
-  static const RaceGfxSpec& raceGfxSpec(RaceID race) { return raceSpecs.find(race)->second; }
   static const RaceHouseGfxSpec& raceHouseGfxSpec(HouseType race) { return raceHouseSpecs.find(race)->second; }
 
   static const SchoolGfxSpec& schoolGfxSpec(School school) { return schoolSpecs.find(school)->second; }
@@ -294,6 +295,7 @@ public:
   
   static const UnitPropGfxMap& propGfx() { return unitPropSpecs; }
   
+  static const RaceGfxSpec& raceGfxSpec(const Race* race) { return gfxDataFor<const Race*, RaceGfxSpec>(race); }
   static const UnitGfxSpec& unitGfx(const UnitSpec* spec) { return gfxDataFor<const UnitSpec*, UnitGfxSpec>(spec); }
   
   template<typename K, typename V> static const V& gfxDataFor(K k) { return containerFor<K,V>().find(k)->second; }

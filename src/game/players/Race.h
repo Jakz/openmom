@@ -40,13 +40,20 @@ class Race
 {
   private:
     static const Race races[];
-  
-  
+
   public:
-    const RaceID ident;
+    //const RaceID ident;
     const HouseType houseType;
+  
+    const s16 baseProduction;
+    const float taxIncomeMultiplier;
+    const float miningBonusMultiplier;
+    const float manaProducedPerCitizen;
+    const s16 foodProductionPerFarmer;
+  
     const s16 growthBonus;
     const float outpostGrowthChance;
+  
     const char* cityNames[20];
   
     const std::string& name() const;

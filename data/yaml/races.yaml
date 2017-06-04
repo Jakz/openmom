@@ -1,15 +1,108 @@
 races:
-  - ident: barbarians
-    cityGrowthModifier: 20
-    outpostGrowthChance: 0.15
+  - identifier: barbarians
+    city_growth_modifier: 20
+    outpost_growth_chance: 0.15
+    base_production: 2 # dwarves and klackons 3
+    food_production_per_farmer: 2 # halflings 3
+    tax_income_multiplier: 1.0 # dwarves 2.0
+    mining_bonus_multiplier: 1.0 # dwarves 2.0
+    mana_produced_per_citizen: 0.0 # high elves, beastmen, draconians 0.5 / dark elves 1.0
+    city_names: [ Norport, Bradenburg, Bromburg, Bamburg,
+      Burglitz, Deventor, Danzig, Freiburg,
+      Flensburg, Hamburg, Hannover, Konstanz
+      Kufstein, Linz, Strassburg, Rostock
+      Schleswig, Stettin, Zwolle, Soest ]
     visuals:
+      house_type: normal  
       graphics:
-        house_type: normal
         worker: [lbx, backgrnd, 45]
         farmer: [lbx, backgrnd, 59]
         rebel: [lbx, backgrnd, 74]
       i18n: race_name_barbarians
       i18n_unit: race_prefix_barbarians
+      
+  - identifier: beastmen
+    city_growth_modifier: 0
+    outpost_growth_chance: 0.05
+    base_production: 2
+    food_production_per_farmer: 2
+    tax_income_multiplier: 1.0 
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 0.5
+    city_names: [ Kempen, Bantanu, Saradash, Tanquil, 
+      Jagan, Panjang, Mourndar, Turlock, 
+      Tetrehahn, Fortalle, Tier, Raban, 
+      Kraang, Amondon, Carn Sul, Mijnduin, 
+      Durwrath, Lorn, Caradas, Rastenford ]
+    visuals:
+      house_type: normal  
+      graphics:
+        worker: [lbx, backgrnd, 46]
+        farmer: [lbx, backgrnd, 60]
+        rebel: [lbx, backgrnd, 75]
+      i18n: race_name_beastmen
+      i18n_unit: race_prefix_beastmen
+      
+  - identifier: dark_elves
+    city_growth_modifier: -20
+    outpost_growth_chance: 0.02
+    base_production: 2
+    food_production_per_farmer: 2
+    tax_income_multiplier: 1.0 
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 1.0
+    city_names: [ Leer, Nightwath, Tyrlinith, Blademarsh, 
+      Bloodrock, Darkhold, Darkmoor, Hellgate, 
+      Bladewater, Tombstone, Midnight, Jet, 
+      Ebony, Fellwood, Ashwall, Thanelorn, 
+      Anamarathor, Deathford, Blackstone, Adderax ]
+    visuals:
+      house_type: tree  
+      graphics:
+        worker: [lbx, backgrnd, 47]
+        farmer: [lbx, backgrnd, 61]
+        rebel: [lbx, backgrnd, 76]
+      i18n: race_name_dark_elves
+      i18n_unit: race_prefix_dark_elves
+      
+  - identifier: draconians
+    city_growth_modifier: -10
+    outpost_growth_chance: 0.05
+    base_production: 2
+    food_production_per_farmer: 2
+    tax_income_multiplier: 1.0 
+    mining_bonus_multiplier: 1.0
+    mana_produced_per_citizen: 0.5
+    city_names: [ Vallis, Minnlow, Mishran, Alairium, 
+      Dragon Pass, Doomcastle, Solanar, Farmist, 
+      Dragonfall, Parch, Arie, Wynd, 
+      Firepeak, Azurtfall, Fangrock, High Top, 
+      Hillfang, Sorin, Straatus, Icetop ]
+    visuals:
+     house_type: normal  
+     graphics:
+       worker: [lbx, backgrnd, 48]
+       farmer: [lbx, backgrnd, 62]
+       rebel: [lbx, backgrnd, 77]
+     i18n: race_name_dark_elves
+     i18n_unit: race_prefix_dark_elves 
+
+      
+# unrest relation, outer race is the fortress race, inner race is the city race
 unrest_relations:
   - barbarians:
-	  - beastmen: +0.1
+	  - barbarians: 0.0
+    - beastmen: 0.1
+    - dark_elves: 0.1
+    - draconians: 0.1
+    - dwarves: 0.1
+    - gnolls: 0.1
+    - halflings: 0.1
+    - high_elves: 0.1
+    - high_men: 0.1
+    - klackons: 0.2
+    - lizardmen: 0.1
+    - nomads: 0.0
+    - orcs: 0.0
+    - trolls: 0.1
+

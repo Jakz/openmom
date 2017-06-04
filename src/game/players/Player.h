@@ -40,7 +40,7 @@ public:
 
 struct TaxRate
 {
-  s16 halfGoldPerCitizen;
+  float goldPerCitizen;
   float unrestPercent;
 };
 
@@ -108,7 +108,6 @@ public:
   
   void spendGold(s32 amount) { goldPool -= amount; }
   
-  u8 getTaxRate() const{ return taxRate; }
   s32 totalGoldPool() const { return goldPool; }
   s32 totalManaPool() const { return manaPool; }
   
@@ -184,9 +183,7 @@ public:
   const Wizard& wizard;
   const PlayerColor color;
   const Race* const race;
-  
-  static constexpr const float TAX_RATES[] = {0.5f,1.0f,1.5f,2.0f,2.5f,3.0f};
-  
+    
   friend class PlayerMechanics;
 };
 

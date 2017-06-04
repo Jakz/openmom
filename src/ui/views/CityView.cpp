@@ -144,7 +144,7 @@ void CityView::draw()
   
   Fonts::drawString(cityName, FontFaces::Huge::GOLD, 104, 2, ALIGN_CENTER);
   
-  const auto& labourGfx = GfxData::raceGfxSpec(city->race->ident);
+  const auto& labourGfx = GfxData::raceGfxSpec(city->race);
   
   int popX = 4, reqFarmers = city->reservedPopulation;
   for (int i = 0; i < (city->population / 1000); ++i)
@@ -196,7 +196,7 @@ void CityView::draw()
   }
   
   /* draw city info: race and population */
-  Fonts::drawString(i18n::s(city->race->ident).name, FontFaces::Small::YELLOW, 5, 18, ALIGN_LEFT);
+  Fonts::drawString(i18n::s(GfxData::raceGfxSpec(city->race).name), FontFaces::Small::YELLOW, 5, 18, ALIGN_LEFT);
   //TODO: localize digits
   Fonts::drawString(Fonts::format("Population: %s (+%d)", strings::groupDigits(city->population).c_str(), city->growthRate), FontFaces::Small::YELLOW, 209, 18, ALIGN_RIGHT);
   

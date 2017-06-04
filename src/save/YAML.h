@@ -30,5 +30,6 @@ public:
   static void parseSkills();
   static void parseSpells();
   static void parseUnits();
+  static void parseRaces();
   static void parseLevels();
 };

@@ -17,8 +17,6 @@
 
 using namespace std;
 
-constexpr const float Player::TAX_RATES[];
-
 FogMap::FogMap(Player* player, u16 w, u16 h) : player(player), w(w), h(h), map{new bool**[PLANE_COUNT]}
 {
   for (int i = 0; i < PLANE_COUNT; ++i)
@@ -124,7 +122,7 @@ void Player::refreshArmies()
 const TaxRate& Player::getTaxRate()
 {
   //TODO: manage
-  static const TaxRate rate = {2, 0.2f};
+  static const TaxRate rate = {0.5f, 0.2f};
   return rate;
 }
 

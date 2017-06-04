@@ -16,17 +16,15 @@
 
 using namespace std;
 
-template<> gfx_map<const Skill*, SkillGfxSpec>& GfxData::containerFor<const Skill*, SkillGfxSpec>()
-{
-  static gfx_map<const Skill*, SkillGfxSpec> skillfGfxSpec;
-  return skillfGfxSpec;
+#define DEFINE_GFX_MAP(__key__, __value__) \
+template<> gfx_map<__key__, __value__>& GfxData::containerFor<__key__, __value__>() { \
+  static gfx_map<__key__, __value__> map; \
+  return map; \
 }
 
-template<> gfx_map<const UnitSpec*, UnitGfxSpec>& GfxData::containerFor<const UnitSpec*, UnitGfxSpec>()
-{
-  static gfx_map<const UnitSpec*, UnitGfxSpec> unitGfxSpec;
-  return unitGfxSpec;
-}
+DEFINE_GFX_MAP(const Skill*, SkillGfxSpec);
+DEFINE_GFX_MAP(const UnitSpec*, UnitGfxSpec);
+DEFINE_GFX_MAP(const Race*, RaceGfxSpec);
 
 #pragma mark Unit Props
 
@@ -152,7 +150,7 @@ decltype(GfxData::playerSpecs) GfxData::playerSpecs = {
   { PlayerColor::YELLOW, { LSI(MAGIC, 5), LSI(MAPBACK, 18), LSI(MAPBACK, 67), { LSI(MAGIC, 72), LSI(MAGIC, 73), LSI(MAGIC, 74) } } },
   { PlayerColor::NEUTRAL, { LSI_PLACEHOLD, LSI(MAPBACK, 19), LSI_PLACEHOLD, { LSI_PLACEHOLD, LSI_PLACEHOLD, LSI_PLACEHOLD } } }
 };
-
+/*
 decltype(GfxData::raceSpecs) GfxData::raceSpecs = {
   { RaceID::BARBARIANS, { LSI(BACKGRND, 45), LSI(BACKGRND, 59), LSI(BACKGRND, 74) } },
   { RaceID::BEASTMEN, { LSI(BACKGRND, 46), LSI(BACKGRND, 60), LSI(BACKGRND, 75) } },
@@ -168,7 +166,7 @@ decltype(GfxData::raceSpecs) GfxData::raceSpecs = {
   { RaceID::NOMADS, { LSI(BACKGRND, 56), LSI(BACKGRND, 70), LSI(BACKGRND, 85) } },
   { RaceID::ORCS, { LSI(BACKGRND, 57), LSI(BACKGRND, 71), LSI(BACKGRND, 86) } },
   { RaceID::TROLLS, { LSI(BACKGRND, 58), LSI(BACKGRND, 72), LSI(BACKGRND, 87) } },
-};
+};*/
 
 decltype(GfxData::raceHouseSpecs) GfxData::raceHouseSpecs = {
   { HouseType::NORMAL, { LSI(BACKGRND, 37), LSI(BACKGRND, 34), LSI(CITYSCAP, 25), LSI(CITYSCAP, 42), LSI(CMBTCITY, 2) } },

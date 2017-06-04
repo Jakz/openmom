@@ -193,6 +193,18 @@ template<> Target yaml::parse(const N& node)
 }
 
 
+template<> HouseType yaml::parse(const N& node)
+{
+  static const std::unordered_map<std::string, HouseType> mapping = {
+    { "mud", HouseType::MUD },
+    { "tree", HouseType::TREE },
+    { "normal", HouseType::NORMAL }
+  };
+  
+  FETCH_OR_FAIL("HouseType", mapping, node);
+}
+
+
 template<> School yaml::parse(const N& node)
 {
   static const std::unordered_map<std::string, School> mapping = {
@@ -587,6 +599,26 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
   return data;
 }
 
+#pragma mark Race
+template<> std::pair<const Race*, RaceGfxSpec> yaml::parse(const N& node)
+{
+  assert(node.IsMap());
+
+  std::pair<const Race*, RaceGfxSpec> data;
+  
+  s16 cityGrowthModifier = node["city_growth_modifier"];
+  float outpostGrowthChance = node["outpost_growth_chance"];
+  HouseType houseType = parse<HouseType>(node["house_type"]);
+  
+  
+  /* parse graphics */
+  data.second.cityWorker = parse<SpriteInfo>(node["visuals"]["graphics"]["worker"]);
+  data.second.cityFarmer = parse<SpriteInfo>(node["visuals"]["graphics"]["farmer"]);
+  data.second.cityRebel = parse<SpriteInfo>(node["visuals"]["graphics"]["rebel"]);
+  
+  return data;
+}
+
 void yaml::parseLevels()
 {
   N file = parse("levels.yaml");
@@ -672,6 +704,20 @@ void yaml::parseUnits()
     GfxData::registerData(unit.first, unit.second);
   }
 
+}
+
+void yaml::parseRaces()
+{
+  N file = parse("races.yaml");
+  auto races = file["races"];
+  
+  for (const auto& yrace : races)
+  {
+    const std::string& identifier = getIdentifier(yrace);
+    const std::pair<const Race*, RaceGfxSpec> race = parse<std::pair<const Race*, RaceGfxSpec>>(yrace);
+    Data::registerData(identifier, race.first);
+    GfxData::registerData(race.first, race.second);
+  }
 }
 
 void yaml::parseLocalization()

@@ -26,7 +26,7 @@ OutpostView::OutpostView(ViewManager* gvm) : View(gvm)
 void OutpostView::draw()
 {
   Gfx::draw(LSI(BACKGRND, 32), 30, 50); // bg
-  Fonts::drawString(i18n::s(city->race->ident).name, FontFaces::Small::YELLOW, 35, 72, ALIGN_LEFT);
+  Fonts::drawString(i18n::s(GfxData::raceGfxSpec(city->race).name), FontFaces::Small::YELLOW, 35, 72, ALIGN_LEFT);
   
   auto& houseSpec = GfxData::raceHouseGfxSpec(city->race->houseType);
 
