@@ -91,7 +91,7 @@ void InfoMenuView::mainMenuClicked(int index)
       
     case TAX_COLLECTOR:
     {
-      
+      break;
     }
       
     case MIRROR:

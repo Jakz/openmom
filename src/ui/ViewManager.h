@@ -15,6 +15,7 @@ class ArmiesItemsView;
 class ArmiesView;
 class ArmyView;
 class CityView;
+class CitiesView;
 class CombatView;
 class ItemCraftView;
 class MagicView;
@@ -83,6 +84,7 @@ public:
   ArmiesItemsView* armiesItemsView();
   ArmiesView* armiesView();
   ArmyView* armyView();
+  CitiesView* citiesView();
   CityView* cityView();
   CombatView* combatView();
   ItemCraftView* itemCraftView();

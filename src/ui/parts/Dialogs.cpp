@@ -75,7 +75,7 @@ void InfoMenu::draw() const
   const auto& title = _delegate->title();
   Fonts::drawString(title, FontFaces::Serif::GOLD, b.x + s.w/2, b.y + 3, ALIGN_CENTER); // TODO: check font face
   
-  
+  //TODO: check if button background are in correct order and such
   for (u16 index = 0; index < _delegate->buttonCount(); ++index)
   {
     int frame = hovered == index ? 1 : 0;

@@ -12,6 +12,7 @@
 #include "ArmiesItemsView.h"
 #include "ArmiesView.h"
 #include "ArmyView.h"
+#include "CitiesView.h"
 #include "CityView.h"
 #include "CombatView.h"
 #include "ItemCraftView.h"
@@ -44,6 +45,7 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_ARMIES] = new ArmiesView(this);
   views[VIEW_ARMY] = new ArmyView(this);
   views[VIEW_CITY] = new CityView(this);
+  views[VIEW_CITIES] = new CitiesView(this);
   views[VIEW_COMBAT] = new CombatView(this);
   views[VIEW_ITEM_CRAFT] = new ItemCraftView(this);
   views[VIEW_MAGIC] = new MagicView(this);
@@ -70,6 +72,7 @@ AlchemyView* ViewManager::alchemyView() { return static_cast<AlchemyView*>(views
 ArmiesItemsView* ViewManager::armiesItemsView() { return static_cast<ArmiesItemsView*>(views[VIEW_ARMIES_ITEMS]); }
 ArmiesView* ViewManager::armiesView() { return static_cast<ArmiesView*>(views[VIEW_ARMIES]); }
 ArmyView* ViewManager::armyView() { return static_cast<ArmyView*>(views[VIEW_ARMY]); }
+CitiesView* ViewManager::citiesView() { return static_cast<CitiesView*>(views[VIEW_CITIES]); }
 CityView* ViewManager::cityView() { return static_cast<CityView*>(views[VIEW_CITY]); }
 CombatView* ViewManager::combatView() { return static_cast<CombatView*>(views[VIEW_COMBAT]); }
 ItemCraftView* ViewManager::itemCraftView() { return static_cast<ItemCraftView*>(views[VIEW_ITEM_CRAFT]); }

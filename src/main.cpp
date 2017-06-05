@@ -122,7 +122,7 @@ int main(int argc, char * arg[])
   //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
 
   SDL::gvm->switchView(VIEW_MAIN);
-  SDL::gvm->switchOverview(VIEW_INFO_MENU);
+  //SDL::gvm->switchOverview(VIEW_INFO_MENU);
 
   //SDL::gvm->switchView(VIEW_ITEM_CRAFT);
   
