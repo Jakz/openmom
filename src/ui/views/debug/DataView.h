@@ -23,7 +23,7 @@ private:
   int page;
   Mode mode;
   
-  DrawQueue<BasicDrawEntry> entries;
+  BasicDrawQueue entries;
   std::vector<std::string> keys;
   
   void draw() override;

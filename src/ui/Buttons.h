@@ -116,6 +116,8 @@ struct TextInfo
   
   TextInfo() = default;
   TextInfo(const std::string& label, const FontSpriteSheet* font) : label(label), font(font) { }
+  TextInfo(const std::string& label, Point position) : label(label), font(nullptr), position(position) { }
+
 };
 
 class Button : public Clickable
