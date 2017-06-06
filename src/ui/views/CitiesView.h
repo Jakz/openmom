@@ -41,7 +41,7 @@ public:
   CitiesView(ViewManager* gvm);
   
   void activate() override;
-  void deactivate() override { offset = 0; }
+  void deactivate() override;
   
   bool mouseMoved(u16 x, u16 y, MouseButton b) override;
   
