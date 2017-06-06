@@ -88,6 +88,7 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::MONSTER);
   lbx::Repository::loadLBX(LBXID::NEWGAME);
   lbx::Repository::loadLBX(LBXID::PORTRAIT);
+  lbx::Repository::loadLBX(LBXID::RELOAD);
   lbx::Repository::loadLBX(LBXID::RESOURCE);
   lbx::Repository::loadLBX(LBXID::SCROLL);
   lbx::Repository::loadLBX(LBXID::SPECFX);

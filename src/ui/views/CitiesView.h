@@ -9,6 +9,8 @@
 #pragma once
 #include "View.h"
 
+#include <vector>
+
 class ViewManager;
 
 class City;
@@ -18,7 +20,6 @@ class CitiesView : public View
 private:
   enum
   {
-    ITEMS,
     OK,
     PREV1,
     NEXT1,
@@ -34,10 +35,12 @@ private:
   void draw() override;
   void drawPost() override { }
   
+  std::vector<const City*> cities;
+  
 public:
   CitiesView(ViewManager* gvm);
   
-  void activate() override { updateScrollButtons(); }
+  void activate() override;
   void deactivate() override { offset = 0; }
   
   bool mouseMoved(u16 x, u16 y, MouseButton b) override;

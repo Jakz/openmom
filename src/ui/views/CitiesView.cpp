@@ -28,16 +28,15 @@ CitiesView::CitiesView(ViewManager* gvm) : View(gvm), offset(0), city(nullptr)
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[ITEMS] = Button::buildBistate("Items", 273, 163, LSI(ARMYLIST, 3))->setAction([gvm](){ gvm->switchOverview(VIEW_ARMIES_ITEMS); });
-  buttons[OK] = Button::buildBistate("Ok", 273, 182, LSI(ARMYLIST, 4))->setAction([gvm](){ gvm->switchView(VIEW_MAIN); });
+  buttons[OK] = Button::buildBistate("Ok", 239, 182, LSI(RELOAD, 22))->setAction([gvm](){ gvm->switchView(VIEW_MAIN); });
   // TODO: arrows buttons
   
   auto lambdaScrollDown = [this](){ scrollDown(); };
   auto lambdaScrollUp = [this](){ scrollUp(); };
 
   
-  buttons[PREV1] = Button::buildTristate("Prev1", 60, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
-  buttons[NEXT1] = Button::buildTristate("Next1", 60, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
+  buttons[PREV1] = Button::buildTristate("Prev1", 20, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
+  buttons[NEXT1] = Button::buildTristate("Next1", 20, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
   buttons[PREV2] = Button::buildTristate("Prev2", 259, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
   buttons[NEXT2] = Button::buildTristate("Next1", 250, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
 }
@@ -50,22 +49,28 @@ void CitiesView::updateScrollButtons()
   buttons[NEXT2]->activateIf(offset + 6 + 1 < player->getArmies().size());
 }
 
+void CitiesView::activate()
+{
+  std::copy(player->getCities().begin(), player->getCities().end(), std::back_inserter(cities));
+  
+  if (!cities.empty())
+    city = *cities.begin();
+}
+
 void CitiesView::draw()
 {
-  Gfx::draw(LSI(ARMYLIST, 0), 0, 0);
+  Gfx::draw(LSI(RELOAD, 21), 0, 0);
   
   /* fill minimap background */
-  Gfx::fillRect(86, 164, 48, 32, Gfx::mainPalette->get(1));
+  Gfx::fillRect(42, 149, 49, 10, Gfx::mainPalette->get(1));
   
   if (city)
   {
     // draw minimap
-    // TODO: size: 48, 32 but in original it's 48,33
-    // offset 164, 86
     const Position& apos = city->getPosition();
-    Viewport::drawMicroMap(player, 86, 164, 48, 32, apos.x, apos.y, apos.plane);
+    Viewport::drawMicroMap(player, 42, 149, 49, 46, apos.x, apos.y, apos.plane);
     if (Gfx::fticks%4 == 0)
-      Gfx::drawPixel({255,255,255}, 86 + 48/2, 164 + 32/2);
+      Gfx::drawPixel({255,255,255}, 42 + 49/2, 149 + 46/2);
     
     // draw city? name
     // TODO: space dello SmallCompactFont è 1 in meno di quanto è nel gioco originale
