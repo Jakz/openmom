@@ -16,4 +16,3 @@ City::City(Player *owner, std::string name, u16 population, Position position) :
   production = Building::HOUSING;
   productionPool = 0;
 }
-

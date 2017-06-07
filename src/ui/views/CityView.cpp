@@ -229,8 +229,7 @@ void CityView::draw()
     
     /* compute and draw missing turns to complete production */
     /* TODO: localize */
-    int prodToDo = (production->productionCost() - city->productionPool);
-    int turns = prodToDo == 0 ? 1 : (prodToDo/city->work + (prodToDo%city->work == 0 ? 0 : 1));
+    int turns = g->cityMechanics.turnsRequiredForProduction(city);
     Fonts::drawString(Fonts::format("%d Turn%s", turns, (turns == 1 ? "" : "s")), FontFaces::Small::YELLOW, 316, 139, ALIGN_RIGHT);
     
     /* draw production coins */

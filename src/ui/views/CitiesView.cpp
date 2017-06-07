@@ -94,10 +94,24 @@ void CitiesView::draw()
       const std::string& cityName = city->getName();
       const std::string& raceName = i18n::s(GfxData::raceGfxSpec(city->race).unitName);
       const std::string population = std::to_string(5/*city->getPopulation()/1000*/);
+      const std::string gold = std::to_string(8);
+      const std::string production = std::to_string(9);
+      const Productable* productable = city->getProductable();
+      const std::string productionTurns = std::to_string(g->cityMechanics.turnsRequiredForProduction(city));
+
       
       Fonts::drawString(cityName, base.x, base.y, ALIGN_LEFT);
       Fonts::drawString(raceName, base.x + 56, base.y, ALIGN_LEFT);
       Fonts::drawString(population, base.x + 119, base.y, ALIGN_RIGHT);
+      Fonts::drawString(gold, base.x + 139, base.y, ALIGN_RIGHT);
+      Fonts::drawString(production, base.x + 159, base.y, ALIGN_RIGHT);
+
+      if (productable)
+      {
+        Fonts::drawString(productable->productionName(), base.x + 165, base.y, ALIGN_LEFT);
+        Fonts::drawString(productionTurns, base.x + 258, base.y, ALIGN_RIGHT);
+
+      }
     }
   }
   
@@ -109,7 +123,7 @@ void CitiesView::draw()
     const Position& apos = city->getPosition();
     Viewport::drawMicroMap(player, 42, 162, 49, 33, apos.x, apos.y, apos.plane, Gfx::mainPalette->get(1));
     if (Gfx::fticks%4 == 0)
-      Gfx::drawPixel({255,255,255}, 42 + 49/2, 149 + 46/2);
+      Gfx::drawPixel({255,255,255}, 42 + 49/2, 162 + 33/2);
     
     // draw city? name
     Fonts::drawString(/*unit->name().toUpper()*/"LIZARDMAN SWORDSMEN", 187, 160, ALIGN_CENTER);

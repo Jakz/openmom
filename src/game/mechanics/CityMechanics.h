@@ -74,6 +74,8 @@ public:
   s16 baseProduction(const City* city);
   s16 baseGrowthRate(const City* city);
   
+  u16 turnsRequiredForProduction(const City* city);
+  
   bool canCityBeBuiltOnTile(Tile* tile);
   
   void updateValues(City* city)

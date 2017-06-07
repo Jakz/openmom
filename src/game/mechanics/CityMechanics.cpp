@@ -780,7 +780,18 @@ void CityMechanics::updateProduction(City *c)
   }
 }
 
-
+u16 CityMechanics::turnsRequiredForProduction(const City* city)
+{
+  // TODO: if housing or trade goods should return 1?
+  
+  if (!city->production)
+    return 0;
+  else
+  {
+    int missing = city->production->productionCost() - city->productionPool;
+    return std::min(1, Util::roundWithMod(missing, city->work));
+  }
+}
 
 void CityMechanics::growCity(City *c)
 {
