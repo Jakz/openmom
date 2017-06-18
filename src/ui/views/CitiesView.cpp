@@ -70,9 +70,20 @@ void CitiesView::deactivate()
 
 void CitiesView::draw()
 {
+  Gfx::draw(LSI(RELOAD, 21), 0, 0);
+
+  std::string title = Fonts::format("The Cities Of %s", player->name.c_str()); //TODO: localize and check if player name or wizard name
+  Fonts::drawString(title, FontFaces::Serif::GOLD, WIDTH/2 - 1, 2, ALIGN_CENTER); //TODO: correct font (with double shadow)
+  
   Fonts::setFace(FontFaces::Small::RED_PALE, 0, 1);
   
-  Gfx::draw(LSI(RELOAD, 21), 0, 0);
+  static const char* headers[] = { "Name", "Race", "Pop", "Gold", "Prd", "Producing", "Time" };
+  static const s16 headerX[] = { 0, 56, 104, 122, 144, 165, 240 };
+  static const Point headerBase = Point(31, 16);
+  
+  for (size_t i = 0; i < sizeof(headers)/sizeof(headers[0]); ++i)
+    Fonts::drawString(headers[i], headerBase.x + headerX[i], headerBase.y, ALIGN_LEFT);
+  
   
   //static const s16 headerColumns [] = {
   
