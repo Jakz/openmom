@@ -64,6 +64,9 @@ public:
   
   bool meldNode(const Army* army, const Position& position);
   
+  Tile* getTile(const Position& position);
+  Army* getArmyAtTile(const Position& position);
+  
   bool startCast(Player* player, const Spell* spell);
   void castSpell(Unit* unit, const Spell* spell, const Player* player);
   bool castSpell(Unit* unit, Player* player, bool combat);

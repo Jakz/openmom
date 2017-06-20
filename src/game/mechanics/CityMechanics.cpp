@@ -664,10 +664,53 @@ s16 CityMechanics::computeMaxPopulationForTile(const Tile* tile)
   return std::min(static_cast<int>(std::ceil(maxPop)), 25);
 }
 
+float CityMechanics::getRacialUnrest(const Race *cityRace, const Race *ownerRace)
+{
+  return 0.1f;
+}
+
 s16 CityMechanics::computeUnrest(const City *city)
 {
-  // TODO: finish
-  return 0;
+  float globalMultiplier = 1.0f;
+  float percentUnrest = 0.0f;
+  s16 flatUnrest = 0;
+  
+  /* unrest given by competition between city race and fortress city race */
+  float racialUnrest = getRacialUnrest(city->race, city->owner->cityWithFortress()->race);
+  /* unrest given by taxes */
+  float taxUnrest = city->owner->getTaxRate().unrestPercent;
+  
+  percentUnrest = std::max(0.0f, racialUnrest + taxUnrest);
+  
+  /* subtract a flat unrest for each 2 normal units in city */
+  const Army* army = game->getArmyAtTile(city->getPosition());
+  if (army)
+  {
+    const auto normalUnits = army->getUnits([](const Unit* unit) { return !unit->isFantastic(); });
+    s16 suppressionFromArmy = normalUnits.size() / 2;
+    
+    flatUnrest -= suppressionFromArmy;
+  }
+  
+  /*
+   dark rituals +1
+   cursed lands +1
+   perstilence +2
+   famine +25% (on global multiplier? )
+   great wasting +1
+   armageddon +2 ( not cumulative with great wasting )
+   
+   shrine parthenon animist's guild -1
+   oracle -2
+   temple cathedral -1 (-2 with divine power of infernal power retort )
+   
+   just cause -1 all towns
+   stream of life forces unrest to 0
+   gaia's blessing -2
+   */
+  
+  /* ( (population * percentUnrest) + flatUnrest ) * globalMultiplier */
+  return std::max(0, (int)std::floor(((city->getPopulationInThousands()*percentUnrest) + flatUnrest) * globalMultiplier));
 }
 
 s16 CityMechanics::computeMaxPopulation(const City *city)

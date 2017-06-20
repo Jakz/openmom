@@ -90,6 +90,7 @@ public:
   s32 getKnowledge() const { return knowledge; }
   s32 getWork() const { return work; }
   
+  u16 getPopulationInThousands() const { return getPopulation() / 1000; }
   u16 getPopulation() const { return population; }
   u16 getMaxPopulation() const { return maxPopulation; }
   

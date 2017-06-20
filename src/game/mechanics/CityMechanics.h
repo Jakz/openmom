@@ -62,6 +62,7 @@ public:
   s16 computeMana(const City* city);
   s16 computeKnowledge(const City* city);
   
+  float getRacialUnrest(const Race* cityRace, const Race* ownerRace);
   s16 computeMaxPopulationForTile(const Tile* tile);
   s16 computeMaxPopulation(const City* city);
   s16 computeUnrest(const City* city);

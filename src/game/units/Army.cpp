@@ -18,6 +18,13 @@ Army::Army(Player* owner, initializer_list<Unit*> units) : owner(owner), isPatro
     updateMovementType();
 }
 
+const unit_list Army::getUnits(std::function<bool(const Unit*)> predicate) const
+{
+  unit_list units;
+  std::copy_if(this->units.begin(), this->units.end(), std::back_inserter(units), predicate);
+  return units;
+}
+
 void Army::setRoute(Route* route)
 {
   this->route.reset(route);

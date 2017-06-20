@@ -124,6 +124,7 @@ public:
   const size_t size() const { return units.size(); }
   Unit* get(u16 index) const { return *std::next(units.begin(), index); }
   const unit_list& getUnits() { return units; }
+  const unit_list getUnits(std::function<bool(const Unit*)> predicate) const;
   
   Player* getOwner() const { return owner; }
   

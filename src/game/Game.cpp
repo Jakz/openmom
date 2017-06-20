@@ -164,6 +164,17 @@ void Game::dummyInit()
   init();
 }
 
+Tile* Game::getTile(const Position& position)
+{
+  return world->get(position);
+}
+
+Army* Game::getArmyAtTile(const Position& position)
+{
+  const Tile* tile = getTile(position);
+  return tile ? tile->army : nullptr;
+}
+
 void Game::placeArmy(Army* army, const Position& position)
 {
   world->get(position)->placeArmy(army);

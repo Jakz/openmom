@@ -98,6 +98,8 @@ public:
     experience.increaseExperience(getProperty(Property::XP));
   }
   
+  // TODO: more elaborate check according to chaos channels and things, possibly trhough a PropertyEffect
+  bool isFantastic() const { return spec->type == UnitType::FANTASTIC; }
   const School school() const { return School::CHAOS; } // TODO
   
   SkillSet* skills() { return &_skills; }
