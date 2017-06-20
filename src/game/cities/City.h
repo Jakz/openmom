@@ -88,6 +88,7 @@ public:
   Upkeep getUpkeep() const { return upkeep; }
   Upkeep getProduction() const { return Upkeep(gold, mana, food); }
   s32 getKnowledge() const { return knowledge; }
+  s32 getWork() const { return work; }
   
   u16 getPopulation() const { return population; }
   u16 getMaxPopulation() const { return maxPopulation; }

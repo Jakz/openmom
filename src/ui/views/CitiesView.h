@@ -37,6 +37,13 @@ private:
   
   std::vector<const City*> cities;
   
+  Point baseForRow(u32 index);
+  
+  void drawRow(u32 index, const City* city);
+  void highlightRow(u32 index);
+  
+  s32 hoveredRow(int_type y);
+  
 public:
   CitiesView(ViewManager* gvm);
   
@@ -44,6 +51,7 @@ public:
   void deactivate() override;
   
   bool mouseMoved(u16 x, u16 y, MouseButton b) override;
+  bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   
   void scrollDown() { ++offset; }
   void scrollUp() { --offset; }

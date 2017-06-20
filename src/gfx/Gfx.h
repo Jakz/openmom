@@ -93,6 +93,7 @@ public:
 
   static void alphaBlend(const SDL_Rect& r, Color color);
 
+  static void fillRect(const Rect& rect, Color color) { fillRect(rect.origin.x, rect.origin.y, rect.size.w, rect.size.h, color); }
   static void fillRect(u16 x, u16 y, u16 w, u16 h, Color color);
   static void rect(u16 x, u16 y, u16 w, u16 h, Color color);
   static void drawPixel(Color color, u16 x, u16 y);
