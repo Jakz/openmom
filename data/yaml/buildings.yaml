@@ -1,0 +1,12 @@
+buildings:
+  - identifier: builders_hall
+    cost: 60
+    upkeep: [1, 0]
+    requires: none
+    visuals:
+      i18n: building_builders_hall
+      i18desc: building_desc_builders_hall
+      gfx:
+        sprite: [lbx, cityscap, 73]
+        pixel_width: 27
+        slot_size: [2, 3]

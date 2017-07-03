@@ -59,6 +59,12 @@ public:
       assert(false);
     }
   }
+  
+  bool isIntegral() const
+  {
+    std::string v = asString();
+    return std::all_of(v.begin(), v.end(), isdigit);
+  }
 };
 
 template<> void yaml::Node::keyNotFoundError(const int& key) const
@@ -307,6 +313,32 @@ template<> void yaml::parse(const N& node, SpriteInfo& v)
     assert(node.IsSequence());
     if (node[0] == "lbx")
       v = SpriteInfo(parse<LBXID>(node[1]), node[2]);
+    else
+      assert(false);
+  }
+}
+
+template<> Upkeep yaml::parse(const N& node)
+{
+  if (node.asString() == "none")
+    return Upkeep();
+  else
+  {
+    if (node.IsSequence())
+    {
+      if (node.size() == 1)
+        return Upkeep(node[0]);
+      else if (node.size() == 2)
+        return Upkeep(node[0], node[1]);
+      else if (node.size() == 3)
+        return Upkeep(node[0], node[1], node[2]);
+      else
+        assert(false);
+    }
+    else if (node.isIntegral())
+    {
+      return Upkeep(node.as<int>());
+    }
     else
       assert(false);
   }
