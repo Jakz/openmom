@@ -9,7 +9,7 @@
 #ifndef _MAP_MECHANICS_H_
 #define _MAP_MECHANICS_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Army.h"
 
 //enum TileType : u8;

@@ -1,5 +1,5 @@
 //
-//  strings.h
+//  mystrings.h
 //  OpenMoM
 //
 //  Created by Jack on 5/7/17.
@@ -7,9 +7,10 @@
 //
 #pragma once
 
-#include "Common.h"
+#include "common/Common.h"
 
 #include <string>
+#include <vector>
 
 class strings
 {

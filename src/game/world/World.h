@@ -9,7 +9,7 @@
 #ifndef _WORLD_H_
 #define _WORLD_H_
 
-#include "Util.h"
+#include "common/Util.h"
 #include "Tile.h"
 #include "Pathfind.h"
 

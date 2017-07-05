@@ -10,7 +10,7 @@
 #define _BUTTONS_H_
 
 #include "SDL.h"
-#include "Common.h"
+#include "common/Common.h"
 #include "Texture.h"
 
 #include <string>

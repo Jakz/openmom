@@ -12,7 +12,7 @@
 
 #include "Combat.h"
 #include "CombatMap.h"
-#include "Util.h"
+#include "common/Util.h"
 
 using namespace combat;
 

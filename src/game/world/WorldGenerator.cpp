@@ -1,6 +1,6 @@
 #include "WorldGenerator.h"
 
-#include "Util.h"
+#include "common/Util.h"
 
 using namespace std;
 

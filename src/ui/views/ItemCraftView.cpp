@@ -18,7 +18,7 @@
 #include "Player.h"
 #include "LocalPlayer.h"
 
-#include "Util.h"
+#include "common/Util.h"
 
 using namespace items;
 

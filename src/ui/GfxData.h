@@ -9,7 +9,7 @@
 #ifndef _GFX_DATA_H_
 #define _GFX_DATA_H_
 
-#include "Common.h"
+#include "common/Common.h"
 
 #include "Items.h"
 

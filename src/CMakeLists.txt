@@ -1,7 +1,7 @@
 set(srcs ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 
 set(LIBRARY_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/../libs)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "../cmake")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_Image REQUIRED)
@@ -22,7 +22,7 @@ include_directories(
   ${SDL2_IMAGE_INCLUDE_DIR}  
   ${YAML_INCLUDE_DIR}
   .
-  common
+#  common
   game
   game/cities
   game/combat

@@ -8,7 +8,7 @@
 
 #include "MapMechanics.h"
 
-#include "Util.h"
+#include "common/Util.h"
 #include "Game.h"
 #include "Places.h"
 #include "Skill.h"

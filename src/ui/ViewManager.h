@@ -1,7 +1,7 @@
 #ifndef _VIEW_MANAGER_H_
 #define _VIEW_MANAGER_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "EventListener.h"
 #include "Animations.h"
 

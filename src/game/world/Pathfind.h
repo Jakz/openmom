@@ -1,7 +1,7 @@
 #ifndef _PATHFIND_H_
 #define _PATHFIND_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Army.h"
 
 #include <unordered_set>

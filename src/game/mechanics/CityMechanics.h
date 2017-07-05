@@ -2,7 +2,7 @@
 #define _CITY_MECHANICS_H_
 
 #include "City.h"
-#include "Common.h"
+#include "common/Common.h"
 
 #include <map>
 

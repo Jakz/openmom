@@ -9,7 +9,7 @@
 #ifndef _LAIR_MECHANICS_H_
 #define _LAIR_MECHANICS_H_
 
-#include "Common.h"
+#include "common/Common.h"
 
 class Game;
 class Place;

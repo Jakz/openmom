@@ -9,7 +9,7 @@
 #include "Font.h"
 
 #include "Gfx.h"
-#include "strings.h"
+#include "common/mystrings.h"
 
 using namespace std;
 

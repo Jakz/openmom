@@ -1,7 +1,7 @@
 #ifndef _BOOK_VIEW_H_
 #define _BOOK_VIEW_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Spells.h"
 #include "SpellBook.h"
 

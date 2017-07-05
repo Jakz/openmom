@@ -10,7 +10,7 @@
 #include "ColorMap.h"
 #include "City.h"
 #include "Army.h"
-#include "Util.h"
+#include "common/Util.h"
 #include "Game.h"
 #include "GUISettings.h"
 

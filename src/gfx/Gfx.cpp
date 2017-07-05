@@ -10,7 +10,7 @@
 
 #include "Texture.h"
 #include "GfxData.h"
-#include "Util.h"
+#include "common/Util.h"
 #include "SDLHelper.h"
 
 #include "LBX.h"

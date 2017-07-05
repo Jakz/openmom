@@ -8,7 +8,7 @@
 
 #include "LocalPlayer.h"
 
-#include "Util.h"
+#include "common/Util.h"
 #include "World.h"
 #include "Unit.h"
 #include "Game.h"

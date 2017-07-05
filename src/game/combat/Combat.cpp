@@ -8,7 +8,7 @@
 
 #include "Combat.h"
 
-#include "Util.h"
+#include "common/Util.h"
 
 #include "CombatMechanics.h"
 #include "CombatMap.h"

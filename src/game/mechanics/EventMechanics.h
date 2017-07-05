@@ -1,8 +1,8 @@
 #ifndef _EVENT_MECHANICS_H_
 #define _EVENT_MECHANICS_H_
 
-#include "Common.h"
-#include "Util.h"
+#include "common/Common.h"
+#include "common/Util.h"
 
 #include <memory>
 

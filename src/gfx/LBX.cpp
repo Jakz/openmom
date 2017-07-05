@@ -8,14 +8,14 @@
 
 #include "LBX.h"
 
-#include "strings.h"
+#include "common/mystrings.h"
 
 #include "Buildings.h"
 #include "Localization.h"
 #include "Help.h"
 
 #include "Font.h"
-#include "Common.h"
+#include "common/Common.h"
 #include "Gfx.h"
 
 #include <iostream>

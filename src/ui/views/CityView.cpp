@@ -8,7 +8,7 @@
 
 #include "CityView.h"
 
-#include "strings.h"
+#include "common/mystrings.h"
 
 #include "City.h"
 #include "CityScape.h"

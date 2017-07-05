@@ -1,7 +1,7 @@
 #ifndef _SPELLS_H_
 #define _SPELLS_H_
 
-#include "Common.h"
+#include "common/Common.h"
 
 #include "CombatSpells.h"
 

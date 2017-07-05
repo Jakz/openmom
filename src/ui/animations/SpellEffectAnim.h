@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Animations.h"
-#include "Common.h"
+#include "common/Common.h"
 #include "CombatUtils.h"
 
 class SummonSpec;

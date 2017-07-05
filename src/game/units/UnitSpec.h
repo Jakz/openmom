@@ -9,7 +9,7 @@
 #ifndef _UNIT_SPEC_H_
 #define _UNIT_SPEC_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Buildings.h"
 #include "Skill.h"
 #include "Race.h"

@@ -9,7 +9,7 @@
 #ifndef _ANIMATIONS_H_
 #define _ANIMATIONS_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "EventListener.h"
 
 #include "Pathfind.h"

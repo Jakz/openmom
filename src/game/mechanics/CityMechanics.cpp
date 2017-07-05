@@ -17,7 +17,7 @@
 #include "Buildings.h"
 #include "World.h"
 #include "Tile.h"
-#include "Util.h"
+#include "common/Util.h"
 #include "Messages.h"
 
 #include <vector>

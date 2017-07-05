@@ -1,11 +1,11 @@
 //
-//  strings.h
+//  mystrings.h
 //  OpenMoM
 //
 //  Created by Jack on 5/7/17.
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
-#include "strings.h"
+#include "mystrings.h"
 
 #include <numeric>
 

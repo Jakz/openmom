@@ -1,7 +1,7 @@
 #ifndef _ARMY_H_
 #define _ARMY_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Effects.h"
 
 #include <list>

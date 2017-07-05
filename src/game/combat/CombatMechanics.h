@@ -9,7 +9,7 @@
 #ifndef _COMBAT_MECHANICS_H_
 #define _COMBAT_MECHANICS_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Unit.h"
 #include "CombatUtils.h"
 

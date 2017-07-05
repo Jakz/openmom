@@ -16,7 +16,7 @@
 #include "ColorMap.h"
 
 #include "ViewManager.h"
-#include "Util.h"
+#include "common/Util.h"
 
 ConsoleView::ConsoleView(ViewManager* gvm) : View(gvm)
 {

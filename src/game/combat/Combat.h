@@ -1,7 +1,7 @@
 #ifndef _COMBAT_H_
 #define _COMBAT_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Unit.h"
 #include "Army.h"
 #include "CombatUtils.h"

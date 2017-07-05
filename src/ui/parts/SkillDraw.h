@@ -1,7 +1,7 @@
 #ifndef _SKILL_DRAW_H_
 #define _SKILL_DRAW_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Unit.h"
 #include "Buttons.h"
 

@@ -1,7 +1,7 @@
 #ifndef _COMBAT_SPELLS_H_
 #define _COMBAT_SPELLS_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Effects.h"
 #include "UnitSpec.h"
 

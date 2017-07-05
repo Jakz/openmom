@@ -9,7 +9,7 @@
 #ifndef _LOCAL_PLAYER_H_
 #define _LOCAL_PLAYER_H_
 
-#include "Common.h"
+#include "common/Common.h"
 
 #include "Spells.h"
 #include "Army.h"

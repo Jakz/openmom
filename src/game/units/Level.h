@@ -1,7 +1,7 @@
 #ifndef _LEVEL_H_
 #define _LEVEL_H_
 
-#include "Common.h"
+#include "common/Common.h"
 #include "Data.h"
 
 #include "Localization.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "Common.h"
+#include "common/Common.h"
 
 namespace dialogs
 {
