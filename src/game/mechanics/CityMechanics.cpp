@@ -278,6 +278,7 @@ const list<const Building*> CityMechanics::availableBuildings(const City* city)
 }
 
 
+// FIXME: something is wrong here, must be redesigned to use yaml in any case
 list<const Productable*> CityMechanics::itemsUnlockedByBuilding(const Building* building, const City *city)
 {
   LOGD3("[city] computing unlocked entries by %s", i18n::c(building->name));
@@ -332,6 +333,8 @@ list<const Productable*> CityMechanics::itemsUnlockedByBuilding(const Building* 
         items.push_back(unit);
   }
   // TODO: check behavior
+
+  items.erase(std::unique(items.begin(), items.end()), items.end());
 
   return items;
 }

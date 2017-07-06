@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/Common.h"
+#include "platform/Path.h"
 #include <string>
 
 namespace YAML { class Node; }
@@ -13,7 +14,7 @@ public:
   
 private:
   static N parse(const std::string& fileName);
-  static std::string yamlPath(const std::string& fileName);
+  static Path yamlPath(const std::string& fileName);
   
   template<typename T> static void parse(const N& node, std::vector<T>& dest);
   template<typename T> static T optionalParse(const N& node, const char* key, T def);

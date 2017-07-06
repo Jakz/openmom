@@ -10,6 +10,7 @@
 #define _LBX_H_
 
 #include "common/Common.h"
+#include "platform/Path.h"
 
 #include "ColorMap.h"
 
@@ -294,10 +295,10 @@ namespace lbx
         void push(std::string str) const { lambda(index, str); ++index; }
     };
     
-    static bool loadHeader(FileInfo& offsets, FILE *in);
+    static bool loadHeader(FileInfo& offsets, const file_handle& in);
     
-    static void loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter, FILE *in);
-    static void loadArrayFile(const FileInfo& info, std::vector<TextFiller>& inserters, FILE *in);
+    static void loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter, const file_handle& in);
+    static void loadArrayFile(const FileInfo& info, std::vector<TextFiller>& inserters, const file_handle& in);
     
     static LBXArrayData* loadArray(LBXOffset offset, FILE *in);
     
@@ -312,9 +313,9 @@ namespace lbx
     static void loadPalette(LBXOffset offset, IndexedPalette* palette, FILE* in);
     static void loadPalettes(const LBXHeader& header, offset_list& offsets, FILE* in);
     
-    static FILE* getDescriptor(const LBXFile& ident);
+    static file_handle getDescriptor(const LBXFile& ident);
 
-    static std::string getLBXPath(const std::string& ident);
+    static Path getLBXPath(const std::string& ident);
     
   public:
     static void load();

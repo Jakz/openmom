@@ -9,6 +9,7 @@
 #include "LBX.h"
 
 #include "common/mystrings.h"
+#include "platform/Path.h"
 
 #include "Buildings.h"
 #include "Localization.h"
@@ -99,15 +100,15 @@ LBXArrayData* LBX::loadArray(LBXOffset offset, FILE *in)
 }
 
 
-void LBX::loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter, FILE *in)
+void LBX::loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter, const file_handle& in)
 {
-  fseek(in, offset, SEEK_SET);
+  in.seek(offset, SEEK_SET);
   
   char* buffer = new char[info.size];
   
   for (int i = 0; i < info.count; ++i)
   {
-    fread(buffer, 1, info.size, in);
+    in.read(buffer, 1, info.size);
     //printf("  > %s\n",buffer);
     inserter.push(string(buffer));
   }
@@ -116,7 +117,7 @@ void LBX::loadArray(LBXOffset offset, LBXArray& info, const TextFiller& inserter
 }
 
 
-void LBX::loadArrayFile(const FileInfo& info, std::vector<TextFiller>& inserters, FILE *in)
+void LBX::loadArrayFile(const FileInfo& info, std::vector<TextFiller>& inserters, const file_handle& in)
 {
   const auto& header = info.header;
   const auto& offsets = info.offsets;
@@ -124,8 +125,8 @@ void LBX::loadArrayFile(const FileInfo& info, std::vector<TextFiller>& inserters
   LBXArray* arrays = new LBXArray[header.count];
   for (int i = 0; i < header.count; ++i)
   {
-    fseek(in, offsets[i], SEEK_SET);
-    fread(&arrays[i], sizeof(LBXArray), 1, in);
+    in.seek(offsets[i], SEEK_SET);
+    in.read(arrays[i]);
   }
   
   for (int i = 0; i < header.count; ++i)
@@ -388,15 +389,14 @@ std::vector<LBXTerrainSpriteSpecs> LBX::scanTerrainTileInfo(FILE* in)
   return data;
 }
 
-bool LBX::loadHeader(FileInfo& info, FILE *in)
+bool LBX::loadHeader(FileInfo& info, const file_handle& in)
 {
-  fread(&info.header, sizeof(LBXHeader), 1, in);
+  in.read(info.header);
   
   if (info.header.magic == 0x0000FEAD)
   {
     info.offsets.resize(info.header.count+1);
-    fread(&info.offsets[0], sizeof(LBXOffset), info.header.count+1, in);
-    
+    in.read(&info.offsets[0], sizeof(LBXOffset), info.header.count+1);
     return true;
   }
   
@@ -604,15 +604,15 @@ void LBX::loadPalettes(const LBXHeader &header, offset_list &offsets, FILE *in)
   //loadPalette(offsets[3], Gfx::loadPalette, in);
 }
 
-std::string LBX::getLBXPath(const std::string& name)
+Path LBX::getLBXPath(const std::string& name)
 {
-  return Platform::instance()->getResourcePath() + "/data/lbx/" + name + ".lbx";
+  return Platform::instance()->getResourcePath() + "/data/lbx/" + name ^ ".lbx";
 }
 
-FILE* LBX::getDescriptor(const LBXFile& lbx)
+file_handle LBX::getDescriptor(const LBXFile& lbx)
 {
-  string name = getLBXPath(lbx.fileName);
-  return fopen(name.c_str(), "rb");
+  Path name = getLBXPath(lbx.fileName);
+  return file_handle(name, file_mode::READING);
 }
 
 void LBX::load()
@@ -625,7 +625,7 @@ void LBX::load()
   }
   {
     FileInfo info;
-    FILE *in = fopen(getLBXPath("buildesc").c_str(), "rb");
+    file_handle in = file_handle(getLBXPath("buildesc"), file_mode::READING);
     loadHeader(info, in);
     
     vector<TextFiller> inserters = {
@@ -734,7 +734,7 @@ const LBXFile& Repository::loadLBX(LBXID ident)
   
   LBXFile& lbx = file(ident);
   
-  FILE *in = LBX::getDescriptor(lbx);
+  file_handle in = LBX::getDescriptor(lbx);
   LBX::loadHeader(lbx.info, in);
   
   if (ident == LBXID::SOUNDFX || ident == LBXID::SNDDRV || ident == LBXID::NEWSOUND || ident == LBXID::CMBTSND || ident == LBXID::INTROSFX || ident == LBXID::INTROSND)
@@ -756,7 +756,7 @@ const LBXFile& Repository::loadLBX(LBXID ident)
   }
   
   
-  fclose(in);
+  in.close();
   
   return lbx;
 }
@@ -765,7 +765,7 @@ const LBXSpriteData* Repository::loadLBXSpriteData(SpriteInfo info)
 {
   LBXFile& lbx = file(info.lbx());
   
-  string name = LBX::getLBXPath(lbx.fileName);
+  Path name = LBX::getLBXPath(lbx.fileName);
   FILE *in = fopen(name.c_str(), "rb");
   
   LOGD("[lbx] loading gfx entry %u from %s", info.index(), file(info.lbx()).fileName.c_str());
@@ -782,7 +782,7 @@ const LBXSpriteData* Repository::loadLBXSpriteData(SpriteInfo info)
 
 const LBXArrayData* Repository::loadLBXArrayData(const LBXFile& lbx, size_t index)
 {
-  string name = LBX::getLBXPath(lbx.fileName);
+  Path name = LBX::getLBXPath(lbx.fileName);
   FILE *in = fopen(name.c_str(), "rb");
 
   LBXArrayData* arrayData = LBX::loadArray(lbx.info.offsets[index], in);
@@ -796,14 +796,14 @@ const LBXArrayData* Repository::loadLBXArrayData(const LBXFile& lbx, size_t inde
 const LBXSpriteData* Repository::loadLBXSpriteTerrainData(SpriteInfo info)
 {
   LBXFile& lbx = file(info.lbx());
-  FILE *in = LBX::getDescriptor(lbx);
+  file_handle in = LBX::getDescriptor(lbx);
 
   LOGD("[lbx] loading gfx entry %u from %s", info.index(), file(info.lbx()).fileName.c_str());
-  LBXSpriteData* sprite = LBX::scanTerrainGfx(lbx.info.offsets[info.index()], terrainData[info.index()].animated() ? 4 : 1, in);
+  LBXSpriteData* sprite = LBX::scanTerrainGfx(lbx.info.offsets[info.index()], terrainData[info.index()].animated() ? 4 : 1, in.fd());
   lbx.sprites[info.index()] = sprite;
   gfxAllocated(sprite);
   
-  fclose(in);
+  in.close();
   
   return sprite;
 }
@@ -838,11 +838,11 @@ LBXArrayData* Repository::loadLBXSpriteTerrainMappingData(LBXFile& lbx, size_t i
 const LBXFile& Repository::loadLBXFontsAndPalettes()
 {
   LBXFile& lbx = file(LBXID::FONTS);
-  FILE* in = LBX::getDescriptor(lbx);
+  file_handle in = LBX::getDescriptor(lbx);
   
   LBX::loadHeader(lbx.info, in);
-  LBX::loadFonts(lbx.info.header, lbx.info.offsets, in);
-  LBX::loadPalettes(lbx.info.header, lbx.info.offsets, in);
+  LBX::loadFonts(lbx.info.header, lbx.info.offsets, in.fd());
+  LBX::loadPalettes(lbx.info.header, lbx.info.offsets, in.fd());
   
   /*string_list names;
   LBX::scanFileNames(lbx.info, names, in);
@@ -862,11 +862,8 @@ const LBXFile& Repository::loadLBXFontsAndPalettes()
     fclose(out);
   }*/
   
-  
-  fclose(in);
-  
-  
-  
+  in.close();
+
   return lbx;
 }
 
@@ -874,12 +871,12 @@ const LBXFile& Repository::loadLBXTerrain()
 {
   LBXFile& lbx = file(LBXID::TERRAIN);
   
-  FILE *in = LBX::getDescriptor(lbx);
-  fread(&lbx.info.header, sizeof(LBXHeader), 1, in);
+  file_handle in = LBX::getDescriptor(lbx);
+  in.read(lbx.info.header);
   
-  terrainData = LBX::scanTerrainTileInfo(in);
+  terrainData = LBX::scanTerrainTileInfo(in.fd());
   
-  fclose(in);
+  in.close();
   
   lbx.info.header.type = LBXFileType::TILES;
   lbx.info.header.count = terrainData.size();
@@ -902,9 +899,9 @@ const LBXFile& Repository::loadLBXTerrainMap()
   
   constexpr size_t offset[] = { 548+2, 1062 };
   
-  FILE *in = LBX::getDescriptor(lbx);
+  file_handle in = LBX::getDescriptor(lbx);
   
-  fread(&lbx.info.header, sizeof(LBXHeader), 1, in);
+  in.read(lbx.info.header);
   lbx.info.header.count = 2;
   lbx.info.header.type = LBXFileType::TILES_MAPPING;
   
@@ -913,13 +910,11 @@ const LBXFile& Repository::loadLBXTerrainMap()
 
   
   lbx.arrays = new LBXArrayData*[2];
-  lbx.arrays[0] = loadLBXSpriteTerrainMappingData(lbx, 0, in);
-  lbx.arrays[1] = loadLBXSpriteTerrainMappingData(lbx, 1, in);
-  
+  lbx.arrays[0] = loadLBXSpriteTerrainMappingData(lbx, 0, in.fd());
+  lbx.arrays[1] = loadLBXSpriteTerrainMappingData(lbx, 1, in.fd());
 
+  in.close();
   
-  fclose(in);
-
   return lbx;
 }
 
@@ -931,11 +926,11 @@ const LBXFile& Repository::loadLBXHelp()
   
   LBXFile& lbx = file(LBXID::HELP);
   
-  FILE* in = LBX::getDescriptor(lbx);
+  file_handle in = LBX::getDescriptor(lbx);
   
-  fread(&lbx.info.header, sizeof(LBXHeader), 1, in);
+  in.read(lbx.info.header);
   lbx.info.offsets.resize(lbx.size());
-  fread(&lbx.info.offsets[0], sizeof(LBXOffset), 3, in);
+  in.read(&lbx.info.offsets[0], sizeof(LBXOffset), 3);
   
   lbx.info.header.count = 2;
   lbx.info.offsets.pop_back();
@@ -943,7 +938,7 @@ const LBXFile& Repository::loadLBXHelp()
   lbx.sprites = new LBXSpriteData*[lbx.size()];
   std::fill(lbx.sprites, lbx.sprites+lbx.size(), nullptr);
 
-  fseek(in, offset, SEEK_SET);
+  in.seek(offset, SEEK_SET);
   
   size_t i = 0;
   
@@ -953,10 +948,10 @@ const LBXFile& Repository::loadLBXHelp()
   
   for (i = 0; i < 806; ++i)
   {
-    size_t off = ftell(in);
+    size_t off = in.tell();
     
     LBXHelpEntry entry;
-    fread(&entry, sizeof(LBXHelpEntry), 1, in);
+    in.read(entry);
     
     for (size_t j = 0; entry.lbxName[j] != '\0'; ++j)
       if (entry.lbxName[j] == '.')
@@ -1004,7 +999,7 @@ const LBXFile& Repository::loadLBXHelp()
 
   LOGD("[lbx] read %zu help entries", i);
   
-  fclose(in);
+  in.close();
   
   return lbx;
 }

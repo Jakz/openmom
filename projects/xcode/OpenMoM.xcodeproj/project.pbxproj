@@ -62,6 +62,8 @@
 		044247121980B97900A8D7CC /* EventMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044247101980B97900A8D7CC /* EventMechanics.cpp */; };
 		044E466D1980202D00E396AD /* MiniMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044E466B1980202D00E396AD /* MiniMap.cpp */; };
 		0450D0C31EE5181E007D5007 /* CitiesView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0450D0C11EE5181E007D5007 /* CitiesView.cpp */; };
+		045755E31F0E93C6005F09D6 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045755E11F0E93C6005F09D6 /* Path.cpp */; };
+		045755E41F0E93C6005F09D6 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045755E11F0E93C6005F09D6 /* Path.cpp */; };
 		046428F01E0AC4DC003A76D8 /* ConsoleView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */; };
 		046428F41E0CE81D003A76D8 /* Dialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F11E0CE6CB003A76D8 /* Dialogs.cpp */; };
 		046428F81E0D1ABA003A76D8 /* Animations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F61E0D1ABA003A76D8 /* Animations.cpp */; };
@@ -366,6 +368,8 @@
 		044E466C1980202D00E396AD /* MiniMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniMap.h; sourceTree = "<group>"; };
 		0450D0C11EE5181E007D5007 /* CitiesView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CitiesView.cpp; sourceTree = "<group>"; };
 		0450D0C21EE5181E007D5007 /* CitiesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CitiesView.h; sourceTree = "<group>"; };
+		045755E11F0E93C6005F09D6 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
+		045755E21F0E93C6005F09D6 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
 		046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleView.cpp; sourceTree = "<group>"; };
 		046428EF1E0AC4DC003A76D8 /* ConsoleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleView.h; sourceTree = "<group>"; };
 		046428F11E0CE6CB003A76D8 /* Dialogs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dialogs.cpp; sourceTree = "<group>"; };
@@ -928,6 +932,8 @@
 		04E282D31E0242C000DD673D /* platform */ = {
 			isa = PBXGroup;
 			children = (
+				045755E11F0E93C6005F09D6 /* Path.cpp */,
+				045755E21F0E93C6005F09D6 /* Path.h */,
 				04E282D41E0242C000DD673D /* osx.mm */,
 				04E282D51E0242C000DD673D /* platform.h */,
 			);
@@ -1103,6 +1109,7 @@
 				0439E99B1986903A0009BFF7 /* MessageView.cpp in Sources */,
 				040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */,
 				049B1CF11E2B3D8500A2A449 /* OptionsView.cpp in Sources */,
+				045755E31F0E93C6005F09D6 /* Path.cpp in Sources */,
 				04E2829C1E01A7DB00DD673D /* OriginalSave.cpp in Sources */,
 				04E218861C02A386005784E1 /* format.cc in Sources */,
 				048616561E02E758004B62B7 /* hq2x.cpp in Sources */,
@@ -1164,6 +1171,7 @@
 				04E282D71E0242C000DD673D /* osx.mm in Sources */,
 				046428FF1E117C2D003A76D8 /* Help.cpp in Sources */,
 				04C1F4861B2535A800F7688A /* Gfx.cpp in Sources */,
+				045755E41F0E93C6005F09D6 /* Path.cpp in Sources */,
 				04E282C01E0227CF00DD673D /* Util.cpp in Sources */,
 				04C1F48B1B2535F100F7688A /* ColorMap.cpp in Sources */,
 				04E282BC1E02278700DD673D /* Common.cpp in Sources */,

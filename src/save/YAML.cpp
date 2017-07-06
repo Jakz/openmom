@@ -87,7 +87,7 @@ N yaml::parse(const std::string& fileName)
   return N(YAML::LoadFile(yamlPath(fileName)));
 }
 
-std::string yaml::yamlPath(const std::string& fileName)
+Path yaml::yamlPath(const std::string& fileName)
 {
   return Platform::instance()->getResourcePath() + "/data/yaml/" + fileName;
 }

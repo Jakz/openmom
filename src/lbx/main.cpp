@@ -879,7 +879,7 @@ public:
         Repository::loadLBX(entry.ident);
       
       if (assetNames.find(entry.ident) == assetNames.end())
-        LBX::scanFileNames(entry.info, assetNames[entry.ident], LBX::getDescriptor(entry));
+        LBX::scanFileNames(entry.info, assetNames[entry.ident], LBX::getDescriptor(entry).fd());
         
       currentLBX = &holder(selection);
       
