@@ -4,11 +4,17 @@
 
 class Path;
 
-#pragma mark Platform
-class Platform
+class FileSystem
 {
 public:
   virtual bool exists(const Path& path) const = 0;
+  virtual Path absolute(const Path& path) const = 0;
+};
+
+#pragma mark Platform
+class Platform : public FileSystem
+{
+public:  
   virtual Path getResourcePath() const = 0;
   
   static Platform* instance();

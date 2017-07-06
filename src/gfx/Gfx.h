@@ -77,6 +77,8 @@ class Gfx
 public:
   static void init();
   static void deinit();
+  
+  static const SDL_PixelFormat* format() { return canvas->data->format; }
 
   static inline const u32 color(u8 r, u8 g, u8 b) { return (255 << 24) | (r << 16) | (g << 8) | b; }
   static inline const u32 colora(u8 r, u8 g, u8 b, u8 a) { return (a << 24) | (r << 16) | (g << 8) | b; }

@@ -89,7 +89,15 @@ N yaml::parse(const std::string& fileName)
 
 Path yaml::yamlPath(const std::string& fileName)
 {
-  return Platform::instance()->getResourcePath() + "/data/yaml/" + fileName;
+  Path path = Platform::instance()->getResourcePath() + "/data/yaml/" + fileName;
+  
+  if (!path.exists())
+  {
+    LOGD("lbx file at %s not found", path.c_str());
+    assert(false);
+  }
+
+  return path;
 }
 
 template<> s32 yaml::parse(const N& node) { return node.as<s32>(); }

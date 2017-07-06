@@ -8,6 +8,8 @@
 
 #include "Texture.h"
 
+#include "platform/Platform.h"
+
 #include "Gfx.h"
 #include "LBX.h"
 
@@ -115,11 +117,21 @@ u16 Texture::sh(u16 r, u16 c) const
 
 
 
-const Texture* Texture::get(TextureID ident) {
+const Texture* Texture::get(TextureID ident)
+{
   const Texture* texture = &textures[static_cast<size_t>(ident)];
   
   if (!texture->img)
-    texture->img = IMG_Load(("data/gfx/"+texture->name).c_str());
+  {
+    Path base = Platform::instance()->getResourcePath();
+    texture->img = IMG_Load((base + "data/gfx" + texture->name).c_str());
+    
+    const SDL_PixelFormat* destFormat = Gfx::format();
+    
+    SDL_Surface* original = texture->img;
+    texture->img = SDL_ConvertSurface(texture->img, destFormat, 0);
+    SDL_FreeSurface(original);
+  }
   
   return texture;
 }

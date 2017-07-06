@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cerrno>
 
 class Path
 {
@@ -107,8 +108,8 @@ public:
     file = fopen(path.c_str() , smode);
 #endif
     
-    //if (!file || ferror(file))
-    //  printf("FILE* %s (mode: %s) error: (%d) %s\n", path.c_str(), smode, errno, strerror(errno));
+    if (!file || ferror(file))
+      printf("FILE* %s (mode: %s) error: (%d) %s\n", path.c_str(), smode, errno, strerror(errno));
     
     return file != nullptr;
   }

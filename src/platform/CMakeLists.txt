@@ -9,4 +9,6 @@ else()
   
 endif()
 
+set (PLATFORM_SOURCE ${PLATFORM_SOURCE} Path.cpp)
+
 add_library(PLATFORM_LIB ${PLATFORM_SOURCE})

@@ -1,5 +1,7 @@
 #include "Path.h"
 
+#include "Platform.h"
+
 static constexpr const char SEPARATOR = '/';
 
 bool endsWith(const std::string& str, char c)
@@ -30,4 +32,9 @@ Path Path::appendExt(const std::string &ext) const
   if (ext.empty()) return Path(*this);
   else if (ext[0] == '.') return Path(data + ext);
   else return Path(data + "." + ext);
+}
+
+bool Path::exists() const
+{
+  return Platform::instance()->exists(*this);
 }

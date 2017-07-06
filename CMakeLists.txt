@@ -19,6 +19,12 @@ elseif(UNIX)
   set(BASE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-reorder -Wno-inconsistent-missing-override -std=c++14 -stdlib=libstdc++ -fdiagnostics-show-option") # -Wall
 endif()
 
+
+add_definitions(-DCMAKE_BUILD)
+if (DEBUG_LEVEL)
+  add_definitions(-DDEBUG=${DEBUG_LEVEL})
+endif()
+
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fstandalone-debug -fno-rtti -fno-exceptions -DDEBUG=1 ${BASE_FLAGS}" CACHE FILEPATH "cache")
 set(CMAKE_CXX_FLAGS_MINSIZEREL "-O3 -flto -DNDEBUG -fno-rtti -fno-exceptions ${BASE_FLAGS}" CACHE FILEPATH "cache")
 set(CMAKE_CXX_FLAGS_RELEASE "-flto -O3 -DNDEBUG -fno-rtti -fno-exceptions ${BASE_FLAGS}" CACHE FILEPATH "cache")
