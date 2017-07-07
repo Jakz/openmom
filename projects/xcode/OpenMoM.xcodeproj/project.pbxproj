@@ -162,6 +162,7 @@
 		04879A781978385800313BC7 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
 		04879A7C1978391F00313BC7 /* SDL2_image.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A751978385800313BC7 /* SDL2_image.framework */; };
 		04879A7D1978391F00313BC7 /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04879A761978385800313BC7 /* SDL2.framework */; };
+		0489C3B21F0F35B50043ACCB /* CartographerView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0489C3B01F0F35B50043ACCB /* CartographerView.cpp */; };
 		048E08B919829C6D009AED0A /* SkillDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08B719829C6D009AED0A /* SkillDraw.cpp */; };
 		048E08BC1982B20A009AED0A /* WorldGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048E08BA1982B20A009AED0A /* WorldGenerator.cpp */; };
 		0493DA901E1B55FA0088FF42 /* SpellEffectAnim.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F91E0D1AEF003A76D8 /* SpellEffectAnim.cpp */; };
@@ -409,6 +410,8 @@
 		04879A481978374100313BC7 /* OpenMoM-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OpenMoM-Info.plist"; sourceTree = SOURCE_ROOT; };
 		04879A751978385800313BC7 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../libs/SDL2_image.framework; sourceTree = SOURCE_ROOT; };
 		04879A761978385800313BC7 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../libs/SDL2.framework; sourceTree = SOURCE_ROOT; };
+		0489C3B01F0F35B50043ACCB /* CartographerView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CartographerView.cpp; sourceTree = "<group>"; };
+		0489C3B11F0F35B50043ACCB /* CartographerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartographerView.h; sourceTree = "<group>"; };
 		048E08B719829C6D009AED0A /* SkillDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillDraw.cpp; sourceTree = "<group>"; };
 		048E08B819829C6D009AED0A /* SkillDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillDraw.h; sourceTree = "<group>"; };
 		048E08BA1982B20A009AED0A /* WorldGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldGenerator.cpp; sourceTree = "<group>"; };
@@ -695,6 +698,8 @@
 				0439E98819868F6D0009BFF7 /* ArmiesView.h */,
 				0439E98A19868F8A0009BFF7 /* ArmyView.cpp */,
 				0439E98B19868F8A0009BFF7 /* ArmyView.h */,
+				0489C3B01F0F35B50043ACCB /* CartographerView.cpp */,
+				0489C3B11F0F35B50043ACCB /* CartographerView.h */,
 				0450D0C11EE5181E007D5007 /* CitiesView.cpp */,
 				0450D0C21EE5181E007D5007 /* CitiesView.h */,
 				0439E98D19868FAD0009BFF7 /* CityView.cpp */,
@@ -1081,6 +1086,7 @@
 				04CE420E1E37DA2A00CFD3B9 /* DrawQueue.cpp in Sources */,
 				04037621197B539400A5B5FC /* Tile.cpp in Sources */,
 				046428FE1E117C2D003A76D8 /* Help.cpp in Sources */,
+				0489C3B21F0F35B50043ACCB /* CartographerView.cpp in Sources */,
 				0464E11419813E1A009C91ED /* CityMechanics.cpp in Sources */,
 				049B1CF01E2B3D8500A2A449 /* LoadView.cpp in Sources */,
 				048204A5198893BA00D4B699 /* CombatMechanics.cpp in Sources */,

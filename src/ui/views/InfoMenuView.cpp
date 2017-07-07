@@ -76,6 +76,7 @@ void InfoMenuView::mainMenuClicked(int index)
   enum MainEntry
   {
     SURVEYOR = 0,
+    CARTOGRAPHER = 1,
     TAX_COLLECTOR = 6,
     MIRROR = 8
   };
@@ -86,6 +87,13 @@ void InfoMenuView::mainMenuClicked(int index)
     {
       gvm->closeOverview();
       gvm->mainView()->switchToSurveyor();
+      break;
+    }
+      
+    case CARTOGRAPHER:
+    {
+      gvm->closeOverview();
+      gvm->switchView(VIEW_CARTOGRAPHER);
       break;
     }
       

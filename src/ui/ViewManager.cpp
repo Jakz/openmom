@@ -31,6 +31,7 @@
 #include "StartView.h"
 #include "IntroView.h"
 #include "InfoMenuView.h"
+#include "CartographerView.h"
 
 #include "ConsoleView.h"
 #include "DataView.h"
@@ -63,6 +64,7 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_INTRO] = new IntroView(this);
   views[VIEW_OPTIONS] = new OptionsView(this);
   views[VIEW_INFO_MENU] = new InfoMenuView(this);
+  views[VIEW_CARTOGRAPHER] = new CartographerView(this);
   
   views[VIEW_CONSOLE] = new ConsoleView(this);
   views[VIEW_DATA] = new DataView(this);
@@ -89,6 +91,7 @@ UnitDetailView* ViewManager::unitDetailView() { return static_cast<UnitDetailVie
 StartView* ViewManager::startView() { return static_cast<StartView*>(views[VIEW_START]); }
 IntroView* ViewManager::introView() { return static_cast<IntroView*>(views[VIEW_INTRO]); }
 InfoMenuView* ViewManager::infoMenuView() { return static_cast<InfoMenuView*>(views[VIEW_INFO_MENU]); }
+CartographerView* ViewManager::cartographerView() { return static_cast<CartographerView*>(views[VIEW_CARTOGRAPHER]); }
 
 ConsoleView* ViewManager::consoleView() { return static_cast<ConsoleView*>(views[VIEW_CONSOLE]); }
 

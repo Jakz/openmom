@@ -192,7 +192,7 @@ public:
   
   class Huge {
   public:
-    const static FontSpriteSheet *GOLD;
+    const static FontSpriteSheet *GOLD, *BROWN_CARTOGRAPHER;
   };
   
   

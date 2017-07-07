@@ -90,6 +90,7 @@ const FontSpriteSheet* FontFaces::Crypt::SERIF_BROWN = nullptr;
 const FontSpriteSheet* FontFaces::Crypt::TINY_BROWN = nullptr;
 
 const FontSpriteSheet* FontFaces::Huge::GOLD = nullptr;
+const FontSpriteSheet* FontFaces::Huge::BROWN_CARTOGRAPHER = nullptr;
 
 const BlinkingPalette* FontFaces::Palettes::BLINK_WHITE_BLUE = nullptr;
 
@@ -254,6 +255,28 @@ void FontFaces::buildFonts()
   };
   
   Huge::GOLD = new FontSpriteSheet(FontData::fonts[FONT_HUGE], hugeGoldPalette, 1, 0);
+
+  
+  color_list brownCartographer = {
+    0, {105, 73, 35}, {105, 73, 35}, {105, 73, 35}, 0,
+    {6, 6, 2},
+    {6, 6, 2},
+    {6, 6, 2},
+    {6, 6, 2},
+    {6, 6, 2},
+    {6, 6, 2},
+    {6, 6, 2},
+    {6, 6, 2},
+    {6, 6, 2},
+    {6, 6, 2},
+    {6, 6, 2},
+    {6, 6, 2},
+  };
+  
+  // 105 73 35
+  Huge::BROWN_CARTOGRAPHER = new FontSpriteSheet(FontData::fonts[FONT_HUGE], brownCartographer, 1, 0);
+
+  
   
   Palettes::BLINK_WHITE_BLUE = new BlinkingPalette({3,4}, 194, 228, 255, 140, 174, 255, 600);
 }

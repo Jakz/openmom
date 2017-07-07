@@ -33,6 +33,7 @@ class OptionsView;
 class StartView;
 class IntroView;
 class InfoMenuView;
+class CartographerView;
 
 class ConsoleView;
 class DataView;
@@ -101,6 +102,7 @@ public:
   StartView* startView();
   IntroView* introView();
   InfoMenuView* infoMenuView();
+  CartographerView* cartographerView();
   
   ConsoleView* consoleView();
 };
