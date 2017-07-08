@@ -19,6 +19,10 @@ private:
   void drawPost() override { }
   
   void setup();
+  
+  Point dialogBase();
+  
+  void drawRow(int section, int row, const std::string& caption, float percent, PlayerColor color);
 
 public:
   AstrologerView(ViewManager* gvm);

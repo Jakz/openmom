@@ -14,7 +14,7 @@ void i18n::mapCustomEntry(std::string key, std::string value)
   data[keyForString(key)] = value;
 }
 
-I18 i18n::keyForString(std::string key)
+I18 i18n::keyForString(const std::string& key)
 {
   auto it = customMapping.find(key);
   if (it != customMapping.end())

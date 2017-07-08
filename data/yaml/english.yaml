@@ -91,5 +91,9 @@ entries:
   game_option_magic_normal: Normal
   game_option_magic_powerful: Powerful
 
+  view_astrologer_title: Current Status Of Wizards
+  view_astrologer_army_strength: Army  Strength
+  view_astrologer_magic_power: Magic  Power
+  view_astrologer_spell_research: Spell  Research
 
-  
+

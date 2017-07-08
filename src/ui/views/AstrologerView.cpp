@@ -26,6 +26,11 @@
 
 #include "ViewManager.h"
 
+static const s16 SECTION_Y[] = { 34, 83, 132 };
+static const s16 TEXT_X = 13;
+static const s16 barX = 64;
+static const s16 ROW_DELTA = 7;
+
 AstrologerView::AstrologerView(ViewManager* gvm) : ViewWithQueue(gvm)
 {
 
@@ -36,6 +41,19 @@ void AstrologerView::activate()
   setup();
 }
 
+Point AstrologerView::dialogBase()
+{
+  SpriteInfo bg = LSI(RELOAD, 1);
+  return Point(WIDTH/2 - bg.sw()/2, HEIGHT/2 - bg.sh()/2);
+}
+
+void AstrologerView::drawRow(int section, int row, const std::string& caption, float percent, PlayerColor color)
+{
+  Point base = dialogBase().delta(TEXT_X, SECTION_Y[section] + row*ROW_DELTA);
+  
+  label(caption, FontFaces::Tiny::GOLD_COMBAT, base, ALIGN_LEFT); // TODO: correct font palette
+}
+
 void AstrologerView::draw()
 {
   
@@ -43,8 +61,21 @@ void AstrologerView::draw()
 
 void AstrologerView::setup()
 {
-  SpriteInfo bg = LSI(RELOAD, 1);
-  sprite(bg, Point(WIDTH/2 - bg.sw()/2, HEIGHT/2 - bg.sh()/2));
+  sprite(LSI(RELOAD, 1), dialogBase());
+  
+  static const char* section_titles[] = { "view_astrologer_army_strength", "view_astrologer_magic_power", "view_astrologer_spell_research" };
+  
+  label(i18n::s("view_astrologer_title"), FontFaces::Serif::GOLD_SHADOW, Point(WIDTH/2-1, 19), ALIGN_CENTER); // TODO: correct font palette
+  
+  for (int i = 0; i < sizeof(section_titles)/sizeof(section_titles[0]); ++i)
+    label(i18n::s(section_titles[i]), FontFaces::Medium::BLUE_MAGIC, Point(WIDTH/2-1, SECTION_Y[i] - 2), ALIGN_CENTER); // TODO: correct font palette
+
+  
+  static const char* names[] = { "Dracon", "Raven", "Kali", "Sharee", "Freya" };
+  
+  for (int i = 0; i < 3; ++i)
+    for (int j = 0; j < 5; ++j)
+      drawRow(i, j, names[j], 0.0f, PlayerColor::RED);
 }
 
 bool AstrologerView::mouseReleased(u16 x, u16 y, MouseButton b)

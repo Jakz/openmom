@@ -246,10 +246,11 @@ private:
   
 public:
   static void mapCustomEntry(std::string key, std::string value);
-  static I18 keyForString(std::string key);
+  static I18 keyForString(const std::string& key);
   
   static const char* c(I18 ident) { return data[ident].c_str(); }
   static const std::string& s(I18 ident) { return data[ident]; }
+  static const std::string& s(const std::string& key) { return s(keyForString(key)); }
   static const std::string& s(SkillBase skill) { return skills[skill]; }
   
   static const std::vector<std::string> surveyorDesc(TileType type) { return surveyorDescs[type]; }
