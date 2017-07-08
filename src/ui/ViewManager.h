@@ -34,6 +34,8 @@ class StartView;
 class IntroView;
 class InfoMenuView;
 class CartographerView;
+class AstrologerView;
+class HistorianView;
 
 class ConsoleView;
 class DataView;
@@ -103,6 +105,8 @@ public:
   IntroView* introView();
   InfoMenuView* infoMenuView();
   CartographerView* cartographerView();
+  AstrologerView* astrologerView();
+  HistorianView* historianView();
   
   ConsoleView* consoleView();
 };

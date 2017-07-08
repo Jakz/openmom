@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04025FC91F113E1600B20404 /* AstrologerView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04025FC71F113E1600B20404 /* AstrologerView.cpp */; };
+		04025FCC1F1140B800B20404 /* HistorianView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04025FCA1F1140B800B20404 /* HistorianView.cpp */; };
 		040375DC197990B900A5B5FC /* Race.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375CD197990B900A5B5FC /* Race.cpp */; };
 		040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D0197990B900A5B5FC /* ColorMap.cpp */; };
 		040375DE197990B900A5B5FC /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D2197990B900A5B5FC /* Font.cpp */; };
@@ -257,6 +259,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04025FC71F113E1600B20404 /* AstrologerView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AstrologerView.cpp; sourceTree = "<group>"; };
+		04025FC81F113E1600B20404 /* AstrologerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AstrologerView.h; sourceTree = "<group>"; };
+		04025FCA1F1140B800B20404 /* HistorianView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HistorianView.cpp; sourceTree = "<group>"; };
+		04025FCB1F1140B800B20404 /* HistorianView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistorianView.h; sourceTree = "<group>"; };
 		040375CD197990B900A5B5FC /* Race.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Race.cpp; sourceTree = "<group>"; };
 		040375CE197990B900A5B5FC /* Race.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Race.h; sourceTree = "<group>"; };
 		040375D0197990B900A5B5FC /* ColorMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = ColorMap.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -698,6 +704,8 @@
 				0439E98819868F6D0009BFF7 /* ArmiesView.h */,
 				0439E98A19868F8A0009BFF7 /* ArmyView.cpp */,
 				0439E98B19868F8A0009BFF7 /* ArmyView.h */,
+				04025FC71F113E1600B20404 /* AstrologerView.cpp */,
+				04025FC81F113E1600B20404 /* AstrologerView.h */,
 				0489C3B01F0F35B50043ACCB /* CartographerView.cpp */,
 				0489C3B11F0F35B50043ACCB /* CartographerView.h */,
 				0450D0C11EE5181E007D5007 /* CitiesView.cpp */,
@@ -708,6 +716,8 @@
 				0439E99119868FCB0009BFF7 /* CombatView.h */,
 				046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */,
 				046428EF1E0AC4DC003A76D8 /* ConsoleView.h */,
+				04025FCA1F1140B800B20404 /* HistorianView.cpp */,
+				04025FCB1F1140B800B20404 /* HistorianView.h */,
 				04CD9F6A1ED9F48F002B7570 /* InfoMenuView.cpp */,
 				04CD9F6B1ED9F48F002B7570 /* InfoMenuView.h */,
 				0438DFF41EAE757500981CFB /* IntroView.cpp */,
@@ -1152,6 +1162,7 @@
 				0403760A197AD00800A5B5FC /* Buildings.cpp in Sources */,
 				0438DFF31EAE682300981CFB /* StartView.cpp in Sources */,
 				0439E98619868F400009BFF7 /* ArmiesItemsView.cpp in Sources */,
+				04025FCC1F1140B800B20404 /* HistorianView.cpp in Sources */,
 				048616571E02E758004B62B7 /* hq3x.cpp in Sources */,
 				04EE4594197C9D7A00EA0CC0 /* Items.cpp in Sources */,
 				048E08B919829C6D009AED0A /* SkillDraw.cpp in Sources */,
@@ -1159,6 +1170,7 @@
 				049B1CF41E2DD76700A2A449 /* CombatMap.cpp in Sources */,
 				040375DC197990B900A5B5FC /* Race.cpp in Sources */,
 				048616581E02E758004B62B7 /* hq4x.cpp in Sources */,
+				04025FC91F113E1600B20404 /* AstrologerView.cpp in Sources */,
 				044E466D1980202D00E396AD /* MiniMap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

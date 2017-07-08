@@ -502,6 +502,8 @@ bool MainView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
     case SDL_SCANCODE_F1: switchToSurveyor(); break;
     case SDL_SCANCODE_F2: gvm->switchView(VIEW_CARTOGRAPHER); break;
     case SDL_SCANCODE_F3: gvm->switchView(VIEW_RESEARCH); break;
+    case SDL_SCANCODE_F4: gvm->switchView(VIEW_HISTORIAN); break;
+    case SDL_SCANCODE_F5: gvm->switchOverview(VIEW_ASTROLOGER); break;
     case SDL_SCANCODE_F9: gvm->switchOverview(VIEW_MIRROR); break;
       
     default: break;

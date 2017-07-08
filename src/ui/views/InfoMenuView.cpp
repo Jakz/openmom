@@ -77,6 +77,10 @@ void InfoMenuView::mainMenuClicked(int index)
   {
     SURVEYOR = 0,
     CARTOGRAPHER = 1,
+    
+    HISTORIAN = 3,
+    ASTROLOGER = 4,
+    
     TAX_COLLECTOR = 6,
     MIRROR = 8
   };
@@ -94,6 +98,20 @@ void InfoMenuView::mainMenuClicked(int index)
     {
       gvm->closeOverview();
       gvm->switchView(VIEW_CARTOGRAPHER);
+      break;
+    }
+    
+    case HISTORIAN:
+    {
+      gvm->closeOverview();
+      gvm->switchView(VIEW_HISTORIAN);
+      break;
+    }
+      
+    case ASTROLOGER:
+    {
+      gvm->closeOverview();
+      gvm->switchOverview(VIEW_ASTROLOGER);
       break;
     }
       
