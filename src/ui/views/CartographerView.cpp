@@ -22,23 +22,31 @@
 
 #include "ViewManager.h"
 
-CartographerView::CartographerView(ViewManager* gvm) : View(gvm)
+CartographerView::CartographerView(ViewManager* gvm) : ViewWithQueue(gvm)
 {
   addArea(new Clickable(264,140,36,30))->setAction([this]() { this->gvm->switchView(VIEW_MAIN); });
   
-  addArea(new Clickable(280,180,39,19))->setAction([this]() { /* TODO */ });
+  addArea(new Clickable(280,180,39,19))->setAction([this]()
+  {
+    clear();
+    plane = plane == Plane::ARCANUS ? Plane::MYRRAN : Plane::ARCANUS;
+    setup();
+  });
 }
 
 void CartographerView::activate()
 {
   this->plane = Plane::ARCANUS;
+  setup();
 }
 
 void CartographerView::draw()
 {
-  Gfx::draw(LSI(RELOAD, 2), 0, 0);
-  
-  
-  
-  Fonts::drawString("Arcanus Plane", FontFaces::Huge::BROWN_CARTOGRAPHER, Point(WIDTH/2 - 1, 11), ALIGN_CENTER);
+
+}
+
+void CartographerView::setup()
+{
+  sprite(LSI(RELOAD, 2), {0, 0});
+  label(plane == Plane::ARCANUS ? "Arcanus Plane" : "Myrror Plane", FontFaces::Huge::BROWN_CARTOGRAPHER, Point(WIDTH/2 - 1, 11), ALIGN_CENTER);
 }

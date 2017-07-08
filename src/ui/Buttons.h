@@ -117,6 +117,7 @@ struct TextInfo
   TextInfo() = default;
   TextInfo(const std::string& label, const FontSpriteSheet* font) : label(label), font(font) { }
   TextInfo(const std::string& label, Point position) : label(label), font(nullptr), position(position) { }
+  TextInfo(const std::string& label, const FontSpriteSheet* font, Point position) : label(label), font(font), position(position) { }
 
 };
 

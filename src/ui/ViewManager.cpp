@@ -143,6 +143,8 @@ void ViewManager::draw()
   if (animations.empty())
     animating = false;
   
+  current->drawPre();
+  
   current->doDraw();
   
   if (LocalGame::i->currentPlayer()->hasMessage() && !isThereOverview())

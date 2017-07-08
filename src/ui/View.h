@@ -40,6 +40,7 @@ protected:
   
   virtual void draw() = 0;
   virtual void drawPost() = 0;
+  virtual void drawPre() { }
   
   void setPlayer(LocalPlayer* player) { this->player = player; }
   
@@ -80,6 +81,35 @@ public:
   Action buildSwitchViewAction(View* view, ViewID newView);
   Action buildSwitchOverviewAction(View* view, ViewID newView);
   
+};
+
+#include "ui/parts/DrawQueueBasic.h"
+
+using Sprite = BasicSpriteEntry;
+using TextLabel = BasicTextEntry;
+
+class ViewWithQueue : public View
+{
+  using DrawQueue = BasicDrawQueue;
+  
+protected:
+  DrawQueue queue;
+  
+  void clear() { queue.clear(); }
+  void add(DrawQueue::type* entity) { queue.add(entity); }
+  
+  void sprite(SpriteInfo info, Point position) { add(new Sprite(info, position)); }
+  void label(const std::string& text, const FontSpriteSheet* font, Point position, TextAlign align) { add(new TextLabel(text, font, position, align)); }
+  
+public:
+  ViewWithQueue(ViewManager* gvm) : View(gvm) { }
+  
+  void doDraw() override
+  {
+    queue.draw();
+    draw();
+    drawButtons();
+  }
 };
 
 #endif

@@ -54,6 +54,7 @@ public:
   
   void setDirty() { _dirty = true; }
 
+  using type = T;
 };
 
 template<typename T, typename S = std::less<std::unique_ptr<T>>>

@@ -51,6 +51,7 @@ private:
   TextAlign align;
   
 public:
+  BasicTextEntry(const std::string& text, const FontSpriteSheet* face, Point point, TextAlign align) : info(text, face, point), align(align) { }
   BasicTextEntry(const std::string& text, Point point) : info(text, point), align(ALIGN_LEFT) { }
   
   void draw() const override

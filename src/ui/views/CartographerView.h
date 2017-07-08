@@ -11,13 +11,15 @@
 #include "common/Common.h"
 #include "View.h"
 
-class CartographerView : public View
+class CartographerView : public ViewWithQueue
 {
 private:
   Plane plane;
   
   void draw() override;
   void drawPost() override { }
+  
+  void setup();
   
 public:
   CartographerView(ViewManager* gvm);
