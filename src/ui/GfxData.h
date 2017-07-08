@@ -92,12 +92,19 @@ struct PlayerGfxSpec
   SpriteInfo gem;
   SpriteInfo unitBack;
   SpriteInfo nodeAura;
+
   struct
   {
     SpriteInfo pact;
     SpriteInfo alliance;
     SpriteInfo war;
   } diplomacy;
+  
+  struct
+  {
+    SpriteInfo flag;
+    Color color;
+  } cartographer;
 };
 
 struct SchoolGfxSpec

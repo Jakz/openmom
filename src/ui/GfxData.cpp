@@ -143,12 +143,12 @@ decltype(GfxData::wizardSpecs) GfxData::wizardSpecs = {
 };
 
 decltype(GfxData::playerSpecs) GfxData::playerSpecs = {
-  { PlayerColor::BLUE, { LSI(MAGIC, 1), LSI(MAPBACK, 14), LSI(MAPBACK, 63), { LSI(MAGIC, 60), LSI(MAGIC, 61), LSI(MAGIC, 62) } } },
-  { PlayerColor::GREEN, { LSI(MAGIC, 2), LSI(MAPBACK, 15), LSI(MAPBACK, 64), { LSI(MAGIC, 63), LSI(MAGIC, 64), LSI(MAGIC, 65) } } },
-  { PlayerColor::PURPLE, { LSI(MAGIC, 3), LSI(MAPBACK, 16), LSI(MAPBACK, 65), { LSI(MAGIC, 66), LSI(MAGIC, 67), LSI(MAGIC, 68) } } },
-  { PlayerColor::RED, { LSI(MAGIC, 4), LSI(MAPBACK, 17), LSI(MAPBACK, 66), { LSI(MAGIC, 69), LSI(MAGIC, 70), LSI(MAGIC, 71) } } },
-  { PlayerColor::YELLOW, { LSI(MAGIC, 5), LSI(MAPBACK, 18), LSI(MAPBACK, 67), { LSI(MAGIC, 72), LSI(MAGIC, 73), LSI(MAGIC, 74) } } },
-  { PlayerColor::NEUTRAL, { LSI_PLACEHOLD, LSI(MAPBACK, 19), LSI_PLACEHOLD, { LSI_PLACEHOLD, LSI_PLACEHOLD, LSI_PLACEHOLD } } }
+  { PlayerColor::BLUE, { LSI(MAGIC, 1), LSI(MAPBACK, 14), LSI(MAPBACK, 63), { LSI(MAGIC, 60), LSI(MAGIC, 61), LSI(MAGIC, 62) }, { LSI(RELOAD, 3), {16, 120, 252} } } },
+  { PlayerColor::GREEN, { LSI(MAGIC, 2), LSI(MAPBACK, 15), LSI(MAPBACK, 64), { LSI(MAGIC, 63), LSI(MAGIC, 64), LSI(MAGIC, 65) }, { LSI(RELOAD, 4), {0, 188, 0} } } },
+  { PlayerColor::PURPLE, { LSI(MAGIC, 3), LSI(MAPBACK, 16), LSI(MAPBACK, 65), { LSI(MAGIC, 66), LSI(MAGIC, 67), LSI(MAGIC, 68) }, { LSI(RELOAD, 5), {164, 84, 164} } } },
+  { PlayerColor::RED, { LSI(MAGIC, 4), LSI(MAPBACK, 17), LSI(MAPBACK, 66),  { LSI(MAGIC, 69), LSI(MAGIC, 70), LSI(MAGIC, 71) }, { LSI(RELOAD, 6), {244, 0, 12} } } },
+  { PlayerColor::YELLOW, { LSI(MAGIC, 5), LSI(MAPBACK, 18), LSI(MAPBACK, 67), { LSI(MAGIC, 72), LSI(MAGIC, 73), LSI(MAGIC, 74) }, { LSI(RELOAD, 7), {220, 148, 28} } } },
+  { PlayerColor::NEUTRAL, { LSI_PLACEHOLD, LSI(MAPBACK, 19), LSI_PLACEHOLD,  { LSI_PLACEHOLD, LSI_PLACEHOLD, LSI_PLACEHOLD }, { LSI(RELOAD, 8), {56, 32, 28} } } }
 };
 /*
 decltype(GfxData::raceSpecs) GfxData::raceSpecs = {
