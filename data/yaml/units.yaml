@@ -188,6 +188,26 @@ units:
       i18n: unit_racial_dragon_turtle
       icon: [lbx, units2, 6]
       figure: [lbx, figures9, 48] 
+# orcs
+  - identifier: orc_engineers
+    type: racial
+    race: orcs
+    upkeep: 1
+    cost: 40
+    melee: 1
+    ranged: none
+    defense: 1
+    resistance: 4
+    hits: 1
+    figures: 6
+    movement: 1
+    sight: 1
+    skills: [ construction_1, wall_crusher ]
+    requires: [ builders_hall ]
+    visuals:
+      i18n: unit_racial_engineers
+      icon: [lbx, units2, 24]
+      figure: [lbx, figure10, 72] 
 # heroes 
   - identifier: hero_dwarf
     type: hero

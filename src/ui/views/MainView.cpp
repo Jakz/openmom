@@ -59,6 +59,8 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
   buttons[PATROL] = Button::buildTristate("Patrol", 280, 176, LSI(MAIN, 9), LSI(MAIN,13));
   buttons[WAIT] = Button::buildTristate("Wait", 246, 186, LSI(MAIN, 10), LSI(MAIN,14));
   buttons[BUILD] = Button::buildTristate("Build", 280, 186, LSI(MAIN, 11), LSI(MAIN,15));
+  buttons[PURIFY] = Button::buildTristate("Purify", 280, 186, LSI(MAIN, 42), LSI(MAIN, 43));
+  buttons[MELD] = Button::buildBistate("Meld", 280, 186, LSI(MAIN, 49));
   // CANCEL BUTTON MISSING
   
   buttons[GAME]->setAction([gvm](){ gvm->switchView(VIEW_LOAD); });
@@ -74,7 +76,7 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
   buttons[PATROL]->setAction([this](){ player->getSelectedArmy()->patrol(); switchToNormalState(); });
   buttons[BUILD]->setAction([this](){ g->settleCity(player->getSelectedArmy(), "Test"); player->resetArmy(); });
   
-  for (auto e : {DONE,PATROL,WAIT,BUILD,CANCEL_SURVEYOR} )
+  for (auto e : {DONE,PATROL,WAIT,BUILD,PURIFY,MELD,CANCEL_SURVEYOR} )
     buttons[e]->hide();
   
   buttons[BUILD]->deactivate();

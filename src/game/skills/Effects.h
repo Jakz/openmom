@@ -27,6 +27,7 @@ public:
   {
     MOVEMENT,
     ABILITY,
+    PARAMETRIC_ABILITY,
     IMMUNITY,
     MAGIC_WEAPONS,
     
@@ -82,6 +83,14 @@ public:
   } effect;
   
   SimpleEffect(SkillEffect::Type type, Type effect) : SkillEffect(type), effect(effect) { }
+};
+
+class SimpleParametricEffect : public SimpleEffect
+{
+public:
+  const s16 param;
+  
+  SimpleParametricEffect(SkillEffect::Type type, Type effect, s16 param) : SimpleEffect(type, effect), param(param) { }
 };
 
 class SpecialAttackEffect : public SimpleEffect

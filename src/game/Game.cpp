@@ -134,7 +134,12 @@ void Game::dummyInit()
   new LocalGame(this);
   
   placeArmy(a, Position(5, 6, ARCANUS));
-  placeArmy(new Army(player, {new FantasticUnit(Data::unit("funit_magic_spirit")->as<SummonSpec>()),new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>())}), Position(4, 3, ARCANUS));
+  placeArmy(new Army(player, {
+    new FantasticUnit(Data::unit("funit_magic_spirit")->as<SummonSpec>()),
+    new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>()),
+    new RaceUnit(Data::unit("orc_engineers")->as<RaceUnitSpec>())
+  }), Position(4, 3, ARCANUS));
+  
   placeArmy(new Army(player, {new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>()), new Hero(Data::unit("hero_dwarf")->as<HeroSpec>())}), Position(4, 8, ARCANUS));
   
   City* florence = new City(player, "Florence", 4000, Position(3, 3, ARCANUS));

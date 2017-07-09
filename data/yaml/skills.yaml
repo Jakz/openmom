@@ -89,6 +89,23 @@ skills:
     visuals:
       icon: [lbx, special, 17]
       i18n: skill_create_outpost
+  - identifier: construction_1
+    type: native
+    effects:
+      - type: parametric_ability
+        kind: create_road
+        value: 1
+    visuals:
+      icon: [lbx, special, 36]
+      i18n: skill_construction
+  - identifier: wall_crusher
+    type: native
+    effects:
+      - type: ability
+        kind: wall_crusher
+    visuals:
+      icon: [lbx, special, 15]
+      i18n: skill_wall_crusher
   - identifier: meld_with_node
     type: native
     effects:

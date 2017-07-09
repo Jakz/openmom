@@ -127,6 +127,7 @@ template<> LBXID yaml::parse(const N& node)
     { "figures3", LBXID::FIGURES3 },
     { "figures4", LBXID::FIGURES4 },
     { "figures9", LBXID::FIGURES9 },
+    { "figure10", LBXID::FIGURE10 },
     { "figure11", LBXID::FIGURE11 },
     { "figure12", LBXID::FIGURE12 },
     
@@ -458,22 +459,33 @@ template<> const SkillEffect* yaml::parse(const N& node)
     
     return new SpecialAttackEffect(kind, value);
   }
-  else if (type == "ability")
+  else if (type == "ability" || type == "parametric_ability")
   {
     static std::unordered_map<std::string, SimpleEffect::Type> mapping = {
       { "first_strike", SimpleEffect::Type::FIRST_STRIKE },
       { "healer", SimpleEffect::Type::HEALER },
       { "purify", SimpleEffect::Type::PURIFY },
       { "create_outpost", SimpleEffect::Type::CREATE_OUTPOST },
-      { "meld_with_node", SimpleEffect::Type::MELD_NODE }
+      { "create_road", SimpleEffect::Type::CREATE_ROAD },
+      { "meld_with_node", SimpleEffect::Type::MELD_NODE },
+      { "wall_crusher", SimpleEffect::Type::WALL_CRUSHING }
     };
     
     if (mapping.find(node["kind"]) == mapping.end())
+    {
+      PARSE_ERROR("unknown effect type '%s'", node["kind"].asString().c_str());
       assert(false);
+    }
     
     SimpleEffect::Type kind = mapping[node["kind"]];
-
-    return new SimpleEffect(SkillEffect::Type::ABILITY, kind);
+    
+    if (type == "parametric_ability")
+    {
+      s16 value = parse<s16>(node["value"]);
+      return new SimpleParametricEffect(SkillEffect::Type::ABILITY, kind, value);
+    }
+    else
+      return new SimpleEffect(SkillEffect::Type::ABILITY, kind);
   }
   else if (type == "movement")
   {
@@ -493,6 +505,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
   }
   else
   {
+    PARSE_ERROR("ability type '%s' not found", type.c_str());
     assert(false);
     return nullptr;
   }
