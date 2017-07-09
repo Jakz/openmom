@@ -338,7 +338,10 @@ struct Rect
   
   bool contains(const Point& point) const
   {
-    return point.x >= left() && point.x < right() && point.y >= top() && point.y <= bottom(); }
+    return point.x >= left() && point.x < right() && point.y >= top() && point.y <= bottom();
+  }
+  
+  using int_type = ::int_type;
 };
 
 inline Point::Point(const Size& size) : x(size.w), y(size.h) { }

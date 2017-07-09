@@ -105,6 +105,11 @@ struct PlayerGfxSpec
     SpriteInfo flag;
     Color color;
   } cartographer;
+  
+  struct
+  {
+    Color color;
+  } astrologer;
 };
 
 struct SchoolGfxSpec

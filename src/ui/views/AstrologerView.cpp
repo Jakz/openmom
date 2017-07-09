@@ -28,7 +28,8 @@
 
 static const s16 SECTION_Y[] = { 34, 83, 132 };
 static const s16 TEXT_X = 13;
-static const s16 barX = 64;
+static const s16 BAR_X = 51;
+static const s16 BAR_WIDTH = 200;
 static const s16 ROW_DELTA = 7;
 
 AstrologerView::AstrologerView(ViewManager* gvm) : ViewWithQueue(gvm)
@@ -52,6 +53,15 @@ void AstrologerView::drawRow(int section, int row, const std::string& caption, f
   Point base = dialogBase().delta(TEXT_X, SECTION_Y[section] + row*ROW_DELTA);
   
   label(caption, FontFaces::Tiny::GOLD_COMBAT, base, ALIGN_LEFT); // TODO: correct font palette
+  
+  s16 barWidth = BAR_WIDTH*percent;
+  Color ccolor = GfxData::playerGfxSpec(color).astrologer.color;
+  
+  Rect barRect = Rect(base.delta(BAR_X, 2), Size(barWidth, 2));
+  Rect shadowRect = Rect(barRect.origin.x, barRect.origin.y+1, barRect.size.w+1, 2);
+  
+  rect(shadowRect, { 24, 24, 44});
+  rect(barRect, ccolor);
 }
 
 void AstrologerView::draw()
@@ -71,11 +81,13 @@ void AstrologerView::setup()
     label(i18n::s(section_titles[i]), FontFaces::Medium::BLUE_MAGIC, Point(WIDTH/2-1, SECTION_Y[i] - 2), ALIGN_CENTER); // TODO: correct font palette
 
   
+  /* TODO: compute real values */
   static const char* names[] = { "Dracon", "Raven", "Kali", "Sharee", "Freya" };
+  static const PlayerColor colors[] = { PlayerColor::YELLOW, PlayerColor::GREEN, PlayerColor::BLUE, PlayerColor::RED, PlayerColor::PURPLE };
   
   for (int i = 0; i < 3; ++i)
     for (int j = 0; j < 5; ++j)
-      drawRow(i, j, names[j], 0.0f, PlayerColor::RED);
+      drawRow(i, j, names[j], Util::rand(0.4f)+0.6f, colors[j]);
 }
 
 bool AstrologerView::mouseReleased(u16 x, u16 y, MouseButton b)

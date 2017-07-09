@@ -100,6 +100,7 @@ protected:
   
   void sprite(SpriteInfo info, Point position) { add(new Sprite(info, position)); }
   void label(const std::string& text, const FontSpriteSheet* font, Point position, TextAlign align) { add(new TextLabel(text, font, position, align)); }
+  void rect(const Rect& rect, Color color) { add(new BasicRectEntry(rect, color)); }
   
 public:
   ViewWithQueue(ViewManager* gvm) : View(gvm) { }
