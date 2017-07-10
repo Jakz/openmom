@@ -151,3 +151,38 @@ void Texture::unload()
     if (texture.img)
       SDL_FreeSurface(texture.img);
 }
+
+void Texture::createMapTextureAtlas()
+{
+  using namespace lbx;
+  
+  constexpr size_t TILE_WIDTH = 20;
+  constexpr size_t TILE_HEIGHT = 18;
+  
+  constexpr size_t ATLAS_SIZE = 42;
+  
+  constexpr size_t TILE_COUNT = 1524;
+  
+  SDL_Surface* atlas = SDL_CreateRGBSurface(0, ATLAS_SIZE*TILE_WIDTH, ATLAS_SIZE*TILE_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+  Repository::loadMultipleLBXSpriteData(LBXID::TERRAIN);
+  
+  for (size_t i = 0; i < TILE_COUNT; ++i)
+  {
+    const SpriteSheet* sprite = Repository::spriteFor(LSI(TERRAIN, i));
+    
+    const size_t bx = 20 * (i % ATLAS_SIZE);
+    const size_t by = 18 * (i / ATLAS_SIZE);
+    
+    for (size_t x = 0; x < TILE_WIDTH; ++x)
+    {
+      for (size_t y = 0; y < TILE_HEIGHT; ++y)
+      {
+        u32* pixel = reinterpret_cast<u32*>(atlas->pixels) + bx + x + (by + y)*atlas->w;
+        *pixel = sprite->getPalette()->get(sprite->at(x, y));
+      }
+    }
+  }
+  
+  IMG_SavePNG(atlas, "atlas.png");
+
+}

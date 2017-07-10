@@ -101,6 +101,12 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::UNITS2);
   lbx::Repository::loadLBX(LBXID::WIZLAB);
   lbx::Repository::loadLBX(LBXID::WIZARDS);
+  
+  lbx::Repository::loadLBXTerrain();
+  Texture::createMapTextureAtlas();
+  return 0;
+
+  
   lbx::LBX::load();
   FontFaces::buildFonts();
   //return 0;

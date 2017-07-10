@@ -475,7 +475,6 @@ public:
         
         fl_draw(fmt::sprintf("Computed Index: %03X", index).c_str(), FIRST_TABLE_WIDTH+SECOND_TABLE_WIDTH+250, DIRECTION_BASE[1] - DIRECTION_DX + 40);
 
-        
         if (myrranCheckbox->isToggled)
           index += 0x2FA;
         
@@ -748,7 +747,8 @@ public:
           if (type != LBXFileType::TILES)
           {
             const LBXFileName& entry = assetNames[currentLBX->ident][ROW];
-            fl_draw(fmt::sprintf("%6Xh %d bytes\n%s/%s",currentLBX->info.offsets[ROW], currentLBX->info.offsets[ROW+1]-currentLBX->info.offsets[ROW],entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
+            if (ROW+1 < currentLBX->info.offsets.size())
+              fl_draw(fmt::sprintf("%6Xh %d bytes\n%s/%s",currentLBX->info.offsets[ROW], currentLBX->info.offsets[ROW+1]-currentLBX->info.offsets[ROW],entry.folder, entry.name).c_str(), X, Y, W, H, FL_ALIGN_LEFT);
           }
           else
           {

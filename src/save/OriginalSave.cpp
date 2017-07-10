@@ -20,6 +20,7 @@ static_assert(sizeof(SaveGame) == 0x1e1a4, "");
 static_assert(sizeof(SaveGame::heroes) == sizeof(HeroStats)*HERO_COUNT*WIZARD_COUNT, "");
 static_assert(sizeof(SaveGame::unusedMap) == 0xc0*2, "");
 
+#pragma WizardData check
 static_assert(offsetof(WizardData, portrait)               == 0x000, "");
 static_assert(offsetof(WizardData, name)                   == 0x001, "");
 static_assert(offsetof(WizardData, race)                   == 0x015, "");
@@ -44,7 +45,7 @@ static_assert(offsetof(WizardData, __unknown10)            == 0x49a, "");
 static_assert(offsetof(WizardData, booksColor)             == 0x4c4, "");
 static_assert(offsetof(WizardData, __unknown11)            == 0x4c6, "");
 
-
+#pragma SaveGame check
 static_assert(offsetof(SaveGame, heroes)             == 0x00000, "");
 static_assert(offsetof(SaveGame, overallData)        == 0x00834, "");
 static_assert(offsetof(SaveGame, wizards)            == 0x009e8, "");

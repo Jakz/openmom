@@ -761,6 +761,32 @@ const LBXFile& Repository::loadLBX(LBXID ident)
   return lbx;
 }
 
+void Repository::loadMultipleLBXSpriteData(LBXID id)
+{
+  LBXFile& lbx = file(id);
+  Path name = LBX::getLBXPath(lbx.fileName);
+  FILE *in = fopen(name.c_str(), "rb");
+  
+  size_t count = lbx.size();
+  LOGD("[lbx] loading %zu gfx entries from %s", count, lbx.fileName.c_str());
+
+  for (size_t i = 0; i < count; ++i)
+  {
+    LBXSpriteData* spriteData;
+    
+    if (id != LBXID::TERRAIN)
+      spriteData = LBX::scanGfx(lbx.info.header, lbx.info.offsets[i], in);
+    else
+      spriteData = LBX::scanTerrainGfx(lbx.info.offsets[i], terrainData[i].animated() ? 4 : 1, in);
+    
+    gfxAllocated(spriteData);
+    lbx.sprites[i] = spriteData;
+  }
+  
+  LOGD3("[lbx] lbx cache size: %zu sprites in %zu bytes", spritesUsed, bytesUsed);
+  fclose(in);
+}
+
 const LBXSpriteData* Repository::loadLBXSpriteData(SpriteInfo info)
 {
   LBXFile& lbx = file(info.lbx());

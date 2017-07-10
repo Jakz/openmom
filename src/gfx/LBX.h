@@ -119,8 +119,6 @@ namespace lbx
     offset_list offsets;
   };
 
-  class SDL_Surface;
-
   class LBXSpriteData : public SpriteSheet
   {
   private:
@@ -243,6 +241,7 @@ namespace lbx
     
     static bool shouldAllocateSprite(SpriteInfo info) { return file(info.lbx()).sprites[info.index()] == nullptr; }
     
+    static void loadMultipleLBXSpriteData(LBXID lbx);
     static const LBXSpriteData* loadLBXSpriteData(SpriteInfo info);
     static const LBXArrayData* loadLBXArrayData(const LBXFile& lbx, size_t index);
     
@@ -266,7 +265,8 @@ namespace lbx
     static const LBXSpriteData* spriteFor(SpriteInfo info) {
       assert(static_cast<u32>(info.lbx()) < LBX_COUNT);
       
-      const LBXSpriteData* sprite = file(info.lbx()).sprites[info.index()];
+      LBXFile& lbxFile = file(info.lbx());
+      const LBXSpriteData* sprite = lbxFile.sprites[info.index()];
       
       if (!sprite)
         sprite = loadLBXSpriteData(info);

@@ -172,107 +172,97 @@ namespace osave
   
   struct WizardData
   {
-    union
-    {
-      struct
-      {
-        u8 portrait;
-        char name[20];
-        Race race;
-        Color color;
-        WizardPersonality personality;
-        WizardObjective objective;
-        
-        byte __unknown1[8];
-        
-        s16 fame;
-        s16 power;
-        u16 controlledVolcanoes;
-        u8 researchPercent;
-        u8 manaPercent;
-        u8 skillPercent;
-        u8 manaFromVolcanoes;
-        
-        coord_t summoningCircleX;
-        coord_t summoningCircleY;
-        Plane16 summoningCirclePlane;
-        
-        spell_id researchableSpells[8];
-        
-        s16 __unknown2;
-        s16 __unknown3;
-        
-        s16 garrisonAverageStrength;
-        
-        s16 __unknown4;
-        
-        s16 combatSkillLeft;
-        s16 spellCastManaLeft;
-        s16 spellCastManaCost;
-        spell_id spellCast;
-        
-        s16 unusedCastingSkill;
-        s16 nominalCastingSkill;
-        
-        u16 taxRate; // TODO: to enum
-        
-        s16 spellBooks[5];
-        
-        bool traits[18];
-        
-        HiredHero heroes[6];
-        
-        u16 __unknown5;
-        
-        s16 items[4];
-        
-        bool wizardContacted[6];
-        s16 wizardDiplomacy1[6];
-        s16 wizardDiplomacy2[6];
-        s16 wizardDiplomacy3[6];
-        s8 wizardRelations[6];
-        s8 wizarWarStatus[6]; // TODO enum
-        
-        byte __unknown6[0x24];
-        s8 wizardDiplomacy4[6];
-        s8 wizardDiplomacy5[6];
-        
-        byte __unknown7[0xCC];
-        
-        s16 researchLeft;
-        s16 mana;
-        u32 castingSkill;
-        spell_id currentSpellResearch;
-        bool spells[214];
-        
-        byte __unknown8[0x1a];
-        
-        u16 banishedWizardsMask;
-        
-        s16 gold;
-        
-        u16 __unknown9;
-        
-        u16 astrologerMagicPower;
-        u16 astrologerSpellResearch;
-        u16 astrologerArmyStrength;
-        u16 astrologerPower;
-        
-        u8 historian[288];
-        
-        bool enchantments[24];
-        
-        byte __unknown10[0x2a];
-        
-        u16 booksColor;
-        
-        u16 __unknown11;
-        
-        
-      } __attribute__((__packed__));
-      byte data[0x4C8];
-    };
- 
+    u8 portrait;
+    char name[20];
+    Race race;
+    Color color;
+    WizardPersonality personality;
+    WizardObjective objective;
+    
+    byte __unknown1[8];
+    
+    s16 fame;
+    s16 power;
+    u16 controlledVolcanoes;
+    u8 researchPercent;
+    u8 manaPercent;
+    u8 skillPercent;
+    u8 manaFromVolcanoes;
+    
+    coord_t summoningCircleX;
+    coord_t summoningCircleY;
+    Plane16 summoningCirclePlane;
+    
+    spell_id researchableSpells[8];
+    
+    s16 __unknown2;
+    s16 __unknown3;
+    
+    s16 garrisonAverageStrength;
+    
+    s16 __unknown4;
+    
+    s16 combatSkillLeft;
+    s16 spellCastManaLeft;
+    s16 spellCastManaCost;
+    spell_id spellCast;
+    
+    s16 unusedCastingSkill;
+    s16 nominalCastingSkill;
+    
+    u16 taxRate; // TODO: to enum
+    
+    s16 spellBooks[5];
+    
+    bool traits[18];
+    
+    HiredHero heroes[6];
+    
+    u16 __unknown5;
+    
+    s16 items[4];
+    
+    bool wizardContacted[6];
+    s16 wizardDiplomacy1[6];
+    s16 wizardDiplomacy2[6];
+    s16 wizardDiplomacy3[6];
+    s8 wizardRelations[6];
+    s8 wizarWarStatus[6]; // TODO enum
+    
+    byte __unknown6[0x24];
+    s8 wizardDiplomacy4[6];
+    s8 wizardDiplomacy5[6];
+    
+    byte __unknown7[0xCC];
+    
+    s16 researchLeft;
+    s16 mana;
+    u32 castingSkill;
+    spell_id currentSpellResearch;
+    bool spells[214];
+    
+    byte __unknown8[0x1a];
+    
+    u16 banishedWizardsMask;
+    
+    s16 gold;
+    
+    u16 __unknown9;
+    
+    u16 astrologerMagicPower;
+    u16 astrologerSpellResearch;
+    u16 astrologerArmyStrength;
+    u16 astrologerPower;
+    
+    u8 historian[288];
+    
+    bool enchantments[24];
+    
+    byte __unknown10[0x2a];
+    
+    u16 booksColor;
+    
+    u16 __unknown11;
   } __attribute__((__packed__));
   
   using AllHeroData = std::array<HeroStats, 35>;
