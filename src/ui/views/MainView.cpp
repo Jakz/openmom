@@ -288,7 +288,17 @@ void MainView::draw()
   {
     Gfx::draw(right_backdrop_road, 240, 76);
     Gfx::draw(road_buttons_backdrop, 240, 76 + 97);
-    //TODO
+    
+    Fonts::drawString("Road", FontFaces::Serif::WHITE_SURVEY, 280, 79, ALIGN_CENTER);
+    Fonts::drawString("Building", FontFaces::Serif::WHITE_SURVEY, 279, 89, ALIGN_CENTER);
+
+    Fonts::setFace(FontFaces::Small::YELLOW_PALE, 1, 0);
+    
+    s16 turnsRequired = 6;
+    
+    Fonts::drawStringBounded(Fonts::format("It will take %d turns to complete the construction of this road", turnsRequired), 249, 105, 50, ALIGN_LEFT);
+    
+    //TODO: management of multiple road by clicking
   }
   else if (substate == SURVEYOR)
   {

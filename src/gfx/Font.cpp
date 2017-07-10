@@ -217,7 +217,7 @@ void FontFaces::buildFonts()
   MediumBold::GRAY_ITEM_CRAFT = buildMediumBold({0, 0, 0, {65,43,35}, 0, {158,150,146}, {142,134,130}, {142,134,130}});
 
   
-  /* color indices: background, high shadow, low shadow, single pixels, stripes x 4 (low to high) */
+  /* color indices: background, high shadow, edge shadow, low shadow, single pixels, stripes x 4 (low to high) */
   
   Serif::TEAL = buildSerif({0, {24,68,68}, 0, {24,68,68}, {58,166,166}, {243,235,231}, {188,238,218}, {197,239,217}, {193,239,240}});
   Serif::BROWN = buildSerif({0, 0, 0, 0, {120,74,36}, {96,8,14}, {96,8,14}, {96,8,14}, {96,8,14}});
@@ -228,7 +228,7 @@ void FontFaces::buildFonts()
   Serif::GOLD_SHADOW = buildSerif({0, 0, 0, {67,43,36},{74,51,44}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
   Serif::GOLD = buildSerif({0, 0, 0, 0, {255,174,12}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
   Serif::SILVER_SHADOW = buildSerif({0, 0, 0, {67,43,36}, {106,97,93}, {159,150,146}, {196,186,182}, {228,219,215}, {255,255,255}});  // TODO: take from fontColors map
-  Serif::WHITE_SURVEY = buildSerif({0, 0, 0, {93,93,121}, {142,134,130}, {255,255,255}, {255,255,255}, {255,255,215}, {255,255,255}});
+  Serif::WHITE_SURVEY = buildSerif({0, 0, 0, {93,93,121}, {142,134,130}, {255,255,255}, {255,255,255}, {255,255,255}, {255,255,255}});
   Serif::DARK_BROWN = buildSerif({0, 0, 0, 0, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}});
   
   Serif::BLACK_INFO_MENU = build(FONT_SERIF, serifWithShadow({8,4,4}, {117,77,36}, {166, 109, 28}));
