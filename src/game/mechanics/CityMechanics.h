@@ -77,7 +77,8 @@ public:
   
   u16 turnsRequiredForProduction(const City* city);
   
-  bool canCityBeBuiltOnTile(Tile* tile);
+  bool canRoadBeBuiltOnTile(const Tile* tile);
+  bool canCityBeBuiltOnTile(const Tile* tile);
   
   void updateValues(City* city)
   {

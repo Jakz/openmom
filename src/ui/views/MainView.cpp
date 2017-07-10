@@ -34,10 +34,11 @@ enum lbx_indices
   right_backdrop_main = LBXI(MAIN, 34),  // 80x97
   right_backdrop_cast = LBXI(MAIN, 40),  // 80x98
   right_backdrop_survey = LBXI(MAIN, 57),  // 80x98
+  right_backdrop_road = LBXI(MAIN, 45), // 80x98
   
-  next_button_backdrop = LBXI(MAIN, 35),
-  cancel_button_backdrop = LBXI(MAIN, 47)
-  
+  next_button_backdrop = LBXI(MAIN, 35), // 80x27
+  cancel_button_backdrop = LBXI(MAIN, 47), // 80x27
+  road_buttons_backdrop = LBXI(MAIN, 48), // 80x27
 };
 
 MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
@@ -53,14 +54,21 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
   buttons[PLANE] = Button::buildBistate("Plane", 270, 4, LSI(MAIN, 7));
   
   buttons[NEXT] = Button::buildPressedOnly("Next", 246, 178, LSI(MAIN, 58));
-  buttons[CANCEL_SURVEYOR] = Button::buildBistate("Cancel", 263, 181, LSI(MAIN, 41));
-
+  
   buttons[DONE] = Button::buildTristate("Done", 246, 176, LSI(MAIN, 8), LSI(MAIN,12));
   buttons[PATROL] = Button::buildTristate("Patrol", 280, 176, LSI(MAIN, 9), LSI(MAIN,13));
   buttons[WAIT] = Button::buildTristate("Wait", 246, 186, LSI(MAIN, 10), LSI(MAIN,14));
-  buttons[BUILD] = Button::buildTristate("Build", 280, 186, LSI(MAIN, 11), LSI(MAIN,15));
+  buttons[BUILD_ROAD] = Button::buildTristate("Build", 280, 186, LSI(MAIN, 11), LSI(MAIN,15));
+  buttons[BUILD_OUTPOST] = Button::buildTristate("Build", 280, 186, LSI(MAIN, 11), LSI(MAIN,15));
   buttons[PURIFY] = Button::buildTristate("Purify", 280, 186, LSI(MAIN, 42), LSI(MAIN, 43));
   buttons[MELD] = Button::buildBistate("Meld", 280, 186, LSI(MAIN, 49));
+  
+  buttons[ROAD_OK] = Button::buildBistate("Road Ok", 246, 181, LSI(MAIN, 46));
+  buttons[ROAD_CANCEL] = Button::buildBistate("Road Cancel", 280, 181, LSI(MAIN, 41));
+  
+  buttons[SURVEYOR_CANCEL] = Button::buildBistate("surveyor cancel", 263, 181, LSI(MAIN, 41));
+  buttons[SPELLCAST_CANCEL] = Button::buildBistate("spellcast cancel", 263, 181, LSI(MAIN, 41));
+
   // CANCEL BUTTON MISSING
   
   buttons[GAME]->setAction([gvm](){ gvm->switchView(VIEW_LOAD); });
@@ -71,15 +79,23 @@ MainView::MainView(ViewManager *gvm) : View(gvm), hoveredTile(nullptr)
   buttons[INFO]->setAction([gvm](){ gvm->switchOverview(VIEW_INFO_MENU); });
   buttons[PLANE]->setAction([this](){ player->switchPlane(); switchToNormalState(); });
   buttons[NEXT]->setAction([this](){ LocalGame::i->getGame()->nextTurn(); switchToNormalState(); });
-  buttons[CANCEL_SURVEYOR]->setAction([this](){ if (substate == SPELL_CAST) g->cancelCast(player); switchToNormalState(); });
+  
+  buttons[SURVEYOR_CANCEL]->setAction([this]() { switchToNormalState(); });
+  buttons[SPELLCAST_CANCEL]->setAction([this]() { g->cancelCast(player); switchToNormalState(); });
+  
   buttons[DONE]->setAction([this](){ switchToNormalState(); }); /*if (player.selectedArmy() != null && player.selectedRoute() != null && !player.selectedRoute().completed()) player.saveRoute();*/
   buttons[PATROL]->setAction([this](){ player->getSelectedArmy()->patrol(); switchToNormalState(); });
-  buttons[BUILD]->setAction([this](){ g->settleCity(player->getSelectedArmy(), "Test"); player->resetArmy(); });
+  buttons[BUILD_OUTPOST]->setAction([this](){ g->settleCity(player->getSelectedArmy(), "Test"); player->resetArmy(); });
+  buttons[BUILD_ROAD]->setAction([this](){ switchToRoadBuilding(); });
   
-  for (auto e : {DONE,PATROL,WAIT,BUILD,PURIFY,MELD,CANCEL_SURVEYOR} )
+  buttons[ROAD_CANCEL]->setAction([this](){ switchToUnitSelection(player->getSelectedArmy()); });
+  buttons[ROAD_OK]->setAction([this](){ /* TODO */ });
+
+  
+  for (const auto e : { DONE,PATROL,WAIT,BUILD_ROAD,BUILD_OUTPOST,PURIFY,MELD,SURVEYOR_CANCEL,SPELLCAST_CANCEL,ROAD_OK,ROAD_CANCEL } )
     buttons[e]->hide();
   
-  buttons[BUILD]->deactivate();
+  buttons[BUILD_OUTPOST]->deactivate();
   
   substate = MAIN;
 }
@@ -99,11 +115,14 @@ void MainView::switchToSpellCast()
 	player->resetArmy();
 	
 	buttons[NEXT]->hide();
-	buttons[DONE]->hide();
-	buttons[PATROL]->hide();
-	buttons[WAIT]->hide();
-	buttons[BUILD]->hide();
-	buttons[CANCEL_SURVEYOR]->show();
+  
+  for (const auto e : { SURVEYOR_CANCEL, ROAD_CANCEL, ROAD_OK })
+    buttons[e]->hide();
+  
+  for (const auto e : { DONE, PATROL, WAIT, BUILD_OUTPOST, BUILD_ROAD })
+    buttons[e]->hide();
+  
+  buttons[SPELLCAST_CANCEL]->show();
 	
 	substate = SPELL_CAST;
 }
@@ -113,13 +132,14 @@ void MainView::switchToUnitSelection(Army* a)
 	player->selectArmy(a);
 	a->unpatrol();
 	player->selectAll();
-	
-	buttons[CANCEL_SURVEYOR]->hide();
-	buttons[NEXT]->hide();
-	buttons[DONE]->show();
-	buttons[PATROL]->show();
-	buttons[WAIT]->show();
-	buttons[BUILD]->show();
+  
+  buttons[NEXT]->hide();
+  
+  for (const auto e : { SURVEYOR_CANCEL, ROAD_CANCEL, ROAD_OK })
+    buttons[e]->hide();
+  
+  for (const auto e : { DONE, PATROL, WAIT })
+    buttons[e]->show();
 	
 	updateBuildButton();
   
@@ -131,11 +151,12 @@ void MainView::switchToNormalState()
 	player->resetArmy();
 	
 	buttons[NEXT]->show();
-	buttons[DONE]->hide();
-	buttons[PATROL]->hide();
-	buttons[WAIT]->hide();
-	buttons[BUILD]->hide();
-	buttons[CANCEL_SURVEYOR]->hide();
+  
+  for (const auto e : { DONE, PATROL, WAIT, BUILD_OUTPOST, BUILD_ROAD })
+    buttons[e]->hide();
+  
+  for (const auto e : { SURVEYOR_CANCEL, ROAD_CANCEL, ROAD_OK, SPELLCAST_CANCEL })
+    buttons[e]->hide();
 	
 	surveyor.updateInfo(nullptr);
 	
@@ -146,22 +167,52 @@ void MainView::switchToSurveyor()
 {
 	player->resetArmy();
 	
-	buttons[CANCEL_SURVEYOR]->show();
 	buttons[NEXT]->hide();
-	buttons[DONE]->hide();
-	buttons[PATROL]->hide();
-	buttons[WAIT]->hide();
-	buttons[BUILD]->hide();
-	
+  
+  for (const auto e : { DONE, PATROL, WAIT, BUILD_ROAD, BUILD_OUTPOST })
+    buttons[e]->hide();
+  
+  for (const auto e : { ROAD_CANCEL, ROAD_OK, SPELLCAST_CANCEL })
+    buttons[e]->hide();
+  
+	buttons[SURVEYOR_CANCEL]->show();
+
 	substate = SURVEYOR;
+}
+
+void MainView::switchToRoadBuilding()
+{
+  buttons[NEXT]->hide();
+
+  for (const auto e : { DONE, PATROL, WAIT, BUILD_ROAD, BUILD_OUTPOST, SURVEYOR_CANCEL, SPELLCAST_CANCEL })
+    buttons[e]->hide();
+  
+  for (const auto e : { ROAD_OK, ROAD_CANCEL })
+    buttons[e]->show();
+  
+  substate = ROAD_BUILDING;
 }
 
 void MainView::updateBuildButton()
 {
-	if (player->selectedArmyCanBuildOutpost())
-		buttons[BUILD]->activate();
-	else
-		buttons[BUILD]->deactivate();
+  const Army* army = player->getSelectedArmy();
+  const Tile* tile = g->world->get(army->getPosition());
+  
+  bool hasCreateOutpost = army->any_of([](const Unit* unit) { return unit->skills()->hasSimpleEffect(SimpleEffect::Type::CREATE_OUTPOST); });
+  bool hasCreateRoad = army->any_of([](const Unit* unit) { return unit->skills()->hasSimpleEffect(SimpleEffect::Type::CREATE_ROAD); });
+  
+  if (hasCreateOutpost && g->cityMechanics.canCityBeBuiltOnTile(tile))
+  {
+    buttons[BUILD_OUTPOST]->show();
+    buttons[BUILD_OUTPOST]->activate();
+  }
+  else if (hasCreateRoad && g->cityMechanics.canRoadBeBuiltOnTile(tile))
+    buttons[BUILD_ROAD]->show();
+  else
+  {
+    buttons[BUILD_OUTPOST]->show();
+    buttons[BUILD_OUTPOST]->deactivate();
+  }
 }
 
 SpriteInfo MainView::movementIconForType(const MovementType effect)
@@ -193,7 +244,7 @@ void MainView::draw()
   Gfx::draw(main_backdrop, 0, 0);
     
   const Army* army = player->getSelectedArmy();
-  if (army)
+  if (substate == UNIT)
   {
     for (int j = 0; j < army->size(); ++j)
     {
@@ -232,6 +283,12 @@ void MainView::draw()
       else
         Gfx::draw(movementIconForType(MovementType::NORMAL), 306, 167);
     }
+  }
+  else if (substate == ROAD_BUILDING)
+  {
+    Gfx::draw(right_backdrop_road, 240, 76);
+    Gfx::draw(road_buttons_backdrop, 240, 76 + 97);
+    //TODO
   }
   else if (substate == SURVEYOR)
   {
@@ -273,7 +330,7 @@ void MainView::draw()
     Fonts::drawString(Fonts::format("%d Mana",m), m > 0 ? FontFaces::Tiny::YELLOW_STROKE : FontFaces::Tiny::RED_STROKE, 277, 164, ALIGN_CENTER);
   }
   
-  if (substate == MAIN || substate == UNIT)
+  if (substate == MAIN || substate == UNIT || substate == ROAD_BUILDING || substate == SURVEYOR)
   {
     Fonts::drawString(Fonts::format("%d",player->totalGoldPool()), FontFaces::Small::WHITE, 266, 67, ALIGN_RIGHT);
     Fonts::drawString("GP", FontFaces::Tiny::WHITE, 267, 67, ALIGN_LEFT);

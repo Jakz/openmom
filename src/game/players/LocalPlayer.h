@@ -58,7 +58,6 @@ public:
   Army* getSelectedArmy() const override { return selectedArmy; }
   const unit_list& getSelectedUnits() const override { return selectedUnits; }
   const movement_list selectedArmyMovementType();
-  bool selectedArmyCanBuildOutpost();
   s16 selectedCount() const override { return selectedUnits.size(); }
   void selectNone();
   void selectAll() override;

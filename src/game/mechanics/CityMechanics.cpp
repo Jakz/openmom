@@ -855,7 +855,13 @@ void CityMechanics::growCity(City *c)
   }
 }
 
-bool CityMechanics::canCityBeBuiltOnTile(Tile *t)
+bool CityMechanics::canRoadBeBuiltOnTile(const Tile* tile)
+{
+  //TODO: check
+  return (tile && tile->isSolidLand());
+}
+
+bool CityMechanics::canCityBeBuiltOnTile(const Tile *t)
 {
   World* w = game->world;
   

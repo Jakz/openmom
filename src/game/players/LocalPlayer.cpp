@@ -42,21 +42,6 @@ const movement_list LocalPlayer::selectedArmyMovementType()
   return g->mapMechanics.movementTypeOfArmy(selectedUnits);
 }
 
-
-bool LocalPlayer::selectedArmyCanBuildOutpost()
-{
-  if (!g->cityMechanics.canCityBeBuiltOnTile(g->world->get(selectedArmy->getPosition())))
-    return false;
-  
-  for (auto u : selectedUnits)
-  {
-    if (u->skills()->hasSimpleEffect(SimpleEffect::Type::CREATE_OUTPOST))
-      return true;
-  }
-  
-  return false;
-}
-
 void LocalPlayer::push(anims::Animation* animation)
 {
   SDL::gvm->push(animation);

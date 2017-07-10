@@ -126,6 +126,10 @@ public:
   const unit_list& getUnits() { return units; }
   const unit_list getUnits(std::function<bool(const Unit*)> predicate) const;
   
+  bool any_of(const std::function<bool(const Unit*)> predicate) const {
+    return std::any_of(units.begin(), units.end(), predicate);
+  }
+  
   Player* getOwner() const { return owner; }
   
   void turnBegin();

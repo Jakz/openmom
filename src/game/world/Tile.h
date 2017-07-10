@@ -64,6 +64,7 @@ public:
   void placeArmy(Army* army);
   
   bool isCorrupted() const { return std::find_if(spells.begin(), spells.end(), [](const SpellCast& cast) { return cast.spell == Spells::CORRUPTION; }) != spells.end(); }
+  bool isSolidLand() const { return type != TileType::TILE_WATER && type != TileType::TILE_SHORE; }
     
   void addSpell(const SpellCast& cast) { spells.push_back(cast); }
 };

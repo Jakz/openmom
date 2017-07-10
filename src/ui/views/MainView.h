@@ -30,15 +30,23 @@ private:
     INFO,
     PLANE,
     NEXT,
-    CANCEL_SURVEYOR,
+
     DONE,
     PATROL,
     WAIT,
-    BUILD,
-    CANCEL,
+    BUILD_ROAD,
+    BUILD_OUTPOST,
+    //CANCEL,
     PURIFY,
     OK,
     MELD,
+    
+    ROAD_OK,
+    ROAD_CANCEL,
+    
+    SURVEYOR_CANCEL,
+    
+    SPELLCAST_CANCEL,
     
     BUTTON_COUNT
   };
@@ -48,6 +56,7 @@ private:
     MAIN,
     UNIT,
     SURVEYOR,
+    ROAD_BUILDING,
     SPELL_CAST
   };
   
@@ -85,6 +94,7 @@ public:
   void switchToUnitSelection(Army* army);
   void switchToNormalState();
   void switchToSurveyor();
+  void switchToRoadBuilding();
   void updateBuildButton();
   
   bool mouseReleased(u16 x, u16 y, MouseButton b) override;
