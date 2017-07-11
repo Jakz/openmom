@@ -10,6 +10,7 @@
 
 #include "Font.h"
 #include "LBX.h"
+#include "Viewport.h"
 
 #include "YAML.h"
 
@@ -102,8 +103,7 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::WIZLAB);
   lbx::Repository::loadLBX(LBXID::WIZARDS);
   
-  lbx::Repository::loadLBXTerrain();
-  Texture::createMapTextureAtlas();
+  Viewport::createMapTextureAtlas();
   return 0;
 
   

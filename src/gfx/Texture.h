@@ -126,8 +126,6 @@ public:
   static const Texture* get(TextureID ident);
   static void load();
   static void unload();
-  
-  static void createMapTextureAtlas();
 };
 
 

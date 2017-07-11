@@ -42,6 +42,8 @@ public:
   static const u16 baseX = 0, baseY = 20;
   
   static const Position hoveredPosition(const World* world, const LocalPlayer* player, u16 x, u16 y);
+  
+  static void createMapTextureAtlas();
 };
 
 #endif

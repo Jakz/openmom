@@ -502,3 +502,264 @@ const Position Viewport::hoveredPosition(const World* world, const LocalPlayer* 
   else
     return Position(-1,-1,ARCANUS);
 }
+
+#pragma Original Graphics Mapping
+
+#include <bitset>
+#include "LBX.h"
+
+const size_t TILE_COUNT = 1524;
+const size_t TILE_PER_PLANE = 0x2FA;
+constexpr size_t TILE_WIDTH = 20;
+constexpr size_t TILE_HEIGHT = 18;
+
+
+
+
+template<size_t SIZE> using tile_mapping = std::array<const SpriteSheet*, SIZE>;
+
+
+std::bitset<TILE_COUNT> used;
+
+static struct TileToSpriteMap
+{
+  enum : size_t
+  {
+    TILE_COUNT_OCEAN = 2,
+    TILE_COUNT_FOREST = 3,
+    TILE_COUNT_TUNDRA = 3,
+    TILE_COUNT_SWAMP = 3,
+    TILE_COUNT_DESERT = 4,
+    TILE_COUNT_GRASSLANDS = 4,
+    
+    TILE_COUNT_HILLS = 16,
+    TILE_COUNT_MOUNTAINS = 16,
+    
+    TILE_COUNT_RIVER_CAP = 1,
+    TILE_COUNT_RIVER_CORNER = 3,
+    TILE_COUNT_RIVER_STRAIGHT = 3,
+    TILE_COUNT_RIVER_T_CROSS = 4,
+    TILE_COUNT_RIVER_CROSS = 5
+    
+  };
+
+  struct
+  {
+    const SpriteSheet* sorcery;
+    const SpriteSheet* nature;
+    const SpriteSheet* chaos;
+  } manaNodes;
+  
+  struct
+  {
+    std::array<tile_mapping<TILE_COUNT_RIVER_CAP>, 4> cap;
+    std::array<tile_mapping<TILE_COUNT_RIVER_CORNER>, 4> corner;
+    std::array<tile_mapping<TILE_COUNT_RIVER_STRAIGHT>, 2> straight;
+    std::array<tile_mapping<TILE_COUNT_RIVER_T_CROSS>, 4> tcross;
+    tile_mapping<TILE_COUNT_RIVER_CROSS> cross;
+  } rivers;
+  
+  const SpriteSheet* volcano;
+  
+  tile_mapping<TILE_COUNT_FOREST> forest;
+  tile_mapping<TILE_COUNT_TUNDRA> tundra;
+  tile_mapping<TILE_COUNT_TUNDRA> swamp;
+  tile_mapping<TILE_COUNT_DESERT> desert;
+  tile_mapping<TILE_COUNT_DESERT> grasslands;
+  tile_mapping<TILE_COUNT_OCEAN> ocean;
+  
+  tile_mapping<TILE_COUNT_HILLS> hills;
+  tile_mapping<TILE_COUNT_HILLS> mountains;
+
+  
+} arcanus, myrran;
+
+void mapSprite(size_t gfxIndex, const SpriteSheet*& dest)
+{
+  used[gfxIndex] = true;
+  dest = lbx::Repository::spriteFor(LSI(TERRAIN, gfxIndex));
+}
+
+void mapSprite(size_t gfxIndex, const SpriteSheet*& arcanusDest, const SpriteSheet*& myrranDest)
+{
+  mapSprite(gfxIndex, arcanusDest);
+  mapSprite(gfxIndex+TILE_PER_PLANE, myrranDest);
+}
+
+template<size_t SIZE> void mapSprite(const std::array<size_t, SIZE>& indices, tile_mapping<SIZE>& arcanus, tile_mapping<SIZE>& myrran)
+{
+  for (size_t i = 0; i < SIZE; ++i)
+  {
+    mapSprite(indices[i], arcanus[i]);
+    mapSprite(indices[i]+TILE_PER_PLANE, arcanus[i]);
+  }
+}
+
+
+void blitTileToAtlas(size_t tileIndex, size_t atlasIndex, size_t atlasWidth, SDL_Surface* atlas)
+{
+  using namespace lbx;
+  
+  const LBXSpriteData* sprite = Repository::spriteFor(LSI(TERRAIN, tileIndex));
+  const size_t bx = 20 * (atlasIndex % atlasWidth);
+  const size_t by = 18 * (atlasIndex / atlasWidth);
+  
+  for (size_t x = 0; x < TILE_WIDTH; ++x)
+  {
+    for (size_t y = 0; y < TILE_HEIGHT; ++y)
+    {
+      Color* pixel = reinterpret_cast<Color*>(atlas->pixels) + bx + x + (by + y)*atlas->w;
+      *pixel = sprite->getPalette()->get(sprite->at(x, y, 0, 0));
+    }
+  }
+}
+
+tile_mapping<256> createJoiningTileTextureAtlas8dirs(size_t gfxOffset, size_t arrayIndex, Plane plane, std::bitset<TILE_COUNT>& used, const char* fileName)
+{
+  using namespace lbx;
+  constexpr size_t ATLAS_WIDTH = 8;
+  constexpr size_t ATLAS_HEIGHT = 32;
+  
+  SDL_Surface* atlas = SDL_CreateRGBSurface(0, ATLAS_WIDTH*TILE_WIDTH, ATLAS_HEIGHT*TILE_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+  
+  const LBXArrayData* mapping = Repository::arrayFor(LBXID::TERRTYPE, arrayIndex);
+  const size_t delta = plane == Plane::ARCANUS ? 0 : TILE_PER_PLANE;
+  
+  tile_mapping<256> result;
+  
+  for (size_t i = 0; i < 256; ++i)
+  {
+    u16 gfxIndex = mapping->get<u16>(i);
+    u16 adjustedIndex = gfxIndex + delta + gfxOffset;
+    
+    result[i] = Repository::spriteFor(LSI(TERRAIN, adjustedIndex));
+    used[adjustedIndex] = true;
+    
+    blitTileToAtlas(adjustedIndex, i, ATLAS_WIDTH, atlas);
+  }
+  
+  IMG_SavePNG(atlas, fileName);
+  SDL_FreeSurface(atlas);
+  
+  return result;
+}
+
+tile_mapping<16> createJoiningTileTextureAtlas4dirs(size_t gfxOffset, size_t arrayIndex, Plane plane, const char* fileName)
+{
+  using namespace lbx;
+  constexpr size_t ATLAS_WIDTH = 16;
+  constexpr size_t ATLAS_HEIGHT = 1;
+  
+  SDL_Surface* atlas = nullptr;
+  
+  if (fileName)
+    SDL_CreateRGBSurface(0, ATLAS_WIDTH*TILE_WIDTH, ATLAS_HEIGHT*TILE_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+  
+  const LBXArrayData* mapping = Repository::arrayFor(LBXID::TERRTYPE, arrayIndex);
+  const size_t delta = plane == Plane::ARCANUS ? 0 : TILE_PER_PLANE;
+  
+  tile_mapping<16> result;
+  
+  static const u16 indices[] = { 1, 4, 1+4, 16, 1+16, 4+16, 1+4+16, 64, 64+1, 64+4, 64+1+4, 64+16, 64+1+16, 64+4+16, 64+1+4+16 };
+  
+  for (size_t i = 0; i < 15; ++i)
+  {
+    u16 gfxIndex = mapping->get<u16>(indices[i]);
+    u16 adjustedIndex = gfxIndex + delta + gfxOffset;
+    
+    result[i] = Repository::spriteFor(LSI(TERRAIN, adjustedIndex));
+    used[adjustedIndex] = true;
+    
+    if (fileName)
+      blitTileToAtlas(adjustedIndex, i, ATLAS_WIDTH, atlas);
+  }
+  
+  if (fileName)
+  {
+    IMG_SavePNG(atlas, fileName);
+    SDL_FreeSurface(atlas);
+  }
+  
+  return result;
+}
+
+void Viewport::createMapTextureAtlas()
+{
+  using namespace lbx;
+
+  constexpr size_t ATLAS_WIDTH = 10;
+  constexpr size_t ATLAS_HEIGHT = 26;
+  
+  
+  SDL_Surface* atlas = SDL_CreateRGBSurface(0, ATLAS_WIDTH*TILE_WIDTH, ATLAS_HEIGHT*TILE_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+  Repository::loadLBXTerrain();
+  Repository::loadLBXTerrainMap();
+  Repository::loadMultipleLBXSpriteData(LBXID::TERRAIN);
+  
+  /*createJoiningTileTextureAtlas8dirs(0, 0, Plane::ARCANUS, used, "arcanus-shore.png");
+  createJoiningTileTextureAtlas8dirs(0, 0, Plane::MYRRAN, used, "myrran-shore.png");
+  createJoiningTileTextureAtlas8dirs(-2 + 0x124, 0, Plane::ARCANUS, used, "arcanus-desert.png");
+  createJoiningTileTextureAtlas8dirs(-2 + 0x124, 0, Plane::MYRRAN, used, "myrran-desert.png");
+  createJoiningTileTextureAtlas8dirs(-2 + 0x25A, 0, Plane::ARCANUS, used, "arcanus-tundra.png");
+  createJoiningTileTextureAtlas8dirs(-2 + 0x25A, 0, Plane::MYRRAN, used, "myrran-tundra.png");
+  
+  createJoiningTileTextureAtlas4dirs(0, 1, Plane::ARCANUS, used, "arcanus-mountains.png");
+  createJoiningTileTextureAtlas4dirs(-0x103 + 0x113, 1, Plane::ARCANUS, used, "arcanus-hills.png");
+  createJoiningTileTextureAtlas4dirs(0, 1, Plane::MYRRAN, used, "myrran-mountains.png");
+  createJoiningTileTextureAtlas4dirs(-0x103 + 0x113, 1, Plane::MYRRAN, used, "myrran-hills.png");*/
+  
+  static_assert(sizeof(TileToSpriteMap::rivers) == sizeof(const SpriteSheet*)*43, "");
+  
+  mapSprite(0x0A8, arcanus.manaNodes.sorcery, myrran.manaNodes.sorcery);
+  mapSprite(0x0A9, arcanus.manaNodes.nature, myrran.manaNodes.nature);
+  mapSprite(0x0AA, arcanus.manaNodes.chaos, myrran.manaNodes.chaos);
+  mapSprite(0x0B3, arcanus.volcano, myrran.volcano);
+
+  
+  mapSprite({{0x00, 0x259}}, arcanus.ocean, myrran.ocean);
+  mapSprite({{0xA3, 0xB7, 0xB8}}, arcanus.forest, myrran.forest);
+  mapSprite({{0xA7, 0xB5, 0xB6}}, arcanus.tundra, myrran.tundra);
+  mapSprite({{0xA6, 0xB1, 0xB2}}, arcanus.swamp, myrran.swamp);
+  
+  mapSprite({{0xA5, 0xAE, 0xAF, 0xB0}}, arcanus.desert, myrran.desert);
+  // TODO: 0x01 is excluded because reported as buggy in I Like Serena MoM Save Format doc
+  mapSprite({{0xA2, 0xAC, 0xAD, 0xB4}}, arcanus.grasslands, myrran.grasslands);
+  
+  arcanus.mountains = createJoiningTileTextureAtlas4dirs(0, 1, Plane::ARCANUS, nullptr);
+  arcanus.hills = createJoiningTileTextureAtlas4dirs(-0x103 + 0x113, 1, Plane::ARCANUS, nullptr);
+  myrran.mountains =createJoiningTileTextureAtlas4dirs(0, 1, Plane::MYRRAN, nullptr);
+  myrran.hills = createJoiningTileTextureAtlas4dirs(-0x103 + 0x113, 1, Plane::MYRRAN, nullptr);
+  /* single hill or mountain are mapped manually to position 0 */
+  mapSprite(0xA4, arcanus.mountains[0], myrran.mountains[0]);
+  mapSprite(0xAB, arcanus.hills[0], myrran.hills[0]);
+
+  
+  atlas = SDL_CreateRGBSurface(0, 40*TILE_WIDTH, 40*TILE_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+  
+  {
+    for (size_t i = 0; i < TILE_COUNT; ++i)
+    {
+      const LBXSpriteData* sprite = Repository::spriteFor(LSI(TERRAIN, i));
+      
+      const size_t bx = 20 * (i % 40);
+      const size_t by = 18 * (i / 40);
+      
+      for (size_t x = 0; x < TILE_WIDTH; ++x)
+      {
+        for (size_t y = 0; y < TILE_HEIGHT; ++y)
+        {
+          Color* pixel = reinterpret_cast<Color*>(atlas->pixels) + bx + x + (by + y)*atlas->w;
+          Color color = sprite->getPalette()->get(sprite->at(x, y, 0, 0));
+          
+          if (used[i])
+            color = color.blend(Color(255,0,0,128));
+          
+          *pixel = color;
+        }
+      }
+    }
+  }
+  
+  IMG_SavePNG(atlas, "atlas.png");
+  SDL_FreeSurface(atlas);
+}
