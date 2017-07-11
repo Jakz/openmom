@@ -274,6 +274,12 @@ namespace lbx
       return sprite;
     }
     
+    static const LBXArrayData* arrayFor(LBXID ident, size_t index)
+    {
+      LBXFile& lbxFile = file(ident);
+      return lbxFile.arrays[index];
+    }
+    
     friend class LBXView;
   };
 
