@@ -84,64 +84,6 @@ enum priority : priority_t
 
 #pragma mark Tile Joins management
 
-enum class DirJoin
-{
-  NONE = 0x00,
-  
-  N  = 0x01,
-  NE = 0x02,
-  E  = 0x04,
-  SE = 0x08,
-  S  = 0x10,
-  SW = 0x20,
-  W  = 0x40,
-  NW = 0x80,
-  
-  HORIZONTAL_NW_SE = NW | SE,
-  HORIZONTAL_NE_SW = NE | SW,
-  
-  DIAGONAL_NW_SE = NW | SE,
-  DIAGONAL_NE_SW = NE | SW,
-  
-  CORNER_NW_NE = NW | NE,
-  CORNER_NE_SE = NE | SE,
-  CORNER_SE_SW = SE | SW,
-  CORNER_SW_NW = SW | NW,
-  
-  HALF_NW = NW | NE | SW,
-  HALF_NE = NW | NE | SE,
-  HALF_SW = SW | SE | NW,
-  HALF_SE = SE | SW | NE,
-  
-  CROSS = NW | SE | NE | SW,
-  
-  ALL = 0xFF
-};
-
-/* these utility functions are used to work with enum class through standard
-   boolean operators
-*/
-inline DirJoin operator~(const DirJoin& lhs)
-{
-  using utype_t = std::underlying_type<DirJoin>::type;
-  return static_cast<DirJoin>(~static_cast<utype_t>(lhs));
-}
-
-inline DirJoin operator&(const DirJoin& lhs, const DirJoin& rhs) {
-  using utype_t = std::underlying_type<DirJoin>::type;
-  return static_cast<DirJoin>(static_cast<utype_t>(lhs) & static_cast<utype_t>(rhs));
-}
-
-inline DirJoin operator|(const DirJoin& lhs, const DirJoin& rhs) {
-  using utype_t = std::underlying_type<DirJoin>::type;
-  return static_cast<DirJoin>(static_cast<utype_t>(lhs) | static_cast<utype_t>(rhs));
-}
-
-inline void operator|=(DirJoin& lhs, const DirJoin& rhs) {
-  using utype_t = std::underlying_type<DirJoin>::type;
-  lhs = static_cast<DirJoin>(static_cast<utype_t>(lhs) | static_cast<utype_t>(rhs));
-}
-
 enum class MaskMode
 {
   ALL,

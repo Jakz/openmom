@@ -518,7 +518,6 @@ constexpr size_t TILE_HEIGHT = 18;
 
 template<size_t SIZE> using tile_mapping = std::array<const SpriteSheet*, SIZE>;
 
-
 std::bitset<TILE_COUNT> used;
 
 static struct TileToSpriteMap
@@ -557,6 +556,80 @@ static struct TileToSpriteMap
     std::array<tile_mapping<TILE_COUNT_RIVER_STRAIGHT>, 2> straight;
     std::array<tile_mapping<TILE_COUNT_RIVER_T_CROSS>, 4> tcross;
     tile_mapping<TILE_COUNT_RIVER_CROSS> cross;
+    
+    /* return river sprite for mask direction */
+    /*
+      |   |   | O |   | O |   |   | O | O |   | O |   | O | O | O |
+      |   |O  |   |  O| OO| OO|OO |OO | O |OOO| OO|OOO|OO |OOO|OOO|
+      | O |   |   |   |   | O | O |   | O |   | O | O | O |   | O |
+     */
+    const SpriteSheet* spriteForMask(DirJoin mask, size_t index)
+    {
+      switch (mask)
+      {
+        case DirJoin::S: return cap[0][index];
+        case DirJoin::W: return cap[1][index];
+        case DirJoin::N: return cap[2][index];
+        case DirJoin::E: return cap[3][index];
+          
+        case DirJoin::CORNER_N_E: return corner[0][index];
+        case DirJoin::CORNER_S_E: return corner[1][index];
+        case DirJoin::CORNER_S_W: return corner[2][index];
+        case DirJoin::CORNER_N_W: return corner[3][index];
+          
+        case DirJoin::VERTICAL: return straight[0][index];
+        case DirJoin::HORIZONTAL: return straight[1][index];
+          
+        case DirJoin::TCROSS_E: return tcross[0][index];
+        case DirJoin::TCROSS_S: return tcross[1][index];
+        case DirJoin::TCROSS_W: return tcross[2][index];
+        case DirJoin::TCROSS_N: return tcross[3][index];
+          
+        case DirJoin::OCROSS: return cross[index];
+          
+        default:
+          assert(false);
+          return nullptr;
+      }
+    }
+    
+    /* return amount of sprites per type */
+    size_t countForMask(DirJoin mask)
+    {
+      switch (mask)
+      {
+        case DirJoin::S:
+        case DirJoin::W:
+        case DirJoin::N:
+        case DirJoin::E:
+          return 1;
+        
+        case DirJoin::CORNER_N_E:
+        case DirJoin::CORNER_N_W:
+        case DirJoin::CORNER_S_W:
+        case DirJoin::CORNER_S_E:
+          return 3;
+          
+        case DirJoin::VERTICAL:
+        case DirJoin::HORIZONTAL:
+          return 3;
+          
+        case DirJoin::TCROSS_W:
+        case DirJoin::TCROSS_S:
+        case DirJoin::TCROSS_E:
+        case DirJoin::TCROSS_N:
+          return 4;
+          
+        case DirJoin::CROSS:
+          return 5;
+          
+        default:
+          assert(false);
+          return 0;
+      }
+    }
+    
+    
   } rivers;
   
   const SpriteSheet* volcano;
@@ -570,8 +643,7 @@ static struct TileToSpriteMap
   
   tile_mapping<TILE_COUNT_HILLS> hills;
   tile_mapping<TILE_COUNT_HILLS> mountains;
-
-  
+    
 } arcanus, myrran;
 
 void mapSprite(size_t gfxIndex, const SpriteSheet*& dest)
@@ -595,6 +667,19 @@ template<size_t SIZE> void mapSprite(const std::array<size_t, SIZE>& indices, ti
   }
 }
 
+template<size_t SIZE1, size_t SIZE2> void mapSprite(const std::array<size_t, SIZE1*SIZE2>& indices, std::array<tile_mapping<SIZE1>, SIZE2>& arcanus, std::array<tile_mapping<SIZE1>, SIZE2>& myrran)
+{
+  //static_assert(TSIZE == SIZE1*SIZE2, "");
+  
+  for (size_t j = 0; j < SIZE2; ++j)
+  {
+    for (size_t i = 0; i < SIZE1; ++i)
+    {
+      mapSprite(indices[i + j*SIZE1], arcanus[j][i]);
+      mapSprite(indices[i + j*SIZE1]+TILE_PER_PLANE, arcanus[j][i]);
+    }
+  }
+}
 
 void blitTileToAtlas(size_t tileIndex, size_t atlasIndex, size_t atlasWidth, SDL_Surface* atlas)
 {
@@ -710,21 +795,22 @@ void Viewport::createMapTextureAtlas()
   
   static_assert(sizeof(TileToSpriteMap::rivers) == sizeof(const SpriteSheet*)*43, "");
   
+  /* nodes and special things */
   mapSprite(0x0A8, arcanus.manaNodes.sorcery, myrran.manaNodes.sorcery);
   mapSprite(0x0A9, arcanus.manaNodes.nature, myrran.manaNodes.nature);
   mapSprite(0x0AA, arcanus.manaNodes.chaos, myrran.manaNodes.chaos);
   mapSprite(0x0B3, arcanus.volcano, myrran.volcano);
 
-  
+  /* standand full terrain types */
   mapSprite({{0x00, 0x259}}, arcanus.ocean, myrran.ocean);
   mapSprite({{0xA3, 0xB7, 0xB8}}, arcanus.forest, myrran.forest);
   mapSprite({{0xA7, 0xB5, 0xB6}}, arcanus.tundra, myrran.tundra);
   mapSprite({{0xA6, 0xB1, 0xB2}}, arcanus.swamp, myrran.swamp);
-  
   mapSprite({{0xA5, 0xAE, 0xAF, 0xB0}}, arcanus.desert, myrran.desert);
   // TODO: 0x01 is excluded because reported as buggy in I Like Serena MoM Save Format doc
   mapSprite({{0xA2, 0xAC, 0xAD, 0xB4}}, arcanus.grasslands, myrran.grasslands);
   
+  /* hills and mountains */
   arcanus.mountains = createJoiningTileTextureAtlas4dirs(0, 1, Plane::ARCANUS, nullptr);
   arcanus.hills = createJoiningTileTextureAtlas4dirs(-0x103 + 0x113, 1, Plane::ARCANUS, nullptr);
   myrran.mountains =createJoiningTileTextureAtlas4dirs(0, 1, Plane::MYRRAN, nullptr);
@@ -732,7 +818,13 @@ void Viewport::createMapTextureAtlas()
   /* single hill or mountain are mapped manually to position 0 */
   mapSprite(0xA4, arcanus.mountains[0], myrran.mountains[0]);
   mapSprite(0xAB, arcanus.hills[0], myrran.hills[0]);
-
+  
+  /* rivers */
+  mapSprite({ 0xB9, 0xBA, 0xBB, 0xBC }, arcanus.rivers.cap, myrran.rivers.cap);
+  mapSprite({ 0xBD, 0xC1, 0xE9, 0xBF, 0xC3, 0xEB, 0xBE, 0xC2, 0xEA, 0xC0, 0xC4, 0xEC }, arcanus.rivers.corner,  myrran.rivers.corner);
+  mapSprite({ 0xED, 0xEE, 0xEF, 0xF0, 0xF1, 0xF2 }, arcanus.rivers.straight, myrran.rivers.straight);
+  mapSprite({ 0xFB, 0xFC, 0xFD, 0xFE, 0xF7, 0xF8, 0xF9, 0xFA, 0xFF, 0x100, 0x101, 0x102, 0xF3, 0xF4, 0xF5, 0xF6 }, arcanus.rivers.tcross, myrran.rivers.tcross);
+  mapSprite({ 0x1D4, 0x1D5, 0x1D6, 0x1D7, 0x1D8 }, arcanus.rivers.cross, myrran.rivers.cross);
   
   atlas = SDL_CreateRGBSurface(0, 40*TILE_WIDTH, 40*TILE_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
   
