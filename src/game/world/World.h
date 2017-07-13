@@ -33,6 +33,7 @@ private:
   Tile** map;
   
 public:
+  /* TODO: is reference to game needed? for what? */
   World(Game* const game, u16 w, u16 h) : game(game), w(w), h(h), pathfinder(this, w, h)
   {
     map = new Tile*[PLANE_COUNT];

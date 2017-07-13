@@ -179,6 +179,7 @@
 		049B1CF71E2DDB9200A2A449 /* CombatUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CF51E2DDB9200A2A449 /* CombatUtils.cpp */; };
 		04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B11983286E00291B82 /* Viewport.cpp */; };
 		04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B419833C1E00291B82 /* UnitDraw.cpp */; };
+		04B6E01D1F17A9FC00A4E4C3 /* MapEditorView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */; };
 		04C1F47F1B25290C00F7688A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C1F44B1B25270300F7688A /* main.cpp */; };
 		04C1F4841B25358200F7688A /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
 		04C1F4851B25359D00F7688A /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D2197990B900A5B5FC /* Font.cpp */; };
@@ -436,6 +437,8 @@
 		04ABF7B21983286E00291B82 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		04ABF7B419833C1E00291B82 /* UnitDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitDraw.cpp; sourceTree = "<group>"; };
 		04ABF7B519833C1E00291B82 /* UnitDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitDraw.h; sourceTree = "<group>"; };
+		04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MapEditorView.cpp; path = extra/MapEditorView.cpp; sourceTree = "<group>"; };
+		04B6E01E1F17AA0200A4E4C3 /* MapEditorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MapEditorView.h; path = extra/MapEditorView.h; sourceTree = "<group>"; };
 		04C1F44B1B25270300F7688A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		04C1F4511B25288F00F7688A /* LBXManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LBXManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C729BF19853F4E002F16E6 /* MainView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainView.cpp; sourceTree = "<group>"; };
@@ -695,6 +698,7 @@
 		04037615197AF92C00A5B5FC /* views */ = {
 			isa = PBXGroup;
 			children = (
+				04B6E01B1F17A9ED00A4E4C3 /* extra */,
 				040851EB1EB3BE560082AFF4 /* debug */,
 				0439E98119868F1B0009BFF7 /* AlchemyView.cpp */,
 				0439E98219868F1B0009BFF7 /* AlchemyView.h */,
@@ -914,6 +918,15 @@
 			path = OpenMoM;
 			sourceTree = "<group>";
 		};
+		04B6E01B1F17A9ED00A4E4C3 /* extra */ = {
+			isa = PBXGroup;
+			children = (
+				04B6E01E1F17AA0200A4E4C3 /* MapEditorView.h */,
+				04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */,
+			);
+			name = extra;
+			sourceTree = "<group>";
+		};
 		04C1F44A1B2526E700F7688A /* lbx */ = {
 			isa = PBXGroup;
 			children = (
@@ -1122,6 +1135,7 @@
 				04037618197AF93600A5B5FC /* NewGameView.cpp in Sources */,
 				04205393197DA9E900B4C2CA /* Skill.cpp in Sources */,
 				040375E61979EA6700A5B5FC /* Buttons.cpp in Sources */,
+				04B6E01D1F17A9FC00A4E4C3 /* MapEditorView.cpp in Sources */,
 				0439E99B1986903A0009BFF7 /* MessageView.cpp in Sources */,
 				040375DD197990B900A5B5FC /* ColorMap.cpp in Sources */,
 				049B1CF11E2B3D8500A2A449 /* OptionsView.cpp in Sources */,
@@ -1449,6 +1463,8 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1467,6 +1483,8 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;

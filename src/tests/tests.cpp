@@ -1,15 +1,21 @@
 #define CATCH_CONFIG_MAIN
 #include "tests/catch.hpp"
 
-#include "Font.h"
+#include "mystrings.h"
 
 #include <iostream>
 
-TEST_CASE("grouping of numbers formatting") {
-  REQUIRE(Fonts::groupDigits(1) == "1");
-  REQUIRE(Fonts::groupDigits(1000) == "1,000");
+TEST_CASE("direction mask operators") {
+  REQUIRE(DirJoin::N << 1 == DirJoin::NW);
+  REQUIRE(DirJoin::N << 2 == DirJoin::W);
 }
 
+TEST_CASE("grouping of numbers formatting") {
+  REQUIRE(strings::groupDigits(1) == "1");
+  REQUIRE(strings::groupDigits(1000) == "1,000");
+}
+
+#include "Data.h"
 #include "Unit.h"
 #include "UnitSpec.h"
 #include "Skill.h"
@@ -17,7 +23,7 @@ TEST_CASE("grouping of numbers formatting") {
 TEST_CASE("basic stats of units") {
   
   SECTION("basic hit and defend chances") {
-    const UnitSpec* spec = UnitSpec::unitSpec(UnitID::SPEARMEN, RaceID::BARBARIANS);
+    const UnitSpec* spec = Data::unit("barbarian_spearmen");
     
     REQUIRE(spec != nullptr);
     
@@ -28,8 +34,8 @@ TEST_CASE("basic stats of units") {
   }
   
   SECTION("large shield modifier") {
-    const RaceUnitSpec* spec = UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS);
-    Unit* unit = new RaceUnit(spec);
+    const UnitSpec* spec = Data::unit("barbarian_swordsmen");
+    Unit* unit = new RaceUnit(spec->as<RaceUnitSpec>());
 
     REQUIRE(spec != nullptr);
     REQUIRE(unit->skills()->hasSkill(Skills::LARGE_SHIELD));
@@ -43,10 +49,10 @@ TEST_CASE("basic stats of units") {
   }
   
   SECTION("to hit modifiers") {
-    const RaceUnitSpec* spec = UnitSpec::raceSpec(UnitID::SWORDSMEN, RaceID::BARBARIANS);
+    const UnitSpec* spec = Data::unit("barbarian_swordsmen");
     
     GIVEN("holy weapon spell") {
-      Unit* unit = new RaceUnit(spec);
+      Unit* unit = new RaceUnit(spec->as<RaceUnitSpec>());
       unit->skills()->add(Skills::SPELL_HOLY_WEAPON);
       REQUIRE(spec->getProperty(Property::TO_HIT) == 30);
 

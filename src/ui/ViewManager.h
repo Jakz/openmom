@@ -37,6 +37,8 @@ class CartographerView;
 class AstrologerView;
 class HistorianView;
 
+class MapEditorView;
+
 class ConsoleView;
 class DataView;
 
@@ -107,6 +109,8 @@ public:
   CartographerView* cartographerView();
   AstrologerView* astrologerView();
   HistorianView* historianView();
+  
+  MapEditorView* mapEditorView();
   
   ConsoleView* consoleView();
 };

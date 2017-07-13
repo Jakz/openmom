@@ -432,6 +432,8 @@ enum class DirJoin
   W  = 0x40,
   NW = 0x80,
   
+  /* orthogonal for map */
+  
   HORIZONTAL = W | E,
   VERTICAL = N | S,
   
@@ -446,6 +448,14 @@ enum class DirJoin
   TCROSS_S = S | W | E,
   TCROSS_E = N | E | S,
   TCROSS_W = N | W | S,
+  
+  EDGE_N = NW | N | NE,
+  EDGE_S = SW | S | SE,
+  EDGE_W = NW | W | SW,
+  EDGE_E = NE | E | SE,
+  
+  
+  /* diagonal for combat isometric */
   
   HORIZONTAL_NW_SE = NW | SE,
   HORIZONTAL_NE_SW = NE | SW,
@@ -492,7 +502,7 @@ inline void operator|=(DirJoin& lhs, const DirJoin& rhs) {
   lhs = static_cast<DirJoin>(static_cast<utype_t>(lhs) | static_cast<utype_t>(rhs));
 }
 
-inline DirJoin operator<<(DirJoin& lhs, u32 v) {
+inline DirJoin operator<<(DirJoin lhs, u32 v) {
   using utype_t = std::underlying_type<DirJoin>::type;
   constexpr size_t bits = 8;/*sizeof(utype_t)*8;*/
   v %= bits;
@@ -503,7 +513,7 @@ inline DirJoin operator<<(DirJoin& lhs, u32 v) {
   return static_cast<DirJoin>((keep | rotate) & 0xFF);
 }
 
-inline DirJoin operator>>(DirJoin& lhs, u32 v) {
+inline DirJoin operator>>(DirJoin lhs, u32 v) {
   using utype_t = std::underlying_type<DirJoin>::type;
   constexpr size_t bits = 8;/*sizeof(utype_t)*8;*/
   v %= bits;
@@ -692,6 +702,8 @@ enum ViewID
   VIEW_OPTIONS,
   VIEW_START,
   VIEW_INTRO,
+  
+  VIEW_MAP_EDITOR,
 
   VIEW_CONSOLE,
   VIEW_DATA,

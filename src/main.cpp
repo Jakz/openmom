@@ -103,8 +103,8 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::WIZLAB);
   lbx::Repository::loadLBX(LBXID::WIZARDS);
   
-  Viewport::createMapTextureAtlas();
-  return 0;
+  /*Viewport::createMapTextureAtlas();
+  return 0;*/
 
   
   lbx::LBX::load();
@@ -126,9 +126,7 @@ int main(int argc, char * arg[])
   Texture::load();
   SDL::initGVM();
   
-  //SDL_SaveBMP(Texture::get(TextureID::FONT_YELLOW_SMALL).img, "antania.bmp");
-
-  SDL::gvm->switchView(VIEW_MAIN);
+  SDL::gvm->switchView(VIEW_MAP_EDITOR);
   //SDL::gvm->switchOverview(VIEW_INFO_MENU);
 
   //SDL::gvm->switchView(VIEW_ITEM_CRAFT);

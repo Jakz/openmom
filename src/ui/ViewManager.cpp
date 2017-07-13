@@ -35,6 +35,8 @@
 #include "AstrologerView.h"
 #include "HistorianView.h"
 
+#include "MapEditorView.h"
+
 #include "ConsoleView.h"
 #include "DataView.h"
 
@@ -70,6 +72,8 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_ASTROLOGER] = new AstrologerView(this);
   views[VIEW_HISTORIAN] = new HistorianView(this);
   
+  views[VIEW_MAP_EDITOR] = new MapEditorView(this);
+  
   views[VIEW_CONSOLE] = new ConsoleView(this);
   views[VIEW_DATA] = new DataView(this);
 }
@@ -98,6 +102,9 @@ InfoMenuView* ViewManager::infoMenuView() { return static_cast<InfoMenuView*>(vi
 CartographerView* ViewManager::cartographerView() { return static_cast<CartographerView*>(views[VIEW_CARTOGRAPHER]); }
 AstrologerView* ViewManager::astrologerView() { return static_cast<AstrologerView*>(views[VIEW_ASTROLOGER]); }
 HistorianView* ViewManager::historianView() { return static_cast<HistorianView*>(views[VIEW_HISTORIAN]); }
+
+MapEditorView* ViewManager::mapEditorView() { return static_cast<MapEditorView*>(views[VIEW_MAP_EDITOR]); }
+
 
 ConsoleView* ViewManager::consoleView() { return static_cast<ConsoleView*>(views[VIEW_CONSOLE]); }
 

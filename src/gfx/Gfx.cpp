@@ -101,7 +101,7 @@ void Gfx::rect(u16 x, u16 y, u16 w, u16 h, Color color)
 {  
   lock(canvas);
 
-  for (int i = 0; i < w; ++i)
+  for (int i = 0; i <= w; ++i)
   {
     canvas->set(x+i, y, color);
     canvas->set(x+i, y+h, color);

@@ -801,11 +801,6 @@ tile_mapping<16> createJoiningTileTextureAtlas4dirs(size_t gfxOffset, size_t arr
 
 void Viewport::createMapTextureAtlas()
 {
-  DirJoin d = DirJoin::NW;
-  d >>= 1;
-  printf("%u\n", d);
-  return;
-  
   using namespace lbx;
 
   Repository::loadLBXTerrain();

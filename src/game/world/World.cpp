@@ -10,12 +10,12 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
   
   if (t->type == TILE_GRASS || t->type == TILE_FOREST)
     t->tileGfxType = TILE_GFX_PLAIN;
-  else if (t->type == TILE_WATER)
+  else if (t->type == TILE_WATER || t->type == TILE_SHORE)
   {
     for (int i = 0; i < Util::DIRS_LENGTH; ++i)
     {
-      Tile* tile = get(x,y,p,Util::DIRS[i]);
-      if (tile && tile->type != TILE_WATER && tile->type != TILE_SHORE)
+      const Tile* tile = get(x,y,p,Util::DIRS[i]);
+      if (tile && tile->isSolidLand())
         subtype |= (1 << i);
     }
     

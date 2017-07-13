@@ -44,3 +44,37 @@ void Tile::placeArmy(Army* army)
     this->army = army;
   }
 }
+
+static const std::array<DirJoin, 8> dirs = { DirJoin::N, DirJoin::NE, DirJoin::E, DirJoin::SE, DirJoin::S, DirJoin::SW, DirJoin::W, DirJoin::NW };
+
+Tile* Tile::neighbor(DirJoin dir) const
+{
+  switch (dir)
+  {
+    case DirJoin::N: return world->get(position.x, position.y-1, Plane::ARCANUS);
+    case DirJoin::NE: return world->get(position.x+1, position.y-1, Plane::ARCANUS);
+    case DirJoin::E: return world->get(position.x+1, position.y, Plane::ARCANUS);
+    case DirJoin::SE: return world->get(position.x+1, position.y+1, Plane::ARCANUS);
+    case DirJoin::S: return world->get(position.x, position.y+1, Plane::ARCANUS);
+    case DirJoin::SW: return world->get(position.x-1, position.y+1, Plane::ARCANUS);
+    case DirJoin::W: return world->get(position.x-1, position.y, Plane::ARCANUS);
+    case DirJoin::NW: return world->get(position.x-1, position.y-1, Plane::ARCANUS);
+    default: assert(false);
+  }
+}
+
+void Tile::for_each_neighbor(const std::function<void(Tile*)> lambda) const
+{
+  for (DirJoin dir : dirs)
+    lambda(neighbor(dir));
+}
+
+DirJoin Tile::computeMask(const std::function<bool(const Tile*)> predicate) const
+{
+  DirJoin mask = DirJoin::NONE;
+  for (DirJoin dir : dirs)
+    if (predicate(neighbor(dir)))
+      mask |= dir;
+
+  return mask;
+}

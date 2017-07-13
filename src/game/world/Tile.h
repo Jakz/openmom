@@ -67,6 +67,12 @@ public:
   bool isSolidLand() const { return type != TileType::TILE_WATER && type != TileType::TILE_SHORE; }
     
   void addSpell(const SpellCast& cast) { spells.push_back(cast); }
+  
+  Tile* neighbor(DirJoin dir) const;
+  
+  void for_each_neighbor(const std::function<void(Tile*)> lambda) const;
+  
+  DirJoin computeMask(const std::function<bool(const Tile*)> predicate) const;
 };
 
 #endif
