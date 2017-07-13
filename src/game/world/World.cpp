@@ -12,38 +12,16 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
     t->tileGfxType = TILE_GFX_PLAIN;
   else if (t->type == TILE_WATER || t->type == TILE_SHORE)
   {
-    for (int i = 0; i < Util::DIRS_LENGTH; ++i)
-    {
-      const Tile* tile = get(x,y,p,Util::DIRS[i]);
-      if (tile && tile->isSolidLand())
-        subtype |= (1 << i);
-    }
-    
-    if ((subtype & ( 1| 4 | 16 | 64)) == (1 | 4 | 16 | 64))
-      subtype = 255;
-    
-    if (subtype == 255 && p == ARCANUS)
-    {
-      t->subtype = subtype;
-      t->tileGfxType = TILE_GFX_ANIMATED;
-    }
-    else if (subtype == 128+64+1 && subtype == 128+64) // TODO: maybe ||?
-    {
-      t->subtype = subtype;
-      t->tileGfxType = TILE_GFX_ANIMATED;
-    }
-    else if (subtype != 0)
-    {
-      t->subtype = subtype;
-      t->tileGfxType = TILE_GFX_BORDER;
-    }
-    else if (Util::chance(0.08f))
-      t->tileGfxType = TILE_GFX_ANIMATED;
+    DirJoin mask = t->computeMask([](const Tile* tile) { return tile && tile->isSolidLand(); });
+
+    if (mask == DirJoin::NONE)
+      t->type = TILE_WATER;
     else
-      t->tileGfxType = TILE_GFX_PLAIN;
-    
-    if (subtype != 0)
       t->type = TILE_SHORE;
+    
+    t->subtype = static_cast<u8>(mask);
+    
+    /*
     
     // check for rivers around
     subtype = 0;
@@ -57,7 +35,7 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
     if (subtype != 0)
     {
       // TODO: manage rivers
-    }
+    }*/
   }
   
   for (const TileType tt : {TILE_DESERT, TILE_TUNDRA})

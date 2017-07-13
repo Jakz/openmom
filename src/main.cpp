@@ -103,8 +103,8 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::WIZLAB);
   lbx::Repository::loadLBX(LBXID::WIZARDS);
   
-  /*Viewport::createMapTextureAtlas();
-  return 0;*/
+  Viewport::createMapTextureAtlas();
+  /*return 0;*/
 
   
   lbx::LBX::load();

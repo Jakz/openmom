@@ -129,6 +129,7 @@ protected:
   
   ButtonGfx gfx;
   optional<TextInfo> labelGfx;
+  uintptr_t data;
   
 public:
   Button(const std::string& name, u16 x, u16 y, u16 w, u16 h) : Clickable(x, y, w, h), name(name), pressed(false), visible(true) { }
@@ -159,7 +160,9 @@ public:
   
   inline void press() { pressed = true;}
   inline void release() { pressed = false; }
-
+  
+  template<typename T, typename std::enable_if<std::is_integral<T>::value && sizeof(T) <= sizeof(uintptr_t), int>::type = 0> inline void setData(T data) { this->data = data; }
+  template<typename T, typename std::enable_if<std::is_integral<T>::value && sizeof(T) <= sizeof(uintptr_t), int>::type = 0> inline void getData() const { return static_cast<T>(data); }
   
   static Button* buildSimple(const std::string& name, u16 x, u16 y, SpriteInfo normal) { return new Button(name, x, y, normal, false); }
   

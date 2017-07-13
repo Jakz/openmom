@@ -34,6 +34,9 @@ constexpr s32 MARGIN = 1;
 constexpr s32 OX = 1, OY = 5;
 constexpr size_t VIEWPORT_WIDTH = 12, VIEWPORT_HEIGHT = 10;
 
+static const Point PALETTE_POSITION = Point(260,5);
+constexpr s32 PALETTE_DY = 20;
+
 const static std::array<Brush, 2> brushes = {
 {
   {
@@ -62,12 +65,14 @@ MapEditorView::MapEditorView(ViewManager* gvm) : ViewWithQueue(gvm)
 {
   lbx::Repository::loadLBXTerrain();
   
-  s16 y = 5;
-  for (const Brush& brush : brushes)
+  s16 y = PALETTE_POSITION.y;
+  for (auto it = brushes.begin(); it != brushes.end(); ++it)
   {
-    lbx::Repository::loadLBXSpriteTerrainData(brush.info);
-    addButton(Button::buildSimple("", 260, y, brush.info));
-    y += 20;
+    lbx::Repository::loadLBXSpriteTerrainData(it->info);
+    addButton(Button::buildSimple("", PALETTE_POSITION.x, y, it->info))->setAction([this, it](){
+      this->brush = it;
+    });
+    y += PALETTE_DY;
 
   }
   
@@ -98,6 +103,10 @@ void MapEditorView::draw()
   
   if (hover.isValid())
     Gfx::rect(OX + hover.x*(TILE_WIDTH+MARGIN)-1, OY + hover.y*(TILE_HEIGHT+MARGIN)-1, TILE_WIDTH+MARGIN, TILE_HEIGHT+MARGIN, {255,0,0});
+  
+  size_t brushIndex = std::distance(brushes.begin(), brush);
+  
+  Gfx::rect(PALETTE_POSITION.x - 1, PALETTE_POSITION.y + PALETTE_DY*brushIndex - 1, 21, 19, {255,0,0});
 }
 
 void MapEditorView::setup()
@@ -116,19 +125,23 @@ Point MapEditorView::hoveredTile(Point pt)
     return Point::INVALID;
 }
 
+void MapEditorView::clickOnTile(Point coords)
+{
+  Tile* tile = world->get(coords.x, coords.y, plane);
+  if (tile)
+  {
+    brush->lambda(tile);
+    world->calcSubTile(tile->x(), tile->y(), plane);
+    tile->for_each_neighbor([this](Tile* t) { if (t) world->calcSubTile(t->x(), t->y(), plane); });
+  }
+}
+
 bool MapEditorView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   Point h = hoveredTile(Point(x,y));
   if (h.isValid())
   {
-    Tile* tile = world->get(h.x + offset.x, h.y + offset.y, plane);
-    if (tile)
-    {
-      brush->lambda(tile);
-      world->calcSubTile(tile->x(), tile->y(), plane);
-      tile->for_each_neighbor([this](Tile* t) { if (t) world->calcSubTile(t->x(), t->y(), plane); });
-    }
-    
+    clickOnTile(Point(h.x + offset.x, h.y + offset.y));
     return true;
   }
   
@@ -138,6 +151,14 @@ bool MapEditorView::mouseReleased(u16 x, u16 y, MouseButton b)
 bool MapEditorView::mouseMoved(u16 x, u16 y, MouseButton b)
 {
   this->hover = hoveredTile(Point(x,y));
-  
+  return true;
+}
+
+bool MapEditorView::mouseDragged(u16 x, u16 y, MouseButton b)
+{
+  Point oldHover = hover;
+  this->hover = hoveredTile(Point(x,y));
+  if (oldHover != hover && hover.isValid())
+    clickOnTile(Point(hover.x + offset.x, hover.y + offset.y));
   return true;
 }

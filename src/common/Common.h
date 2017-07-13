@@ -826,7 +826,6 @@ enum TileType : u8
 enum TileGfxType : u8
 {
   TILE_GFX_NONE = 0,
-  TILE_GFX_ANIMATED,
   TILE_GFX_BORDER,
   TILE_GFX_PLAIN
 };

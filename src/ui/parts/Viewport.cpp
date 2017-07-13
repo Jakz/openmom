@@ -175,6 +175,7 @@ SpriteInfo Viewport::gfxForResource(Resource resource)
 void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
 {
   TextureID* tx = planeTextures[plane];
+  const auto& mapping = plane == Plane::ARCANUS ? arcanus : myrran;
   
   if (t->node)
   {
@@ -185,17 +186,10 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
   }
   else
   {
-    if (t->type == TILE_WATER || t->type == TILE_SHORE)
-    {
-      if (waterMap.find(t->subtype) != waterMap.end() && (t->subtype != 0 || t->tileGfxType == TILE_GFX_ANIMATED))
-        Gfx::drawAnimated(SpriteInfo(tx[ANIMATED], waterMap[t->subtype]), x, y, t->animationOffset);
-      /*else if (waterMap.contains(t->subtype))
-       TextureID::drawAnimated(animated, waterMap.get(t->subtype), x, y, t->animationOffset());*/
-      else if (t->tileGfxType == TILE_GFX_BORDER)
-        Gfx::draw(tx[SHORE], t->subtype/10, t->subtype%10, x, y);
-      else
-        Gfx::draw(tx[TILES], 5, 0, x, y);
-    }
+    if (t->type == TILE_WATER)
+      Gfx::draw(mapping.ocean[t->subtype], x, y);
+    else if (t->type == TILE_SHORE)
+      Gfx::draw(mapping.shores[t->subtype], x, y);
     else if (t->type == TILE_RIVER)
       Gfx::draw(tx[RIVERS], t->subtype/8, t->subtype%8, x, y);
     else if (t->type == TILE_DESERT)
@@ -513,147 +507,10 @@ const size_t TILE_PER_PLANE = 0x2FA;
 constexpr size_t TILE_WIDTH = 20;
 constexpr size_t TILE_HEIGHT = 18;
 
-
-
-
-template<size_t SIZE> using tile_mapping = std::array<const SpriteSheet*, SIZE>;
+TileToSpriteMap Viewport::arcanus;
+TileToSpriteMap Viewport::myrran;
 
 std::bitset<TILE_COUNT> used;
-
-static struct TileToSpriteMap
-{
-  enum : size_t
-  {
-    TILE_COUNT_OCEAN = 2,
-    TILE_COUNT_FOREST = 3,
-    TILE_COUNT_TUNDRA = 3,
-    TILE_COUNT_SWAMP = 3,
-    TILE_COUNT_DESERT = 4,
-    TILE_COUNT_GRASSLANDS = 4,
-    
-    TILE_COUNT_HILLS = 16,
-    TILE_COUNT_MOUNTAINS = 16,
-    
-    TILE_COUNT_RIVER_CAP = 1,
-    TILE_COUNT_RIVER_CORNER = 3,
-    TILE_COUNT_RIVER_STRAIGHT = 3,
-    TILE_COUNT_RIVER_T_CROSS = 4,
-    TILE_COUNT_RIVER_CROSS = 5,
-    
-    TILE_COUNT_SHORE = 256,
-    TILE_COUNT_DESERT_JOIN = 256,
-    TILE_COUNT_TUNDRA_JOIN = 256,
-    
-  };
-
-  struct
-  {
-    const SpriteSheet* sorcery;
-    const SpriteSheet* nature;
-    const SpriteSheet* chaos;
-  } manaNodes;
-  
-  struct
-  {
-    std::array<tile_mapping<TILE_COUNT_RIVER_CAP>, 4> cap;
-    std::array<tile_mapping<TILE_COUNT_RIVER_CORNER>, 4> corner;
-    std::array<tile_mapping<TILE_COUNT_RIVER_STRAIGHT>, 2> straight;
-    std::array<tile_mapping<TILE_COUNT_RIVER_T_CROSS>, 4> tcross;
-    tile_mapping<TILE_COUNT_RIVER_CROSS> cross;
-    
-    /* return river sprite for mask direction */
-    /*
-      |   |   | O |   | O |   |   | O | O |   | O |   | O | O | O |
-      |   |O  |   |  O| OO| OO|OO |OO | O |OOO| OO|OOO|OO |OOO|OOO|
-      | O |   |   |   |   | O | O |   | O |   | O | O | O |   | O |
-     */
-    const SpriteSheet* spriteForMask(DirJoin mask, size_t index) const
-    {
-      switch (mask)
-      {
-        case DirJoin::S: return cap[0][index];
-        case DirJoin::W: return cap[1][index];
-        case DirJoin::N: return cap[2][index];
-        case DirJoin::E: return cap[3][index];
-          
-        case DirJoin::CORNER_N_E: return corner[0][index];
-        case DirJoin::CORNER_S_E: return corner[1][index];
-        case DirJoin::CORNER_S_W: return corner[2][index];
-        case DirJoin::CORNER_N_W: return corner[3][index];
-          
-        case DirJoin::VERTICAL: return straight[0][index];
-        case DirJoin::HORIZONTAL: return straight[1][index];
-          
-        case DirJoin::TCROSS_E: return tcross[0][index];
-        case DirJoin::TCROSS_S: return tcross[1][index];
-        case DirJoin::TCROSS_W: return tcross[2][index];
-        case DirJoin::TCROSS_N: return tcross[3][index];
-          
-        case DirJoin::OCROSS: return cross[index];
-          
-        default:
-          assert(false);
-          return nullptr;
-      }
-    }
-    
-    /* return amount of sprites per type */
-    size_t countForMask(DirJoin mask) const
-    {
-      switch (mask)
-      {
-        case DirJoin::S:
-        case DirJoin::W:
-        case DirJoin::N:
-        case DirJoin::E:
-          return 1;
-        
-        case DirJoin::CORNER_N_E:
-        case DirJoin::CORNER_N_W:
-        case DirJoin::CORNER_S_W:
-        case DirJoin::CORNER_S_E:
-          return 3;
-          
-        case DirJoin::VERTICAL:
-        case DirJoin::HORIZONTAL:
-          return 3;
-          
-        case DirJoin::TCROSS_W:
-        case DirJoin::TCROSS_S:
-        case DirJoin::TCROSS_E:
-        case DirJoin::TCROSS_N:
-          return 4;
-          
-        case DirJoin::OCROSS:
-          return 5;
-          
-        default:
-          assert(false);
-          return 0;
-      }
-    }
-    
-    
-  } rivers;
-  
-  const SpriteSheet* volcano;
-  
-  tile_mapping<TILE_COUNT_FOREST> forest;
-  tile_mapping<TILE_COUNT_TUNDRA> tundra;
-  tile_mapping<TILE_COUNT_TUNDRA> swamp;
-  tile_mapping<TILE_COUNT_DESERT> desert;
-  tile_mapping<TILE_COUNT_DESERT> grasslands;
-  tile_mapping<TILE_COUNT_OCEAN> ocean;
-  
-  tile_mapping<TILE_COUNT_HILLS> hills;
-  tile_mapping<TILE_COUNT_HILLS> mountains;
-  
-  tile_mapping<TILE_COUNT_SHORE> shores;
-  tile_mapping<TILE_COUNT_DESERT_JOIN> desertJoin;
-  tile_mapping<TILE_COUNT_TUNDRA_JOIN> tundraJoin;
-
-  
-} arcanus, myrran;
 
 void mapSprite(size_t gfxIndex, const SpriteSheet*& dest)
 {
@@ -667,7 +524,7 @@ void mapSprite(size_t gfxIndex, const SpriteSheet*& arcanusDest, const SpriteShe
   mapSprite(gfxIndex+TILE_PER_PLANE, myrranDest);
 }
 
-template<size_t SIZE> void mapSprite(const std::array<size_t, SIZE>& indices, tile_mapping<SIZE>& arcanus, tile_mapping<SIZE>& myrran)
+template<size_t SIZE> void mapSprite(const std::array<size_t, SIZE>& indices, TileToSpriteMap::tile_mapping<SIZE>& arcanus, TileToSpriteMap::tile_mapping<SIZE>& myrran)
 {
   for (size_t i = 0; i < SIZE; ++i)
   {
@@ -676,7 +533,7 @@ template<size_t SIZE> void mapSprite(const std::array<size_t, SIZE>& indices, ti
   }
 }
 
-template<size_t SIZE1, size_t SIZE2> void mapSprite(const std::array<size_t, SIZE1*SIZE2>& indices, std::array<tile_mapping<SIZE1>, SIZE2>& arcanus, std::array<tile_mapping<SIZE1>, SIZE2>& myrran)
+template<size_t SIZE1, size_t SIZE2> void mapSprite(const std::array<size_t, SIZE1*SIZE2>& indices, std::array<TileToSpriteMap::tile_mapping<SIZE1>, SIZE2>& arcanus, std::array<TileToSpriteMap::tile_mapping<SIZE1>, SIZE2>& myrran)
 {
   for (size_t j = 0; j < SIZE2; ++j)
   {
@@ -723,7 +580,7 @@ void blitTileToAtlas(const SpriteSheet* sprite, size_t xx, size_t yy, SDL_Surfac
   }
 }
 
-tile_mapping<256> createJoiningTileTextureAtlas8dirs(size_t gfxOffset, size_t arrayIndex, Plane plane, const char* fileName)
+TileToSpriteMap::tile_mapping<256> createJoiningTileTextureAtlas8dirs(size_t gfxOffset, size_t arrayIndex, Plane plane, const char* fileName)
 {
   using namespace lbx;
   constexpr size_t ATLAS_WIDTH = 8;
@@ -737,7 +594,7 @@ tile_mapping<256> createJoiningTileTextureAtlas8dirs(size_t gfxOffset, size_t ar
   const LBXArrayData* mapping = Repository::arrayFor(LBXID::TERRTYPE, arrayIndex);
   const size_t delta = plane == Plane::ARCANUS ? 0 : TILE_PER_PLANE;
   
-  tile_mapping<256> result;
+  TileToSpriteMap::tile_mapping<256> result;
   
   for (size_t i = 1; i < 256; ++i)
   {
@@ -760,7 +617,7 @@ tile_mapping<256> createJoiningTileTextureAtlas8dirs(size_t gfxOffset, size_t ar
   return result;
 }
 
-tile_mapping<16> createJoiningTileTextureAtlas4dirs(size_t gfxOffset, size_t arrayIndex, Plane plane, const char* fileName)
+TileToSpriteMap::tile_mapping<16> createJoiningTileTextureAtlas4dirs(size_t gfxOffset, size_t arrayIndex, Plane plane, const char* fileName)
 {
   using namespace lbx;
   constexpr size_t ATLAS_WIDTH = 16;
@@ -774,7 +631,7 @@ tile_mapping<16> createJoiningTileTextureAtlas4dirs(size_t gfxOffset, size_t arr
   const LBXArrayData* mapping = Repository::arrayFor(LBXID::TERRTYPE, arrayIndex);
   const size_t delta = plane == Plane::ARCANUS ? 0 : TILE_PER_PLANE;
   
-  tile_mapping<16> result;
+  TileToSpriteMap::tile_mapping<16> result;
   
   static const u16 indices[] = { 1, 4, 1+4, 16, 1+16, 4+16, 1+4+16, 64, 64+1, 64+4, 64+1+4, 64+16, 64+1+16, 64+4+16, 64+1+4+16 };
   
