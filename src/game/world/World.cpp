@@ -19,7 +19,12 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
     else
       t->type = TILE_SHORE;
     
-    t->subtype = static_cast<u8>(mask);
+    t->joinMask = mask;
+    
+    if (t->type == TILE_WATER && Util::chance(0.80f))
+      t->variant = 1;
+    else
+      t->variant = 0;
     
     /*
     

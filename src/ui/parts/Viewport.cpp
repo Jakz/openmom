@@ -187,9 +187,10 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
   else
   {
     if (t->type == TILE_WATER)
-      Gfx::draw(mapping.ocean[t->subtype], x, y);
+      Gfx::draw(mapping.ocean[t->variant], x, y);
     else if (t->type == TILE_SHORE)
-      Gfx::draw(mapping.shores[t->subtype], x, y);
+      Gfx::draw(mapping.shores[t->joinMask], x, y);
+    
     else if (t->type == TILE_RIVER)
       Gfx::draw(tx[RIVERS], t->subtype/8, t->subtype%8, x, y);
     else if (t->type == TILE_DESERT)
@@ -524,7 +525,7 @@ void mapSprite(size_t gfxIndex, const SpriteSheet*& arcanusDest, const SpriteShe
   mapSprite(gfxIndex+TILE_PER_PLANE, myrranDest);
 }
 
-template<size_t SIZE> void mapSprite(const std::array<size_t, SIZE>& indices, TileToSpriteMap::tile_mapping<SIZE>& arcanus, TileToSpriteMap::tile_mapping<SIZE>& myrran)
+template<size_t SIZE> void mapSprite(const std::array<size_t, SIZE>& indices, gfx_tile_mapping<SIZE>& arcanus, gfx_tile_mapping<SIZE>& myrran)
 {
   for (size_t i = 0; i < SIZE; ++i)
   {
@@ -533,7 +534,7 @@ template<size_t SIZE> void mapSprite(const std::array<size_t, SIZE>& indices, Ti
   }
 }
 
-template<size_t SIZE1, size_t SIZE2> void mapSprite(const std::array<size_t, SIZE1*SIZE2>& indices, std::array<TileToSpriteMap::tile_mapping<SIZE1>, SIZE2>& arcanus, std::array<TileToSpriteMap::tile_mapping<SIZE1>, SIZE2>& myrran)
+template<size_t SIZE1, size_t SIZE2> void mapSprite(const std::array<size_t, SIZE1*SIZE2>& indices, std::array<gfx_tile_mapping<SIZE1>, SIZE2>& arcanus, std::array<gfx_tile_mapping<SIZE1>, SIZE2>& myrran)
 {
   for (size_t j = 0; j < SIZE2; ++j)
   {
@@ -580,7 +581,7 @@ void blitTileToAtlas(const SpriteSheet* sprite, size_t xx, size_t yy, SDL_Surfac
   }
 }
 
-TileToSpriteMap::tile_mapping<256> createJoiningTileTextureAtlas8dirs(size_t gfxOffset, size_t arrayIndex, Plane plane, const char* fileName)
+gfx_tile_mapping<256> createJoiningTileTextureAtlas8dirs(size_t gfxOffset, size_t arrayIndex, Plane plane, const char* fileName)
 {
   using namespace lbx;
   constexpr size_t ATLAS_WIDTH = 8;
@@ -594,7 +595,7 @@ TileToSpriteMap::tile_mapping<256> createJoiningTileTextureAtlas8dirs(size_t gfx
   const LBXArrayData* mapping = Repository::arrayFor(LBXID::TERRTYPE, arrayIndex);
   const size_t delta = plane == Plane::ARCANUS ? 0 : TILE_PER_PLANE;
   
-  TileToSpriteMap::tile_mapping<256> result;
+  gfx_tile_mapping<256> result;
   
   for (size_t i = 1; i < 256; ++i)
   {
@@ -617,7 +618,7 @@ TileToSpriteMap::tile_mapping<256> createJoiningTileTextureAtlas8dirs(size_t gfx
   return result;
 }
 
-TileToSpriteMap::tile_mapping<16> createJoiningTileTextureAtlas4dirs(size_t gfxOffset, size_t arrayIndex, Plane plane, const char* fileName)
+gfx_tile_mapping<16> createJoiningTileTextureAtlas4dirs(size_t gfxOffset, size_t arrayIndex, Plane plane, const char* fileName)
 {
   using namespace lbx;
   constexpr size_t ATLAS_WIDTH = 16;
@@ -631,7 +632,7 @@ TileToSpriteMap::tile_mapping<16> createJoiningTileTextureAtlas4dirs(size_t gfxO
   const LBXArrayData* mapping = Repository::arrayFor(LBXID::TERRTYPE, arrayIndex);
   const size_t delta = plane == Plane::ARCANUS ? 0 : TILE_PER_PLANE;
   
-  TileToSpriteMap::tile_mapping<16> result;
+  gfx_tile_mapping<16> result;
   
   static const u16 indices[] = { 1, 4, 1+4, 16, 1+16, 4+16, 1+4+16, 64, 64+1, 64+4, 64+1+4, 64+16, 64+1+16, 64+4+16, 64+1+4+16 };
   

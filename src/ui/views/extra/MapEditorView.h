@@ -54,6 +54,6 @@ public:
   
   bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   bool mouseMoved(u16 x, u16 y, MouseButton b) override;
-  bool mouseDragged(u16 x, u16 y, MouseButton b);
+  bool mouseDragged(u16 x, u16 y, MouseButton b) override;
 
 };

@@ -10,10 +10,20 @@ class LocalPlayer;
 class World;
 class Place;
 
+using gfx_tile_t = const SpriteSheet*;
+template<size_t SIZE> class gfx_tile_mapping : public std::array<gfx_tile_t, SIZE>
+{
+public:
+  inline gfx_tile_t const & operator[](DirJoin mask) const { return this->operator[](static_cast<size_t>(mask)); }
+  inline gfx_tile_t const & operator[](size_t mask) const { return std::array<gfx_tile_t, SIZE>::operator[](mask); }
+  
+  inline gfx_tile_t& operator[](DirJoin mask) { return this->operator[](static_cast<size_t>(mask)); }
+  inline gfx_tile_t& operator[](size_t mask) { return std::array<gfx_tile_t, SIZE>::operator[](mask); }
+};
+
+
 struct TileToSpriteMap
 {
-  template<size_t SIZE> using tile_mapping = std::array<const SpriteSheet*, SIZE>;
-  
   enum : size_t
   {
     TILE_COUNT_OCEAN = 2,
@@ -40,18 +50,18 @@ struct TileToSpriteMap
   
   struct
   {
-    const SpriteSheet* sorcery;
-    const SpriteSheet* nature;
-    const SpriteSheet* chaos;
+    gfx_tile_t sorcery;
+    gfx_tile_t nature;
+    gfx_tile_t chaos;
   } manaNodes;
   
   struct
   {
-    std::array<tile_mapping<TILE_COUNT_RIVER_CAP>, 4> cap;
-    std::array<tile_mapping<TILE_COUNT_RIVER_CORNER>, 4> corner;
-    std::array<tile_mapping<TILE_COUNT_RIVER_STRAIGHT>, 2> straight;
-    std::array<tile_mapping<TILE_COUNT_RIVER_T_CROSS>, 4> tcross;
-    tile_mapping<TILE_COUNT_RIVER_CROSS> cross;
+    std::array<gfx_tile_mapping<TILE_COUNT_RIVER_CAP>, 4> cap;
+    std::array<gfx_tile_mapping<TILE_COUNT_RIVER_CORNER>, 4> corner;
+    std::array<gfx_tile_mapping<TILE_COUNT_RIVER_STRAIGHT>, 2> straight;
+    std::array<gfx_tile_mapping<TILE_COUNT_RIVER_T_CROSS>, 4> tcross;
+    gfx_tile_mapping<TILE_COUNT_RIVER_CROSS> cross;
     
     /* return river sprite for mask direction */
     /*
@@ -130,19 +140,19 @@ struct TileToSpriteMap
   
   const SpriteSheet* volcano;
   
-  tile_mapping<TILE_COUNT_FOREST> forest;
-  tile_mapping<TILE_COUNT_TUNDRA> tundra;
-  tile_mapping<TILE_COUNT_TUNDRA> swamp;
-  tile_mapping<TILE_COUNT_DESERT> desert;
-  tile_mapping<TILE_COUNT_DESERT> grasslands;
-  tile_mapping<TILE_COUNT_OCEAN> ocean;
+  gfx_tile_mapping<TILE_COUNT_FOREST> forest;
+  gfx_tile_mapping<TILE_COUNT_TUNDRA> tundra;
+  gfx_tile_mapping<TILE_COUNT_TUNDRA> swamp;
+  gfx_tile_mapping<TILE_COUNT_DESERT> desert;
+  gfx_tile_mapping<TILE_COUNT_DESERT> grasslands;
+  gfx_tile_mapping<TILE_COUNT_OCEAN> ocean;
   
-  tile_mapping<TILE_COUNT_HILLS> hills;
-  tile_mapping<TILE_COUNT_HILLS> mountains;
+  gfx_tile_mapping<TILE_COUNT_HILLS> hills;
+  gfx_tile_mapping<TILE_COUNT_HILLS> mountains;
   
-  tile_mapping<TILE_COUNT_SHORE> shores;
-  tile_mapping<TILE_COUNT_DESERT_JOIN> desertJoin;
-  tile_mapping<TILE_COUNT_TUNDRA_JOIN> tundraJoin;
+  gfx_tile_mapping<TILE_COUNT_SHORE> shores;
+  gfx_tile_mapping<TILE_COUNT_DESERT_JOIN> desertJoin;
+  gfx_tile_mapping<TILE_COUNT_TUNDRA_JOIN> tundraJoin;
   
   
 };

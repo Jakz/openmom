@@ -18,11 +18,13 @@ private:
   World* world;
   
 public:
-  
   TileType type;
   TileGfxType tileGfxType;
   s16 subtype;
   u8 roads;
+  
+  DirJoin joinMask;
+  u8 variant;
   
   Position position;
   
@@ -43,7 +45,10 @@ public:
   Tile() { }
   
   Tile(World* const world, Position position) : world(world), position(position), subtype(0), tileGfxType(TILE_GFX_NONE), animationOffset(Util::randomIntUpTo(10)),
-    resource(Resource::NONE), city(nullptr), army(nullptr), node(nullptr), place(nullptr), type(TILE_WATER), roads(0), hasRoad(false), hasEnchantedRoad(false), resourceUsed({false})
+    resource(Resource::NONE), city(nullptr), army(nullptr), node(nullptr), place(nullptr), type(TILE_WATER), roads(0),
+  
+  joinMask(DirJoin::NONE), variant(0),
+  hasRoad(false), hasEnchantedRoad(false), resourceUsed({false})
   {
   }
   

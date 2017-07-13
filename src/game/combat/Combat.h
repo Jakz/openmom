@@ -121,13 +121,13 @@ namespace combat
     Combat(Army* a1, Army* a2, CombatMechanics* mechanics);
     ~Combat();
     
-    void endTurn();
+    void endTurn() override;
     
     Player* currentPlayer() { return current; }
     
     const CombatTile* tileAt(const Point& position);
     const CombatTile* tileAt(s16 x, s16 y);
-    CombatUnit* unitAtTile(CombatCoord position) const;
+    CombatUnit* unitAtTile(CombatCoord position) const override;
     bool isTileEmpty(CombatCoord position) const override { return !unitAtTile(position); }
 
     CombatMap* map() { return _map.get(); }

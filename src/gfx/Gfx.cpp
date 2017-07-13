@@ -383,7 +383,11 @@ void Gfx::drawAnimated(SpriteInfo info, u16 x, u16 y, s16 offset, s16 animFactor
   if (info.isLBX())
   {
     const auto* lsheet = static_cast<const lbx::LBXSpriteData*>(sheet);
-    draw(lsheet, x, y, ((offset+fticks)/animFactor) % lsheet->count, 0);
+    
+    if (lsheet->count > 1)
+      draw(lsheet, x, y, ((offset+fticks)/animFactor) % lsheet->count, 0);
+    else
+      draw(lsheet, x, y, 0, 0);
   }
   else
   {
