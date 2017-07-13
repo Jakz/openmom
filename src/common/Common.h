@@ -492,6 +492,40 @@ inline void operator|=(DirJoin& lhs, const DirJoin& rhs) {
   lhs = static_cast<DirJoin>(static_cast<utype_t>(lhs) | static_cast<utype_t>(rhs));
 }
 
+inline DirJoin operator<<(DirJoin& lhs, u32 v) {
+  using utype_t = std::underlying_type<DirJoin>::type;
+  constexpr size_t bits = 8;/*sizeof(utype_t)*8;*/
+  v %= bits;
+  
+  utype_t keep = static_cast<utype_t>(lhs) >> v;
+  utype_t rotate = static_cast<utype_t>(lhs) << (bits - v);
+  
+  return static_cast<DirJoin>((keep | rotate) & 0xFF);
+}
+
+inline DirJoin operator>>(DirJoin& lhs, u32 v) {
+  using utype_t = std::underlying_type<DirJoin>::type;
+  constexpr size_t bits = 8;/*sizeof(utype_t)*8;*/
+  v %= bits;
+  
+  utype_t keep = static_cast<utype_t>(lhs) << v;
+  utype_t rotate = static_cast<utype_t>(lhs) >> (bits - v);
+  
+  return static_cast<DirJoin>((keep | rotate) & 0xFF);
+}
+
+inline DirJoin& operator<<=(DirJoin& lhs, u32 v)
+{
+  lhs = lhs << v;
+  return lhs;
+}
+
+inline DirJoin& operator>>=(DirJoin& lhs, u32 v)
+{
+  lhs = lhs >> v;
+  return lhs;
+}
+
 class Palette;
 
 class SpriteSheet
