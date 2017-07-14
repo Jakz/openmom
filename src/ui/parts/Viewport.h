@@ -3,6 +3,7 @@
 
 #include "common/Common.h"
 
+#include "Tile.h"
 #include <unordered_map>
 
 class Tile;
@@ -10,7 +11,7 @@ class LocalPlayer;
 class World;
 class Place;
 
-using gfx_tile_t = const SpriteSheet*;
+using gfx_tile_t = SpriteInfo;//const SpriteSheet*;
 template<size_t SIZE> class gfx_tile_mapping : public std::array<gfx_tile_t, SIZE>
 {
 public:
@@ -23,31 +24,7 @@ public:
 
 
 struct TileToSpriteMap
-{
-  enum : size_t
-  {
-    TILE_COUNT_OCEAN = 2,
-    TILE_COUNT_FOREST = 3,
-    TILE_COUNT_TUNDRA = 3,
-    TILE_COUNT_SWAMP = 3,
-    TILE_COUNT_DESERT = 4,
-    TILE_COUNT_GRASSLANDS = 4,
-    
-    TILE_COUNT_HILLS = 16,
-    TILE_COUNT_MOUNTAINS = 16,
-    
-    TILE_COUNT_RIVER_CAP = 1,
-    TILE_COUNT_RIVER_CORNER = 3,
-    TILE_COUNT_RIVER_STRAIGHT = 3,
-    TILE_COUNT_RIVER_T_CROSS = 4,
-    TILE_COUNT_RIVER_CROSS = 5,
-    
-    TILE_COUNT_SHORE = 256,
-    TILE_COUNT_DESERT_JOIN = 256,
-    TILE_COUNT_TUNDRA_JOIN = 256,
-    
-  };
-  
+{  
   struct
   {
     gfx_tile_t sorcery;
@@ -69,7 +46,7 @@ struct TileToSpriteMap
      |   |O  |   |  O| OO| OO|OO |OO | O |OOO| OO|OOO|OO |OOO|OOO|
      | O |   |   |   |   | O | O |   | O |   | O | O | O |   | O |
      */
-    const SpriteSheet* spriteForMask(DirJoin mask, size_t index) const
+    gfx_tile_t spriteForMask(DirJoin mask, size_t index) const
     {
       switch (mask)
       {
@@ -95,7 +72,6 @@ struct TileToSpriteMap
           
         default:
           assert(false);
-          return nullptr;
       }
     }
     
@@ -138,7 +114,7 @@ struct TileToSpriteMap
     
   } rivers;
   
-  const SpriteSheet* volcano;
+  gfx_tile_t volcano;
   
   gfx_tile_mapping<TILE_COUNT_FOREST> forest;
   gfx_tile_mapping<TILE_COUNT_TUNDRA> tundra;

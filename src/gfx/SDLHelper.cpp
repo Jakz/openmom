@@ -157,6 +157,12 @@ void SDL::handleEvents()
         gvm->keyReleased(event.key.keysym.scancode, event.key.keysym.sym, static_cast<KeyboardMod>(event.key.keysym.mod));
         break;
       }
+        
+      case SDL_MOUSEWHEEL:
+      {
+        gvm->mouseWheel(event.wheel.x, event.wheel.y, 0);
+        break;
+      }
     }
   }
 }

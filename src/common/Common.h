@@ -419,6 +419,8 @@ inline Dir operator~(const Dir& dir)
   }
 }
 
+#pragma mark DirJoin mask management
+
 enum class DirJoin
 {
   NONE = 0x00,
@@ -502,6 +504,7 @@ inline void operator|=(DirJoin& lhs, const DirJoin& rhs) {
   lhs = static_cast<DirJoin>(static_cast<utype_t>(lhs) | static_cast<utype_t>(rhs));
 }
 
+/* shift and rotate left */
 inline DirJoin operator<<(DirJoin lhs, u32 v) {
   using utype_t = std::underlying_type<DirJoin>::type;
   constexpr size_t bits = 8;/*sizeof(utype_t)*8;*/
@@ -513,6 +516,7 @@ inline DirJoin operator<<(DirJoin lhs, u32 v) {
   return static_cast<DirJoin>((keep | rotate) & 0xFF);
 }
 
+/* shift and rotate right */
 inline DirJoin operator>>(DirJoin lhs, u32 v) {
   using utype_t = std::underlying_type<DirJoin>::type;
   constexpr size_t bits = 8;/*sizeof(utype_t)*8;*/
@@ -535,6 +539,20 @@ inline DirJoin& operator>>=(DirJoin& lhs, u32 v)
   lhs = lhs >> v;
   return lhs;
 }
+
+/* compress to orthogonal */
+inline std::underlying_type<DirJoin>::type operator!(const DirJoin& lhs)
+{
+  return
+  ((lhs & DirJoin::N) != DirJoin::NONE ? 0x01 : 0) |
+  ((lhs & DirJoin::E) != DirJoin::NONE ? 0x02 : 0) |
+  ((lhs & DirJoin::S) != DirJoin::NONE ? 0x04 : 0) |
+  ((lhs & DirJoin::W) != DirJoin::NONE ? 0x08 : 0)
+  ;
+}
+
+
+#pragma mark SpriteSheet generic interface
 
 class Palette;
 

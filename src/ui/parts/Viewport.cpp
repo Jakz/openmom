@@ -174,6 +174,8 @@ SpriteInfo Viewport::gfxForResource(Resource resource)
 
 void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
 {
+  constexpr u16 animSpeed = 2;
+  
   TextureID* tx = planeTextures[plane];
   const auto& mapping = plane == Plane::ARCANUS ? arcanus : myrran;
   
@@ -186,32 +188,57 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
   }
   else
   {
-    if (t->type == TILE_WATER)
-      Gfx::draw(mapping.ocean[t->variant], x, y);
-    else if (t->type == TILE_SHORE)
-      Gfx::draw(mapping.shores[t->joinMask], x, y);
-    
-    else if (t->type == TILE_RIVER)
-      Gfx::draw(tx[RIVERS], t->subtype/8, t->subtype%8, x, y);
-    else if (t->type == TILE_DESERT)
-      Gfx::draw(tx[DESERT], t->subtype/10, t->subtype%10, x, y);
-    else if (t->type == TILE_TUNDRA)
+    switch (t->type)
     {
-      // the sprite doesn't have borders with other types, then a random sprite of basic terrain is used
-      if (t->tileGfxType == TILE_GFX_PLAIN)
-        Gfx::draw(tx[TILES], GfxData::tileGfxSpec(t->type).row, t->subtype, x, y);
-      else
-        Gfx::draw(tx[TUNDRA], t->subtype/10, t->subtype%10, x, y);
-    }
-    else if (t->type == TILE_MOUNTAIN)
-      Gfx::draw(tx[MOUNTAINS], 0, t->subtype, x, y);
-    else if (t->type == TILE_VOLCANO)
-      Gfx::drawAnimated(SpriteInfo(tx[ANIMATED], 1), x, y, t->animationOffset);
-    else if (t->type == TILE_HILL)
-      Gfx::draw(tx[MOUNTAINS], 1, t->subtype, x, y);
-    else if (t->type == TILE_GRASS || t->type == TILE_SWAMP || t->type == TILE_FOREST || t->type == TILE_DESERT || t->type == TILE_TUNDRA)
-    {
-      Gfx::draw(tx[TILES], GfxData::tileGfxSpec(t->type).row, t->subtype, x, y);
+      case TILE_WATER:
+        Gfx::drawAnimated(mapping.ocean[t->variant], x, y, t->animationOffset, animSpeed);
+        break;
+        
+      case TILE_SHORE:
+        Gfx::drawAnimated(mapping.shores[t->joinMask], x, y, t->animationOffset, animSpeed);
+        break;
+        
+      case TILE_GRASS:
+        Gfx::draw(mapping.grasslands[t->variant], x, y);
+        break;
+        
+      case TILE_DESERT:
+      {
+        if (t->joinMask == DirJoin::NONE)
+          Gfx::draw(mapping.desert[t->variant], x, y);
+        else
+          Gfx::draw(mapping.desertJoin[t->joinMask], x, y);
+        break;
+      }
+        
+      case TILE_TUNDRA:
+      {
+        if (t->joinMask == DirJoin::NONE)
+          Gfx::draw(mapping.tundra[t->variant], x, y);
+        else
+          Gfx::draw(mapping.tundraJoin[t->joinMask], x, y);
+        break;
+      }
+        
+      case TILE_MOUNTAIN:
+      case TILE_HILL:
+      {
+        const auto& tiles = t->type == TILE_MOUNTAIN ? mapping.mountains : mapping.hills;
+        Gfx::draw(tiles[t->variant], x, y);
+        break;
+      }
+
+      case TILE_FOREST:
+        Gfx::draw(mapping.forest[t->variant], x, y);
+        break;
+        
+      case TILE_SWAMP:
+        Gfx::draw(mapping.swamp[t->variant], x, y);
+        break;
+        
+      case TILE_VOLCANO:
+        Gfx::drawAnimated(mapping.volcano, x, y);
+        break;
     }
   }
   
@@ -513,13 +540,18 @@ TileToSpriteMap Viewport::myrran;
 
 std::bitset<TILE_COUNT> used;
 
-void mapSprite(size_t gfxIndex, const SpriteSheet*& dest)
+// Repository::spriteFor
+inline gfx_tile_t spriteInfoToGfxTile(SpriteInfo info) { return info; }
+inline const SpriteSheet* gfxTileToSprite(SpriteInfo info) { return lbx::Repository::spriteFor(info); }
+
+
+void mapSprite(size_t gfxIndex, gfx_tile_t& dest)
 {
   used[gfxIndex] = true;
-  dest = lbx::Repository::spriteFor(LSI(TERRAIN, gfxIndex));
+  dest = spriteInfoToGfxTile(LSI(TERRAIN, gfxIndex));
 }
 
-void mapSprite(size_t gfxIndex, const SpriteSheet*& arcanusDest, const SpriteSheet*& myrranDest)
+void mapSprite(size_t gfxIndex, gfx_tile_t& arcanusDest, gfx_tile_t& myrranDest)
 {
   mapSprite(gfxIndex, arcanusDest);
   mapSprite(gfxIndex+TILE_PER_PLANE, myrranDest);
@@ -564,12 +596,14 @@ void blitTileToAtlas(size_t tileIndex, size_t atlasIndex, size_t atlasWidth, SDL
   }
 }
 
-void blitTileToAtlas(const SpriteSheet* sprite, size_t xx, size_t yy, SDL_Surface* atlas)
+void blitTileToAtlas(gfx_tile_t info, size_t xx, size_t yy, SDL_Surface* atlas)
 {
   using namespace lbx;
   
   const size_t bx = 20 * xx;
   const size_t by = 18 * yy;
+  
+  const SpriteSheet* sprite = gfxTileToSprite(info);
   
   for (size_t x = 0; x < TILE_WIDTH; ++x)
   {
@@ -602,7 +636,7 @@ gfx_tile_mapping<256> createJoiningTileTextureAtlas8dirs(size_t gfxOffset, size_
     u16 gfxIndex = mapping->get<u16>(i);
     u16 adjustedIndex = gfxIndex + delta + gfxOffset;
     
-    result[i] = Repository::spriteFor(LSI(TERRAIN, adjustedIndex));
+    result[i] = spriteInfoToGfxTile(LSI(TERRAIN, adjustedIndex));
     used[adjustedIndex] = true;
     
     if (fileName)
@@ -641,7 +675,7 @@ gfx_tile_mapping<16> createJoiningTileTextureAtlas4dirs(size_t gfxOffset, size_t
     u16 gfxIndex = mapping->get<u16>(indices[i]);
     u16 adjustedIndex = gfxIndex + delta + gfxOffset;
     
-    result[i+1] = Repository::spriteFor(LSI(TERRAIN, adjustedIndex));
+    result[i+1] = spriteInfoToGfxTile(LSI(TERRAIN, adjustedIndex));
     used[adjustedIndex] = true;
     
     if (fileName)
@@ -677,7 +711,7 @@ void Viewport::createMapTextureAtlas()
   createJoiningTileTextureAtlas4dirs(0, 1, Plane::MYRRAN, used, "myrran-mountains.png");
   createJoiningTileTextureAtlas4dirs(-0x103 + 0x113, 1, Plane::MYRRAN, used, "myrran-hills.png");*/
   
-  static_assert(sizeof(TileToSpriteMap::rivers) == sizeof(const SpriteSheet*)*43, "");
+  static_assert(sizeof(TileToSpriteMap::rivers) == sizeof(gfx_tile_t)*43, "");
   
   /* nodes and special things */
   mapSprite(0x0A8, arcanus.manaNodes.sorcery, myrran.manaNodes.sorcery);
@@ -757,7 +791,7 @@ void Viewport::createMapTextureAtlas()
       
       if (!used[i])
       {
-        blitTileToAtlas(sprite, ucount % side, ucount / side, uatlas);
+        blitTileToAtlas(LSI(TERRAIN, i), ucount % side, ucount / side, uatlas);
         ++ucount;
       }
     }

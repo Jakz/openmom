@@ -77,6 +77,7 @@ public:
   bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   bool mouseMoved(u16 x, u16 y, MouseButton b) override;
   bool mouseDragged(u16 x, u16 y, MouseButton b) override;
+  bool mouseWheel(s16 dx, s16 dy, u16 d) override;
   
   bool keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
   bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;

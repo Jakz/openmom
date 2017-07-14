@@ -34,10 +34,7 @@ constexpr s32 MARGIN = 1;
 constexpr s32 OX = 1, OY = 5;
 constexpr size_t VIEWPORT_WIDTH = 12, VIEWPORT_HEIGHT = 10;
 
-static const Point PALETTE_POSITION = Point(260,5);
-constexpr s32 PALETTE_DY = 20;
-
-const static std::array<Brush, 2> brushes = {
+const static std::array<Brush, 9> brushes = {
 {
   {
     Brush::Type::OCEAN,
@@ -57,6 +54,62 @@ const static std::array<Brush, 2> brushes = {
     {
       tile->type = TILE_GRASS;
     }
+  },
+  {
+    Brush::Type::DESERT,
+    LSI(TERRAIN, 0xA5),
+    [](Tile* tile)
+    {
+      tile->type = TILE_DESERT;
+    }
+  },
+  {
+    Brush::Type::TUNDRA,
+    LSI(TERRAIN, 0xA7),
+    [](Tile* tile)
+    {
+      tile->type = TILE_TUNDRA;
+    }
+  },
+  {
+    Brush::Type::HILLS,
+    LSI(TERRAIN, 0xAB),
+    [](Tile* tile)
+    {
+      tile->type = TILE_HILL;
+    }
+  },
+  {
+    Brush::Type::MOUNTAINS,
+    LSI(TERRAIN, 0xA4),
+    [](Tile* tile)
+    {
+      tile->type = TILE_MOUNTAIN;
+    }
+  },
+  {
+    Brush::Type::FOREST,
+    LSI(TERRAIN, 0xA3),
+    [](Tile* tile)
+    {
+      tile->type = TILE_FOREST;
+    }
+  },
+  {
+    Brush::Type::VOLCANO,
+    LSI(TERRAIN, 0xB3),
+    [](Tile* tile)
+    {
+      tile->type = TILE_VOLCANO;
+    }
+  },
+  {
+    Brush::Type::SWAMP,
+    LSI(TERRAIN, 0xA6),
+    [](Tile* tile)
+    {
+      tile->type = TILE_SWAMP;
+    }
   }
 } };
 
@@ -65,15 +118,16 @@ MapEditorView::MapEditorView(ViewManager* gvm) : ViewWithQueue(gvm)
 {
   lbx::Repository::loadLBXTerrain();
   
-  s16 y = PALETTE_POSITION.y;
+  size_t i = 0;
   for (auto it = brushes.begin(); it != brushes.end(); ++it)
   {
     lbx::Repository::loadLBXSpriteTerrainData(it->info);
-    addButton(Button::buildSimple("", PALETTE_POSITION.x, y, it->info))->setAction([this, it](){
+    Point position = positionForBrush(i);
+    addButton(Button::buildSimple("", position.x, position.y, it->info))->setAction([this, it](){
       this->brush = it;
     });
-    y += PALETTE_DY;
-
+    
+    ++i;
   }
   
 }
@@ -89,6 +143,17 @@ void MapEditorView::activate()
   brush = brushes.begin();
   offset = Point::ZERO;
   plane = Plane::ARCANUS;
+  
+  mode = Mode::TERRAIN;
+}
+
+Point MapEditorView::positionForBrush(size_t i)
+{
+  static const Point PALETTE_POSITION = Point(260,5);
+  constexpr s32 PALETTE_DY = 20, PALETTE_DX = 22;
+  constexpr s32 BRUSH_PER_COLUMN = 6;
+  
+  return Point(PALETTE_POSITION.x + ((i/BRUSH_PER_COLUMN)*PALETTE_DX), PALETTE_POSITION.y + ((i%BRUSH_PER_COLUMN)*PALETTE_DY));
 }
 
 void MapEditorView::draw()
@@ -105,8 +170,9 @@ void MapEditorView::draw()
     Gfx::rect(OX + hover.x*(TILE_WIDTH+MARGIN)-1, OY + hover.y*(TILE_HEIGHT+MARGIN)-1, TILE_WIDTH+MARGIN, TILE_HEIGHT+MARGIN, {255,0,0});
   
   size_t brushIndex = std::distance(brushes.begin(), brush);
-  
-  Gfx::rect(PALETTE_POSITION.x - 1, PALETTE_POSITION.y + PALETTE_DY*brushIndex - 1, 21, 19, {255,0,0});
+  Point brushPosition = positionForBrush(brushIndex);
+
+  Gfx::rect(brushPosition.x - 1, brushPosition.y - 1, 21, 19, {255,0,0});
 }
 
 void MapEditorView::setup()
@@ -136,7 +202,7 @@ void MapEditorView::clickOnTile(Point coords)
   }
 }
 
-bool MapEditorView::mouseReleased(u16 x, u16 y, MouseButton b)
+bool MapEditorView::mousePressed(u16 x, u16 y, MouseButton b)
 {
   Point h = hoveredTile(Point(x,y));
   if (h.isValid())
@@ -160,5 +226,24 @@ bool MapEditorView::mouseDragged(u16 x, u16 y, MouseButton b)
   this->hover = hoveredTile(Point(x,y));
   if (oldHover != hover && hover.isValid())
     clickOnTile(Point(hover.x + offset.x, hover.y + offset.y));
+  return true;
+}
+
+bool MapEditorView::mouseWheel(s16 dx, s16 dy, u16 d)
+{
+  switch (mode)
+  {
+    case Mode::TERRAIN:
+    {
+      if (dy < 0 && brush < brushes.end()-1)
+        ++brush;
+      else if (dy > 0 && brush > brushes.begin())
+        --brush;
+      
+      break;
+    }
+  }
+
+  
   return true;
 }

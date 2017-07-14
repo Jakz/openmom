@@ -217,6 +217,14 @@ bool ViewManager::mousePressed(u16 x, u16 y, MouseButton b)
     return respondingView()->doMousePressed(x, y, b);
 }
 
+bool ViewManager::mouseWheel(s16 dx, s16 dy, u16 d)
+{
+  if (animating)
+    return (*animations.begin())->mouseWheel(dx, dy, d);
+  else
+    return respondingView()->doMouseWheel(dx, dy, d);
+}
+
 bool ViewManager::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   if (animating)

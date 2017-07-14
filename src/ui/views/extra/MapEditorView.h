@@ -19,7 +19,14 @@ struct Brush
   enum class Type
   {
     OCEAN,
-    GRASSLANDS
+    GRASSLANDS,
+    DESERT,
+    TUNDRA,
+    HILLS,
+    MOUNTAINS,
+    FOREST,
+    SWAMP,
+    VOLCANO,
   };
   
   Type type;
@@ -30,6 +37,11 @@ struct Brush
 class MapEditorView : public ViewWithQueue
 {
 private:
+  enum class Mode
+  {
+    TERRAIN
+  };
+  
   World* world;
   
   void draw() override;
@@ -37,10 +49,13 @@ private:
   
   void setup();
   
-  std::array<Brush, 2>::const_iterator brush;
+  std::array<Brush, 9>::const_iterator brush;
   Point hover;
   Point offset;
   Plane plane;
+  Mode mode;
+  
+  Point positionForBrush(size_t index);
   
   Point hoveredTile(Point pt);
   
@@ -52,8 +67,10 @@ public:
   void activate() override;
   void deactivate() override { }
   
-  bool mouseReleased(u16 x, u16 y, MouseButton b) override;
+  bool mousePressed(u16 x, u16 y, MouseButton b) override;
   bool mouseMoved(u16 x, u16 y, MouseButton b) override;
   bool mouseDragged(u16 x, u16 y, MouseButton b) override;
+  
+  bool mouseWheel(s16 dx, s16 dy, u16 d) override;
 
 };

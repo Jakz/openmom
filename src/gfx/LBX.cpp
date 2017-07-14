@@ -795,7 +795,14 @@ const LBXSpriteData* Repository::loadLBXSpriteData(SpriteInfo info)
   FILE *in = fopen(name.c_str(), "rb");
   
   LOGD("[lbx] loading gfx entry %u from %s", info.index(), file(info.lbx()).fileName.c_str());
-  LBXSpriteData* spriteData = LBX::scanGfx(lbx.info.header, lbx.info.offsets[info.index()], in);
+  
+  LBXSpriteData* spriteData;
+  
+  if (info.lbx() != LBXID::TERRAIN)
+    spriteData = LBX::scanGfx(lbx.info.header, lbx.info.offsets[info.index()], in);
+  else
+    spriteData = LBX::scanTerrainGfx(lbx.info.offsets[info.index()], terrainData[info.index()].animated() ? 4 : 1, in);
+  
   gfxAllocated(spriteData);
   LOGD3("[lbx] lbx cache size: %zu sprites in %zu bytes", spritesUsed, bytesUsed);
   

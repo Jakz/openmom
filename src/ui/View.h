@@ -73,6 +73,8 @@ public:
   bool doMouseMoved(u16 x, u16 y, MouseButton b);
   bool doMouseClicked(u16 x, u16 y, MouseButton b) { return mouseClicked(x,y,b); }
   
+  bool doMouseWheel(s16 dx, s16 dy, u16 d);
+  
   bool doKeyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { return keyPressed(key,kkey,mod); }
   bool doKeyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { return keyReleased(key,kkey,mod); }
   

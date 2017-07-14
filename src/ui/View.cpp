@@ -149,3 +149,8 @@ bool View::doMouseMoved(u16 x, u16 y, MouseButton b)
   
   return mouseMoved(x, y, b);
 }
+
+bool View::doMouseWheel(s16 dx, s16 dy, u16 d)
+{
+  return mouseWheel(dx, dy, d);
+}

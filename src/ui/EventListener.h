@@ -19,6 +19,7 @@ public:
   virtual bool mouseReleased(u16 x, u16 y, MouseButton b) { return true; };
   virtual bool mouseMoved(u16 x, u16 y, MouseButton b) { return true; };
   virtual bool mouseDragged(u16 x, u16 y, MouseButton b) { return true; };
+  virtual bool mouseWheel(s16 dx, s16 dy, u16 d) { return true; }
 };
 
 class KeyEventListener
