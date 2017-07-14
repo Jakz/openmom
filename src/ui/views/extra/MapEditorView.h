@@ -11,8 +11,10 @@
 #include "common/Common.h"
 #include "View.h"
 
+
 class World;
 class Tile;
+class MiniMap;
 
 struct Brush
 {
@@ -47,6 +49,7 @@ private:
   };
   
   World* world;
+  MiniMap* minimap;
   
   void draw() override;
   void drawPost() override { }
@@ -69,7 +72,7 @@ public:
   MapEditorView(ViewManager* gvm);
   
   void activate() override;
-  void deactivate() override { }
+  void deactivate() override;
   
   bool mousePressed(u16 x, u16 y, MouseButton b) override;
   bool mouseMoved(u16 x, u16 y, MouseButton b) override;

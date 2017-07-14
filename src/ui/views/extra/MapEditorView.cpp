@@ -17,7 +17,10 @@
 #include "Spells.h"
 #include "LocalPlayer.h"
 #include "Game.h"
+
+#include "Minimap.h"
 #include "World.h"
+#include "WorldGenerator.h"
 
 #include "Army.h"
 
@@ -31,7 +34,7 @@
 
 constexpr s32 TILE_WIDTH = 20, TILE_HEIGHT = 18;
 constexpr s32 MARGIN = 1;
-constexpr s32 OX = 1, OY = 5;
+constexpr s32 OX = 1, OY = 1;
 constexpr size_t VIEWPORT_WIDTH = 12, VIEWPORT_HEIGHT = 10;
 
 const static std::array<Brush, 13> brushes = {
@@ -171,6 +174,13 @@ void MapEditorView::activate()
   world->fill(TileType::GRASS, Plane::MYRRAN);
   world->calcSubTiles();
   
+  minimap = new MiniMap(world);
+  minimap->discover(Rect(0,0,60,40), Plane::ARCANUS);
+  minimap->discover(Rect(0,0,60,40), Plane::MYRRAN);
+  
+  //WorldGenerator generator(world);
+  //generator.atlasGenerate();
+  
   hover = Point::INVALID;
   brush = brushes.begin();
   offset = Point::ZERO;
@@ -179,9 +189,14 @@ void MapEditorView::activate()
   mode = Mode::TERRAIN;
 }
 
+void MapEditorView::deactivate()
+{
+  // TODO: release resources
+}
+
 Point MapEditorView::positionForBrush(size_t i)
 {
-  static const Point PALETTE_POSITION = Point(260,5);
+  static const Point PALETTE_POSITION = Point(256,40+3);
   constexpr s32 PALETTE_DY = 20, PALETTE_DX = 22;
   constexpr s32 BRUSH_PER_COLUMN = 7;
   
@@ -205,6 +220,8 @@ void MapEditorView::draw()
   Point brushPosition = positionForBrush(brushIndex);
 
   Gfx::rect(brushPosition.x - 1, brushPosition.y - 1, 21, 19, {255,0,0});
+  
+  Gfx::draw(minimap->get(plane), 256, OY);
 }
 
 void MapEditorView::setup()
@@ -231,15 +248,30 @@ void MapEditorView::clickOnTile(Point coords)
     brush->lambda(tile);
     world->calcSubTile(tile->x(), tile->y(), plane);
     tile->for_each_neighbor([this](Tile* t) { if (t) world->calcSubTile(t->x(), t->y(), plane); });
+    
+    minimap->discover(Position(coords.x, coords.y, plane));
+    tile->for_each_neighbor([this]( const Tile* tile) {
+      if (tile)
+        minimap->discover(tile->position);
+    });
   }
 }
 
 bool MapEditorView::mousePressed(u16 x, u16 y, MouseButton b)
 {
   Point h = hoveredTile(Point(x,y));
+  
   if (h.isValid())
   {
-    clickOnTile(Point(h.x + offset.x, h.y + offset.y));
+    if (b == MouseButton::BUTTON_LEFT)
+      clickOnTile(Point(h.x + offset.x, h.y + offset.y));
+    else if (b == MouseButton::BUTTON_RIGHT)
+    {
+      offset = h - Point(VIEWPORT_WIDTH/2, VIEWPORT_HEIGHT/2);
+      offset.y = std::max((s16)0, offset.y);
+      offset.y = std::min((s16)(world->h - VIEWPORT_HEIGHT), offset.y);
+    }
+      
     return true;
   }
   

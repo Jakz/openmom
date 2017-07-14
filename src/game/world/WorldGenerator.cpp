@@ -74,7 +74,7 @@ void AtlasMap::placeContinents(s32 count)
 
 void AtlasMap::placeContinentSeed(s32 x,s32 y,s32 t) // TODO: optimizable by placing all data in static array
 {
-  static const s32 LENGTH = 14;
+  s32 LENGTH = 14;
   
   s32* data[2];
   
@@ -113,6 +113,7 @@ void AtlasMap::placeContinentSeed(s32 x,s32 y,s32 t) // TODO: optimizable by pla
       static s32 ar0[] = { -1, 0, -2, -1, 0, 1, -2, 1, 2, -2, 2, 3 };
       static s32 ar1[] = { -1, -1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2 };
       data[0] = ar0; data[1] = ar1;
+      LENGTH = 12;
       break;
     }
     case 6:
@@ -146,7 +147,11 @@ void AtlasMap::placeContinentSeed(s32 x,s32 y,s32 t) // TODO: optimizable by pla
   }
   
   for (int i = 0; i < LENGTH; ++i)
-    set(upX(x, data[0][i]), upY(y, data[1][i]), 'G');
+  {
+    s32 xx = upX(x, data[0][i]);
+    s32 yy = upY(y, data[1][i]);
+    set(xx, yy, 'G');
+  }
 }
 
 void AtlasMap::placeIslands(s32 count, IslandType type)
@@ -165,8 +170,8 @@ void AtlasMap::lonelyIslands(s32 count)
 {
   for (int i = 0; i < count; ++i)
   {
-    s32 j = Util::randomIntUpTo(W); // TODO this order shouldn't work since it gives ( [0:1]*W ) - 0.5f
-    s32 k = Util::randomIntUpTo(H);
+    s32 j = Util::randi(W); // TODO this order shouldn't work since it gives ( [0:1]*W ) - 0.5f
+    s32 k = Util::randi(H);
     set(j, k, 'G');
   }
   cellCount4(3 * ISLAND_SIZE, 0.3f, 'G', 'w', 'G');

@@ -9,6 +9,8 @@
 #include "Game.h"
 
 #include "World.h"
+#include "WorldGenerator.h"
+
 #include "LocalPlayer.h"
 
 #include "Army.h"
@@ -84,7 +86,9 @@ void Game::dummyInit()
   world->set(TileType::DESERT, 10,9, ARCANUS);
   
   world->get(7, 8, ARCANUS)->placeManaNode(new ManaNode(School::SORCERY, 0));
-    
+  
+  //WorldGenerator generator(world);
+  //generator.generate();
   //WorldGenerator.generate(world, ARCANUS);
   //WorldGenerator.generate(world, MYRRAN);
 

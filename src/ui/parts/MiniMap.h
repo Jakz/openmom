@@ -26,6 +26,7 @@ public:
   
   SpriteSheet* get(Plane plane) const { return maps[plane]; }
   
+  void discover(const Rect& rect, Plane plane);
   void discover(const Position& position);
 
   static Color minimapColor(const Tile *tile);

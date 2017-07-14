@@ -35,6 +35,15 @@ void MiniMap::discover(const Position& position)
   Gfx::unlock(maps[position.plane]);
 }
 
+void MiniMap::discover(const Rect& rect, Plane plane)
+{
+  Gfx::lock(maps[plane]);
+  for (s16 x = rect.origin.x; x < rect.origin.x + rect.size.w; ++x)
+    for (s16 y = rect.origin.y; y < rect.origin.y + rect.size.h; ++y)
+      maps[plane]->set(x, y, minimapColor(world->get(x, y, plane)));
+  Gfx::unlock(maps[plane]);
+}
+
 Color MiniMap::minimapColor(const Tile* tile)
 {
   if (tile->city)
@@ -55,5 +64,6 @@ Color MiniMap::minimapColor(const Tile* tile)
   SpriteInfo terrainGfx = Viewport::gfxForTerrain(tile);
   
   /* then we get from the index of the sprite the correct minimap color from LBX file */
-  return Gfx::mainPalette->get(lbx::Repository::terrainInfo()[terrainGfx.index()].minimapColor);
+  u8 colorIndex = lbx::Repository::terrainInfo()[terrainGfx.index()].minimapColor;
+  return Gfx::mainPalette->get(colorIndex);
 }
