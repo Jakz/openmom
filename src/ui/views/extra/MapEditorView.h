@@ -27,6 +27,10 @@ struct Brush
     FOREST,
     SWAMP,
     VOLCANO,
+    RIVER,
+    CHAOS_NODE,
+    SORCERY_NODE,
+    NATURE_NODE
   };
   
   Type type;
@@ -49,7 +53,7 @@ private:
   
   void setup();
   
-  std::array<Brush, 9>::const_iterator brush;
+  std::array<Brush, 13>::const_iterator brush;
   Point hover;
   Point offset;
   Plane plane;

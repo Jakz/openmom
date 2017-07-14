@@ -34,7 +34,7 @@ constexpr s32 MARGIN = 1;
 constexpr s32 OX = 1, OY = 5;
 constexpr size_t VIEWPORT_WIDTH = 12, VIEWPORT_HEIGHT = 10;
 
-const static std::array<Brush, 9> brushes = {
+const static std::array<Brush, 13> brushes = {
 {
   {
     Brush::Type::OCEAN,
@@ -110,6 +110,38 @@ const static std::array<Brush, 9> brushes = {
     {
       tile->type = TILE_SWAMP;
     }
+  },
+  {
+    Brush::Type::RIVER,
+    LSI(TERRAIN, 0xED),
+    [](Tile* tile)
+    {
+      tile->type = TILE_RIVER;
+    }
+  },
+  {
+    Brush::Type::SORCERY_NODE,
+    LSI(TERRAIN, 0xA8),
+    [](Tile* tile)
+    {
+
+    }
+  },
+  {
+    Brush::Type::NATURE_NODE,
+    LSI(TERRAIN, 0xA9),
+    [](Tile* tile)
+    {
+
+    }
+  },
+  {
+    Brush::Type::CHAOS_NODE,
+    LSI(TERRAIN, 0xAA),
+    [](Tile* tile)
+    {
+
+    }
   }
 } };
 
@@ -151,7 +183,7 @@ Point MapEditorView::positionForBrush(size_t i)
 {
   static const Point PALETTE_POSITION = Point(260,5);
   constexpr s32 PALETTE_DY = 20, PALETTE_DX = 22;
-  constexpr s32 BRUSH_PER_COLUMN = 6;
+  constexpr s32 BRUSH_PER_COLUMN = 7;
   
   return Point(PALETTE_POSITION.x + ((i/BRUSH_PER_COLUMN)*PALETTE_DX), PALETTE_POSITION.y + ((i%BRUSH_PER_COLUMN)*PALETTE_DY));
 }

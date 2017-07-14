@@ -45,9 +45,13 @@ public:
   TileType type;
   u8 roads;
   
-  DirJoin joinMask;
-  u8 variant;
-  
+  struct
+  {
+    DirJoin joinMask;
+    u8 variant;
+    s8 animationOffset;
+  } gfx;
+
   Position position;
   
   ManaNode *node;
@@ -62,14 +66,13 @@ public:
   
   std::list<const SpellCast> spells;
   
-  s8 animationOffset;
   
   Tile() { }
   
-  Tile(World* const world, Position position) : world(world), position(position), animationOffset(Util::randomIntUpTo(10)),
+  Tile(World* const world, Position position) : world(world), position(position),
     resource(Resource::NONE), city(nullptr), army(nullptr), node(nullptr), place(nullptr), type(TILE_WATER), roads(0),
   
-  joinMask(DirJoin::NONE), variant(0),
+  gfx({DirJoin::NONE, 0, static_cast<s8>(Util::randi(10))}),
   hasRoad(false), hasEnchantedRoad(false), resourceUsed({false})
   {
   }

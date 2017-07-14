@@ -70,6 +70,9 @@ struct TileToSpriteMap
           
         case DirJoin::OCROSS: return cross[index];
           
+        /* forced for single river tiles which shouldn't exist in final maps */
+        case DirJoin::NONE: return cross[index];
+          
         default:
           assert(false);
       }

@@ -179,44 +179,47 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
   TextureID* tx = planeTextures[plane];
   const auto& mapping = plane == Plane::ARCANUS ? arcanus : myrran;
   
+  const auto& gfx = t->gfx;
+  
   if (t->node)
   {
     u16 index = 0;
     if (t->node->school == NATURE) index = 1;
     else if (t->node->school == CHAOS) index = 2;
-    Gfx::drawAnimated(SpriteInfo(tx[NODES], index), x, y, t->animationOffset);
+    Gfx::drawAnimated(SpriteInfo(tx[NODES], index), x, y, gfx.animationOffset, animSpeed);
   }
   else
   {
+    
     switch (t->type)
     {
       case TILE_WATER:
-        Gfx::drawAnimated(mapping.ocean[t->variant], x, y, t->animationOffset, animSpeed);
+        Gfx::drawAnimated(mapping.ocean[gfx.variant], x, y, gfx.animationOffset, animSpeed);
         break;
         
       case TILE_SHORE:
-        Gfx::drawAnimated(mapping.shores[t->joinMask], x, y, t->animationOffset, animSpeed);
+        Gfx::drawAnimated(mapping.shores[gfx.joinMask], x, y, gfx.animationOffset, animSpeed);
         break;
         
       case TILE_GRASS:
-        Gfx::draw(mapping.grasslands[t->variant], x, y);
+        Gfx::draw(mapping.grasslands[gfx.variant], x, y);
         break;
         
       case TILE_DESERT:
       {
-        if (t->joinMask == DirJoin::NONE)
-          Gfx::draw(mapping.desert[t->variant], x, y);
+        if (gfx.joinMask == DirJoin::NONE)
+          Gfx::draw(mapping.desert[gfx.variant], x, y);
         else
-          Gfx::draw(mapping.desertJoin[t->joinMask], x, y);
+          Gfx::draw(mapping.desertJoin[gfx.joinMask], x, y);
         break;
       }
         
       case TILE_TUNDRA:
       {
-        if (t->joinMask == DirJoin::NONE)
-          Gfx::draw(mapping.tundra[t->variant], x, y);
+        if (gfx.joinMask == DirJoin::NONE)
+          Gfx::draw(mapping.tundra[gfx.variant], x, y);
         else
-          Gfx::draw(mapping.tundraJoin[t->joinMask], x, y);
+          Gfx::draw(mapping.tundraJoin[gfx.joinMask], x, y);
         break;
       }
         
@@ -224,20 +227,24 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
       case TILE_HILL:
       {
         const auto& tiles = t->type == TILE_MOUNTAIN ? mapping.mountains : mapping.hills;
-        Gfx::draw(tiles[t->variant], x, y);
+        Gfx::draw(tiles[gfx.variant], x, y);
         break;
       }
 
       case TILE_FOREST:
-        Gfx::draw(mapping.forest[t->variant], x, y);
+        Gfx::draw(mapping.forest[gfx.variant], x, y);
         break;
         
       case TILE_SWAMP:
-        Gfx::draw(mapping.swamp[t->variant], x, y);
+        Gfx::draw(mapping.swamp[gfx.variant], x, y);
         break;
         
       case TILE_VOLCANO:
-        Gfx::drawAnimated(mapping.volcano, x, y);
+        Gfx::drawAnimated(mapping.volcano, x, y, gfx.animationOffset, animSpeed);
+        break;
+        
+      case TILE_RIVER:
+        Gfx::draw(mapping.rivers.spriteForMask(gfx.joinMask, gfx.variant), x, y);
         break;
     }
   }
@@ -254,12 +261,12 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
   if (t->hasRoad || t->city)
   {
     if (t->roads == 0)
-      Gfx::drawAnimated(t->hasEnchantedRoad ? roads_ench[0] : roads[0], x, y);
+      Gfx::drawAnimated(t->hasEnchantedRoad ? roads_ench[0] : roads[0], x, y, gfx.animationOffset, animSpeed);
     else
       for (int i = 0; i < 8; ++i)
         if ((t->roads & (1<<i)) == 1<<i)
         {
-          Gfx::drawAnimated(t->hasEnchantedRoad ? roads_ench[i+1] : roads[i+1], x, y);
+          Gfx::drawAnimated(t->hasEnchantedRoad ? roads_ench[i+1] : roads[i+1], x, y, gfx.animationOffset, animSpeed);
         }
   }
   
@@ -369,12 +376,12 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
           if (t->node && t->node->owner)
           {
             auto& auraGfx = GfxData::playerGfxSpec(t->node->owner->color).nodeAura;
-            Gfx::drawAnimated(auraGfx, sx, sy, t->animationOffset);
+            Gfx::drawAnimated(auraGfx, sx, sy, t->gfx.animationOffset);
             for (auto aura : t->node->auras)
             {
               int tx = x + aura.x;
               int ty = y + aura.y;
-              int animationOffset = map->get(tx, ty, plane)->animationOffset;
+              int animationOffset = map->get(tx, ty, plane)->gfx.animationOffset;
               if (tx > 0 && tx < w && ty > 0 && ty < h)
               {
                 tx = sx + aura.x*tileWidth;
