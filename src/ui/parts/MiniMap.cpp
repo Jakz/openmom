@@ -51,5 +51,5 @@ Color MiniMap::minimapColor(const Tile *tile)
   
   if (tile->node && tile->node->school == SORCERY) return {42,45,72};
   else if (tile->node && tile->node->school == NATURE) return {53,92,17};
-  else return GfxData::tileGfxSpec(tile->type).minimapColor(tile->position.plane, tile->subtype ? 1 : 0);
+  else return GfxData::tileGfxSpec(tile->type).minimapColor(tile->position.plane, /*TODO FIXME: tile->subtype ? 1 :*/ 0);
 }

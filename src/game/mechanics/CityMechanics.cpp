@@ -658,8 +658,7 @@ s16 CityMechanics::computeMaxPopulationForTile(const Tile* tile)
               case TILE_HILL: maxPop += 0.5f; break;
               case TILE_SWAMP: maxPop += 0.5f; break;
               case TILE_FOREST: maxPop += 0.5f; break;
-              case TILE_WATER: if (t->subtype != 0) maxPop += 0.5f; break;
-              default: break;
+              case TILE_SHORE: maxPop += 0.5f; break;
             }
         }
       }

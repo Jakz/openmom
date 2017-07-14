@@ -841,13 +841,6 @@ enum TileType : u8
   TILE_TYPES
 };
 
-enum TileGfxType : u8
-{
-  TILE_GFX_NONE = 0,
-  TILE_GFX_BORDER,
-  TILE_GFX_PLAIN
-};
-
 enum class Resource : u8
 {
   ADAMANTIUM = 0,
