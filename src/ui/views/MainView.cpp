@@ -605,7 +605,7 @@ void MainView::Surveyor::updateInfo(Tile *t)
       cityForbidMsg = I18::EMPTY;
       return;
     }
-    else if (t->type == TILE_WATER || t->type == TILE_SHORE)
+    else if (t->type == TILE_OCEAN || t->type == TILE_SHORE)
     {
       cityForbidMsg = I18::SURVEYOR_CITY_FORBID_WATER;
       return;

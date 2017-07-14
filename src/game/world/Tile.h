@@ -41,6 +41,9 @@ class Tile
 private:
   World* world;
   
+  std::unique_ptr<ManaNode> _node;
+  std::unique_ptr<Place> _place;
+
 public:
   TileType type;
   u8 roads;
@@ -53,10 +56,8 @@ public:
   } gfx;
 
   Position position;
-  
-  ManaNode *node;
+
   Resource resource;
-  Place *place;
   
   City* city;
   Army* army;
@@ -70,15 +71,19 @@ public:
   Tile() { }
   
   Tile(World* const world, Position position) : world(world), position(position),
-    resource(Resource::NONE), city(nullptr), army(nullptr), node(nullptr), place(nullptr), type(TILE_WATER), roads(0),
+    resource(Resource::NONE), city(nullptr), army(nullptr), _node(nullptr), _place(nullptr), type(TILE_OCEAN), roads(0),
   
   gfx({DirJoin::NONE, 0, static_cast<s8>(Util::randi(10))}),
   hasRoad(false), hasEnchantedRoad(false), resourceUsed({false})
   {
   }
   
+  Plane plane() const { return position.plane; }
   u16 x() const { return position.x; }
   u16 y() const { return position.y; }
+  
+  const std::unique_ptr<ManaNode>& node() const { return _node; }
+  const std::unique_ptr<Place>& place() const { return _place; }
   
   void settleCity(City* city);
   void markResourceUsed() { if (resourceUsed[0]) resourceUsed[1] = true; else resourceUsed[0] = true; }
@@ -87,14 +92,14 @@ public:
   
   void placeRoad(bool enchanted) { hasRoad = true; hasEnchantedRoad = enchanted; }
   void placeResource(Resource resource) { this->resource = resource; }
-  void placeManaNode(ManaNode* node) { this->node = node; }
-  void placePlace(Place* place) { this->place = place; }
+  void placeManaNode(ManaNode* node) { this->_node = std::unique_ptr<ManaNode>(node); }
+  void placePlace(Place* place) { this->_place = std::unique_ptr<Place>(place); }
 
   void unplaceArmy() { army = nullptr; }
   void placeArmy(Army* army);
   
   bool isCorrupted() const { return std::find_if(spells.begin(), spells.end(), [](const SpellCast& cast) { return cast.spell == Spells::CORRUPTION; }) != spells.end(); }
-  bool isSolidLand() const { return type != TileType::TILE_WATER && type != TileType::TILE_SHORE; }
+  bool isSolidLand() const { return type != TileType::TILE_OCEAN && type != TileType::TILE_SHORE; }
     
   void addSpell(const SpellCast& cast) { spells.push_back(cast); }
   

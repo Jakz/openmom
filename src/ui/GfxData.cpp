@@ -103,22 +103,6 @@ template<> const UnitPropGfxMap::Data& UnitPropGfxMap::operator[](Property prope
 constexpr s8 GfxData::RANGED_INDEX[];
 constexpr s8 GfxData::PROPERTY_INDEX[];
 
-const TileGfxSpec GfxData::specs[] =
-{
-  TileGfxSpec(0,6,{56,94,18},{81,60,48}), // GRASS
-  TileGfxSpec(0,0,{{0,14,90},{7,25,95}},{{8,4,4},{36,28,24}}), // WATER
-  TileGfxSpec(0,0,{{0,14,90},{7,25,95}},{{8,4,4},{36,28,24}}), // SHORE
-  TileGfxSpec(0,0,{{105,96,93},{126,116,113}},{{255,255,255}}), // MOUNTAIN
-  TileGfxSpec(0,0,{{105,96,93},{126,116,113}},{{255,255,255}}), // VOLCANO
-  TileGfxSpec(0,0,{53,92,17},{115,83,69}), // HILL
-  TileGfxSpec(1,3,{0,94,19},{0,94,19}),  // FOREST
-  TileGfxSpec(2,3,{56,47,43},{56,47,43}), // SWAMP
-  TileGfxSpec(3,4,{{190,154,117},{142,113,89}},{{255,255,255}}), // DESERT
-  TileGfxSpec(4,3,{56,47,43},{255,255,255}), // TUNDRA
-  TileGfxSpec(0,0,{255,255,255},{255,255,255}), // RIVER
-  TileGfxSpec(0,0,{{0,14,90},{7,25,95}},{{8,4,4},{36,28,24}}) // RIVER_MOUTH TODO: check colors
-};
-
 gfx_map<const Spell*, sprite_ref> GfxData::specialSpellGfxEffects = {
   {Spells::CORRUPTION, LBXI(SPECFX, 7)},
   {Spells::CHANGE_TERRAIN, LBXI(SPECFX, 8)},

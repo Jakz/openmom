@@ -71,7 +71,7 @@ public:
     {
       for (int x = 0; x < 60; ++x)
       {
-        world->set(get(x,y) == 'G' ? TILE_GRASS : TILE_WATER, x, y, plane);
+        world->set(get(x,y) == 'G' ? TILE_GRASS : TILE_OCEAN, x, y, plane);
       }
     }
   }

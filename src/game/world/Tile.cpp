@@ -17,7 +17,7 @@ void Tile::settleCity(City* city)
     if (tile)
     {
       switch (tile->type) {
-        case TILE_WATER:
+        case TILE_OCEAN:
         case TILE_SHORE: city->setPlacement(CITY_BY_SEA); break;
         case TILE_RIVER: city->setPlacement(CITY_BY_RIVER); break;
         case TILE_HILL: city->setPlacement(CITY_BY_HILL); break;

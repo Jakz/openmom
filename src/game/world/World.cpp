@@ -9,25 +9,26 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
   t->gfx.variant = 0;
   t->gfx.joinMask = DirJoin::NONE;
   
-  switch (t->type) {
+  switch (t->type)
+  {
     case TILE_GRASS:
       t->gfx.variant = Util::randi(TILE_COUNT_GRASSLANDS);
       break;
       
-    case TILE_WATER:
+    case TILE_OCEAN:
     case TILE_SHORE:
     {
       DirJoin mask = t->computeMask([](const Tile* tile) { return tile && tile->isSolidLand(); });
       
       if (mask == DirJoin::NONE)
-        t->type = TILE_WATER;
+        t->type = TILE_OCEAN;
       else
         t->type = TILE_SHORE;
       
       t->gfx.joinMask = mask;
       
       /* if tile is ocean then 20% chance it's animated texture */
-      if (t->type == TILE_WATER && Util::chance(0.20f))
+      if (t->type == TILE_OCEAN && Util::chance(0.20f))
         t->gfx.variant = 1;
       else
         t->gfx.variant = 0;

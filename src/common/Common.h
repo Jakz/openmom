@@ -826,7 +826,7 @@ enum Plane : u8
 enum TileType : u8
 {
   TILE_GRASS = 0,
-  TILE_WATER,
+  TILE_OCEAN,
   TILE_SHORE,
   TILE_MOUNTAIN,
   TILE_VOLCANO,

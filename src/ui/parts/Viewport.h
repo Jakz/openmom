@@ -147,6 +147,8 @@ private:
   static SpriteInfo gfxForResource(Resource resource);
   
 public:
+  static SpriteInfo gfxForTerrain(const Tile* tile);
+  
   static void drawTile(const Tile* tile, u16 x, s16 y, Plane plane);
   
   static inline s16 baseOffsetX(s16 vx, s16 w) { return vx - w/2; }

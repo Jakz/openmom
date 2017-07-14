@@ -560,7 +560,7 @@ void WorldGenerator::makeNodes(Plane plane)
         for (s32 y = -minDistance; y <= minDistance; ++y)
         {
           Tile* t = world->get(gx+x, gy+y, plane);
-          if (t && t->node)
+          if (t && t->node())
             allowed = false;
         }
       
@@ -584,7 +584,7 @@ void WorldGenerator::makeNodes(Plane plane)
           Tile* t = world->get(gx+x, gy+y, plane);
           if (t)
             switch (t->type) {
-              case TILE_WATER:
+              case TILE_OCEAN:
                 ++sea;
                 break;
               case TILE_FOREST:
@@ -607,7 +607,7 @@ void WorldGenerator::makeNodes(Plane plane)
       else if (forest >= sea && forest >= mountain) type = NATURE;
       else if (mountain >= sea && mountain >= forest) type = CHAOS;
       
-      world->get(gx,gy,plane)->node = mapMech->generateManaNode(static_cast<World*>(world), Position(gx, gx, plane), type);
+      world->get(gx,gy,plane)->placeManaNode(mapMech->generateManaNode(static_cast<World*>(world), Position(gx, gx, plane), type));
 
       counter = 1;
       ++cur;
@@ -637,7 +637,7 @@ void WorldGenerator::makeLairs()
       
       // TODO: then place resources underneath, it shouldn't be that way
       
-      if (t->type != TILE_WATER && t->type != TILE_SHORE && t->type != TILE_TUNDRA && !t->node&& !t->place && t->resource == Resource::NONE)
+      if (t->type != TILE_OCEAN && t->type != TILE_SHORE && t->type != TILE_TUNDRA && !t->node() && !t->place() && t->resource == Resource::NONE)
       {
         // check if there are places within minimal distance
         bool allowed = true;
@@ -645,7 +645,7 @@ void WorldGenerator::makeLairs()
           for (int y = -minDistance; y <= minDistance; ++y)
           {
             Tile* t2 = world->get(gx+x, gy+y, gp);
-            if (t2 && t2->place)
+            if (t2 && t2->place())
               allowed = false;
           }
         

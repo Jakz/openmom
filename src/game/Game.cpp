@@ -63,16 +63,16 @@ void Game::dummyInit()
   players.push_back(player2);
   current = players.begin();
   
-  world->fill(TILE_WATER, ARCANUS);
-  world->fill(TILE_WATER, MYRRAN);
+  world->fill(TILE_OCEAN, ARCANUS);
+  world->fill(TILE_OCEAN, MYRRAN);
   world->rect(TILE_GRASS, 3, 3, 10, 10, ARCANUS);
   world->rect(TILE_MOUNTAIN, 4, 4, 2, 2, ARCANUS);
   world->line(TILE_HILL, 4, 8, 11, true, ARCANUS);
   world->rect(TILE_GRASS, 1, 1, 6, 6, MYRRAN);
   world->line(TILE_MOUNTAIN, 6, 8, 5, false, MYRRAN);
   world->line(TILE_HILL, 5, 8, 6, true, MYRRAN);
-  world->line(TILE_WATER, 2, 6, 6, true, ARCANUS);
-  world->set(TILE_WATER, 4, 7, ARCANUS);
+  world->line(TILE_OCEAN, 2, 6, 6, true, ARCANUS);
+  world->set(TILE_OCEAN, 4, 7, ARCANUS);
   world->set(TILE_HILL, 4,4, ARCANUS);
   world->set(TILE_DESERT, 8,8, ARCANUS);
   world->set(TILE_DESERT, 7,8, ARCANUS);
@@ -231,8 +231,8 @@ void Game::settleCity(City* city)
 bool Game::meldNode(const Army* army, const Position& position)
 {
   Tile* t = world->get(position);
-  t->node->owner = army->getOwner();
-  army->getOwner()->add(t->node);
+  t->node()->owner = army->getOwner();
+  army->getOwner()->add(t->node().get());
   return true;
 }
 

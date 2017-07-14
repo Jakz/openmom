@@ -96,9 +96,9 @@ ManaNode* MapMechanics::generateManaNode(World* world, const Position position, 
 
 u16 MapMechanics::turnsRequiredToBuildRoadOnTile(Tile* tile) const
 {
-  if (tile->node)
+  if (tile->node())
   {
-    switch (tile->node->school)
+    switch (tile->node()->school)
     {
       case CHAOS: return 5;
       case NATURE: return 4;
@@ -146,7 +146,7 @@ s16 MapMechanics::movementCost(World* world, const Position& position, const mov
       case TILE_GRASS:
         return movement.contains(MovementType::MOUNTAINWALK) ? 6 : 2;
       case TILE_DESERT:
-      case TILE_WATER:
+      case TILE_OCEAN:
       case TILE_SHORE:
         return 1;
       case TILE_FOREST:

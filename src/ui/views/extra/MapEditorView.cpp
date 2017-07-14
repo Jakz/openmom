@@ -41,7 +41,7 @@ const static std::array<Brush, 13> brushes = {
     LSI(TERRAIN, 0),
     [](Tile* tile)
     {
-      tile->type = TILE_WATER;
+      tile->type = TILE_OCEAN;
       DirJoin land = tile->computeMask([](const Tile* tile) { return tile && tile->isSolidLand(); });
       if (land != DirJoin::NONE)
         tile->type = TILE_SHORE;

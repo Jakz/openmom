@@ -9,6 +9,8 @@
 #include "MiniMap.h"
 #include "World.h"
 #include "Gfx.h"
+#include "LBX.h"
+#include "Viewport.h"
 #include "Tile.h"
 #include "City.h"
 #include "Player.h"
@@ -33,7 +35,7 @@ void MiniMap::discover(const Position& position)
   Gfx::unlock(maps[position.plane]);
 }
 
-Color MiniMap::minimapColor(const Tile *tile)
+Color MiniMap::minimapColor(const Tile* tile)
 {
   if (tile->city)
   {
@@ -49,7 +51,7 @@ Color MiniMap::minimapColor(const Tile *tile)
     }
   }
   
-  if (tile->node && tile->node->school == SORCERY) return {42,45,72};
-  else if (tile->node && tile->node->school == NATURE) return {53,92,17};
-  else return GfxData::tileGfxSpec(tile->type).minimapColor(tile->position.plane, /*TODO FIXME: tile->subtype ? 1 :*/ 0);
+  SpriteInfo terrainGfx = Viewport::gfxForTerrain(tile);
+  
+  return Gfx::mainPalette->get(lbx::Repository::terrainInfo()[terrainGfx.index()].minimapColor);
 }

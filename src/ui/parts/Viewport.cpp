@@ -172,88 +172,66 @@ SpriteInfo Viewport::gfxForResource(Resource resource)
   }
 }
 
-void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
+SpriteInfo Viewport::gfxForTerrain(const Tile* t)
 {
-  constexpr u16 animSpeed = 2;
-  
-  TextureID* tx = planeTextures[plane];
-  const auto& mapping = plane == Plane::ARCANUS ? arcanus : myrran;
-  
+  const auto& mapping = t->plane() == Plane::ARCANUS ? arcanus : myrran;
   const auto& gfx = t->gfx;
-  
-  if (t->node)
+
+  if (t->node())
   {
-    u16 index = 0;
-    if (t->node->school == NATURE) index = 1;
-    else if (t->node->school == CHAOS) index = 2;
-    Gfx::drawAnimated(SpriteInfo(tx[NODES], index), x, y, gfx.animationOffset, animSpeed);
+    switch (t->node()->school)
+    {
+      case School::NATURE: return mapping.manaNodes.nature;
+      case School::CHAOS: return mapping.manaNodes.chaos;
+      case School::SORCERY: return mapping.manaNodes.sorcery;
+      default: assert(false);
+    }
   }
   else
   {
-    
     switch (t->type)
     {
-      case TILE_WATER:
-        Gfx::drawAnimated(mapping.ocean[gfx.variant], x, y, gfx.animationOffset, animSpeed);
-        break;
-        
-      case TILE_SHORE:
-        Gfx::drawAnimated(mapping.shores[gfx.joinMask], x, y, gfx.animationOffset, animSpeed);
-        break;
-        
-      case TILE_GRASS:
-        Gfx::draw(mapping.grasslands[gfx.variant], x, y);
-        break;
-        
-      case TILE_DESERT:
-      {
-        if (gfx.joinMask == DirJoin::NONE)
-          Gfx::draw(mapping.desert[gfx.variant], x, y);
-        else
-          Gfx::draw(mapping.desertJoin[gfx.joinMask], x, y);
-        break;
-      }
-        
-      case TILE_TUNDRA:
-      {
-        if (gfx.joinMask == DirJoin::NONE)
-          Gfx::draw(mapping.tundra[gfx.variant], x, y);
-        else
-          Gfx::draw(mapping.tundraJoin[gfx.joinMask], x, y);
-        break;
-      }
-        
+      case TILE_OCEAN: return mapping.ocean[gfx.variant];
+      case TILE_SHORE: return mapping.shores[gfx.joinMask];
+      case TILE_GRASS: return mapping.grasslands[gfx.variant];
+
+      case TILE_DESERT: return gfx.joinMask == DirJoin::NONE ? mapping.desert[gfx.variant] : mapping.desertJoin[gfx.joinMask];
+      case TILE_TUNDRA: return gfx.joinMask == DirJoin::NONE ? mapping.tundra[gfx.variant] : mapping.tundraJoin[gfx.joinMask];
+
       case TILE_MOUNTAIN:
       case TILE_HILL:
       {
         const auto& tiles = t->type == TILE_MOUNTAIN ? mapping.mountains : mapping.hills;
-        Gfx::draw(tiles[gfx.variant], x, y);
-        break;
+        return tiles[gfx.variant];
       }
+        
+      case TILE_FOREST: return mapping.forest[gfx.variant];
+      case TILE_SWAMP: return mapping.swamp[gfx.variant];
+        
+      case TILE_VOLCANO: return mapping.volcano;
 
-      case TILE_FOREST:
-        Gfx::draw(mapping.forest[gfx.variant], x, y);
-        break;
-        
-      case TILE_SWAMP:
-        Gfx::draw(mapping.swamp[gfx.variant], x, y);
-        break;
-        
-      case TILE_VOLCANO:
-        Gfx::drawAnimated(mapping.volcano, x, y, gfx.animationOffset, animSpeed);
-        break;
-        
-      case TILE_RIVER:
-        Gfx::draw(mapping.rivers.spriteForMask(gfx.joinMask, gfx.variant), x, y);
-        break;
+      case TILE_RIVER: return mapping.rivers.spriteForMask(gfx.joinMask, gfx.variant);
     }
   }
+  
+  assert(false);
+}
+
+void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
+{
+  constexpr u16 animSpeed = 2;
+  
+  const auto& gfx = t->gfx;
+  
+  const SpriteInfo terrain = gfxForTerrain(t);
+  Gfx::drawAnimated(terrain, x, y, gfx.animationOffset, animSpeed);
   
   if (t->resource != Resource::NONE)
     Gfx::draw(gfxForResource(t->resource), x, y);
   
-  if (t->place)
-    Gfx::draw(gfxForPlace(t->place), x, y);
+  //TODO: raw pointer
+  if (t->place())
+    Gfx::draw(gfxForPlace(t->place().get()), x, y);
   
   if (t->isCorrupted())
     Gfx::draw(place_corruption, x, y);
@@ -373,11 +351,11 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
           }
           
           /* draw node auras */
-          if (t->node && t->node->owner)
+          if (t->node() && t->node()->owner)
           {
-            auto& auraGfx = GfxData::playerGfxSpec(t->node->owner->color).nodeAura;
+            auto& auraGfx = GfxData::playerGfxSpec(t->node()->owner->color).nodeAura;
             Gfx::drawAnimated(auraGfx, sx, sy, t->gfx.animationOffset);
-            for (auto aura : t->node->auras)
+            for (auto aura : t->node()->auras)
             {
               int tx = x + aura.x;
               int ty = y + aura.y;

@@ -32,12 +32,12 @@ bool SpellMechanics::isTileAllowed(const Player *player, const Spell *spell, con
   
   if (spell == Spells::CORRUPTION)
   {
-    if (tile->type == TILE_WATER || tile->node)
+    if (tile->type == TILE_OCEAN || tile->node())
       return false;
   }
   else if (spell == Spells::CHANGE_TERRAIN)
   {
-    if (tile->node) return false;
+    if (tile->node()) return false;
     
     switch (tile->type) {
       case TILE_DESERT:
@@ -54,7 +54,7 @@ bool SpellMechanics::isTileAllowed(const Player *player, const Spell *spell, con
   }
   else if (spell == Spells::RAISE_VOLCANO)
   {
-    return !tile->node && tile->type != TILE_HILL && tile->type != TILE_MOUNTAIN && tile->type != TILE_RIVER;
+    return !tile->node() && tile->type != TILE_HILL && tile->type != TILE_MOUNTAIN && tile->type != TILE_RIVER;
   }
   
   return true;

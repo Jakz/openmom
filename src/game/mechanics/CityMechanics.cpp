@@ -222,7 +222,7 @@ bool CityMechanics::isBuildingAllowedForTerrain(const City *city, const Building
   
   // TODO: check if correct
   if (building == Building::STABLE) requirement.push_back(TILE_GRASS);
-  else if (building == Building::SHIP_WRIGHTS_GUILD) requirement = {TILE_SHORE, TILE_RIVER, TILE_RIVER_MOUTH, TILE_WATER};
+  else if (building == Building::SHIP_WRIGHTS_GUILD) requirement = {TILE_SHORE, TILE_RIVER, TILE_RIVER_MOUTH, TILE_OCEAN};
   else if (building == Building::MINERS_GUILD) requirement = {TILE_HILL, TILE_MOUNTAIN, TILE_VOLCANO};
   else if (building == Building::SAWMILL) requirement = {TILE_FOREST};
   
@@ -374,7 +374,7 @@ s16 CityMechanics::countSurroundManaNode(const City* city, School school)
 {
   s16 count = 0;
   lambdaOnCitySurroundings(city, [&count, school](const Tile* tile) {
-    count += tile->node && tile->node->school == school ? 1 : 0;
+    count += tile->node() && tile->node()->school == school ? 1 : 0;
   });
   return count;
 }
@@ -646,10 +646,10 @@ s16 CityMechanics::computeMaxPopulationForTile(const Tile* tile)
           Tile* t = game->world->get(tile->position.x + x, tile->position.y + y, tile->position.plane);
           if (t->resource == Resource::WILD_GAME)
             maxPop += 2.0f;
-          else if (t->node && (t->node->school == SORCERY || t->node->school == NATURE))
+          else if (t->node() && (t->node()->school == SORCERY || t->node()->school == NATURE))
             maxPop += 2.0f;
           
-          if (!t->node)
+          if (!t->node())
             switch (t->type)
             {
               case TILE_GRASS: maxPop += 1.5f; break;
@@ -864,7 +864,7 @@ bool CityMechanics::canCityBeBuiltOnTile(const Tile *t)
 {
   World* w = game->world;
   
-  if (!t || t->city || (t->type == TILE_WATER || t->type == TILE_SHORE))
+  if (!t || t->city || (t->type == TILE_OCEAN || t->type == TILE_SHORE))
     return false;
   
   for (int i = -3; i <= 3; ++i)

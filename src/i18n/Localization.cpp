@@ -378,7 +378,7 @@ std::unordered_map<TileType, std::vector<std::string>, enum_hash> i18n::surveyor
   {TILE_TUNDRA, {"Tundra"} },
   {TILE_SWAMP, {"Swamp"} },
   {TILE_VOLCANO, {"Volcano"} },
-  {TILE_WATER, {"Ocean"} },
+  {TILE_OCEAN, {"Ocean"} },
   {TILE_SHORE, {"Shore", "1/2 food", "+10% gold"} },
   {TILE_RIVER_MOUTH, {"River Mouth"} },
 };

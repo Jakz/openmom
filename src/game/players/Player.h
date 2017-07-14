@@ -140,7 +140,7 @@ public:
   void add(City* city) { cities.push_back(city); }
   void add(Army* army) { armies.push_back(army); }
   void add(Hero* hero) { heroes.push_back(hero); }
-  void add(ManaNode* node) { nodes.push_back(node); }
+  void add(ManaNode* node) { nodes.push_back(node); } // TODO: here we store a raw pointer of a unique_ptr allocated object
   void add(const SpellCast& spell) { spells.push_back(spell); }
   const cast_list& getSpells() const { return spells; }
   
