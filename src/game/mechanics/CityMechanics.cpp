@@ -221,10 +221,10 @@ bool CityMechanics::isBuildingAllowedForTerrain(const City *city, const Building
   vector<TileType> requirement;
   
   // TODO: check if correct
-  if (building == Building::STABLE) requirement.push_back(TILE_GRASS);
-  else if (building == Building::SHIP_WRIGHTS_GUILD) requirement = {TILE_SHORE, TILE_RIVER, TILE_RIVER_MOUTH, TILE_OCEAN};
-  else if (building == Building::MINERS_GUILD) requirement = {TILE_HILL, TILE_MOUNTAIN, TILE_VOLCANO};
-  else if (building == Building::SAWMILL) requirement = {TILE_FOREST};
+  if (building == Building::STABLE) requirement.push_back(TileType::GRASS);
+  else if (building == Building::SHIP_WRIGHTS_GUILD) requirement = {TileType::SHORE, TileType::RIVER, TileType::RIVER_MOUTH, TileType::OCEAN};
+  else if (building == Building::MINERS_GUILD) requirement = {TileType::HILL, TileType::MOUNTAIN, TileType::VOLCANO};
+  else if (building == Building::SAWMILL) requirement = {TileType::FOREST};
   
   if (!requirement.empty())
   {
@@ -522,10 +522,10 @@ s16 CityMechanics::computeProductionBonus(const City *city)
     bonus += 0.50f;
   
   // bonuses given by terrain features
-  bonus += countSurroundTileType(city, TILE_HILL)*0.03f; // TODO: broken, check
-  bonus += countSurroundTileType(city, TILE_HILL)*0.03f;
-  bonus += countSurroundTileType(city, TILE_HILL)*0.03f;
-  bonus += countSurroundTileType(city, TILE_HILL)*0.05f;
+  bonus += countSurroundTileType(city, TileType::HILL)*0.03f; // TODO: broken, check
+  bonus += countSurroundTileType(city, TileType::HILL)*0.03f;
+  bonus += countSurroundTileType(city, TileType::HILL)*0.03f;
+  bonus += countSurroundTileType(city, TileType::HILL)*0.05f;
   bonus += countSurroundManaNode(city, CHAOS)*0.05f;
   bonus += countSurroundManaNode(city, NATURE)*0.03f;
   
@@ -652,13 +652,13 @@ s16 CityMechanics::computeMaxPopulationForTile(const Tile* tile)
           if (!t->node())
             switch (t->type)
             {
-              case TILE_GRASS: maxPop += 1.5f; break;
-              case TILE_RIVER: maxPop += 2.0f; break;
-              case TILE_RIVER_MOUTH: maxPop += 2.0f; break;
-              case TILE_HILL: maxPop += 0.5f; break;
-              case TILE_SWAMP: maxPop += 0.5f; break;
-              case TILE_FOREST: maxPop += 0.5f; break;
-              case TILE_SHORE: maxPop += 0.5f; break;
+              case TileType::GRASS: maxPop += 1.5f; break;
+              case TileType::RIVER: maxPop += 2.0f; break;
+              case TileType::RIVER_MOUTH: maxPop += 2.0f; break;
+              case TileType::HILL: maxPop += 0.5f; break;
+              case TileType::SWAMP: maxPop += 0.5f; break;
+              case TileType::FOREST: maxPop += 0.5f; break;
+              case TileType::SHORE: maxPop += 0.5f; break;
             }
         }
       }
@@ -864,7 +864,7 @@ bool CityMechanics::canCityBeBuiltOnTile(const Tile *t)
 {
   World* w = game->world;
   
-  if (!t || t->city || (t->type == TILE_OCEAN || t->type == TILE_SHORE))
+  if (!t || t->city || (t->type == TileType::OCEAN || t->type == TileType::SHORE))
     return false;
   
   for (int i = -3; i <= 3; ++i)

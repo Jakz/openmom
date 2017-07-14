@@ -384,7 +384,9 @@ void WorldGenerator::count(Plane plane)
   for (int x = 0; x < world->width(); ++x)
     for (int y = 0; y < world->height(); ++y)
     {
-      ++quantities[static_cast<u16>(world->get(x, y, plane)->type)];
+      TileType type = world->get(x, y, plane)->type;
+      s32 oldValue = quantities[type];
+      quantities.set(type, oldValue+1);
       ++totalTiles;
     }
 }
@@ -394,7 +396,7 @@ void WorldGenerator::makeAreas(Plane plane, TileType type,  float perc, float ex
   count(plane);
   
   s32 placed = 0;
-  s32 itotal = static_cast<s32>(perc*quantities[TILE_GRASS]);
+  s32 itotal = static_cast<s32>(perc*quantities[TileType::GRASS]);
   
   // TODO: break after some time if stuck
   
@@ -403,14 +405,14 @@ void WorldGenerator::makeAreas(Plane plane, TileType type,  float perc, float ex
     s32 gx = Util::randomIntUpTo(W);
     s32 gy = Util::randomIntUpTo(H);
     
-    if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TILE_GRASS && (limit == 0 || (gy < limit && gy > H-limit)) )
+    if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TileType::GRASS && (limit == 0 || (gy < limit && gy > H-limit)) )
     {
       world->set(type, gx, gy, plane);
       
       for (int x = -1; x <= 1; ++x)
         for (int y = -1; y <= 1;++y)
           if (gx+x >= 0 && gx+x < W && gy+y >= 0 && gy+y < H && std::abs(x) - std::abs(y) != 0 && (limit == 0 || (gy+y > limit && gy+y > H-limit)))
-            if (Util::chance(expandO) && world->get(gx+x, gy+y, plane)->type == TILE_GRASS)
+            if (Util::chance(expandO) && world->get(gx+x, gy+y, plane)->type == TileType::GRASS)
             {
               
               world->set(type, gx+x, gy+y, plane);
@@ -418,21 +420,21 @@ void WorldGenerator::makeAreas(Plane plane, TileType type,  float perc, float ex
               if (y != 0)
               {
                 Tile* t = world->get(gx+x-1, gy+y, plane);
-                if (Util::chance(expandT) && t && t->type == TILE_GRASS)
+                if (Util::chance(expandT) && t && t->type == TileType::GRASS)
                   world->set(type, gx+x-1, gy+y, plane);
                 
                 t = world->get(gx+x+1, gy+y, plane);
-                if (Util::chance(expandT) && t && t->type == TILE_GRASS)
+                if (Util::chance(expandT) && t && t->type == TileType::GRASS)
                   world->set(type, gx+x+1, gy+y, plane);
               }
               else if (x != 0)
               {
                 Tile* t = world->get(gx+x, gy+y-1, plane);
-                if (Util::chance(expandT) && t && t->type == TILE_GRASS)
+                if (Util::chance(expandT) && t && t->type == TileType::GRASS)
                   world->set(type, gx+x, gy+y-1, plane);
                 
                 t = world->get(gx+x, gy+y+1, plane);
-                if (Util::chance(expandT) && t && t->type == TILE_GRASS)
+                if (Util::chance(expandT) && t && t->type == TileType::GRASS)
                   world->set(type, gx+x, gy+y+1, plane);
               }
             }		
@@ -445,14 +447,14 @@ void WorldGenerator::makeChains(Plane plane, TileType type,  float perc, float b
 {
   count(plane);
   s32 placed = 0;
-  s32 itotal = (int)(perc*quantities[TILE_GRASS]);
+  s32 itotal = (int)(perc*quantities[TileType::GRASS]);
   
   for (s32 i = 0; placed < itotal; ++i)
   {
     int gx = Util::randomIntUpTo(W);
     int gy = Util::randomIntUpTo(H);
     
-    if (world->get(gx, gy, plane)->type == TILE_GRASS)
+    if (world->get(gx, gy, plane)->type == TileType::GRASS)
     {
       world->set(type, gx, gy, plane);
       
@@ -472,7 +474,7 @@ void WorldGenerator::makeChains(Plane plane, TileType type,  float perc, float b
           ry = gy+d.y;
         }
         
-        if (world->get(rx, ry, plane)->type == TILE_GRASS)
+        if (world->get(rx, ry, plane)->type == TileType::GRASS)
           world->set(type, rx, ry, plane);
         
         gx = rx;
@@ -488,14 +490,14 @@ void WorldGenerator::makeSpots(Plane plane, TileType type, float perc)
 {
   count(plane);
   s32 placed = 0;
-  s32 itotal = (int)(perc*quantities[TILE_GRASS]);
+  s32 itotal = (int)(perc*quantities[TileType::GRASS]);
   
   for (s32 i = 0; placed < itotal; ++i)
   {
     s32 gx = Util::randomIntUpTo(W);
     s32 gy = Util::randomIntUpTo(H);
     
-    if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TILE_GRASS )
+    if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TileType::GRASS )
     {
       world->set(type, gx, gy, plane);
       ++placed;
@@ -509,13 +511,13 @@ void WorldGenerator::makeTundraEdges(Plane plane)
   
   for (int x = 0; x < W; ++x)
   {
-    world->set(TILE_TUNDRA, x, 0, plane);
-    world->set(TILE_TUNDRA, x, H-1, plane);
+    world->set(TileType::TUNDRA, x, 0, plane);
+    world->set(TileType::TUNDRA, x, H-1, plane);
     
     if (l[0] == 2)
-      world->set(TILE_TUNDRA, x, 1, plane);
+      world->set(TileType::TUNDRA, x, 1, plane);
     if (l[1] == 2)
-      world->set(TILE_TUNDRA, x, H-2, plane);
+      world->set(TileType::TUNDRA, x, H-2, plane);
     
     for (int k = 0; k < 2; ++k)
     {
@@ -531,11 +533,11 @@ void WorldGenerator::makeTundraEdges(Plane plane)
     /*for (int k = 0; k < 2; ++k)
      {
      if (l[k] == 1)
-     world->set(TILE_TUNDRA, x, y[k][0], Plane.ARCANUS);
+     world->set(TileType::TUNDRA, x, y[k][0], Plane.ARCANUS);
      else
      {
-     world->set(TILE_TUNDRA, x, y[k][0], Plane.ARCANUS);
-     world->set(TILE_TUNDRA, x, y[k][1], Plane.ARCANUS);
+     world->set(TileType::TUNDRA, x, y[k][0], Plane.ARCANUS);
+     world->set(TileType::TUNDRA, x, y[k][1], Plane.ARCANUS);
      }
      l[k] = Util::chance(0.5f) ? 1 : 2;
      }*/
@@ -552,7 +554,7 @@ void WorldGenerator::makeNodes(Plane plane)
     s32 gx = Util::randomIntUpTo(W);
     s32 gy = Util::randomIntUpTo(H);
     
-    if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TILE_GRASS)
+    if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TileType::GRASS)
     {
       // check if there are nodes within minimal distance
       bool allowed = true;
@@ -584,15 +586,15 @@ void WorldGenerator::makeNodes(Plane plane)
           Tile* t = world->get(gx+x, gy+y, plane);
           if (t)
             switch (t->type) {
-              case TILE_OCEAN:
+              case TileType::OCEAN:
                 ++sea;
                 break;
-              case TILE_FOREST:
-              case TILE_SWAMP:
+              case TileType::FOREST:
+              case TileType::SWAMP:
                 ++forest;
                 break;
-              case TILE_HILL:
-              case TILE_MOUNTAIN:
+              case TileType::HILL:
+              case TileType::MOUNTAIN:
                 ++mountain;
                 break;
               default: break;
@@ -637,7 +639,7 @@ void WorldGenerator::makeLairs()
       
       // TODO: then place resources underneath, it shouldn't be that way
       
-      if (t->type != TILE_OCEAN && t->type != TILE_SHORE && t->type != TILE_TUNDRA && !t->node() && !t->place() && t->resource == Resource::NONE)
+      if (t->type != TileType::OCEAN && t->type != TileType::SHORE && t->type != TileType::TUNDRA && !t->node() && !t->place() && t->resource == Resource::NONE)
       {
         // check if there are places within minimal distance
         bool allowed = true;
@@ -697,13 +699,13 @@ void WorldGenerator::generate()
   {
     Plane which = static_cast<Plane>(i);
     
-    makeAreas(which, TILE_DESERT,  0.04f, 0.40f, 0.30f,0);
-  	makeChains(which, TILE_MOUNTAIN, 0.07f, 0.60f, 9);
-  	makeChains(which, TILE_HILL, 0.09f, 0.60f, 9);
+    makeAreas(which, TileType::DESERT,  0.04f, 0.40f, 0.30f,0);
+  	makeChains(which, TileType::MOUNTAIN, 0.07f, 0.60f, 9);
+  	makeChains(which, TileType::HILL, 0.09f, 0.60f, 9);
     
-  	makeSpots(which, TILE_SWAMP, 0.05f);
-  	makeAreas(which, TILE_TUNDRA,  0.01f, 0.20f, 0.20f,7);
-  	makeSpots(which, TILE_FOREST, 0.40f);
+  	makeSpots(which, TileType::SWAMP, 0.05f);
+  	makeAreas(which, TileType::TUNDRA,  0.01f, 0.20f, 0.20f,7);
+  	makeSpots(which, TileType::FOREST, 0.40f);
     
     makeTundraEdges(which);
 

@@ -88,6 +88,8 @@ public:
 private:
   std::array<V, size> data;
 public:
+  enum_simple_map(V value) : data({value}) { }
+  
   enum_simple_map(const std::initializer_list<init_element>& elements)
   {
     assert(elements.size() == size);
@@ -98,6 +100,17 @@ public:
       data[static_cast<size_t>(it->first)] = it->second;
     }
   }
+  
+  using iterator = typename std::array<V, size>::iterator;
+  using const_iterator = typename std::array<V, size>::const_iterator;
+  
+  iterator begin() { return data.begin(); }
+  const_iterator begin() const { return data.begin(); }
+  
+  iterator end() { return data.end(); }
+  const_iterator end() const { return data.end(); }
+  
+  void set(K key, const V& value) { data[static_cast<size_t>(key)] = value; }
   
   const V& operator[](K key) const { return data[static_cast<size_t>(key)]; }
   dummy_pair find(K key) const { return { operator[](key) }; }
@@ -823,23 +836,24 @@ enum Plane : u8
   PLANE_COUNT
 };
 
-enum TileType : u8
+enum class TileType : u8
 {
-  TILE_GRASS = 0,
-  TILE_OCEAN,
-  TILE_SHORE,
-  TILE_MOUNTAIN,
-  TILE_VOLCANO,
-  TILE_HILL,
-  TILE_FOREST,
-  TILE_SWAMP,
-  TILE_DESERT,
-  TILE_TUNDRA,
-  TILE_RIVER,
-  TILE_RIVER_MOUTH,
-  
-  TILE_TYPES
+  GRASS = 0,
+  OCEAN,
+  SHORE,
+  MOUNTAIN,
+  VOLCANO,
+  HILL,
+  FOREST,
+  SWAMP,
+  DESERT,
+  TUNDRA,
+  RIVER,
+  RIVER_MOUTH,
+
 };
+
+static constexpr size_t TILE_TYPES = 12;
 
 enum class Resource : u8
 {

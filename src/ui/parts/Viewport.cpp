@@ -191,26 +191,26 @@ SpriteInfo Viewport::gfxForTerrain(const Tile* t)
   {
     switch (t->type)
     {
-      case TILE_OCEAN: return mapping.ocean[gfx.variant];
-      case TILE_SHORE: return mapping.shores[gfx.joinMask];
-      case TILE_GRASS: return mapping.grasslands[gfx.variant];
+      case TileType::OCEAN: return mapping.ocean[gfx.variant];
+      case TileType::SHORE: return mapping.shores[gfx.joinMask];
+      case TileType::GRASS: return mapping.grasslands[gfx.variant];
 
-      case TILE_DESERT: return gfx.joinMask == DirJoin::NONE ? mapping.desert[gfx.variant] : mapping.desertJoin[gfx.joinMask];
-      case TILE_TUNDRA: return gfx.joinMask == DirJoin::NONE ? mapping.tundra[gfx.variant] : mapping.tundraJoin[gfx.joinMask];
+      case TileType::DESERT: return gfx.joinMask == DirJoin::NONE ? mapping.desert[gfx.variant] : mapping.desertJoin[gfx.joinMask];
+      case TileType::TUNDRA: return gfx.joinMask == DirJoin::NONE ? mapping.tundra[gfx.variant] : mapping.tundraJoin[gfx.joinMask];
 
-      case TILE_MOUNTAIN:
-      case TILE_HILL:
+      case TileType::MOUNTAIN:
+      case TileType::HILL:
       {
-        const auto& tiles = t->type == TILE_MOUNTAIN ? mapping.mountains : mapping.hills;
+        const auto& tiles = t->type == TileType::MOUNTAIN ? mapping.mountains : mapping.hills;
         return tiles[gfx.variant];
       }
         
-      case TILE_FOREST: return mapping.forest[gfx.variant];
-      case TILE_SWAMP: return mapping.swamp[gfx.variant];
+      case TileType::FOREST: return mapping.forest[gfx.variant];
+      case TileType::SWAMP: return mapping.swamp[gfx.variant];
         
-      case TILE_VOLCANO: return mapping.volcano;
+      case TileType::VOLCANO: return mapping.volcano;
 
-      case TILE_RIVER: return mapping.rivers.spriteForMask(gfx.joinMask, gfx.variant);
+      case TileType::RIVER: return mapping.rivers.spriteForMask(gfx.joinMask, gfx.variant);
     }
   }
   

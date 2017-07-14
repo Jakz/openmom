@@ -71,7 +71,7 @@ public:
   Tile() { }
   
   Tile(World* const world, Position position) : world(world), position(position),
-    resource(Resource::NONE), city(nullptr), army(nullptr), _node(nullptr), _place(nullptr), type(TILE_OCEAN), roads(0),
+    resource(Resource::NONE), city(nullptr), army(nullptr), _node(nullptr), _place(nullptr), type(TileType::OCEAN), roads(0),
   
   gfx({DirJoin::NONE, 0, static_cast<s8>(Util::randi(10))}),
   hasRoad(false), hasEnchantedRoad(false), resourceUsed({false})
@@ -99,7 +99,7 @@ public:
   void placeArmy(Army* army);
   
   bool isCorrupted() const { return std::find_if(spells.begin(), spells.end(), [](const SpellCast& cast) { return cast.spell == Spells::CORRUPTION; }) != spells.end(); }
-  bool isSolidLand() const { return type != TileType::TILE_OCEAN && type != TileType::TILE_SHORE; }
+  bool isSolidLand() const { return type != TileType::OCEAN && type != TileType::SHORE; }
     
   void addSpell(const SpellCast& cast) { spells.push_back(cast); }
   

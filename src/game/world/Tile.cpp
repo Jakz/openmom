@@ -17,11 +17,11 @@ void Tile::settleCity(City* city)
     if (tile)
     {
       switch (tile->type) {
-        case TILE_OCEAN:
-        case TILE_SHORE: city->setPlacement(CITY_BY_SEA); break;
-        case TILE_RIVER: city->setPlacement(CITY_BY_RIVER); break;
-        case TILE_HILL: city->setPlacement(CITY_BY_HILL); break;
-        case TILE_MOUNTAIN: city->setPlacement(CITY_BY_MOUNTAIN); break;
+        case TileType::OCEAN:
+        case TileType::SHORE: city->setPlacement(CITY_BY_SEA); break;
+        case TileType::RIVER: city->setPlacement(CITY_BY_RIVER); break;
+        case TileType::HILL: city->setPlacement(CITY_BY_HILL); break;
+        case TileType::MOUNTAIN: city->setPlacement(CITY_BY_MOUNTAIN); break;
         default: break;
       }
     }

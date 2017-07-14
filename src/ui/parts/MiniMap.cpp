@@ -51,7 +51,9 @@ Color MiniMap::minimapColor(const Tile* tile)
     }
   }
   
+  /* first we obtain the sprite we'd draw for that tile */
   SpriteInfo terrainGfx = Viewport::gfxForTerrain(tile);
   
+  /* then we get from the index of the sprite the correct minimap color from LBX file */
   return Gfx::mainPalette->get(lbx::Repository::terrainInfo()[terrainGfx.index()].minimapColor);
 }

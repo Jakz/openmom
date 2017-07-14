@@ -369,17 +369,17 @@ unordered_map<SkillBase, string, enum_hash> i18n::skills =
 
 std::unordered_map<TileType, std::vector<std::string>, enum_hash> i18n::surveyorDescs
 {
-  {TILE_FOREST, {"Forest", "1/2 production", "+3% production"} },
-  {TILE_MOUNTAIN, {"Mountain", "+5% production"} },
-  {TILE_DESERT, {"Desert"} },
-  {TILE_GRASS, {"Grasslands"} },
-  {TILE_HILL, {"Hills"} },
-  {TILE_MOUNTAIN, {"Mountain"} },
-  {TILE_TUNDRA, {"Tundra"} },
-  {TILE_SWAMP, {"Swamp"} },
-  {TILE_VOLCANO, {"Volcano"} },
-  {TILE_OCEAN, {"Ocean"} },
-  {TILE_SHORE, {"Shore", "1/2 food", "+10% gold"} },
-  {TILE_RIVER_MOUTH, {"River Mouth"} },
+  {TileType::FOREST, {"Forest", "1/2 production", "+3% production"} },
+  {TileType::MOUNTAIN, {"Mountain", "+5% production"} },
+  {TileType::DESERT, {"Desert"} },
+  {TileType::GRASS, {"Grasslands"} },
+  {TileType::HILL, {"Hills"} },
+  {TileType::MOUNTAIN, {"Mountain"} },
+  {TileType::TUNDRA, {"Tundra"} },
+  {TileType::SWAMP, {"Swamp"} },
+  {TileType::VOLCANO, {"Volcano"} },
+  {TileType::OCEAN, {"Ocean"} },
+  {TileType::SHORE, {"Shore", "1/2 food", "+10% gold"} },
+  {TileType::RIVER_MOUTH, {"River Mouth"} },
 };
 

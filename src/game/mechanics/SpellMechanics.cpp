@@ -32,7 +32,7 @@ bool SpellMechanics::isTileAllowed(const Player *player, const Spell *spell, con
   
   if (spell == Spells::CORRUPTION)
   {
-    if (tile->type == TILE_OCEAN || tile->node())
+    if (tile->type == TileType::OCEAN || tile->node())
       return false;
   }
   else if (spell == Spells::CHANGE_TERRAIN)
@@ -40,13 +40,13 @@ bool SpellMechanics::isTileAllowed(const Player *player, const Spell *spell, con
     if (tile->node()) return false;
     
     switch (tile->type) {
-      case TILE_DESERT:
-      case TILE_FOREST:
-      case TILE_HILL:
-      case TILE_SWAMP:
-      case TILE_GRASS:
-      case TILE_VOLCANO:
-      case TILE_MOUNTAIN:
+      case TileType::DESERT:
+      case TileType::FOREST:
+      case TileType::HILL:
+      case TileType::SWAMP:
+      case TileType::GRASS:
+      case TileType::VOLCANO:
+      case TileType::MOUNTAIN:
         return true;
       default:
         return false;
@@ -54,7 +54,7 @@ bool SpellMechanics::isTileAllowed(const Player *player, const Spell *spell, con
   }
   else if (spell == Spells::RAISE_VOLCANO)
   {
-    return !tile->node() && tile->type != TILE_HILL && tile->type != TILE_MOUNTAIN && tile->type != TILE_RIVER;
+    return !tile->node() && tile->type != TileType::HILL && tile->type != TileType::MOUNTAIN && tile->type != TileType::RIVER;
   }
   
   return true;
@@ -72,19 +72,19 @@ bool SpellMechanics::applyTileSpell(const SpellCast& cast, Tile *tile)
     TileType newType;
     
     switch (tile->type) {
-      case TILE_DESERT:
-      case TILE_FOREST:
-      case TILE_HILL:
-      case TILE_SWAMP:
-        newType = TILE_GRASS; break;
-      case TILE_GRASS:
-        newType = TILE_FOREST; break;
-      case TILE_VOLCANO:
-        newType = TILE_MOUNTAIN; break;
-      case TILE_MOUNTAIN:
-        newType = TILE_HILL; break;
+      case TileType::DESERT:
+      case TileType::FOREST:
+      case TileType::HILL:
+      case TileType::SWAMP:
+        newType = TileType::GRASS; break;
+      case TileType::GRASS:
+        newType = TileType::FOREST; break;
+      case TileType::VOLCANO:
+        newType = TileType::MOUNTAIN; break;
+      case TileType::MOUNTAIN:
+        newType = TileType::HILL; break;
       default:
-        newType = TILE_GRASS;
+        newType = TileType::GRASS;
     }
     
     tile->type = newType;
@@ -94,7 +94,7 @@ bool SpellMechanics::applyTileSpell(const SpellCast& cast, Tile *tile)
   else if (cast.spell == Spells::RAISE_VOLCANO)
   {
     tile->resource = Resource::NONE;
-    tile->type = TILE_VOLCANO;
+    tile->type = TileType::VOLCANO;
   }
   else
   {

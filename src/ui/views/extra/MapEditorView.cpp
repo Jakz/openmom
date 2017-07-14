@@ -41,10 +41,10 @@ const static std::array<Brush, 13> brushes = {
     LSI(TERRAIN, 0),
     [](Tile* tile)
     {
-      tile->type = TILE_OCEAN;
+      tile->type = TileType::OCEAN;
       DirJoin land = tile->computeMask([](const Tile* tile) { return tile && tile->isSolidLand(); });
       if (land != DirJoin::NONE)
-        tile->type = TILE_SHORE;
+        tile->type = TileType::SHORE;
     }
   },
   {
@@ -52,7 +52,7 @@ const static std::array<Brush, 13> brushes = {
     LSI(TERRAIN, 1),
     [](Tile* tile)
     {
-      tile->type = TILE_GRASS;
+      tile->type = TileType::GRASS;
     }
   },
   {
@@ -60,7 +60,7 @@ const static std::array<Brush, 13> brushes = {
     LSI(TERRAIN, 0xA5),
     [](Tile* tile)
     {
-      tile->type = TILE_DESERT;
+      tile->type = TileType::DESERT;
     }
   },
   {
@@ -68,7 +68,7 @@ const static std::array<Brush, 13> brushes = {
     LSI(TERRAIN, 0xA7),
     [](Tile* tile)
     {
-      tile->type = TILE_TUNDRA;
+      tile->type = TileType::TUNDRA;
     }
   },
   {
@@ -76,7 +76,7 @@ const static std::array<Brush, 13> brushes = {
     LSI(TERRAIN, 0xAB),
     [](Tile* tile)
     {
-      tile->type = TILE_HILL;
+      tile->type = TileType::HILL;
     }
   },
   {
@@ -84,7 +84,7 @@ const static std::array<Brush, 13> brushes = {
     LSI(TERRAIN, 0xA4),
     [](Tile* tile)
     {
-      tile->type = TILE_MOUNTAIN;
+      tile->type = TileType::MOUNTAIN;
     }
   },
   {
@@ -92,7 +92,7 @@ const static std::array<Brush, 13> brushes = {
     LSI(TERRAIN, 0xA3),
     [](Tile* tile)
     {
-      tile->type = TILE_FOREST;
+      tile->type = TileType::FOREST;
     }
   },
   {
@@ -100,7 +100,7 @@ const static std::array<Brush, 13> brushes = {
     LSI(TERRAIN, 0xB3),
     [](Tile* tile)
     {
-      tile->type = TILE_VOLCANO;
+      tile->type = TileType::VOLCANO;
     }
   },
   {
@@ -108,7 +108,7 @@ const static std::array<Brush, 13> brushes = {
     LSI(TERRAIN, 0xA6),
     [](Tile* tile)
     {
-      tile->type = TILE_SWAMP;
+      tile->type = TileType::SWAMP;
     }
   },
   {
@@ -116,7 +116,7 @@ const static std::array<Brush, 13> brushes = {
     LSI(TERRAIN, 0xED),
     [](Tile* tile)
     {
-      tile->type = TILE_RIVER;
+      tile->type = TileType::RIVER;
     }
   },
   {
@@ -167,8 +167,8 @@ MapEditorView::MapEditorView(ViewManager* gvm) : ViewWithQueue(gvm)
 void MapEditorView::activate()
 {
   world = new World(nullptr,60,40);
-  world->fill(TileType::TILE_GRASS, Plane::ARCANUS);
-  world->fill(TileType::TILE_GRASS, Plane::MYRRAN);
+  world->fill(TileType::GRASS, Plane::ARCANUS);
+  world->fill(TileType::GRASS, Plane::MYRRAN);
   world->calcSubTiles();
   
   hover = Point::INVALID;

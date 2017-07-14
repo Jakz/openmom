@@ -17,7 +17,7 @@ bool MovementStrategy::movementAllowed(const movement_list& movement, const unit
 {
   Tile* t = world->get(position);
   
-  if ((t->type == TILE_OCEAN || t->type == TILE_SHORE))
+  if ((t->type == TileType::OCEAN || t->type == TileType::SHORE))
     return movement.contains(MovementType::NON_CORPOREAL) || movement.contains(MovementType::FLYING);
   else
     return true;

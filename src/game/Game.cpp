@@ -63,25 +63,25 @@ void Game::dummyInit()
   players.push_back(player2);
   current = players.begin();
   
-  world->fill(TILE_OCEAN, ARCANUS);
-  world->fill(TILE_OCEAN, MYRRAN);
-  world->rect(TILE_GRASS, 3, 3, 10, 10, ARCANUS);
-  world->rect(TILE_MOUNTAIN, 4, 4, 2, 2, ARCANUS);
-  world->line(TILE_HILL, 4, 8, 11, true, ARCANUS);
-  world->rect(TILE_GRASS, 1, 1, 6, 6, MYRRAN);
-  world->line(TILE_MOUNTAIN, 6, 8, 5, false, MYRRAN);
-  world->line(TILE_HILL, 5, 8, 6, true, MYRRAN);
-  world->line(TILE_OCEAN, 2, 6, 6, true, ARCANUS);
-  world->set(TILE_OCEAN, 4, 7, ARCANUS);
-  world->set(TILE_HILL, 4,4, ARCANUS);
-  world->set(TILE_DESERT, 8,8, ARCANUS);
-  world->set(TILE_DESERT, 7,8, ARCANUS);
-  world->set(TILE_DESERT, 9,8, ARCANUS);
-  world->set(TILE_DESERT, 8,7, ARCANUS);
-  world->set(TILE_DESERT, 8,9, ARCANUS);
-  world->set(TILE_DESERT, 7,9, ARCANUS);
-  world->set(TILE_DESERT, 9,9, ARCANUS);
-  world->set(TILE_DESERT, 10,9, ARCANUS);
+  world->fill(TileType::OCEAN, ARCANUS);
+  world->fill(TileType::OCEAN, MYRRAN);
+  world->rect(TileType::GRASS, 3, 3, 10, 10, ARCANUS);
+  world->rect(TileType::MOUNTAIN, 4, 4, 2, 2, ARCANUS);
+  world->line(TileType::HILL, 4, 8, 11, true, ARCANUS);
+  world->rect(TileType::GRASS, 1, 1, 6, 6, MYRRAN);
+  world->line(TileType::MOUNTAIN, 6, 8, 5, false, MYRRAN);
+  world->line(TileType::HILL, 5, 8, 6, true, MYRRAN);
+  world->line(TileType::OCEAN, 2, 6, 6, true, ARCANUS);
+  world->set(TileType::OCEAN, 4, 7, ARCANUS);
+  world->set(TileType::HILL, 4,4, ARCANUS);
+  world->set(TileType::DESERT, 8,8, ARCANUS);
+  world->set(TileType::DESERT, 7,8, ARCANUS);
+  world->set(TileType::DESERT, 9,8, ARCANUS);
+  world->set(TileType::DESERT, 8,7, ARCANUS);
+  world->set(TileType::DESERT, 8,9, ARCANUS);
+  world->set(TileType::DESERT, 7,9, ARCANUS);
+  world->set(TileType::DESERT, 9,9, ARCANUS);
+  world->set(TileType::DESERT, 10,9, ARCANUS);
   
   world->get(7, 8, ARCANUS)->placeManaNode(new ManaNode(School::SORCERY, 0));
     
@@ -108,18 +108,18 @@ void Game::dummyInit()
   //map.get(6, 6, ARCANUS).placeManaNode(new ManaNode());
   world->get(4, 3, ARCANUS)->placeResource(Resource::COAL);
   world->get(3, 4, ARCANUS)->placeResource(Resource::WILD_GAME);
-  //map.rect(TILE_GRASS, 2, 2, 6, 3);
-  //map.rect(TILE_GRASS, 8, 4, 1, 1);
+  //map.rect(TileType::GRASS, 2, 2, 6, 3);
+  //map.rect(TileType::GRASS, 8, 4, 1, 1);
   world->get(3,4,ARCANUS)->placeRoad(true);
   world->get(3,5,ARCANUS)->placeRoad(true);
   world->get(4,5,ARCANUS)->placeRoad(true);
   world->get(5,5,ARCANUS)->placeRoad(true);
 
-  world->set(TILE_VOLCANO, 0, 0, ARCANUS);
-  world->set(TILE_VOLCANO, 59, 0, ARCANUS);
-  world->set(TILE_VOLCANO, 0, 39, ARCANUS);
-  world->set(TILE_VOLCANO, 59, 39, ARCANUS);
-  world->set(TILE_HILL, 1, 2, MYRRAN);
+  world->set(TileType::VOLCANO, 0, 0, ARCANUS);
+  world->set(TileType::VOLCANO, 59, 0, ARCANUS);
+  world->set(TileType::VOLCANO, 0, 39, ARCANUS);
+  world->set(TileType::VOLCANO, 59, 39, ARCANUS);
+  world->set(TileType::HILL, 1, 2, MYRRAN);
   
   player->fog()->setRect(0, 0, 60, 40, ARCANUS);
   player->fog()->setRect(0, 0, 60, 40, MYRRAN);

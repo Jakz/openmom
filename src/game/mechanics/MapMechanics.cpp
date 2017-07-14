@@ -41,9 +41,9 @@ Resource MapMechanics::generateResourceForTile(TileType type, Plane which) const
   {
     switch (type)
     {
-      case TILE_FOREST: return Resource::WILD_GAME;
-      case TILE_SWAMP: return Resource::NIGHT_SHADE;
-      case TILE_DESERT:
+      case TileType::FOREST: return Resource::WILD_GAME;
+      case TileType::SWAMP: return Resource::NIGHT_SHADE;
+      case TileType::DESERT:
       {
         float x = Util::rand(100.0f);
         for (int i = 0; i < sizeof(desertResource)/sizeof(desertResource[0]); ++i)
@@ -52,7 +52,7 @@ Resource MapMechanics::generateResourceForTile(TileType type, Plane which) const
           else return desertResource[i];
         break;
       }
-      case TILE_MOUNTAIN:
+      case TileType::MOUNTAIN:
       {
         float x = Util::rand(100.0f);
         for (int i = 0; i < sizeof(hillsResources)/sizeof(hillsResources[0]); ++i)
@@ -63,7 +63,7 @@ Resource MapMechanics::generateResourceForTile(TileType type, Plane which) const
         }
         break;
       }
-      case TILE_HILL:
+      case TileType::HILL:
       {
         float x = Util::rand(100.0f);
         for (int i = 0; i < sizeof(hillsResources)/sizeof(hillsResources[0]); ++i)
@@ -110,15 +110,15 @@ u16 MapMechanics::turnsRequiredToBuildRoadOnTile(Tile* tile) const
   {
     switch (tile->type)
     {
-      case TILE_DESERT: return 4;
-      case TILE_FOREST: return 6;
-      case TILE_GRASS: return 3;
-      case TILE_HILL: return 6;
-      case TILE_MOUNTAIN: return 8;
-      case TILE_SWAMP: return 8;
-      case TILE_TUNDRA: return 6;
-      case TILE_VOLCANO: return 6;
-      case TILE_RIVER: return 5;
+      case TileType::DESERT: return 4;
+      case TileType::FOREST: return 6;
+      case TileType::GRASS: return 3;
+      case TileType::HILL: return 6;
+      case TileType::MOUNTAIN: return 8;
+      case TileType::SWAMP: return 8;
+      case TileType::TUNDRA: return 6;
+      case TileType::VOLCANO: return 6;
+      case TileType::RIVER: return 5;
       //TODO: river mouth
     }
   }
@@ -143,28 +143,25 @@ s16 MapMechanics::movementCost(World* world, const Position& position, const mov
   else
   {
     switch (t->type) {
-      case TILE_GRASS:
+      case TileType::GRASS:
         return movement.contains(MovementType::MOUNTAINWALK) ? 6 : 2;
-      case TILE_DESERT:
-      case TILE_OCEAN:
-      case TILE_SHORE:
+      case TileType::DESERT:
+      case TileType::OCEAN:
+      case TileType::SHORE:
         return 1;
-      case TILE_FOREST:
+      case TileType::FOREST:
         return movement.contains(MovementType::FORESTWALK) ? 2 : 4;
-      case TILE_RIVER:
-      case TILE_RIVER_MOUTH:
-      case TILE_TUNDRA:
+      case TileType::RIVER:
+      case TileType::RIVER_MOUTH:
+      case TileType::TUNDRA:
         return movement.contains(MovementType::SWIMMING) ? 2 : 4;
-      case TILE_SWAMP:
+      case TileType::SWAMP:
         return movement.contains(MovementType::SWIMMING) ? 2 : 6;
-      case TILE_HILL:
+      case TileType::HILL:
         return movement.contains(MovementType::MOUNTAINWALK) ? 2 : 6;
-      case TILE_MOUNTAIN:
-      case TILE_VOLCANO:
+      case TileType::MOUNTAIN:
+      case TileType::VOLCANO:
         return movement.contains(MovementType::MOUNTAINWALK) ? 2 : 8;
-      case TILE_TYPES:
-        assert(false);
-        return 0;
     }
   }
 }

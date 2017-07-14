@@ -71,7 +71,7 @@ public:
     {
       for (int x = 0; x < 60; ++x)
       {
-        world->set(get(x,y) == 'G' ? TILE_GRASS : TILE_OCEAN, x, y, plane);
+        world->set(get(x,y) == 'G' ? TileType::GRASS : TileType::OCEAN, x, y, plane);
       }
     }
   }
@@ -152,7 +152,7 @@ private:
   s16 W, H;
   
   
-  s32 quantities[TILE_TYPES];
+  enum_simple_map<TileType, s32, TILE_TYPES> quantities;
   s32 totalTiles;
   
   

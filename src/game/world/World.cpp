@@ -11,24 +11,24 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
   
   switch (t->type)
   {
-    case TILE_GRASS:
+    case TileType::GRASS:
       t->gfx.variant = Util::randi(TILE_COUNT_GRASSLANDS);
       break;
       
-    case TILE_OCEAN:
-    case TILE_SHORE:
+    case TileType::OCEAN:
+    case TileType::SHORE:
     {
       DirJoin mask = t->computeMask([](const Tile* tile) { return tile && tile->isSolidLand(); });
       
       if (mask == DirJoin::NONE)
-        t->type = TILE_OCEAN;
+        t->type = TileType::OCEAN;
       else
-        t->type = TILE_SHORE;
+        t->type = TileType::SHORE;
       
       t->gfx.joinMask = mask;
       
       /* if tile is ocean then 20% chance it's animated texture */
-      if (t->type == TILE_OCEAN && Util::chance(0.20f))
+      if (t->type == TileType::OCEAN && Util::chance(0.20f))
         t->gfx.variant = 1;
       else
         t->gfx.variant = 0;
@@ -36,10 +36,10 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
       break;
     }
       
-    case TILE_DESERT:
-    case TILE_TUNDRA:
+    case TileType::DESERT:
+    case TileType::TUNDRA:
     {
-      const u32 count = t->type == TILE_DESERT ? TILE_COUNT_DESERT : TILE_COUNT_TUNDRA;
+      const u32 count = t->type == TileType::DESERT ? TILE_COUNT_DESERT : TILE_COUNT_TUNDRA;
       
       /* compute mask to see which border tile should be used */
       const TileType type = t->type;
@@ -52,8 +52,8 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
       break;
     }
 
-    case TILE_MOUNTAIN:
-    case TILE_HILL:
+    case TileType::MOUNTAIN:
+    case TileType::HILL:
     {
       const TileType type = t->type;
       /* first we compute the normal 8 directional mask to see where mountain/hills are */
@@ -64,22 +64,22 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
       break;
     }
       
-    case TILE_SWAMP:
+    case TileType::SWAMP:
       t->gfx.variant = Util::randi(TILE_COUNT_SWAMP);
       break;
       
-    case TILE_FOREST:
+    case TileType::FOREST:
       t->gfx.variant = Util::randi(TILE_COUNT_FOREST);
       break;
       
-    case TILE_VOLCANO:
+    case TileType::VOLCANO:
       t->gfx.variant = 0;
       break;
       
-    case TILE_RIVER:
+    case TileType::RIVER:
     {
       /* we compute the normal 8 directional mask to see where rivers are */
-      t->gfx.joinMask = t->computeMask([](const Tile* tile) { return tile && tile->type == TILE_RIVER; }) & DirJoin::OCROSS;
+      t->gfx.joinMask = t->computeMask([](const Tile* tile) { return tile && tile->type == TileType::RIVER; }) & DirJoin::OCROSS;
       /* TODO FIXME: use number of variants as specified in Viewport data */
       t->gfx.variant = 0;
       break;
