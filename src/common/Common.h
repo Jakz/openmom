@@ -383,6 +383,7 @@ struct Position
   Position(Point pt, Plane plane) : x(pt.x), y(pt.y), plane(plane) { }
   
   Position relative(s16 ox, s16 oy) const { return Position(x+ox, y+oy, plane); }
+  Position dx(s16 ox, s16 oy) const { return relative(ox, oy); }
   
   bool wrapAndCheckValidity(u16 w, u16 h)
   {

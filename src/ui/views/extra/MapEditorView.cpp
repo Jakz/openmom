@@ -186,7 +186,7 @@ void MapEditorView::activate()
   hover = Point::INVALID;
   brush = brushes.begin();
   offset = Point::ZERO;
-  plane = Plane::ARCANUS;
+  plane = Plane::MYRRAN;
   
   mode = Mode::TERRAIN;
   
@@ -338,7 +338,7 @@ bool MapEditorView::mouseDragged(u16 x, u16 y, MouseButton b)
 {
   Point oldHover = hover;
   this->hover = hoveredTile(Point(x,y));
-  if (oldHover != hover && hover.isValid())
+  if (oldHover != hover && hover.isValid() && b == MouseButton::BUTTON_LEFT)
     clickOnTile(Point(hover.x + offset.x, hover.y + offset.y));
   return true;
 }
@@ -365,6 +365,12 @@ bool MapEditorView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod m
 {
   switch (key)
   {
+    case SDL_SCANCODE_P:
+    {
+      plane = plane == Plane::ARCANUS ? Plane::MYRRAN : Plane::ARCANUS;
+      hover = Point::INVALID;
+      break;
+    }
     case SDL_SCANCODE_S: toggleDownscale(!downscaled); break;
     default: break;
   }

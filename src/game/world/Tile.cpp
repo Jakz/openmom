@@ -51,14 +51,14 @@ Tile* Tile::neighbor(DirJoin dir) const
 {
   switch (dir)
   {
-    case DirJoin::N: return world->get(position.x, position.y-1, Plane::ARCANUS);
-    case DirJoin::NE: return world->get(position.x+1, position.y-1, Plane::ARCANUS);
-    case DirJoin::E: return world->get(position.x+1, position.y, Plane::ARCANUS);
-    case DirJoin::SE: return world->get(position.x+1, position.y+1, Plane::ARCANUS);
-    case DirJoin::S: return world->get(position.x, position.y+1, Plane::ARCANUS);
-    case DirJoin::SW: return world->get(position.x-1, position.y+1, Plane::ARCANUS);
-    case DirJoin::W: return world->get(position.x-1, position.y, Plane::ARCANUS);
-    case DirJoin::NW: return world->get(position.x-1, position.y-1, Plane::ARCANUS);
+    case DirJoin::N: return world->get(position.dx(0,-1));
+    case DirJoin::NE: return world->get(position.dx(+1,-1));
+    case DirJoin::E: return world->get(position.dx(+1,0));
+    case DirJoin::SE: return world->get(position.dx(+1,+1));
+    case DirJoin::S: return world->get(position.dx(0,+1));
+    case DirJoin::SW: return world->get(position.dx(-1,+1));
+    case DirJoin::W: return world->get(position.dx(-1,0));
+    case DirJoin::NW: return world->get(position.dx(-1,-1));
     default: assert(false);
   }
 }
