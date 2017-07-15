@@ -15,6 +15,11 @@ using gfx_tile_t = SpriteInfo;//const SpriteSheet*;
 template<size_t SIZE> class gfx_tile_mapping : public std::array<gfx_tile_t, SIZE>
 {
 public:
+  gfx_tile_mapping() : std::array<gfx_tile_t,SIZE>()
+  {
+    std::fill(this->begin(), this->end(), LSI(TERRAIN,0));
+  }
+  
   inline gfx_tile_t const & operator[](DirJoin mask) const { return this->operator[](static_cast<size_t>(mask)); }
   inline gfx_tile_t const & operator[](size_t mask) const { return std::array<gfx_tile_t, SIZE>::operator[](mask); }
   
@@ -116,6 +121,33 @@ struct TileToSpriteMap
     
     
   } rivers;
+  
+  struct
+  {
+    gfx_tile_mapping<TILE_COUNT_SHORE> north, south, west, east;
+    gfx_tile_mapping<TILE_COUNT_SHORE> corner_ne, corner_nw, corner_sw, corner_se;
+    
+
+    gfx_tile_t spriteForRiverAndJoinMask(DirJoin river, DirJoin join) const
+    {
+      switch (river)
+      {
+        case DirJoin::N: return north[join];
+        case DirJoin::E: return east[join];
+        case DirJoin::S: return south[join];
+        case DirJoin::W: return west[join];
+          
+        case DirJoin::CORNER_N_E: return corner_ne[join];
+        case DirJoin::CORNER_N_W: return corner_nw[join];
+        case DirJoin::CORNER_S_E: return corner_se[join];
+        case DirJoin::CORNER_S_W: return corner_sw[join];
+          
+        default: return LSI(TERRAIN, 0);
+      }
+    }
+    
+    
+  } riverMouths;
   
   gfx_tile_t volcano;
   

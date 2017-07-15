@@ -137,7 +137,14 @@ SpriteInfo Viewport::gfxForTerrain(const Tile* t)
     switch (t->type)
     {
       case TileType::OCEAN: return mapping.ocean[gfx.variant];
-      case TileType::SHORE: return mapping.shores[gfx.joinMask];
+      case TileType::SHORE:
+      {
+        if (t->gfx.riverMask == DirJoin::NONE)
+          return mapping.shores[gfx.joinMask];
+        else
+          return mapping.riverMouths.spriteForRiverAndJoinMask(t->gfx.riverMask, gfx.joinMask);
+      }
+        
       case TileType::GRASS: return mapping.grasslands[gfx.variant];
 
       case TileType::DESERT: return gfx.joinMask == DirJoin::NONE ? mapping.desert[gfx.variant] : mapping.desertJoin[gfx.joinMask];
@@ -155,7 +162,7 @@ SpriteInfo Viewport::gfxForTerrain(const Tile* t)
         
       case TileType::VOLCANO: return mapping.volcano;
 
-      case TileType::RIVER: return mapping.rivers.spriteForMask(gfx.joinMask, gfx.variant);
+      case TileType::RIVER: return mapping.rivers.spriteForMask(gfx.riverMask, gfx.variant);
     }
   }
   
@@ -692,6 +699,12 @@ void Viewport::createMapTextureAtlas()
   mapSprite({ 0xFB, 0xFC, 0xFD, 0xFE, 0xF7, 0xF8, 0xF9, 0xFA, 0xFF, 0x100, 0x101, 0x102, 0xF3, 0xF4, 0xF5, 0xF6 }, arcanus.rivers.tcross, myrran.rivers.tcross);
   mapSprite({ 0x1D4, 0x1D5, 0x1D6, 0x1D7, 0x1D8 }, arcanus.rivers.cross, myrran.rivers.cross);
   
+  /* river mouths */
+  /* TODO: not enough because for example the closed lake is used also for shores with diagonal elements */
+  mapSprite(0xC5, arcanus.riverMouths.west[DirJoin::ALL], myrran.riverMouths.west[DirJoin::ALL]);
+  mapSprite(0xC6, arcanus.riverMouths.north[DirJoin::ALL], myrran.riverMouths.north[DirJoin::ALL]);
+  mapSprite(0xC7, arcanus.riverMouths.east[DirJoin::ALL], myrran.riverMouths.east[DirJoin::ALL]);
+  mapSprite(0xC8, arcanus.riverMouths.south[DirJoin::ALL], myrran.riverMouths.south[DirJoin::ALL]);
   
   {
     SDL_Surface* atlas = SDL_CreateRGBSurface(0, 40*TILE_WIDTH + 40, 40*TILE_HEIGHT + 40, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);

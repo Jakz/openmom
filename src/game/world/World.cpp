@@ -10,6 +10,7 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
   t->gfx.joinMask = DirJoin::NONE;
   
   t->gfx.roadMask = t->computeMask([](const Tile* ntile) { return ntile && (ntile->hasRoad || ntile->city); });
+  t->gfx.riverMask = t->computeMask([](const Tile* ntile) { return ntile && (ntile->type == TileType::RIVER); }) & DirJoin::OCROSS;
   
   switch (t->type)
   {
@@ -80,8 +81,7 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
       
     case TileType::RIVER:
     {
-      /* we compute the normal 8 directional mask to see where rivers are */
-      t->gfx.joinMask = t->computeMask([](const Tile* tile) { return tile && tile->type == TileType::RIVER; }) & DirJoin::OCROSS;
+      t->gfx.riverMask = t->computeMask([](const Tile* ntile) { return ntile && (ntile->type == TileType::RIVER || ntile->type == TileType::SHORE || ntile->type == TileType::OCEAN); }) & DirJoin::OCROSS;
       /* TODO FIXME: use number of variants as specified in Viewport data */
       t->gfx.variant = 0;
       break;

@@ -186,11 +186,11 @@ void MapEditorView::activate()
   hover = Point::INVALID;
   brush = brushes.begin();
   offset = Point::ZERO;
-  plane = Plane::MYRRAN;
+  plane = Plane::ARCANUS;
   
   mode = Mode::TERRAIN;
   
-  toggleDownscale(true);
+  toggleDownscale(false);
 }
 
 void MapEditorView::toggleDownscale(bool value)
