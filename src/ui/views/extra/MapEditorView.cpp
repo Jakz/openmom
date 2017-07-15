@@ -37,6 +37,8 @@ constexpr s32 MARGIN = 1;
 constexpr s32 OX = 1, OY = 1;
 constexpr size_t VIEWPORT_WIDTH = 12, VIEWPORT_HEIGHT = 10;
 
+constexpr s32 MAP_WIDTH = 60, MAP_HEIGHT = 40;
+
 const static std::array<Brush, 13> brushes = {
 {
   {
@@ -222,6 +224,16 @@ void MapEditorView::draw()
   Gfx::rect(brushPosition.x - 1, brushPosition.y - 1, 21, 19, {255,0,0});
   
   Gfx::draw(minimap->get(plane), 256, OY);
+  
+  if (offset.x < MAP_WIDTH - VIEWPORT_WIDTH)
+    Gfx::rect((256 + offset.x - 1), (OY + offset.y - 1), VIEWPORT_WIDTH + 1, VIEWPORT_HEIGHT + 1, {255,0,0});
+  else
+  {
+    Gfx::rect((256 + offset.x - 1), (OY + offset.y - 1), MAP_WIDTH - offset.x + 1, VIEWPORT_HEIGHT + 1, {255,0,0});
+    Gfx::rect((256 - 1), (OY + offset.y - 1), VIEWPORT_WIDTH - (MAP_WIDTH - offset.x) + 1, VIEWPORT_HEIGHT + 1, {255,0,0});
+  }
+
+  
 }
 
 void MapEditorView::setup()
@@ -249,10 +261,10 @@ void MapEditorView::clickOnTile(Point coords)
     world->calcSubTile(tile->x(), tile->y(), plane);
     tile->for_each_neighbor([this](Tile* t) { if (t) world->calcSubTile(t->x(), t->y(), plane); });
     
-    minimap->discover(Position(coords.x, coords.y, plane));
-    tile->for_each_neighbor([this]( const Tile* tile) {
-      if (tile)
-        minimap->discover(tile->position);
+    minimap->discover(Position(tile->x(), tile->y(), plane));
+    tile->for_each_neighbor([this](const Tile* neighbor) {
+      if (neighbor)
+        minimap->discover(neighbor->position);
     });
   }
 }
@@ -267,9 +279,12 @@ bool MapEditorView::mousePressed(u16 x, u16 y, MouseButton b)
       clickOnTile(Point(h.x + offset.x, h.y + offset.y));
     else if (b == MouseButton::BUTTON_RIGHT)
     {
-      offset = h - Point(VIEWPORT_WIDTH/2, VIEWPORT_HEIGHT/2);
+      offset = offset + h - Point(VIEWPORT_WIDTH/2, VIEWPORT_HEIGHT/2);
       offset.y = std::max((s16)0, offset.y);
       offset.y = std::min((s16)(world->h - VIEWPORT_HEIGHT), offset.y);
+      
+      offset.x %= MAP_WIDTH;
+      if (offset.x < 0) offset.x += MAP_WIDTH;
     }
       
     return true;

@@ -9,6 +9,8 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
   t->gfx.variant = 0;
   t->gfx.joinMask = DirJoin::NONE;
   
+  t->gfx.roadMask = t->computeMask([](const Tile* ntile) { return ntile && (ntile->hasRoad || ntile->city); });
+  
   switch (t->type)
   {
     case TileType::GRASS:

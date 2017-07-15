@@ -168,7 +168,6 @@ void Game::dummyInit()
   
   
   world->calcSubTiles();
-  world->updateRoads();
   
   init();
 }

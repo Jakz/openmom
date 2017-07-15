@@ -46,13 +46,15 @@ private:
 
 public:
   TileType type;
-  u8 roads;
   
   struct
   {
     DirJoin joinMask;
+    DirJoin roadMask;
     u8 variant;
+
     s8 animationOffset;
+    
   } gfx;
 
   Position position;
@@ -71,9 +73,9 @@ public:
   Tile() { }
   
   Tile(World* const world, Position position) : world(world), position(position),
-    resource(Resource::NONE), city(nullptr), army(nullptr), _node(nullptr), _place(nullptr), type(TileType::OCEAN), roads(0),
+    resource(Resource::NONE), city(nullptr), army(nullptr), _node(nullptr), _place(nullptr), type(TileType::OCEAN),
   
-  gfx({DirJoin::NONE, 0, static_cast<s8>(Util::randi(10))}),
+  gfx({DirJoin::NONE, DirJoin::NONE, 0, static_cast<s8>(Util::randi(10))}),
   hasRoad(false), hasEnchantedRoad(false), resourceUsed({false})
   {
   }

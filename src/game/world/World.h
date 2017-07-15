@@ -122,16 +122,8 @@ public:
       {
 				for (int y = 0; y < h; ++y)
         {
-          u8 roads = 0;
-          
-          for (int i = 0; i < Util::DIRS_LENGTH; ++i)
-          {
-            Tile* tile = get(x,y,p,Util::DIRS[i]);
-            if (tile && (tile->hasRoad || tile->city))
-              roads |= (1 << i);
-          }
-          
-          get(x,y,p)->roads = roads;
+          Tile* tile = get(x, y, p);
+          tile->gfx.roadMask = tile->computeMask([](const Tile* ntile) { return ntile && (ntile->hasRoad || ntile->city); });
         }
       }
     }
