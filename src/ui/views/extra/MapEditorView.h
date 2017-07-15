@@ -62,11 +62,18 @@ private:
   Plane plane;
   Mode mode;
   
+  bool downscaled;
+  
+  Size tileSize;
+  Size viewportSize;
+  
   Point positionForBrush(size_t index);
   
   Point hoveredTile(Point pt);
   
   void clickOnTile(Point coords);
+  
+  void toggleDownscale(bool value);
 
 public:
   MapEditorView(ViewManager* gvm);
@@ -79,5 +86,7 @@ public:
   bool mouseDragged(u16 x, u16 y, MouseButton b) override;
   
   bool mouseWheel(s16 dx, s16 dy, u16 d) override;
+  
+  bool keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod);
 
 };

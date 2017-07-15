@@ -110,6 +110,8 @@ public:
 
   static void resetBuffer(u16 w = WIDTH, u16 h = HEIGHT);
   static void mergeBuffer(u16 xf = 0, u16 yf = 0, u16 xt = 0, u16 yt = 0, u16 w = WIDTH, u16 h = HEIGHT) { blit(buffer, canvas, xf, yf, xt, yt, w, h); }
+  static void mergeBufferDownScaled(u16 xf = 0, u16 yf = 0, u16 xt = 0, u16 yt = 0, u16 w = WIDTH, u16 h = HEIGHT);
+
   static void maskBuffer(TextureID texture, int r, int c);
   static void colorMapBuffer(int w, int h, ColorMap& map);
   static void maskBufferWithImage(TextureID mask, TextureID snd, u16 r, u16 c, u16 r2, u16 c2);

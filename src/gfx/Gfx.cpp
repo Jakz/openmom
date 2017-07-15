@@ -468,7 +468,29 @@ void Gfx::drawGrayScale(const SpriteSheet* src, u16 r, u16 c, u16 x, u16 y)
   unlock(buffer);
   mergeBuffer(0, 0, x, y, tw, th);
   bindCanvas();
+}
 
+void Gfx::mergeBufferDownScaled(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h)
+{
+  assert(w % 2 == 0 && h % 2 == 0);
+  const u16 fw = w/2;
+  const u16 fh = h/2;
+  
+  for (u16 xx = 0; xx < fw; ++xx)
+  {
+    for (u16 yy = 0; yy < fh; ++yy)
+    {
+      const u16 bx = xf + xx*2, by = yf + yy*2;
+      
+      Color c1 = buffer->at(bx, by);
+      Color c2 = buffer->at(bx + 1, by);
+      Color c3 = buffer->at(bx, by + 1);
+      Color c4 = buffer->at(bx + 1, by + 1);
+      Color f = c1.blend(c2, 0.5f).blend(c3.blend(c4, 0.5f), 0.5f);
+      
+      canvas->set(xt + xx, yt + yy, f);
+    }
+  }
 }
 
 void CursorManager::hideCursor()

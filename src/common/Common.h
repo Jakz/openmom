@@ -332,6 +332,12 @@ struct Size
   
   bool operator==(const Size& size) const { return w == size.w && h == size.h; }
   bool operator!=(const Size& size) const { return !this->operator==(size); }
+  
+  Size operator*(int_type v) const { return Size(this->w*v, this->h*v); }
+  Size& operator*=(int_type v) { this->w *= v; this->h *= v; return *this; }
+  
+  Size operator/(int_type v) const { return Size(this->w/v, this->h/v); }
+  Size& operator/=(int_type v) { this->w /= v; this->h /= v; return *this; }
 };
 
 using Coord = Point;

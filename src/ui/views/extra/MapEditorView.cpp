@@ -32,10 +32,10 @@
 
 #include "ViewManager.h"
 
-constexpr s32 TILE_WIDTH = 20, TILE_HEIGHT = 18;
+constexpr s32 BASE_TILE_WIDTH = 20, BASE_TILE_HEIGHT = 18;
 constexpr s32 MARGIN = 1;
 constexpr s32 OX = 1, OY = 1;
-constexpr size_t VIEWPORT_WIDTH = 12, VIEWPORT_HEIGHT = 10;
+constexpr size_t BASE_VIEWPORT_WIDTH = 10, BASE_VIEWPORT_HEIGHT = 10;
 
 constexpr s32 MAP_WIDTH = 60, MAP_HEIGHT = 40;
 
@@ -189,6 +189,25 @@ void MapEditorView::activate()
   plane = Plane::ARCANUS;
   
   mode = Mode::TERRAIN;
+  
+  toggleDownscale(true);
+}
+
+void MapEditorView::toggleDownscale(bool value)
+{
+  downscaled = value;
+  
+  tileSize = Size(BASE_TILE_WIDTH, BASE_TILE_HEIGHT);
+  
+  if (downscaled)
+  {
+    tileSize /= 2;
+    viewportSize = Size(BASE_VIEWPORT_WIDTH*2, BASE_VIEWPORT_HEIGHT*2 - 1);
+  }
+  else
+  {
+    viewportSize = Size(BASE_VIEWPORT_WIDTH, BASE_VIEWPORT_HEIGHT);
+  }
 }
 
 void MapEditorView::deactivate()
@@ -207,16 +226,32 @@ Point MapEditorView::positionForBrush(size_t i)
 
 void MapEditorView::draw()
 {
-  for (size_t x = 0; x < VIEWPORT_WIDTH; ++x)
+  if (downscaled)
   {
-    for (size_t y = 0; y < VIEWPORT_HEIGHT; ++y)
+    Gfx::bindBuffer();
+    for (size_t x = 0; x < viewportSize.w; ++x)
     {
-      Viewport::drawTile(world->get(offset.x + x, offset.y + y, plane), OX + x*(TILE_WIDTH+MARGIN), OY + y*(TILE_HEIGHT+MARGIN), plane);
+      for (size_t y = 0; y < viewportSize.h; ++y)
+      {
+        Viewport::drawTile(world->get(offset.x + x, offset.y + y, plane), 0, 0, plane);
+        Gfx::mergeBufferDownScaled(0, 0, OX + x*(tileSize.w+MARGIN), OY + y*(tileSize.h+MARGIN), 20, 18);
+      }
+    }
+    Gfx::bindCanvas();
+  }
+  else
+  {
+    for (size_t x = 0; x < viewportSize.w; ++x)
+    {
+      for (size_t y = 0; y < viewportSize.h; ++y)
+      {
+        Viewport::drawTile(world->get(offset.x + x, offset.y + y, plane), OX + x*(tileSize.w+MARGIN), OY + y*(tileSize.h+MARGIN), plane);
+      }
     }
   }
-  
+
   if (hover.isValid())
-    Gfx::rect(OX + hover.x*(TILE_WIDTH+MARGIN)-1, OY + hover.y*(TILE_HEIGHT+MARGIN)-1, TILE_WIDTH+MARGIN, TILE_HEIGHT+MARGIN, {255,0,0});
+    Gfx::rect(OX + hover.x*(tileSize.w+MARGIN)-1, OY + hover.y*(tileSize.h+MARGIN)-1, tileSize.w+MARGIN, tileSize.h+MARGIN, {255,0,0});
   
   size_t brushIndex = std::distance(brushes.begin(), brush);
   Point brushPosition = positionForBrush(brushIndex);
@@ -225,12 +260,12 @@ void MapEditorView::draw()
   
   Gfx::draw(minimap->get(plane), 256, OY);
   
-  if (offset.x < MAP_WIDTH - VIEWPORT_WIDTH)
-    Gfx::rect((256 + offset.x - 1), (OY + offset.y - 1), VIEWPORT_WIDTH + 1, VIEWPORT_HEIGHT + 1, {255,0,0});
+  if (offset.x < MAP_WIDTH - viewportSize.w)
+    Gfx::rect((256 + offset.x - 1), (OY + offset.y - 1), viewportSize.w + 1, viewportSize.h + 1, {255,0,0});
   else
   {
-    Gfx::rect((256 + offset.x - 1), (OY + offset.y - 1), MAP_WIDTH - offset.x + 1, VIEWPORT_HEIGHT + 1, {255,0,0});
-    Gfx::rect((256 - 1), (OY + offset.y - 1), VIEWPORT_WIDTH - (MAP_WIDTH - offset.x) + 1, VIEWPORT_HEIGHT + 1, {255,0,0});
+    Gfx::rect((256 + offset.x - 1), (OY + offset.y - 1), MAP_WIDTH - offset.x + 1, viewportSize.h + 1, {255,0,0});
+    Gfx::rect((256 - 1), (OY + offset.y - 1), viewportSize.w - (MAP_WIDTH - offset.x) + 1, viewportSize.h + 1, {255,0,0});
   }
 
   
@@ -243,10 +278,10 @@ void MapEditorView::setup()
 
 Point MapEditorView::hoveredTile(Point pt)
 {
-  u16 tx = (pt.x - OX) / (TILE_WIDTH+MARGIN);
-  u16 ty = (pt.y - OY) / (TILE_HEIGHT+MARGIN);
+  u16 tx = (pt.x - OX) / (tileSize.w+MARGIN);
+  u16 ty = (pt.y - OY) / (tileSize.h+MARGIN);
   
-  if (tx >= 0 && tx < VIEWPORT_WIDTH && ty >= 0 && ty < VIEWPORT_HEIGHT)
+  if (tx >= 0 && tx < viewportSize.w && ty >= 0 && ty < viewportSize.h)
     return Point(tx, ty);
   else
     return Point::INVALID;
@@ -279,9 +314,9 @@ bool MapEditorView::mousePressed(u16 x, u16 y, MouseButton b)
       clickOnTile(Point(h.x + offset.x, h.y + offset.y));
     else if (b == MouseButton::BUTTON_RIGHT)
     {
-      offset = offset + h - Point(VIEWPORT_WIDTH/2, VIEWPORT_HEIGHT/2);
+      offset = offset + h - Point(viewportSize.w/2, viewportSize.h/2);
       offset.y = std::max((s16)0, offset.y);
-      offset.y = std::min((s16)(world->h - VIEWPORT_HEIGHT), offset.y);
+      offset.y = std::min((s16)(world->h - viewportSize.h), offset.y);
       
       offset.x %= MAP_WIDTH;
       if (offset.x < 0) offset.x += MAP_WIDTH;
@@ -323,6 +358,16 @@ bool MapEditorView::mouseWheel(s16 dx, s16 dy, u16 d)
     }
   }
 
+  return true;
+}
+
+bool MapEditorView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
+{
+  switch (key)
+  {
+    case SDL_SCANCODE_S: toggleDownscale(!downscaled); break;
+    default: break;
+  }
   
   return true;
 }
