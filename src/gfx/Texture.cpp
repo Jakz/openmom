@@ -17,30 +17,6 @@
 
 const Texture Texture::textures[] =
 {
-  Texture(TextureID::ARCANUS_TILES,"tile/arcanus/tile_map_1.png",10,10,20,18),
-  Texture(TextureID::ARCANUS_SHORE,"tile/arcanus/tile_map_shore.png",26,10,20,18),
-  Texture(TextureID::MYRRAN_TILES,"tile/myrran/tile_map_1.png",10,10,20,18),
-  Texture(TextureID::MYRRAN_SHORE,"tile/myrran/tile_map_shore.png",26,10,20,18),
-  
-  Texture(TextureID::ARCANUS_DESERT,"tile/arcanus/tiles-desert.png",26,10,20,18),
-  Texture(TextureID::MYRRAN_DESERT,"tile/myrran/tiles-desert.png",26,10,20,18),
-  
-  Texture(TextureID::ARCANUS_TUNDRA,"tile/arcanus/tiles-tundra.png",26,10,20,18),
-  Texture(TextureID::MYRRAN_TUNDRA,"tile/myrran/tiles-tundra.png",26,10,20,18),
-  
-  Texture(TextureID::ARCANUS_MOUNTAINS,"tile/arcanus/mountains.png",2,17,20,18),
-  Texture(TextureID::MYRRAN_MOUNTAINS,"tile/myrran/mountains.png",2,17,20,18),
-  
-  Texture(TextureID::ARCANUS_RIVERS,"tile/arcanus/rivers.png",28,8,20,18),
-  Texture(TextureID::MYRRAN_RIVERS,"tile/myrran/rivers.png",28,8,20,18),
-  
-  Texture(TextureID::ARCANUS_ANIMATED,"tile/arcanus/animated.png",39,4,20,18,true,2),
-  Texture(TextureID::MYRRAN_ANIMATED,"tile/myrran/animated.png",34,4,20,18,true,2),
-  
-  Texture(TextureID::ARCANUS_NODES,"tile/arcanus/nodes.png",3,4,20,18,true,5),
-  Texture(TextureID::MYRRAN_NODES,"tile/myrran/nodes.png",3,4,20,18,true,5),
-  
-  
   Texture(TextureID::TILE_FOG,"tile/fog.png",1,10,20,18),
   
   

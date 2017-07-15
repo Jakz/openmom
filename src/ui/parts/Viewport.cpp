@@ -84,61 +84,6 @@ enum lbx_indices
 const static sprite_ref roads[] = { road_none, road_north, road_north_west, road_west, road_south_west, road_south, road_south_east, road_east, road_north_east };
 const static sprite_ref roads_ench[] = { road_ench_none, road_ench_north, road_ench_north_west, road_ench_west, road_ench_south_west, road_ench_south, road_ench_south_east, road_ench_east, road_ench_north_east };
 
-
-std::unordered_map<u8,u8> Viewport::waterMap = {
-  {0, 0},
-  {255, 2},
-  // corners
-  {255-2-4-8-16-32,6},
-  {255-2-4-8-16-32-128,6},
-  {255-4-8-16-32,7},
-  {255-4-8-16-32-128,7},
-  {255-2-4-8-16,8},
-  {255-2-4-8-16-128,8},
-  {255-4-8-16,9},
-  {255-4-8-16-128,9},
-  {255-32-64-128-1-2,10},
-  {255-32-64-128-1-2-8,10},
-  {255-64-128-1-2,11},
-  {255-64-128-1-2-8,11},
-  {255-32-64-128-1,12},
-  {255-32-64-128-1-8,12},
-  {255-64-128-1,13},
-  {255-64-128-1-8,13},
-  {255-8-16-32-64-128,14},
-  {255-8-16-32-64-128-2,14},
-  {255-16-32-64-128,15},
-  {255-16-32-64-128-2,15},
-  {255-8-16-32-64,16},
-  {255-8-16-32-64-2,16},
-  {255-16-32-64,17},
-  {255-16-32-64-2,17},
-  {255-128-1-2-4-8,18},
-  {255-128-1-2-4-8-32,18},
-  {255-128-1-2-4,19},
-  {255-128-1-2-4-32,19},
-  {255-1-2-4-8,20},
-  {255-1-2-4-8-32,20},
-  {255-1-2-4,21},
-  {255-1-2-4-32,21}
-};
-
-static TextureID planeTextures[][8] = {
-  {TextureID::ARCANUS_SHORE, TextureID::ARCANUS_ANIMATED, TextureID::ARCANUS_DESERT, TextureID::ARCANUS_TUNDRA, TextureID::ARCANUS_TILES, TextureID::ARCANUS_RIVERS, TextureID::ARCANUS_MOUNTAINS, TextureID::ARCANUS_NODES},
-  {TextureID::MYRRAN_SHORE, TextureID::MYRRAN_ANIMATED, TextureID::MYRRAN_DESERT, TextureID::MYRRAN_TUNDRA, TextureID::MYRRAN_TILES, TextureID::MYRRAN_RIVERS, TextureID::MYRRAN_MOUNTAINS, TextureID::MYRRAN_NODES},
-};
-
-enum TileSheet : u8 {
-  SHORE = 0,
-  ANIMATED,
-  DESERT,
-  TUNDRA,
-  TILES,
-  RIVERS,
-  MOUNTAINS,
-  NODES
-};
-
 SpriteInfo Viewport::gfxForPlace(const Place* place)
 {
   switch (place->type)

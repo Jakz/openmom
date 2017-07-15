@@ -138,9 +138,7 @@ struct TileToSpriteMap
 
 class Viewport
 {
-private:
-  static std::unordered_map<u8,u8> waterMap;
-  
+private:  
   static void drawViewport(const World* map, const LocalPlayer* player, const Position& p, s16 ttx, s16 tty, s16 w, s16 h, bool darkenEdges);
   
   static SpriteInfo gfxForPlace(const Place* place);
