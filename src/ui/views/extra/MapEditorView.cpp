@@ -269,6 +269,19 @@ void MapEditorView::draw()
   }
 
   
+  const s16 DEBUG_X = 2;
+  const s16 DEBUG_Y = HEIGHT - 9;
+  const FontSpriteSheet* font = FontFaces::Tiny::WHITE;
+  Fonts::setFace(font);
+  if (hover.isValid())
+  {
+    const Tile* tile = world->get(hover.x, hover.y, plane);
+    if (tile)
+    {
+      Fonts::drawString(Fonts::format("join: %02X, variant: %u, river: %02X", tile->gfx.joinMask, tile->gfx.variant, tile->gfx.riverMask), DEBUG_X, DEBUG_Y, ALIGN_LEFT);
+    }
+  }
+  
 }
 
 void MapEditorView::setup()

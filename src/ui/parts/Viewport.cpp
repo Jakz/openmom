@@ -500,6 +500,22 @@ void mapSprite(size_t gfxIndex, gfx_tile_t& arcanusDest, gfx_tile_t& myrranDest)
   mapSprite(gfxIndex+TILE_PER_PLANE, myrranDest);
 }
 
+void mapRiverSprite(size_t srcIndex, size_t length, size_t destIndex, gfx_tile_mapping<256>& source, gfx_tile_mapping<256>& arcanus, gfx_tile_mapping<256>& myrran)
+{
+  for (size_t i = 0; i < length; ++i)
+  {
+    for (size_t j = 0; j < source.size(); ++j)
+    {
+      if (source[j].index() == srcIndex + i)
+      {
+        mapSprite(destIndex + i, arcanus[j]);
+        mapSprite(destIndex + i + TILE_PER_PLANE, myrran[j]);
+      }
+    }
+  }
+  
+}
+
 template<size_t SIZE> void mapSprite(const std::array<size_t, SIZE>& indices, gfx_tile_mapping<SIZE>& arcanus, gfx_tile_mapping<SIZE>& myrran)
 {
   for (size_t i = 0; i < SIZE; ++i)
@@ -701,10 +717,20 @@ void Viewport::createMapTextureAtlas()
   
   /* river mouths */
   /* TODO: not enough because for example the closed lake is used also for shores with diagonal elements */
-  mapSprite(0xC5, arcanus.riverMouths.west[DirJoin::ALL], myrran.riverMouths.west[DirJoin::ALL]);
-  mapSprite(0xC6, arcanus.riverMouths.north[DirJoin::ALL], myrran.riverMouths.north[DirJoin::ALL]);
-  mapSprite(0xC7, arcanus.riverMouths.east[DirJoin::ALL], myrran.riverMouths.east[DirJoin::ALL]);
-  mapSprite(0xC8, arcanus.riverMouths.south[DirJoin::ALL], myrran.riverMouths.south[DirJoin::ALL]);
+  
+  /* full lakes */
+  SpriteInfo info = arcanus.shores[DirJoin::ALL];
+  mapRiverSprite(info.index(), 1, 0xC5, arcanus.shores, arcanus.riverMouths.west, myrran.riverMouths.west);
+  mapRiverSprite(info.index(), 1, 0xC6, arcanus.shores, arcanus.riverMouths.north, myrran.riverMouths.north);
+  mapRiverSprite(info.index(), 1, 0xC7, arcanus.shores, arcanus.riverMouths.east, myrran.riverMouths.east);
+  mapRiverSprite(info.index(), 1, 0xC8, arcanus.shores, arcanus.riverMouths.south, myrran.riverMouths.south);
+
+  /* shore corners with double river */
+  mapRiverSprite(0x22, 4, 0xC9, arcanus.shores, arcanus.riverMouths.corner_nw, myrran.riverMouths.corner_nw);
+  mapRiverSprite(0x22+4, 4, 0xC9+4, arcanus.shores, arcanus.riverMouths.corner_se, myrran.riverMouths.corner_se);
+  mapRiverSprite(0x22+8, 4, 0xC9+8, arcanus.shores, arcanus.riverMouths.corner_ne, myrran.riverMouths.corner_ne);
+  mapRiverSprite(0x22+12, 4, 0xC9+12, arcanus.shores, arcanus.riverMouths.corner_sw, myrran.riverMouths.corner_sw);
+
   
   {
     SDL_Surface* atlas = SDL_CreateRGBSurface(0, 40*TILE_WIDTH + 40, 40*TILE_HEIGHT + 40, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
