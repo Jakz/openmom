@@ -27,7 +27,7 @@ static const Range LAIR_BUDGETS[][2][5] = {
 
 const Range& LairMechanics::budgetForPlace(Place* place, Plane plane)
 {
-  if (place->type == PLACE_TOWER_OF_WIZARDRY)
+  if (place->type == PlaceType::TOWER_OF_WIZARDRY)
     return LAIR_BUDGETS[TOWER_OF_WIZARDRY][plane][game->settings.group(SETTING_DIFFICULTY).index()];
   else if (place->isWeak)
     return LAIR_BUDGETS[WEAK_LAIR][plane][game->settings.group(SETTING_DIFFICULTY).index()];

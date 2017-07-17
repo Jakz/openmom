@@ -19,6 +19,10 @@ TileType osave::OriginalSaveGame::getTileTypeForTileValue(TileValue value)
   {
     const auto& mapping = Viewport::arcanus;
     
+    /* TODO: this approach doesn't preserve the same exact tile, for example a forest tile will change during the conversion
+     to a different variant
+     */
+    
     for_each(mapping.desert.begin(), mapping.desert.end(), [](const gfx_tile_t& gfx) { worldTileMapping[gfx.index()] = TileType::DESERT; });
     for_each(mapping.tundra.begin(), mapping.tundra.end(), [](const gfx_tile_t& gfx) { worldTileMapping[gfx.index()] = TileType::TUNDRA; });
     for_each(mapping.swamp.begin(), mapping.swamp.end(), [](const gfx_tile_t& gfx) { worldTileMapping[gfx.index()] = TileType::SWAMP; });
@@ -61,6 +65,25 @@ Resource osave::OriginalSaveGame::getResourceForValue(TileResource value)
     default:
       // TODO: values 0A-0E seems related to sparkles on tile?
       return Resource::NONE;
+  }
+}
+
+PlaceType osave::OriginalSaveGame::getPlaceTypeForPlaceValue(osave::PlaceData::Type value)
+{
+  using Type = osave::PlaceData::Type;
+  
+  switch (value)
+  {
+    case Type::TOWER: return PlaceType::TOWER_OF_WIZARDRY;
+    case Type::ABANDONED_KEEP: return PlaceType::ABANDONED_KEEP;
+    case Type::ANCIENT_TEMPLE: return PlaceType::ANCIENT_TEMPLE;
+    case Type::DUNGEON: return PlaceType::DUNGEON;
+    case Type::FALLEN_TEMPLE: return PlaceType::FALLEN_TEMPLE;
+    case Type::MONSTER_LAIR: return PlaceType::MONSTER_LAIR;
+    case Type::MYSTERIOUS_CAVE: return PlaceType::MYSTERIOUS_CAVE;
+    case Type::RUINS: return PlaceType::RUINS;
+      
+    default: assert(false);
   }
 }
 
@@ -109,6 +132,57 @@ World* osave::OriginalSaveGame::getWorld()
       }
     }
     
+    constexpr size_t PLACE_COUNT = 99;
+    
+    for (size_t i = 0; i < PLACE_COUNT; ++i)
+    {
+      using Type = PlaceData::Type;
+      const PlaceData& oplace = data->places[i];
+      Place* place = nullptr;
+      
+      /* if place is a node we have special handling */
+      if (oplace.type == Type::CHAOS_NODE || oplace.type == Type::SORCERY_NODE || oplace.type == Type::NATURE_NODE)
+      {
+        ManaNode* node = nullptr;
+        
+        /* search mana node in node attributes array */
+        for (const ManaNodeData& onode : data->manaNodes)
+        {
+          if (onode.x == oplace.x && onode.y == oplace.y && onode.plane == oplace.plane)
+          {
+            s16 power = onode.power;
+            
+            /* we double check both types to be sure */
+            if (onode.type == ManaNodeData::Type::CHAOS && oplace.type == Type::CHAOS_NODE)
+              node = new ManaNode(School::CHAOS, power);
+            else if (onode.type == ManaNodeData::Type::SORCERY && oplace.type == Type::SORCERY_NODE)
+              node = new ManaNode(School::SORCERY, power);
+            else if (onode.type == ManaNodeData::Type::NATURE && oplace.type == Type::NATURE_NODE)
+              node = new ManaNode(School::NATURE, power);
+            else
+            {
+              /* report error */
+            }
+            
+            /* TODO: other attribs */
+            place = node;
+            
+          }
+        }
+      }
+      else
+      {      
+        PlaceType type = getPlaceTypeForPlaceValue(oplace.type);
+        place = new Place(type);
+      }
+      
+      //TODO: misc parameters of node
+
+      
+      if (place)
+        world->get(oplace.x, oplace.y, oplace.plane == 0 ? Plane::ARCANUS : Plane::MYRRAN)->placePlace(place);
+    }
+    
     world->calcSubTiles();
     return world;
   }
@@ -124,7 +198,7 @@ static_assert(sizeof(WizardData) == 0x4c8, "");
 static_assert(sizeof(OverallGameData) == 0x1b4, "");
 static_assert(sizeof(tile_map<TileValue>) == 0x12c0, "");
 static_assert(sizeof(tile_map<u8>) == 0x960, "");
-static_assert(sizeof(osave::ManaNode) == 0x30, "");
+static_assert(sizeof(osave::ManaNodeData) == 0x30, "");
 static_assert(sizeof(osave::FortressData) == 4, "");
 static_assert(sizeof(osave::TowerData) == 4, "");
 static_assert(sizeof(osave::PlaceData) == 0x18, "");

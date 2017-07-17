@@ -288,7 +288,33 @@ namespace osave
   using AllHeroData = std::array<HeroStats, 35>;
   using TileValue = u16;
   
-  using ManaNode = std::array<byte, 48>;
+  struct ManaNodeData
+  {
+    enum class Type : u8
+    {
+      SORCERY = 0,
+      NATURE = 1,
+      CHAOS = 2
+    };
+    
+    enum class Flag : u8
+    {
+      WARPED = 0x01,
+      GUARDIAN_SPIRIT = 0x02
+    };
+    
+    u8 x;
+    u8 y;
+    u8 plane;
+    s8 owner;
+    u8 power;
+    u8 sparkleX[20];
+    u8 sparkleY[20];
+    Type type;
+    bit_mask<Flag> flags;
+    u8 uknown;
+  } __attribute__((__packed__));
+  
   using FortressData = std::array<byte, 4>;
   using TowerData = std::array<byte, 4>;
   using ItemData = std::array<byte, 0x32>;
@@ -353,7 +379,7 @@ namespace osave
     u16 itemIndex1;
     u16 itemIndex2;
     u16 itemIndex3;
-  };
+  } __attribute__((__packed__));
   
   
   constexpr size_t HERO_COUNT = 35;
@@ -397,7 +423,7 @@ namespace osave
 
     map_data<tile_map<u8>> landmass;
     
-    std::array<ManaNode, 30> manaNodes;
+    std::array<ManaNodeData, 30> manaNodes;
     
     std::array<FortressData, 6> fortresses;
     std::array<TowerData, 6> towers;
@@ -439,6 +465,7 @@ namespace osave
     
     TileType getTileTypeForTileValue(TileValue value);
     Resource getResourceForValue(TileResource value);
+    PlaceType getPlaceTypeForPlaceValue(PlaceData::Type value);
     
   public:
     OriginalSaveGame(const Path& path);

@@ -879,15 +879,19 @@ enum class Resource : u8
   NONE
 };
 
-enum PlaceType : u8
-{
-  PLACE_TOWER_OF_WIZARDRY = 0,
-  PLACE_TOWER_OF_WIZARDRY_CLEARED,
-  PLACE_CAVE,
-  PLACE_RUINS,
-  PLACE_KEEP,
-  PLACE_TEMPLE,
-  PLACE_ANCIENT_RUINS
+enum class PlaceType : u8
+{  
+  TOWER_OF_WIZARDRY = 1,
+  
+  MYSTERIOUS_CAVE,
+  DUNGEON,
+  ANCIENT_TEMPLE,
+  ABANDONED_KEEP,
+  MONSTER_LAIR,
+  RUINS,
+  FALLEN_TEMPLE,
+  
+  MANA_NODE
 };
 
 /* forward declarations */

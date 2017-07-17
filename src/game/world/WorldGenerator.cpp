@@ -614,7 +614,7 @@ void WorldGenerator::makeNodes(Plane plane)
       else if (forest >= sea && forest >= mountain) type = NATURE;
       else if (mountain >= sea && mountain >= forest) type = CHAOS;
       
-      world->get(gx,gy,plane)->placeManaNode(mapMech->generateManaNode(static_cast<World*>(world), Position(gx, gx, plane), type));
+      world->get(gx,gy,plane)->placePlace(mapMech->generateManaNode(static_cast<World*>(world), Position(gx, gx, plane), type));
 
       counter = 1;
       ++cur;
@@ -627,7 +627,17 @@ void WorldGenerator::makeLairs()
   s32 lairs[] = {25,32}; // lairs, weak lairs
   s32 minDistance = 2, counter = 1;
   
-  PlaceType places[] = {PLACE_CAVE,PLACE_RUINS,PLACE_KEEP,PLACE_TEMPLE,PLACE_ANCIENT_RUINS};
+  PlaceType places[] =
+  {
+    PlaceType::MYSTERIOUS_CAVE,
+    PlaceType::DUNGEON,
+    PlaceType::ANCIENT_TEMPLE,
+    PlaceType::ABANDONED_KEEP,
+    PlaceType::MONSTER_LAIR,
+    PlaceType::RUINS,
+    PlaceType::FALLEN_TEMPLE
+  };
+  
   s32 placeTypes = sizeof(places)/sizeof(places[0]);
   
   for (int plane = 0; plane < PLANE_COUNT; ++plane)

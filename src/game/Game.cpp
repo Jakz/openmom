@@ -85,7 +85,7 @@ void Game::dummyInit()
   world->set(TileType::DESERT, 9,9, ARCANUS);
   world->set(TileType::DESERT, 10,9, ARCANUS);
   
-  world->get(7, 8, ARCANUS)->placeManaNode(new ManaNode(School::SORCERY, 0));
+  world->get(7, 8, ARCANUS)->placePlace(new ManaNode(School::SORCERY, 0));
   
   //WorldGenerator generator(world);
   //generator.generate();
@@ -163,8 +163,8 @@ void Game::dummyInit()
   City* milan = new City(player, "Milan", 6000, Position(7, 3, ARCANUS));
   settleCity(milan);
   
-  world->get(7,6,ARCANUS)->placePlace(new Place(PLACE_TOWER_OF_WIZARDRY, false));
-  world->get(8,6,ARCANUS)->placePlace(new Place(PLACE_CAVE, false));
+  world->get(7,6,ARCANUS)->placePlace(new Place(PlaceType::TOWER_OF_WIZARDRY, false));
+  world->get(8,6,ARCANUS)->placePlace(new Place(PlaceType::MYSTERIOUS_CAVE, false));
   
   
   world->calcSubTiles();
@@ -235,7 +235,7 @@ bool Game::meldNode(const Army* army, const Position& position)
 {
   Tile* t = world->get(position);
   t->node()->owner = army->getOwner();
-  army->getOwner()->add(t->node().get());
+  army->getOwner()->add(t->node());
   return true;
 }
 

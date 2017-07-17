@@ -88,13 +88,19 @@ SpriteInfo Viewport::gfxForPlace(const Place* place)
 {
   switch (place->type)
   {
-    case PLACE_TOWER_OF_WIZARDRY: return place_tower_unowned; //TODO: there is 1 pixel shift compared to other tower gfx
-    case PLACE_TOWER_OF_WIZARDRY_CLEARED: return place_tower_owned;
-    case PLACE_CAVE: return place_mound;
-    case PLACE_RUINS: return place_ruins;
-    case PLACE_KEEP: return place_keep;
-    case PLACE_TEMPLE: return place_temple;
-    case PLACE_ANCIENT_RUINS: return place_fallen_temple;
+    //TODO: there is 1 pixel shift compared to other tower gfx
+    case PlaceType::TOWER_OF_WIZARDRY:
+      return place->cleared ? place_tower_owned : place_tower_unowned;
+      
+    case PlaceType::MYSTERIOUS_CAVE: return place_mound;
+    case PlaceType::RUINS: return place_ruins;
+    case PlaceType::ABANDONED_KEEP: return place_keep;
+    case PlaceType::DUNGEON: return place_ruins;
+    case PlaceType::ANCIENT_TEMPLE: return place_temple;
+    case PlaceType::MONSTER_LAIR: return place_mound;
+    case PlaceType::FALLEN_TEMPLE: return place_fallen_temple;
+      
+    case PlaceType::MANA_NODE: assert(false); /* should never end up here */
   }
 }
 
@@ -182,7 +188,7 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
     Gfx::draw(gfxForResource(t->resource), x, y);
   
   //TODO: raw pointer
-  if (t->place())
+  if (t->place() && !t->place()->isNode())
     Gfx::draw(gfxForPlace(t->place().get()), x, y);
   
   if (t->isCorrupted())

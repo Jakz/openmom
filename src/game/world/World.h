@@ -76,12 +76,12 @@ public:
 		return &map[plane][x+y*w];
   }
   
-  Tile *get(Position position, PositionOffset offset) const
+  Tile* get(Position position, PositionOffset offset) const
   {
     return get(position.x+offset.x, position.y+offset.y, position.plane);
   }
   
-  Tile *get(s16 x, s16 y, Plane plane, PositionOffset offset) const
+  Tile* get(s16 x, s16 y, Plane plane, PositionOffset offset) const
   {
     return get(x+offset.x, y+offset.y, plane);
   }
