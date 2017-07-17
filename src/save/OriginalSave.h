@@ -163,6 +163,7 @@ namespace osave
   
   using coord_t = s16;
   using spell_id = u16;
+  using creature_id = u8;
   
   struct HeroStats
   {
@@ -290,10 +291,69 @@ namespace osave
   using ManaNode = std::array<byte, 48>;
   using FortressData = std::array<byte, 4>;
   using TowerData = std::array<byte, 4>;
-  using PlaceData = std::array<byte, 0x18>;
   using ItemData = std::array<byte, 0x32>;
   using CityData = std::array<byte, 0x72>;
   using UnitData = std::array<byte, 0x20>;
+  
+  struct PlaceData
+  {
+    enum class Type : u8
+    {
+      TOWER = 0,
+      CHAOS_NODE = 1,
+      NATURE_NODE = 2,
+      SORCERY_NODE = 3,
+      MYSTERIOUS_CAVE = 4,
+      DUNGEON = 5,
+      ANCIENT_TEMPLE = 6,
+      ABANDONED_KEEP = 7,
+      MONSTER_LAIR = 8,
+      RUINS = 9,
+      FALLEN_TEMPLE = 0xA
+    };
+    
+    enum class Reward : u8
+    {
+      NONE,
+      COMMON_SPELL,
+      UNCOMMON_SPELL,
+      RARE_SPELL,
+      VERY_RARE_SPELL,
+      SPELLBOOK_OR_SKILL1,
+      SPELLBOOK_OR_SKILL2
+    };
+    
+    struct monster_spec
+    {
+      u8 quantity : 4;
+      u8 left : 4;
+    };
+    
+    u8 x;
+    u8 y;
+    u8 plane;
+    
+    bool intact;
+    Type type;
+    
+    creature_id monster1;
+    monster_spec monsterSpec1;
+    creature_id monster2;
+    monster_spec monsterSpec2;
+    
+    u8 unknown;
+    
+    u16 goldReward;
+    u16 manaReward;
+    Reward reward;
+    
+    u8 flags; // 0x01 prisoner present 0x02 you explored creature 1, 0x04 you explored creature 2
+    
+    u16 itemsReward;
+    u16 itemIndex1;
+    u16 itemIndex2;
+    u16 itemIndex3;
+  };
   
   
   constexpr size_t HERO_COUNT = 35;
