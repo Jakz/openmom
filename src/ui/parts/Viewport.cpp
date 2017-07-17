@@ -196,16 +196,17 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
   
   if (t->hasRoad || t->city)
   {
-    if (t->gfx.roadMask == DirJoin::NONE)
+    const auto& roadMask = t->gfx.roadMask;
+    if (roadMask == DirJoin::NONE)
       Gfx::drawAnimated(t->hasEnchantedRoad ? roads_ench[0] : roads[0], x, y, gfx.animationOffset, animSpeed);
     else
     {
       DirJoin d = DirJoin::N;
       for (int i = 0; i < 8; ++i)
       {
-        if ((t->gfx.roadMask & d) != DirJoin::NONE)
+        if ((roadMask & d) != DirJoin::NONE)
           Gfx::drawAnimated(t->hasEnchantedRoad ? roads_ench[i+1] : roads[i+1], x, y, gfx.animationOffset, animSpeed);
-        d >> 1;
+        d >>= 1;
       }
       
     }

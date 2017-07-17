@@ -118,6 +118,7 @@ World* osave::OriginalSaveGame::getWorld()
       Plane plane = (Plane)p;
       const auto& tileMap = data->tilemap.get(plane);
       const auto& resourceMap = data->mapResources.get(plane);
+      const auto& terrainFlags = data->mapTerrainFlags.get(plane);
       
       for (u16 y = 0; y < h; ++y)
       {
@@ -125,9 +126,26 @@ World* osave::OriginalSaveGame::getWorld()
         {
           Tile* tile = world->get(x, y, plane);
           
+          /* convert tile gfx to tile type */
           tile->type = getTileTypeForTileValue(tileMap[y][x]);
+          /* convert resource type */
           tile->resource = getResourceForValue(resourceMap[y][x]);
           
+          const auto& flags = terrainFlags[y][x];
+          
+          // TODO: manage volcano
+          
+          // TODO: actually road shouldn't be set in tile if there a city because it's implicit
+          if (flags.isSet(TerrainFlag::ROAD))
+            tile->hasRoad = true;
+          
+          if (flags.isSet(TerrainFlag::ENCHANTED_ROAD))
+          {
+            tile->hasRoad = true;
+            tile->hasEnchantedRoad = true;
+          }
+          
+          // TODO: corruption       
         }
       }
     }
@@ -184,6 +202,7 @@ World* osave::OriginalSaveGame::getWorld()
     }
     
     world->calcSubTiles();
+    world->updateRoads();
     return world;
   }
 }

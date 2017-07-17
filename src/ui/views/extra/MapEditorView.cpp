@@ -178,14 +178,11 @@ void MapEditorView::activate()
   world->fill(TileType::GRASS, Plane::MYRRAN);
   world->calcSubTiles();*/
   
-  Path path = "/Users/jack/Desktop/mom3x.app/Contents/Resources/mom/SAVE4.GAM";
+  Path path = "/Users/jack/Desktop/mom3x.app/Contents/Resources/mom/SAVE1.GAM";
   osave::OriginalSaveGame save(path);
   
   if (save.isLoaded())
-  {
     this->world = save.getWorld();
-  }
-  
   
   minimap = new MiniMap(world);
   minimap->discover(Rect(0,0,60,40), Plane::ARCANUS);
@@ -289,7 +286,7 @@ void MapEditorView::draw()
     const Tile* tile = world->get(hover.x, hover.y, plane);
     if (tile)
     {
-      Fonts::drawString(Fonts::format("join: %02X, variant: %u, river: %02X", tile->gfx.joinMask, tile->gfx.variant, tile->gfx.riverMask), DEBUG_X, DEBUG_Y, ALIGN_LEFT);
+      Fonts::drawString(Fonts::format("join: %02X, variant: %u, river: %02X, roads: %02X", tile->gfx.joinMask, tile->gfx.variant, tile->gfx.riverMask, tile->gfx.roadMask), DEBUG_X, DEBUG_Y, ALIGN_LEFT);
     }
   }
   

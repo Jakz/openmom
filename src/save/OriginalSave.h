@@ -28,6 +28,20 @@ namespace osave
     bool isSet(T flag) const { return value & static_cast<utype>(flag); }
     void set(T flag) { value |= static_cast<utype>(flag); }
     void reset(T flag) { value &= ~static_cast<utype>(flag); }
+
+    bit_mask<T> operator&(T flag) const
+    {
+      bit_mask<T> mask;
+      mask.value = this->value & static_cast<utype>(flag);
+      return mask;
+    }
+    
+    bit_mask<T> operator|(T flag) const
+    {
+      bit_mask<T> mask;
+      mask.value = this->value | static_cast<utype>(flag);
+      return mask;
+    }
   };
   
   enum class Race : u8
@@ -158,7 +172,18 @@ namespace osave
   
   enum TerrainFlag : u8
   {
+    VOLCANO_FLAG = 0b00000111,
+    VOLCANO_WIZARD1 = 1,
+    VOLCANO_WIZARD2 = 2,
+    VOLCANO_WIZARD3 = 3,
+    VOLCANO_WIZARD4 = 4,
+    VOLCANO_WIZARD5 = 5,
     
+    ROAD = 0x08,
+    ENCHANTED_ROAD = 0x10,
+    CORRUPTION = 0x20,
+    UNUSED1 = 0x40,
+    UNUSED2 = 0x80
   };
   
   using coord_t = s16;
