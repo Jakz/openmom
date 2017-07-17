@@ -116,6 +116,7 @@ void SDL::deinit()
 }
 
 bool buttonDown = false;
+MouseButton lastButton = BUTTON_LEFT;
 void SDL::handleEvents()
 {
   SDL_Event event;
@@ -129,6 +130,7 @@ void SDL::handleEvents()
       {
         gvm->mousePressed(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, static_cast<MouseButton>(event.button.button));
         buttonDown = true;
+        lastButton = static_cast<MouseButton>(event.button.button);
         break;
       }
       case SDL_MOUSEBUTTONUP:
@@ -140,7 +142,7 @@ void SDL::handleEvents()
       case SDL_MOUSEMOTION:
       {
         if (buttonDown)
-          gvm->mouseDragged(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, BUTTON_LEFT);
+          gvm->mouseDragged(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, lastButton);
         else
           gvm->mouseMoved(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, BUTTON_LEFT);
         break;

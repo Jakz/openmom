@@ -845,7 +845,8 @@ enum Plane : u8
 
 enum class TileType : u8
 {
-  GRASS = 0,
+  NONE = 0, 
+  GRASS = 1,
   OCEAN,
   SHORE,
   MOUNTAIN,

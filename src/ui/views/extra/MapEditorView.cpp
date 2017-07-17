@@ -169,12 +169,23 @@ MapEditorView::MapEditorView(ViewManager* gvm) : ViewWithQueue(gvm)
   
 }
 
+#include "save/OriginalSave.h"
+
 void MapEditorView::activate()
 {
-  world = new World(nullptr,60,40);
+  /*world = new World(nullptr,60,40);
   world->fill(TileType::GRASS, Plane::ARCANUS);
   world->fill(TileType::GRASS, Plane::MYRRAN);
-  world->calcSubTiles();
+  world->calcSubTiles();*/
+  
+  Path path = "/Users/jack/Desktop/mom3x.app/Contents/Resources/mom/SAVE4.GAM";
+  osave::OriginalSaveGame save(path);
+  
+  if (save.isLoaded())
+  {
+    this->world = save.getWorld();
+  }
+  
   
   minimap = new MiniMap(world);
   minimap->discover(Rect(0,0,60,40), Plane::ARCANUS);
@@ -384,7 +395,11 @@ bool MapEditorView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod m
       hover = Point::INVALID;
       break;
     }
-    case SDL_SCANCODE_S: toggleDownscale(!downscaled); break;
+    case SDL_SCANCODE_S:
+    {
+      toggleDownscale(!downscaled);
+      hover = Point::INVALID;
+    }
     default: break;
   }
   

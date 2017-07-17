@@ -4,6 +4,12 @@
 #include <type_traits>
 #include <array>
 
+#include "common/Common.h"
+
+struct Path;
+
+class World;
+
 namespace osave
 {
   using u8 = uint8_t;
@@ -132,9 +138,22 @@ namespace osave
     
   };
   
-  enum TileResource : u8
+  enum class TileResource : u8
   {
+    NONE = 0x00,
     
+    IRON_ORE = 0x01,
+    COAL = 0x02,
+    SILVER_ORE = 0x03,
+    GOLD_ORE = 0x04,
+    GEMS = 0x05,
+    MITHRIL = 0x06,
+    ADAMANTIUM = 0x07,
+    QUORK = 0x08,
+    CRYSX = 0x09,
+    
+    WILD_GAME = 0x40,
+    NIGHTSHADE = 0x80
   };
   
   enum TerrainFlag : u8
@@ -266,7 +285,7 @@ namespace osave
   } __attribute__((__packed__));
   
   using AllHeroData = std::array<HeroStats, 35>;
-  using TileType = u16;
+  using TileValue = u16;
   
   using ManaNode = std::array<byte, 48>;
   using FortressData = std::array<byte, 4>;
@@ -289,6 +308,8 @@ namespace osave
   {
     T arcanus;
     T myrran;
+    
+    const T& get(Plane plane) const { return plane == Plane::ARCANUS ? arcanus : myrran; }
   };
   
   struct MovementCostMap
@@ -301,7 +322,7 @@ namespace osave
     tile_map<u8> sailing;
   };
   
-  struct SaveGame
+  struct SaveGameData
   {
     std::array<AllHeroData, WIZARD_COUNT> heroes;
     
@@ -310,7 +331,7 @@ namespace osave
     std::array<WizardData, WIZARD_COUNT> wizards;
     WizardData dummyWizard;
     
-    map_data<tile_map<TileType>> tilemap;
+    map_data<tile_map<TileValue>> tilemap;
     
     map_data<byte[0xC0]> unusedMap;
 
@@ -334,7 +355,7 @@ namespace osave
     std::array<UnitData, 1000> units;
     std::array<UnitData, 9> garbageUnits;
     
-    map_data<tile_map<bit_mask<TileResource>>> mapResources;
+    map_data<tile_map<TileResource>> mapResources;
     map_data<tile_map<bit_mask<FogData>>> mapFog;
 
     map_data<MovementCostMap> mapMovementCost;
@@ -349,4 +370,21 @@ namespace osave
     
     std::array<char[0x10], 35> heroNames;
   } __attribute__((__packed__));
+  
+  
+  class OriginalSaveGame
+  {
+  private:
+    std::unique_ptr<SaveGameData> data;
+    
+    TileType getTileTypeForTileValue(TileValue value);
+    Resource getResourceForValue(TileResource value);
+    
+  public:
+    OriginalSaveGame(const Path& path);
+    
+    bool isLoaded() const { return data != nullptr; }
+    
+    World* getWorld();
+  };
 }

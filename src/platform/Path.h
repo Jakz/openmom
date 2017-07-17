@@ -90,7 +90,7 @@ public:
   void rewind() const { fseek(file, 0, SEEK_SET); }
   void flush() const { fflush(file); }
   
-  bool open(const class Path& path, file_mode mode)
+  bool open(const class Path& path, file_mode mode) const
   {
 #ifdef _WIN32
     const wchar_t* smode = L"rb";
