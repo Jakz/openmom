@@ -212,8 +212,26 @@ namespace osave
     s16 turn;
     s16 currentActiveUnit;
   } __attribute__((__packed__));
-  
-  using HiredHero = std::array<byte, 0x1C>;
+    
+  struct HiredHero
+  {
+    enum class ItemSlotType : s16
+    {
+      NONE = 0,
+      SWORD = 1,
+      BOW = 2,
+      SWORD_STAFF_WAND = 3,
+      STAFF_WAND = 4,
+      ARMOR_SHIELD = 5,
+      AMULET = 6
+    };
+    
+    s16 unitIndex;
+    char name[0xE];
+    s16 itemIndex[3];
+    ItemSlotType itemType[3];
+    
+  } __attribute__((__packed__));;
   
   struct WizardData
   {
@@ -343,8 +361,63 @@ namespace osave
   using FortressData = std::array<byte, 4>;
   using TowerData = std::array<byte, 4>;
   using ItemData = std::array<byte, 0x32>;
-  using CityData = std::array<byte, 0x72>;
   using UnitData = std::array<byte, 0x20>;
+  
+  struct CityData
+  {
+    enum class Race : s8
+    {
+      BARBARIAN = 0,
+      BEASTMAN,
+      DARK_ELF,
+      DRACONIAN,
+      DWARF,
+      GNOLL,
+      HALFLING,
+      HIGH_ELF,
+      HIGH_MAN,
+      KLACKON,
+      LIZARZMEN,
+      NOMAD,
+      ORC,
+      TROLL
+    };
+    
+    enum class BuildingStatus : s8
+    {
+      NOT_BUILT = -1,
+      REPLACED = 0,
+      BUILD = 1,
+      DESTROYED = 2
+    };
+    
+    char name[14];
+    Race race;
+    u8 x;
+    u8 y;
+    u8 plane;
+    s8 owner;
+    s8 size;
+    s8 populationHigh;
+    s8 farmers;
+    bool hasSoldBuilding;
+    u8 unknown1;
+    s8 populationLow;
+    u8 unknown2[3];
+    s16 currentProduction;
+    u8 buildingsCount;
+    BuildingStatus buildings[36];
+    u8 enchantments[25];
+    bool hasNightshade;
+    s8 hammers;
+    s16 hammersTotal;
+    s8 coins;
+    s8 upkeep;
+    s8 mana;
+    s8 research;
+    s8 foodProduced;
+    u8 connectedCities[0xD];
+  } __attribute__((__packed__));
   
   struct PlaceData
   {
