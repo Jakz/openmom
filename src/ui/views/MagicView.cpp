@@ -14,7 +14,7 @@
 
 #include "Gfx.h"
 #include "GfxData.h"
-#include "LBX.h"
+#include "LBXRepository.h"
 #include "Texture.h"
 #include "Buttons.h"
 #include "Font.h"

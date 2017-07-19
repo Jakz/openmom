@@ -59,6 +59,11 @@
 		0439E9AA1986912D0009BFF7 /* SpellBookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9A81986912D0009BFF7 /* SpellBookView.cpp */; };
 		0439E9AD198691530009BFF7 /* UnitDetailView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9AB198691530009BFF7 /* UnitDetailView.cpp */; };
 		0439E9B019869F6D0009BFF7 /* CommonDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0439E9AE19869F6D0009BFF7 /* CommonDraw.cpp */; };
+		043A81471F1FD6E2003E3475 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045755E11F0E93C6005F09D6 /* Path.cpp */; };
+		043A81481F1FD6ED003E3475 /* osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04E282D41E0242C000DD673D /* osx.mm */; };
+		043A814B1F1FF8CE003E3475 /* LBXRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043A81491F1FF8CE003E3475 /* LBXRepository.cpp */; };
+		043A814C1F1FF8CE003E3475 /* LBXRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043A81491F1FF8CE003E3475 /* LBXRepository.cpp */; };
+		043A814D1F1FFC09003E3475 /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
 		043C01441E218A4E00E035D8 /* Data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043C01421E218A4E00E035D8 /* Data.cpp */; };
 		0442470F1980A04800A8D7CC /* SpellMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0442470D1980A04800A8D7CC /* SpellMechanics.cpp */; };
 		044247121980B97900A8D7CC /* EventMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044247101980B97900A8D7CC /* EventMechanics.cpp */; };
@@ -194,6 +199,8 @@
 		04C729C41985F1B1002F16E6 /* BookView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C729C21985F1B1002F16E6 /* BookView.cpp */; };
 		04CD9F6C1ED9F48F002B7570 /* InfoMenuView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CD9F6A1ED9F48F002B7570 /* InfoMenuView.cpp */; };
 		04CE420E1E37DA2A00CFD3B9 /* DrawQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CE420C1E37DA2A00CFD3B9 /* DrawQueue.cpp */; };
+		04DF5B541F1FA792000B1AA2 /* lbxlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04DF5B521F1FA792000B1AA2 /* lbxlib.cpp */; };
+		04DF5B551F1FA792000B1AA2 /* lbxlib.h in Headers */ = {isa = PBXBuildFile; fileRef = 04DF5B531F1FA792000B1AA2 /* lbxlib.h */; };
 		04E218861C02A386005784E1 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04E218841C02A386005784E1 /* format.cc */; };
 		04E218871C02A386005784E1 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04E218841C02A386005784E1 /* format.cc */; };
 		04E2829C1E01A7DB00DD673D /* OriginalSave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */; };
@@ -365,6 +372,8 @@
 		0439E9AC198691530009BFF7 /* UnitDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitDetailView.h; sourceTree = "<group>"; };
 		0439E9AE19869F6D0009BFF7 /* CommonDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CommonDraw.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0439E9AF19869F6D0009BFF7 /* CommonDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CommonDraw.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		043A81491F1FF8CE003E3475 /* LBXRepository.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LBXRepository.cpp; sourceTree = "<group>"; };
+		043A814A1F1FF8CE003E3475 /* LBXRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBXRepository.h; sourceTree = "<group>"; };
 		043C01421E218A4E00E035D8 /* Data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Data.cpp; sourceTree = "<group>"; };
 		043C01431E218A4E00E035D8 /* Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Data.h; sourceTree = "<group>"; };
 		0442470D1980A04800A8D7CC /* SpellMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = SpellMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -449,6 +458,10 @@
 		04CD9F6B1ED9F48F002B7570 /* InfoMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoMenuView.h; sourceTree = "<group>"; };
 		04CE420C1E37DA2A00CFD3B9 /* DrawQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawQueue.cpp; sourceTree = "<group>"; };
 		04CE420D1E37DA2A00CFD3B9 /* DrawQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawQueue.h; sourceTree = "<group>"; };
+		04DF5B471F1FA715000B1AA2 /* liblbx.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = liblbx.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		04DF5B521F1FA792000B1AA2 /* lbxlib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lbxlib.cpp; sourceTree = "<group>"; };
+		04DF5B531F1FA792000B1AA2 /* lbxlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lbxlib.h; sourceTree = "<group>"; };
+		04DF5B561F1FA84E000B1AA2 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = System/Library/Frameworks/JavaVM.framework; sourceTree = SDKROOT; };
 		04E218841C02A386005784E1 /* format.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = format.cc; sourceTree = "<group>"; };
 		04E218851C02A386005784E1 /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = format.h; sourceTree = "<group>"; };
 		04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OriginalSave.cpp; sourceTree = "<group>"; };
@@ -501,6 +514,13 @@
 				04C1F48C1B25366D00F7688A /* Cocoa.framework in Frameworks */,
 				04C1F48D1B25367800F7688A /* SDL2.framework in Frameworks */,
 				04C1F48E1B25367C00F7688A /* SDL2_image.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04DF5B441F1FA715000B1AA2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,6 +621,8 @@
 				040375D7197990B900A5B5FC /* Texture.h */,
 				048204A019888E5C00D4B699 /* LBX.cpp */,
 				048204A119888E5C00D4B699 /* LBX.h */,
+				043A81491F1FF8CE003E3475 /* LBXRepository.cpp */,
+				043A814A1F1FF8CE003E3475 /* LBXRepository.h */,
 				04E282C41E02343E00DD673D /* SDLHelper.cpp */,
 				04E282C51E02343E00DD673D /* SDLHelper.h */,
 			);
@@ -882,6 +904,7 @@
 				04879A3D1978374100313BC7 /* OpenMoM.app */,
 				04C1F4511B25288F00F7688A /* LBXManager.app */,
 				04E282A71E021C3300DD673D /* Tests */,
+				04DF5B471F1FA715000B1AA2 /* liblbx.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -889,6 +912,7 @@
 		04879A3F1978374100313BC7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04DF5B561F1FA84E000B1AA2 /* JavaVM.framework */,
 				04EDF9331E0819C100739E86 /* libyaml-cpp.a */,
 				04879A751978385800313BC7 /* SDL2_image.framework */,
 				04879A761978385800313BC7 /* SDL2.framework */,
@@ -930,6 +954,8 @@
 		04C1F44A1B2526E700F7688A /* lbx */ = {
 			isa = PBXGroup;
 			children = (
+				04DF5B521F1FA792000B1AA2 /* lbxlib.cpp */,
+				04DF5B531F1FA792000B1AA2 /* lbxlib.h */,
 				04C1F44B1B25270300F7688A /* main.cpp */,
 			);
 			path = lbx;
@@ -970,6 +996,17 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		04DF5B451F1FA715000B1AA2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04DF5B551F1FA792000B1AA2 /* lbxlib.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		04879A3C1978374100313BC7 /* OpenMoM */ = {
 			isa = PBXNativeTarget;
@@ -1007,6 +1044,23 @@
 			productReference = 04C1F4511B25288F00F7688A /* LBXManager.app */;
 			productType = "com.apple.product-type.application";
 		};
+		04DF5B461F1FA715000B1AA2 /* lbx */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04DF5B511F1FA716000B1AA2 /* Build configuration list for PBXNativeTarget "lbx" */;
+			buildPhases = (
+				04DF5B431F1FA715000B1AA2 /* Sources */,
+				04DF5B441F1FA715000B1AA2 /* Frameworks */,
+				04DF5B451F1FA715000B1AA2 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = lbx;
+			productName = lbx;
+			productReference = 04DF5B471F1FA715000B1AA2 /* liblbx.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 		04E282A61E021C3300DD673D /* Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 04E282AB1E021C3300DD673D /* Build configuration list for PBXNativeTarget "Tests" */;
@@ -1033,6 +1087,10 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Jack;
 				TargetAttributes = {
+					04DF5B461F1FA715000B1AA2 = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
+					};
 					04E282A61E021C3300DD673D = {
 						CreatedOnToolsVersion = 8.1;
 						ProvisioningStyle = Automatic;
@@ -1055,6 +1113,7 @@
 				04879A3C1978374100313BC7 /* OpenMoM */,
 				04C1F4501B25288F00F7688A /* LBXManager */,
 				04E282A61E021C3300DD673D /* Tests */,
+				04DF5B461F1FA715000B1AA2 /* lbx */,
 			);
 		};
 /* End PBXProject section */
@@ -1171,6 +1230,7 @@
 				0442470F1980A04800A8D7CC /* SpellMechanics.cpp in Sources */,
 				046428FB1E0D1AEF003A76D8 /* SpellEffectAnim.cpp in Sources */,
 				0439E9AD198691530009BFF7 /* UnitDetailView.cpp in Sources */,
+				043A814B1F1FF8CE003E3475 /* LBXRepository.cpp in Sources */,
 				0420539B197DCDB300B4C2CA /* MapMechanics.cpp in Sources */,
 				048E08BC1982B20A009AED0A /* WorldGenerator.cpp in Sources */,
 				0403760A197AD00800A5B5FC /* Buildings.cpp in Sources */,
@@ -1203,10 +1263,22 @@
 				04E282D71E0242C000DD673D /* osx.mm in Sources */,
 				046428FF1E117C2D003A76D8 /* Help.cpp in Sources */,
 				04C1F4861B2535A800F7688A /* Gfx.cpp in Sources */,
+				043A814C1F1FF8CE003E3475 /* LBXRepository.cpp in Sources */,
 				045755E41F0E93C6005F09D6 /* Path.cpp in Sources */,
 				04E282C01E0227CF00DD673D /* Util.cpp in Sources */,
 				04C1F48B1B2535F100F7688A /* ColorMap.cpp in Sources */,
 				04E282BC1E02278700DD673D /* Common.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04DF5B431F1FA715000B1AA2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				043A814D1F1FFC09003E3475 /* LBX.cpp in Sources */,
+				043A81481F1FD6ED003E3475 /* osx.mm in Sources */,
+				043A81471F1FD6E2003E3475 /* Path.cpp in Sources */,
+				04DF5B541F1FA792000B1AA2 /* lbxlib.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1451,6 +1523,75 @@
 			};
 			name = Release;
 		};
+		04DF5B4F1F1FA716000B1AA2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 04E282CA1E023AF200DD673D /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					"${inherited}",
+					"${SRCROOT}/../../src",
+					"${LIBS_PATH}/SDL2.framework/Headers",
+					"${LIBS_PATH}/SDL2_image.framework/Headers",
+					"${LIBS_PATH}/yaml/include",
+					/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/include/,
+					/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/include/darwin,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		04DF5B501F1FA716000B1AA2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 04E282CA1E023AF200DD673D /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					"${inherited}",
+					"${SRCROOT}/../../src",
+					"${LIBS_PATH}/SDL2.framework/Headers",
+					"${LIBS_PATH}/SDL2_image.framework/Headers",
+					"${LIBS_PATH}/yaml/include",
+					/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/include/,
+					/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/include/darwin,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		04E282AC1E021C3300DD673D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 04E282CA1E023AF200DD673D /* Config.xcconfig */;
@@ -1518,6 +1659,15 @@
 			buildConfigurations = (
 				04C1F47A1B25289000F7688A /* Debug */,
 				04C1F47B1B25289000F7688A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04DF5B511F1FA716000B1AA2 /* Build configuration list for PBXNativeTarget "lbx" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04DF5B4F1F1FA716000B1AA2 /* Debug */,
+				04DF5B501F1FA716000B1AA2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

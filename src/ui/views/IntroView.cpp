@@ -8,7 +8,7 @@
 
 #include "IntroView.h"
 
-#include "LBX.h"
+#include "LBXRepository.h"
 #include "Gfx.h"
 #include "ViewManager.h"
 

@@ -9,7 +9,7 @@
 #include "ViewManager.h"
 
 #include "Font.h"
-#include "LBX.h"
+#include "LBXRepository.h"
 #include "Viewport.h"
 
 #include "YAML.h"
@@ -107,7 +107,6 @@ int main(int argc, char * arg[])
   /*return 0;*/
 
   
-  lbx::LBX::load();
   FontFaces::buildFonts();
   //return 0;
   

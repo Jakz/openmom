@@ -9,8 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import com.esotericsoftware.yamlbeans.YamlReader;
 import com.github.jakz.openmom.data.Unit;
+import com.github.jakz.openmom.lbx.LBX;
+import com.github.jakz.openmom.lbx.SpriteSheet;
 import com.github.jakz.openmom.ui.TablePanel;
 import com.github.jakz.openmom.ui.UnitTable;
 import com.github.jakz.openmom.yaml.YamlNode;
@@ -19,14 +25,44 @@ import com.github.jakz.openmom.yaml.unserializers.ReflectiveUnserializer;
 import com.pixbits.lib.lang.Pair;
 import com.pixbits.lib.ui.UIUtils;
 import com.pixbits.lib.ui.WrapperFrame;
+import com.pixbits.lib.ui.color.Color;
+import com.pixbits.lib.ui.color.Palette;
 import com.pixbits.lib.ui.table.DataSource;
 
 public class App 
 {
-  public static void main( String[] args )
+  static
   {
     try
     {
+      System.loadLibrary("lbx");
+    }
+    catch (UnsatisfiedLinkError e)
+    {
+      e.printStackTrace();
+      System.exit(1);
+    }
+  }
+  
+  public static void main( String[] args )
+  {
+    try
+    {      
+      SpriteSheet sprite = LBX.loadSprite("armylist.lbx", 0);
+      
+      {
+        JLabel label = new JLabel(new ImageIcon(sprite.get(0)));
+        JPanel panel = new JPanel();
+        panel.add(label);
+        WrapperFrame<?> frame = UIUtils.buildFrame(panel, "Units");
+        frame.exitOnClose();
+        frame.setVisible(true);
+      }
+
+      
+      if (true)
+        return;
+      
       Path path = Paths.get("../../data/yaml/units.yaml");
       YamlNode root = new YamlParser().parse(path).get("units");
       

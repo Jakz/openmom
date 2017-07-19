@@ -2,6 +2,7 @@
 
 #include <string>
 #include <cerrno>
+#include <cassert>
 
 class Path
 {

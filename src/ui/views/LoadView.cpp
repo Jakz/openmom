@@ -14,7 +14,7 @@
 #include "Localization.h"
 #include "GfxData.h"
 #include "Buttons.h"
-#include "LBX.h"
+#include "LBXRepository.h"
 
 #include "ViewManager.h"
 

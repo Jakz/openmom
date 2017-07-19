@@ -4,7 +4,7 @@
 #include "Gfx.h"
 #include "Spells.h"
 
-#include "LBX.h"
+#include "LBXRepository.h"
 #include "Texture.h"
 
 using namespace std;

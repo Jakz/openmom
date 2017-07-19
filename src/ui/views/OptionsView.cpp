@@ -13,7 +13,7 @@
 #include "Font.h"
 #include "Localization.h"
 #include "GfxData.h"
-#include "LBX.h"
+#include "LBXRepository.h"
 #include "Buttons.h"
 #include "ViewManager.h"
 

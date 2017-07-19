@@ -478,7 +478,7 @@ const Position Viewport::hoveredPosition(const World* world, const LocalPlayer* 
 #pragma Original Graphics Mapping
 
 #include <bitset>
-#include "LBX.h"
+#include "LBXRepository.h"
 
 const size_t TILE_COUNT = 1524;
 const size_t TILE_PER_PLANE = 0x2FA;

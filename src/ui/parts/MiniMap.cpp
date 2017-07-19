@@ -9,7 +9,7 @@
 #include "MiniMap.h"
 #include "World.h"
 #include "Gfx.h"
-#include "LBX.h"
+#include "LBXRepository.h"
 #include "Viewport.h"
 #include "Tile.h"
 #include "City.h"

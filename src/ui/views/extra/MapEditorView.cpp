@@ -28,7 +28,7 @@
 #include "GfxData.h"
 #include "Localization.h"
 
-#include "LBX.h"
+#include "LBXRepository.h"
 
 #include "ViewManager.h"
 
