@@ -190,6 +190,22 @@ public:
   
 };
 
+class TwoPartButton : public Button
+{
+public:
+  struct Clip { u16 start, length; };
+
+private:
+  ButtonGfx gfx2;
+  Clip clip1, clip2;
+  
+public:
+  TwoPartButton(const std::string& name, u16 x, u16 y, SpriteInfo normal1, SpriteInfo normal2, SpriteInfo pressed1, SpriteInfo pressed2, Clip clip1, Clip clip2) :
+    Button(name, x, y, normal1, pressed1), gfx2(normal2, pressed2), clip1(clip1), clip2(clip2) { }
+  
+  void draw() override;
+};
+
 template<typename T>
 class RadioButtonGroup
 {

@@ -18,24 +18,6 @@ class MiniMap;
 
 struct Brush
 {
-  enum class Type
-  {
-    OCEAN,
-    GRASSLANDS,
-    DESERT,
-    TUNDRA,
-    HILLS,
-    MOUNTAINS,
-    FOREST,
-    SWAMP,
-    VOLCANO,
-    RIVER,
-    CHAOS_NODE,
-    SORCERY_NODE,
-    NATURE_NODE
-  };
-  
-  Type type;
   SpriteInfo info;
   std::function<void(Tile*)> lambda;
 };
@@ -45,8 +27,12 @@ class MapEditorView : public ViewWithQueue
 private:
   enum class Mode
   {
-    TERRAIN
+    TERRAIN,
+    RESOURCES
   };
+  
+  std::vector<Button*> terrainButtons;
+  std::vector<Button*> resourceButtons;
   
   World* world;
   MiniMap* minimap;
@@ -57,6 +43,8 @@ private:
   void setup();
   
   std::array<Brush, 13>::const_iterator brush;
+  std::array<Resource, 11>::const_iterator resource;
+  
   Point hover;
   Point offset;
   Plane plane;
@@ -73,6 +61,7 @@ private:
   
   void clickOnTile(Point coords);
   
+  void switchMode(Mode mode);
   void toggleDownscale(bool value);
 
 public:

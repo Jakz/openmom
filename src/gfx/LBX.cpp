@@ -26,7 +26,6 @@
 #include <dirent.h>
 #include <vector>
 
-#include "SDL.h"
 #include "platform.h"
 
 /* FORMAT */

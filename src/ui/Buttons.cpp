@@ -89,6 +89,11 @@ void Button::setPosition(u16 x, u16 y)
     labelGfx->position = Point(x + gfx.normal->sw()/2, y + gfx.normal->sh()/2 - labelGfx->font->sh()/2);
 }
 
+void TwoPartButton::draw()
+{
+  /* TODO: finish */
+}
+
 template<typename T>
 void RadioButton<T>::draw()
 {

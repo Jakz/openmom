@@ -42,7 +42,6 @@ constexpr s32 MAP_WIDTH = 60, MAP_HEIGHT = 40;
 const static std::array<Brush, 13> brushes = {
 {
   {
-    Brush::Type::OCEAN,
     LSI(TERRAIN, 0),
     [](Tile* tile)
     {
@@ -53,7 +52,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::GRASSLANDS,
     LSI(TERRAIN, 1),
     [](Tile* tile)
     {
@@ -61,7 +59,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::DESERT,
     LSI(TERRAIN, 0xA5),
     [](Tile* tile)
     {
@@ -69,7 +66,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::TUNDRA,
     LSI(TERRAIN, 0xA7),
     [](Tile* tile)
     {
@@ -77,7 +73,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::HILLS,
     LSI(TERRAIN, 0xAB),
     [](Tile* tile)
     {
@@ -85,7 +80,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::MOUNTAINS,
     LSI(TERRAIN, 0xA4),
     [](Tile* tile)
     {
@@ -93,7 +87,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::FOREST,
     LSI(TERRAIN, 0xA3),
     [](Tile* tile)
     {
@@ -101,7 +94,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::VOLCANO,
     LSI(TERRAIN, 0xB3),
     [](Tile* tile)
     {
@@ -109,7 +101,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::SWAMP,
     LSI(TERRAIN, 0xA6),
     [](Tile* tile)
     {
@@ -117,7 +108,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::RIVER,
     LSI(TERRAIN, 0xED),
     [](Tile* tile)
     {
@@ -125,7 +115,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::SORCERY_NODE,
     LSI(TERRAIN, 0xA8),
     [](Tile* tile)
     {
@@ -133,7 +122,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::NATURE_NODE,
     LSI(TERRAIN, 0xA9),
     [](Tile* tile)
     {
@@ -141,7 +129,6 @@ const static std::array<Brush, 13> brushes = {
     }
   },
   {
-    Brush::Type::CHAOS_NODE,
     LSI(TERRAIN, 0xAA),
     [](Tile* tile)
     {
@@ -150,6 +137,11 @@ const static std::array<Brush, 13> brushes = {
   }
 } };
 
+const static std::array<Resource, 11> resources = {
+  Resource::ADAMANTIUM, Resource::COAL, Resource::CRYSX_CRYSTAL, Resource::GEMS,
+  Resource::GOLD, Resource::IRON_ORE, Resource::MITHRIL, Resource::NIGHT_SHADE,
+  Resource::QOURK_CRYSTAL, Resource::SILVER, Resource::WILD_GAME
+};
 
 MapEditorView::MapEditorView(ViewManager* gvm) : ViewWithQueue(gvm)
 {
@@ -160,13 +152,32 @@ MapEditorView::MapEditorView(ViewManager* gvm) : ViewWithQueue(gvm)
   {
     lbx::Repository::loadLBXSpriteTerrainData(it->info);
     Point position = positionForBrush(i);
-    addButton(Button::buildSimple("", position.x, position.y, it->info))->setAction([this, it](){
+    auto* button = addButton(Button::buildSimple("", position.x, position.y, it->info));
+    
+    terrainButtons.push_back(button);
+    button->setAction([this, it](){
       this->brush = it;
     });
     
     ++i;
   }
   
+  i = 0;
+  for (auto it = resources.begin(); it != resources.end(); ++it)
+  {
+    Point position = positionForBrush(i);
+    auto* button = addButton(Button::buildSimple("", position.x, position.y, Viewport::gfxForResource(*it)));
+    
+    resourceButtons.push_back(button);
+    button->setAction([this, it]() {
+      this->resource = it;
+    });
+    
+    ++i;
+  }
+  
+  std::for_each(resourceButtons.begin(), resourceButtons.end(), [](Button* button) { button->hide(); });
+
 }
 
 #include "save/OriginalSave.h"
@@ -192,11 +203,13 @@ void MapEditorView::activate()
   //generator.atlasGenerate();
   
   hover = Point::INVALID;
-  brush = brushes.begin();
   offset = Point::ZERO;
   plane = Plane::ARCANUS;
   
   mode = Mode::TERRAIN;
+  
+  brush = brushes.begin();
+  resource = resources.begin();
   
   toggleDownscale(false);
 }
@@ -261,10 +274,18 @@ void MapEditorView::draw()
   if (hover.isValid())
     Gfx::rect(OX + hover.x*(tileSize.w+MARGIN)-1, OY + hover.y*(tileSize.h+MARGIN)-1, tileSize.w+MARGIN, tileSize.h+MARGIN, {255,0,0});
   
-  size_t brushIndex = std::distance(brushes.begin(), brush);
-  Point brushPosition = positionForBrush(brushIndex);
-
-  Gfx::rect(brushPosition.x - 1, brushPosition.y - 1, 21, 19, {255,0,0});
+  if (mode == Mode::TERRAIN)
+  {
+    size_t brushIndex = std::distance(brushes.begin(), brush);
+    Point brushPosition = positionForBrush(brushIndex);
+    Gfx::rect(brushPosition.x - 1, brushPosition.y - 1, 21, 19, {255,0,0});
+  }
+  else if (mode == Mode::RESOURCES)
+  {
+    size_t brushIndex = std::distance(resources.begin(), resource);
+    Point brushPosition = positionForBrush(brushIndex);
+    Gfx::rect(brushPosition.x - 1, brushPosition.y - 1, 21, 19, {255,0,0});
+  }
   
   Gfx::draw(minimap->get(plane), 256, OY);
   
@@ -313,7 +334,11 @@ void MapEditorView::clickOnTile(Point coords)
   Tile* tile = world->get(coords.x, coords.y, plane);
   if (tile)
   {
-    brush->lambda(tile);
+    if (mode == Mode::TERRAIN)
+      brush->lambda(tile);
+    else if (mode == Mode::RESOURCES)
+      tile->resource = *resource;
+    
     world->calcSubTile(tile->x(), tile->y(), plane);
     tile->for_each_neighbor([this](Tile* t) { if (t) world->calcSubTile(t->x(), t->y(), plane); });
     
@@ -322,6 +347,23 @@ void MapEditorView::clickOnTile(Point coords)
       if (neighbor)
         minimap->discover(neighbor->position);
     });
+  }
+}
+
+void MapEditorView::switchMode(Mode mode)
+{
+  this->mode = mode;
+  
+  if (mode == Mode::TERRAIN)
+  {
+    std::for_each(terrainButtons.begin(), terrainButtons.end(), [](Button* bt) { bt->show(); });
+    std::for_each(resourceButtons.begin(), resourceButtons.end(), [](Button* bt) { bt->hide(); });
+
+  }
+  else if (mode == Mode::RESOURCES)
+  {
+    std::for_each(terrainButtons.begin(), terrainButtons.end(), [](Button* bt) { bt->hide(); });
+    std::for_each(resourceButtons.begin(), resourceButtons.end(), [](Button* bt) { bt->show(); });
   }
 }
 
@@ -377,6 +419,14 @@ bool MapEditorView::mouseWheel(s16 dx, s16 dy, u16 d)
       
       break;
     }
+      
+    case Mode::RESOURCES:
+    {
+      if (dy < 0 && resource < resources.end()-1)
+        ++resource;
+      else if (dy > 0 && resource > resources.begin())
+        --resource;
+    }
   }
 
   return true;
@@ -397,6 +447,17 @@ bool MapEditorView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod m
       toggleDownscale(!downscaled);
       hover = Point::INVALID;
     }
+    case SDL_SCANCODE_1:
+    {
+      switchMode(Mode::TERRAIN);
+      break;
+    }
+    case SDL_SCANCODE_2:
+    {
+      switchMode(Mode::RESOURCES);
+      break;
+    }
+    
     default: break;
   }
   
