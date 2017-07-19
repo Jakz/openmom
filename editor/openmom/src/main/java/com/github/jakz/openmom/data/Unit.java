@@ -4,6 +4,11 @@ import java.util.List;
 
 public class Unit
 {
+  public Unit()
+  {
+    visuals = new Visuals();
+  }
+  
   public String identifier;
   public UnitType type;
   public int upkeep;
@@ -21,7 +26,7 @@ public class Unit
   
   public Visuals visuals;
   
-  public class Visuals
+  public static class Visuals
   {
     public String i18n;
     public SpriteInfo icon;

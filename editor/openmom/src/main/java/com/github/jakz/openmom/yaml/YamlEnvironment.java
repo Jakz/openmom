@@ -1,9 +1,11 @@
 package com.github.jakz.openmom.yaml;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.github.jakz.openmom.yaml.unserializers.EnumUnserializer;
+import com.github.jakz.openmom.yaml.unserializers.ListUnserializer;
 import com.github.jakz.openmom.yaml.unserializers.ReflectiveUnserializer;
 
 public class YamlEnvironment
@@ -54,8 +56,15 @@ public class YamlEnvironment
     if (unserializer != null)
       return unserializer;
     else if (type.isEnum())
+    {
       return (YamlUnserializer<T>)unserializers
           .computeIfAbsent(type, t -> new EnumUnserializer<>(t));
+    }
+    else if (List.class.equals(type))
+    {
+      return (YamlUnserializer<T>)unserializers
+          .computeIfAbsent(type, t -> new ListUnserializer<>(t));
+    }
     else
     {
       return (YamlUnserializer<T>)unserializers
