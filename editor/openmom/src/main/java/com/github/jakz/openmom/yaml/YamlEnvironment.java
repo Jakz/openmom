@@ -48,6 +48,11 @@ public class YamlEnvironment
     setupBasicUnserializers();
   }
   
+  public <T> void registerUnserializer(Class<T> type, YamlUnserializer<T> unserializer)
+  {
+    unserializers.put(type, unserializer);
+  }
+  
   @SuppressWarnings("unchecked")
   public <T> YamlUnserializer<T> findUnserializer(Class<T> type)
   {

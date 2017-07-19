@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
+import com.github.jakz.openmom.data.SpriteInfo;
+import com.github.jakz.openmom.data.SpriteInfoLBX;
 import com.github.jakz.openmom.data.Unit;
 import com.github.jakz.openmom.lbx.LBX;
 import com.github.jakz.openmom.lbx.SpriteSheet;
@@ -48,23 +50,21 @@ public class App
   {
     try
     {      
-      SpriteSheet sprite = LBX.loadSprite("armylist.lbx", 0);
-      
-      {
-        JLabel label = new JLabel(new ImageIcon(sprite.get(0)));
-        JPanel panel = new JPanel();
-        panel.add(label);
-        WrapperFrame<?> frame = UIUtils.buildFrame(panel, "Units");
-        frame.exitOnClose();
-        frame.setVisible(true);
-      }
-
-      
-      if (true)
-        return;
-      
       Path path = Paths.get("../../data/yaml/units.yaml");
-      YamlNode root = new YamlParser().parse(path).get("units");
+      YamlParser parser = new YamlParser();
+      
+      parser.registerUnserializer(SpriteInfo.class, y -> {
+        if (y.get(0).asString().equals("lbx"))
+        {
+          String lbx = y.get(1).asString() + ".lbx";
+          int index = y.get(2).asInt();
+          return new SpriteInfoLBX(lbx, index);
+        }
+        
+        return null;
+      });
+      
+      YamlNode root = parser.parse(path).get("units");
       
       ReflectiveUnserializer<Unit> uns = new ReflectiveUnserializer<>(Unit.class);
       

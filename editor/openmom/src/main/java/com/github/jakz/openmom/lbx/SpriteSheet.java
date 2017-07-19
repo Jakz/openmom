@@ -1,5 +1,7 @@
 package com.github.jakz.openmom.lbx;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
@@ -44,9 +46,16 @@ public class SpriteSheet
   
   public void rasterize(int index)
   {
+    rasterize(index, 1);
+  }
+  
+  public void rasterize(int index, int ratio)
+  {
     if (rasterized[index] == null)
     {
       BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      
+      palette.set(0, new Color(0,0,0,0));
       
       int[] cdata = new int[width*height];
       final int count = width*height;
@@ -58,13 +67,27 @@ public class SpriteSheet
       }
       
       image.setRGB(0, 0, width, height, cdata, 0, width);
-      rasterized[index] = image;
+      
+      if (ratio == 1)
+        rasterized[index] = image;
+      else
+      {
+        BufferedImage nimage = new BufferedImage(width*ratio, height*ratio, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = nimage.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        g2.drawImage(image, 0, 0, width*ratio, height*ratio, null);
+        g2.dispose();
+        rasterized[index] = nimage;
+      }
     }
   }
   
-  public BufferedImage get(int index)
+  public BufferedImage get(int index) { return get(index, 1); }
+  public BufferedImage get() { return get(0); }
+  
+  public BufferedImage get(int index, int ratio)
   {
-    rasterize(index);
+    rasterize(index, ratio);
     return rasterized[index];
   }
 }

@@ -24,4 +24,9 @@ public class YamlParser
       return root;  
     }
   }
+  
+  public <T> void registerUnserializer(Class<T> type, YamlUnserializer<T> unserializer)
+  {
+    env.registerUnserializer(type, unserializer);
+  }
 }

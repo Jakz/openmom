@@ -1,6 +1,8 @@
 package com.github.jakz.openmom.data;
 
-public class SpriteInfo
-{
+import javax.swing.ImageIcon;
 
+public interface SpriteInfo
+{
+  public ImageIcon getIcon(int ratio);
 }
