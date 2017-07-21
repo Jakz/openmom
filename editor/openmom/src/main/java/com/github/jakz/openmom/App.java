@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
+import com.github.jakz.openmom.data.Ranged;
 import com.github.jakz.openmom.data.SpriteInfo;
 import com.github.jakz.openmom.data.SpriteInfoLBX;
 import com.github.jakz.openmom.data.Unit;
@@ -21,15 +22,15 @@ import com.github.jakz.openmom.lbx.LBX;
 import com.github.jakz.openmom.lbx.SpriteSheet;
 import com.github.jakz.openmom.ui.TablePanel;
 import com.github.jakz.openmom.ui.UnitTable;
-import com.github.jakz.openmom.yaml.YamlNode;
-import com.github.jakz.openmom.yaml.YamlParser;
-import com.github.jakz.openmom.yaml.unserializers.ReflectiveUnserializer;
 import com.pixbits.lib.lang.Pair;
 import com.pixbits.lib.ui.UIUtils;
 import com.pixbits.lib.ui.WrapperFrame;
 import com.pixbits.lib.ui.color.Color;
 import com.pixbits.lib.ui.color.Palette;
 import com.pixbits.lib.ui.table.DataSource;
+import com.pixbits.lib.yaml.YamlNode;
+import com.pixbits.lib.yaml.YamlParser;
+import com.pixbits.lib.yaml.unserializer.ReflectiveUnserializer;
 
 public class App 
 {
@@ -62,6 +63,18 @@ public class App
         }
         
         return null;
+      });
+      
+      parser.registerUnserializer(Ranged.class, y -> {
+        if (y.size() != 3)
+          return new Ranged(Ranged.Type.none);
+        else
+        {
+          int strength = y.get(0).asInt();
+          Ranged.Type type = y.environment().findUnserializer(Ranged.Type.class).unserialize(y.get(1));
+          int ammo = y.get(2).asInt();
+          return new Ranged(strength, type, ammo);
+        }
       });
       
       YamlNode root = parser.parse(path).get("units");

@@ -7,6 +7,7 @@ public class Unit
   public Unit()
   {
     visuals = new Visuals();
+    ranged = new Ranged(Ranged.Type.none);
   }
   
   public String identifier;

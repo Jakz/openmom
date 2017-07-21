@@ -19,6 +19,11 @@ public class TablePanel extends JPanel
     scrollPane.setPreferredSize(dimension);
     this.setLayout(new BorderLayout());
     this.add(scrollPane, BorderLayout.CENTER);
+    
+    float fontSize = table.getFont().getSize();
+    table.getTableHeader().setFont(table.getFont().deriveFont(fontSize*0.8f));
+    
+    table.setAutoCreateRowSorter(true);
   }
   
 }

@@ -56,6 +56,7 @@ public class SpriteSheet
       BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
       
       palette.set(0, new Color(0,0,0,0));
+      palette.set(232, new Color(0,0,0,128));
       
       int[] cdata = new int[width*height];
       final int count = width*height;

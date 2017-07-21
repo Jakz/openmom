@@ -59,4 +59,7 @@ public class SpriteInfoLBX implements SpriteInfo
     }
   }
   
+  @Override
+  public String toString() { return lbx + ", " + index; }
+  
 }
