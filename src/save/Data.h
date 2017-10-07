@@ -25,12 +25,16 @@ public:
   
   using unit_dependency_map_t = std::unordered_map<const UnitSpec*, const Building*>;
   
+  using skill_replacement_map_t = std::unordered_map<const Skill*, const Skill*>;
+  
   static experience_levels normalUnitLevels, heroLevels;
   
 private:
   template<typename T> static std::unordered_map<key_type, T>& containerFor();
   
   static unit_dependency_map_t unitDependsOnBuilding;
+  
+  static skill_replacement_map_t skillReplacementMap;
   
 public:
   static const Trait& trait(const TraitID trait);

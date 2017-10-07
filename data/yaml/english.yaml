@@ -63,6 +63,8 @@ entries:
   skill_thrown: Thrown
 
   skill_spell_bless: Bless
+  skill_spell_resist_elements: Resist Elements
+  skill_spell_elemental_armor: Elemental Armor
   
   unit_level_recruit: Recruit
   unit_level_regular: Regular
@@ -74,6 +76,9 @@ entries:
   spell_bless: Bless
   spell_earth_gate: Earth Gate
   spell_guardian_spirit: Guardian Spirit
+  
+  spell_resist_elemnts: Resist Elements
+  spell_elemental_armor: Elemental Armor
 
   game_option_difficulty_intro: Intro
   game_option_difficulty_easy: Easy

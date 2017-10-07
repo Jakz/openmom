@@ -10,6 +10,7 @@ spells:
     visuals:
       i18n: spell_guardian_spirit
 # unit enchantment
+# life
   - identifier: bless
     kind: unit_enchantment
     rarity: common
@@ -21,7 +22,30 @@ spells:
     skill: spell_bless
     visuals:
       i18n: spell_bless
-  
+# nature
+  - identifier: resist_elements
+    kind: unit_enchantment
+    rarity: common
+    school: nature
+    research_cost: 40
+    mana_cost: 25
+    combat_mana_cost: 5
+    upkeep: 1
+    skill: spell_resist_elements
+    visuals:
+      i18n: spell_resist_elements
+  - identifier: elemental_armor
+    kind: unit_enchantment
+    rarity: rare
+    school: nature
+    research_cost: 880
+    mana_cost: 175
+    combat_mana_cost: 35
+    upkeep: 5
+    skill: spell_elemental_armor
+    visuals:
+      i18n: spell_elemental_armor
+
 # city spells
   - identifier: earth_gate
     kind: city_enchantment
