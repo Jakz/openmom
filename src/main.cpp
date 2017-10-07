@@ -125,7 +125,7 @@ int main(int argc, char * arg[])
   Texture::load();
   SDL::initGVM();
   
-  SDL::gvm->switchView(VIEW_MAP_EDITOR);
+  SDL::gvm->switchView(VIEW_MAIN);
   //SDL::gvm->switchOverview(VIEW_INFO_MENU);
 
   //SDL::gvm->switchView(VIEW_ITEM_CRAFT);

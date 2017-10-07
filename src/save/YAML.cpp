@@ -25,6 +25,10 @@
   assert(false); \
   } while(false)
 
+#define YAML_ASSERT_OR_RETURN_NULL(c, x, ...) do { if (!(c)) { PARSE_ERROR(x, __VA_ARGS__); return nullptr; } } while (false)
+
+#define YAML_ASSERT(c, x, ...) do { if (!c) { PARSE_ERROR(x, __VA_ARGS__); } } while (false)
+
 using namespace YAML;
 using N = yaml::N;
 
@@ -264,6 +268,7 @@ template<> Property yaml::parse(const N& node)
     { "defense_death", Property::SHIELDS_DEATH },
     { "resistance", Property::RESIST },
     { "resist_chaos", Property::RESIST_CHAOS },
+    { "resist_nature", Property::RESIST_NATURE },
     { "resist_death", Property::RESIST_DEATH },
     { "hits", Property::HIT_POINTS },
     { "figures", Property::FIGURES }
@@ -375,6 +380,7 @@ template<> const Spell* yaml::parse(const N& node)
     {
       const std::string unitIdentifier = node["unit"];
       const SummonSpec* spec = Data::unit(unitIdentifier)->as<SummonSpec>();
+      YAML_ASSERT_OR_RETURN_NULL(spec, "SummonSpec '%s' not found", unitIdentifier.c_str());
       return new SummonSpell(name, rarity, school, researchCost, manaCost, combatManaCost, spec);
     }
       
@@ -382,6 +388,7 @@ template<> const Spell* yaml::parse(const N& node)
     {
       const std::string skillIdentifier = node["skill"];
       const Skill* skill = Data::skill(skillIdentifier);
+      YAML_ASSERT_OR_RETURN_NULL(skill, "Skill '%s' not found", skillIdentifier.c_str());
       return new UnitSpell(name, rarity, school, researchCost, manaCost, combatManaCost, upkeep, skill);
     }
       
@@ -389,6 +396,7 @@ template<> const Spell* yaml::parse(const N& node)
     {
       //SpellDuration duration = parse<SpellDuration>(node["duration"]);
       Target target = parse<Target>(node["target"]);
+      YAML_ASSERT_OR_RETURN_NULL(target == Target::ENEMY_CITY || target == Target::FRIENDLY_CITY, "CitySpell target must be a city, found '%s'", node["target"].asString().c_str());
       return new CitySpell(name, rarity, school, SpellDuration::CONTINUOUS, target, researchCost, manaCost, combatManaCost, upkeep);
     }
       

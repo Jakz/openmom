@@ -80,6 +80,26 @@
 		0464E11419813E1A009C91ED /* CityMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11219813E1A009C91ED /* CityMechanics.cpp */; };
 		0464E11719818239009C91ED /* PlayerMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E11519818239009C91ED /* PlayerMechanics.cpp */; };
 		0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0464E1181981D1EF009C91ED /* CityScape.cpp */; };
+		046706F91F892B1D00F38879 /* CitiesView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0450D0C11EE5181E007D5007 /* CitiesView.cpp */; };
+		046706FA1F892B2900F38879 /* OptionsView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CEE1E2B3D8500A2A449 /* OptionsView.cpp */; };
+		046706FB1F892B2D00F38879 /* InfoMenuView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CD9F6A1ED9F48F002B7570 /* InfoMenuView.cpp */; };
+		046706FC1F892B4700F38879 /* Data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043C01421E218A4E00E035D8 /* Data.cpp */; };
+		046706FD1F892B4700F38879 /* YAML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0493DA951E1DFB0C0088FF42 /* YAML.cpp */; };
+		046706FE1F892B4700F38879 /* mystrings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E729061EBF4D62009DA0D1 /* mystrings.cpp */; };
+		046706FF1F892B4700F38879 /* CombatMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CF21E2DD76700A2A449 /* CombatMap.cpp */; };
+		046707001F892B4700F38879 /* CombatUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CF51E2DDB9200A2A449 /* CombatUtils.cpp */; };
+		046707011F892B4700F38879 /* LBXRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043A81491F1FF8CE003E3475 /* LBXRepository.cpp */; };
+		046707021F892B4700F38879 /* AstrologerView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04025FC71F113E1600B20404 /* AstrologerView.cpp */; };
+		046707031F892B4700F38879 /* CartographerView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0489C3B01F0F35B50043ACCB /* CartographerView.cpp */; };
+		046707041F892B4700F38879 /* HistorianView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04025FCA1F1140B800B20404 /* HistorianView.cpp */; };
+		046707051F892B4700F38879 /* IntroView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0438DFF41EAE757500981CFB /* IntroView.cpp */; };
+		046707061F892B4700F38879 /* LoadView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CEC1E2B3D8500A2A449 /* LoadView.cpp */; };
+		046707071F892B4700F38879 /* StartView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0438DFF11EAE682300981CFB /* StartView.cpp */; };
+		046707081F892B4700F38879 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045755E11F0E93C6005F09D6 /* Path.cpp */; };
+		046707091F892B7E00F38879 /* libyaml-cpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04EDF9331E0819C100739E86 /* libyaml-cpp.a */; };
+		0467070A1F892B9600F38879 /* DataView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040851EC1EB3BE560082AFF4 /* DataView.cpp */; };
+		0467070B1F892B9A00F38879 /* MapEditorView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */; };
+		0467070E1F892D1300F38879 /* data in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04E282CD1E023BEB00DD673D /* data */; };
 		04797BEF1C1DCB830026C153 /* ValuesMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04797BED1C1DCB830026C153 /* ValuesMechanics.cpp */; };
 		0482049F19885DA900D4B699 /* Diplomacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0482049D19885DA900D4B699 /* Diplomacy.cpp */; };
 		048204A219888E5C00D4B699 /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
@@ -257,12 +277,13 @@
 		};
 		04E282A51E021C3300DD673D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
+				0467070E1F892D1300F38879 /* data in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -530,6 +551,7 @@
 			files = (
 				04E282AF1E021D2F00DD673D /* SDL2_image.framework in Frameworks */,
 				04E282B01E021D2F00DD673D /* SDL2.framework in Frameworks */,
+				046707091F892B7E00F38879 /* libyaml-cpp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1068,6 +1090,7 @@
 				04E282A31E021C3300DD673D /* Sources */,
 				04E282A41E021C3300DD673D /* Frameworks */,
 				04E282A51E021C3300DD673D /* CopyFiles */,
+				0467070C1F892CDF00F38879 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1124,6 +1147,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				04E282CF1E023C0B00DD673D /* data in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0467070C1F892CDF00F38879 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1286,6 +1316,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0467070B1F892B9A00F38879 /* MapEditorView.cpp in Sources */,
+				0467070A1F892B9600F38879 /* DataView.cpp in Sources */,
+				046706FC1F892B4700F38879 /* Data.cpp in Sources */,
+				046706FD1F892B4700F38879 /* YAML.cpp in Sources */,
+				046706FE1F892B4700F38879 /* mystrings.cpp in Sources */,
+				046706FF1F892B4700F38879 /* CombatMap.cpp in Sources */,
+				046707001F892B4700F38879 /* CombatUtils.cpp in Sources */,
+				046707011F892B4700F38879 /* LBXRepository.cpp in Sources */,
+				046707021F892B4700F38879 /* AstrologerView.cpp in Sources */,
+				046707031F892B4700F38879 /* CartographerView.cpp in Sources */,
+				046707041F892B4700F38879 /* HistorianView.cpp in Sources */,
+				046707051F892B4700F38879 /* IntroView.cpp in Sources */,
+				046707061F892B4700F38879 /* LoadView.cpp in Sources */,
+				046707071F892B4700F38879 /* StartView.cpp in Sources */,
+				046707081F892B4700F38879 /* Path.cpp in Sources */,
+				046706FB1F892B2D00F38879 /* InfoMenuView.cpp in Sources */,
+				046706FA1F892B2900F38879 /* OptionsView.cpp in Sources */,
+				046706F91F892B1D00F38879 /* CitiesView.cpp in Sources */,
 				0493DA941E1B56040088FF42 /* Help.cpp in Sources */,
 				0493DA901E1B55FA0088FF42 /* SpellEffectAnim.cpp in Sources */,
 				0493DA911E1B55FA0088FF42 /* Animations.cpp in Sources */,
@@ -1395,7 +1443,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1436,7 +1484,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

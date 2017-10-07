@@ -251,7 +251,6 @@ unordered_map<SkillBase, string, enum_hash> i18n::skills =
   {SkillBase::HERO_SAGE, "Sage"},
   {SkillBase::HERO_SPELL_CASTER, "Spell Caster"},
   
-  {SkillBase::LARGE_SHIELD, "Large Shield"},
   {SkillBase::FIRST_STRIKE, "First Strike"},
   {SkillBase::NEGATE_FIRST_STRIKE, "Negate First Strike"},
   {SkillBase::ARMOR_PIERCING, "Armor Piercing"},

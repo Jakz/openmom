@@ -28,7 +28,7 @@ const Skill* SkillSet::get(size_t index) const
   else
     return (*next(spells.begin(), index - native - additional - armyc)).asUnitSpell()->skill;
   
-  return Skills::LARGE_SHIELD;
+  return nullptr;
 }
 
 void SkillSet::remove(const Spell* spell)

@@ -9,6 +9,12 @@ if(APPLE)
   set(CMAKE_C_COMPILER "/usr/bin/clang")
 elseif(UNIX)
 
+elseif(WIN32)
+set(SDL2_LIBRARY C:\\SDL2\\lib)
+set(SDL2_INCLUDE_DIR C:\\SDL2\\include)
+
+set(SDL2_IMAGE_LIBRARY C:\\SDL2_image\\lib)
+set(SDL2_IMAGE_INCLUDE_DIR C:\\SDL2_image\\include)
 endif()
 
 

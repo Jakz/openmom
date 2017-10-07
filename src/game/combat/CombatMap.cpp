@@ -52,6 +52,7 @@ void CombatMap::placeWall(u16 x, u16 y, std::function<void(CombatTile*,WallType)
     WallType::NORTH_WEST_WALL2
   };
   
+  /* direction to go when iterating on the wall tiles */
   static const Dir neighbours[] = {
     Dir::SOUTH_EAST,
     Dir::SOUTH_EAST,

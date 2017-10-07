@@ -25,8 +25,23 @@ s16 UnitSpec::getProperty(Property property) const
     case Property::MELEE: return melee;
     case Property::RANGED: return ranged.strength;
     case Property::RANGED_TYPE: return static_cast<s16>(ranged.type); // TODO: hack
-    case Property::SHIELDS: return defense;
-    case Property::RESIST: return resistance;
+      
+    case Property::SHIELDS:
+    case Property::SHIELDS_CHAOS:
+    case Property::SHIELDS_NATURE:
+    case Property::SHIELDS_LIFE:
+    case Property::SHIELDS_DEATH:
+    case Property::SHIELDS_SORCERY:
+      return defense;
+    
+    case Property::RESIST:
+    case Property::RESIST_LIFE:
+    case Property::RESIST_CHAOS:
+    case Property::RESIST_DEATH:
+    case Property::RESIST_NATURE:
+    case Property::RESIST_SORCERY:
+      return resistance;
+      
     case Property::HIT_POINTS: return hits;
     case Property::MOVEMENT: return movement;
     case Property::SIGHT: return sight;

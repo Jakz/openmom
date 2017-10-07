@@ -91,10 +91,11 @@ enum class MaskMode
   ORTHO
 };
 
-/* this utility functions computes the bitfield mask of neighbours, optionally
-   computing it only on orthogonal or diagonal directions
+/* this utility functions computes the bitfield mask of neighbours according
+   to a specified predicate, optionally computing it only on orthogonal or 
+  diagonal directions
 */
-DirJoin computeMask(MaskMode mode, const CombatTile* tile, std::function<bool(CombatTile*)> lambda)
+DirJoin computeMask(MaskMode mode, const CombatTile* tile, predicate<CombatTile*> lambda)
 {
   static const Dir neighbours[] = { Dir::NORTH, Dir::NORTH_EAST, Dir::EAST, Dir::SOUTH_EAST, Dir::SOUTH, Dir::SOUTH_WEST, Dir::WEST, Dir::NORTH_WEST };
   static const DirJoin flags[] = { DirJoin::N, DirJoin::NE, DirJoin::E, DirJoin::SE, DirJoin::S, DirJoin::SW, DirJoin::W, DirJoin::NW };

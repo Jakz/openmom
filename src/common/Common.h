@@ -44,6 +44,8 @@ typedef int32_t s32;
 typedef int64_t s64;
 using byte = u8;
 
+template<typename... T> using predicate = std::function<bool(T...)>;
+
 template<typename T>
 class optional
 {

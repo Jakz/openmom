@@ -102,8 +102,11 @@ void Game::dummyInit()
 		new RaceUnit(Data::unit("barbarian_berserkers")->as<RaceUnitSpec>()),
   });
   
-  SpellCast cast = SpellCast(player, Data::spell("bless"));
+  SpellCast cast = SpellCast(player, Data::spell("elemental_armor"));
   a->get(0)->skills()->add(cast);
+  SpellCast cast2 = SpellCast(player, Data::spell("resist_elements"));
+  a->get(0)->skills()->add(cast2);
+
   
   //map.get(5, 5, ARCANUS).placeManaNode(mapMechanics.generateManaNode(world, 5, 5, ARCANUS));
   //this.meldNode(a, 5, 5, ARCANUS);

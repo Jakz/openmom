@@ -170,7 +170,6 @@ namespace skillimpl
   static const ConcreteSkill SPELL_RESIST_MAGIC = ConcreteSkill(SkillBase::SPELL_RESIST_MAGIC, {new UnitBonus(Property::RESIST,3)} );
   static const WrapSkill SPELL_GUARDIAN_WIND = WrapSkill(SkillBase::SPELL_GUARDIAN_WIND, IMMUNITY_MISSILE);
   
-  static const ConcreteSkill SPELL_BLESS = ConcreteSkill(SkillBase::SPELL_BLESS, UnitBonus::build({Property::RESIST_DEATH, Property::RESIST_CHAOS, Property::SHIELDS_DEATH, Property::SHIELDS_CHAOS}, 3));
   static const ConcreteSkill SPELL_ENDURANCE = ConcreteSkill(SkillBase::SPELL_ENDURANCE, {new UnitBonus(Property::MOVEMENT,1)} );
   static const ConcreteSkill SPELL_HOLY_ARMOR = ConcreteSkill(SkillBase::SPELL_HOLY_ARMOR, {new UnitBonus(Property::SHIELDS,2)}); // TODO: should be correct
   static const ConcreteSkill SPELL_HOLY_WEAPON = ConcreteSkill(SkillBase::SPELL_HOLY_WEAPON, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::TO_HIT,1)});
@@ -238,7 +237,6 @@ const Skill* Skills::SPELL_RESIST_MAGIC = &skillimpl::SPELL_RESIST_MAGIC;
 const Skill* Skills::SPELL_GUARDIAN_WIND = &skillimpl::SPELL_GUARDIAN_WIND;
 const Skill* Skills::SPELL_FLYING = nullptr;//TODO &skillimpl::SPELL_FLYING;
 
-const Skill* Skills::SPELL_BLESS = &skillimpl::SPELL_BLESS;
 const Skill* Skills::SPELL_ENDURANCE = &skillimpl::SPELL_ENDURANCE;
 const Skill* Skills::SPELL_HEROISM = nullptr;//TODO &skillimpl::SPELL_HEROISM;
 const Skill* Skills::SPELL_HOLY_ARMOR = &skillimpl::SPELL_HOLY_ARMOR;
