@@ -16,6 +16,7 @@
 #include "CityView.h"
 #include "CombatView.h"
 #include "ItemCraftView.h"
+#include "ItemCraftChargesView.h"
 #include "MagicView.h"
 #include "MainView.h"
 #include "MessageView.h"
@@ -54,6 +55,7 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_CITIES] = new CitiesView(this);
   views[VIEW_COMBAT] = new CombatView(this);
   views[VIEW_ITEM_CRAFT] = new ItemCraftView(this);
+  views[VIEW_ITEM_CRAFT_CHARGES] = new ItemCraftChargesView(this);
   views[VIEW_MAGIC] = new MagicView(this);
   views[VIEW_MAIN] = new MainView(this);
   views[VIEW_MESSAGE] = new MessageView(this);
@@ -88,6 +90,7 @@ CitiesView* ViewManager::citiesView() { return static_cast<CitiesView*>(views[VI
 CityView* ViewManager::cityView() { return static_cast<CityView*>(views[VIEW_CITY]); }
 CombatView* ViewManager::combatView() { return static_cast<CombatView*>(views[VIEW_COMBAT]); }
 ItemCraftView* ViewManager::itemCraftView() { return static_cast<ItemCraftView*>(views[VIEW_ITEM_CRAFT]); }
+ItemCraftChargesView* ViewManager::itemCraftChargesView() { return static_cast<ItemCraftChargesView*>(views[VIEW_ITEM_CRAFT_CHARGES]); }
 MagicView* ViewManager::magicView() { return static_cast<MagicView*>(views[VIEW_MAGIC]); }
 MainView* ViewManager::mainView() { return static_cast<MainView*>(views[VIEW_MAIN]); }
 MessageView* ViewManager::messageView() { return static_cast<MessageView*>(views[VIEW_MESSAGE]); }

@@ -207,6 +207,8 @@
 		04B6E01D1F17A9FC00A4E4C3 /* MapEditorView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */; };
 		04BE3A7C1F89C6A000EF89E3 /* MerchantView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04BE3A7A1F89C6A000EF89E3 /* MerchantView.cpp */; };
 		04BE3A7D1F89C6A000EF89E3 /* MerchantView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04BE3A7A1F89C6A000EF89E3 /* MerchantView.cpp */; };
+		04BE3A801F8A672D00EF89E3 /* ItemCraftChargesView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04BE3A7E1F8A672D00EF89E3 /* ItemCraftChargesView.cpp */; };
+		04BE3A811F8A672D00EF89E3 /* ItemCraftChargesView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04BE3A7E1F8A672D00EF89E3 /* ItemCraftChargesView.cpp */; };
 		04C1F47F1B25290C00F7688A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C1F44B1B25270300F7688A /* main.cpp */; };
 		04C1F4841B25358200F7688A /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
 		04C1F4851B25359D00F7688A /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D2197990B900A5B5FC /* Font.cpp */; };
@@ -473,6 +475,8 @@
 		04B6E01E1F17AA0200A4E4C3 /* MapEditorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MapEditorView.h; path = extra/MapEditorView.h; sourceTree = "<group>"; };
 		04BE3A7A1F89C6A000EF89E3 /* MerchantView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MerchantView.cpp; sourceTree = "<group>"; };
 		04BE3A7B1F89C6A000EF89E3 /* MerchantView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MerchantView.h; sourceTree = "<group>"; };
+		04BE3A7E1F8A672D00EF89E3 /* ItemCraftChargesView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemCraftChargesView.cpp; sourceTree = "<group>"; };
+		04BE3A7F1F8A672D00EF89E3 /* ItemCraftChargesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemCraftChargesView.h; sourceTree = "<group>"; };
 		04C1F44B1B25270300F7688A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		04C1F4511B25288F00F7688A /* LBXManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LBXManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C729BF19853F4E002F16E6 /* MainView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainView.cpp; sourceTree = "<group>"; };
@@ -776,6 +780,8 @@
 				0438DFF51EAE757500981CFB /* IntroView.h */,
 				0439E99319868FF60009BFF7 /* ItemCraftView.cpp */,
 				0439E99419868FF60009BFF7 /* ItemCraftView.h */,
+				04BE3A7E1F8A672D00EF89E3 /* ItemCraftChargesView.cpp */,
+				04BE3A7F1F8A672D00EF89E3 /* ItemCraftChargesView.h */,
 				049B1CEC1E2B3D8500A2A449 /* LoadView.cpp */,
 				049B1CED1E2B3D8500A2A449 /* LoadView.h */,
 				0439E996198690150009BFF7 /* MagicView.cpp */,
@@ -1182,6 +1188,7 @@
 				0438DFF61EAE757500981CFB /* IntroView.cpp in Sources */,
 				0439E9B019869F6D0009BFF7 /* CommonDraw.cpp in Sources */,
 				04037606197AC92200A5B5FC /* Army.cpp in Sources */,
+				04BE3A801F8A672D00EF89E3 /* ItemCraftChargesView.cpp in Sources */,
 				043C01441E218A4E00E035D8 /* Data.cpp in Sources */,
 				04797BEF1C1DCB830026C153 /* ValuesMechanics.cpp in Sources */,
 				0439E998198690150009BFF7 /* MagicView.cpp in Sources */,
@@ -1371,6 +1378,7 @@
 				048616731E038086004B62B7 /* Level.cpp in Sources */,
 				048616741E038086004B62B7 /* Items.cpp in Sources */,
 				048616751E038086004B62B7 /* Effects.cpp in Sources */,
+				04BE3A811F8A672D00EF89E3 /* ItemCraftChargesView.cpp in Sources */,
 				048616761E038086004B62B7 /* Skill.cpp in Sources */,
 				048616771E038086004B62B7 /* SkillSet.cpp in Sources */,
 				048616781E038086004B62B7 /* Spells.cpp in Sources */,

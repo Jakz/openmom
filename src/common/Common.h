@@ -156,6 +156,8 @@ namespace std
   };
 }
 
+class FontSpriteSheet;
+
 enum class I18 : u32;
 enum class TextureID : u16;
 enum Plane : u8;
@@ -724,6 +726,7 @@ enum ViewID
   VIEW_ARMIES,
   VIEW_ARMIES_ITEMS,
   VIEW_ITEM_CRAFT,
+  VIEW_ITEM_CRAFT_CHARGES,
   VIEW_MERCHANT,
   VIEW_CITY,
   VIEW_UNIT,

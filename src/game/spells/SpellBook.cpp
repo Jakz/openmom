@@ -140,7 +140,7 @@ const vector<ResearchStatus> SpellBook::availableForResearch() const
   return available;
 }
 
-const vector<ResearchStatus> SpellBook::bookSpells(Type type) const
+const vector<ResearchStatus> SpellBook::discoveredSpells(Type type) const
 {
   vector<ResearchStatus> rspells;
   

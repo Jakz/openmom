@@ -47,8 +47,13 @@ ItemCraftView::ClickableAffix::ClickableAffix(affix_radio_group_t* group, size_t
 
 void ItemCraftView::ClickableAffix::draw()
 {
-  Fonts::drawString(left.c_str(), font(), x, y, ALIGN_RIGHT);
-  Fonts::drawString(right.c_str(), font(), x+2, y, ALIGN_LEFT);
+  if (!left.empty())
+  {
+    Fonts::drawString(left.c_str(), font(), x, y, ALIGN_RIGHT);
+    Fonts::drawString(right.c_str(), font(), x+2, y, ALIGN_LEFT);
+  }
+  else
+    Fonts::drawString(right.c_str(), font(), x, y, ALIGN_LEFT);
   
   Clickable::draw();
 }
@@ -106,23 +111,26 @@ void ItemCraftView::updateClickableAreas()
   
   constexpr int BASE_Y = 40;
   constexpr int BASE_X = 21;
+  constexpr int AFFIX_COLUMN_W = 91;
+  constexpr int SPELL_COLUMN_DX = 175;
   constexpr int MAX_H = 196;
   constexpr int LINE_HEIGHT = 11;
   constexpr int GROUP_SPACING = 3;
+  
+  auto mediumFace = FontFaces::MediumBold::BROWN_ITEM_CRAFT;
   
   int by = BASE_Y;
   int bx = BASE_X;
   for (const auto& affix : affixes.properties)
   {
-    /* since property cost limit may be specified (which is 200 for enchant item spell we need
+    /* since property cost limit may be specified (which is 200 for enchant item spell) we need
      to keep only affixes which have lower cost
      */
     size_t effectiveRange = affix.sizeForCost(propertyCostLimit);
-    auto mediumFace = FontFaces::MediumBold::BROWN_ITEM_CRAFT;
 
     if (by + effectiveRange*LINE_HEIGHT > MAX_H)
     {
-      bx += 91;
+      bx += AFFIX_COLUMN_W;
       by = BASE_Y;
     }
     
@@ -159,6 +167,22 @@ void ItemCraftView::updateClickableAreas()
     }
     by += GROUP_SPACING;
   }
+  
+  
+  by = BASE_Y;
+  bx = BASE_X + SPELL_COLUMN_DX;
+  /* add spells*/
+  
+  /* spell charges if supported */
+  if (currentType == TypeID::STAFF || currentType == TypeID::WAND)
+  {
+    std::string caption = "Spell Charges";
+    u16 width = Fonts::stringWidth(mediumFace, caption);
+    ClickableAffix* area = new ClickableAffix(nullptr, 0, "", caption, bx, by, width, LINE_HEIGHT);
+    area->setAction([](){});
+    clickables.emplace_back(area);
+  }
+    
 
 }
 

@@ -10,7 +10,7 @@ void BookView::populate(const Player *player, SpellBook::Type type)
 {
   bookPages.clear();
   
-  auto totalPool = player->book()->bookSpells(type);
+  auto totalPool = player->book()->discoveredSpells(type);
   
   vector<vector<ResearchStatus>> spellsByKind;
   spellsByKind.resize((size_t)SpellKind::COUNT, vector<ResearchStatus>());

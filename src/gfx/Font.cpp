@@ -123,6 +123,18 @@ const FontSpriteSheet* buildSerifCrypt(color_list colors) { return new FontSprit
 
 const FontSpriteSheet* buildSmall(const Palette *palette) { return new FontSpriteSheet(FontData::fonts[FONT_SMALL], palette, 1, 2); }
 
+
+namespace fonts
+{
+  template<FontType FONT>
+  SpecificFontSheet<FONT>::SpecificFontSheet(const Palette* palette) : FontSpriteSheet(FontData::fonts[FONT], palette, 1, vspacings[FONT]) { }
+  
+  /* color indices: background, high shadow, edge shadow, low shadow, unused?, main color, middle dots, single pixels */
+  MediumBoldFont::MediumBoldFont(Color color) : SpecificFontSheet<FONT_MEDIUM_THICK>(new IndexedPalette({0, 0, 0, 0, color, color, color})) { }
+  MediumBoldFont::MediumBoldFont(Color color, Color shadow) : SpecificFontSheet<FONT_MEDIUM_THICK>(new IndexedPalette({0, 0, 0, shadow, color, color, color})) { }
+}
+
+
 /*
 //              small, tiny, medium, serif, tiny crypt, serif crypt
 s8 xadjust[] = {  -1,   -1,    -1,    0,      -1,         -1};
@@ -149,8 +161,7 @@ namespace FontPalettes
   //TODO: should edge stroke be part of shadow?
   static const Palette* tinyWithShadow(Color main, Color single, Color shadow) { return new IndexedPalette({0,0,0, shadow, single, main}); }
   static const Palette* tinyWithStroke(Color main, Color single, Color stroke) { return new IndexedPalette({0, stroke, stroke, stroke, single, main}); }
-  
-  
+
   /* color indices: bg, light stroke, edge stroke, dark stroke, stripes x 4 (low to high) */
   static const Palette* serif(Color main) { return new IndexedPalette({0,0,0,0, main, main, main, main, main} ); }
   static const Palette* serif(Color main, Color single) { return new IndexedPalette({0,0,0,0, single, main, main, main, main} ); }
@@ -210,7 +221,7 @@ void FontFaces::buildFonts()
   Medium::BLACK = buildMedium({0, 0, 0, {90,154,154}, {6,69,69}, {6,2,2}});
   Medium::BLUE_MAGIC = buildMedium({0, 0, 0, {81,60,48}, {97,69,36}, {146,146,166}});
   
-  /* color indices: background, high shadow, low shadow, unused?, main color, middle dots, single pixels */
+  /* color indices: background, high shadow, edge shadow, low shadow, unused?, main color, middle dots, single pixels */
   MediumBold::BROWN_START = buildMediumBold({0, 0, 0, {166,134,105}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28}}); // TODO: fix last color
   MediumBold::BROWN_ITEM_CRAFT = buildMediumBold({0, {73,52,44}, 0, {56,32,28}, 0, {166,134,105}, {150,117,93}, {142,113,89}});
   MediumBold::GOLD_ITEM_CRAFT = buildMediumBold({0, {73,52,44}, 0, {56,32,28}, 0, {255,182,43}, {239,166,35}, {223,150,27}});

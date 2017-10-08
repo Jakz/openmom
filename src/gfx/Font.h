@@ -110,6 +110,7 @@ public:
   FontSpriteSheet(FontData *data, const Palette* palette, s16 hor, s16 ver) : rawData(data), palette(palette), hor(hor), ver(ver) { }
   FontSpriteSheet(FontData *data, color_list palette, s16 hor, s16 ver) : rawData(data), palette(new IndexedPalette(palette)), hor(hor), ver(ver) { }
 
+public:
   ~FontSpriteSheet() { delete palette; }
   
   u32 at(u16 x, u16 y, u16 r = 0, u16 c = 0) const override
@@ -146,7 +147,26 @@ public:
   }
   
   const Palette* getPalette() const override { return palette; }
+  
+  friend class Fonts;
 };
+
+namespace fonts
+{
+  template<FontType FONT>
+  class SpecificFontSheet : public FontSpriteSheet
+  {
+  protected:
+    SpecificFontSheet(const Palette* palette);
+  };
+  
+  class MediumBoldFont : public SpecificFontSheet<FONT_MEDIUM_THICK>
+  {
+  public:
+    MediumBoldFont(Color color);
+    MediumBoldFont(Color color, Color shadow);
+  };
+}
 
 class FontFaces
 {
@@ -211,6 +231,8 @@ public:
   static const Spacings& defaultSpacingForType(FontType type);
   
   static void buildFonts();
+  
+  const FontSpriteSheet* generate(FontType, Color color, Color shadow);
 };
 
 class Fonts

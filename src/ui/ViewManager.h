@@ -18,6 +18,7 @@ class CityView;
 class CitiesView;
 class CombatView;
 class ItemCraftView;
+class ItemCraftChargesView;
 class MagicView;
 class MainView;
 class MessageView;
@@ -95,6 +96,7 @@ public:
   CityView* cityView();
   CombatView* combatView();
   ItemCraftView* itemCraftView();
+  ItemCraftChargesView* itemCraftChargesView();
   MagicView* magicView();
   MainView* mainView();
   MessageView* messageView();

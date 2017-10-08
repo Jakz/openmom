@@ -24,7 +24,7 @@ static const PropertyAffixSpec defense_affix = PropertyAffixSpec(Property::SHIEL
 static const PropertyAffixSpec movement_affix = PropertyAffixSpec(Property::MOVEMENT, "Movement", {1,2,3,4}, {100,200,400,800});
 static const PropertyAffixSpec resistance_affix = PropertyAffixSpec(Property::RESIST, "Resistance", {1,2,3,4,5,6}, {50,100,200,350,550,800});
 static const PropertyAffixSpec spell_skill_affix = PropertyAffixSpec(Property::SPELL_SKILL, "Spell Skill", {5,10,15,20}, {200,400,800,1600});
-static const PropertyAffixSpec spell_save_affix = PropertyAffixSpec(Property::SPELL_SKILL, "Spell Save", {-1,-2,-3,-4}, {100,200,400,800});
+static const PropertyAffixSpec spell_save_affix = PropertyAffixSpec(Property::SPELL_SKILL, "Spell Save", {-1,-2,-3,-4}, {100,200,400,800}); //TODO: property should be SPELL_SAVE
 static const PropertyAffixSpec to_hit_affix = PropertyAffixSpec(Property::TO_HIT, "To Hit", {1,2,3}, {400,800,1200});
 
 

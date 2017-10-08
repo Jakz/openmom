@@ -8,6 +8,7 @@
 #include <array>
 #include <string>
 
+class Spell;
 class Skill;
 class SkillEffect;
 enum class Property : u8;
@@ -106,6 +107,15 @@ namespace items
     const std::vector<PropertyAffixSpec>& properties;
     
     static Affixes forType(TypeID type);
+  };
+  
+  class ItemSpellCharge
+  {
+  private:
+    const Spell* spell;
+    s16 amount;
+  public:
+    ItemSpellCharge(const Spell* spell, s16 amount) : spell(spell), amount(amount) { }
   };
   
 }

@@ -129,7 +129,7 @@ public:
   void fillPool();
   
   const std::vector<ResearchStatus> availableForResearch() const;
-  const std::vector<ResearchStatus> bookSpells(Type type) const;
+  const std::vector<ResearchStatus> discoveredSpells(Type type) const;
 
 };
 
