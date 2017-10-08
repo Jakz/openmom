@@ -172,6 +172,10 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
       {
         u32 ps = gsrc->at(fx+x, fy+y, r, c);
         
+        //TODO: treat color at index 0 always as transparent?
+        if (ps == 0)
+          continue;
+        
         if (palette)
           ps = palette->get(ps);
         
