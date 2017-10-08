@@ -126,7 +126,7 @@ int main(int argc, char * arg[])
   SDL::initGVM();
   
   SDL::gvm->switchView(VIEW_MAIN);
-  //SDL::gvm->switchOverview(VIEW_INFO_MENU);
+  SDL::gvm->switchOverview(VIEW_MERCHANT);
 
   //SDL::gvm->switchView(VIEW_ITEM_CRAFT);
   

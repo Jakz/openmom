@@ -205,6 +205,8 @@
 		04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B11983286E00291B82 /* Viewport.cpp */; };
 		04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B419833C1E00291B82 /* UnitDraw.cpp */; };
 		04B6E01D1F17A9FC00A4E4C3 /* MapEditorView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */; };
+		04BE3A7C1F89C6A000EF89E3 /* MerchantView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04BE3A7A1F89C6A000EF89E3 /* MerchantView.cpp */; };
+		04BE3A7D1F89C6A000EF89E3 /* MerchantView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04BE3A7A1F89C6A000EF89E3 /* MerchantView.cpp */; };
 		04C1F47F1B25290C00F7688A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C1F44B1B25270300F7688A /* main.cpp */; };
 		04C1F4841B25358200F7688A /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
 		04C1F4851B25359D00F7688A /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040375D2197990B900A5B5FC /* Font.cpp */; };
@@ -469,6 +471,8 @@
 		04ABF7B519833C1E00291B82 /* UnitDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitDraw.h; sourceTree = "<group>"; };
 		04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MapEditorView.cpp; path = extra/MapEditorView.cpp; sourceTree = "<group>"; };
 		04B6E01E1F17AA0200A4E4C3 /* MapEditorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MapEditorView.h; path = extra/MapEditorView.h; sourceTree = "<group>"; };
+		04BE3A7A1F89C6A000EF89E3 /* MerchantView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MerchantView.cpp; sourceTree = "<group>"; };
+		04BE3A7B1F89C6A000EF89E3 /* MerchantView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MerchantView.h; sourceTree = "<group>"; };
 		04C1F44B1B25270300F7688A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		04C1F4511B25288F00F7688A /* LBXManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LBXManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C729BF19853F4E002F16E6 /* MainView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainView.cpp; sourceTree = "<group>"; };
@@ -778,6 +782,8 @@
 				0439E997198690150009BFF7 /* MagicView.h */,
 				04C729BF19853F4E002F16E6 /* MainView.cpp */,
 				04C729C019853F4E002F16E6 /* MainView.h */,
+				04BE3A7A1F89C6A000EF89E3 /* MerchantView.cpp */,
+				04BE3A7B1F89C6A000EF89E3 /* MerchantView.h */,
 				0439E9991986903A0009BFF7 /* MessageView.cpp */,
 				0439E99A1986903A0009BFF7 /* MessageView.h */,
 				0439E99C198690580009BFF7 /* MirrorView.cpp */,
@@ -1215,6 +1221,7 @@
 				0439E98919868F6D0009BFF7 /* ArmiesView.cpp in Sources */,
 				0439E9A1198690B70009BFF7 /* OutpostView.cpp in Sources */,
 				04E282C61E02343E00DD673D /* SDLHelper.cpp in Sources */,
+				04BE3A7C1F89C6A000EF89E3 /* MerchantView.cpp in Sources */,
 				0403760D197AE16100A5B5FC /* Level.cpp in Sources */,
 				04E282C31E0227DE00DD673D /* GUISettings.cpp in Sources */,
 				046428F01E0AC4DC003A76D8 /* ConsoleView.cpp in Sources */,
@@ -1337,6 +1344,7 @@
 				0493DA941E1B56040088FF42 /* Help.cpp in Sources */,
 				0493DA901E1B55FA0088FF42 /* SpellEffectAnim.cpp in Sources */,
 				0493DA911E1B55FA0088FF42 /* Animations.cpp in Sources */,
+				04BE3A7D1F89C6A000EF89E3 /* MerchantView.cpp in Sources */,
 				0493DA921E1B55FA0088FF42 /* Dialogs.cpp in Sources */,
 				0493DA931E1B55FA0088FF42 /* ConsoleView.cpp in Sources */,
 				048616AA1E0380A4004B62B7 /* osx.mm in Sources */,

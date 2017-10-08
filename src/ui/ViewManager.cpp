@@ -34,6 +34,7 @@
 #include "CartographerView.h"
 #include "AstrologerView.h"
 #include "HistorianView.h"
+#include "MerchantView.h"
 
 #include "MapEditorView.h"
 
@@ -71,6 +72,7 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_CARTOGRAPHER] = new CartographerView(this);
   views[VIEW_ASTROLOGER] = new AstrologerView(this);
   views[VIEW_HISTORIAN] = new HistorianView(this);
+  views[VIEW_MERCHANT] = new MerchantView(this);
   
   views[VIEW_MAP_EDITOR] = new MapEditorView(this);
   
