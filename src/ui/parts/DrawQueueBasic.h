@@ -31,8 +31,8 @@ public:
 class BasicSpriteEntry : public BasicDrawEntry
 {
 private:
-  const Point point;
-  const SpriteInfo info;
+  Point point;
+  SpriteInfo info;
 public:
   BasicSpriteEntry(SpriteInfo info, Point point) : info(info), point(point) { }
   
@@ -40,6 +40,8 @@ public:
   {
     Gfx::draw(info, point);
   }
+  
+  void setPosition(const Point& point) { this->point = point; }
 };
 
 enum TextAlign : u8;
@@ -47,7 +49,7 @@ enum TextAlign : u8;
 class BasicTextEntry : public BasicDrawEntry
 {
 private:
-  const TextInfo info;
+  TextInfo info;
   TextAlign align;
   
 public:
@@ -61,6 +63,11 @@ public:
     else
       Fonts::drawString(info.label, info.position.x, info.position.y, align);
   }
+  
+  void setFace(const FontSpriteSheet* face) { info.font = face; }
+  void setPosition(const Point& point) { info.position = point; }
+  
+  const Point& getPosition() const { return info.position; }
 };
 
 class BasicRectEntry : public BasicDrawEntry

@@ -130,8 +130,9 @@ namespace fonts
   SpecificFontSheet<FONT>::SpecificFontSheet(const Palette* palette) : FontSpriteSheet(FontData::fonts[FONT], palette, 1, vspacings[FONT]) { }
   
   /* color indices: background, high shadow, edge shadow, low shadow, unused?, main color, middle dots, single pixels */
-  MediumBoldFont::MediumBoldFont(Color color) : SpecificFontSheet<FONT_MEDIUM_THICK>(new IndexedPalette({0, 0, 0, 0, color, color, color})) { }
-  MediumBoldFont::MediumBoldFont(Color color, Color shadow) : SpecificFontSheet<FONT_MEDIUM_THICK>(new IndexedPalette({0, 0, 0, shadow, color, color, color})) { }
+  MediumBoldFont::MediumBoldFont(Color color) : SpecificFontSheet<FONT_MEDIUM_THICK>(new IndexedPalette({0, 0, 0, 0, 0, color, color, color})) { }
+  //TODO: should single shadow pixels considered part of low shadow?
+  MediumBoldFont::MediumBoldFont(Color color, Color shadow) : SpecificFontSheet<FONT_MEDIUM_THICK>(new IndexedPalette({0, 0, 0, shadow, 0, color, color, color})) { }
 }
 
 

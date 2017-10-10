@@ -49,7 +49,8 @@ public:
       sort();
     
     for (const auto& element : _elements)
-      element->draw();
+      if (element->isVisible())
+        element->draw();
   }
   
   void setDirty() { _dirty = true; }
@@ -61,8 +62,15 @@ template<typename T, typename S = std::less<std::unique_ptr<T>>>
 class DrawElement
 {
 private:
+  bool visible;
   DrawQueue<T,S>* queue;
+  
+protected:
+  DrawElement() : visible(true) { }
   
 public:
   void setDirty() { queue->setDirty(); }
+  
+  bool isVisible() const { return visible; }
+  void setVisible(bool visible) { this->visible = visible; }
 };

@@ -166,6 +166,13 @@ namespace fonts
     MediumBoldFont(Color color);
     MediumBoldFont(Color color, Color shadow);
   };
+  
+  class SerifFont : public SpecificFontSheet<FONT_SERIF>
+  {
+  public:
+    SerifFont(Color color);
+    SerifFont(Color color, Color shadow);
+  };
 }
 
 class FontFaces

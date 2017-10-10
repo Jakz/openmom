@@ -63,7 +63,7 @@ private:
   };
   
 public:
-  class GfxEntry : DrawElement<GfxEntry, entry_comparator>
+  class GfxEntry : public DrawElement<GfxEntry, entry_comparator>
   {
     priority_t _priority;
   protected:
