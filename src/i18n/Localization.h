@@ -260,5 +260,14 @@ public:
   friend class lbx::Repository;
 };
 
+struct i18n_cached_key
+{
+private:
+  std::string ident;
+  I18 key;
+  
+public:
+  i18n_cached_key(const std::string& ident) : ident(ident), key(i18n::keyForString(ident)) { }
+};
 
 #endif

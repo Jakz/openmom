@@ -56,7 +56,7 @@ public:
   const std::unique_ptr<Clickable>& areaAt(u16 index) { return areas[index]; }
   
   void doActivate(LocalPlayer* player);
-  void doDeactivate() { deactivate(); }
+  virtual void doDeactivate() { deactivate(); }
   
   virtual void doDraw()
   {
@@ -112,6 +112,12 @@ public:
     queue.draw();
     draw();
     drawButtons();
+  }
+  
+  void doDeactivate() override
+  {
+    queue.clear();
+    View::doDeactivate();
   }
 };
 

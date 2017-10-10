@@ -8,18 +8,22 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
+import com.github.jakz.openmom.data.HouseType;
+import com.github.jakz.openmom.data.Race;
 import com.github.jakz.openmom.data.Ranged;
 import com.github.jakz.openmom.data.SpriteInfo;
 import com.github.jakz.openmom.data.SpriteInfoLBX;
 import com.github.jakz.openmom.data.Unit;
 import com.github.jakz.openmom.lbx.LBX;
 import com.github.jakz.openmom.lbx.SpriteSheet;
+import com.github.jakz.openmom.ui.MainPanel;
 import com.github.jakz.openmom.ui.TablePanel;
 import com.github.jakz.openmom.ui.UnitTable;
 import com.pixbits.lib.lang.Pair;
@@ -28,9 +32,13 @@ import com.pixbits.lib.ui.WrapperFrame;
 import com.pixbits.lib.ui.color.Color;
 import com.pixbits.lib.ui.color.Palette;
 import com.pixbits.lib.ui.table.DataSource;
+import com.pixbits.lib.ui.table.ModifiableDataSource;
 import com.pixbits.lib.yaml.YamlNode;
 import com.pixbits.lib.yaml.YamlParser;
+import com.pixbits.lib.yaml.YamlUnserializer;
 import com.pixbits.lib.yaml.unserializer.ReflectiveUnserializer;
+import com.pixbits.lib.yaml.unserializer.EnumUnserializer;
+import com.pixbits.lib.yaml.unserializer.ListUnserializer;
 
 public class App 
 {
@@ -47,12 +55,46 @@ public class App
     }
   }
   
+  static final Function<String, String> fieldNameFromYaml = n -> {
+    StringBuilder b = new StringBuilder();
+    
+    for (int i = 0; i < n.length(); ++i)
+    {
+      if (n.charAt(i) == '_' && i < n.length()-1)
+        b.append(Character.toUpperCase(n.charAt(i+1)));
+      else
+        b.append(n.charAt(i));
+    }
+    
+    return b.toString();
+  };
+  
+  static final Function<String, String> fieldNameToYaml = n -> {
+    StringBuilder b = new StringBuilder();
+    
+    for (int i = 0; i < n.length(); ++i)
+    {
+      char c = n.charAt(i);
+      if (Character.isUpperCase(c))
+        b.append('_').append(Character.toLowerCase(c));
+      else
+        b.append(c);
+    }
+    
+    return b.toString();
+  };
+  
+  
   public static void main( String[] args )
   {
     try
     {      
-      Path path = Paths.get("../../data/yaml/units.yaml");
+      final Path base = Paths.get("../../data/yaml");
+      final Data data = new Data();
+      
       YamlParser parser = new YamlParser();
+      
+      parser.setReflectiveUnserializeFieldRemapper(fieldNameToYaml);
       
       parser.registerUnserializer(SpriteInfo.class, y -> {
         if (y.get(0).asString().equals("lbx"))
@@ -77,25 +119,50 @@ public class App
         }
       });
       
-      YamlNode root = parser.parse(path).get("units");
+      parser.registerUnserializer(HouseType.class, new EnumUnserializer<HouseType>(HouseType.class));
       
-      ReflectiveUnserializer<Unit> uns = new ReflectiveUnserializer<>(Unit.class);
       
-      List<Unit> units = new ArrayList<>();
-      
-      for (YamlNode node : root)
+
+
+      /* races.yaml */
       {
-        Unit unit = uns.unserialize(node);
-        units.add(unit);
-        System.out.println(unit.identifier+", "+unit.type+", "+unit.upkeep+", "+unit.visuals.i18n);        
+        Path path = base.resolve("races.yaml");
+        
+        YamlNode root = parser.parse(path).get("races");
+        YamlUnserializer<List<Race>> unserializer = new ListUnserializer<>(Race.class);
+        List<Race> races = unserializer.unserialize(root);
+        data.races = ModifiableDataSource.of(races);
       }
       
+      
+      /* units.yaml */
+      {
+        Path path = base.resolve("units.yaml");
+     
+
+        
+        YamlNode root = parser.parse(path).get("units");
+        
+        ReflectiveUnserializer<Unit> uns = new ReflectiveUnserializer<>(Unit.class);
+        
+        List<Unit> units = new ArrayList<>();
+        
+        for (YamlNode node : root)
+        {
+          Unit unit = uns.unserialize(node);
+          units.add(unit);
+          System.out.println(unit.identifier+", "+unit.type+", "+unit.upkeep+", "+unit.visuals.i18n);        
+        }
+        
+        data.units = ModifiableDataSource.of(units);
+
+      }
+
       UIUtils.setNimbusLNF();
+
+      MainPanel mainPanel = new MainPanel(data);
       
-      UnitTable unitTable = new UnitTable(DataSource.of(units));
-      TablePanel panel = new TablePanel(unitTable, new Dimension(1024,600));
-      
-      WrapperFrame<?> frame = UIUtils.buildFrame(panel, "Units");
+      WrapperFrame<?> frame = UIUtils.buildFrame(mainPanel, "OpenMoM Editor v0.1");
       frame.exitOnClose();
       frame.setVisible(true);
     }
