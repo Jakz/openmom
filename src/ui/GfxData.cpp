@@ -25,6 +25,7 @@ template<> gfx_map<__key__, __value__>& GfxData::containerFor<__key__, __value__
 DEFINE_GFX_MAP(const Skill*, SkillGfxSpec);
 DEFINE_GFX_MAP(const UnitSpec*, UnitGfxSpec);
 DEFINE_GFX_MAP(const Race*, RaceGfxSpec);
+DEFINE_GFX_MAP(const Wizard*, WizardGfxSpec);
 
 #pragma mark Unit Props
 
@@ -107,23 +108,6 @@ gfx_map<const Spell*, sprite_ref> GfxData::specialSpellGfxEffects = {
   {Spells::CORRUPTION, LBXI(SPECFX, 7)},
   {Spells::CHANGE_TERRAIN, LBXI(SPECFX, 8)},
   {Spells::RAISE_VOLCANO, LBXI(SPECFX, 11)}
-};
-
-decltype(GfxData::wizardSpecs) GfxData::wizardSpecs = {
-  { WizardID::MERLIN, { LSI(MAGIC, 18), LSI(WIZARDS, 0), LSI(MOODWIZ, 0), LSI(LILWIZ, 0), LSI(WIZLAB, 0), LSI(SPELLSCR, 46) } },
-  { WizardID::RAVEN, { LSI(MAGIC, 19), LSI(WIZARDS, 1), LSI(MOODWIZ, 1), LSI(LILWIZ, 5), LSI(WIZLAB, 1), LSI(SPELLSCR, 47) } },
-  { WizardID::SHAREE, { LSI(MAGIC, 20), LSI(WIZARDS, 2), LSI(MOODWIZ, 2), LSI(LILWIZ, 10), LSI(WIZLAB, 2), LSI(SPELLSCR, 48) } },
-  { WizardID::LO_PAN, { LSI(MAGIC, 21), LSI(WIZARDS, 3), LSI(MOODWIZ, 3), LSI(LILWIZ, 15), LSI(WIZLAB, 3), LSI(SPELLSCR, 49) } },
-  { WizardID::JAFAR, { LSI(MAGIC, 22), LSI(WIZARDS, 4), LSI(MOODWIZ, 4), LSI(LILWIZ, 20), LSI(WIZLAB, 4), LSI(SPELLSCR, 50) } },
-  { WizardID::OBERIC, { LSI(MAGIC, 23), LSI(WIZARDS, 5), LSI(MOODWIZ, 5), LSI(LILWIZ, 25), LSI(WIZLAB, 5), LSI(SPELLSCR, 51) } },
-  { WizardID::RJAK, { LSI(MAGIC, 24), LSI(WIZARDS, 6), LSI(MOODWIZ, 6), LSI(LILWIZ, 30), LSI(WIZLAB, 6), LSI(SPELLSCR, 52) } },
-  { WizardID::SSS_RA, { LSI(MAGIC, 25), LSI(WIZARDS, 7), LSI(MOODWIZ, 7), LSI(LILWIZ, 35), LSI(WIZLAB, 7), LSI(SPELLSCR, 53) } },
-  { WizardID::TAURON, { LSI(MAGIC, 26), LSI(WIZARDS, 8), LSI(MOODWIZ, 8), LSI(LILWIZ, 40), LSI(WIZLAB, 8), LSI(SPELLSCR, 54) } },
-  { WizardID::FREYA, { LSI(MAGIC, 27), LSI(WIZARDS, 9), LSI(MOODWIZ, 9), LSI(LILWIZ, 45), LSI(WIZLAB, 9), LSI(SPELLSCR, 55) } },
-  { WizardID::HORUS, { LSI(MAGIC, 28), LSI(WIZARDS, 10), LSI(MOODWIZ, 10), LSI(LILWIZ, 50), LSI(WIZLAB, 10), LSI(SPELLSCR, 56) } },
-  { WizardID::ARIEL, { LSI(MAGIC, 29), LSI(WIZARDS, 11), LSI(MOODWIZ, 11), LSI(LILWIZ, 55), LSI(WIZLAB, 11), LSI(SPELLSCR, 57) } },
-  { WizardID::TLALOC, { LSI(MAGIC, 30), LSI(WIZARDS, 12), LSI(MOODWIZ, 12), LSI(LILWIZ, 60), LSI(WIZLAB, 12), LSI(SPELLSCR, 58) } },
-  { WizardID::KALI, { LSI(MAGIC, 31), LSI(WIZARDS, 13), LSI(MOODWIZ, 13), LSI(LILWIZ, 65), LSI(WIZLAB, 13), LSI(SPELLSCR, 59) } }
 };
 
 decltype(GfxData::playerSpecs) GfxData::playerSpecs = {

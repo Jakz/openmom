@@ -18,7 +18,7 @@
 
 using namespace std;
 
-LocalPlayer::LocalPlayer(Game *game, std::string name, const Wizard& wizard, PlayerColor color, const Race* race, u16 mapWidth, u16 mapHeight) :
+LocalPlayer::LocalPlayer(Game *game, std::string name, const Wizard* wizard, PlayerColor color, const Race* race, u16 mapWidth, u16 mapHeight) :
 Player(game,name,wizard,color,race,mapWidth,mapHeight), viewport(Position(0,0,ARCANUS)), selectedArmy(nullptr), selectedRoute(nullptr), combatSelectedUnit(nullptr), combatCurrentlyPlaying(false), map(MiniMap(game->world)) { }
 
 void LocalPlayer::setViewport(s16 x, s16 y)

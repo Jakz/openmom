@@ -810,36 +810,6 @@ enum class WizardID : u8
   KALI
 };
 
-struct Wizard
-{
-  WizardID ident;
-  const char* _name;
-  
-  const char* name() const { return _name; }
-};
-
-enum class TraitID : u8
-{
-  ALCHEMY = 0,
-  WARLORD,
-  CHANNELER,
-  ARCHMAGE,
-  ARTIFICER,
-  CONJURER,
-  SAGE_MASTER,
-  MYRRAN,
-  DIVINE_POWER,
-  FAMOUS,
-  RUNEMASTER,
-  CHARISMATIC,
-  CHAOS_MASTERY,
-  NATURE_MASTERY,
-  SORCERY_MASTERY,
-  INFERNAL_POWER,
-  MANA_FOCUSING,
-  NODE_MASTERY
-};
-
 struct Trait
 {
   const std::string identifier;
@@ -853,6 +823,16 @@ struct Trait
 };
 
 using Retort = Trait;
+
+struct Wizard
+{
+  school_value_map defaultBooks;
+  std::vector<const Retort*> defaultRetorts;
+  
+  Wizard() : defaultBooks(0) { }
+};
+
+
 
 #pragma mark Map Related
 

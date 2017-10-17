@@ -2,28 +2,6 @@
 
 #include "Localization.h"
 
-static const Wizard wizardInfo[] = {
-  {WizardID::MERLIN, "Merlin"},
-  {WizardID::RAVEN, "Raven"},
-  {WizardID::SHAREE, "Sharee"},
-  {WizardID::LO_PAN, "Lo Pan"},
-  {WizardID::JAFAR, "Jafar"},
-  {WizardID::OBERIC, "Oberic"},
-  {WizardID::RJAK, "Rjak"},
-  {WizardID::SSS_RA, "Sss'ra"},
-  {WizardID::TAURON, "Tauron"},
-  {WizardID::FREYA, "Freya"},
-  {WizardID::HORUS, "Horus"},
-  {WizardID::ARIEL, "Ariel"},
-  {WizardID::TLALOC, "Tlaloc"},
-  {WizardID::KALI, "Kali"}
-};
-
-const Wizard& Data::wizard(const WizardID wizard)
-{
-  return wizardInfo[static_cast<size_t>(wizard)];
-}
-
 #include <unordered_map>
 
 #include "Spells.h"
@@ -31,6 +9,10 @@ const Wizard& Data::wizard(const WizardID wizard)
 #include "Race.h"
 #include "UnitSpec.h"
 #include "Level.h"
+
+#if defined(DEBUG)
+template<> const char* Data::nameForDataType<const Retort*>() { return "Retort"; }
+#endif
 
 experience_levels Data::normalUnitLevels;
 experience_levels Data::heroLevels;
@@ -59,6 +41,11 @@ template<> Data::map_t<const Race*>& Data::containerFor() {
 
 template<> Data::map_t<const Trait*>& Data::containerFor() {
   static map_t<const Trait*> traitMap;
+  return traitMap;
+}
+
+template<> Data::map_t<const Wizard*>& Data::containerFor() {
+  static map_t<const Wizard*> traitMap;
   return traitMap;
 }
 

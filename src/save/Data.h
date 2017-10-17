@@ -27,6 +27,15 @@ public:
   using key_type = std::string;
   template<typename T> using map_t = std::unordered_map<key_type, T>;
   
+  template<typename T>
+  struct data_set
+  {
+    using iterator = typename map_t<T>::const_iterator;
+    iterator begin;
+    iterator end;
+    size_t size;
+  };
+  
   using unit_dependency_map_t = std::unordered_map<const UnitSpec*, const Building*>;
   
   using skill_replacement_map_t = std::unordered_map<const Skill*, const Skill*>;
@@ -61,7 +70,7 @@ public:
       return it->second;
     else
     {
-      LOGD("Data value not found for %s", ident.c_str());
+      LOGD("Data value not found for '%s' of type '%s'", ident.c_str(), nameForDataType<T>());
       assert(false);
     }
   }
@@ -83,6 +92,12 @@ public:
   static const Spell* spell(const key_type& ident) { return get<const Spell*>(ident); }
   static const Race* race(const key_type& ident) { return get<const Race*>(ident); }
   static const Trait* trait(const key_type& ident) { return get<const Trait*>(ident); }
+  static const Wizard* wizard(const key_type& ident) { return get<const Wizard*>(ident); }
+  
+  template <typename T> static data_set<T> values() {
+    const auto& map = containerFor<T>();
+    return { map.begin(), map.end(), map.size() };
+  }
   
   static const std::unordered_map<key_type, const UnitSpec*> units();
   
@@ -94,6 +109,8 @@ public:
   }
   
 #if defined(DEBUG)
+  template<typename T> static const char* nameForDataType() { return "unnamed"; }
+  
   template<typename T> static std::string getInfo(T data)
   {
     char buffer[128];

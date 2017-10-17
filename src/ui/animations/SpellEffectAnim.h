@@ -44,7 +44,7 @@ namespace anims
     const Palette* palette;
         
   public:
-    SummonAnimation(WizardID wizard, const SummonSpec* spec);
+    SummonAnimation(const Wizard* wizard, const SummonSpec* spec);
     void step() override;
     bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   };
@@ -56,7 +56,7 @@ namespace anims
     SpriteInfo familiar;
     
   public:
-    SpellDiscoverAnimation(WizardID wizard, School school);
+    SpellDiscoverAnimation(const Wizard* wizard, School school);
     void step() override;
     bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   };

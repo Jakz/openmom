@@ -18,13 +18,14 @@ static const Point gameOptionsButtonPositions[] = {
   { 251, 120 }
 };
 
-NewGameView::NewGameView(ViewManager * gvm) : View(gvm)
+NewGameView::NewGameView(ViewManager * gvm) : View(gvm), wizard(nullptr)
 {
 
 }
 
 void NewGameView::activate()
 {
+  wizard = nullptr;
   switchToPhase(Phase::GAME_OPTIONS);
 }
 
@@ -67,18 +68,20 @@ void NewGameView::switchToPhase(Phase phase)
       const u16 baseY = 27;
       const u16 baseButtonSprite = 9;
       const u16 deltaY = 22;
-      const WizardID wizards[] = {
-        WizardID::MERLIN, WizardID::RAVEN, WizardID::SHAREE, WizardID::LO_PAN, WizardID::JAFAR, WizardID::OBERIC, WizardID::RJAK,
-        WizardID::SSS_RA, WizardID::TAURON, WizardID::FREYA, WizardID::HORUS, WizardID::ARIEL, WizardID::TLALOC, WizardID::KALI
-      };
       
-      for (size_t i = 0; i < 14; ++i)
+      const auto wizards = Data::values<const Wizard*>();
+      
+      auto it = wizards.begin;
+      for (size_t i = 0; i < wizards.size; ++i, ++it)
       {
-        const auto button = addButton(Button::buildOffsetted(Data::wizard(wizards[i]).name(), baseX[i/7], baseY + deltaY*(i%7), LSI(NEWGAME, baseButtonSprite+i)));
-        button->setTextInfo(TextInfo(Data::wizard(wizards[i]).name(), face));
-        button->setOnEnterAction([this,i,wizards]() { this->wizard = wizards[i]; });
+        const Wizard* wizard = it->second;
+        const WizardGfxSpec& gfx = GfxData::wizardGfx(wizard);
+        
+        const auto button = addButton(Button::buildOffsetted(i18n::s(gfx.name), baseX[i/7], baseY + deltaY*(i%7), LSI(NEWGAME, baseButtonSprite+i)));
+        button->setTextInfo(TextInfo(i18n::s(gfx.name), face));
+        button->setOnEnterAction([this,wizard,wizards]() { this->wizard = wizard; });
       }
-      
+
       const auto customButton = addButton(Button::buildOffsetted("custom", baseX[1], baseY+deltaY*7, LSI(NEWGAME, 23)));
       customButton->setTextInfo(TextInfo("Custom", face));
       
@@ -113,10 +116,10 @@ void NewGameView::draw()
       Fonts::drawString("Select Wizard", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
       Gfx::draw(LSI(NEWGAME, 8), 165, 17);
       
-      if (wizard.isPresent())
+      if (wizard)
       {
-        Gfx::draw(GfxData::wizardGfxSpec(wizard).portraitLarge, 24, 10);
-        Fonts::drawString(Data::wizard(wizard).name(), FontFaces::Serif::BROWN_START, 76, 118, ALIGN_CENTER);
+        Gfx::draw(GfxData::wizardGfx(wizard).portraitLarge, 24, 10);
+        Fonts::drawString(i18n::s(GfxData::wizardGfx(wizard).name), FontFaces::Serif::BROWN_START, 76, 118, ALIGN_CENTER);
       }
 
       break;

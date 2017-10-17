@@ -109,6 +109,8 @@ template<> s16 yaml::parse(const N& node) { return node.operator s16(); }
 template<> u16 yaml::parse(const N& node) { return node.operator u16(); }
 template<> float yaml::parse(const N& node) { return node.as<float>(); }
 template<> bool yaml::parse(const N& node) { return node.as<bool>(); }
+template<> std::string yaml::parse(const N& node) { return node.as<std::string>(); }
+
 
 template<typename T, typename std::enable_if<!std::is_pointer<T>::value, int>::type> T yaml::parse(const N& node)
 {
@@ -135,14 +137,22 @@ template<> LBXID yaml::parse(const N& node)
     { "figure11", LBXID::FIGURE11 },
     { "figure12", LBXID::FIGURE12 },
     
+    { "lilwiz", LBXID::LILWIZ },
+    { "magic", LBXID::MAGIC },
     { "monster", LBXID::MONSTER },
+    { "moodwiz", LBXID::MOODWIZ },
     { "portrait", LBXID::PORTRAIT },
     
     { "special", LBXID::SPECIAL },
     { "special2", LBXID::SPECIAL2 },
+    { "spellscr", LBXID::SPELLSCR },
     
     { "units1", LBXID::UNITS1 },
     { "units2", LBXID::UNITS2 },
+    
+    { "wizards", LBXID::WIZARDS },
+    { "wizlab", LBXID::WIZLAB },
+
   };
   
   FETCH_OR_FAIL("LBXID", mapping, node);
@@ -709,6 +719,52 @@ template<> std::pair<const Race*, RaceGfxSpec> yaml::parse(const N& node)
   return data;
 }
 
+#pragma mark Wizard
+template<> std::pair<const Wizard*, WizardGfxSpec> yaml::parse(const N& node)
+{
+  assert(node.IsMap());
+  
+  
+  // TODO: don't set fields, use constructor
+  std::pair<const Wizard*, WizardGfxSpec> data;
+  
+  Wizard* wizard = new Wizard();
+  wizard->defaultBooks = parse<school_value_map>(node["default_books"]);
+  
+  if (node.hasChild("default_retorts"))
+  {
+    std::vector<std::string> retortNames;
+    parse(node["default_retorts"], retortNames);
+    std::transform(retortNames.begin(), retortNames.end(), std::back_inserter(wizard->defaultRetorts), [](const std::string& retortName) { return Data::trait(retortName); });
+  }
+  
+  data.first = wizard;
+  
+  /* visual */
+  {
+    const Node& visual = node["visuals"];
+    auto& gfx = data.second;
+    
+    I18 name = i18n::keyForString(visual["i18n"]);
+    SpriteInfo portraitSmall = parse<SpriteInfo>(visual["portrait_small"]);
+    SpriteInfo portraitLarge = parse<SpriteInfo>(visual["portrait_large"]);
+    SpriteInfo diplomacyMood = parse<SpriteInfo>(visual["diplomacy_mood"]);
+    SpriteInfo gemmedPortrait = parse<SpriteInfo>(visual["gemmed_portrait"]);
+    SpriteInfo researchPose = parse<SpriteInfo>(visual["research_pose"]);
+    SpriteInfo summonPose = parse<SpriteInfo>(visual["summon_pose"]);
+    
+    gfx.name = name;
+    gfx.portraitSmall = portraitSmall;
+    gfx.portraitLarge = portraitLarge;
+    gfx.diplomacyMood = diplomacyMood;
+    gfx.gemmedPortrait = gemmedPortrait;
+    gfx.researchPose = researchPose;
+    gfx.summonPose = summonPose;
+  }
+  
+  return data;
+}
+
 #pragma mark Retort
 template<> const Retort* yaml::parse(const N& node)
 {
@@ -818,14 +874,27 @@ void yaml::parseUnits()
 void yaml::parseWizards()
 {
   N file = parse("wizards.yaml");
-  auto retorts = file["retorts"];
   
+  auto retorts = file["retorts"];
   for (const auto& yretort : retorts)
   {
     const std::string& identifier = getIdentifier(yretort);
     const Retort* retort = parse<const Retort*>(yretort);
     Data::registerData(identifier, retort);
   }
+  
+  auto wizards = file["wizards"];
+  for (const auto& ywizard : wizards)
+  {
+    const std::string& identifier = getIdentifier(ywizard);
+    const std::pair<const Wizard*, WizardGfxSpec> pair = parse<std::pair<const Wizard*, WizardGfxSpec>>(ywizard);
+    const Wizard* wizard = pair.first;
+    const WizardGfxSpec& gfx = pair.second;
+    Data::registerData(identifier, wizard);
+    GfxData::registerData(wizard, gfx);
+  }
+  
+  
 }
 
 void yaml::parseRaces()

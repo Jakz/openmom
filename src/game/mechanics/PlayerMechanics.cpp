@@ -166,7 +166,7 @@ void PlayerMechanics::castSpell(Player* player, const Spell* spell)
     }
     
     // TODO: manage awareness and such things
-    g->localGame->currentPlayer()->push(new anims::SummonAnimation(player->wizard.ident, spec));
+    g->localGame->currentPlayer()->push(new anims::SummonAnimation(player->wizard, spec));
   }
   else if (spell->type == SpellType::GLOBAL || spell->type == SpellType::GLOBAL_SKILL)
   {

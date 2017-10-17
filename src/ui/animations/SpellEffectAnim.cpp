@@ -48,8 +48,8 @@ void SpellEffect::step()
 
 #pragma mark SummonEffect
 
-SummonAnimation::SummonAnimation(WizardID wizard, const SummonSpec* spec)
-: ContinuousEndlessAnimation(5000), spec(spec), wizard(GfxData::wizardGfxSpec(wizard).summonPose), creature(GfxData::unitGfx(spec).fantastic.summonFigure),
+SummonAnimation::SummonAnimation(const Wizard* wizard, const SummonSpec* spec)
+: ContinuousEndlessAnimation(5000), spec(spec), wizard(GfxData::wizardGfx(wizard).summonPose), creature(GfxData::unitGfx(spec).fantastic.summonFigure),
   palette(GfxData::schoolGfxSpec(spec->as<SummonSpec>()->school).summonPalette.palette())
 {
 }
@@ -80,8 +80,8 @@ bool SummonAnimation::mouseReleased(u16 x, u16 y, MouseButton b) { finish(); ret
 
 #pragma mark SpellDiscover
 
-SpellDiscoverAnimation::SpellDiscoverAnimation(WizardID wizard, School school)
-: ContinuousEndlessAnimation(1000), wizard(GfxData::wizardGfxSpec(wizard).researchPose), familiar(GfxData::schoolGfxSpec(school).researchFamiliar)
+SpellDiscoverAnimation::SpellDiscoverAnimation(const Wizard* wizard, School school)
+: ContinuousEndlessAnimation(1000), wizard(GfxData::wizardGfx(wizard).researchPose), familiar(GfxData::schoolGfxSpec(school).researchFamiliar)
 {
 }
 

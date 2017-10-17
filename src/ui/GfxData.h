@@ -52,6 +52,7 @@ struct UnitGfxSpec
 
 struct WizardGfxSpec
 {
+  I18 name;
   SpriteInfo portraitSmall;
   SpriteInfo portraitLarge;
   SpriteInfo diplomacyMood;
@@ -247,7 +248,6 @@ public:
 class GfxData
 {
 private:
-  static const gfx_map<WizardID, WizardGfxSpec, 14> wizardSpecs;
   static const gfx_map<PlayerColor, PlayerGfxSpec, 6> playerSpecs;
   static const gfx_map<RaceID, RaceGfxSpec, 14> raceSpecs;
   static const gfx_map<HouseType, RaceHouseGfxSpec, 3> raceHouseSpecs;
@@ -271,7 +271,6 @@ public:
   static SpriteInfo itemGfxSpec(items::TypeID type, int index);
   
   static const PlayerGfxSpec& playerGfxSpec(PlayerColor color) { return playerSpecs.find(color)->second; }
-  static const WizardGfxSpec& wizardGfxSpec(WizardID wizard) { return wizardSpecs.find(wizard)->second; }
   static const RaceHouseGfxSpec& raceHouseGfxSpec(HouseType race) { return raceHouseSpecs.find(race)->second; }
 
   static const SchoolGfxSpec& schoolGfxSpec(School school) { return schoolSpecs.find(school)->second; }
@@ -283,6 +282,8 @@ public:
   
   static const RaceGfxSpec& raceGfxSpec(const Race* race) { return gfxDataFor<const Race*, RaceGfxSpec>(race); }
   static const UnitGfxSpec& unitGfx(const UnitSpec* spec) { return gfxDataFor<const UnitSpec*, UnitGfxSpec>(spec); }
+  static const WizardGfxSpec& wizardGfx(const Wizard* spec) { return gfxDataFor<const Wizard*, WizardGfxSpec>(spec); }
+
   
   template<typename K, typename V> static const V& gfxDataFor(K k) { return containerFor<K,V>().find(k)->second; }
   template<typename K, typename V> static void registerData(K k, V v) { containerFor<K,V>().insert(std::make_pair(k,v)); }

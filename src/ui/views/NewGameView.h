@@ -30,7 +30,7 @@ private:
   
   Phase phase;
   Settings settings;
-  optional<WizardID> wizard;
+  const Wizard* wizard;
   
   void switchToPhase(Phase phase);
   

@@ -86,7 +86,7 @@ void MagicView::draw()
     {
       if (r.first->isAlive())
       {
-        const auto& wizardGfx = GfxData::wizardGfxSpec(r.first->wizard.ident);
+        const auto& wizardGfx = GfxData::wizardGfx(r.first->wizard);
         Gfx::draw(wizardGfx.getGemmedPortrait(r.first->color), 24+77*c, 4);
       }
       else
