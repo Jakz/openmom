@@ -7,6 +7,10 @@
 #include <unordered_map>
 #include <list>
 
+#if defined(DEBUG)
+#include <sstream>
+#endif
+
 class UnitSpec;
 class RaceUnitSpec;
 class Race;
@@ -37,7 +41,6 @@ private:
   static skill_replacement_map_t skillReplacementMap;
   
 public:
-  static const Trait& trait(const TraitID trait);
   static const Wizard& wizard(const WizardID wizard);
   
   template<typename T> static bool registerData(const key_type& ident, const T data)
@@ -63,6 +66,14 @@ public:
     }
   }
   
+  template<typename T> static void isValidKey(const key_type& ident)
+  {
+    const auto& map = containerFor<T>();
+    const auto it = map.find(ident);
+    LOGD("Identifier not found for %s", ident.c_str());
+    assert(it != map.end());
+  }
+  
   static const experience_levels& experienceLevelsForUnits() { return normalUnitLevels; }
   static const experience_levels& experienceLevelsForHeroes() { return heroLevels; }
   
@@ -71,6 +82,7 @@ public:
   static const UnitSpec* unit(const key_type& ident) { return get<const UnitSpec*>(ident); }
   static const Spell* spell(const key_type& ident) { return get<const Spell*>(ident); }
   static const Race* race(const key_type& ident) { return get<const Race*>(ident); }
+  static const Trait* trait(const key_type& ident) { return get<const Trait*>(ident); }
   
   static const std::unordered_map<key_type, const UnitSpec*> units();
   
@@ -82,12 +94,19 @@ public:
   }
   
 #if defined(DEBUG)
+  template<typename T> static std::string getInfo(T data)
+  {
+    char buffer[128];
+    sprintf(buffer, "%p", data);
+    return buffer;
+  }
+  
   template<typename T> static void getInfo()
   {
     auto& container = containerFor<T>();
     LOGD("[data] size: %zu", container.size())
     for (const auto& entry : container)
-      LOGD("  %s -> %p", entry.first.c_str(), entry.second);
+      LOGD("  %s -> %s", entry.first.c_str(), getInfo(entry.second).c_str());
   }
 #endif
   

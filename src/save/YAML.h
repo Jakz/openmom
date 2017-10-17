@@ -33,4 +33,5 @@ public:
   static void parseUnits();
   static void parseRaces();
   static void parseLevels();
+  static void parseWizards();
 };

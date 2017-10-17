@@ -2,27 +2,6 @@
 
 #include "Localization.h"
 
-static const Trait traitInfo[] = {
-  {TraitID::ALCHEMY,1,NO_SCHOOL},
-  {TraitID::WARLORD,2,NO_SCHOOL},
-  {TraitID::CHANNELER,2,NO_SCHOOL},
-  {TraitID::ARCHMAGE,1,NO_SCHOOL},
-  {TraitID::ARTIFICER,1,NO_SCHOOL},
-  {TraitID::CONJURER,1,NO_SCHOOL},
-  {TraitID::SAGE_MASTER,1,NO_SCHOOL},
-  {TraitID::MYRRAN,3,NO_SCHOOL},
-  {TraitID::DIVINE_POWER,2,NO_SCHOOL},
-  {TraitID::FAMOUS,2,NO_SCHOOL},
-  {TraitID::RUNEMASTER,1,NO_SCHOOL},
-  {TraitID::CHARISMATIC,1,NO_SCHOOL},
-  {TraitID::CHAOS_MASTERY,1,CHAOS},
-  {TraitID::NATURE_MASTERY,1,NATURE},
-  {TraitID::SORCERY_MASTERY,1,SORCERY},
-  {TraitID::INFERNAL_POWER,1,NO_SCHOOL},
-  {TraitID::MANA_FOCUSING,1,NO_SCHOOL},
-  {TraitID::NODE_MASTERY,1,NO_SCHOOL}
-};
-
 static const Wizard wizardInfo[] = {
   {WizardID::MERLIN, "Merlin"},
   {WizardID::RAVEN, "Raven"},
@@ -39,11 +18,6 @@ static const Wizard wizardInfo[] = {
   {WizardID::TLALOC, "Tlaloc"},
   {WizardID::KALI, "Kali"}
 };
-
-const Trait& Data::trait(const TraitID trait)
-{
-  return traitInfo[static_cast<u8>(trait)];
-}
 
 const Wizard& Data::wizard(const WizardID wizard)
 {
@@ -81,6 +55,11 @@ template<> Data::map_t<const Spell*>& Data::containerFor() {
 template<> Data::map_t<const Race*>& Data::containerFor() {
   static map_t<const Race*> raceMap;
   return raceMap;
+}
+
+template<> Data::map_t<const Trait*>& Data::containerFor() {
+  static map_t<const Trait*> traitMap;
+  return traitMap;
 }
 
 template<> Data::map_t<const Building*>& Data::containerFor() {

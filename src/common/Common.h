@@ -24,11 +24,16 @@
   #else
     #define LOGD2(...) do { } while (false);
   #endif
+
+  #define INTEGRITY_CHECK(x) x
+
 #else
   #define LOGD(...) do { } while (false);
   #define LOGD2(...) do { } while (false);
   #define LOGD3(...) do { } while (false);
   #define LOGG(...) do { } while (false);
+
+  #define INTEGRITY_CHECK(x)
 #endif
 
 #define WIDTH (320)
@@ -758,6 +763,7 @@ enum ViewID
 
 
 #include <vector>
+#include <string>
 
 enum School : s8
 {
@@ -772,6 +778,9 @@ enum School : s8
   
   NO_SCHOOL = -1
 };
+
+template<typename T> using school_map = enum_simple_map<School, T, SCHOOL_COUNT>;
+using school_value_map = school_map<s16>;
 
 enum PlayerColor : u8
 {
@@ -833,11 +842,17 @@ enum class TraitID : u8
 
 struct Trait
 {
-  const TraitID ident;
-  const u8 cost;
-  const School school;
+  const std::string identifier;
+  const u16 cost;
+  school_value_map requirement;
+  I18 i18n; //TODO: should be moved in GfxData?
+  
+  Trait(const std::string& identifier, u16 cost) : identifier(identifier), cost(cost), requirement(0) { }
+  Trait(const std::string& identifier, u16 cost, School school, u16 booksRequired) : identifier(identifier), cost(cost), requirement(0) { requirement.set(school, booksRequired); }
+  Trait(const std::string& identifier, u16 cost, school_value_map&& requirement) : identifier(identifier), cost(cost), requirement(requirement) { }
 };
 
+using Retort = Trait;
 
 #pragma mark Map Related
 

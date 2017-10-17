@@ -25,7 +25,7 @@ NewGameView::NewGameView(ViewManager * gvm) : View(gvm)
 
 void NewGameView::activate()
 {
-  switchToPhase(Phase::WIZARD_CHOICE);
+  switchToPhase(Phase::GAME_OPTIONS);
 }
 
 void NewGameView::switchToPhase(Phase phase)

@@ -404,7 +404,7 @@ bool Game::alchemy(Player* player, s32 amount, bool fromGold)
 {
   s32 newAmount = amount;
   
-  if (!player->hasTrait(TraitID::ALCHEMY))
+  if (!player->hasTrait("alchemy"))
     newAmount /= 2;
   
   if (fromGold)

@@ -304,6 +304,21 @@ template<> skills::Type yaml::parse(const N& node)
     assert(false);
 }
 
+template<> school_value_map yaml::parse(const N& node)
+{
+  school_value_map values = school_value_map(0);
+  
+  assert(node.IsSequence() && node.size() % 2 == 0);
+  for (size_t i = 0; i < node.size(); i += 2)
+  {
+    School school = parse<School>(node[i]);
+    s16 value = parse<s16>(node[i+1]);
+    values.set(school, value);
+  }
+  
+  return values;
+}
+
 template<typename T> void yaml::parse(const N& node, std::vector<T>& dest)
 {
   assert(node.IsSequence());
@@ -694,6 +709,26 @@ template<> std::pair<const Race*, RaceGfxSpec> yaml::parse(const N& node)
   return data;
 }
 
+#pragma mark Retort
+template<> const Retort* yaml::parse(const N& node)
+{
+  assert(node.IsMap());
+
+  //TODO: ugly, should not set fields directly but just use constructors
+  
+  std::string identifier = node["identifier"];
+  u16 cost = node["cost"];
+  I18 i18n = i18n::keyForString(node["i18n"]);
+  
+  Retort* retort = new Retort(identifier, cost);
+  retort->i18n = i18n;
+  
+  if (node.hasChild("requirement"))
+    retort->requirement = parse<school_value_map>(node["requirement"]);
+  
+  return retort;
+}
+
 void yaml::parseLevels()
 {
   N file = parse("levels.yaml");
@@ -778,7 +813,19 @@ void yaml::parseUnits()
     Data::registerData(identifier, unit.first);
     GfxData::registerData(unit.first, unit.second);
   }
+}
 
+void yaml::parseWizards()
+{
+  N file = parse("wizards.yaml");
+  auto retorts = file["retorts"];
+  
+  for (const auto& yretort : retorts)
+  {
+    const std::string& identifier = getIdentifier(yretort);
+    const Retort* retort = parse<const Retort*>(yretort);
+    Data::registerData(identifier, retort);
+  }
 }
 
 void yaml::parseRaces()
@@ -816,6 +863,7 @@ void yaml::parse()
   parseLevels();
   parseUnits();
   parseSpells();
+  parseWizards();
   
-  //Data::getInfo<const Skill*>();
+  Data::getInfo<const Trait*>();
 }

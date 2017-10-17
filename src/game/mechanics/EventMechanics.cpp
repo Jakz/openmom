@@ -121,7 +121,7 @@ float EventMechanics::chanceOfMercenaryHeroOffer(const Player* player)
   float chance = (0.03f + (player->getFame()/25) ) / std::min(1, (int)heroCount / 2);
   
   /* x 2 if famous */
-  if (player->hasTrait(TraitID::FAMOUS))
+  if (player->hasTrait("famous"))
     chance *= 2.0f;
   
   return std::min(chance, 0.10f);
@@ -132,7 +132,7 @@ u32 EventMechanics::feeForMercenaryHeroOffer(const Player* player, const Hero* h
   u32 base = 100 + (hero->getSpec()->requiredFame * 10);
   u32 fee = base * (3 * hero->getExperienceLevel()->ordinal()) / 4;
   
-  if (player->hasTrait(TraitID::CHARISMATIC))
+  if (player->hasTrait("charismatic"))
     fee /= 2;
   
   return fee;

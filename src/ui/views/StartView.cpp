@@ -29,7 +29,7 @@ StartView::StartView(ViewManager* gvm) : View(gvm)
 
 void StartView::activate()
 {
-
+  
 }
 
 void StartView::draw()

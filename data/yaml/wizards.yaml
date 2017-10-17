@@ -1,0 +1,83 @@
+retorts:
+  - identifier: alchemy
+    cost: 1
+    i18n: retort_alchemy
+  - identifier: warlord
+    cost: 2
+    i18n: retort_warlord
+  - identifier: channeler
+    cost: 2
+    i18n: retort_channeler
+  - identifier: archmage
+    cost: 1
+    i18n: retort_archmage
+  - identifier: artificer
+    cost: 1
+    i18n: retort_artificer
+  - identifier: conjurer
+    cost: 1
+    i18n: retort_conjurer
+  - identifier: sage_master
+    cost: 1
+    i18n: retort_sage_master
+  - identifier: myrran
+    cost: 3
+    i18n: retort_myrran
+  - identifier: divine_power
+    cost: 2
+    i18n: retort_divine_power
+  - identifier: famous
+    cost: 2
+    i18n: retort_famous
+  - identifier: runemaster
+    cost: 1
+    i18n: retort_runemaster
+  - identifier: charismatic
+    cost: 1
+    i18n: retort_charismatic
+  - identifier: chaos_mastery
+    cost: 1
+    requirement: [chaos, 4]
+    i18n: retort_chaos_mastery
+  - identifier: nature_mastery
+    cost: 1
+    requirement: [nature, 4]
+    i18n: retort_nature_mastery
+  - identifier: sorcery_mastery
+    cost: 1
+    requirement: [sorcery, 4]
+    i18n: retort_sorcery_mastery
+  - identifier: infernal_power
+    cost: 1
+    i18n: retort_infernal_power
+  - identifier: mana_focusing
+    cost: 1
+    i18n: retort_mana_focusing
+  - identifier: node_mastery
+    cost: 1
+    i18n: retort_node_mastery
+    
+    
+wizards:
+  - identifier: merlin
+    default_books: [ life, 5, nature, 5 ]
+    default_traits: [ sage_master ]
+    visuals:
+      i18n: wizard_name_merlin
+      portait_small: [lbx, magic, 18]
+      portrait_large: [lbx, magic, 0]
+      diplomacy_mood: [lbx, moodwiz, 0]
+      gemmed_portrait: [lbx, lilwiz, 0]
+      research_pose: [lbx, wizlab, 0]
+      summon_pose: [lbx, spellscr, 46]
+  - identifier: raven
+    default_books: [ sorcery, 6, nature, 5 ]
+    visuals:
+      i18n: wizard_name_merlin
+      portait_small: [lbx, magic, 19]
+      portrait_large: [lbx, magic, 1]
+      diplomacy_mood: [lbx, moodwiz, 1]
+      gemmed_portrait: [lbx, lilwiz, 1]
+      research_pose: [lbx, wizlab, 1]
+      summon_pose: [lbx, spellscr, 47]
+    

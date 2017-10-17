@@ -75,7 +75,7 @@ protected:
   std::list<ManaNode*> nodes;
   std::list<const SpellCast> spells;
 
-  std::unordered_set<TraitID, enum_hash> traits;
+  std::unordered_set<const Trait*> traits;
 
   SpellBook spellBook;
   Relations relations;
@@ -176,8 +176,16 @@ public:
   City* cityWithFortress() const;
   City* cityWithSummoningCircle() const;
   
-  bool hasTrait(TraitID trait) const { return traits.find(trait) != traits.end(); }
-  bool hasMastery(School school) const { return (school == NATURE && hasTrait(TraitID::NATURE_MASTERY)) || (school == CHAOS && hasTrait(TraitID::CHAOS_MASTERY)) || (school == SORCERY && hasTrait(TraitID::SORCERY_MASTERY)); }
+  bool hasTrait(const std::string& ident) const {
+    //TODO: Data::isKeyValid<Trait>(ident)
+    return std::find_if(traits.begin(), traits.end(), [&ident](const Trait* trait) { return trait->identifier == ident; }) != traits.end();
+  }
+  bool hasMastery(School school) const
+  {
+    return (school == School::NATURE && hasTrait("nature_mastery")) ||
+      (school == School::CHAOS && hasTrait("chaos_mastery")) ||
+      (school == School::SORCERY && hasTrait("sorcery_mastery"));
+  }
   
   const std::string name;
   const Wizard& wizard;

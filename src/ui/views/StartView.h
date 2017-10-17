@@ -17,6 +17,8 @@ private:
   void draw() override;
   void drawPost() override { }
   
+  FontSpriteSheet* mainFont;
+  
 public:
   StartView(ViewManager* gvm);
   
