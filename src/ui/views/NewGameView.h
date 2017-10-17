@@ -32,10 +32,14 @@ private:
   Settings settings;
   const Wizard* wizard;
   
+  school_value_map spellBooks;
+  
   void switchToPhase(Phase phase);
   
   void draw() override;
   void drawPost() override { }
+  
+  void drawSpellBooks(const school_value_map& books, Point position);
   
 public:
   NewGameView(ViewManager* gvm);

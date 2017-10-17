@@ -10,6 +10,7 @@
 #include "GfxData.h"
 #include "UnitSpec.h"
 #include "UnitDraw.h"
+#include "CommonDraw.h"
 
 static const Point gameOptionsButtonPositions[] = {
   { 251, 39 },
@@ -18,7 +19,7 @@ static const Point gameOptionsButtonPositions[] = {
   { 251, 120 }
 };
 
-NewGameView::NewGameView(ViewManager * gvm) : View(gvm), wizard(nullptr)
+NewGameView::NewGameView(ViewManager * gvm) : View(gvm), wizard(nullptr), spellBooks(0)
 {
 
 }
@@ -26,6 +27,8 @@ NewGameView::NewGameView(ViewManager * gvm) : View(gvm), wizard(nullptr)
 void NewGameView::activate()
 {
   wizard = nullptr;
+  spellBooks = school_value_map(0);
+  
   switchToPhase(Phase::GAME_OPTIONS);
 }
 
@@ -120,6 +123,7 @@ void NewGameView::draw()
       {
         Gfx::draw(GfxData::wizardGfx(wizard).portraitLarge, 24, 10);
         Fonts::drawString(i18n::s(GfxData::wizardGfx(wizard).name), FontFaces::Serif::BROWN_START, 76, 118, ALIGN_CENTER);
+        CommonDraw::drawSpellBooks(wizard->defaultBooks, Point(36, 135), false);
       }
 
       break;
