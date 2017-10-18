@@ -202,12 +202,12 @@ public:
   
   class MediumBold {
   public:
-    const static FontSpriteSheet *BROWN_START, *BROWN_ITEM_CRAFT, *GOLD_ITEM_CRAFT, *GRAY_ITEM_CRAFT;
+    const static FontSpriteSheet *BROWN_ITEM_CRAFT, *GOLD_ITEM_CRAFT, *GRAY_ITEM_CRAFT;
   };
   
   class Serif {
   public:
-    const static FontSpriteSheet *TEAL, *BROWN, *BROWN_HELP, *BROWN_START, *YELLOW_SHADOW, *GOLD_SHADOW, *GOLD, *GOLD_ERROR_MESSAGE, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
+    const static FontSpriteSheet *TEAL, *BROWN, *BROWN_HELP, *YELLOW_SHADOW, *GOLD_SHADOW, *GOLD, *GOLD_ERROR_MESSAGE, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
     
     const static FontSpriteSheet *BLACK_INFO_MENU, *BLACK_INFO_MENU_HOVER;
   };

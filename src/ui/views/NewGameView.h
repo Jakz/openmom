@@ -51,7 +51,7 @@ private:
     WIZARD_CHOICE,
     PORTRIT_CHOICE,
     NAME_CHOICE,
-    SPELL_CHOICE,
+    BOOKS_CHOICE,
     RACE_CHOICE,
   };
   
@@ -85,6 +85,14 @@ private:
   void drawSpellBooks(const school_value_map& books, Point position);
   
   u32 countPicks();
+  
+  struct
+  {
+    const FontSpriteSheet* darkBoldFont;
+    const FontSpriteSheet* brightBoldFont;
+    
+    const FontSpriteSheet* darkSerifFont;
+  } fonts;
   
 public:
   NewGameView(ViewManager* gvm);

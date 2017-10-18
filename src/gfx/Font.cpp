@@ -65,7 +65,6 @@ const FontSpriteSheet* FontFaces::Medium::TEAL_BRIGHT = nullptr;
 const FontSpriteSheet* FontFaces::Medium::BLACK = nullptr;
 const FontSpriteSheet* FontFaces::Medium::BLUE_MAGIC = nullptr;
 
-const FontSpriteSheet* FontFaces::MediumBold::BROWN_START = nullptr;
 const FontSpriteSheet* FontFaces::MediumBold::BROWN_ITEM_CRAFT = nullptr;
 const FontSpriteSheet* FontFaces::MediumBold::GRAY_ITEM_CRAFT = nullptr;
 const FontSpriteSheet* FontFaces::MediumBold::GOLD_ITEM_CRAFT = nullptr;
@@ -74,7 +73,6 @@ const FontSpriteSheet* FontFaces::MediumBold::GOLD_ITEM_CRAFT = nullptr;
 const FontSpriteSheet* FontFaces::Serif::TEAL = nullptr;
 const FontSpriteSheet* FontFaces::Serif::BROWN = nullptr;
 const FontSpriteSheet* FontFaces::Serif::BROWN_HELP = nullptr;
-const FontSpriteSheet* FontFaces::Serif::BROWN_START = nullptr;
 const FontSpriteSheet* FontFaces::Serif::YELLOW_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::GOLD_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::GOLD = nullptr;
@@ -133,6 +131,10 @@ namespace fonts
   MediumBoldFont::MediumBoldFont(Color color) : SpecificFontSheet<FONT_MEDIUM_THICK>(new IndexedPalette({0, 0, 0, 0, 0, color, color, color})) { }
   //TODO: should single shadow pixels considered part of low shadow?
   MediumBoldFont::MediumBoldFont(Color color, Color shadow) : SpecificFontSheet<FONT_MEDIUM_THICK>(new IndexedPalette({0, 0, 0, shadow, 0, color, color, color})) { }
+  
+  /* color indices: background, high shadow, edge shadow, low shadow, single pixels, stripes x 4 (low to high) */
+  SerifFont::SerifFont(Color color) : SpecificFontSheet<FONT_SERIF>(new IndexedPalette({0, 0, 0, 0, color, color, color, color, color})) { }
+  SerifFont::SerifFont(Color color, Color shadow) : SpecificFontSheet<FONT_SERIF>(new IndexedPalette({0, 0, 0, shadow, color, color, color, color, color})) { }
 }
 
 
@@ -223,7 +225,6 @@ void FontFaces::buildFonts()
   Medium::BLUE_MAGIC = buildMedium({0, 0, 0, {81,60,48}, {97,69,36}, {146,146,166}});
   
   /* color indices: background, high shadow, edge shadow, low shadow, unused?, main color, middle dots, single pixels */
-  MediumBold::BROWN_START = buildMediumBold({0, 0, 0, {166,134,105}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28}}); // TODO: fix last color
   MediumBold::BROWN_ITEM_CRAFT = buildMediumBold({0, {73,52,44}, 0, {56,32,28}, 0, {166,134,105}, {150,117,93}, {142,113,89}});
   MediumBold::GOLD_ITEM_CRAFT = buildMediumBold({0, {73,52,44}, 0, {56,32,28}, 0, {255,182,43}, {239,166,35}, {223,150,27}});
   MediumBold::GRAY_ITEM_CRAFT = buildMediumBold({0, 0, 0, {65,43,35}, 0, {158,150,146}, {142,134,130}, {142,134,130}});
@@ -234,7 +235,6 @@ void FontFaces::buildFonts()
   Serif::TEAL = buildSerif({0, {24,68,68}, 0, {24,68,68}, {58,166,166}, {243,235,231}, {188,238,218}, {197,239,217}, {193,239,240}});
   Serif::BROWN = buildSerif({0, 0, 0, 0, {120,74,36}, {96,8,14}, {96,8,14}, {96,8,14}, {96,8,14}});
   Serif::BROWN_HELP = buildSerif({0, 0, 0, 0, {97,69,36}, {69,4,4}, {69,4,4}, {69,4,4}, {69,4,4}});
-  Serif::BROWN_START = buildSerif({ 0, 0, 0, {166, 134, 105}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28}, {52,40,28} });
   Serif::YELLOW_SHADOW = buildSerif({0, 0, 0, {15,49,56}, {115,84,69}, {245,161,39}, {229,145,31}, {213,133,27}, {213,133,27}});
   Serif::GOLD_ERROR_MESSAGE = buildSerif({0, 0, 0, {128,13,4},{121,85,36}, {207,138,24}, {245,161,39}, {255,199,103}, {255,243,127}});
   Serif::GOLD_SHADOW = buildSerif({0, 0, 0, {67,43,36},{74,51,44}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});

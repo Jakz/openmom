@@ -120,17 +120,23 @@ NewGameView::NewGameView(ViewManager * gvm) : View(gvm), info({nullptr, "", scho
   nameField.setOnCancel([this](){ switchToPhase(isPremadeWizard ? Phase::WIZARD_CHOICE : Phase::PORTRIT_CHOICE); });
   nameField.setOnComplete([this](const std::string& name) {
     info.name = name;
-    switchToPhase(isPremadeWizard ? Phase::RACE_CHOICE : Phase::SPELL_CHOICE);
+    switchToPhase(isPremadeWizard ? Phase::RACE_CHOICE : Phase::BOOKS_CHOICE);
   });
+  
+  fonts.darkBoldFont = new fonts::MediumBoldFont({52,40,28}, {166,134,105}); // TODO: fix last color?
+  fonts.brightBoldFont = new fonts::MediumBoldFont({166,134,105}, {52,40,28});
+  fonts.darkSerifFont = new fonts::SerifFont({52,40,28}, {166, 134, 105});
 }
 
 void NewGameView::activate()
 {
   info.portrait = Data::wizard("kali"); //TODO nullptr
   info.books = school_value_map({{CHAOS, 3}, {LIFE, 2}, {SORCERY, 4},  {ARCANE, 0}, {DEATH, 0}, {NATURE, 0}}); //TODO school_value_map(0);
+  info.name = "Jack"; // "";
   isPremadeWizard = false; // TODO true
   
-  switchToPhase(Phase::SPELL_CHOICE);
+  
+  switchToPhase(Phase::BOOKS_CHOICE);
   
   nameField.setPosition(Point(194,35));
   nameField.setText("Lo Pan");
@@ -148,7 +154,7 @@ u32 NewGameView::countPicks()
 
 void NewGameView::switchToPhase(Phase phase)
 {
-  const auto* face = FontFaces::MediumBold::BROWN_START;
+  const auto* face = fonts.darkBoldFont;
   const u16 baseX[] = { 169, 245 };
   const u16 baseY = 27;
   const u16 baseButtonSprite = 9;
@@ -255,7 +261,7 @@ void NewGameView::switchToPhase(Phase phase)
       break;
     }
       
-    case Phase::SPELL_CHOICE:
+    case Phase::BOOKS_CHOICE:
     {
       //TODO: background
       const auto button = addButton(Button::buildOffsetted("spell_choice_ok", 252, 182, LSI(NEWGAME, 42), LSI(NEWGAME, 43)));
@@ -313,10 +319,10 @@ void NewGameView::draw()
       break;
     }
       
-    case Phase::SPELL_CHOICE:
+    case Phase::BOOKS_CHOICE:
     {
       Gfx::draw(spell_choice_bg, 0, 0);
-      Fonts::drawString(std::to_string(availablePicks - countPicks())+ " picks", FontFaces::MediumBold::BROWN_START, 221, 184, ALIGN_CENTER);
+      Fonts::drawString(std::to_string(availablePicks - countPicks())+ " picks", fonts.brightBoldFont, 221, 184, ALIGN_CENTER);
       
       for (size_t i = 0; i < SCHOOL_NO_ARCANE_COUNT; ++i)
       {
@@ -331,7 +337,7 @@ void NewGameView::draw()
   if (info.portrait)
   {
     Gfx::draw(GfxData::wizardGfx(info.portrait).portraitLarge, 24, 10);
-    Fonts::drawString(info.name, FontFaces::Serif::BROWN_START, 76, 118, ALIGN_CENTER);
+    Fonts::drawString(info.name, fonts.darkSerifFont, 76, 118, ALIGN_CENTER);
   }
   
   CommonDraw::drawSpellBooks(info.books, Point(36, 135), false);
