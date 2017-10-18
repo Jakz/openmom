@@ -10,6 +10,7 @@ class ViewManager;
 class Textfield : public KeyEventListener
 {
 private:
+  size_t caret;
   std::string text;
   Point position;
   const FontSpriteSheet* font;
@@ -18,11 +19,11 @@ private:
   std::function<void(void)> onCancel;
 
 public:
-  Textfield() : text(""), font(nullptr), position(Point::ZERO) { }
+  Textfield() : caret(0), text(""), font(nullptr), position(Point::ZERO) { }
   
   void setFace(const FontSpriteSheet* font) { this->font = font; }
   void setPosition(const Point& position) { this->position = position; }
-  void setText(const std::string& text) { this->text = text; }
+  void setText(const std::string& text) { this->text = text; this->caret = text.size(); }
   
   bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
   bool textInput(sdl_text_input data) override;

@@ -19,8 +19,28 @@ bool Textfield::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
     onCancel();
   else if (key == KeyboardCode::SDL_SCANCODE_BACKSPACE)
   {
-    if (!text.empty())
-      text.pop_back();
+    if (caret > 0)
+    {
+      text.erase(text.begin()+caret-1);
+      --caret;
+    }
+  }
+  else if (key == KeyboardCode::SDL_SCANCODE_DELETE)
+  {
+    if (caret < text.length())
+    {
+      text.erase(text.begin()+caret);
+    }
+  }
+  else if (key == KeyboardCode::SDL_SCANCODE_LEFT)
+  {
+    if (caret > 0)
+      --caret;
+  }
+  else if (key == KeyboardCode::SDL_SCANCODE_RIGHT)
+  {
+    if (caret < text.size())
+      ++caret;
   }
   
   return true;
@@ -31,7 +51,10 @@ bool Textfield::textInput(sdl_text_input data)
   if (data[1] == '\0')
   {
     if (isalpha(data[0]))
-      text += data[0];
+    {
+      text.insert(caret, &data[0]);
+      ++caret;
+    }
   }
   
   return true;
@@ -39,7 +62,9 @@ bool Textfield::textInput(sdl_text_input data)
 
 void Textfield::draw()
 {
-  u16 x = Fonts::drawString(text, font, position.x, position.y, ALIGN_LEFT);
+  Fonts::drawString(text, font, position.x, position.y, ALIGN_LEFT);
+  
+  u16 x = Fonts::stringWidth(font, text.substr(0, caret));
   
   if (Gfx::fticks % 4 < 2)
     Fonts::drawString("_", font, position.x + x, position.y, ALIGN_LEFT);
