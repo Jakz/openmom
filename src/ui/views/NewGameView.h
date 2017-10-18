@@ -9,7 +9,7 @@ class ViewManager;
 
 class Textfield : public KeyEventListener
 {
-private:
+protected:
   size_t caret;
   std::string text;
   Point position;
@@ -17,17 +17,29 @@ private:
   
   std::function<void(const std::string&)> onComplete;
   std::function<void(void)> onCancel;
+  
+  bool caretEnabled;
 
 public:
-  Textfield() : caret(0), text(""), font(nullptr), position(Point::ZERO) { }
+  Textfield() : caret(0), text(""), font(nullptr), position(Point::ZERO), caretEnabled(true) { }
   
   void setFace(const FontSpriteSheet* font) { this->font = font; }
   void setPosition(const Point& position) { this->position = position; }
   void setText(const std::string& text) { this->text = text; this->caret = text.size(); }
+  void setCaretEnabled(bool enabled) { this->caretEnabled = enabled; }
+  
+  void setOnCancel(std::function<void(void)> onCancel) { this->onCancel = onCancel; }
+  void setOnComplete(std::function<void(const std::string&)> onComplete) { this->onComplete = onComplete; }
   
   bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
   bool textInput(sdl_text_input data) override;
-  void draw();
+  virtual void draw();
+};
+
+class PlayerNameField : public Textfield
+{
+public:
+  void draw() override;
 };
 
 class NewGameView : public View
@@ -38,7 +50,9 @@ private:
     GAME_OPTIONS = 0,
     WIZARD_CHOICE,
     PORTRIT_CHOICE,
-    NAME_CHOICE
+    NAME_CHOICE,
+    SPELL_CHOICE,
+    RACE_CHOICE,
   };
   
   enum
@@ -54,23 +68,23 @@ private:
   };
   
   Phase phase;
+  u32 availablePicks;
   
   Settings settings;
-  const Wizard* wizard;
-  std::string name;
-  school_value_map spellBooks;
-
-
-  Textfield nameField;
+  
+  PlayerSetupInfo info;
   bool isPremadeWizard;
   
-  
+  PlayerNameField nameField;
+
   void switchToPhase(Phase phase);
   
   void draw() override;
   void drawPost() override { }
   
   void drawSpellBooks(const school_value_map& books, Point position);
+  
+  u32 countPicks();
   
 public:
   NewGameView(ViewManager* gvm);

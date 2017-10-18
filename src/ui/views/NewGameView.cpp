@@ -17,6 +17,8 @@ bool Textfield::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
   if (key == KeyboardCode::SDL_SCANCODE_ESCAPE)
     onCancel();
+  else if (key == KeyboardCode::SDL_SCANCODE_KP_ENTER || key == KeyboardCode::SDL_SCANCODE_RETURN || key == KeyboardCode::SDL_SCANCODE_RETURN2)
+    onComplete(text);
   else if (key == KeyboardCode::SDL_SCANCODE_BACKSPACE)
   {
     if (caret > 0)
@@ -34,12 +36,12 @@ bool Textfield::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
   }
   else if (key == KeyboardCode::SDL_SCANCODE_LEFT)
   {
-    if (caret > 0)
+    if (caretEnabled && caret > 0)
       --caret;
   }
   else if (key == KeyboardCode::SDL_SCANCODE_RIGHT)
   {
-    if (caret < text.size())
+    if (caretEnabled && caret < text.size())
       ++caret;
   }
   
@@ -63,11 +65,34 @@ bool Textfield::textInput(sdl_text_input data)
 void Textfield::draw()
 {
   Fonts::drawString(text, font, position.x, position.y, ALIGN_LEFT);
+}
+
+
+
+
+void PlayerNameField::draw()
+{
+  Textfield::draw();
   
-  u16 x = Fonts::stringWidth(font, text.substr(0, caret));
+  u16 x, caretWidth;
+  u16 y = position.y + font->sh() - 1;
+  
+  if (caret == text.length())
+  {
+    x = Fonts::stringWidth(font, text);
+    caretWidth = font->charWidth(' ');
+  }
+  else
+  {
+    x = Fonts::stringWidth(font, text.substr(0, caret));
+    caretWidth = font->charWidth(text[caret]);
+  }
   
   if (Gfx::fticks % 4 < 2)
-    Fonts::drawString("_", font, position.x + x, position.y, ALIGN_LEFT);
+    Gfx::drawLine(Color(158, 125, 101), position.x + x, y, position.x + x + caretWidth + 2, y);
+  
+  //if (Gfx::fticks % 4 < 2)
+  //  Fonts::drawString("_", font, position.x + x, position.y, ALIGN_LEFT);
 }
 
 
@@ -78,7 +103,8 @@ enum sprite_id : sprite_ref
   options_bg = LBXI(NEWGAME, 1),
   wizard_choice_bg = LBXI(NEWGAME, 8),
   portrait_choice_bg = LBXI(NEWGAME, 39),
-  name_choice_bg = LBXI(NEWGAME, 40)
+  name_choice_bg = LBXI(NEWGAME, 40),
+  spell_choice_bg = LBXI(NEWGAME, 41)
 };
 
 static const Point gameOptionsButtonPositions[] = {
@@ -88,21 +114,36 @@ static const Point gameOptionsButtonPositions[] = {
   { 251, 120 }
 };
 
-NewGameView::NewGameView(ViewManager * gvm) : View(gvm), wizard(nullptr), spellBooks(0)
+NewGameView::NewGameView(ViewManager * gvm) : View(gvm), info({nullptr, "", school_value_map(0)})
 {
   nameField.setFace(new fonts::MediumBoldFont({158, 125, 101}));
+  nameField.setOnCancel([this](){ switchToPhase(isPremadeWizard ? Phase::WIZARD_CHOICE : Phase::PORTRIT_CHOICE); });
+  nameField.setOnComplete([this](const std::string& name) {
+    info.name = name;
+    switchToPhase(isPremadeWizard ? Phase::RACE_CHOICE : Phase::SPELL_CHOICE);
+  });
 }
 
 void NewGameView::activate()
 {
-  wizard = nullptr;
-  spellBooks = school_value_map(0);
-  isPremadeWizard = true;
+  info.portrait = Data::wizard("kali"); //TODO nullptr
+  info.books = school_value_map({{CHAOS, 3}, {LIFE, 2}, {SORCERY, 4},  {ARCANE, 0}, {DEATH, 0}, {NATURE, 0}}); //TODO school_value_map(0);
+  isPremadeWizard = false; // TODO true
   
-  switchToPhase(Phase::NAME_CHOICE);
+  switchToPhase(Phase::SPELL_CHOICE);
   
   nameField.setPosition(Point(194,35));
   nameField.setText("Lo Pan");
+  
+  availablePicks = 11;
+}
+
+u32 NewGameView::countPicks()
+{
+  u32 picksFromRetort = std::accumulate(info.retorts.begin(), info.retorts.end(), 0u, [](u32 value, const Retort* retort) { return value + retort->cost; });
+  u32 picksFromBooks = std::accumulate(info.books.begin(), info.books.end(), 0u, [](u32 value, const u32& entry) { return value + entry; });
+  
+  return picksFromRetort + picksFromBooks;
 }
 
 void NewGameView::switchToPhase(Phase phase)
@@ -121,8 +162,8 @@ void NewGameView::switchToPhase(Phase phase)
     case Phase::WIZARD_CHOICE:
     {
       isPremadeWizard = true;
-      wizard = nullptr;
-      spellBooks = school_value_map(0);
+      info.portrait = nullptr;
+      info.books = school_value_map(0);
       break;
     }
     default: break;
@@ -169,13 +210,23 @@ void NewGameView::switchToPhase(Phase phase)
         
         const auto button = addButton(Button::buildOffsetted(i18n::s(gfx.name), baseX[i/7], baseY + deltaY*(i%7), LSI(NEWGAME, baseButtonSprite+i)));
         button->setTextInfo(TextInfo(i18n::s(gfx.name), face));
-        button->setOnEnterAction([this,wizard,wizards]() { this->wizard = wizard; });
+        button->setOnEnterAction([this,wizard,wizards]() {
+          info.portrait = wizard;
+          info.books = wizard->defaultBooks;
+          info.retorts = wizard->defaultRetorts;
+          info.name = i18n::s(GfxData::wizardGfx(wizard).name);
+        });
       }
 
       const auto customButton = addButton(Button::buildOffsetted("custom", baseX[1], baseY+deltaY*7, LSI(NEWGAME, 23)));
       customButton->setTextInfo(TextInfo("Custom", face));
       customButton->setAction([this]() { switchToPhase(Phase::PORTRIT_CHOICE); });
-      customButton->setOnEnterAction([this]() { this->wizard = nullptr; });
+      customButton->setOnEnterAction([this]() {
+        info.portrait = nullptr;
+        info.books = school_value_map(0);
+        info.retorts.clear();
+        info.name = "";
+      });
       
       break;
     }
@@ -192,7 +243,7 @@ void NewGameView::switchToPhase(Phase phase)
         
         const auto button = addButton(Button::buildOffsetted(i18n::s(gfx.name), baseX[i/7], baseY + deltaY*(i%7), LSI(NEWGAME, baseButtonSprite+i)));
         button->setTextInfo(TextInfo(i18n::s(gfx.name), face));
-        button->setOnEnterAction([this,wizard,wizards]() { this->wizard = wizard; });
+        button->setOnEnterAction([this,wizard,wizards]() { info.portrait = wizard; });
       }
       
       break;
@@ -200,6 +251,15 @@ void NewGameView::switchToPhase(Phase phase)
       
     case Phase::NAME_CHOICE:
     {
+      
+      break;
+    }
+      
+    case Phase::SPELL_CHOICE:
+    {
+      //TODO: background
+      const auto button = addButton(Button::buildOffsetted("spell_choice_ok", 252, 182, LSI(NEWGAME, 42), LSI(NEWGAME, 43)));
+      button->deactivate();
       
       break;
     }
@@ -219,6 +279,7 @@ void NewGameView::draw()
   {
     case Phase::GAME_OPTIONS:
     {
+      Gfx::draw(main_bg, 0, 0);
       //TODO: draw buttons bg
       //const Color buttonBG = Color(12,12,12);
       Gfx::draw(options_bg, 165, 0);
@@ -229,6 +290,7 @@ void NewGameView::draw()
       
     case Phase::WIZARD_CHOICE:
     {
+      Gfx::draw(main_bg, 0, 0);
       Fonts::drawString("Select Wizard", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
       Gfx::draw(wizard_choice_bg, 165, 17);
       break;
@@ -236,6 +298,7 @@ void NewGameView::draw()
       
     case Phase::PORTRIT_CHOICE:
     {
+      Gfx::draw(main_bg, 0, 0);
       Fonts::drawString("Select Picture", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
       Gfx::draw(portrait_choice_bg, 165, 17);
       break;
@@ -243,21 +306,35 @@ void NewGameView::draw()
       
     case Phase::NAME_CHOICE:
     {
+      Gfx::draw(main_bg, 0, 0);
       Fonts::drawString("Wizard's Name", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
       Gfx::draw(name_choice_bg, 165+16, 17);
       nameField.draw();
       break;
     }
+      
+    case Phase::SPELL_CHOICE:
+    {
+      Gfx::draw(spell_choice_bg, 0, 0);
+      Fonts::drawString(std::to_string(availablePicks - countPicks())+ " picks", FontFaces::MediumBold::BROWN_START, 221, 184, ALIGN_CENTER);
+      
+      for (size_t i = 0; i < SCHOOL_NO_ARCANE_COUNT; ++i)
+      {
+        School school = CommonDraw::schools[i];
+        CommonDraw::drawSpellBooks(school, info.books[school], Point(197, 49 + 26*i));
+      }
+
+      break;
+    }
   }
   
-  if (wizard)
+  if (info.portrait)
   {
-    Gfx::draw(GfxData::wizardGfx(wizard).portraitLarge, 24, 10);
-    Fonts::drawString(i18n::s(GfxData::wizardGfx(wizard).name), FontFaces::Serif::BROWN_START, 76, 118, ALIGN_CENTER);
-    
-    if (isPremadeWizard)
-      CommonDraw::drawSpellBooks(wizard->defaultBooks, Point(36, 135), false);
+    Gfx::draw(GfxData::wizardGfx(info.portrait).portraitLarge, 24, 10);
+    Fonts::drawString(info.name, FontFaces::Serif::BROWN_START, 76, 118, ALIGN_CENTER);
   }
+  
+  CommonDraw::drawSpellBooks(info.books, Point(36, 135), false);
 }
 
 bool NewGameView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)

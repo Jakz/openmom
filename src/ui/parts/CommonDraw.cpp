@@ -242,10 +242,23 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
   }
 }
 
+const School CommonDraw::schools[SCHOOL_NO_ARCANE_COUNT] = { School::LIFE, School::DEATH, School::CHAOS, School::NATURE, School::SORCERY };
+
+void CommonDraw::drawSpellBooks(School school, u16 amount, Point position)
+{
+  int t = 0;
+  const auto& gfxData = GfxData::schoolGfxSpec(school);
+
+  for (int j = 0; j < amount; ++j)
+  {
+    SpriteInfo gfxBook = gfxData.book.relative(((int)school+j*2+1)%3);
+    Gfx::draw(gfxBook, position + Point(t, 0));
+    t += 8;
+  }
+}
+
 void CommonDraw::drawSpellBooks(const school_value_map& books, Point position, bool centered)
 {
-  static const School schools[] = { School::LIFE, School::DEATH, School::CHAOS, School::NATURE, School::SORCERY };
-
   u16 t = 0;
   u16 tot = 0;
   
@@ -256,19 +269,8 @@ void CommonDraw::drawSpellBooks(const school_value_map& books, Point position, b
   for (u16 i = 0; i < 5; ++i)
   {
     School school = schools[i];
-    int nb = books[school];
-    const auto& gfxData = GfxData::schoolGfxSpec(school);
-    
-    for (int j = 0; j < nb; ++j)
-    {
-      SpriteInfo gfxBook = gfxData.book.relative((i+j*2+1)%3);
-      
-      if (centered)
-        Gfx::draw(gfxBook, 160 - (tot*8)/2 + t, position.y);
-      else
-        Gfx::draw(gfxBook, position + Point(t, 0));
-      
-      t += 8;
-    }
+    Point base = Point(t + (centered ? position.x - (tot*8)/2 : position.x), position.y);
+    drawSpellBooks(school, books[school], base);
+    t += books[school]*8;
   }
 }

@@ -776,6 +776,7 @@ enum School : s8
   SORCERY,
   
   SCHOOL_COUNT,
+  SCHOOL_NO_ARCANE_COUNT = 5,
   
   NO_SCHOOL = -1
 };
@@ -813,6 +814,15 @@ struct Wizard
   std::vector<const Retort*> defaultRetorts;
   
   Wizard() : defaultBooks(0) { }
+};
+
+struct PlayerSetupInfo
+{
+  const Wizard* portrait;
+  std::string name;
+  school_value_map books;
+  std::vector<const Retort*> retorts;
+  PlayerColor color;
 };
 
 

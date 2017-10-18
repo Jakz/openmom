@@ -27,7 +27,10 @@ public:
   static void drawUnitProps(const UnitSpec* spec, u16 xx, u16 yy, s16 max);
   static void drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max);
   
+  static void drawSpellBooks(School school, u16 amount, Point position);
   static void drawSpellBooks(const school_value_map& books, Point position, bool centered);
+  
+  static const School schools[SCHOOL_NO_ARCANE_COUNT];
 
 };
 
