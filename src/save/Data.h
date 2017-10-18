@@ -49,9 +49,7 @@ private:
   
   static skill_replacement_map_t skillReplacementMap;
   
-public:
-  static const Wizard& wizard(const WizardID wizard);
-  
+public:  
   template<typename T> static bool registerData(const key_type& ident, const T data)
   {
     auto& container = containerFor<T>();

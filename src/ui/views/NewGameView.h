@@ -13,7 +13,8 @@ private:
   enum class Phase
   {
     GAME_OPTIONS = 0,
-    WIZARD_CHOICE
+    WIZARD_CHOICE,
+    PORTRIT_CHOICE,
   };
   
   enum
@@ -31,6 +32,7 @@ private:
   Phase phase;
   Settings settings;
   const Wizard* wizard;
+  bool isPremadeWizard;
   
   school_value_map spellBooks;
   
@@ -46,6 +48,8 @@ public:
   
   void activate() override;
   void deactivate() override { }
+  
+  bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
 };
 
 #endif

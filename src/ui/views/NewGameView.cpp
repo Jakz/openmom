@@ -12,6 +12,14 @@
 #include "UnitDraw.h"
 #include "CommonDraw.h"
 
+enum sprite_id : sprite_ref
+{
+  main_bg = LBXI(NEWGAME, 0),
+  options_bg = LBXI(NEWGAME, 1),
+  wizard_choice_bg = LBXI(NEWGAME, 8),
+  portrait_choice_bg = LBXI(NEWGAME, 39)
+};
+
 static const Point gameOptionsButtonPositions[] = {
   { 251, 39 },
   { 251, 66 },
@@ -28,6 +36,7 @@ void NewGameView::activate()
 {
   wizard = nullptr;
   spellBooks = school_value_map(0);
+  isPremadeWizard = true;
   
   switchToPhase(Phase::GAME_OPTIONS);
 }
@@ -35,8 +44,25 @@ void NewGameView::activate()
 void NewGameView::switchToPhase(Phase phase)
 {
   const auto* face = FontFaces::MediumBold::BROWN_START;
+  const u16 baseX[] = { 169, 245 };
+  const u16 baseY = 27;
+  const u16 baseButtonSprite = 9;
+  const u16 deltaY = 22;
   
   buttons.clear();
+  
+  switch (phase)
+  {
+    case Phase::PORTRIT_CHOICE:
+    case Phase::WIZARD_CHOICE:
+    {
+      isPremadeWizard = true;
+      wizard = nullptr;
+      spellBooks = school_value_map(0);
+      break;
+    }
+    default: break;
+  }
   
   switch (phase)
   {
@@ -67,12 +93,9 @@ void NewGameView::switchToPhase(Phase phase)
       
     case Phase::WIZARD_CHOICE:
     {
-      const u16 baseX[] = { 169, 245 };
-      const u16 baseY = 27;
-      const u16 baseButtonSprite = 9;
-      const u16 deltaY = 22;
-      
       const auto wizards = Data::values<const Wizard*>();
+      
+      //TODO: labels are not correctly centered on buttons, verify buildOffsetted
       
       auto it = wizards.begin;
       for (size_t i = 0; i < wizards.size; ++i, ++it)
@@ -87,6 +110,26 @@ void NewGameView::switchToPhase(Phase phase)
 
       const auto customButton = addButton(Button::buildOffsetted("custom", baseX[1], baseY+deltaY*7, LSI(NEWGAME, 23)));
       customButton->setTextInfo(TextInfo("Custom", face));
+      customButton->setAction([this]() { switchToPhase(Phase::PORTRIT_CHOICE); });
+      customButton->setOnEnterAction([this]() { this->wizard = nullptr; });
+      
+      break;
+    }
+      
+    case Phase::PORTRIT_CHOICE:
+    {
+      const auto wizards = Data::values<const Wizard*>();
+      
+      auto it = wizards.begin;
+      for (size_t i = 0; i < wizards.size; ++i, ++it)
+      {
+        const Wizard* wizard = it->second;
+        const WizardGfxSpec& gfx = GfxData::wizardGfx(wizard);
+        
+        const auto button = addButton(Button::buildOffsetted(i18n::s(gfx.name), baseX[i/7], baseY + deltaY*(i%7), LSI(NEWGAME, baseButtonSprite+i)));
+        button->setTextInfo(TextInfo(i18n::s(gfx.name), face));
+        button->setOnEnterAction([this,wizard,wizards]() { this->wizard = wizard; });
+      }
       
       break;
     }
@@ -97,7 +140,7 @@ void NewGameView::switchToPhase(Phase phase)
 
 void NewGameView::draw()
 {
-  Gfx::draw(LSI(NEWGAME, 0), 0, 0);
+  Gfx::draw(main_bg, 0, 0);
 
   /*Gfx::drawGrayScale(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30);
   Gfx::drawGlow(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30, CHAOS);*/
@@ -108,7 +151,7 @@ void NewGameView::draw()
     {
       //TODO: draw buttons bg
       //const Color buttonBG = Color(12,12,12);
-      Gfx::draw(LSI(NEWGAME, 1), 165, 0);
+      Gfx::draw(options_bg, 165, 0);
       //Gfx::fillRect(0, 0, 100, 20, buttonBG);
       
       break;
@@ -117,16 +160,40 @@ void NewGameView::draw()
     case Phase::WIZARD_CHOICE:
     {
       Fonts::drawString("Select Wizard", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
-      Gfx::draw(LSI(NEWGAME, 8), 165, 17);
+      Gfx::draw(wizard_choice_bg, 165, 17);
+      break;
+    }
       
-      if (wizard)
-      {
-        Gfx::draw(GfxData::wizardGfx(wizard).portraitLarge, 24, 10);
-        Fonts::drawString(i18n::s(GfxData::wizardGfx(wizard).name), FontFaces::Serif::BROWN_START, 76, 118, ALIGN_CENTER);
-        CommonDraw::drawSpellBooks(wizard->defaultBooks, Point(36, 135), false);
-      }
-
+    case Phase::PORTRIT_CHOICE:
+    {
+      Fonts::drawString("Select Picture", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
+      Gfx::draw(portrait_choice_bg, 165, 17);
       break;
     }
   }
+  
+  if (wizard)
+  {
+    Gfx::draw(GfxData::wizardGfx(wizard).portraitLarge, 24, 10);
+    Fonts::drawString(i18n::s(GfxData::wizardGfx(wizard).name), FontFaces::Serif::BROWN_START, 76, 118, ALIGN_CENTER);
+    
+    if (isPremadeWizard)
+      CommonDraw::drawSpellBooks(wizard->defaultBooks, Point(36, 135), false);
+  }
+}
+
+bool NewGameView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
+{
+  if (key == KeyboardCode::SDL_SCANCODE_ESCAPE)
+  {
+    if (phase == Phase::PORTRIT_CHOICE)
+    {
+      switchToPhase(Phase::WIZARD_CHOICE);
+    }
+    
+    
+    return true;
+  }
+  
+  return false;
 }

@@ -792,24 +792,6 @@ enum PlayerColor : u8
   NEUTRAL,
 };
 
-enum class WizardID : u8
-{
-  MERLIN = 0,
-  RAVEN,
-  SHAREE,
-  LO_PAN,
-  JAFAR,
-  OBERIC,
-  RJAK,
-  SSS_RA,
-  TAURON,
-  FREYA,
-  HORUS,
-  ARIEL,
-  TLALOC,
-  KALI
-};
-
 struct Trait
 {
   const std::string identifier;

@@ -29,6 +29,8 @@ void MirrorView::draw()
   Gfx::draw(GfxData::wizardGfx(player->wizard).getGemmedPortrait(player->color), 81, 13);
   Fonts::drawString(player->name, FontFaces::Serif::YELLOW_SHADOW, 171, 12, ALIGN_CENTER);
   
+  //TODO: switch to CommonDraw::drawSpellBooks
+  
   u16 t = 0;
   u16 tot = player->book()->totalBooks();
   for (u16 i = 0; i < SCHOOL_COUNT; ++i)
