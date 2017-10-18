@@ -83,6 +83,7 @@ public:
   
   bool keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
   bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
+  bool textInput(sdl_text_input data) override;
   
   inline bool isThereOverview() { return !overviews.empty(); }
   inline View* firstOverview() { return isThereOverview() ? overviews.back() : nullptr; }

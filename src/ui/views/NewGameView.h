@@ -7,6 +7,28 @@
 
 class ViewManager;
 
+class Textfield : public KeyEventListener
+{
+private:
+  std::string text;
+  Point position;
+  const FontSpriteSheet* font;
+  
+  std::function<void(const std::string&)> onComplete;
+  std::function<void(void)> onCancel;
+
+public:
+  Textfield() : text(""), font(nullptr), position(Point::ZERO) { }
+  
+  void setFace(const FontSpriteSheet* font) { this->font = font; }
+  void setPosition(const Point& position) { this->position = position; }
+  void setText(const std::string& text) { this->text = text; }
+  
+  bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
+  bool textInput(sdl_text_input data) override;
+  void draw();
+};
+
 class NewGameView : public View
 {
 private:
@@ -15,6 +37,7 @@ private:
     GAME_OPTIONS = 0,
     WIZARD_CHOICE,
     PORTRIT_CHOICE,
+    NAME_CHOICE
   };
   
   enum
@@ -30,11 +53,16 @@ private:
   };
   
   Phase phase;
+  
   Settings settings;
   const Wizard* wizard;
+  std::string name;
+  school_value_map spellBooks;
+
+
+  Textfield nameField;
   bool isPremadeWizard;
   
-  school_value_map spellBooks;
   
   void switchToPhase(Phase phase);
   
@@ -50,6 +78,7 @@ public:
   void deactivate() override { }
   
   bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
+  bool textInput(sdl_text_input data) override;
 };
 
 #endif

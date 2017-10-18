@@ -246,6 +246,14 @@ bool ViewManager::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mo
     return respondingView()->doKeyReleased(key, kkey, mod);
 }
 
+bool ViewManager::textInput(sdl_text_input data)
+{
+  if (animating)
+    return (*animations.begin())->textInput(data);
+  else
+    return respondingView()->textInput(data);
+}
+
 void ViewManager::setPlayer(LocalPlayer* player)
 {
   std::for_each(views, views+VIEW_COUNT, [player] (View* view) { view->setPlayer(player); });

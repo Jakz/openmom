@@ -12,12 +12,48 @@
 #include "UnitDraw.h"
 #include "CommonDraw.h"
 
+
+bool Textfield::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
+{
+  if (key == KeyboardCode::SDL_SCANCODE_ESCAPE)
+    onCancel();
+  else if (key == KeyboardCode::SDL_SCANCODE_BACKSPACE)
+  {
+    if (!text.empty())
+      text.pop_back();
+  }
+  
+  return true;
+}
+
+bool Textfield::textInput(sdl_text_input data)
+{
+  if (data[1] == '\0')
+  {
+    if (isalpha(data[0]))
+      text += data[0];
+  }
+  
+  return true;
+}
+
+void Textfield::draw()
+{
+  u16 x = Fonts::drawString(text, font, position.x, position.y, ALIGN_LEFT);
+  
+  if (Gfx::fticks % 4 < 2)
+    Fonts::drawString("_", font, position.x + x, position.y, ALIGN_LEFT);
+}
+
+
+
 enum sprite_id : sprite_ref
 {
   main_bg = LBXI(NEWGAME, 0),
   options_bg = LBXI(NEWGAME, 1),
   wizard_choice_bg = LBXI(NEWGAME, 8),
-  portrait_choice_bg = LBXI(NEWGAME, 39)
+  portrait_choice_bg = LBXI(NEWGAME, 39),
+  name_choice_bg = LBXI(NEWGAME, 40)
 };
 
 static const Point gameOptionsButtonPositions[] = {
@@ -29,7 +65,7 @@ static const Point gameOptionsButtonPositions[] = {
 
 NewGameView::NewGameView(ViewManager * gvm) : View(gvm), wizard(nullptr), spellBooks(0)
 {
-
+  nameField.setFace(new fonts::MediumBoldFont({158, 125, 101}));
 }
 
 void NewGameView::activate()
@@ -38,7 +74,10 @@ void NewGameView::activate()
   spellBooks = school_value_map(0);
   isPremadeWizard = true;
   
-  switchToPhase(Phase::GAME_OPTIONS);
+  switchToPhase(Phase::NAME_CHOICE);
+  
+  nameField.setPosition(Point(194,35));
+  nameField.setText("Lo Pan");
 }
 
 void NewGameView::switchToPhase(Phase phase)
@@ -133,6 +172,12 @@ void NewGameView::switchToPhase(Phase phase)
       
       break;
     }
+      
+    case Phase::NAME_CHOICE:
+    {
+      
+      break;
+    }
   }
   
   this->phase = phase;
@@ -170,6 +215,14 @@ void NewGameView::draw()
       Gfx::draw(portrait_choice_bg, 165, 17);
       break;
     }
+      
+    case Phase::NAME_CHOICE:
+    {
+      Fonts::drawString("Wizard's Name", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
+      Gfx::draw(name_choice_bg, 165+16, 17);
+      nameField.draw();
+      break;
+    }
   }
   
   if (wizard)
@@ -184,14 +237,27 @@ void NewGameView::draw()
 
 bool NewGameView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
+  if (phase == Phase::NAME_CHOICE)
+    nameField.keyReleased(key, kkey, mod);
+  
   if (key == KeyboardCode::SDL_SCANCODE_ESCAPE)
   {
     if (phase == Phase::PORTRIT_CHOICE)
     {
       switchToPhase(Phase::WIZARD_CHOICE);
     }
-    
-    
+
+    return true;
+  }
+  
+  return false;
+}
+
+bool NewGameView::textInput(sdl_text_input data)
+{
+  if (phase == Phase::NAME_CHOICE)
+  {
+    nameField.textInput(data);
     return true;
   }
   

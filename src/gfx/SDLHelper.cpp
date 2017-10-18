@@ -44,6 +44,9 @@ bool SDL::init()
   filter = Gfx::createSurface(WIDTH*SCALE_FACTOR, HEIGHT*SCALE_FACTOR);
 #endif
   
+  SDL_version version;
+  SDL_GetVersion(&version);
+  LOGD("[sdl] SDL library initialized, version %d.%d.%d", version.major, version.minor, version.patch);
   /*u16 *r = new u16[256];
   u16 *g = new u16[256];
   u16 *b = new u16[256];
@@ -145,6 +148,12 @@ void SDL::handleEvents()
           gvm->mouseDragged(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, lastButton);
         else
           gvm->mouseMoved(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, BUTTON_LEFT);
+        break;
+      }
+        
+      case SDL_TEXTINPUT:
+      {
+        gvm->textInput(event.text.text);
         break;
       }
       

@@ -381,6 +381,7 @@ constexpr size_t LBX_COUNT = static_cast<size_t>(LBXID::COUNT);
 using KeyboardKey = SDL_Keycode;
 using KeyboardCode = SDL_Scancode;
 using KeyboardMod = SDL_Keymod;
+using sdl_text_input = const char (&)[32];
 
 struct Position
 {

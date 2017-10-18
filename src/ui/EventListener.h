@@ -25,6 +25,7 @@ public:
 class KeyEventListener
 {
 public:
+  virtual bool textInput(sdl_text_input data) { return true; }
   virtual bool keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { return true; };
   virtual bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { return true; };
 };

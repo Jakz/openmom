@@ -77,6 +77,8 @@ public:
   
   bool doKeyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { return keyPressed(key,kkey,mod); }
   bool doKeyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { return keyReleased(key,kkey,mod); }
+  bool doTextInput(sdl_text_input data) { return textInput(data); }
+
   
   friend class ViewManager;
   
