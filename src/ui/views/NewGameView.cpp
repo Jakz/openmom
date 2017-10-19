@@ -152,6 +152,34 @@ u32 NewGameView::countPicks()
   return picksFromRetort + picksFromBooks;
 }
 
+void NewGameView::booksPicked(School school, u16 amount)
+{
+  int dx = amount - info.books[school];
+  
+  
+  /* we're removing books, alwasys do it then check for broken retorts */
+  if (dx < 0)
+  {
+    info.books.set(school, amount);
+    //TODO: check for broken retorts and remove them + error message
+  }
+  else if (dx > 0)
+  {
+    int freePicks = availablePicks - countPicks();
+    /* if we're allowed to add books, if all picks are used then message */
+    if (freePicks > 0)
+    {
+      s16 maxIncrement = std::min(freePicks, dx);
+      info.books.set(school, info.books[school] + maxIncrement);
+    }
+    else
+    {
+      //TODO message
+    }
+
+  }
+}
+
 void NewGameView::switchToPhase(Phase phase)
 {
   const auto* face = fonts.darkBoldFont;
@@ -370,4 +398,29 @@ bool NewGameView::textInput(sdl_text_input data)
   }
   
   return false;
+}
+
+bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
+{
+  if (phase == Phase::BOOKS_CHOICE)
+  {
+    constexpr u16 BX = 189, BY = 48;
+    constexpr u16 BW = 8, BH = 26, VH = 22;
+    constexpr u16 MX = 13, MY = 5;
+    
+    int rx = (x - BX) / BW;
+    int ry = (y - BY) / BH;
+    
+    if (rx >= 0 && rx <= MX && ry >= 0 && ry <= MY)
+    {
+      if (((y - BY) % BH) < VH)
+      {
+        School school = CommonDraw::schools[ry];
+        booksPicked(school, rx);
+      }
+    }
+  }
+  
+  
+  return true;
 }

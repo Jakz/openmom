@@ -85,6 +85,7 @@ private:
   void drawSpellBooks(const school_value_map& books, Point position);
   
   u32 countPicks();
+  void booksPicked(School school, u16 amount);
   
   struct
   {
@@ -102,6 +103,14 @@ public:
   
   bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
   bool textInput(sdl_text_input data) override;
+
+  bool mouseReleased(u16 x, u16 y, MouseButton b) override;
+  bool mouseDragged(u16 x, u16 y, MouseButton b) override {
+    if (b == MouseButton::BUTTON_LEFT)
+      mouseReleased(x,y,b);
+    return true;
+  };
+
 };
 
 #endif
