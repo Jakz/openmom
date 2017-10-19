@@ -42,7 +42,7 @@ public:
   void draw() override;
 };
 
-class NewGameView : public View
+class NewGameView : public ViewWithQueue
 {
 private:
   enum class Phase

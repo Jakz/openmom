@@ -44,7 +44,12 @@ public:
     {
     public:
       using inner_it = typename std::vector<std::reference_wrapper<const key_type>>::const_iterator;
+      
       using value_type = T; //std::pair<const std::string&, T>;
+      using difference_type = ptrdiff_t;
+      using pointer = T*;
+      using reference = T&;
+      using iterator_category = std::random_access_iterator_tag;
       
     private:
       const insertion_ordered_map<T>& data;
@@ -52,6 +57,8 @@ public:
       
     public:
       const_iterator(const insertion_ordered_map<T>& data, inner_it it) : data(data), it(it) { }
+      
+      const_iterator& operator+=(size_t i) { it += i; return *this; }
       
       inline bool operator!=(const const_iterator& other) const { return &data != &other.data || it != other.it; }
       inline const const_iterator& operator++() { ++it; return *this; }
@@ -85,6 +92,7 @@ public:
     
     const_iterator obegin() const { return const_iterator(*this, order.begin()); }
     const_iterator oend() const { return const_iterator(*this, order.end()); }
+    const T& operator[](size_t i) const { return mapping.find(order[i].get())->second; }
     
   };
   

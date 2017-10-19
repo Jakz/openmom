@@ -119,7 +119,7 @@ static const Point gameOptionsButtonPositions[] = {
   { 251, 120 }
 };
 
-NewGameView::NewGameView(ViewManager * gvm) : View(gvm), info({nullptr, "", school_value_map(0)})
+NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr, "", school_value_map(0)})
 {
   nameField.setFace(new fonts::MediumBoldFont({158, 125, 101}));
   nameField.setOnCancel([this](){ switchToPhase(isPremadeWizard ? Phase::WIZARD_CHOICE : Phase::PORTRIT_CHOICE); });
@@ -492,21 +492,44 @@ bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   if (phase == Phase::BOOKS_CHOICE)
   {
-    constexpr u16 BX = 189, BY = 44;
-    constexpr u16 BW = 8, BH = 26, VH = 22;
-    constexpr u16 MX = 13, MY = 5;
-    
-    int rx = (x - BX) / BW;
-    int ry = (y - BY) / BH;
-    
-    if (rx >= 0 && rx <= MX && ry >= 0 && ry < MY)
+    /* books selection grid */
     {
-      if (((y - BY) % BH) > (BH - VH))
+      constexpr u16 BX = 189, BY = 44;
+      constexpr u16 BW = 8, BH = 26, VH = 22;
+      constexpr u16 MX = 13, MY = 5;
+      
+      int rx = (x - BX) / BW;
+      int ry = (y - BY) / BH;
+      
+      if (rx >= 0 && rx <= MX && ry >= 0 && ry < MY)
       {
-        School school = CommonDraw::schools[ry];
-        booksPicked(school, rx);
+        if (((y - BY) % BH) > (BH - VH))
+        {
+          School school = CommonDraw::schools[ry];
+          booksPicked(school, rx);
+        }
       }
     }
+    
+    /* retort selection grid */
+    {
+      const static u16 X[] = { 170, 209, 259 };
+      const static u16 Y = 4;
+      const static u16 H = 6, RH = 7;
+      
+      if (x >= X[0] - 5 && y >= Y && y < Y + H*RH)
+      {
+        int v = (y - Y) / RH;
+        int r = x < 209 ? 0 : (x < 259 ? 1 : 2);
+        
+        int index = v + r*H;
+        
+        const Retort* retort = Data::values<const Retort*>()[index];
+        LOGD("RETORT: %s", i18n::c(retort->i18n));
+      }
+    }
+    
+    
   }
   
   
