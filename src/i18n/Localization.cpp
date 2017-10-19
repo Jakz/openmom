@@ -29,6 +29,23 @@ I18 i18n::keyForString(const std::string& key)
   return nkey;
 }
 
+#if defined(DEBUG)
+std::vector<std::string> i18n::unlocalizedEntries()
+{
+  std::vector<std::string> entries;
+  
+  for (const auto& key : customMapping)
+  {
+    auto it = data.find(key.second);
+    if (it == data.end() || it->second == "#"+key.first+"#")
+      entries.push_back(key.first);
+  }
+  
+  std::sort(entries.begin(), entries.end());
+  return entries;
+}
+#endif
+
 constexpr const I18 i18n::CITY_SIZE_NAMES[];
 constexpr I18 i18n::SPELL_KIND_NAMES[];
 

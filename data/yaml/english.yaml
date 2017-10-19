@@ -14,6 +14,25 @@ entries:
   wizard_name_tlaloc: Tlaloc
   wizard_name_kali: Kali
   
+  retort_alchemy: Alchemy
+  retort_archmage: Archmage
+  retort_artificer: Artificer
+  retort_channeler: Channeler
+  retort_chaos_mastery: Chaos Mastery
+  retort_charismatic: Charismatic
+  retort_conjurer: Conjurer
+  retort_divine_power: Divine Power
+  retort_famous: Famous
+  retort_infernal_power: Infernal Power
+  retort_mana_focusing: Mana Focusing
+  retort_myrran: Myrran
+  retort_nature_mastery: Nature Mastery
+  retort_node_mastery: Node Mastery
+  retort_runemaster: Runemaster
+  retort_sage_master: Sage Master
+  retort_sorcery_mastery: Sorcery Mastery
+  retort_warlord: Warlord
+  
   
   race_name_barbarians: Barbarians
   race_name_beastmen: Beastmen

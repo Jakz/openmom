@@ -126,6 +126,9 @@ NewGameView::NewGameView(ViewManager * gvm) : View(gvm), info({nullptr, "", scho
   fonts.darkBoldFont = new fonts::MediumBoldFont({52,40,28}, {166,134,105}); // TODO: fix last color?
   fonts.brightBoldFont = new fonts::MediumBoldFont({166,134,105}, {52,40,28});
   fonts.darkSerifFont = new fonts::SerifFont({52,40,28}, {166, 134, 105});
+  
+  fonts.tinyBright = fonts::TinyFont::of({190, 154, 117}, {113, 85, 69}, {56, 31, 27});
+  fonts.tinyInactive = fonts::TinyFont::of({97, 73, 60}, {113, 85, 69}, {56, 31, 27});
 }
 
 void NewGameView::activate()
@@ -232,19 +235,19 @@ void NewGameView::switchToPhase(Phase phase)
       
     case Phase::WIZARD_CHOICE:
     {
-      const auto wizards = Data::values<const Wizard*>();
+      const auto& wizards = Data::values<const Wizard*>();
       
       //TODO: labels are not correctly centered on buttons, verify buildOffsetted
       
-      auto it = wizards.begin;
-      for (size_t i = 0; i < wizards.size; ++i, ++it)
+      auto it = wizards.obegin();
+      for (size_t i = 0; i < wizards.size(); ++i, ++it)
       {
-        const Wizard* wizard = (*it)->second;
+        const Wizard* wizard = *it;
         const WizardGfxSpec& gfx = GfxData::wizardGfx(wizard);
         
         const auto button = addButton(Button::buildOffsetted(i18n::s(gfx.name), baseX[i/7], baseY + deltaY*(i%7), LSI(NEWGAME, baseButtonSprite+i)));
         button->setTextInfo(TextInfo(i18n::s(gfx.name), face));
-        button->setOnEnterAction([this,wizard,wizards]() {
+        button->setOnEnterAction([this,wizard]() {
           info.portrait = wizard;
           info.books = wizard->defaultBooks;
           info.retorts = wizard->defaultRetorts;
@@ -267,17 +270,17 @@ void NewGameView::switchToPhase(Phase phase)
       
     case Phase::PORTRIT_CHOICE:
     {
-      const auto wizards = Data::values<const Wizard*>();
+      const auto& wizards = Data::values<const Wizard*>();
       
-      auto it = wizards.begin;
-      for (size_t i = 0; i < wizards.size; ++i, ++it)
+      auto it = wizards.obegin();
+      for (size_t i = 0; i < wizards.size(); ++i, ++it)
       {
-        const Wizard* wizard = (*it)->second;
+        const Wizard* wizard = *it;
         const WizardGfxSpec& gfx = GfxData::wizardGfx(wizard);
         
         const auto button = addButton(Button::buildOffsetted(i18n::s(gfx.name), baseX[i/7], baseY + deltaY*(i%7), LSI(NEWGAME, baseButtonSprite+i)));
         button->setTextInfo(TextInfo(i18n::s(gfx.name), face));
-        button->setOnEnterAction([this,wizard,wizards]() { info.portrait = wizard; });
+        button->setOnEnterAction([this,wizard]() { info.portrait = wizard; });
       }
       
       break;
@@ -352,11 +355,34 @@ void NewGameView::draw()
       Gfx::draw(spell_choice_bg, 0, 0);
       Fonts::drawString(std::to_string(availablePicks - countPicks())+ " picks", fonts.brightBoldFont, 221, 184, ALIGN_CENTER);
       
+      /* draw spellbooks */
       for (size_t i = 0; i < SCHOOL_NO_ARCANE_COUNT; ++i)
       {
         School school = CommonDraw::schools[i];
         CommonDraw::drawSpellBooks(school, info.books[school], Point(197, 49 + 26*i));
       }
+      
+      /* draw retort list */
+      {
+        const static u16 X[] = { 170, 209, 259 };
+        const static u16 Y = 4;
+        const static u16 H = 6, RH = 7;
+        
+        const auto& retorts = Data::values<const Retort*>();
+        auto it = retorts.obegin();
+        for (u16 i = 0; i < retorts.size(); ++i, ++it)
+        {
+          const Retort* retort = *it;
+          
+          bool canBePicked = retort->canBePicked(availablePicks - countPicks(), info.books);
+          const FontSpriteSheet* font = canBePicked ? fonts.tinyBright : fonts.tinyInactive;
+          
+          Fonts::drawString(i18n::s(retort->i18n), font, X[i / H], Y + (i % H) * RH, ALIGN_LEFT);
+        }
+      }
+
+      
+      
 
       break;
     }

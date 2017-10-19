@@ -173,6 +173,14 @@ namespace fonts
     SerifFont(Color color);
     SerifFont(Color color, Color shadow);
   };
+  
+  class TinyFont : public SpecificFontSheet<FONT_TINY>
+  {
+  private:
+    TinyFont(const Palette* palette) : SpecificFontSheet<FONT_TINY>(palette) { };
+  public:
+    static const TinyFont* of(Color color, Color single, Color shadow);
+  };
 }
 
 class FontFaces

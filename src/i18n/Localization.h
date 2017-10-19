@@ -257,6 +257,10 @@ public:
   static constexpr const I18 CITY_SIZE_NAMES[] { I18::CITY_HAMLET, I18::CITY_VILLAGE, I18::CITY_TOWN, I18::CITY_CITY, I18::CITY_CAPITOL };
   static constexpr I18 SPELL_KIND_NAMES[] = { I18::SPELL_KIND_SUMMONING, I18::SPELL_KIND_SPECIAL, I18::SPELL_KIND_CITY, I18::SPELL_KIND_ENCHANTMENT, I18::SPELL_KIND_UNIT_SPELL, I18::SPELL_KIND_COMBAT_SPELL };
   
+#if defined(DEBUG)
+  static std::vector<std::string> unlocalizedEntries();
+#endif
+  
   friend class lbx::Repository;
 };
 

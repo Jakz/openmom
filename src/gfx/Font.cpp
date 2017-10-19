@@ -135,6 +135,9 @@ namespace fonts
   /* color indices: background, high shadow, edge shadow, low shadow, single pixels, stripes x 4 (low to high) */
   SerifFont::SerifFont(Color color) : SpecificFontSheet<FONT_SERIF>(new IndexedPalette({0, 0, 0, 0, color, color, color, color, color})) { }
   SerifFont::SerifFont(Color color, Color shadow) : SpecificFontSheet<FONT_SERIF>(new IndexedPalette({0, 0, 0, shadow, color, color, color, color, color})) { }
+  
+  /* color indices: background, high shadow, edge stroke, low shadow, single pixels, main */
+  const TinyFont* TinyFont::of(Color color, Color single, Color shadow) { return new TinyFont(new IndexedPalette({0, 0, 0, shadow, single, color})); }
 }
 
 

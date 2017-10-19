@@ -26,13 +26,13 @@ class Data
 public:
   using key_type = std::string;
   
-  template<typename T> struct
-  insertion_ordered_map
+  template<typename T>
+  struct insertion_ordered_map
   {
   private:
     using inner_type = std::unordered_map<key_type, T>;
     inner_type mapping;
-    std::vector<typename decltype(mapping)::const_iterator> order;
+    std::vector<std::reference_wrapper<const key_type>> order;
     
   public:
     using key_type = typename inner_type::key_type;
@@ -40,42 +40,57 @@ public:
     using map_iterator = typename inner_type::const_iterator;
     using ordered_iterator = typename decltype(order)::const_iterator;
     
+    class const_iterator
+    {
+    public:
+      using inner_it = typename std::vector<std::reference_wrapper<const key_type>>::const_iterator;
+      using value_type = T; //std::pair<const std::string&, T>;
+      
+    private:
+      const insertion_ordered_map<T>& data;
+      inner_it it;
+      
+    public:
+      const_iterator(const insertion_ordered_map<T>& data, inner_it it) : data(data), it(it) { }
+      
+      inline bool operator!=(const const_iterator& other) const { return &data != &other.data; }
+      inline const const_iterator& operator++() { ++it; return *this; }
+      T operator*() const { return data.find((*it).get())->second; }
+    };
+    
     insertion_ordered_map() { }
     insertion_ordered_map(const std::initializer_list<value_type>& values)
     {
       for (const auto& pair : values)
       {
         auto it = mapping.insert(pair);
-        order.push_back(it.first);
+        order.push_back(std::cref(it.first->first));
       }
     }
     
+    insertion_ordered_map(const insertion_ordered_map& other) = delete;
+    insertion_ordered_map operator=(const insertion_ordered_map& other) = delete;
+    
     size_t size() const { return mapping.size(); }
 
-    std::pair<map_iterator, bool> insert(value_type&& pair) { return mapping.insert(pair); }
+    std::pair<map_iterator, bool> insert(value_type&& pair)
+    {
+      auto it = mapping.insert(pair);
+      order.push_back(std::cref(it.first->first));
+      return it;
+    }
     map_iterator find(const typename inner_type::key_type& key) const { return mapping.find(key); }
     map_iterator begin() const { return mapping.begin(); }
     map_iterator end() const { return mapping.end(); }
     
-    ordered_iterator obegin() const { return order.begin(); }
-    ordered_iterator oend() const { return order.end(); }
+    const_iterator obegin() const { return const_iterator(*this, order.begin()); }
+    const_iterator oend() const { return const_iterator(*this, order.end()); }
     
   };
   
   
   template<typename T> using map_t = insertion_ordered_map<T>; //std::unordered_map<key_type, T>;
 
-  
-  template<typename T>
-  struct data_set
-  {
-    using iterator = typename map_t<T>::ordered_iterator;
-    using value_type = typename iterator::value_type;
-    iterator begin;
-    iterator end;
-    size_t size;
-  };
-  
   using unit_dependency_map_t = std::unordered_map<const UnitSpec*, const Building*>;
   
   using skill_replacement_map_t = std::unordered_map<const Skill*, const Skill*>;
@@ -132,9 +147,9 @@ public:
   static const Trait* trait(const key_type& ident) { return get<const Trait*>(ident); }
   static const Wizard* wizard(const key_type& ident) { return get<const Wizard*>(ident); }
   
-  template <typename T> static data_set<T> values() {
+  template <typename T> static const map_t<T>& values() {
     const auto& map = containerFor<T>();
-    return { map.obegin(), map.oend(), map.size() };
+    return map;
   }
     
   static std::vector<const RaceUnitSpec*> unitsForRace(const Race* race);

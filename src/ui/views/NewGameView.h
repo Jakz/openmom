@@ -93,6 +93,8 @@ private:
     const FontSpriteSheet* brightBoldFont;
     
     const FontSpriteSheet* darkSerifFont;
+    
+    const FontSpriteSheet *tinyBright, *tinyGold, *tinyInactive;
   } fonts;
   
 public:

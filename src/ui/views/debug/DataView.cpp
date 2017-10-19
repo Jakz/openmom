@@ -35,9 +35,9 @@ void DataView::activate()
   const auto& units = Data::values<const UnitSpec*>();
   
   keys.clear();
-  std::transform(units.begin, units.end, std::back_inserter(keys), [](const std::remove_reference<decltype(units)>::type::value_type& entry)
+  std::transform(units.begin(), units.end(), std::back_inserter(keys), [](const std::remove_reference<decltype(units)>::type::value_type& entry)
   {
-    return entry->first;
+    return entry.first;
   });
   
   std::sort(keys.begin(), keys.end(), [](const std::string& s1, const std::string& s2) {
