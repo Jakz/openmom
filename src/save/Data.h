@@ -25,12 +25,52 @@ class Data
 {
 public:
   using key_type = std::string;
-  template<typename T> using map_t = std::unordered_map<key_type, T>;
+  
+  template<typename T> struct
+  insertion_ordered_map
+  {
+  private:
+    using inner_type = std::unordered_map<key_type, T>;
+    inner_type mapping;
+    std::vector<typename decltype(mapping)::const_iterator> order;
+    
+  public:
+    using key_type = typename inner_type::key_type;
+    using value_type = typename inner_type::value_type;
+    using map_iterator = typename inner_type::const_iterator;
+    using ordered_iterator = typename decltype(order)::const_iterator;
+    
+    insertion_ordered_map() { }
+    insertion_ordered_map(const std::initializer_list<value_type>& values)
+    {
+      for (const auto& pair : values)
+      {
+        auto it = mapping.insert(pair);
+        order.push_back(it.first);
+      }
+    }
+    
+    size_t size() const { return mapping.size(); }
+
+    std::pair<map_iterator, bool> insert(value_type&& pair) { return mapping.insert(pair); }
+    map_iterator find(const typename inner_type::key_type& key) const { return mapping.find(key); }
+    map_iterator begin() const { return mapping.begin(); }
+    map_iterator end() const { return mapping.end(); }
+    
+    ordered_iterator obegin() const { return order.begin(); }
+    ordered_iterator oend() const { return order.end(); }
+    
+  };
+  
+  
+  template<typename T> using map_t = insertion_ordered_map<T>; //std::unordered_map<key_type, T>;
+
   
   template<typename T>
   struct data_set
   {
-    using iterator = typename map_t<T>::const_iterator;
+    using iterator = typename map_t<T>::ordered_iterator;
+    using value_type = typename iterator::value_type;
     iterator begin;
     iterator end;
     size_t size;
@@ -43,7 +83,7 @@ public:
   static experience_levels normalUnitLevels, heroLevels;
   
 private:
-  template<typename T> static std::unordered_map<key_type, T>& containerFor();
+  template<typename T> static map_t<T>& containerFor();
   
   static unit_dependency_map_t unitDependsOnBuilding;
   
@@ -94,11 +134,9 @@ public:
   
   template <typename T> static data_set<T> values() {
     const auto& map = containerFor<T>();
-    return { map.begin(), map.end(), map.size() };
+    return { map.obegin(), map.oend(), map.size() };
   }
-  
-  static const std::unordered_map<key_type, const UnitSpec*> units();
-  
+    
   static std::vector<const RaceUnitSpec*> unitsForRace(const Race* race);
   
   static std::pair<unit_dependency_map_t::const_iterator, unit_dependency_map_t::const_iterator> requiredBuildingsForUnit(const UnitSpec* unit)

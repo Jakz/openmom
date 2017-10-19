@@ -32,11 +32,12 @@ DataView::DataView(ViewManager* gvm) : View(gvm)
 void DataView::activate()
 {
   switchMode(Mode::UNITS);
-  const auto& units = Data::units();
+  const auto& units = Data::values<const UnitSpec*>();
   
   keys.clear();
-  std::transform(units.begin(), units.end(), std::back_inserter(keys), [](const std::remove_reference<decltype(units)>::type::value_type& entry) {
-    return entry.first;
+  std::transform(units.begin, units.end, std::back_inserter(keys), [](const std::remove_reference<decltype(units)>::type::value_type& entry)
+  {
+    return entry->first;
   });
   
   std::sort(keys.begin(), keys.end(), [](const std::string& s1, const std::string& s2) {

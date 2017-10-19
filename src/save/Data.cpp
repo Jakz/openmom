@@ -123,5 +123,3 @@ std::vector<const RaceUnitSpec*> Data::unitsForRace(const Race* race)
   
   return racialUnits;
 }
-
-const std::unordered_map<Data::key_type, const UnitSpec*> Data::units() { return containerFor<const UnitSpec*>(); }

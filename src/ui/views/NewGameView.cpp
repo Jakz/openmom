@@ -239,7 +239,7 @@ void NewGameView::switchToPhase(Phase phase)
       auto it = wizards.begin;
       for (size_t i = 0; i < wizards.size; ++i, ++it)
       {
-        const Wizard* wizard = it->second;
+        const Wizard* wizard = (*it)->second;
         const WizardGfxSpec& gfx = GfxData::wizardGfx(wizard);
         
         const auto button = addButton(Button::buildOffsetted(i18n::s(gfx.name), baseX[i/7], baseY + deltaY*(i%7), LSI(NEWGAME, baseButtonSprite+i)));
@@ -272,7 +272,7 @@ void NewGameView::switchToPhase(Phase phase)
       auto it = wizards.begin;
       for (size_t i = 0; i < wizards.size; ++i, ++it)
       {
-        const Wizard* wizard = it->second;
+        const Wizard* wizard = (*it)->second;
         const WizardGfxSpec& gfx = GfxData::wizardGfx(wizard);
         
         const auto button = addButton(Button::buildOffsetted(i18n::s(gfx.name), baseX[i/7], baseY + deltaY*(i%7), LSI(NEWGAME, baseButtonSprite+i)));
