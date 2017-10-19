@@ -115,7 +115,7 @@ s32 PlayerMechanics::computeManaFromNodes(const Player *player)
       if (player->hasMastery(node->school))
         nmana *= g->values.get<float>(Value::SCHOOL_MASTERY_MANA_NODE_MULTIPLIER);
       
-      if (player->hasTrait("node_mastery"))
+      if (player->hasRetort("node_mastery"))
         nmana *= g->values.get<float>(Value::NODE_MASTERY_MANA_MULTIPLIER);
       
       nmana *= g->values.get<float>(Value::DIFFICULTY_MANA_NODE_MULTIPLIER);
@@ -219,7 +219,7 @@ s32 PlayerMechanics::computeBaseCastingSkill(const Player *player)
   //TODO: does additional book found after game start contribute?
   s32 base = player->spellBook.totalBooks()*2;
   
-  if (player->hasTrait("archmage"))
+  if (player->hasRetort("archmage"))
     base += 10;
   
   return base;
@@ -257,7 +257,7 @@ void PlayerMechanics::updateBonusCastingSkill(Player *player)
   
   // ARCHMAGE has a 50% bonus on mana diverted on spell cast gain
   // TODO: check if correct (rounded down and so on)
-  if (player->hasTrait("archmage"))
+  if (player->hasRetort("archmage"))
     totalBonus += std::floor(player->manaRatio(2)/2.0f);
  
   LOGG("spell-skill", "updating spell skill: updating counter from %d to %d, next increase at %d, total bonus skill: %d", player->castingSkillCounter, totalBonus, 2*player->castingSkillBase(), player->castingSkillGained_);

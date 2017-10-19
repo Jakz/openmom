@@ -39,9 +39,9 @@ template<> Data::map_t<const Race*>& Data::containerFor() {
   return raceMap;
 }
 
-template<> Data::map_t<const Trait*>& Data::containerFor() {
-  static map_t<const Trait*> traitMap;
-  return traitMap;
+template<> Data::map_t<const Retort*>& Data::containerFor() {
+  static map_t<const Retort*> retortMap;
+  return retortMap;
 }
 
 template<> Data::map_t<const Wizard*>& Data::containerFor() {

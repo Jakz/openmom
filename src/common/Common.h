@@ -794,16 +794,16 @@ enum PlayerColor : u8
   NEUTRAL,
 };
 
-struct Trait
+struct Retort
 {
   const std::string identifier;
   const u16 cost;
   school_value_map requirement;
   I18 i18n; //TODO: should be moved in GfxData?
   
-  Trait(const std::string& identifier, u16 cost) : identifier(identifier), cost(cost), requirement(0) { }
-  Trait(const std::string& identifier, u16 cost, School school, u16 booksRequired) : identifier(identifier), cost(cost), requirement(0) { requirement.set(school, booksRequired); }
-  Trait(const std::string& identifier, u16 cost, school_value_map&& requirement) : identifier(identifier), cost(cost), requirement(requirement) { }
+  Retort(const std::string& identifier, u16 cost) : identifier(identifier), cost(cost), requirement(0) { }
+  Retort(const std::string& identifier, u16 cost, School school, u16 booksRequired) : identifier(identifier), cost(cost), requirement(0) { requirement.set(school, booksRequired); }
+  Retort(const std::string& identifier, u16 cost, school_value_map&& requirement) : identifier(identifier), cost(cost), requirement(requirement) { }
   
   bool canBePicked(u16 availablePicks, const school_value_map& books) const
   {
@@ -819,8 +819,6 @@ struct Trait
     return true;
   }
 };
-
-using Retort = Trait;
 
 struct Wizard
 {

@@ -115,13 +115,13 @@ s32 SpellMechanics::actualResearchGain(const Player *player, const Spell *spell)
   
   //TODO: check how bonus is calculated, ceil floor?
   // 20% bonus by Sage Master
-  if (player->hasTrait("sage_master"))
+  if (player->hasRetort("sage_master"))
     research += std::floor(research * 0.20f);
   
   if (spell)
   {
     // 25% bonus by Conjurer if Summoning spell
-    if (player->hasTrait("conjurer") && spell->kind == SpellKind::SUMMONING)
+    if (player->hasRetort("conjurer") && spell->kind == SpellKind::SUMMONING)
       research += std::floor(research * 0.25f);
     
     // 15% for misc School mastery if spell of same school
@@ -146,7 +146,7 @@ bool SpellMechanics::willDispel(const SpellCast &cast, const SpellCast &dispelCa
   float chance = dispelMana / (dispelMana + cast.spell->mana.combatManaCost);
   
   // TODO: are traits like ARCHMAGE + NATURE MASTERY cumulative?
-  if (cast.player->hasTrait("archmage") || cast.player->hasTrait("runemaster"))
+  if (cast.player->hasRetort("archmage") || cast.player->hasRetort("runemaster"))
     chance /= 2.0f;
   
   if (cast.player->hasMastery(cast.spell->school))
