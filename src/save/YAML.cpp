@@ -735,7 +735,12 @@ template<> std::pair<const Wizard*, WizardGfxSpec> yaml::parse(const N& node)
   {
     std::vector<std::string> retortNames;
     parse(node["default_retorts"], retortNames);
-    std::transform(retortNames.begin(), retortNames.end(), std::back_inserter(wizard->defaultRetorts), [](const std::string& retortName) { return Data::retort(retortName); });
+    std::transform(
+      retortNames.begin(),
+      retortNames.end(),
+      std::inserter(wizard->defaultRetorts, wizard->defaultRetorts.begin()),
+      [](const std::string& retortName) { return Data::retort(retortName); }
+    );
   }
   
   data.first = wizard;

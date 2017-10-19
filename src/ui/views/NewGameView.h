@@ -83,6 +83,7 @@ private:
   void drawPost() override { }
   
   void drawSpellBooks(const school_value_map& books, Point position);
+  void drawRetortList();
   void errorMessage(const std::string& message);
   
   u32 countPicks();
@@ -95,7 +96,7 @@ private:
     
     const FontSpriteSheet* darkSerifFont;
     
-    const FontSpriteSheet *tinyBright, *tinyGold, *tinyInactive;
+    const FontSpriteSheet *tinyBright, *tinyGold, *tinyInactive, *tinyRetortList;
   } fonts;
   
 public:

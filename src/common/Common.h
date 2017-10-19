@@ -849,7 +849,7 @@ struct Retort
 struct Wizard
 {
   school_value_map defaultBooks;
-  std::vector<const Retort*> defaultRetorts;
+  std::set<const Retort*> defaultRetorts;
   
   Wizard() : defaultBooks(0) { }
 };

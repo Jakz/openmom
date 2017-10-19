@@ -53,7 +53,7 @@ public:
     public:
       const_iterator(const insertion_ordered_map<T>& data, inner_it it) : data(data), it(it) { }
       
-      inline bool operator!=(const const_iterator& other) const { return &data != &other.data; }
+      inline bool operator!=(const const_iterator& other) const { return &data != &other.data || it != other.it; }
       inline const const_iterator& operator++() { ++it; return *this; }
       T operator*() const { return data.find((*it).get())->second; }
     };

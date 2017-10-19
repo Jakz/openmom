@@ -107,7 +107,9 @@ enum sprite_id : sprite_ref
   wizard_choice_bg = LBXI(NEWGAME, 8),
   portrait_choice_bg = LBXI(NEWGAME, 39),
   name_choice_bg = LBXI(NEWGAME, 40),
-  spell_choice_bg = LBXI(NEWGAME, 41)
+  spell_choice_bg = LBXI(NEWGAME, 41),
+  
+  checkmark = LBXI(NEWGAME, 52)
 };
 
 static const Point gameOptionsButtonPositions[] = {
@@ -132,6 +134,9 @@ NewGameView::NewGameView(ViewManager * gvm) : View(gvm), info({nullptr, "", scho
   
   fonts.tinyBright = fonts::TinyFont::of({190, 154, 117}, {113, 85, 69}, {56, 31, 27});
   fonts.tinyInactive = fonts::TinyFont::of({97, 73, 60}, {113, 85, 69}, {56, 31, 27});
+  fonts.tinyGold = fonts::TinyFont::of({239, 166, 35}, {97, 73, 60}, {56, 31, 27});
+  fonts.tinyRetortList = fonts::TinyFont::of({239, 166, 35}, {142, 97, 36}, {52, 40, 28});
+  
 }
 
 void NewGameView::activate()
@@ -139,6 +144,10 @@ void NewGameView::activate()
   info.portrait = Data::wizard("kali"); //TODO nullptr
   info.books = school_value_map({{CHAOS, 3}, {LIFE, 2}, {SORCERY, 4},  {ARCANE, 0}, {DEATH, 0}, {NATURE, 0}}); //TODO school_value_map(0);
   info.name = "Jack"; // "";
+  info.retorts.insert(Data::retort("archmage")); // ...
+  info.retorts.insert(Data::retort("conjurer"));
+  info.retorts.insert(Data::retort("node_mastery"));
+  info.retorts.insert(Data::retort("charismatic"));
   isPremadeWizard = false; // TODO true
   
   
@@ -153,6 +162,41 @@ void NewGameView::activate()
 void NewGameView::errorMessage(const std::string& message)
 {
   player->send(new msgs::Error(message));
+}
+
+void NewGameView::drawRetortList()
+{
+  if (!info.retorts.empty())
+  {
+    size_t i = 0;
+    std::string ss;
+  
+    /* we must use original list because this is the order shown in game */
+    // TODO: order now always correspond to the one of original game
+    const auto& retorts = Data::values<const Retort*>();
+    for (auto it = retorts.obegin(); it != retorts.oend(); ++it)
+    {
+      const Retort* retort = *it;
+      
+      if (info.retorts.find(retort) != info.retorts.end())
+      {
+        if (i == 0)
+          ss = i18n::s(retort->i18n) + '.';
+        else if (i == 1)
+          ss = i18n::s(retort->i18n) + " and " + ss;
+        else
+          ss = i18n::s(retort->i18n) + ", " + ss;
+        
+        ++i;
+      }
+    }
+  
+    // TODO: ugly hack to increase vertical spacing between lines, we should
+    // understand if this font is used with multiple spacings or this is the most
+    // used one
+    Fonts::setFace(fonts.tinyRetortList, fonts.tinyRetortList->ver+1, fonts.tinyRetortList->hor);
+    Fonts::drawStringBounded(ss, 12, 180, 145, ALIGN_LEFT);
+  }
 }
 
 u32 NewGameView::countPicks()
@@ -385,7 +429,15 @@ void NewGameView::draw()
           bool canBePicked = retort->canBePicked(availablePicks - countPicks(), info.books);
           const FontSpriteSheet* font = canBePicked ? fonts.tinyBright : fonts.tinyInactive;
           
-          Fonts::drawString(i18n::s(retort->i18n), font, X[i / H], Y + (i % H) * RH, ALIGN_LEFT);
+          Point pos = Point(X[i / H], Y + (i % H) * RH);
+          
+          if (info.retorts.find(retort) != info.retorts.end())
+          {
+            Gfx::draw(checkmark, pos.delta(-5, 2));
+            font = fonts.tinyGold;
+          }
+          
+          Fonts::drawString(i18n::s(retort->i18n), font, pos.x, pos.y, ALIGN_LEFT);
         }
       }
 
@@ -401,6 +453,8 @@ void NewGameView::draw()
     Gfx::draw(GfxData::wizardGfx(info.portrait).portraitLarge, 24, 10);
     Fonts::drawString(info.name, fonts.darkSerifFont, 76, 118, ALIGN_CENTER);
   }
+  
+  drawRetortList();
   
   CommonDraw::drawSpellBooks(info.books, Point(36, 135), false);
 }
@@ -438,7 +492,7 @@ bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   if (phase == Phase::BOOKS_CHOICE)
   {
-    constexpr u16 BX = 189, BY = 48;
+    constexpr u16 BX = 189, BY = 44;
     constexpr u16 BW = 8, BH = 26, VH = 22;
     constexpr u16 MX = 13, MY = 5;
     
@@ -447,7 +501,7 @@ bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
     
     if (rx >= 0 && rx <= MX && ry >= 0 && ry < MY)
     {
-      if (((y - BY) % BH) < VH)
+      if (((y - BY) % BH) > (BH - VH))
       {
         School school = CommonDraw::schools[ry];
         booksPicked(school, rx);
