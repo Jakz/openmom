@@ -53,7 +53,7 @@ namespace msgs {
   class Error : public Message
   {
   public:
-    Error(std::string& message) : Message(message, ERROR) { }
+    Error(const std::string& message) : Message(message, ERROR) { }
     Error(std::string&& message) : Message(message, ERROR) { }
   };
   

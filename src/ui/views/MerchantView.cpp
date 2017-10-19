@@ -39,8 +39,8 @@ MerchantView::MerchantView(ViewManager* gvm) : ViewWithQueue(gvm)
   buttons.resize(2);
   
   //TODO: font color is slightly wrong
-  buttons[BUY] = Button::buildBistate("buy", 257, 136, button, "Buy", FontFaces::Serif::GOLD);
-  buttons[REJECT] = Button::buildBistate("reject", 257, 155, button, "Reject", FontFaces::Serif::GOLD);
+  buttons[BUY] = Button::buildBistate("buy", 257, 136, button, "Buy", fonts::base::SERIF_GOLD);
+  buttons[REJECT] = Button::buildBistate("reject", 257, 155, button, "Reject", fonts::base::SERIF_GOLD);
 
   openWithOffer(nullptr, 200);
 }
@@ -61,7 +61,7 @@ void MerchantView::draw()
     //TODO: hardcoded for positioning so far
     
     const char* header = "A merchant arrives and offers a magic Shield of Demos for sale. The price is only 200 gold pieces.";
-    Fonts::drawStringBounded(header, FontFaces::Serif::GOLD, 61, 23, 185, ALIGN_LEFT);
+    Fonts::drawStringBounded(header, fonts::base::SERIF_GOLD, 61, 23, 185, ALIGN_LEFT);
     
     Gfx::draw(LSI(ITEMS, 62), 30, 88);
     Fonts::drawString("Shield of Demos", FontFaces::Serif::GOLD_SHADOW, 49, 91, ALIGN_LEFT);

@@ -10,6 +10,9 @@ retorts:
     i18n: retort_channeler
   - identifier: archmage
     cost: 1
+    requirements:
+      - type: any_school
+        count: 4
     i18n: retort_archmage
   - identifier: artificer
     cost: 1
@@ -19,42 +22,80 @@ retorts:
     i18n: retort_conjurer
   - identifier: sage_master
     cost: 1
+    requirements:
+      - type: any_school
+        count: 1
+        times: 2
     i18n: retort_sage_master
   - identifier: myrran
     cost: 3
     i18n: retort_myrran
   - identifier: divine_power
     cost: 2
+    requirements:
+      - type: specific_school
+        school: life
+        count: 4
     i18n: retort_divine_power
   - identifier: famous
     cost: 2
     i18n: retort_famous
   - identifier: runemaster
     cost: 1
+    requirements:
+      - type: any_school
+        count: 2
+        times: 3
     i18n: retort_runemaster
   - identifier: charismatic
     cost: 1
     i18n: retort_charismatic
   - identifier: chaos_mastery
     cost: 1
-    requirement: [chaos, 4]
+    requirements:
+      - type: specific_school
+        school: chaos
+        count: 4
     i18n: retort_chaos_mastery
   - identifier: nature_mastery
     cost: 1
-    requirement: [nature, 4]
+    requirements:
+      - type: specific_school
+        school: nature
+        count: 4
     i18n: retort_nature_mastery
   - identifier: sorcery_mastery
     cost: 1
-    requirement: [sorcery, 4]
+    requirements:
+      - type: specific_school
+        school: sorcery
+        count: 4
     i18n: retort_sorcery_mastery
   - identifier: infernal_power
     cost: 1
+    requirements:
+      - type: specific_school
+        school: death
+        count: 4
     i18n: retort_infernal_power
   - identifier: mana_focusing
     cost: 1
+    requirements:
+      - type: any_school
+        count: 4
     i18n: retort_mana_focusing
   - identifier: node_mastery
     cost: 1
+    requirements:
+      - type: specific_school
+        school: chaos
+        count: 1
+      - type: specific_school
+        school: nature
+        count: 1
+      - type: specific_school
+        school: sorcery
+        count: 1
     i18n: retort_node_mastery
     
 # TODO: starting spells

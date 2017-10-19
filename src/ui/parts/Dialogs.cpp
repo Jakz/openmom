@@ -9,21 +9,23 @@ using namespace dialogs;
 
 void dialogs::drawErrorDialog(const std::string& text)
 {
+  static const FontSpriteSheet* font = fonts::SerifFont::withShadowAndSingle(fonts::base::SERIF_GOLD, {121,85,36}, {128,13,4});
+  
   constexpr u32 MESSAGE_WIDTH = 174;
   constexpr u32 DIALOG_WIDTH = 186;
   constexpr u32 DIALOG_X = 68;
   
   Gfx::resetBuffer();
   Gfx::bindBuffer();
-  int h = Fonts::drawStringBounded(text, FontFaces::Serif::GOLD_ERROR_MESSAGE, 4+MESSAGE_WIDTH/2, 5, MESSAGE_WIDTH, ALIGN_CENTER) + 3;
+  int h = Fonts::drawStringBounded(text, font, 3+MESSAGE_WIDTH/2, 5, MESSAGE_WIDTH, ALIGN_CENTER) + 3 + 1;
   int y = HEIGHT/2 - (h+29)/2;
   Gfx::bindCanvas();
   
   Gfx::bindPalette(LSI(RESOURCE,38));
   Gfx::drawClipped(LSI(RESOURCE,39), DIALOG_X, y+h, 0, 0, DIALOG_WIDTH, 9);
   Gfx::drawClipped(LSI(RESOURCE,38), DIALOG_X, y, 0, 0, DIALOG_WIDTH, h);
-  Gfx::mergeBuffer(4, 4, DIALOG_X + (DIALOG_WIDTH - MESSAGE_WIDTH)/2, y+8, DIALOG_WIDTH, h+10);
   Gfx::unbindPalette();
+  Gfx::mergeBuffer(4, 4, DIALOG_X + (DIALOG_WIDTH - MESSAGE_WIDTH)/2, y+8, DIALOG_WIDTH, h+10);
 }
 
 static const SpriteInfo leftTop = LSI(RESOURCE, 5);
@@ -73,7 +75,7 @@ void InfoMenu::draw() const
   Gfx::unbindPalette();
   
   const auto& title = _delegate->title();
-  Fonts::drawString(title, FontFaces::Serif::GOLD, b.x + s.w/2, b.y + 3, ALIGN_CENTER); // TODO: check font face
+  Fonts::drawString(title, fonts::base::SERIF_GOLD, b.x + s.w/2, b.y + 3, ALIGN_CENTER); // TODO: check font face
   
   //TODO: check if button background are in correct order and such
   for (u16 index = 0; index < _delegate->buttonCount(); ++index)

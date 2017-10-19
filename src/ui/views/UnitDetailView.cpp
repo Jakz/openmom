@@ -42,8 +42,8 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
 {
   buttons.resize(BUTTON_COUNT);
   
-  buttons[HIGH_ACTION] = Button::buildBistate("High Action", 0, 0, LSI(BACKGRND, 24), "", FontFaces::Serif::GOLD)->setAction([this](){this->buttonClicked(HIGH_ACTION);});
-  buttons[LOW_ACTION] = Button::buildBistate("Low Action", 0, 0, LSI(BACKGRND, 24), "", FontFaces::Serif::GOLD)->setAction([this](){this->buttonClicked(LOW_ACTION);});
+  buttons[HIGH_ACTION] = Button::buildBistate("High Action", 0, 0, LSI(BACKGRND, 24), "", fonts::base::SERIF_GOLD)->setAction([this](){this->buttonClicked(HIGH_ACTION);});
+  buttons[LOW_ACTION] = Button::buildBistate("Low Action", 0, 0, LSI(BACKGRND, 24), "", fonts::base::SERIF_GOLD)->setAction([this](){this->buttonClicked(LOW_ACTION);});
 
   buttons[UP_ARROW] = Button::buildTristate("Up", 0, 0, up_arrow)->setAction([this](){skillDraw.prevPage();});
   buttons[DOWN_ARROW] = Button::buildTristate("Down", 0, 0, down_arrow)->setAction([this](){skillDraw.nextPage();});
@@ -137,7 +137,7 @@ void UnitDetailView::draw()
   if (mode == Mode::HERO_HIRE)
   {
     Gfx::draw(hero_hire_banner, 0,0);
-    Fonts::drawString(Fonts::format("Hero for Hire: %u gold", hireCost), FontFaces::Serif::GOLD, 128, 5, ALIGN_CENTER);
+    Fonts::drawString(Fonts::format("Hero for Hire: %u gold", hireCost), fonts::base::SERIF_GOLD, 128, 5, ALIGN_CENTER);
   }
   
   //TODO: font has full teal stroke

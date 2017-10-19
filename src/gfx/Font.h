@@ -169,9 +169,17 @@ namespace fonts
   
   class SerifFont : public SpecificFontSheet<FONT_SERIF>
   {
+  private:
+    SerifFont(const Palette* palette) : SpecificFontSheet<FONT_SERIF>(palette) { };
+    
   public:
     SerifFont(Color color);
     SerifFont(Color color, Color shadow);
+    
+  public:
+    static const SerifFont* of(const std::array<Color, 4>& stripes, Color single);
+    static const SerifFont* withShadow(const SerifFont* font, Color shadow);
+    static const SerifFont* withShadowAndSingle(const SerifFont* font, Color single, Color shadow);
   };
   
   class TinyFont : public SpecificFontSheet<FONT_TINY>
@@ -180,6 +188,11 @@ namespace fonts
     TinyFont(const Palette* palette) : SpecificFontSheet<FONT_TINY>(palette) { };
   public:
     static const TinyFont* of(Color color, Color single, Color shadow);
+  };
+  
+  struct base
+  {
+    static const SerifFont* SERIF_GOLD;
   };
 }
 
@@ -215,7 +228,7 @@ public:
   
   class Serif {
   public:
-    const static FontSpriteSheet *TEAL, *BROWN, *BROWN_HELP, *YELLOW_SHADOW, *GOLD_SHADOW, *GOLD, *GOLD_ERROR_MESSAGE, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
+    const static FontSpriteSheet *TEAL, *BROWN, *BROWN_HELP, *YELLOW_SHADOW, *GOLD_SHADOW, *SILVER_SHADOW, *WHITE_SURVEY, *DARK_BROWN;
     
     const static FontSpriteSheet *BLACK_INFO_MENU, *BLACK_INFO_MENU_HOVER;
   };

@@ -12,6 +12,9 @@
 #include "UnitDraw.h"
 #include "CommonDraw.h"
 
+#include "Messages.h"
+#include "LocalPlayer.h" //TODO: required for error message, maybe unneeded
+
 
 bool Textfield::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
 {
@@ -147,6 +150,11 @@ void NewGameView::activate()
   availablePicks = 11;
 }
 
+void NewGameView::errorMessage(const std::string& message)
+{
+  player->send(new msgs::Error(message));
+}
+
 u32 NewGameView::countPicks()
 {
   u32 picksFromRetort = std::accumulate(info.retorts.begin(), info.retorts.end(), 0u, [](u32 value, const Retort* retort) { return value + retort->cost; });
@@ -177,7 +185,7 @@ void NewGameView::booksPicked(School school, u16 amount)
     }
     else
     {
-      //TODO message
+      errorMessage("You have already made all your picks");
     }
 
   }
@@ -437,7 +445,7 @@ bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
     int rx = (x - BX) / BW;
     int ry = (y - BY) / BH;
     
-    if (rx >= 0 && rx <= MX && ry >= 0 && ry <= MY)
+    if (rx >= 0 && rx <= MX && ry >= 0 && ry < MY)
     {
       if (((y - BY) % BH) < VH)
       {

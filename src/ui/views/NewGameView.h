@@ -83,6 +83,7 @@ private:
   void drawPost() override { }
   
   void drawSpellBooks(const school_value_map& books, Point position);
+  void errorMessage(const std::string& message);
   
   u32 countPicks();
   void booksPicked(School school, u16 amount);

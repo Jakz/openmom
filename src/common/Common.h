@@ -764,6 +764,7 @@ enum ViewID
 
 
 #include <vector>
+#include <set>
 #include <string>
 
 enum School : s8
@@ -796,27 +797,52 @@ enum PlayerColor : u8
 
 struct Retort
 {
+  struct Requirement
+  {
+    enum class Type : u8
+    {
+      ANY_SCHOOL_AT_LEAST,
+      SPECIFIC_SCHOOL_AT_LEAST
+    };
+    
+    Type type;
+    School school;
+    u8 count;
+    u8 times;
+    
+    bool isSatisfied(const school_value_map& books) const
+    {
+      switch (type)
+      {
+        case Type::SPECIFIC_SCHOOL_AT_LEAST: return books[school] >= count;
+        case Type::ANY_SCHOOL_AT_LEAST:
+        {
+          u32 valid = 0;
+          for (const auto c : books)
+            valid += c >= count ? 1 : 0;
+          
+          return valid >= times;
+        }
+      }
+
+      return false;
+    }
+  };
+  
   const std::string identifier;
   const u16 cost;
-  school_value_map requirement;
+  std::vector<Requirement> requirements;
   I18 i18n; //TODO: should be moved in GfxData?
   
-  Retort(const std::string& identifier, u16 cost) : identifier(identifier), cost(cost), requirement(0) { }
-  Retort(const std::string& identifier, u16 cost, School school, u16 booksRequired) : identifier(identifier), cost(cost), requirement(0) { requirement.set(school, booksRequired); }
-  Retort(const std::string& identifier, u16 cost, school_value_map&& requirement) : identifier(identifier), cost(cost), requirement(requirement) { }
+  Retort(const std::string& identifier, u16 cost) : identifier(identifier), cost(cost) { }
+  Retort(const std::string& identifier, u16 cost, const std::vector<Requirement>& requirements) : identifier(identifier), cost(cost), requirements(requirements) { }
   
   bool canBePicked(u16 availablePicks, const school_value_map& books) const
   {
     if (availablePicks < cost)
       return false;
     
-    auto it1 = requirement.begin(), it2 = books.begin();
-    
-    for (; it1 != requirement.end(); ++it1, ++it2)
-      if (*it1 > *it2)
-        return false;
-    
-    return true;
+    return std::all_of(requirements.begin(), requirements.end(), [&books](const Requirement& req) { return req.isSatisfied(books); });
   }
 };
 
@@ -833,7 +859,7 @@ struct PlayerSetupInfo
   const Wizard* portrait;
   std::string name;
   school_value_map books;
-  std::vector<const Retort*> retorts;
+  std::set<const Retort*> retorts;
   PlayerColor color;
 };
 

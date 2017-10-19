@@ -127,7 +127,7 @@ void ItemCraftChargesView::populate(const Player* player)
   add(chargesCaption);
   
   //TODO: localize + font is wrong
-  add(new BasicTextEntry("Choose a spell to embed in this item", FontFaces::Serif::GOLD_ERROR_MESSAGE, Point(WIDTH/2 - 1, 1), ALIGN_CENTER));
+  add(new BasicTextEntry("Choose a spell to embed in this item", FontFaces::Serif::GOLD_SHADOW, Point(WIDTH/2 - 1, 1), ALIGN_CENTER));
 }
 
 void ItemCraftChargesView::chargesPicked(u32 amount)

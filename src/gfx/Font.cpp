@@ -75,8 +75,6 @@ const FontSpriteSheet* FontFaces::Serif::BROWN = nullptr;
 const FontSpriteSheet* FontFaces::Serif::BROWN_HELP = nullptr;
 const FontSpriteSheet* FontFaces::Serif::YELLOW_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::GOLD_SHADOW = nullptr;
-const FontSpriteSheet* FontFaces::Serif::GOLD = nullptr;
-const FontSpriteSheet* FontFaces::Serif::GOLD_ERROR_MESSAGE = nullptr;
 const FontSpriteSheet* FontFaces::Serif::SILVER_SHADOW = nullptr;
 const FontSpriteSheet* FontFaces::Serif::WHITE_SURVEY = nullptr;
 const FontSpriteSheet* FontFaces::Serif::DARK_BROWN = nullptr;
@@ -133,11 +131,29 @@ namespace fonts
   MediumBoldFont::MediumBoldFont(Color color, Color shadow) : SpecificFontSheet<FONT_MEDIUM_THICK>(new IndexedPalette({0, 0, 0, shadow, 0, color, color, color})) { }
   
   /* color indices: background, high shadow, edge shadow, low shadow, single pixels, stripes x 4 (low to high) */
-  SerifFont::SerifFont(Color color) : SpecificFontSheet<FONT_SERIF>(new IndexedPalette({0, 0, 0, 0, color, color, color, color, color})) { }
-  SerifFont::SerifFont(Color color, Color shadow) : SpecificFontSheet<FONT_SERIF>(new IndexedPalette({0, 0, 0, shadow, color, color, color, color, color})) { }
+  SerifFont::SerifFont(Color color) : SerifFont(new IndexedPalette({0, 0, 0, 0, color, color, color, color, color})) { }
+  SerifFont::SerifFont(Color color, Color shadow) : SerifFont(new IndexedPalette({0, 0, 0, shadow, color, color, color, color, color})) { }
+  
+  const SerifFont* SerifFont::of(const std::array<Color, 4>& stripes, Color single) { return new SerifFont(new IndexedPalette({0, 0, 0, 0, single, stripes[0], stripes[1], stripes[2], stripes[3]})); }
+  
+  const SerifFont* SerifFont::withShadow(const SerifFont* font, Color shadow) { return withShadowAndSingle(font, font->getPalette()->get(4), shadow); }
+  const SerifFont* SerifFont::withShadowAndSingle(const SerifFont* font, Color single, Color shadow) {
+    const Palette* p = font->getPalette();
+    return new SerifFont(new IndexedPalette({0, 0, 0, shadow, single, p->get(5), p->get(6), p->get(7), p->get(8)}));
+  }
+
+
   
   /* color indices: background, high shadow, edge stroke, low shadow, single pixels, main */
   const TinyFont* TinyFont::of(Color color, Color single, Color shadow) { return new TinyFont(new IndexedPalette({0, 0, 0, shadow, single, color})); }
+  
+  
+  
+  
+  
+  
+  const SerifFont* base::SERIF_GOLD = nullptr;
+  
 }
 
 
@@ -177,7 +193,6 @@ namespace FontPalettes
 
 void FontFaces::buildFonts()
 {
-  
   
   Palettes::SMALL_WHITE_PALE = new IndexedPalette({0,0,0, {93,93,121}, {142,134,130}, {255,255,255}});
   Palettes::SMALL_YELLOW_PALE = new IndexedPalette({0,0,0,{93,93,121},{142,134,130},{249,232,67}});
@@ -239,9 +254,10 @@ void FontFaces::buildFonts()
   Serif::BROWN = buildSerif({0, 0, 0, 0, {120,74,36}, {96,8,14}, {96,8,14}, {96,8,14}, {96,8,14}});
   Serif::BROWN_HELP = buildSerif({0, 0, 0, 0, {97,69,36}, {69,4,4}, {69,4,4}, {69,4,4}, {69,4,4}});
   Serif::YELLOW_SHADOW = buildSerif({0, 0, 0, {15,49,56}, {115,84,69}, {245,161,39}, {229,145,31}, {213,133,27}, {213,133,27}});
-  Serif::GOLD_ERROR_MESSAGE = buildSerif({0, 0, 0, {128,13,4},{121,85,36}, {207,138,24}, {245,161,39}, {255,199,103}, {255,243,127}});
+  
+  fonts::base::SERIF_GOLD = fonts::SerifFont::of({{{213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}}}, {255,174,12});
+
   Serif::GOLD_SHADOW = buildSerif({0, 0, 0, {67,43,36},{74,51,44}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
-  Serif::GOLD = buildSerif({0, 0, 0, 0, {255,174,12}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
   Serif::SILVER_SHADOW = buildSerif({0, 0, 0, {67,43,36}, {106,97,93}, {159,150,146}, {196,186,182}, {228,219,215}, {255,255,255}});  // TODO: take from fontColors map
   Serif::WHITE_SURVEY = buildSerif({0, 0, 0, {93,93,121}, {142,134,130}, {255,255,255}, {255,255,255}, {255,255,255}, {255,255,255}});
   Serif::DARK_BROWN = buildSerif({0, 0, 0, 0, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}, {73,56,36}});

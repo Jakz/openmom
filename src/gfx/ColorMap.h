@@ -125,6 +125,7 @@ class Palette
 {
 public:
   virtual Color get(u8 index) const = 0;
+  Color operator[](u8 index) const { return get(index); }
   virtual ~Palette() { }
 };
 

@@ -766,6 +766,33 @@ template<> std::pair<const Wizard*, WizardGfxSpec> yaml::parse(const N& node)
 }
 
 #pragma mark Retort
+template<> Retort::Requirement::Type yaml::parse(const N& node)
+{
+  if (node == "any_school")
+    return Retort::Requirement::Type::ANY_SCHOOL_AT_LEAST;
+  else if (node == "specific_school")
+    return Retort::Requirement::Type::SPECIFIC_SCHOOL_AT_LEAST;
+  else
+    assert(false);
+}
+
+template<> Retort::Requirement yaml::parse(const N& node)
+{
+  using Type = Retort::Requirement::Type;
+  
+  Type type = parse<Type>(node["type"]);
+  School school = School::NO_SCHOOL;
+  u8 count = parse<u16>(node["count"]);
+  u8 times = optionalParse(node, "times", 1);
+  
+  if (type == Type::SPECIFIC_SCHOOL_AT_LEAST)
+    school = parse<School>(node["school"]);
+  
+  assert((school == School::NO_SCHOOL) ^ (type == Type::SPECIFIC_SCHOOL_AT_LEAST));
+  
+  return { type, school, count, times };
+}
+
 template<> const Retort* yaml::parse(const N& node)
 {
   assert(node.IsMap());
@@ -779,8 +806,8 @@ template<> const Retort* yaml::parse(const N& node)
   Retort* retort = new Retort(identifier, cost);
   retort->i18n = i18n;
   
-  if (node.hasChild("requirement"))
-    retort->requirement = parse<school_value_map>(node["requirement"]);
+  if (node.hasChild("requirements"))
+    parse(node["requirements"], retort->requirements);
   
   return retort;
 }
