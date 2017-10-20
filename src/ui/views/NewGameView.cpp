@@ -239,6 +239,7 @@ void NewGameView::booksPicked(School school, u16 amount)
 
 void NewGameView::retortToggled(const Retort* retort)
 {
+  //TODO: localize (this will be a problem for plurals )
   static const std::string no_picks_available = "You have already made all your picks";
   static const std::string no_enough_picks_available = "You don't have enough picks left to make this selection.\nYou need %d picks";
   static const std::string no_enough_books_school_prefix = "To select %s you need:   ";

@@ -33,7 +33,7 @@ units:
     movement: 1
     sight: 1
     skills: [ thrown_1, large_shield ]
-    requires: [ smithy ]
+    requires: [ barracks, smithy ]
     visuals:
       i18n: unit_racial_swordsmen
       icon: [lbx, units1, 40]
@@ -131,7 +131,82 @@ units:
     visuals:
       i18n: unit_racial_settlers
       icon: [lbx, units1, 44]
-      figure: [lbx, figures3, 112]   
+      figure: [lbx, figures3, 112]  
+       
+# beastmen      
+  - identifier: beastmen_spearmen
+    type: racial
+    race: beastmen
+    upkeep: 0
+    cost: 20
+    melee: 2
+    ranged: none
+    defense: 2
+    resstance: 5
+    hits: 2
+    figures: 8
+    movement: 1
+    sight: 1
+    visuals:
+      i18n: unit_racial_spearmen
+      icon: [lbx, units1, 46]
+      figure: [lbx, figures4, 8]  
+  - identifier: beastmen_swordsmen
+    type: racial
+    race: beastmen
+    upkeep: 1
+    cost: 40
+    melee: 4
+    ranged: none
+    defense: 2
+    resistance: 5
+    hits: 2
+    figures: 6
+    movement: 1
+    sight: 1
+    skills: [ large_shield ]
+    requires: [ barracks, smithy ]
+    visuals:
+      i18n: unit_racial_swordsmen
+      icon: [lbx, units1, 47]
+      figure: [lbx, figures4, 16]
+  - identifier: beastmen_halberdiers
+    type: racial
+    race: beastmen
+    upkeep: 2
+    cost: 80
+    melee: 5
+    ranged: none
+    defense: 3
+    resistance: 5
+    hits: 2
+    figures: 6
+    movement: 1
+    sight: 1
+    requires: [ armory ]
+    visuals:
+      i18n: unit_racial_halberdiers
+      icon: [lbx, units1, 48]
+      figure: [lbx, figures4, 24]
+  - identifier: beastmen_bowmen
+    type: racial
+    race: beastmen
+    upkeep: 2
+    cost: 60
+    melee: 2
+    ranged: [1, arrow, 8]
+    defense: 1
+    resistance: 5
+    hits: 2
+    figures: 6
+    movement: 1
+    sight: 1
+    requires: [ barrack, sawmill ]
+    visuals:
+      i18n: unit_racial_bowmen
+      icon: [lbx, units1, 49]
+      figure: [lbx, figures4, 32]
+       
 # lizardmen
   - identifier: lizardmen_spearmen
     type: racial
@@ -165,6 +240,7 @@ units:
     movement: 1
     sight: 1
     skills: [ swimming, large_shield ]
+    requires: [ barracks, smithy ]
     visuals:
       i18n: unit_racial_swordsmen
       icon: [lbx, units2, 1]
