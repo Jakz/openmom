@@ -12,6 +12,8 @@
 #include "UnitDraw.h"
 #include "CommonDraw.h"
 
+#include "format.h"
+
 #include "Messages.h"
 #include "LocalPlayer.h" //TODO: required for error message, maybe unneeded
 
@@ -199,7 +201,7 @@ void NewGameView::drawRetortList()
   }
 }
 
-u32 NewGameView::countPicks()
+u32 NewGameView::countPicks() const
 {
   u32 picksFromRetort = std::accumulate(info.retorts.begin(), info.retorts.end(), 0u, [](u32 value, const Retort* retort) { return value + retort->cost; });
   u32 picksFromBooks = std::accumulate(info.books.begin(), info.books.end(), 0u, [](u32 value, const u32& entry) { return value + entry; });
@@ -233,6 +235,61 @@ void NewGameView::booksPicked(School school, u16 amount)
     }
 
   }
+}
+
+void NewGameView::retortToggled(const Retort* retort)
+{
+  static const std::string no_picks_available = "You have already made all your picks";
+  static const std::string no_enough_picks_available = "You don't have enough picks left to make this selection.\nYou need %d picks";
+  static const std::string no_enough_books_school_prefix = "To select %s you need:   ";
+  static const std::string no_enough_books_any_school = "%d pick%s in any %sRealm%s of Magic";
+  static const std::string no_enough_books_specific_school = "%d pick%s in %s Magic";
+
+  
+  if (info.retorts.find(retort) != info.retorts.end())
+    info.retorts.erase(retort);
+  else if (retort->canBePicked(freePicks(), info.books))
+    info.retorts.insert(retort);
+  else if (freePicks() == 0)
+    errorMessage(no_picks_available);
+  else
+  {
+    /* generate error message for requirements */
+    if (freePicks() < retort->cost)
+      errorMessage(fmt::sprintf(no_enough_picks_available, retort->cost));
+    else if (!retort->requirements.empty())
+    {
+      const Retort::Requirement& req = retort->requirements[0];
+      std::string prefix = fmt::sprintf(no_enough_books_school_prefix, i18n::c(retort->i18n));
+      
+      if (req.type == Retort::Requirement::Type::ANY_SCHOOL_AT_LEAST)
+      {
+        errorMessage(
+          prefix +
+          fmt::sprintf(no_enough_books_any_school,
+            req.count,
+            req.count > 1 ? "s" : "",
+            req.times > 1 ? std::to_string(req.times) + " " : "",
+            req.times> 1 ? "s" : "")
+        );
+        
+        assert(retort->requirements.size() == 1);
+      }
+      else if (req.type == Retort::Requirement::Type::SPECIFIC_SCHOOL_AT_LEAST)
+      {
+        std::string suffix = "";
+        for (const auto& r : retort->requirements)
+        {
+          assert(r.type == Retort::Requirement::Type::SPECIFIC_SCHOOL_AT_LEAST);
+          if (!suffix.empty()) suffix += ", ";
+          suffix += fmt::sprintf(no_enough_books_specific_school, r.count, r.count > 1 ? "s" : "", "Chaos"); // TODO: use localized school name
+        }
+        
+        errorMessage(prefix + suffix);
+      }
+    }
+  }
+
 }
 
 void NewGameView::switchToPhase(Phase phase)
@@ -525,7 +582,7 @@ bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
         int index = v + r*H;
         
         const Retort* retort = Data::values<const Retort*>()[index];
-        LOGD("RETORT: %s", i18n::c(retort->i18n));
+        retortToggled(retort);
       }
     }
     

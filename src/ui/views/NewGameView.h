@@ -86,8 +86,11 @@ private:
   void drawRetortList();
   void errorMessage(const std::string& message);
   
-  u32 countPicks();
+  u32 freePicks() const { return availablePicks - countPicks(); }
+  u32 countPicks() const;
+  
   void booksPicked(School school, u16 amount);
+  void retortToggled(const Retort* retort);
   
   struct
   {

@@ -11,7 +11,7 @@ void dialogs::drawErrorDialog(const std::string& text)
 {
   static const FontSpriteSheet* font = fonts::SerifFont::withShadowAndSingle(fonts::base::SERIF_GOLD, {121,85,36}, {128,13,4});
   
-  constexpr u32 MESSAGE_WIDTH = 174;
+  constexpr u32 MESSAGE_WIDTH = 170;//174;
   constexpr u32 DIALOG_WIDTH = 186;
   constexpr u32 DIALOG_X = 68;
   

@@ -1,4 +1,11 @@
 entries:
+  school_arcane: Arcane
+  school_nature: Nature
+  school_chaos: Chaos
+  school_sorcery: Sorcery
+  school_death: Death
+  school_life: Life
+
   wizard_name_merlin: Merlin
   wizard_name_raven: Raven
   wizard_name_sharee: Sharee
