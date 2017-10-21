@@ -607,7 +607,7 @@ void WorldGenerator::makeNodes(Plane plane)
         }
       
       School schools[] = {SORCERY,NATURE,CHAOS};
-      School type;
+      School type = School::NO_SCHOOL;
       
       if (sea == forest && mountain == forest) type = schools[Util::randomIntUpTo(3)];
       else if (sea >= forest && sea >= mountain) type = SORCERY;

@@ -57,7 +57,7 @@ s16 SkillSet::bonusForProperty(Property property) const
     {
       if (e->type == SkillEffect::Type::UNIT_BONUS)
       {
-        const UnitBonus* ub = static_cast<const UnitBonus*>(e);
+        const UnitBonus* ub = e->as<UnitBonus>();
       
         if (ub->sameProperty(property)) bonus += ub->getValue(&unit);
       }
@@ -77,7 +77,7 @@ s16 SkillSet::bonusForProperty(Property property) const
         {
           if (e->type == SkillEffect::Type::ARMY_BONUS)
           {
-            const UnitBonus* ub = static_cast<const UnitBonus*>(e);
+            const ArmyBonus* ub = e->as<ArmyBonus>();
             if (ub->sameProperty(property)) bonus += ub->getValue(&unit);
           }
         }

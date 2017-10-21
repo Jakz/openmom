@@ -432,6 +432,29 @@ template<> const Spell* yaml::parse(const N& node)
   return nullptr;
 }
 
+#pragma mark SkillEffectGroup
+
+// TODO: it's here because it's not needed by the game but for consistency
+// maybe we should move it to Data
+static std::unordered_map<std::string, const SkillEffectGroup*> skillGroups;
+
+template<> SkillEffectGroup::Mode yaml::parse(const N& node)
+{
+  using Mode = SkillEffectGroup::Mode;
+  static const std::unordered_map<std::string, Mode> mapping = {
+    { "keep_greater", SkillEffectGroup::Mode::KEEP_GREATER }
+  };
+  
+  FETCH_OR_FAIL("SkillEffectGroup::Mode", mapping, node);
+}
+                                          
+template<> const SkillEffectGroup* yaml::parse(const N& node)
+{
+  //const std::string& identifier = node["identifier"];
+  SkillEffectGroup::Mode mode = parse<SkillEffectGroup::Mode>(node["policy"]);
+  return new SkillEffectGroup(mode);
+}
+
 #pragma mark SkillEffect
 template<> const SkillEffect* yaml::parse(const N& node)
 {
@@ -452,27 +475,6 @@ template<> const SkillEffect* yaml::parse(const N& node)
   }
   else if (type == "army_bonus")
   {
-    using sgroup_t = ArmyBonus::StackableGroup;
-    
-    static sgroup_t base = sgroup_t::START;
-    static std::unordered_map<std::string, sgroup_t> groups = { };
-    
-    bool hasStackableGroup = node.getWithoutCheck("stackable_group").IsDefined();
-    sgroup_t groupId = sgroup_t::NONE;
-    
-    if (hasStackableGroup)
-    {
-      const std::string& groupName = node["stackable_group"];
-      if (groups.find(groupName) == groups.end())
-      {
-        groups[groupName] = base;
-        groupId = base;
-        base = static_cast<sgroup_t>(static_cast<size_t>(base)+1);
-      }
-      else
-        base = groups[groupName];
-    }
-    
     Property property = parse<Property>(node["property"]);
     s16 value = parse<s16>(node["value"]);
     
@@ -546,28 +548,21 @@ template<> const SkillEffect* yaml::parse(const N& node)
   
   /* parse stackable group if present */
   {
-    using sgroup_t = SkillEffect::StackableGroup;
-    
-    static sgroup_t base = sgroup_t::START;
-    static std::unordered_map<std::string, sgroup_t> groups = { };
-    
-    bool hasStackableGroup = node.getWithoutCheck("stackable_group").IsDefined();
-    sgroup_t groupId = sgroup_t::NONE;
+    bool hasStackableGroup = node.hasChild("stackable_group");
     
     if (hasStackableGroup)
     {
-      const std::string& groupName = node["stackable_group"];
-      if (groups.find(groupName) == groups.end())
+      std::string groupIdentifier = node["stackable_group"];
+      const auto it = skillGroups.find(groupIdentifier);
+      
+      if (it == skillGroups.end())
       {
-        groups[groupName] = base;
-        groupId = base;
-        base = static_cast<sgroup_t>(static_cast<size_t>(base)+1);
+        PARSE_ERROR("skill stackable_group '%s' is not defined", node["stackable_group"].asString().c_str());
+        assert(false);
       }
-      else
-        base = groups[groupName];
+      
+      effect->setGroup(it->second);
     }
-    
-    effect->setGroup(groupId);
   }
 
   return effect;
@@ -895,8 +890,15 @@ const std::string& yaml::getIdentifier(const N& node, const char* key)
 void yaml::parseSkills()
 {
   N file = parse("skills.yaml");
-  auto skills = file["skills"];
   
+  auto groups = file["groups"];
+  for (const auto& ygroup : groups)
+  {
+    const std::string& identifier = getIdentifier(ygroup);
+    skillGroups[identifier] = parse<const SkillEffectGroup*>(ygroup);
+  }
+  
+  auto skills = file["skills"];
   for (const auto& yskill : skills)
   {
     const std::string& identifier = getIdentifier(yskill);

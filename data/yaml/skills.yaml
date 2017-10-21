@@ -1,3 +1,7 @@
+groups:
+  - identifier: resistance_to_all
+    policy: keep_greater
+    
 skills:
   - identifier: mountaineer
     type: native

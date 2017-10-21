@@ -13,20 +13,31 @@
 
 #include <vector>
 
-class SkillEffect;
-using effect_list = std::vector<const SkillEffect*>;
-using effect_init_list = const std::initializer_list<const SkillEffect*>;
-
 enum class Property : u8;
 class Unit;
+
+struct SkillEffectGroup
+{
+public:
+  enum class Mode : u16 { KEEP_ALL, UNIQUE, KEEP_GREATER, KEEP_LESSER };
+ 
+private:
+  Mode _mode;
+  
+  
+public:
+  SkillEffectGroup(Mode mode) : _mode(mode) { }
+  
+  Mode mode() const { return _mode; }
+};
 
 class SkillEffect
 {
 public:
-  enum class StackableGroup : u16 { NONE = 0, START = 1 };
+  enum class Order { GREATER, LESSER, EQUAL, UNCOMPARABLE, DIFFERENT };
   
 protected:
-  StackableGroup stackableGroup;
+  const SkillEffectGroup* _group;
   
 public:
   const enum class Type : u8
@@ -45,11 +56,13 @@ public:
   } type;
   
   
-  SkillEffect(Type type, StackableGroup group) : type(type), stackableGroup(group) { }
-  SkillEffect(Type type) : SkillEffect(type, StackableGroup::NONE) { }
+  SkillEffect(Type type, const SkillEffectGroup* group) : type(type), _group(group) { }
+  SkillEffect(Type type) : SkillEffect(type, nullptr) { }
   
-  void setGroup(StackableGroup group) { this->stackableGroup = group; }
-  StackableGroup group() const { return stackableGroup; }
+  void setGroup(const SkillEffectGroup* group) { this->_group = group; }
+  const SkillEffectGroup* group() const { return _group; }
+
+  virtual Order compare(const Unit* unit, const SkillEffect* other) const { return Order::UNCOMPARABLE; }
   
   template<typename T> const T* as() const { return static_cast<const T*>(this); }
 };
@@ -100,9 +113,8 @@ public:
 class SimpleParametricEffect : public SimpleEffect
 {
 public:
-  const s16 param;
-  
   SimpleParametricEffect(SkillEffect::Type type, Type effect, s16 param) : SimpleEffect(type, effect), param(param) { }
+  const s16 param;
 };
 
 class SpecialAttackEffect : public SimpleEffect
@@ -126,22 +138,33 @@ public:
   
   virtual s16 getValue(const Unit* unit) const { return value; }
   
-  // TODO: finish
+  Order compare(const Unit* unit, const SkillEffect* other) const override
+  {
+    if (other->type != SkillEffect::Type::UNIT_BONUS && other->type != SkillEffect::Type::ARMY_BONUS && other->type != SkillEffect::Type::COMBAT_BONUS)
+      return Order::UNCOMPARABLE;
+    else
+    {
+      const PropertyBonus* bonus = other->as<PropertyBonus>();
+      
+      if (bonus->property != property)
+        return Order::UNCOMPARABLE;
+      else
+      {
+        if (property < bonus->property)
+          return Order::LESSER;
+        else if (property > bonus->property)
+          return Order::GREATER;
+        else
+          return Order::EQUAL;
+      }
+    }
+  }
 };
 
 class UnitBonus : public PropertyBonus
 {
 public:
   UnitBonus(Property property, s16 value) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, value) { }
-
-  
-  static const effect_list build(std::initializer_list<Property> properties, s16 value)
-  {
-    effect_list effects;
-    effects.resize(properties.size());
-    std::transform(properties.begin(), properties.end(), effects.begin(), [&] (const Property& property) { return new UnitBonus(property, value); });
-    return effects;
-  }
 };
 
 class UnitLevelBonus : public UnitBonus
@@ -231,8 +254,27 @@ public:
   MovementEffect(MovementType type) : SkillEffect(SkillEffect::Type::MOVEMENT), _type(type) { }
   bool operator==(MovementType type) const { return _type == type; }
   MovementType type() const { return _type; }
+  
+  Order compare(const Unit* unit, const SkillEffect* other) const override
+  {
+    if (other->type == SkillEffect::Type::MOVEMENT)
+      return other->as<MovementEffect>()->type() == type() ? Order::EQUAL : Order::DIFFERENT;
+    else
+      return Order::UNCOMPARABLE;
+  }
 };
 
+class SkillEffect;
+using effect_list = std::vector<const SkillEffect*>;
+using effect_init_list = const std::initializer_list<const SkillEffect*>;
 
+//TODO: to remove after hardcoded effects has been removed
+static const effect_list unit_bonus_build(std::initializer_list<Property> properties, s16 value)
+{
+  effect_list effects;
+  effects.resize(properties.size());
+  std::transform(properties.begin(), properties.end(), effects.begin(), [&] (const Property& property) { return new UnitBonus(property, value); });
+  return effects;
+}
 
 #endif

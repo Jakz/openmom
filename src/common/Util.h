@@ -60,8 +60,8 @@ public:
   static constexpr size_t DIRS_LENGTH = sizeof(DIRS)/sizeof(DIRS[0]);
   static constexpr size_t ODIRS_LENGTH = sizeof(ODIRS)/sizeof(ODIRS[0]);
   
-  template<typename T> static const T& randomElement(const std::vector<T>& data) { return data[randomIntUpTo(data.size())]; }
-  template<typename T> static typename T::const_iterator randomElementIterator(const T& data) { return data.begin() + randomIntUpTo(data.size()); }
+  template<typename T> static const T& randomElement(const std::vector<T>& data) { return data[randomIntUpTo((u32)data.size())]; }
+  template<typename T> static typename T::const_iterator randomElementIterator(const T& data) { return data.begin() + randomIntUpTo((u32)data.size()); }
 
   
   static inline s32 wrap(const s32 v, const s32 m) { return v < 0 ? (v + m) : ((v >= m) ? v%m : v); }

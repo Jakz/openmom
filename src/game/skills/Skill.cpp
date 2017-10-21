@@ -95,7 +95,7 @@ namespace skillimpl
   static const ConcreteSkill CREATE_ROAD = ConcreteSkill(SkillBase::CREATE_ROAD, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::CREATE_ROAD)});
   static const ConcreteSkill WALL_CRUSHING = ConcreteSkill(SkillBase::WALL_CRUSHING, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::WALL_CRUSHING)}); // maybe should be combat?
   
-  static const ConcreteSkill LUCKY = ConcreteSkill(SkillBase::LUCKY, UnitBonus::build({Property::TO_HIT, Property::TO_DEFEND, Property::RESIST}, 1));
+  static const ConcreteSkill LUCKY = ConcreteSkill(SkillBase::LUCKY, unit_bonus_build({Property::TO_HIT, Property::TO_DEFEND, Property::RESIST}, 1));
   
   static const ConcreteSkill NEGATE_FIRST_STRIKE = ConcreteSkill(SkillBase::NEGATE_FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::NEGATE_FIRST_STRIKE)} );
   static const ConcreteSkill ARMOR_PIERCING = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::ARMOR_PIERCING)} );
@@ -157,14 +157,14 @@ namespace skillimpl
   // TODO: SPELL_CASTER
   
   static const ConcreteSkill SPELL_ELDRITCH_WEAPON = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new CombatBonus(Property::TO_DEFEND, -1, CombatBonus::Phase::ATTACKER, CombatBonus::Phase::DEFENDER, false)});
-  static const ConcreteSkill SPELL_FLAME_BLADE = ConcreteSkill(SkillBase::SPELL_FLAME_BLADE, UnitBonus::build({Property::MELEE, Property::RANGED, Property::THROWN_ATTACK}, 2));
+  static const ConcreteSkill SPELL_FLAME_BLADE = ConcreteSkill(SkillBase::SPELL_FLAME_BLADE, unit_bonus_build({Property::MELEE, Property::RANGED, Property::THROWN_ATTACK}, 2));
 
-  static const ConcreteSkill SPELL_RESIST_ELEMENTS = ConcreteSkill(SkillBase::SPELL_RESIST_ELEMENTS, UnitBonus::build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 3));
+  static const ConcreteSkill SPELL_RESIST_ELEMENTS = ConcreteSkill(SkillBase::SPELL_RESIST_ELEMENTS, unit_bonus_build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 3));
   static const ConcreteSkill SPELL_GIANT_STRENGTH = ConcreteSkill(SkillBase::SPELL_GIANT_STRENGTH, {new UnitBonus(Property::MELEE,1)} );
   static const ConcreteSkill SPELL_STONE_SKIN = ConcreteSkill(SkillBase::SPELL_STONE_SKIN, {new UnitBonus(Property::SHIELDS,1)} );
   static const ConcreteSkill SPELL_SWIMMING = ConcreteSkill(SkillBase::SPELL_SWIMMING, {new MovementEffect(MovementType::SWIMMING)});
   static const ConcreteSkill SPELL_PATH_FINDER = ConcreteSkill(SkillBase::SPELL_PATH_FINDER, {new MovementEffect(MovementType::PATH_FINDER)});
-  static const ConcreteSkill SPELL_ELEMENTAL_ARMOR = ConcreteSkill(SkillBase::SPELL_ELEMENTAL_ARMOR, UnitBonus::build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 10));
+  static const ConcreteSkill SPELL_ELEMENTAL_ARMOR = ConcreteSkill(SkillBase::SPELL_ELEMENTAL_ARMOR, unit_bonus_build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 10));
   static const ConcreteSkill SPELL_IRON_SKIN = ConcreteSkill(SkillBase::SPELL_IRON_SKIN, {new UnitBonus(Property::SHIELDS,10)} );
 
   static const ConcreteSkill SPELL_RESIST_MAGIC = ConcreteSkill(SkillBase::SPELL_RESIST_MAGIC, {new UnitBonus(Property::RESIST,3)} );
