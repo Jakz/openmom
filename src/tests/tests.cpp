@@ -15,16 +15,6 @@ int main( int argc, char* argv[] )
   return result < 0xff ? result : 0xff;
 }
 
-TEST_CASE("direction mask operators") {
-  REQUIRE(DirJoin::N << 1 == DirJoin::NW);
-  REQUIRE(DirJoin::N << 2 == DirJoin::W);
-}
-
-TEST_CASE("grouping of numbers formatting") {
-  REQUIRE(strings::groupDigits(1) == "1");
-  REQUIRE(strings::groupDigits(1000) == "1,000");
-}
-
 #include "Data.h"
 #include "Unit.h"
 #include "UnitSpec.h"
@@ -36,8 +26,31 @@ struct PropertyModifier
   s16 value;
 };
 
+static const std::unordered_map<Property, std::string, enum_hash> propertyNames = {
+  { Property::SHIELDS, "shields" },
+  { Property::SHIELDS_LIFE, "shields_life" },
+  { Property::SHIELDS_DEATH, "shields_death" },
+  { Property::SHIELDS_SORCERY, "shields_sorcery" },
+  { Property::SHIELDS_CHAOS, "shields_chaos" },
+  { Property::SHIELDS_NATURE, "shields_nature" },
+  
+  { Property::RESIST, "resistance" },
+  { Property::RESIST_LIFE, "resistance_life" },
+  { Property::RESIST_DEATH, "resistance_death" },
+  { Property::RESIST_SORCERY, "resistance_sorcery" },
+  { Property::RESIST_CHAOS, "resistance_chaos" },
+  { Property::RESIST_NATURE, "resistance_nature" }
+};
+
+std::ostream& operator<<(std::ostream& out, Property p) { out << propertyNames.find(p)->second; return out; }
+
 namespace test
 {
+  using unit_ptr = std::unique_ptr<Unit>;
+  using unit_pair = std::pair<unit_ptr, unit_ptr>;
+  using identifier = const std::string&;
+  using identifier_list = const std::initializer_list<std::string>&;
+  
   static const std::array<Property, 12> properties = { {
     Property::SHIELDS,
     Property::SHIELDS_LIFE,
@@ -54,39 +67,68 @@ namespace test
     Property::RESIST_NATURE,
   } };
   
-  bool testModifiers(const Unit* unit, const std::initializer_list<PropertyModifier>& modifiers)
+
+  
+  
+  void testModifiers(const Unit* unit1, const Unit* unit2, const std::initializer_list<PropertyModifier>& modifiers)
   {
     for (Property p : properties)
     {
       auto it = std::find_if(modifiers.begin(), modifiers.end(), [&p](const PropertyModifier& mod) { return mod.property == p; });
       
-      if (it == modifiers.end() && unit->getProperty(p) != unit->spec->getProperty(p))
-        return false;
-      else if (unit->getProperty(p) != (unit->spec->getProperty(p) + it->value))
-        return false;
-    }
-    
-    return true;
-  }
-  
-  std::unique_ptr<Unit> raceUnitWithSpells(const std::string& unitSpec, const std::initializer_list<std::string>& spellSkills)
-  {
-    const UnitSpec* spec = Data::unit(unitSpec);
-    Unit* unit = new RaceUnit(spec->as<RaceUnitSpec>());
-    
-    for (const std::string& spellSkill : spellSkills)
-      unit->skills()->add(Data::skill(spellSkill));
+      if (it == modifiers.end())
+      {
+        if (unit1->getProperty(p) != unit2->getProperty(p))
+          FAIL("Property " << p << " should be equal for both units but it's " << unit1->getProperty(p) << " != " << unit2->getProperty(p));
+        //return false;
+      }
+      else
+      {
+        if (unit1->getProperty(p) != (unit2->getProperty(p) + it->value))
+          FAIL("Property " << p << " should match equation for both units but it's " << unit1->getProperty(p) << " != " << unit2->getProperty(p) << " + " << it->value);
 
-    return std::unique_ptr<Unit>(unit);
+      }
+    }
+  }
+  void testModifiers(const unit_ptr& unit1, const unit_ptr& unit2, const std::initializer_list<PropertyModifier>& modifiers) { testModifiers(unit1.get(), unit2.get(), modifiers); }
+
+  
+  unit_ptr raceUnit(identifier unitSpec) { return unit_ptr(new RaceUnit(Data::unit(unitSpec)->as<RaceUnitSpec>())); }
+  unit_ptr raceUnitWithSkills(identifier unitSpec, identifier_list skills)
+  {
+    auto unit = raceUnit(unitSpec);
+    
+    for (const std::string& skill : skills)
+      unit->skills()->add(Data::skill(skill));
+
+    return unit;
   }
   
-  std::unique_ptr<Unit> anyRaceUnitWithSpells(const std::initializer_list<std::string>& spellSkills)
+  unit_pair raceUnitPairWithSkills(identifier unitSpec, identifier_list skills)
   {
-    return raceUnitWithSpells("barbarian_swordsmen", spellSkills);
+    return std::make_pair(raceUnit(unitSpec), raceUnitWithSkills(unitSpec, skills));
+  }
+  
+  unit_ptr anyRaceUnitWithSkills(identifier_list spellSkills)
+  {
+    return raceUnitWithSkills("barbarian_swordsmen", spellSkills);
+  }
+  
+  unit_pair anyRaceUnitPairWithSkills(identifier_list skills)
+  {
+    return std::make_pair(raceUnit("barbarian_swordsmen"), raceUnitWithSkills("barbarian_swordsmen", skills));
   }
 }
 
+TEST_CASE("direction mask operators") {
+  REQUIRE(DirJoin::N << 1 == DirJoin::NW);
+  REQUIRE(DirJoin::N << 2 == DirJoin::W);
+}
 
+TEST_CASE("grouping of numbers formatting") {
+  REQUIRE(strings::groupDigits(1) == "1");
+  REQUIRE(strings::groupDigits(1000) == "1,000");
+}
 
 TEST_CASE("basic stats of units") {
   
@@ -135,8 +177,13 @@ TEST_CASE("basic stats of units") {
   SECTION("nature unit spells") {
     
     GIVEN("resist elements spell") {
-      const auto unit = test::anyRaceUnitWithSpells({"spell_resist_elements"});
-      REQUIRE(test::testModifiers(unit.get(), { {Property::SHIELDS_NATURE, 3}, {Property::SHIELDS_CHAOS, 3} }));
+      const auto pair = test::anyRaceUnitPairWithSkills({"spell_resist_elements"});
+      test::testModifiers(pair.second, pair.first, {
+        { Property::SHIELDS_NATURE, 3 },
+        { Property::SHIELDS_CHAOS, 3 },
+        { Property::RESIST_NATURE, 3 },
+        { Property::RESIST_CHAOS, 3 }
+      });
     }
   }
 

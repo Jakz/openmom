@@ -573,7 +573,7 @@ template<> const Skill* yaml::parse(const N& node)
 {
   skills::Type type = optionalParse(node, "type", skills::Type::NATIVE);
   
-  effect_list effects;
+  std::vector<const SkillEffect*> effects;
   parse(node["effects"], effects);
   
   auto visuals = node["visuals"];
@@ -587,7 +587,7 @@ template<> const Skill* yaml::parse(const N& node)
     visualInfo.icon = parse<SpriteInfo>(visuals["icon"]);
   }
   
-  return new skills::ConcreteSkill(type, effects, visualInfo);
+  return new skills::ConcreteSkill(type, effect_list(effects), visualInfo);
 }
 
 template<> void yaml::parse(const N& node, skill_init_list& skills)

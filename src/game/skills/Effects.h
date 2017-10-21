@@ -265,15 +265,36 @@ public:
 };
 
 class SkillEffect;
-using effect_list = std::vector<const SkillEffect*>;
 using effect_init_list = const std::initializer_list<const SkillEffect*>;
+
+struct effect_list
+{
+private:
+  using inner_type_t = std::vector<const SkillEffect*>;
+  inner_type_t data;
+  
+public:
+  using iterator = inner_type_t::const_iterator;
+  using value_type = inner_type_t::value_type;
+  
+  effect_list() { }
+  effect_list(const inner_type_t& effects) : data(effects) { }
+  effect_list(const effect_init_list& list) : data(list) { }
+  
+  void push_back(const SkillEffect* effect) { data.push_back(effect); }
+  void resize(size_t size) { data.resize(size); }
+  iterator begin() const { return data.begin(); }
+  iterator end() const { return data.end(); }
+  
+  const SkillEffect* operator[](size_t index) const { return data[index]; }
+};
 
 //TODO: to remove after hardcoded effects has been removed
 static const effect_list unit_bonus_build(std::initializer_list<Property> properties, s16 value)
 {
   effect_list effects;
   effects.resize(properties.size());
-  std::transform(properties.begin(), properties.end(), effects.begin(), [&] (const Property& property) { return new UnitBonus(property, value); });
+  std::transform(properties.begin(), properties.end(), std::back_inserter(effects), [&] (const Property& property) { return new UnitBonus(property, value); });
   return effects;
 }
 
