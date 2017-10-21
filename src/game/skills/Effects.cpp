@@ -22,6 +22,10 @@ s16 ArmyLevelBonus::getValue(const Unit* unit) const
   // TODO: is +1 intended behavior? According to OSG it is.
 }
 
-s16 FilterUnitBonus::getValue(const Unit* unit) const {
-  return unit->school() == school ? value : 0;
+FilterUnitBonus::FilterUnitBonus(Property property, s16 value, School school) : UnitBonus(property, value),
+  filter([school](const Unit* unit) { return unit->school() == school; }) { }
+
+s16 FilterUnitBonus::getValue(const Unit* unit) const
+{
+  return filter(unit) ? value : 0;
 }
