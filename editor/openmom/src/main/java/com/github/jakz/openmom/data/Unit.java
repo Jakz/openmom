@@ -23,7 +23,7 @@ public class Unit
   public int movement;
   public int sight;
   
-  public List<Skill> skills;
+  public List<String> skills;
   
   public Visuals visuals;
   

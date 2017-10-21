@@ -3,6 +3,7 @@ package com.github.jakz.openmom.ui;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
@@ -58,10 +59,16 @@ public class UnitTable extends JTable
         new ColumnSpec<>(Unit.class.getField("sight")),
         // skills
         new ColumnSpec<>("icon", SpriteInfo.class, u -> u.visuals.icon, (u, s) -> { if (s != null) u.visuals.icon = s; }),
-        new ColumnSpec<>("figure", SpriteInfo.class, u -> u.visuals.figure, (u, s) -> { if (s != null) u.visuals.figure = s; })
+        new ColumnSpec<>("figure", SpriteInfo.class, u -> u.visuals.figure, (u, s) -> { if (s != null) u.visuals.figure = s; }),
 
+        new ColumnSpec<>("skills", String.class, u -> {
+          return u.skills == null ? "" : u.skills.stream().collect(Collectors.joining(", "));
+        })
+        
         // visuals
       );
+      
+      
       
       int widths[] = { 30, 200, 60, 50, 50, 50, 100, 50, 50, 50, 50, 50, 50 };
       

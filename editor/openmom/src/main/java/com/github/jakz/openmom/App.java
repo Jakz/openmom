@@ -113,7 +113,8 @@ public class App
         else
         {
           int strength = y.get(0).asInt();
-          Ranged.Type type = y.environment().findUnserializer(Ranged.Type.class).unserialize(y.get(1));
+          YamlUnserializer<Ranged.Type> unserializer = y.environment().findUnserializer(Ranged.Type.class);
+          Ranged.Type type = unserializer.unserialize(y.get(1));
           int ammo = y.get(2).asInt();
           return new Ranged(strength, type, ammo);
         }
@@ -151,7 +152,9 @@ public class App
         {
           Unit unit = uns.unserialize(node);
           units.add(unit);
-          System.out.println(unit.identifier+", "+unit.type+", "+unit.upkeep+", "+unit.visuals.i18n);        
+          System.out.println(unit.identifier+", "+unit.type+", "+unit.upkeep+", "+unit.visuals.i18n/*+", "+String.join(", ", unit.skills)*/);
+          if (unit.skills != null && !unit.skills.isEmpty())
+            System.out.println(">> "+unit.skills.get(0).getClass());
         }
         
         data.units = ModifiableDataSource.of(units);
