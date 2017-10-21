@@ -45,8 +45,8 @@ template<> Data::map_t<const Retort*>& Data::containerFor() {
 }
 
 template<> Data::map_t<const Wizard*>& Data::containerFor() {
-  static map_t<const Wizard*> traitMap;
-  return traitMap;
+  static map_t<const Wizard*> wizardMap;
+  return wizardMap;
 }
 
 template<> Data::map_t<const Building*>& Data::containerFor() {

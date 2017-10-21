@@ -23,6 +23,12 @@ class Unit;
 class SkillEffect
 {
 public:
+  enum class StackableGroup : u16 { NONE = 0, START = 1 };
+  
+protected:
+  StackableGroup stackableGroup;
+  
+public:
   const enum class Type : u8
   {
     MOVEMENT,
@@ -38,7 +44,13 @@ public:
     SPECIAL_ATTACK
   } type;
   
-  SkillEffect(Type type) : type(type) { }
+  
+  SkillEffect(Type type, StackableGroup group) : type(type), stackableGroup(group) { }
+  SkillEffect(Type type) : SkillEffect(type, StackableGroup::NONE) { }
+  
+  void setGroup(StackableGroup group) { this->stackableGroup = group; }
+  StackableGroup group() const { return stackableGroup; }
+  
   template<typename T> const T* as() const { return static_cast<const T*>(this); }
 };
 
@@ -155,18 +167,13 @@ public:
 
 class ArmyBonus : public PropertyBonus
 {
-public:
-  enum class StackableGroup : u16 { NONE = 0, START = 1 };
-  
 protected:
-  StackableGroup group;
   bool applicableOn(const Unit* unit) const;
   
 public:
   const enum class Type { WHOLE_ARMY, NORMAL_UNITS } target;
   
-  ArmyBonus(Property property, s16 value, Type target, StackableGroup group = StackableGroup::NONE) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, value), target(target), group(group) { }
-  
+  ArmyBonus(Property property, s16 value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, value), target(target) { }
   s16 getValue(const Unit* unit) const override;
 };
 

@@ -436,18 +436,19 @@ template<> const Spell* yaml::parse(const N& node)
 template<> const SkillEffect* yaml::parse(const N& node)
 {
   const std::string& type = node["type"];
+  SkillEffect* effect = nullptr;
   
   if (type == "unit_bonus")
   {
     Property property = parse<Property>(node["property"]);
     s16 value = parse<s16>(node["value"]);
-    return new UnitBonus(property, value);
+    effect = new UnitBonus(property, value);
   }
   else if (type == "unit_level_bonus")
   {
     Property property = parse<Property>(node["property"]);
     float multiplier = parse<float>(node["multiplier"]);
-    return new UnitLevelBonus(property, multiplier);
+    effect = new UnitLevelBonus(property, multiplier);
   }
   else if (type == "army_bonus")
   {
@@ -475,7 +476,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
     Property property = parse<Property>(node["property"]);
     s16 value = parse<s16>(node["value"]);
     
-    return new ArmyBonus(property, value, ArmyBonus::Type::WHOLE_ARMY, groupId);
+    effect = new ArmyBonus(property, value, ArmyBonus::Type::WHOLE_ARMY);
   }
   else if (type == "special_attack")
   {
@@ -490,7 +491,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
     s16 value = parse<s16>(node["value"]);
     SimpleEffect::Type kind = mapping[node["kind"]];
     
-    return new SpecialAttackEffect(kind, value);
+    effect = new SpecialAttackEffect(kind, value);
   }
   else if (type == "ability" || type == "parametric_ability")
   {
@@ -515,10 +516,10 @@ template<> const SkillEffect* yaml::parse(const N& node)
     if (type == "parametric_ability")
     {
       s16 value = parse<s16>(node["value"]);
-      return new SimpleParametricEffect(SkillEffect::Type::ABILITY, kind, value);
+      effect = new SimpleParametricEffect(SkillEffect::Type::ABILITY, kind, value);
     }
     else
-      return new SimpleEffect(SkillEffect::Type::ABILITY, kind);
+      effect = new SimpleEffect(SkillEffect::Type::ABILITY, kind);
   }
   else if (type == "movement")
   {
@@ -534,7 +535,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
     
     MovementType kind = mapping[node["kind"]];
     
-    return new MovementEffect(kind);
+    effect = new MovementEffect(kind);
   }
   else
   {
@@ -542,6 +543,34 @@ template<> const SkillEffect* yaml::parse(const N& node)
     assert(false);
     return nullptr;
   }
+  
+  /* parse stackable group if present */
+  {
+    using sgroup_t = SkillEffect::StackableGroup;
+    
+    static sgroup_t base = sgroup_t::START;
+    static std::unordered_map<std::string, sgroup_t> groups = { };
+    
+    bool hasStackableGroup = node.getWithoutCheck("stackable_group").IsDefined();
+    sgroup_t groupId = sgroup_t::NONE;
+    
+    if (hasStackableGroup)
+    {
+      const std::string& groupName = node["stackable_group"];
+      if (groups.find(groupName) == groups.end())
+      {
+        groups[groupName] = base;
+        groupId = base;
+        base = static_cast<sgroup_t>(static_cast<size_t>(base)+1);
+      }
+      else
+        base = groups[groupName];
+    }
+    
+    effect->setGroup(groupId);
+  }
+
+  return effect;
 }
 
 #pragma mark Skill
