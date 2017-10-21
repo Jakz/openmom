@@ -145,13 +145,12 @@ public:
 
 class FilterUnitBonus : public UnitBonus
 {
+private:
+  predicate<const Unit*> filter;
+  
 public:
-  
-  FilterUnitBonus(Property property, s16 value, School school) : UnitBonus(property, value), school(school) { }
-
+  FilterUnitBonus(Property property, s16 value, School school);
   s16 getValue(const Unit* unit) const override;
-  
-  const School school;
 };
 
 class ArmyBonus : public PropertyBonus

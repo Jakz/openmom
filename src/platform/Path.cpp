@@ -1,6 +1,6 @@
 #include "Path.h"
 
-#include "Platform.h"
+#include "platform.h"
 
 static constexpr const char SEPARATOR = '/';
 

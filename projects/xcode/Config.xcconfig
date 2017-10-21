@@ -15,4 +15,4 @@ LD_RUNPATH_SEARCH_PATHS = @executable_path/../Frameworks
 
 INFOPLIST_FILE = $(PROJECT_DIR)/OpenMoM-Info.plist
 
-WARNING_CFLAGS = -Wnarrowing
+WARNING_CFLAGS = -Wnarrowing -Wno-documentation

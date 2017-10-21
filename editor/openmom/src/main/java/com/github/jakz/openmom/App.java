@@ -113,7 +113,8 @@ public class App
         else
         {
           int strength = y.get(0).asInt();
-          Ranged.Type type = y.environment().findUnserializer(Ranged.Type.class).unserialize(y.get(1));
+          YamlUnserializer<Ranged.Type> unserializer = y.environment().findUnserializer(Ranged.Type.class);
+          Ranged.Type type = unserializer.unserialize(y.get(1));
           int ammo = y.get(2).asInt();
           return new Ranged(strength, type, ammo);
         }
