@@ -142,7 +142,7 @@ units:
     melee: 2
     ranged: none
     defense: 2
-    resstance: 5
+    resistance: 5
     hits: 2
     figures: 8
     movement: 1
@@ -201,7 +201,7 @@ units:
     figures: 6
     movement: 1
     sight: 1
-    requires: [ barrack, sawmill ]
+    requires: [ barracks, sawmill ]
     visuals:
       i18n: unit_racial_bowmen
       icon: [lbx, units1, 49]

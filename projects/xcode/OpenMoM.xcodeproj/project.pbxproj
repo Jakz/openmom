@@ -101,6 +101,7 @@
 		0467070B1F892B9A00F38879 /* MapEditorView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */; };
 		0467070E1F892D1300F38879 /* data in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04E282CD1E023BEB00DD673D /* data */; };
 		04797BEF1C1DCB830026C153 /* ValuesMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04797BED1C1DCB830026C153 /* ValuesMechanics.cpp */; };
+		047AE63F1F9BB3D400088E37 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04E218841C02A386005784E1 /* format.cc */; };
 		0482049F19885DA900D4B699 /* Diplomacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0482049D19885DA900D4B699 /* Diplomacy.cpp */; };
 		048204A219888E5C00D4B699 /* LBX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A019888E5C00D4B699 /* LBX.cpp */; };
 		048204A5198893BA00D4B699 /* CombatMechanics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048204A3198893BA00D4B699 /* CombatMechanics.cpp */; };
@@ -1330,6 +1331,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				047AE63F1F9BB3D400088E37 /* format.cc in Sources */,
 				0467070B1F892B9A00F38879 /* MapEditorView.cpp in Sources */,
 				0467070A1F892B9600F38879 /* DataView.cpp in Sources */,
 				046706FC1F892B4700F38879 /* Data.cpp in Sources */,
