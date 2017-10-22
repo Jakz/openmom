@@ -52,7 +52,7 @@ void Game::dummyInit()
   
   Army* army2 = new Army(player2, {
     new Hero(Data::unit("hero_dwarf")->as<HeroSpec>()),
-    new RaceUnit(Data::unit("barbarian_spearmen")->as<RaceUnitSpec>()),
+    new RaceUnit(Data::unit("beastmen_priests")->as<RaceUnitSpec>()),
     new FantasticUnit(Data::unit("funit_magic_spirit")->as<SummonSpec>()),
     new RaceUnit(Data::unit("barbarian_shamans")->as<RaceUnitSpec>()),
 
@@ -97,7 +97,7 @@ void Game::dummyInit()
     new RaceUnit(Data::unit("lizardmen_spearmen")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("lizardmen_swordsmen")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("barbarian_bowmen")->as<RaceUnitSpec>()),
-		new RaceUnit(Data::unit("barbarian_cavalry")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("beastmen_priests")->as<RaceUnitSpec>()),
     new RaceUnit(Data::unit("lizardmen_dragon_turtle")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("barbarian_berserkers")->as<RaceUnitSpec>()),
   });

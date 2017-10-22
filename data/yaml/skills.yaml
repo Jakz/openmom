@@ -5,6 +5,7 @@ groups:
     policy: unique
     
 skills:
+# movement
   - identifier: mountaineer
     type: native
     effects:
@@ -35,6 +36,7 @@ skills:
         kind: flying
     visuals:
       hidden: true
+# to hit
   - identifier: to_hit_1
     type: native
     effects:
@@ -74,8 +76,9 @@ skills:
   - identifier: healer
     type: native
     effects:
-      - type: ability
-        kind: healer
+      - type: army_bonus
+        property: health_regen
+        value: 20
         group: healer
     visuals:
       icon: [lbx, special, 16]
@@ -211,6 +214,35 @@ skills:
     visuals:
       icon: [lbx, special, 33]
       i18n: skill_resistance_to_all
+# spell granting abilities
+  - identifier: healing_spell
+    type: native
+    effects:
+      - type: spell_grant
+        spell: healing
+        times: 1
+    visuals:
+      icon: [lbx, special, 38]
+      i18n: skill_healing_spell
+  - identifier: doom_bolt_spell
+    type: native
+    effects:
+      - type: spell_grant
+        spell: doom_bolt
+        times: 1
+    visuals:
+      icon: [lbx, special, 41]
+      i18n: skill_doom_bolt_spell  
+  - identifier: fireball_spell
+    type: native
+    effects:
+      - type: spell_grant
+        spell: fireball
+        strength: 5
+        times: 1
+    visuals:
+      icon: [lbx, special, 39]
+      i18n: skill_fireball_spell        
 # hero abilities
   - identifier: constitution
     type: hero

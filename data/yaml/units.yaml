@@ -206,6 +206,25 @@ units:
       i18n: unit_racial_bowmen
       icon: [lbx, units1, 49]
       figure: [lbx, figures4, 32]
+  - identifier: beastmen_priests
+    type: racial
+    race: beastmen
+    upkeep: 3
+    cost: 150
+    melee: 4
+    ranged: [4, nature, 4]
+    defense: 4
+    resistance: 8
+    hits: 2
+    figures: 4
+    movement: 1
+    sight: 1
+    skills: [ healer, purify, healing_spell ]
+    requires: [ parthenon ]
+    visuals:
+      i18n: unit_racial_priests
+      icon: [lbx, units1, 50]
+      figure: [lbx, figures4, 40]
        
 # lizardmen
   - identifier: lizardmen_spearmen

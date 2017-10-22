@@ -281,7 +281,9 @@ template<> Property yaml::parse(const N& node)
     { "resist_nature", Property::RESIST_NATURE },
     { "resist_death", Property::RESIST_DEATH },
     { "hits", Property::HIT_POINTS },
-    { "figures", Property::FIGURES }
+    { "health_regen", Property::HEALTH_REGEN },
+    { "figures", Property::FIGURES },
+    
   };
   
   FETCH_OR_FAIL("Property", mapping, node);
@@ -539,6 +541,15 @@ template<> const SkillEffect* yaml::parse(const N& node)
     MovementType kind = mapping[node["kind"]];
     
     effect = new MovementEffect(kind);
+  }
+  else if (type == "spell_grant")
+  {
+    std::string spellName = node["spell"];
+    //TODO: can't be mapped now because spells are not loaded yet
+    u16 times = parse<u16>(node["times"]);
+    s16 strength = optionalParse(node, "strength", 0);
+    
+    effect = new SpellGrantEffect(nullptr, times, strength);
   }
   else
   {

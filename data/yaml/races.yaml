@@ -238,7 +238,7 @@ races:
         worker: [lbx, backgrnd, 55]
         farmer: [lbx, backgrnd, 69]
         rebel: [lbx, backgrnd, 84]
-      i18n: race_name_lizardmens
+      i18n: race_name_lizardmen
       i18n_unit: race_prefix_lizardmen
 
   - identifier: nomads

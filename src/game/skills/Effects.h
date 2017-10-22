@@ -52,6 +52,8 @@ public:
     UNIT_BONUS,
     ARMY_BONUS,
     
+    GRANT_SPELL,
+    
     SPECIAL_ATTACK
   } type;
   
@@ -264,7 +266,26 @@ public:
   }
 };
 
-class SkillEffect;
+//TODO: technically is a combat instant spell
+//TODO: implement mechanics
+class Spell;
+class SpellGrantEffect : public SkillEffect
+{
+private:
+  const Spell* _spell;
+  const u16 _times;
+  const s16 _strength;
+  
+public:
+  SpellGrantEffect(const Spell* spell, const u16 times, const s16 strength = 0) : SkillEffect(SkillEffect::Type::GRANT_SPELL), _spell(spell), _times(times), _strength(strength) { }
+  
+  const Spell* spell() const { return _spell; }
+  u16 times() const { return _times; }
+  s16 strength() const { return _strength; }
+};
+
+
+
 using effect_init_list = const std::initializer_list<const SkillEffect*>;
 
 struct effect_list

@@ -125,9 +125,9 @@ int main(int argc, char * arg[])
   Texture::load();
   SDL::initGVM();
   
-  //SDL::gvm->switchView(VIEW_MAIN);
+  SDL::gvm->switchView(VIEW_MAIN);
 
-  SDL::gvm->switchView(VIEW_NEW_GAME);
+  //SDL::gvm->switchView(VIEW_NEW_GAME);
   
   /*Hero* unit = new Hero(*UnitSpec::heroSpec(UnitID::HERO_DWARF));
   SDL::gvm->unitDetailView()->setHeroHire(unit, 200);

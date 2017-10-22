@@ -75,7 +75,9 @@ entries:
   unit_racial_swordsmen: Swordsmen
   unit_racial_bowmen: Bowmen
   unit_racial_cavalry: Cavalry
+  unit_racial_halberdiers: Halberdiers
   unit_racial_shamans: Shamans
+  unit_racial_priests: Priests
   unit_racial_engineers: Engineers
   unit_racial_settlers: Settlers
   
@@ -94,15 +96,26 @@ entries:
   skill_constitution: Constitution  
 
   skill_construction: Construction
+  skill_create_outpost: Create Outpost
+  skill_purify: Purify
+  skill_healer: Healer
+  skill_meld_with_node: Meld With Node
+  
   skill_fire_breath: Fire Breath
   skill_first_strike: First Strike
   skill_large_shield: Large Shield
-  skill_meld_with_node: Meld With Node
+  
   skill_mountaineer: Mountaineer
   skill_non_corporeal: Non Corporeal
+
   skill_resistance_to_all: Resistance To All
+
   skill_to_hit: To Hit
   skill_thrown: Thrown
+  
+  skill_healing_spell: Healing Spell
+  skill_doom_bolt_spell: Doom Bolt Spell
+  skill_fireball_spell: Fireball Spell
 
   skill_spell_bless: Bless
   skill_spell_resist_elements: Resist Elements

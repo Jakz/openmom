@@ -185,7 +185,7 @@ enum class Property : u8
   THROWN_ATTACK, //TODO: implement to get it from skills
   BREATH_ATTACK, // TODO: implement to get it from skills
   
-  HEALTH_REGEN,
+  HEALTH_REGEN, // expressed in percent, (eg. 20 = 20% of total hits)
   
   AVAILABLE_MOVEMENT,
   AVAILABLE_AMMO
