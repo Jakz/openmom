@@ -52,6 +52,7 @@ class HashColorMap : public ColorMap
     color_map map;
   
   public:
+    HashColorMap() { }
     HashColorMap(color_list data)
     {
       color_list::iterator it = data.begin();
@@ -92,8 +93,8 @@ public:
   static const Color SCHOOL_GLOW_COLORS[][5];
   static constexpr u8 SCHOOL_GLOW_COUNT = sizeof(SCHOOL_GLOW_COLORS[0])/sizeof(SCHOOL_GLOW_COLORS[0][0]);
   
-  static const HashColorMap FLAG_COLORS_MAP[6];
-  static constexpr u8 FLAG_COLORS_COUNT = sizeof(FLAG_COLORS_MAP)/sizeof(FLAG_COLORS_MAP[0]);
+  static const enum_simple_map<PlayerColor, HashColorMap, 6> FLAG_COLORS_MAP;
+  static const enum_simple_map<PlayerColor, HashColorMap, 6> UNIT_COLORS_MAP;
   
   class GrayscaleMap : public ColorMap
   {

@@ -41,34 +41,36 @@ u32 BlinkMap::get(u32 k) const
 
 const MiscMaps::GrayscaleMap MiscMaps::GRAYSCALE = MiscMaps::GrayscaleMap();
 
-const HashColorMap MiscMaps::FLAG_COLORS_MAP[6] = {
-  HashColorMap({}),
-  HashColorMap({
+
+// palette index 216 217 218
+const enum_simple_map<PlayerColor, HashColorMap, 6> MiscMaps::FLAG_COLORS_MAP = enum_simple_map<PlayerColor, HashColorMap, 6>({
+  { PlayerColor::GREEN, HashColorMap() },
+  { PlayerColor::BLUE, HashColorMap({
     {0,188,0}, {150,182,215},
     {0,164,0}, {113,154,190},
     {0,124,0}, {85,125,166}
-  }),
-  HashColorMap({
+  }) },
+  { PlayerColor::RED, HashColorMap({
     {0,188,0}, {215,0,0},
     {0,164,0}, {211,28,0},
     {0,124,0}, {142,56,56}
-  }),
-  HashColorMap({
+  }) },
+  { PlayerColor::PURPLE, HashColorMap({
     {0,188,0}, {211,60,255},
     {0,164,0}, {199,0,255},
     {0,124,0}, {146,0,190}
-  }),
-  HashColorMap({
+  }) },
+  { PlayerColor::YELLOW, HashColorMap({
     {0,188,0}, {255,231,0},
     {0,164,0}, {231,211,0},
     {0,124,0}, {166,154,0}
-  }),
-  HashColorMap({
+  }) },
+  { PlayerColor::NEUTRAL, HashColorMap({
     {0,188,0}, {117,77,36},
     {0,164,0}, {93,52,16},
     {0,124,0}, {69,36,4}
-  })
-};
+  }) },
+});
 
 const Color MiscMaps::SCHOOL_GLOW_COLORS[][5] = {
   {0},

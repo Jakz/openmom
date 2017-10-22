@@ -13,6 +13,7 @@
 
 #include "Game.h"
 #include "Player.h"
+#include "LocalPlayer.h"
 #include "City.h"
 #include "UnitSpec.h"
 
@@ -87,7 +88,7 @@ void ProductionView::draw()
     Fonts::drawString("Upkeep", FontFaces::Small::TEAL, 128, 26, ALIGN_LEFT);
     CommonDraw::drawMovement(spec->movement, MovementBaseType::WALKING, 163, 19, 0); // TODO: use real type value
     CommonDraw::drawUpkeep(spec->upkeep, 164, 26);
-    UnitDraw::drawUnitIso(spec, 83, 5, nullptr);
+    UnitDraw::drawUnitIso(spec, 83, 5, nullptr, player);
     CommonDraw::drawUnitProps(spec, 128, 47, 10);
     Fonts::drawString(Fonts::format("Cost %u(%u)", cost, cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
     

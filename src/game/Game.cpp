@@ -46,7 +46,7 @@ void Game::init()
 
 void Game::dummyInit()
 {
-  LocalPlayer *player = new LocalPlayer(this, "Kali", Data::wizard("kali"), YELLOW, Data::race("barbarians"), 60, 40);
+  LocalPlayer *player = new LocalPlayer(this, "Kali", Data::wizard("kali"), PURPLE, Data::race("barbarians"), 60, 40);
   LocalPlayer *player2 = new LocalPlayer(this, "Antani", Data::wizard("merlin"), BLUE, Data::race("barbarians"), 60, 40);
 
   
@@ -57,7 +57,7 @@ void Game::dummyInit()
     new RaceUnit(Data::unit("barbarian_shamans")->as<RaceUnitSpec>()),
 
   });
-  
+    
   player2->add(army2);
   placeArmy(army2, Position(2, 2, ARCANUS));
   
@@ -94,10 +94,10 @@ void Game::dummyInit()
 
   Army* a = new Army(player, {
 		new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>()),
-    new RaceUnit(Data::unit("lizardmen_spearmen")->as<RaceUnitSpec>()),
-		new RaceUnit(Data::unit("lizardmen_swordsmen")->as<RaceUnitSpec>()),
+    new RaceUnit(Data::unit("beastmen_spearmen")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("high_men_swordsmen")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("beastmen_engineers")->as<RaceUnitSpec>()),
-		new RaceUnit(Data::unit("beastmen_magicians")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("beastmen_priests")->as<RaceUnitSpec>()),
     new RaceUnit(Data::unit("lizardmen_dragon_turtle")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("barbarian_berserkers")->as<RaceUnitSpec>()),
   });

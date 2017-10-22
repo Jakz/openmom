@@ -263,6 +263,28 @@ units:
       i18n: unit_racial_engineers
       icon: [lbx, units1, 52]
       figure: [lbx, figures4, 56]
+      
+# highmen
+  # spearmen missing
+  - identifier: high_men_swordsmen
+    type: racial
+    race: high_men
+    upkeep: 1
+    cost: 20
+    melee: 3
+    ranged: none
+    defense: 2
+    resistance: 4
+    hits: 1
+    figures: 6
+    movement: 1
+    sight: 1
+    skills: [ large_shield ]
+    requires: [ barracks, smithy ]
+    visuals:
+      i18n: unit_racial_swordsmen
+      icon: [lbx, units1, 105]
+      figure: [lbx, figures8, 0]
        
 # lizardmen
   - identifier: lizardmen_spearmen

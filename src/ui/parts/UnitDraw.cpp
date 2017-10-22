@@ -19,16 +19,79 @@
 #include "LocalPlayer.h"
 #include "Game.h"
 
-/*const static OverridePalette* bluePalette = new OverridePalette(basePalette, 214, 5, {Gfx::PALETTE[219], Gfx::PALETTE[220], Gfx::PALETTE[221], Gfx::PALETTE[222], Gfx::PALETTE[223]});*/
+/* color map of colors that change according to player color
+   these should be correct because they've been hand picked from the game
+*/
+// yellow
+// 216 217 218
+// 162 178 180
+
+// red
+// 216 217 218
+// 203 166  45
+
+// purple
+// 216 217 218
+// 123 124 125
+
+// blue
+// 216 217 218
+// 107 108 109
+
+// brown
+// 216 217 218
+//  50  51  52
 
 void UnitDraw::bindPlayerColorPalette(PlayerColor color)
 {
-  Gfx::bindColorMap(&MiscMaps::FLAG_COLORS_MAP[color]);
+  const Palette* palette = nullptr;
+  
+  switch (color)
+  {
+    case PlayerColor::YELLOW:
+    {
+      static const DerivedPalette dpalette = DerivedPalette(Gfx::mainPalette, 216, 3, { Gfx::mainPalette->get(162), Gfx::mainPalette->get(178), Gfx::mainPalette->get(180) });
+      palette = &dpalette;
+      break;
+    }
+    case PlayerColor::RED:
+    {
+      static const DerivedPalette dpalette = DerivedPalette(Gfx::mainPalette, 216, 3, { Gfx::mainPalette->get(203), Gfx::mainPalette->get(166), Gfx::mainPalette->get(45) });
+      palette = &dpalette;
+      break;
+    }
+    case PlayerColor::PURPLE:
+    {
+      static const DerivedPalette dpalette = DerivedPalette(Gfx::mainPalette, 216, 3, { Gfx::mainPalette->get(123), Gfx::mainPalette->get(124), Gfx::mainPalette->get(125) });
+      palette = &dpalette;
+      break;
+    }
+    case PlayerColor::BLUE:
+    {
+      static const DerivedPalette dpalette = DerivedPalette(Gfx::mainPalette, 216, 3, { Gfx::mainPalette->get(107), Gfx::mainPalette->get(108), Gfx::mainPalette->get(109) });
+      palette = &dpalette;
+      break;
+    }
+    case PlayerColor::NEUTRAL:
+    {
+      static const DerivedPalette dpalette = DerivedPalette(Gfx::mainPalette, 216, 3, { Gfx::mainPalette->get(50), Gfx::mainPalette->get(51), Gfx::mainPalette->get(52) });
+      palette = &dpalette;
+      break;
+    }
+    case PlayerColor::GREEN:
+    {
+      /* nothing to do */
+      break;
+    }
+  }
+
+  if (palette)
+    Gfx::bindPalette(palette);
 }
 
 void UnitDraw::unbindPlayerColorPalette()
 {
-  Gfx::unbindColorMap();
+  Gfx::unbindPalette();
 }
 
 std::string UnitDraw::stringForDoubleMovement(s16 moves, bool hideZero)
@@ -98,12 +161,12 @@ void UnitDraw::drawStatic(const Army *army, s16 x, s16 y, bool forceDraw)
     else
       Gfx::drawGrayScale(info, x+1, y+1);
     
+    unbindPlayerColorPalette();
+
+    
     School school = first->glow();
     if (school != NO_SCHOOL)
       Gfx::drawGlow(info, x+1, y+1, school);
-    
-    unbindPlayerColorPalette();
-
   }
 }
 
@@ -121,11 +184,12 @@ void UnitDraw::drawStatic(const Unit *unit, s16 x, s16 y, bool backdrop, bool gr
   else
     Gfx::draw(info, x+1, y+1);
   
+  unbindPlayerColorPalette();
+  
   School school = unit->glow();
   if (school != NO_SCHOOL)
     Gfx::drawGlow(info, x+1, y+1, school);
   
-  unbindPlayerColorPalette();
 }
 
 void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
@@ -139,11 +203,11 @@ void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
   const SpriteInfo& info = GfxData::unitGfx(first->spec).still;
   Gfx::draw(info, x+1, y+1);
   
+  unbindPlayerColorPalette();
+
   School school = first->glow();
   if (school != NO_SCHOOL)
     Gfx::drawGlow(info, x+1, y+1, school);
-  
-  unbindPlayerColorPalette();
 }
 
 void UnitDraw::drawHeroPortrait(const Hero *unit, s16 x, s16 y)
@@ -159,7 +223,7 @@ static const IsoOffset ISO_4FIGURES[] = {{+2,-4},{+11,+1},{-8,+1},{+2,+6}};
 static const IsoOffset ISO_6FIGURES[] = {{+1,-5},{+4,-1},{+10,+2},{-10,0},{-3,+3},{+1,+7}};
 static const IsoOffset ISO_8FIGURES[] = {{+1,-5},{+7,-2},{+11,0},{-2,-1},{+4,+1},{-10,0},{-4,+3},{+2,+6}};
 
-void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realUnit)
+void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realUnit, const Player* owner)
 {
   
   if (realUnit && (realUnit->skills()->has(MovementType::SWIMMING) || realUnit->skills()->has(MovementType::SAILING)))
@@ -191,19 +255,27 @@ void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realU
   
   // TODO: bind color map flags missing, probably sohuld be passed by production view since it could come from a city (so no realUnit)
 
-  School glow = NO_SCHOOL;
+  School glow = School::NO_SCHOOL;
   
   if (realUnit)
     glow = realUnit->glow();
   
   for (int i = 0; i < unit->figures; ++i)
-  {    
+  {
+    if (realUnit)
+      bindPlayerColorPalette(realUnit->getArmy()->getOwner()->color);
+    else if (owner)
+      bindPlayerColorPalette(owner->color);
+    
     Gfx::draw(GfxData::unitGfx(unit).fullFigure.frame(2, 2), x+o[i].x, y+o[i].y);
     
-    //FIXME: commented to test lbx
-    /*if (glow != NO_SCHOOL)
-      Gfx::drawGlow(GfxData::unitGfxSpec(unit).fullFigure, x+o[i].x, y+o[i].y, 2, 2, glow);*
-     */
+    if (realUnit || owner)
+      unbindPlayerColorPalette();
+    
+    //TODO: seembs bugged, eg: great drake rightmost edge
+    if (glow != School::NO_SCHOOL)
+      Gfx::drawGlow(GfxData::unitGfx(unit).fullFigure.frame(2, 2), x+o[i].x, y+o[i].y, glow);
+    
   }
 }
 
@@ -233,7 +305,6 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
       action = 3;
   }
   
-  bindPlayerColorPalette(unit->getArmy()->getOwner()->color);
 
   SpriteInfo sprite = GfxData::unitGfx(unit->spec).fullFigure.relative(static_cast<u8>(facing));
   
@@ -250,12 +321,13 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
   
   for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
   {
+    bindPlayerColorPalette(unit->getArmy()->getOwner()->color);
     Gfx::draw(sprite.frame(action), x + offsets[i].x, y + offsets[i].y);
+    unbindPlayerColorPalette();
     //if (glow != School::NO_SCHOOL)
     //  Gfx::drawGlow(sprite.relative(action), x + offsets[i].x, y + offsets[i].y, glow); // TODO: check if it works with new management
   }
 
-  unbindPlayerColorPalette();
 }
 
 void UnitDraw::drawUnitLevel(const Level* level, u16 x, u16 y, u16 spacing, bool shadowed)

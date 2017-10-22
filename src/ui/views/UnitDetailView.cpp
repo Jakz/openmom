@@ -151,7 +151,7 @@ void UnitDetailView::draw()
   
   // draw isometric version of the unit, if it's an hero use its portrait
   if (unit->type() != Productable::Type::HERO)
-    UnitDraw::drawUnitIso(unit->spec, c.x + 6, c.y + 5, unit);
+    UnitDraw::drawUnitIso(unit->spec, c.x + 6, c.y + 5, unit, nullptr);
   else
   {
     Gfx::draw(hero_portrait_border, c.x + 8, c.y + 6);

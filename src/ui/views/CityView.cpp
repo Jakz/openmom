@@ -224,7 +224,7 @@ void CityView::draw()
     }
     else if (production->productionType() == Productable::Type::UNIT)
     {
-      UnitDraw::drawUnitIso(static_cast<const UnitSpec*>(production), 218, 144, nullptr);
+      UnitDraw::drawUnitIso(static_cast<const UnitSpec*>(production), 218, 144, nullptr, player);
     }
     
     /* compute and draw missing turns to complete production */
