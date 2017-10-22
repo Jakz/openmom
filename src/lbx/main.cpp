@@ -355,6 +355,22 @@ public:
           }
         }
       }
+      
+      constexpr u32 PALETTE_W = 10 + 6 + 10;
+      constexpr u32 PALETTE_X = FIRST_TABLE_WIDTH+2+SECOND_TABLE_WIDTH+2+16*0;
+      constexpr u32 PALETTE_Y = 5, PALETTE_H = 768;
+      x = Fl::event_x();
+      y = Fl::event_y();
+      
+      //printf("%d >= %d && x %d < %d && %d >= %d && %d < %d\n", x, PALETTE_X, x, PALETTE_X+PALETTE_W, y, PALETTE_Y, y, PALETTE_Y+PALETTE_H);
+      if (x >= PALETTE_X && x < PALETTE_X + PALETTE_W && y >= PALETTE_Y && y < PALETTE_Y + PALETTE_H)
+      {
+        const Palette* palette = x - PALETTE_X < 10 || !sprite ? Gfx::mainPalette : sprite->palette;
+        hi = (y - PALETTE_Y)/3;
+        hx = 0;
+        hy = 0;
+      }
+      
     }
     
     return Fl_Double_Window::handle(event);

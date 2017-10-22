@@ -211,5 +211,20 @@ public:
   
   Color get(u8 index) const override { return index >= start && index < end ? colors[index - start] : palette->get(index); }
 };
+    
+class GrayscalePalette : public Palette
+{
+private:
+  const Palette* palette;
+  
+public:
+  GrayscalePalette(const Palette* palette) : palette(palette) { }
+  Color get(u8 index) const override
+  {
+    Color c = palette->get(index);
+    u8 v = static_cast<u8>(0.21f*c.r + 0.72f*c.g + 0.07*c.b);
+    return Color(v, v, v);
+  }
+};
 
 #endif

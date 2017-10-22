@@ -46,7 +46,7 @@ void Game::init()
 
 void Game::dummyInit()
 {
-  LocalPlayer *player = new LocalPlayer(this, "Kali", Data::wizard("kali"), GREEN, Data::race("barbarians"), 60, 40);
+  LocalPlayer *player = new LocalPlayer(this, "Kali", Data::wizard("kali"), YELLOW, Data::race("barbarians"), 60, 40);
   LocalPlayer *player2 = new LocalPlayer(this, "Antani", Data::wizard("merlin"), BLUE, Data::race("barbarians"), 60, 40);
 
   
