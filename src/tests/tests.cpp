@@ -109,6 +109,7 @@ namespace test
     return std::make_pair(raceUnit(unitSpec), raceUnitWithSkills(unitSpec, skills));
   }
   
+  unit_ptr anyRaceUnit() { return raceUnit("barbarian_swordsmen"); }
   unit_ptr anyRaceUnitWithSkills(identifier_list spellSkills)
   {
     return raceUnitWithSkills("barbarian_swordsmen", spellSkills);
@@ -117,6 +118,18 @@ namespace test
   unit_pair anyRaceUnitPairWithSkills(identifier_list skills)
   {
     return std::make_pair(raceUnit("barbarian_swordsmen"), raceUnitWithSkills("barbarian_swordsmen", skills));
+  }
+  
+  effect_list effectListWithSkills(identifier_list skills)
+  {
+    effect_list effects;
+    
+    std::for_each(skills.begin(), skills.end(), [&effects] (identifier ident) {
+      const Skill* skill = Data::skill(ident);
+      effects += skill->getEffects();
+    });
+    
+    return effects;
   }
 }
 
@@ -186,6 +199,20 @@ TEST_CASE("basic stats of units") {
       });
     }
   }
+}
 
-  
+TEST_CASE("skill effects groups") {
+  SECTION("keep greater group") {
+    GIVEN("two skill effects, one more powerful") {
+      const auto unit = test::anyRaceUnit();
+      const effect_list effects = test::effectListWithSkills({"resistance_to_all_2", "resistance_to_all_1"});
+      const effect_list actuals = effects.actuals(unit.get());
+      
+      THEN("only the most powerful is kept") {
+        REQUIRE(actuals.size() == 1);
+        REQUIRE(*actuals.begin() == *effects.begin());
+      }
+    
+    }
+  }
 }

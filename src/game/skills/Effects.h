@@ -285,8 +285,28 @@ public:
   void resize(size_t size) { data.resize(size); }
   iterator begin() const { return data.begin(); }
   iterator end() const { return data.end(); }
+  size_t size() const { return data.size(); }
   
   const SkillEffect* operator[](size_t index) const { return data[index]; }
+  
+  effect_list operator+(const effect_list& other) const {
+    effect_list result;
+    auto& rdata = result.data;
+    rdata.reserve(data.size() + other.data.size());
+    rdata.insert(rdata.end(), data.begin(), data.end());
+    rdata.insert(rdata.end(), other.data.begin(), other.data.end());
+    return result;
+  }
+  
+  effect_list& operator+=(const effect_list& other) {
+    data.reserve(data.size()+other.data.size());
+    data.insert(data.end(), other.data.begin(), other.data.end());
+    return *this;
+  }
+  
+  /* this method builds the actual effects taking into consideration
+     that some effects override or replace others */
+  effect_list actuals(const Unit* unit) const;
 };
 
 //TODO: to remove after hardcoded effects has been removed
