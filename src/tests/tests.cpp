@@ -215,4 +215,17 @@ TEST_CASE("skill effects groups") {
     
     }
   }
+  
+  SECTION("unique effect group" ) {
+    GIVEN("multiple skill effect with same unique group") {
+      const auto unit = test::anyRaceUnit();
+      const effect_list effects = test::effectListWithSkills({"healer", "healer", "healer"});
+      const effect_list actuals = effects.actuals(unit.get());
+
+      THEN("only one effect is kept") {
+        REQUIRE(actuals.size() == 1);
+        REQUIRE(*actuals.begin() == *effects.begin());
+      }
+    }
+  }
 }

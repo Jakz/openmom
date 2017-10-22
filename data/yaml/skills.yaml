@@ -1,6 +1,8 @@
 groups:
   - identifier: resistance_to_all
     policy: keep_greater
+  - identifier: healer
+    policy: unique
     
 skills:
   - identifier: mountaineer
@@ -74,6 +76,7 @@ skills:
     effects:
       - type: ability
         kind: healer
+        group: healer
     visuals:
       icon: [lbx, special, 16]
       i18n: skill_healer
@@ -194,7 +197,17 @@ skills:
       - type: army_bonus
         property: resistance
         value: 1
-        stackable_group: resistance_to_all
+        group: resistance_to_all
+    visuals:
+      icon: [lbx, special, 33]
+      i18n: skill_resistance_to_all
+  - identifier: resistance_to_all_2
+    type: native
+    effects:
+      - type: army_bonus
+        property: resistance
+        value: 2
+        group: resistance_to_all
     visuals:
       icon: [lbx, special, 33]
       i18n: skill_resistance_to_all

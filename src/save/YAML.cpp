@@ -442,7 +442,8 @@ template<> SkillEffectGroup::Mode yaml::parse(const N& node)
 {
   using Mode = SkillEffectGroup::Mode;
   static const std::unordered_map<std::string, Mode> mapping = {
-    { "keep_greater", SkillEffectGroup::Mode::KEEP_GREATER }
+    { "keep_greater", SkillEffectGroup::Mode::KEEP_GREATER },
+    { "unique", SkillEffectGroup::Mode::UNIQUE }
   };
   
   FETCH_OR_FAIL("SkillEffectGroup::Mode", mapping, node);
@@ -548,16 +549,16 @@ template<> const SkillEffect* yaml::parse(const N& node)
   
   /* parse stackable group if present */
   {
-    bool hasStackableGroup = node.hasChild("stackable_group");
+    bool hasStackableGroup = node.hasChild("group");
     
     if (hasStackableGroup)
     {
-      std::string groupIdentifier = node["stackable_group"];
+      std::string groupIdentifier = node["group"];
       const auto it = skillGroups.find(groupIdentifier);
       
       if (it == skillGroups.end())
       {
-        PARSE_ERROR("skill stackable_group '%s' is not defined", node["stackable_group"].asString().c_str());
+        PARSE_ERROR("skill group '%s' is not defined", node["group"].asString().c_str());
         assert(false);
       }
       
