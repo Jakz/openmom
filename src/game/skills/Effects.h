@@ -69,6 +69,26 @@ public:
   template<typename T> const T* as() const { return static_cast<const T*>(this); }
 };
 
+template<typename T, SkillEffect::Type TYPE>
+class SkillEnumEffect : public SkillEffect
+{
+private:
+  const T _subType;
+public:
+  SkillEnumEffect(T type) : SkillEffect(TYPE), _subType(type) { }
+  
+  bool operator==(T type) const { return _subType == type; }
+  T subType() const { return _subType; }
+  
+  Order compare(const Unit* unit, const SkillEffect* other) const override
+  {
+    if (other->type == type)
+      return other->as<SkillEnumEffect<T, TYPE>>()->subType() == subType() ? Order::EQUAL : Order::DIFFERENT;
+    else
+      return Order::UNCOMPARABLE;
+  }
+};
+
 class SimpleEffect : public SkillEffect
 {
 public:
@@ -219,7 +239,8 @@ public:
   enum class Phase : u8
   {
     ATTACKER,
-    DEFENDER
+    DEFENDER,
+    ALWAYS
   };
   
   CombatBonus(Property property, s16 value, Phase owner, Phase target, bool boundToSkill) : SkillEffect(SkillEffect::Type::COMBAT_BONUS), property(property), value(value), owner(owner), target(target), boundToSkill(boundToSkill) { }
@@ -247,7 +268,7 @@ enum class MovementType
   SAILING,
 };
 
-class MovementEffect : public SkillEffect
+/*class MovementEffect : public SkillEffect
 {
 private:
   const MovementType _type;
@@ -264,7 +285,9 @@ public:
     else
       return Order::UNCOMPARABLE;
   }
-};
+};*/
+
+using MovementEffect = SkillEnumEffect<MovementType, SkillEffect::Type::MOVEMENT>;
 
 //TODO: technically is a combat instant spell
 //TODO: implement mechanics

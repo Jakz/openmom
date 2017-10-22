@@ -214,6 +214,18 @@ skills:
     visuals:
       icon: [lbx, special, 33]
       i18n: skill_resistance_to_all
+# immunities
+  - identifier: missile_immunity
+    type: native
+    effects:
+      - type: combat_bonus
+        owner_phase: defender
+        enemy_phase: attacker
+        property: defense_ranged
+        value: 50
+    visuals:
+      icon: [lbx, special, 9]
+      i18n: skill_immunity_missile
 # spell granting abilities
   - identifier: healing_spell
     type: native

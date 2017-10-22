@@ -65,8 +65,8 @@ entries:
   race_prefix_halflings: Halfling
   race_prefix_high_elves: High Elf
   race_prefix_high_men: High Man
-  race_prefix_kackons: Klackon
-  race_prefix_lizarmen: Lizardman
+  race_prefix_klackons: Klackon
+  race_prefix_lizardmen: Lizardman
   race_prefix_nomads: Nomad
   race_prefix_orcs: Orc
   race_prefix_trolls: Troll
@@ -78,6 +78,7 @@ entries:
   unit_racial_halberdiers: Halberdiers
   unit_racial_shamans: Shamans
   unit_racial_priests: Priests
+  unit_racial_magicians: Magicians
   unit_racial_engineers: Engineers
   unit_racial_settlers: Settlers
   
@@ -109,6 +110,8 @@ entries:
   skill_non_corporeal: Non Corporeal
 
   skill_resistance_to_all: Resistance To All
+  
+  skill_immunity_missile: Missile Immunity
 
   skill_to_hit: To Hit
   skill_thrown: Thrown
@@ -132,7 +135,7 @@ entries:
   spell_earth_gate: Earth Gate
   spell_guardian_spirit: Guardian Spirit
   
-  spell_resist_elemnts: Resist Elements
+  spell_resist_elements: Resist Elements
   spell_elemental_armor: Elemental Armor
 
   game_option_difficulty_intro: Intro

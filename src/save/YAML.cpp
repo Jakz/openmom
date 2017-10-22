@@ -289,6 +289,17 @@ template<> Property yaml::parse(const N& node)
   FETCH_OR_FAIL("Property", mapping, node);
 }
 
+template<> CombatBonus::Phase yaml::parse(const N& node)
+{
+  static const std::unordered_map<std::string, CombatBonus::Phase> mapping = {
+    { "attacker", CombatBonus::Phase::ATTACKER },
+    { "defender", CombatBonus::Phase::DEFENDER },
+    { "always", CombatBonus::Phase::ALWAYS }
+  };
+ 
+  FETCH_OR_FAIL("CombatBonus::Phase", mapping, node);
+}
+
 template<> RangedInfo yaml::parse(const N& node)
 {
   if (node == "none")
@@ -482,6 +493,15 @@ template<> const SkillEffect* yaml::parse(const N& node)
     s16 value = parse<s16>(node["value"]);
     
     effect = new ArmyBonus(property, value, ArmyBonus::Type::WHOLE_ARMY);
+  }
+  else if (type == "combat_bonus")
+  {
+    Property property = parse<Property>(node["property"]);
+    s16 value = parse<s16>(node["value"]);
+    CombatBonus::Phase owner = optionalParse(node, "owner_phase", CombatBonus::Phase::ALWAYS);
+    CombatBonus::Phase other = optionalParse(node, "enemy_phase", CombatBonus::Phase::ALWAYS);
+    
+    effect = new CombatBonus(property, value, owner, other, false);
   }
   else if (type == "special_attack")
   {

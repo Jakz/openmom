@@ -96,8 +96,8 @@ void Game::dummyInit()
 		new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>()),
     new RaceUnit(Data::unit("lizardmen_spearmen")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("lizardmen_swordsmen")->as<RaceUnitSpec>()),
-		new RaceUnit(Data::unit("barbarian_bowmen")->as<RaceUnitSpec>()),
-		new RaceUnit(Data::unit("beastmen_priests")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("beastmen_engineers")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("beastmen_magicians")->as<RaceUnitSpec>()),
     new RaceUnit(Data::unit("lizardmen_dragon_turtle")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("barbarian_berserkers")->as<RaceUnitSpec>()),
   });

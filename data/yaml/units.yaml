@@ -225,6 +225,44 @@ units:
       i18n: unit_racial_priests
       icon: [lbx, units1, 50]
       figure: [lbx, figures4, 40]
+  - identifier: beastmen_magicians
+    type: racial
+    race: beastmen
+    upkeep: 4
+    cost: 180
+    melee: 2
+    ranged: [5, chaos, 4]
+    defense: 3
+    resistance: 9
+    hits: 2
+    figures: 4
+    movement: 1
+    sight: 1
+    skills: [ missile_immunity, fireball_spell]
+    requires: [ wizards_guild ]
+    visuals:
+      i18n: unit_racial_magicians
+      icon: [lbx, units1, 51]
+      figure: [lbx, figures4, 48]
+  - identifier: beastmen_engineers
+    type: racial
+    race: beastmen
+    upkeep: 2
+    cost: 60
+    melee: 2
+    ranged: none
+    defense: 1
+    resistance: 5
+    hits: 2
+    figures: 6
+    movement: 1
+    sight: 1
+    skills: [ construction_1, wall_crusher]
+    requires: [ builders_hall ]
+    visuals:
+      i18n: unit_racial_engineers
+      icon: [lbx, units1, 52]
+      figure: [lbx, figures4, 56]
        
 # lizardmen
   - identifier: lizardmen_spearmen

@@ -113,7 +113,6 @@ public:
   static void mergeBufferDownScaled(u16 xf = 0, u16 yf = 0, u16 xt = 0, u16 yt = 0, u16 w = WIDTH, u16 h = HEIGHT);
 
   static void maskBuffer(TextureID texture, int r, int c);
-  static void colorMapBuffer(int w, int h, ColorMap& map);
   static void maskBufferWithImage(TextureID mask, TextureID snd, u16 r, u16 c, u16 r2, u16 c2);
 
   static void drawClipped(const SpriteSheet* sheet, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h);

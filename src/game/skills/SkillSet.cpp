@@ -109,7 +109,7 @@ bool SkillSet::has(const std::function<bool(const SkillEffect*)>& predicate) con
 
 bool SkillSet::has(MovementType type) const {
   return has([type](const SkillEffect* effect) {
-    return effect->type == SkillEffect::Type::MOVEMENT && effect->as<MovementEffect>()->type() == type;
+    return effect->type == SkillEffect::Type::MOVEMENT && effect->as<MovementEffect>()->subType() == type;
   });
 }
 

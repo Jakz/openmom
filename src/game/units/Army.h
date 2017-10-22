@@ -7,7 +7,6 @@
 #include <list>
 #include <unordered_set>
 
-class MovementEffect;
 class Unit;
 namespace pathfind { class Route; }
 class Player;
@@ -26,7 +25,7 @@ public:
   movement_list(const decltype(data)& data) : data(data) { }
   movement_list(const movement_list& other) : data(other.data) { }
   movement_list(const std::vector<const MovementEffect*>& effects) {
-    for (const auto* e : effects) data.insert(e->type());
+    for (const auto* e : effects) data.insert(e->subType());
   }
 
   size_t size() const { return data.size(); }

@@ -244,6 +244,7 @@ void Gfx::drawPixel(Color color, u16 x, u16 y)
 void Gfx::resetBuffer(u16 w, u16 h)
 {
   lock(buffer);
+  //TODO: can be optimized
   for (int yy = 0; yy < h; ++yy)
     for (int xx = 0; xx < w; ++xx)
       buffer->set(xx, yy, 0x00000000);
@@ -268,16 +269,6 @@ void Gfx::maskBuffer(TextureID texture, int r, int c)
   
   unlock(buffer);
   unlock(tex);
-}
-
-void Gfx::colorMapBuffer(int w, int h, ColorMap& map)
-{
-  lock(buffer);
-  for (int yy = 0; yy < h; ++yy)
-    for (int xx = 0; xx < w; ++xx)
-      buffer->set(xx, yy, map.get(buffer->at(xx,yy)));
-  
-  unlock(buffer);
 }
 
 void Gfx::maskBufferWithImage(TextureID mask, TextureID snd, u16 r, u16 c, u16 r2, u16 c2)
