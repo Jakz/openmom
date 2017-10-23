@@ -70,7 +70,7 @@ units:
     movement: 2
     sight: 1
     skills: [ thrown_1, first_strike ]
-    requires: [ barracks, stable ]
+    requires: [ barracks, stables ]
     visuals:
       i18n: unit_racial_cavalry
       icon: [lbx, units1, 42]
@@ -94,25 +94,6 @@ units:
       i18n: unit_racial_shamans
       icon: [lbx, units1, 43]
       figure: [lbx, figures3, 104]
-  - identifier: barbarian_berserkers
-    type: racial
-    race: barbarians
-    upkeep: 3
-    cost: 120
-    melee: 7
-    ranged: none
-    defense: 3
-    resistance: 7
-    hits: 3
-    figures: 6
-    movement: 1
-    sight: 1
-    skills: [ thrown_3 ]
-    requires: [ armorers_guild ]
-    visuals:
-      i18n: unit_racial_berserkers
-      icon: [lbx, units1, 45]
-      figure: [lbx, figures4, 0]
   - identifier: barbarian_settlers
     type: racial
     race: barbarians
@@ -132,6 +113,26 @@ units:
       i18n: unit_racial_settlers
       icon: [lbx, units1, 44]
       figure: [lbx, figures3, 112]  
+  - identifier: barbarian_berserkers
+    type: racial
+    race: barbarians
+    upkeep: 3
+    cost: 120
+    melee: 7
+    ranged: none
+    defense: 3
+    resistance: 7
+    hits: 3
+    figures: 6
+    movement: 1
+    sight: 1
+    skills: [ thrown_3 ]
+    requires: [ armorers_guild ]
+    visuals:
+      i18n: unit_racial_berserkers
+      icon: [lbx, units1, 45]
+      figure: [lbx, figures4, 0]
+
        
 # beastmen      
   - identifier: beastmen_spearmen
@@ -263,7 +264,82 @@ units:
       i18n: unit_racial_engineers
       icon: [lbx, units1, 52]
       figure: [lbx, figures4, 56]
-      
+  - identifier: beastmen_settlers
+    type: racial
+    race: beastmen
+    upkeep: 3
+    cost: 120
+    melee: 1
+    ranged: none
+    defense: 1
+    resistance: 5
+    hits: 20
+    figures: 1
+    movement: 1
+    sight: 1
+    skills: [ create_outpost ]
+    visuals:
+      i18n: unit_racial_settlers
+      icon: [lbx, units1, 53]
+      figure: [lbx, figures4, 64]
+  - identifier: beastmen_centaurs
+    type: racial
+    race: beastmen
+    upkeep: 2
+    cost: 100
+    melee: 3
+    ranged: [2, arrow, 6]
+    defense: 3
+    resistance: 5
+    hits: 3
+    figures: 4
+    movement: 2
+    sight: 1
+    requires: [ barracks, stables ]
+    visuals:
+      i18n: unit_racial_centaurs
+      icon: [lbx, units1, 54]
+      figure: [lbx, figures4, 72]
+  - identifier: beastmen_manticores
+    type: racial
+    race: beastmen
+    upkeep: 4
+    cost: 160
+    melee: 5
+    ranged: none
+    defense: 3
+    resistance: 6
+    hits: 7
+    figures: 2
+    movement: 2
+    sight: 1
+    skills: [ flying, scouting_2, poison_touch_6 ]
+    requires: [ animists_guild, barracks ]
+    visuals:
+      i18n: unit_racial_manticores
+      icon: [lbx, units1, 55]
+      figure: [lbx, figures4, 80]
+      is_flying: true
+  - identifier: beastmen_minotaurs
+    type: racial
+    race: beastmen
+    upkeep: 4
+    cost: 200
+    melee: 12
+    ranged: none
+    defense: 4
+    resistance: 7
+    hits: 12
+    figures: 2
+    movement: 1
+    sight: 1
+    skills: [ to_hit_2, large_shield ]
+    requires: [ armorers_guild ]
+    visuals:
+      i18n: unit_racial_minotaurs
+      icon: [lbx, units1, 56 ]
+      figure: [lbx, figures4, 88 ]
+        
 # highmen
   # spearmen missing
   - identifier: high_men_swordsmen
@@ -338,7 +414,7 @@ units:
     movement: 2
     sight: 1
     skills: [ swimming, fire_breath_5 ]
-    requires: [ armorers_guild, stable ]
+    requires: [ armorers_guild, stables ]
     visuals:
       i18n: unit_racial_dragon_turtle
       icon: [lbx, units2, 6]

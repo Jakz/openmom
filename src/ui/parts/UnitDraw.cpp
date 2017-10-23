@@ -219,6 +219,8 @@ void UnitDraw::drawHeroPortrait(const Hero *unit, s16 x, s16 y)
 struct IsoOffset { s8 x, y; };
 
 static const IsoOffset ISO_1FIGURES[] = {{0,0}};
+static const IsoOffset ISO_2FIGURES[] = {{-8,+1},{+8,+1}};
+// TODO: check order, it should match the ingame one when an unit is damaged and less than all the units are drawn
 static const IsoOffset ISO_4FIGURES[] = {{+2,-4},{+11,+1},{-8,+1},{+2,+6}};
 static const IsoOffset ISO_6FIGURES[] = {{+1,-5},{+4,-1},{+10,+2},{-10,0},{-3,+3},{+1,+7}};
 static const IsoOffset ISO_8FIGURES[] = {{+1,-5},{+7,-2},{+11,0},{-2,-1},{+4,+1},{-10,0},{-4,+3},{+2,+6}};
@@ -240,6 +242,9 @@ void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realU
     case 1:
       o = ISO_1FIGURES;
       break;
+    case 2:
+      o = ISO_2FIGURES;
+      break;
     case 4:
       o = ISO_4FIGURES;
       break;
@@ -250,6 +255,7 @@ void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realU
       o = ISO_8FIGURES;
       break;
     default:
+      assert(false);
       break;
   }
   
@@ -260,6 +266,9 @@ void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realU
   if (realUnit)
     glow = realUnit->glow();
   
+  const auto& unitGfx = GfxData::unitGfx(unit);
+  const SpriteInfo sprite = unitGfx.fullFigure.frame(2, 2);
+  
   for (int i = 0; i < unit->figures; ++i)
   {
     if (realUnit)
@@ -267,14 +276,15 @@ void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realU
     else if (owner)
       bindPlayerColorPalette(owner->color);
     
-    Gfx::draw(GfxData::unitGfx(unit).fullFigure.frame(2, 2), x+o[i].x, y+o[i].y);
+    
+    Gfx::draw(sprite, x+o[i].x, y+o[i].y);
     
     if (realUnit || owner)
       unbindPlayerColorPalette();
     
     //TODO: seembs bugged, eg: great drake rightmost edge
     if (glow != School::NO_SCHOOL)
-      Gfx::drawGlow(GfxData::unitGfx(unit).fullFigure.frame(2, 2), x+o[i].x, y+o[i].y, glow);
+      Gfx::drawGlow(sprite, x+o[i].x, y+o[i].y, glow);
     
   }
 }

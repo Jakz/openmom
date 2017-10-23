@@ -61,7 +61,7 @@ template<> Data::map_t<const Building*>& Data::containerFor() {
     
     { "smithy", Building::SMITHY },
     
-    { "stable", Building::STABLE },
+    { "stables", Building::STABLE },
     { "animists_guild", Building::ANIMISTS_GUILD },
     { "fantastic_stable", Building::FANTASTIC_STABLE },
     

@@ -284,6 +284,7 @@ template<> Property yaml::parse(const N& node)
     { "hits", Property::HIT_POINTS },
     { "health_regen", Property::HEALTH_REGEN },
     { "figures", Property::FIGURES },
+    { "sight", Property::SIGHT }
     
   };
   
@@ -299,6 +300,20 @@ template<> CombatBonus::Phase yaml::parse(const N& node)
   };
  
   FETCH_OR_FAIL("CombatBonus::Phase", mapping, node);
+}
+
+template<> PropertyBonus::Mode yaml::parse(const N& node)
+{
+  using Mode = PropertyBonus::Mode;
+  static const std::unordered_map<std::string, Mode> mapping = {
+    { "additive", Mode::ADDITIVE },
+    { "override", Mode::OVERRIDE },
+    { "override_if_greater", Mode::OVERRIDE_IF_GREATER },
+    { "override_if_lesser", Mode::OVERRIDE_IF_LESSER }
+
+  };
+  
+  FETCH_OR_FAIL("SkillEffectGroup::Mode", mapping, node);
 }
 
 template<> RangedInfo yaml::parse(const N& node)
@@ -480,7 +495,8 @@ template<> const SkillEffect* yaml::parse(const N& node)
   {
     Property property = parse<Property>(node["property"]);
     s16 value = parse<s16>(node["value"]);
-    effect = new UnitBonus(property, value);
+    PropertyBonus::Mode mode = optionalParse(node, "mode", PropertyBonus::Mode::ADDITIVE);
+    effect = new UnitBonus(property, mode, value);
   }
   else if (type == "unit_level_bonus")
   {
@@ -492,8 +508,9 @@ template<> const SkillEffect* yaml::parse(const N& node)
   {
     Property property = parse<Property>(node["property"]);
     s16 value = parse<s16>(node["value"]);
-    
-    effect = new ArmyBonus(property, value, ArmyBonus::Type::WHOLE_ARMY);
+    PropertyBonus::Mode mode = optionalParse(node, "mode", PropertyBonus::Mode::ADDITIVE);
+
+    effect = new ArmyBonus(property, mode, value, ArmyBonus::Type::WHOLE_ARMY);
   }
   else if (type == "combat_bonus")
   {
@@ -506,16 +523,17 @@ template<> const SkillEffect* yaml::parse(const N& node)
   }
   else if (type == "special_attack")
   {
-    static std::unordered_map<std::string, SimpleEffect::Type> mapping = {
-      { "thrown_weapon", SimpleEffect::Type::THROWN_ATTACK },
-      { "fire_breath", SimpleEffect::Type::FIRE_BREATH }
+    static std::unordered_map<std::string, SpecialAttackType> mapping = {
+      { "thrown_weapon", SpecialAttackType::THROWN_ATTACK },
+      { "fire_breath", SpecialAttackType::FIRE_BREATH },
+      { "poison_touch", SpecialAttackType::POISON_TOUCH }
     };
     
     if (mapping.find(node["kind"]) == mapping.end())
       assert(false);
     
     s16 value = parse<s16>(node["value"]);
-    SimpleEffect::Type kind = mapping[node["kind"]];
+    SpecialAttackType kind = mapping[node["kind"]];
     
     effect = new SpecialAttackEffect(kind, value);
   }
@@ -631,6 +649,7 @@ template<> void yaml::parse(const N& node, skill_init_list& skills)
   });
 }
 
+#pragma mark UnitSpec
 template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
 {
   assert(node.IsMap());
@@ -643,6 +662,7 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
   s16 resistance = node["resistance"];
   s16 hits = node["hits"];
   s16 figures = node["figures"];
+
   s16 movement = node["movement"];
   s16 sight = node["sight"];
   s16 upkeep = node["upkeep"];
@@ -655,6 +675,10 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
   SpriteInfo gfxFigure = parse<SpriteInfo>(visuals["figure"]);
   I18 gfxName = i18n::keyForString(visuals["i18n"]);
   bool gfxIsFlying = optionalParse(visuals, "is_flying", false);
+  
+  
+  if (figures != 1 && figures != 2 && figures != 4 && figures != 6 && figures != 8)
+    assert(false);
   
   std::pair<const UnitSpec*, UnitGfxSpec> data = std::make_pair(nullptr, UnitGfxSpec(gfxName, gfxIcon, gfxFigure, gfxIsFlying));
   

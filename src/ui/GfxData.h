@@ -86,6 +86,11 @@ struct PlayerGfxSpec
   {
     Color color;
   } astrologer;
+  
+  struct
+  {
+    
+  } units;
 };
 
 struct SchoolGfxSpec

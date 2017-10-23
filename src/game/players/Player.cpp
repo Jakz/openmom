@@ -68,9 +68,16 @@ void FogMap::setRange(const Position& pos, s16 range)
     for (int j = -range; j <= range; ++j)
       if (range == 1 || (!((i == -range || i == range) && (j == -range || j == range))))
       {
-        map[pos.plane][j+pos.x][i+pos.y] = true;
-        Position pos2 = Position(j+pos.x,i+pos.y,pos.plane);
-        player->discoverTile(pos2);
+        if (i+pos.y >= 0 && i+pos.y < h)
+        {
+          s16 x = Util::wrap(j+pos.x, w);
+          map[pos.plane][x][i+pos.y] = true;
+          Position pos2 = Position(j+pos.x,i+pos.y,pos.plane);
+          player->discoverTile(pos2);
+        }
+        
+        
+
       }
 }
 

@@ -310,7 +310,6 @@ unordered_map<SkillBase, string, enum_hash> i18n::skills =
   {SkillBase::CREATE_ROAD, "Create Road"},
   {SkillBase::WALL_CRUSHING, "Wall Crushing"},
   
-  {SkillBase::SCOUTING, "Scouting"},
   {SkillBase::TO_HIT, "To Hit"},
   {SkillBase::LUCKY, "Lucky"},
   {SkillBase::HOLY_BONUS, "Holy Bonus"},

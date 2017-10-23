@@ -93,10 +93,10 @@ void Game::dummyInit()
   //WorldGenerator.generate(world, MYRRAN);
 
   Army* a = new Army(player, {
-		new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>()),
-    new RaceUnit(Data::unit("beastmen_spearmen")->as<RaceUnitSpec>()),
-		new RaceUnit(Data::unit("high_men_swordsmen")->as<RaceUnitSpec>()),
-		new RaceUnit(Data::unit("beastmen_engineers")->as<RaceUnitSpec>()),
+		new FantasticUnit(Data::unit("beastmen_settlers")->as<SummonSpec>()),
+    new RaceUnit(Data::unit("beastmen_centaurs")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("beastmen_manticores")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("beastmen_minotaurs")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("beastmen_priests")->as<RaceUnitSpec>()),
     new RaceUnit(Data::unit("lizardmen_dragon_turtle")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("barbarian_berserkers")->as<RaceUnitSpec>()),

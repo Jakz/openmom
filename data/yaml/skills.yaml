@@ -34,6 +34,10 @@ skills:
     effects:
       - type: movement
         kind: flying
+      - type: unit_bonus
+        mode: override_if_greater
+        property: sight
+        value: 2
     visuals:
       hidden: true
 # to hit
@@ -65,6 +69,28 @@ skills:
     visuals:
       icon: [lbx, special2, 14]
       i18n: skill_to_hit
+# scouting
+  - identifier: scouting_2
+    type: native
+    effects:
+      - type: unit_bonus
+        mode: override_if_greater
+        property: sight
+        value: 2
+    visuals:
+      icon: [lbx, special, 37]
+      i18n: skill_scouting
+  - identifier: scouting_3
+    type: native
+    effects:
+      - type: unit_bonus
+        mode: override_if_greater
+        property: sight
+        value: 3
+    visuals:
+      icon: [lbx, special, 37]
+      i18n: skill_scouting
+              
   - identifier: first_strike
     type: native
     effects:
@@ -194,6 +220,15 @@ skills:
     visuals:
       icon: [lbx, special2, 27]
       i18n: skill_fire_breath
+  - identifier: poison_touch_6
+    type: native
+    effects:
+      - type: special_attack
+        kind: poison_touch
+        value: 6
+    visuals:
+      icon: [lbx, special, 30]
+      i18n: skill_poison_touch
   - identifier: resistance_to_all_1
     type: native
     effects:

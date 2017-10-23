@@ -19,7 +19,7 @@ const std::string skills::ConcreteSkill::name() const
     if (effect->type == SkillEffect::Type::UNIT_BONUS)
       return string("+") + to_string(static_cast<const PropertyBonus*>(effect)->value) + " " + base;
     else if (_effects[0]->type == SkillEffect::Type::SPECIAL_ATTACK)
-      return base + " (" + to_string(static_cast<const SpecialAttackEffect*>(effect)->strength) + ")";
+      return base + " (" + to_string(effect->as<SpecialAttackEffect>()->strength()) + ")";
   }
   
   return base;
@@ -62,7 +62,7 @@ const string ConcreteSkill::name() const
     if (effect->type == SkillEffect::Type::UNIT_BONUS)
       return string("+") + to_string(static_cast<const PropertyBonus*>(effect)->value) + " " + Skill::name();
     else if (effects[0]->type == SkillEffect::Type::SPECIAL_ATTACK)
-      return Skill::name() + " (" + to_string(static_cast<const SpecialAttackEffect*>(effect)->strength) + ")";
+      return Skill::name() + " (" + to_string(effect->as<SpecialAttackEffect>()->strength()) + ")";
   }
   
   return "";
@@ -102,7 +102,7 @@ namespace skillimpl
   static const ConcreteSkill LONG_RANGE = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::LONG_RANGE)} );
   static const ConcreteSkill ILLUSIONARY_ATTACK = ConcreteSkill(SkillBase::ILLUSIONARY_ATTACK, {new SimpleEffect(SkillEffect::Type::ABILITY, SimpleEffect::Type::ILLUSIONARY_ATTACK)} );
 
-  static const ConcreteSkill POISON_ATTACK1 = ConcreteSkill(SkillBase::POISON_ATTACK, {new SpecialAttackEffect(SpecialAttackEffect::Type::POISON, 1)}, false);
+  /*static const ConcreteSkill POISON_ATTACK1 = ConcreteSkill(SkillBase::POISON_ATTACK, {new SpecialAttackEffect(SpecialAttackEffect::Type::POISON, 1)}, false);
   static const ConcreteSkill POISON_ATTACK4 = ConcreteSkill(SkillBase::POISON_ATTACK, {new SpecialAttackEffect(SpecialAttackEffect::Type::POISON, 4)}, false);
   static const ConcreteSkill POISON_ATTACK6 = ConcreteSkill(SkillBase::POISON_ATTACK, {new SpecialAttackEffect(SpecialAttackEffect::Type::POISON, 6)}, false);
   static const ConcreteSkill POISON_ATTACK15 = ConcreteSkill(SkillBase::POISON_ATTACK, {new SpecialAttackEffect(SpecialAttackEffect::Type::POISON, 15)}, false);
@@ -125,13 +125,9 @@ namespace skillimpl
   static const ConcreteSkill STONE_GAZE3 = ConcreteSkill(SkillBase::STONE_GAZE, {new SpecialAttackEffect(SpecialAttackEffect::Type::STONE_GAZE, -3)}, false);
   static const ConcreteSkill STONE_GAZE4 = ConcreteSkill(SkillBase::STONE_GAZE, {new SpecialAttackEffect(SpecialAttackEffect::Type::STONE_GAZE, -4)}, false);
 
-  static const ConcreteSkill STONE_TOUCH3 = ConcreteSkill(SkillBase::STONE_TOUCH, {new SpecialAttackEffect(SpecialAttackEffect::Type::STONE_TOUCH, -3)}, false);
+  static const ConcreteSkill STONE_TOUCH3 = ConcreteSkill(SkillBase::STONE_TOUCH, {new SpecialAttackEffect(SpecialAttackEffect::Type::STONE_TOUCH, -3)}, false);*/
 
   // TODO: a parametric throw weapon is needed for hero ability
-
-  static const ConcreteSkill SCOUTING1 = ConcreteSkill(SkillBase::SCOUTING, {new UnitBonus(Property::SIGHT,1)}, false);
-  static const ConcreteSkill SCOUTING2 = ConcreteSkill(SkillBase::SCOUTING, {new UnitBonus(Property::SIGHT,2)}, false);
-  static const ConcreteSkill SCOUTING3 = ConcreteSkill(SkillBase::SCOUTING, {new UnitBonus(Property::SIGHT,3)}, false);
   
   static const ConcreteSkill MITHRIL_WEAPONS = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,1)});
   static const ConcreteSkill ADAMANTIUM_WEAPONS = ConcreteSkill(SkillBase::ADAMANTIUM_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,2)});
@@ -187,32 +183,27 @@ const Skill* Skills::ARMOR_PIERCING = &skillimpl::ARMOR_PIERCING;
 const Skill* Skills::LONG_RANGE = &skillimpl::LONG_RANGE;
 const Skill* Skills::ILLUSIONARY_ATTACK = &skillimpl::ILLUSIONARY_ATTACK;
 
-const Skill* Skills::POISON_ATTACK1 = &skillimpl::POISON_ATTACK1;
-const Skill* Skills::POISON_ATTACK4 = &skillimpl::POISON_ATTACK4;
-const Skill* Skills::POISON_ATTACK6 = &skillimpl::POISON_ATTACK6;
-const Skill* Skills::POISON_ATTACK15 = &skillimpl::POISON_ATTACK15;
+const Skill* Skills::POISON_ATTACK1 = nullptr;//&skillimpl::POISON_ATTACK1;
+const Skill* Skills::POISON_ATTACK4 = nullptr;//&skillimpl::POISON_ATTACK4;
+const Skill* Skills::POISON_ATTACK6 = nullptr;//&skillimpl::POISON_ATTACK6;
+const Skill* Skills::POISON_ATTACK15 = nullptr;//&skillimpl::POISON_ATTACK15;
 
-const Skill* Skills::LIFE_STEALING0 = &skillimpl::LIFE_STEALING0;
-const Skill* Skills::LIFE_STEALING3 = &skillimpl::LIFE_STEALING3;
-const Skill* Skills::LIFE_STEALING4 = &skillimpl::LIFE_STEALING4;
-const Skill* Skills::LIFE_STEALING5 = &skillimpl::LIFE_STEALING5;
+const Skill* Skills::LIFE_STEALING0 = nullptr;//&skillimpl::LIFE_STEALING0;
+const Skill* Skills::LIFE_STEALING3 = nullptr;//&skillimpl::LIFE_STEALING3;
+const Skill* Skills::LIFE_STEALING4 = nullptr;//&skillimpl::LIFE_STEALING4;
+const Skill* Skills::LIFE_STEALING5 = nullptr;//&skillimpl::LIFE_STEALING5;
 
-const Skill* Skills::IMMOLATION = &skillimpl::IMMOLATION;
+const Skill* Skills::IMMOLATION = nullptr;//&skillimpl::IMMOLATION;
 
-const Skill* Skills::LIGHTING_BREATH20 = &skillimpl::LIGHTING_BREATH20;
+const Skill* Skills::LIGHTING_BREATH20 = nullptr;//&skillimpl::LIGHTING_BREATH20;
 
-const Skill* Skills::DOOM_GAZE4 = &skillimpl::DOOM_GAZE4;
-const Skill* Skills::DEATH_GAZE2 = &skillimpl::DEATH_GAZE2;
-const Skill* Skills::DEATH_GAZE4 = &skillimpl::DEATH_GAZE4;
-const Skill* Skills::STONE_GAZE1 = &skillimpl::STONE_GAZE1;
-const Skill* Skills::STONE_GAZE3 = &skillimpl::STONE_GAZE3;
-const Skill* Skills::STONE_GAZE4 = &skillimpl::STONE_GAZE4;
-const Skill* Skills::STONE_TOUCH3 = &skillimpl::STONE_TOUCH3;
-
-
-const Skill* Skills::SCOUTING1 = &skillimpl::SCOUTING1;
-const Skill* Skills::SCOUTING2 = &skillimpl::SCOUTING2;
-const Skill* Skills::SCOUTING3 = &skillimpl::SCOUTING3;
+const Skill* Skills::DOOM_GAZE4 = nullptr;//&skillimpl::DOOM_GAZE4;
+const Skill* Skills::DEATH_GAZE2 = nullptr;//&skillimpl::DEATH_GAZE2;
+const Skill* Skills::DEATH_GAZE4 = nullptr;//&skillimpl::DEATH_GAZE4;
+const Skill* Skills::STONE_GAZE1 = nullptr;//&skillimpl::STONE_GAZE1;
+const Skill* Skills::STONE_GAZE3 = nullptr;//&skillimpl::STONE_GAZE3;
+const Skill* Skills::STONE_GAZE4 = nullptr;//&skillimpl::STONE_GAZE4;
+const Skill* Skills::STONE_TOUCH3 = nullptr;//&skillimpl::STONE_TOUCH3;
 
 const Skill* Skills::MITHRIL_WEAPONS = &skillimpl::MITHRIL_WEAPONS;
 const Skill* Skills::ADAMANTIUM_WEAPONS = &skillimpl::ADAMANTIUM_WEAPONS;

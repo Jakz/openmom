@@ -139,20 +139,23 @@ public:
   const s16 param;
 };
 
-class SpecialAttackEffect : public SimpleEffect
-{
-public:
-  SpecialAttackEffect(SimpleEffect::Type attack, s16 strength = 0) : SimpleEffect(SkillEffect::Type::SPECIAL_ATTACK, attack), strength(strength) { }
-  const s16 strength;
-};
-
 class PropertyBonus : public SkillEffect
 {
+public:
+  enum class Mode
+  {
+    ADDITIVE,
+    OVERRIDE, 
+    OVERRIDE_IF_GREATER,
+    OVERRIDE_IF_LESSER
+  };
+  
 protected:
-  PropertyBonus(SkillEffect::Type type, Property property, s16 value) : SkillEffect(type), property(property), value(value) { }
+  PropertyBonus(SkillEffect::Type type, Property property, Mode mode, s16 value) : SkillEffect(type), property(property), mode(mode), value(value) { }
   
 public:
- 
+
+  const Mode mode;
   const Property property;
   const s16 value;
   
@@ -186,7 +189,8 @@ public:
 class UnitBonus : public PropertyBonus
 {
 public:
-  UnitBonus(Property property, s16 value) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, value) { }
+  UnitBonus(Property property, Mode mode, s16 value) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, mode, value) { }
+  UnitBonus(Property property, s16 value) : UnitBonus(property, PropertyBonus::Mode::ADDITIVE, value) { }
 };
 
 class UnitLevelBonus : public UnitBonus
@@ -218,7 +222,8 @@ protected:
 public:
   const enum class Type { WHOLE_ARMY, NORMAL_UNITS } target;
   
-  ArmyBonus(Property property, s16 value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, value), target(target) { }
+  ArmyBonus(Property property, Mode mode, s16 value, Type target) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, mode, value), target(target) { }
+  ArmyBonus(Property property, s16 value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, PropertyBonus::Mode::ADDITIVE, value), target(target) { }
   s16 getValue(const Unit* unit) const override;
 };
 
@@ -268,26 +273,27 @@ enum class MovementType
   SAILING,
 };
 
-/*class MovementEffect : public SkillEffect
+using MovementEffect = SkillEnumEffect<MovementType, SkillEffect::Type::MOVEMENT>;
+
+enum SpecialAttackType
+{
+  THROWN_ATTACK,
+  
+  FIRE_BREATH,
+  
+  POISON_TOUCH
+};
+
+class SpecialAttackEffect : public SkillEnumEffect<SpecialAttackType, SkillEffect::Type::SPECIAL_ATTACK>
 {
 private:
-  const MovementType _type;
+  s16 _strength;
   
 public:
-  MovementEffect(MovementType type) : SkillEffect(SkillEffect::Type::MOVEMENT), _type(type) { }
-  bool operator==(MovementType type) const { return _type == type; }
-  MovementType type() const { return _type; }
+  SpecialAttackEffect(SpecialAttackType type, s16 strength) : SkillEnumEffect(type), _strength(strength) { }
   
-  Order compare(const Unit* unit, const SkillEffect* other) const override
-  {
-    if (other->type == SkillEffect::Type::MOVEMENT)
-      return other->as<MovementEffect>()->type() == type() ? Order::EQUAL : Order::DIFFERENT;
-    else
-      return Order::UNCOMPARABLE;
-  }
-};*/
-
-using MovementEffect = SkillEnumEffect<MovementType, SkillEffect::Type::MOVEMENT>;
+  s16 strength() const { return _strength; }
+};
 
 //TODO: technically is a combat instant spell
 //TODO: implement mechanics
