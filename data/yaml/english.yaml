@@ -84,6 +84,10 @@ entries:
   
   unit_racial_berserkers: Berserkers
   unit_racial_dragon_turtle: Dragon Turtle
+  unit_racial_centaurs: Centaurs
+  unit_racial_manticores: Manticores
+  unit_racial_minotaurs: Minotaurs
+  unit_racial_nightblades: Nightblades
 
   funit_magic_spirit: Magic Spirit
   funit_guardian_spirit: Guardian Spirit
@@ -101,10 +105,13 @@ entries:
   skill_purify: Purify
   skill_healer: Healer
   skill_meld_with_node: Meld With Node
-  
-  skill_fire_breath: Fire Breath
+
   skill_first_strike: First Strike
   skill_large_shield: Large Shield
+  skill_invisibility: Invisibility
+  
+  skill_poison_touch: Poison
+  skill_fire_breath: Fire Breath  
   
   skill_mountaineer: Mountaineer
   skill_non_corporeal: Non Corporeal

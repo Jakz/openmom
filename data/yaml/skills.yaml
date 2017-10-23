@@ -150,6 +150,19 @@ skills:
     visuals:
       icon: [lbx, special, 40]
       i18n: skill_meld_with_node
+  - identifier: invisibility
+    type: native
+    effects:
+      - type: ability
+        kind: invisibility
+      - type: combat_bonus
+        trigger_on: defending
+        affects: attacker
+        property: to_hit
+        value: -1
+    visuals:
+      icon: [lbx, special, 18]
+      i18n: skill_invisibility
   - identifier: large_shield
     type: native
     effects:
@@ -220,6 +233,15 @@ skills:
     visuals:
       icon: [lbx, special2, 27]
       i18n: skill_fire_breath
+  - identifier: poison_touch_1
+    type: native
+    effects:
+      - type: special_attack
+        kind: poison_touch
+        value: 1
+    visuals:
+      icon: [lbx, special, 30]
+      i18n: skill_poison_touch
   - identifier: poison_touch_6
     type: native
     effects:
@@ -254,8 +276,8 @@ skills:
     type: native
     effects:
       - type: combat_bonus
-        owner_phase: defender
-        enemy_phase: attacker
+        trigger_on: defending
+        affects: defender
         property: defense_ranged
         value: 50
     visuals:

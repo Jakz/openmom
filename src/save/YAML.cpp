@@ -295,12 +295,22 @@ template<> Property yaml::parse(const N& node)
 template<> CombatBonus::Phase yaml::parse(const N& node)
 {
   static const std::unordered_map<std::string, CombatBonus::Phase> mapping = {
-    { "attacker", CombatBonus::Phase::ATTACKER },
-    { "defender", CombatBonus::Phase::DEFENDER },
-    { "always", CombatBonus::Phase::ALWAYS }
+    { "attacking", CombatBonus::Phase::ATTACKING },
+    { "defending", CombatBonus::Phase::DEFENDING },
+    { "both", CombatBonus::Phase::BOTH }
   };
  
   FETCH_OR_FAIL("CombatBonus::Phase", mapping, node);
+}
+
+template<> CombatBonus::Target yaml::parse(const N& node)
+{
+  static const std::unordered_map<std::string, CombatBonus::Target> mapping = {
+    { "attacker", CombatBonus::Target::ATTACKER },
+    { "defender", CombatBonus::Target::DEFENDER },
+  };
+  
+  FETCH_OR_FAIL("CombatBonus::Target", mapping, node);
 }
 
 template<> PropertyBonus::Mode yaml::parse(const N& node)
@@ -517,10 +527,10 @@ template<> const SkillEffect* yaml::parse(const N& node)
   {
     Property property = parse<Property>(node["property"]);
     s16 value = parse<s16>(node["value"]);
-    CombatBonus::Phase owner = optionalParse(node, "owner_phase", CombatBonus::Phase::ALWAYS);
-    CombatBonus::Phase other = optionalParse(node, "enemy_phase", CombatBonus::Phase::ALWAYS);
+    CombatBonus::Phase phase = parse<CombatBonus::Phase>(node["trigger_on"]);
+    CombatBonus::Target target = parse<CombatBonus::Target>(node["affects"]);
     
-    effect = new CombatBonus(property, value, owner, other, false);
+    effect = new CombatBonus(property, value, phase, target, false);
   }
   else if (type == "special_attack")
   {
@@ -547,7 +557,8 @@ template<> const SkillEffect* yaml::parse(const N& node)
       { "create_outpost", SimpleEffect::Type::CREATE_OUTPOST },
       { "create_road", SimpleEffect::Type::CREATE_ROAD },
       { "meld_with_node", SimpleEffect::Type::MELD_NODE },
-      { "wall_crusher", SimpleEffect::Type::WALL_CRUSHING }
+      { "wall_crusher", SimpleEffect::Type::WALL_CRUSHING },
+      { "invisibility", SimpleEffect::Type::INVISIBILITY }
     };
     
     if (mapping.find(node["kind"]) == mapping.end())

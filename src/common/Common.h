@@ -395,7 +395,7 @@ struct Position
   Position relative(s16 ox, s16 oy) const { return Position(x+ox, y+oy, plane); }
   Position dx(s16 ox, s16 oy) const { return relative(ox, oy); }
   
-  bool wrapAndCheckValidity(u16 w, u16 h)
+  inline bool wrapAndCheckValidity(u16 w, u16 h)
   {
     if (y < 0 || y >= h) return false;
     else
@@ -406,6 +406,11 @@ struct Position
         x = x%w;
       return true;
     }
+  }
+  
+  bool isValid(u16 w, u16 h) const
+  {
+    return y >= 0 || y < h;
   }
   
   bool same(const Position& p) const { return p.x == x && p.y == y && p.plane == plane; }

@@ -433,7 +433,43 @@ units:
       i18n: unit_racial_priests
       icon: [lbx, units1, 61]
       figure: [lbx, figures5, 8]
-    
+  - identifier: dark_elves_settlers
+    type: racial
+    race: dark_elves
+    upkeep: 3
+    cost: 150
+    melee: 0
+    ranged: none
+    defense: 1
+    resistance: 7
+    hits: 10
+    figures: 1
+    movement: 1
+    sight: 1
+    skills: [ create_outpost ]
+    visuals:
+      i18n: unit_racial_settlers
+      icon: [lbx, units1, 62]
+      figure: [lbx, figures5, 16]
+  - identifier: dark_elves_nightblades
+    type: racial
+    race: dark_elves
+    upkeep: 3
+    cost: 120
+    melee: 4
+    ranged: none
+    defense: 3
+    resistance: 7
+    hits: 1
+    figures: 6
+    movement: 1
+    sight: 1
+    skills: [ invisibility, poison_touch_1 ]
+    visuals:
+      i18n: unit_racial_nightblades
+      icon: [lbx, units1, 63]
+      figure: [lbx, figures5, 24]
+
 # highmen
   # spearmen missing
   - identifier: high_men_swordsmen

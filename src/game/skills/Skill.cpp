@@ -152,7 +152,7 @@ namespace skillimpl
   // TODO: SAGE
   // TODO: SPELL_CASTER
   
-  static const ConcreteSkill SPELL_ELDRITCH_WEAPON = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new CombatBonus(Property::TO_DEFEND, -1, CombatBonus::Phase::ATTACKER, CombatBonus::Phase::DEFENDER, false)});
+  static const ConcreteSkill SPELL_ELDRITCH_WEAPON = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new CombatBonus(Property::TO_DEFEND, -1, CombatBonus::Phase::ATTACKING, CombatBonus::Target::DEFENDER, false)});
   static const ConcreteSkill SPELL_FLAME_BLADE = ConcreteSkill(SkillBase::SPELL_FLAME_BLADE, unit_bonus_build({Property::MELEE, Property::RANGED, Property::THROWN_ATTACK}, 2));
 
   static const ConcreteSkill SPELL_RESIST_ELEMENTS = ConcreteSkill(SkillBase::SPELL_RESIST_ELEMENTS, unit_bonus_build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 3));

@@ -30,23 +30,19 @@ FogMap::FogMap(Player* player, u16 w, u16 h) : player(player), w(w), h(h), map{n
   }
 }
 
-bool FogMap::get(const Position& position) const {
-  s16 x = position.x, y = position.y;
-  
-  if (y < 0 || y >= h)
-    return true;
+bool FogMap::get(Position position) const
+{
+  if (position.wrapAndCheckValidity(w, h))
+    return map[position.plane][position.x][position.y];
   else
-    return map[position.plane][Util::wrap(x, w)][y];
+    return true;
 }
 
-void FogMap::set(const Position& position) {
-  s16 x = position.x, y = position.y;
-  
-  if (y >= 0 && y < h)
+void FogMap::set(Position position)
+{
+  if (position.wrapAndCheckValidity(w, h))
   {
-    x = Util::wrap(x, w);
-    
-    map[position.plane][x][y] = true;
+    unsafeSet(position);
     player->discoverTile(position);
   }
 }
@@ -56,9 +52,13 @@ void FogMap::setRect(s16 x, s16 y, s16 w, s16 h, Plane plane)
   for (int i = y; i < y+h; ++i)
     for (int j = x; j < x+w; ++j)
     {
-      map[plane][j][i] = true;
       Position pos = Position(j,i,plane);
-      player->discoverTile(pos);
+
+      if (pos.wrapAndCheckValidity(w, h))
+      {
+        unsafeSet(pos);
+        player->discoverTile(pos);
+      }
     }
 }
 
@@ -68,16 +68,12 @@ void FogMap::setRange(const Position& pos, s16 range)
     for (int j = -range; j <= range; ++j)
       if (range == 1 || (!((i == -range || i == range) && (j == -range || j == range))))
       {
-        if (i+pos.y >= 0 && i+pos.y < h)
+        Position npos = pos.relative(j, i);
+        if (npos.wrapAndCheckValidity(w, h))
         {
-          s16 x = Util::wrap(j+pos.x, w);
-          map[pos.plane][x][i+pos.y] = true;
-          Position pos2 = Position(j+pos.x,i+pos.y,pos.plane);
-          player->discoverTile(pos2);
+          unsafeSet(npos);
+          player->discoverTile(npos);
         }
-        
-        
-
       }
 }
 

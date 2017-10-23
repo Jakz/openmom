@@ -96,6 +96,9 @@ class SimpleEffect : public SkillEffect
 public:
   const enum class Type : u16
   {
+    INVISIBILITY,
+    
+    
     IMMUNITY_MAGIC,
     IMMUNITY_ILLUSIONS,
     IMMUNITY_MISSILE,
@@ -245,14 +248,21 @@ class CombatBonus : public SkillEffect
 public:
   enum class Phase : u8
   {
-    ATTACKER,
-    DEFENDER,
-    ALWAYS
+    BOTH,
+    ATTACKING,
+    DEFENDING
   };
   
-  CombatBonus(Property property, s16 value, Phase owner, Phase target, bool boundToSkill) : SkillEffect(SkillEffect::Type::COMBAT_BONUS), property(property), value(value), owner(owner), target(target), boundToSkill(boundToSkill) { }
+  enum class Target : u8
+  {
+    ATTACKER,
+    DEFENDER,
+  };
   
-  const Phase owner, target;
+  CombatBonus(Property property, s16 value, Phase trigger, Target target, bool boundToSkill) : SkillEffect(SkillEffect::Type::COMBAT_BONUS), property(property), value(value), trigger(trigger), target(target), boundToSkill(boundToSkill) { }
+  
+  const Phase trigger;
+  const Target target;
   const Property property;
   const s16 value;
   const bool boundToSkill; // TODO wtf?

@@ -93,8 +93,8 @@ void Game::dummyInit()
   //WorldGenerator.generate(world, MYRRAN);
 
   Army* a = new Army(player, {
-		new FantasticUnit(Data::unit("dark_elves_swordsmen")->as<SummonSpec>()),
-    new RaceUnit(Data::unit("dark_elves_spearmen")->as<RaceUnitSpec>()),
+		new FantasticUnit(Data::unit("dark_elves_settlers")->as<SummonSpec>()),
+    new RaceUnit(Data::unit("dark_elves_nightblades")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("dark_elves_halberdiers")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("dark_elves_cavalry")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("dark_elves_priests")->as<RaceUnitSpec>()),
