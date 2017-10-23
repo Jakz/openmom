@@ -70,6 +70,7 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::FIGURES1);
   lbx::Repository::loadLBX(LBXID::FIGURES3);
   lbx::Repository::loadLBX(LBXID::FIGURES4);
+  lbx::Repository::loadLBX(LBXID::FIGURES5);
   lbx::Repository::loadLBX(LBXID::FIGURES8);
   lbx::Repository::loadLBX(LBXID::FIGURES9);
   lbx::Repository::loadLBX(LBXID::FIGURE10);

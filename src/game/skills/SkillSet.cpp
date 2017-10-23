@@ -33,10 +33,9 @@ const Skill* SkillSet::get(size_t index) const
 
 void SkillSet::remove(const Spell* spell)
 {
-  auto it = spells.begin();
-  while (it != spells.end())
-    if ((*it++).spell == spell)
-      spells.erase(it);
+  auto it = std::find(spells.begin(), spells.end(), spell);
+  if (it != spells.end())
+    spells.erase(it);
 }
 
 s16 SkillSet::spellsUpkeep() const

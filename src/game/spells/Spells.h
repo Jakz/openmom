@@ -192,17 +192,21 @@ public:
 
 class SpellCast
 {
-  public:
-    const Player* player;
-    const Spell* spell;
-    const u16 extraMana;
-    const bool isVariable;
+public:
+  const Player* player;
+  const Spell* spell;
+  const u16 extraMana;
+  const bool isVariable;
+
+  SpellCast(const Player* player, const Spell* spell, u16 extraMana = 0) : player(player), spell(spell), extraMana(extraMana), isVariable(extraMana > 0) { }
+
+  bool operator==(const Spell* spell) const { return this->spell == spell; }
   
-    SpellCast(const Player* player, const Spell* spell, u16 extraMana = 0) : player(player), spell(spell), extraMana(extraMana), isVariable(extraMana > 0) { }
-  
-    const UnitSpell* asUnitSpell() const { return static_cast<const UnitSpell*>(spell); }
-    const CitySpell* asCitySpell() const { return static_cast<const CitySpell*>(spell); }
-    const CombatEnchSpell* asCombatEnchSpell() { return static_cast<const CombatEnchSpell*>(spell); }
+  template<typename T> const T* as() const { return static_cast<const T*>(spell); }
+
+  const UnitSpell* asUnitSpell() const { return as<UnitSpell>(); }
+  const CitySpell* asCitySpell() const { return as<CitySpell>(); }
+  const CombatEnchSpell* asCombatEnchSpell() { return as<CombatEnchSpell>(); }
 };
 
 

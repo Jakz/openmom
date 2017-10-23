@@ -15,6 +15,7 @@
 
 enum class Property : u8;
 class Unit;
+class SkillEffect;
 
 struct SkillEffectGroup
 {
@@ -23,11 +24,12 @@ public:
  
 private:
   Mode _mode;
-  
+  const SkillEffect* _specific;
   
 public:
-  SkillEffectGroup(Mode mode) : _mode(mode) { }
+  SkillEffectGroup(Mode mode) : _mode(mode), _specific(nullptr) { }
   
+  const SkillEffect* master() { return _specific; }
   Mode mode() const { return _mode; }
 };
 

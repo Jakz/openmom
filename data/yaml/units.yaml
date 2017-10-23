@@ -132,9 +132,9 @@ units:
       i18n: unit_racial_berserkers
       icon: [lbx, units1, 45]
       figure: [lbx, figures4, 0]
-
-       
-# beastmen      
+         
+# beastmen   
+   
   - identifier: beastmen_spearmen
     type: racial
     race: beastmen
@@ -339,7 +339,101 @@ units:
       i18n: unit_racial_minotaurs
       icon: [lbx, units1, 56 ]
       figure: [lbx, figures4, 88 ]
-        
+      
+# dark elves
+  - identifier: dark_elves_spearmen
+    type: racial
+    race: dark_elves
+    upkeep: 0
+    cost: 25
+    melee: 1
+    ranged: [1, chaos, 4]
+    defense: 2
+    resistance: 7
+    hits: 1
+    figures: 8
+    movement: 1
+    sight : 1
+    visuals:
+      i18n: unit_racial_spearmen
+      icon: [lbx, units1, 57]
+      figure: [lbx, figures4, 96]
+  - identifier: dark_elves_swordsmen
+    type: racial
+    race: dark_elves
+    upkeep: 1
+    cost: 50
+    melee: 3
+    ranged: [1, chaos, 4]
+    defense: 2
+    resistance: 7
+    hits: 1
+    figures: 6
+    movement: 1
+    sight: 1
+    skills: [ large_shield ]
+    requires: [ barracks, smithy ]
+    visuals:
+      i18n: unit_racial_swordsmen
+      icon: [lbx, units1, 58]
+      figure: [lbx, figures4, 104]
+  - identifier: dark_elves_halberdiers
+    type: racial
+    race: dark_elves
+    upkeep: 2
+    cost: 100
+    melee: 4
+    ranged: [1, chaos, 4]
+    defense: 3
+    resistance: 7
+    hits: 1
+    figures: 6
+    movement: 1
+    sight: 1
+    requires: [ armory ]
+    visuals:
+      i18n: unit_racial_halberdiers
+      icon: [lbx, units1, 59]
+      figure: [lbx, figures4, 112]
+  - identifier: dark_elves_cavalry
+    type: racial
+    race: dark_elves
+    upkeep: 2
+    cost: 100
+    melee: 4
+    ranged: [1, chaos, 4]
+    defense: 2
+    resistance: 7
+    hits: 3
+    figures: 4
+    movement: 2
+    sight: 1
+    skills: [ first_strike ]
+    requires: [ barracks, stables ]
+    visuals:
+      i18n: unit_racial_cavalry
+      icon: [lbx, units1, 60]
+      figure: [lbx, figures5, 0]
+  - identifier: dark_elves_priests
+    type: racial
+    race: dark_elves
+    upkeep: 4
+    cost: 200
+    melee: 3
+    ranged: [6, nature, 4]
+    defense: 4
+    resistance: 10
+    hits: 1
+    figures: 4
+    movement: 1
+    sight: 1
+    skills: [ healer, purify, healing_spell ]
+    requires: [ parthenon ]
+    visuals: 
+      i18n: unit_racial_priests
+      icon: [lbx, units1, 61]
+      figure: [lbx, figures5, 8]
+    
 # highmen
   # spearmen missing
   - identifier: high_men_swordsmen
