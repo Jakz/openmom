@@ -358,10 +358,198 @@ namespace osave
     u8 uknown;
   } __attribute__((__packed__));
   
-  using FortressData = std::array<byte, 4>;
-  using TowerData = std::array<byte, 4>;
-  using ItemData = std::array<byte, 0x32>;
-  using UnitData = std::array<byte, 0x20>;
+  struct FortressData
+  {
+    u8 x;
+    u8 y;
+    u8 plane;
+    bool active;
+  } __attribute__((__packed__));
+  
+  struct TowerData
+  {
+    u8 x;
+    u8 y;
+    u8 plane;
+    bool cleared;
+  } __attribute__((__packed__));
+  
+  struct ItemData
+  {
+    enum Slot : s8
+    {
+      // TODO
+    };
+    
+    enum Type : s8
+    {
+      SWORD,
+      MACE,
+      AXE,
+      BOW,
+      STAFF,
+      WAND,
+      MISC,
+      SHIELD,
+      CHAIN_MAIL,
+      PLATE_MAIL
+    };
+    
+    enum Power : u32
+    {
+      VAMPIRIC = 0X00000080,
+      GUARDIAN_WIND = 0X00000040,
+      LIGHTNING = 0X00000020,
+      CLOAK_OF_FEAR = 0X00000010,
+      DESTRUCTION = 0X00000008,
+      WRAITHFORM = 0X00000004,
+      REGENERATION = 0X00000002,
+      PATHFINDING = 0X00000001,
+      WATER_WALKING = 0X00008000,
+      RESIST_ELEMENTS = 0X00004000,
+      ELEMENTAL_ARMOUR = 0X00002000,
+      DOOM = 0X00001000,
+      STONING = 0X00000800,
+      ENDURANCE = 0X00000400,
+      HASTE = 0X00000200,
+      INVISIBILITY = 0X00000100,
+      DEATH = 0X00800000,
+      FLIGHT = 0X00400000,
+      RESIST_MAGIC = 0X00200000,
+      MAGIC_IMMUNITY = 0X00100000,
+      FLAMING = 0X00080000,
+      HOLY_AVENGER = 0X00040000,
+      TRUE_SIGHT = 0X00020000,
+      PHANTASMAL = 0X00010000,
+      POWER_DRAIN = 0X80000000,
+      BLESS = 0X40000000,
+      LIONHEART = 0X20000000,
+      GIANT_STRENGTH = 0X10000000,
+      PLANAR_TRAVEL = 0X08000000,
+      MERGING = 0X04000000,
+      RIGHTEOUSNESS = 0X02000000,
+      INVULNERABILITY = 0X01000000
+    };
+    
+    char name[30];
+    s16 icon;
+    Slot slot;
+    Type type;
+    s16 cost; // -1 = destroyed, 0 = not yet used
+    //struct
+    //{
+      s8 attack;
+      s8 toHit;
+      s8 defense;
+      s8 halfMovements;
+      s8 resistance;
+      s8 spellPoints;
+      s8 spellSave;
+    //} bonuses __attribute__((__packed__));
+    u8 spellChargesImbuedIndex; // 0 = no spell
+    s16 spellChargesAmount;
+    bit_mask<Power> powers;
+  } __attribute__((__packed__));
+    
+  struct UnitData
+  {
+    enum Status : s8
+    {
+      READY = 0x00,
+      PATROL = 0x01,
+      BUILDING_ROAD = 0x02,
+      GOING_TO = 0x03,
+      REACHED_DEST_AND_FINISHED = 0x04,
+      WAIT_FOR_ALL_UNITS = 0x05,
+      PURIFY = 0x08,
+      MELD = 0x09,
+      SETTLE = 0x0A,
+      SEEK_TRANSPORT = 0x0B,
+      MOVE = 0x10, // this can be found ORed with others, eg 0x1C move and road
+      PURIFY_ENDED = 0x6F
+    };
+    
+    enum WeaponFlagsAndMutations : u8
+    {
+      STASIS = 0x80, // lingering, not resisted
+      STASIS_INITIAL = 0x40,
+      UNDEAD = 0x20,
+      CHAOS_CHANNELS_FIRE_BREATH = 0x10,
+      CHAOS_CHANNELS_DEMON_WINGS = 0x08,
+      CHAOS_CHANNELS_DEMON_SKIN = 0x04,
+      WEAPON_ADAMANTIUM = 0x03,
+      WEAPON_MITHRIL = 0x02,
+      WEAPON_MAGIC = 0x01
+    };
+    
+    enum Enchantments : u32
+    {
+      PATHFINDING = 0x00000080,
+      REGENERATE = 0x00000040,
+      WRAITH_FORM = 0x00000020,
+      BLACK_CHANNELS = 0x00000010,
+      CLOAK_OF_FEAR = 0x00000008,
+      BERSERK = 0x00000004,
+      GUARDIAN_WIND = 0x00000002,
+      IMMOLATION = 0x00000001,
+      
+      INVISIBILITY = 0x00008000,
+      SPELL_LOCK = 0x00004000,
+      ENDURANCE = 0x00002000,
+      IRON_SKIN = 0x00001000,
+      STONE_SKIN = 0x00000800,
+      ELEMENTAL_ARMOR = 0x00000400,
+      RESIST_ELEMENTS = 0x00000200,
+      WATER_WALKING = 0x00000100,
+      
+      HOLY_WEAPON = 0x00800000,
+      TRUE_SIGHT = 0x00400000,
+      ELDRITCH_WEAPON = 0x00200000,
+      FLAME_BLADE = 0x00100000,
+      MAGIC_IMMUNITY = 0x00080000,
+      RESIST_MAGIC = 0x00040000,
+      FLIGHT = 0x00020000,
+      WIND_WALKING = 0x00010000,
+      
+      INVULNERABLITY = 0x80000000,
+      RIGHTEOUSNESS = 0x40000000,
+      HOLY_ARMOR = 0x20000000,
+      PLANAR_TRAVEL = 0x10000000,
+      GIANT_STRENGTH = 0x08000000,
+      LION_HEART = 0x04000000,
+      BLESS = 0x02000000,
+      HEROISM = 0x01000000,
+    };
+    
+    s8 x;
+    s8 y;
+    s8 plane;
+    s8 owner;
+    s8 halfMoves;
+    u8 icon;
+    s8 heroSlot;
+    bool stillActive;
+    s8 halfMovesLeft;
+    s8 destX;
+    s8 destY;
+    Status status;
+    u8 level;
+    u8 unkown;
+    s16 experience;
+    u8 lifeDrainDamageMaybe; // for Ghoul turning
+    s8 damage;
+    u8 grouping;
+    u8 unknownBitmask1;
+    u8 unknownBitmask2; // 0 1 in tower without planar seal, 0x10 web
+    u8 unknownBitmask3;
+    u8 scoutingRange;
+    bit_mask<WeaponFlagsAndMutations> weaponFlagsAndMutations;
+    bit_mask<Enchantments> enchants;
+    u8 turnsToBuildRoad;
+    s8 roadStartX;
+    s8 roadStartY;
+    u8 roadStartParamForBuildAndMove;
+  } __attribute__((__packed__));
   
   struct CityData
   {
