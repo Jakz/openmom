@@ -20,7 +20,7 @@ endif()
 
 
 if(APPLE)
-  set(BASE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-reorder -std=c++14 -stdlib=libc++ -fdiagnostics-show-option") # -Wall
+  set(BASE_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping --coverage -Wno-reorder -std=c++14 -stdlib=libc++ -fdiagnostics-show-option") # -Wall
 elseif(UNIX)
   set(BASE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-reorder -Wno-inconsistent-missing-override -std=c++14 -stdlib=libstdc++ -fdiagnostics-show-option") # -Wall
 endif()
@@ -31,10 +31,12 @@ if (DEBUG_LEVEL)
   add_definitions(-DDEBUG=${DEBUG_LEVEL})
 endif()
 
-set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fstandalone-debug -fno-rtti -fno-exceptions -DDEBUG=1 ${BASE_FLAGS}" CACHE FILEPATH "cache")
-set(CMAKE_CXX_FLAGS_MINSIZEREL "-O3 -flto -DNDEBUG -fno-rtti -fno-exceptions ${BASE_FLAGS}" CACHE FILEPATH "cache")
-set(CMAKE_CXX_FLAGS_RELEASE "-flto -O3 -DNDEBUG -fno-rtti -fno-exceptions ${BASE_FLAGS}" CACHE FILEPATH "cache")
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -flto -g -fno-rtti -fno-exceptions ${BASE_FLAGS}" CACHE FILEPATH "cache")
+#set(BASE_FLAGS "${BASE_FLAGS} -fno-rtti -fno-exceptions")
+
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fstandalone-debug -DDEBUG=1 ${BASE_FLAGS}" CACHE FILEPATH "cache")
+set(CMAKE_CXX_FLAGS_MINSIZEREL "-O3 -flto -DNDEBUG ${BASE_FLAGS}" CACHE FILEPATH "cache")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -flto -DNDEBUG ${BASE_FLAGS}" CACHE FILEPATH "cache")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -flto -g ${BASE_FLAGS}" CACHE FILEPATH "cache")
 
 set(CMAKE_C_FLAGS_DEBUG "-O0 -g -fstandalone-debug -DDEBUG=1" CACHE FILEPATH "cache")
 set(CMAKE_C_FLAGS_MINSIZEREL "-Os -DNDEBUG" CACHE STRING "" FORCE)

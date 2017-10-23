@@ -55,8 +55,9 @@ add_subdirectory(save)
 add_subdirectory(ui)
 
 add_executable(openmom ${srcs})
+add_executable(openmom-tests tests/tests.cpp)
 
-target_link_libraries(openmom
+set(LIBRARIES
   ${SDL2_LIBRARY}
   ${SDL2_IMAGE_LIBRARIES}
   ${LIBRARY_FOLDER}/yaml/lib/osx/libyaml-cpp.a
@@ -80,4 +81,8 @@ target_link_libraries(openmom
   VIEWS_LIB
   DEBUG_VIEWS_LIB
   EXTRA_VIEWS_LIB
+
 )
+
+target_link_libraries(openmom ${LIBRARIES})
+target_link_libraries(openmom-tests ${LIBRARIES})
