@@ -22,23 +22,23 @@
 class FogMap
 {
 private:
-  bool*** map;
-  const u16 w, h;
-  Player *player;
+  std::unique_ptr<bool[]> map;
+  const Size size;
+  Player* const player;
   
-  bool unsafeGet(const Position& p) { return map[p.plane][p.x][p.y]; }
-  void unsafeSet(const Position& p) { map[p.plane][p.x][p.y] = true; }
+  bool unsafeGet(const Position& p) const { return map[p.plane*(size.w*size.h) + size.w*p.y + p.x]; }
+  void unsafeSet(const Position& p) { map[p.plane*(size.w*size.h) + size.w*p.y + p.x] = true; }
   
 public:
   FogMap(Player* player, u16 w, u16 h);
   
   bool get(Position position) const;
-  void set(Position position);
+  inline void set(Position position);
   
   void setRect(s16 x, s16 y, s16 w, s16 h, Plane plane);
   void setRange(const Position& position, s16 range);
   
-  ~FogMap();
+  ~FogMap() { }
 };
 
 struct TaxRate

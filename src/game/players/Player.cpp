@@ -17,30 +17,22 @@
 
 using namespace std;
 
-FogMap::FogMap(Player* player, u16 w, u16 h) : player(player), w(w), h(h), map{new bool**[PLANE_COUNT]}
+FogMap::FogMap(Player* player, u16 w, u16 h) : player(player), size(w,h), map(new bool[PLANE_COUNT*w*h])
 {
-  for (int i = 0; i < PLANE_COUNT; ++i)
-  {
-    map[i] = new bool*[w];
-    for (int x = 0; x < w; ++x)
-    {
-      map[i][x] = new bool[h];
-      memset(map[i][x], 0, sizeof(bool)*h);
-    }
-  }
+  std::fill(map.get(), map.get() + (w*h*PLANE_COUNT), false);
 }
 
 bool FogMap::get(Position position) const
 {
-  if (position.wrapAndCheckValidity(w, h))
-    return map[position.plane][position.x][position.y];
+  if (position.wrapAndCheckValidity(size.w, size.h))
+    return unsafeGet(position);
   else
     return true;
 }
 
 void FogMap::set(Position position)
 {
-  if (position.wrapAndCheckValidity(w, h))
+  if (position.wrapAndCheckValidity(size.w, size.h))
   {
     unsafeSet(position);
     player->discoverTile(position);
@@ -53,46 +45,24 @@ void FogMap::setRect(s16 x, s16 y, s16 w, s16 h, Plane plane)
     for (int j = x; j < x+w; ++j)
     {
       Position pos = Position(j,i,plane);
-
-      if (pos.wrapAndCheckValidity(w, h))
-      {
-        unsafeSet(pos);
-        player->discoverTile(pos);
-      }
+      set(pos);
     }
 }
 
 void FogMap::setRange(const Position& pos, s16 range)
 {
   for (int i = -range; i <= range; ++i)
+  {
     for (int j = -range; j <= range; ++j)
+    {
       if (range == 1 || (!((i == -range || i == range) && (j == -range || j == range))))
       {
         Position npos = pos.relative(j, i);
-        if (npos.wrapAndCheckValidity(w, h))
-        {
-          unsafeSet(npos);
-          player->discoverTile(npos);
-        }
+        set(npos);
       }
-}
-
-FogMap::~FogMap()
-{
-  for (int i = 0; i < PLANE_COUNT; ++i)
-  {
-    for (int x = 0; x < w; ++x)
-      delete [] map[i][x];
-    
-    delete [] map[i];
-    
+    }
   }
-  delete [] map;
 }
-
-
-
-
 
 
 
