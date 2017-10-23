@@ -133,6 +133,7 @@ public:
     {
       LOGD("Data value not found for '%s' of type '%s'", ident.c_str(), nameForDataType<T>());
       assert(false);
+      return nullptr;
     }
   }
   

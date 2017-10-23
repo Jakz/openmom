@@ -22,7 +22,7 @@ include_directories(
   ${SDL2_IMAGE_INCLUDE_DIR}  
   ${YAML_INCLUDE_DIR}
   .
-#  common
+  common
   game
   game/cities
   game/combat
@@ -43,6 +43,7 @@ include_directories(
   ui/parts
   ui/views
   ui/views/debug
+  ui/views/extra
 )
 
 add_subdirectory(common)
@@ -78,4 +79,5 @@ target_link_libraries(openmom
   UI_ANIMATIONS_LIB
   VIEWS_LIB
   DEBUG_VIEWS_LIB
+  EXTRA_VIEWS_LIB
 )

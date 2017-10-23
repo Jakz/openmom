@@ -1054,7 +1054,9 @@ void yaml::parse()
   parseSpells();
   parseWizards();
   
+#if defined(DEBUG)
   const auto i18missing = i18n::unlocalizedEntries();
   for (const auto& entry : i18missing)
     LOGD("[i18n] Missing localized entry: %s", entry.c_str());
+#endif
 }
