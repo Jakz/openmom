@@ -10,7 +10,7 @@ void Tile::settleCity(City* city)
 {
   this->city = city;
   
-  for (u16 i = 0;  i < Util::DIRS_LENGTH+1; ++i)
+  for (size_t i = 0;  i < Util::DIRS.size()+1; ++i)
   {
     Tile* tile = i < 8 ? world->get(position, Util::DIRS[i]) : this;
     

@@ -110,6 +110,7 @@ public:
   
   using iterator = typename std::array<V, size>::iterator;
   using const_iterator = typename std::array<V, size>::const_iterator;
+  using mapped_type = V;
   
   iterator begin() { return data.begin(); }
   const_iterator begin() const { return data.begin(); }
@@ -590,6 +591,8 @@ inline std::underlying_type<DirJoin>::type operator!(const DirJoin& lhs)
 #pragma mark SpriteSheet generic interface
 
 class Palette;
+class IndexedPalette;
+class ColorMap;
 
 class SpriteSheet
 {

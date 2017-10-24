@@ -13,6 +13,7 @@
 
 #include <random>
 #include <vector>
+#include <array>
 
 class Util
 {
@@ -20,7 +21,6 @@ private:
   static std::mt19937 rng;
   static std::uniform_real_distribution<float> real;
   static std::uniform_int_distribution<> integer;
-
 
 public:
   static void seed(u32 s) { rng.seed(s); }
@@ -54,12 +54,9 @@ public:
   static bool chance(u32 percent) { return randomIntUpTo(101) <= percent; }
   static bool chance(float percent) { return rand() <= percent; }
   
-  static constexpr PositionOffset DIRS[] = {{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1}};
-  static constexpr PositionOffset ODIRS[] = {{0,-1},{1,0},{0,1},{-1,0}};
-  
-  static constexpr size_t DIRS_LENGTH = sizeof(DIRS)/sizeof(DIRS[0]);
-  static constexpr size_t ODIRS_LENGTH = sizeof(ODIRS)/sizeof(ODIRS[0]);
-  
+  static const std::array<PositionOffset, 8> DIRS;
+  static const std::array<PositionOffset, 4> ODIRS;
+    
   template<typename T> static const T& randomElement(const std::vector<T>& data) { return data[randomIntUpTo((u32)data.size())]; }
   template<typename T> static typename T::const_iterator randomElementIterator(const T& data) { return data.begin() + randomIntUpTo((u32)data.size()); }
 

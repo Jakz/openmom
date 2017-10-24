@@ -93,8 +93,8 @@ void Game::dummyInit()
   //WorldGenerator.generate(world, MYRRAN);
 
   Army* a = new Army(player, {
-		new FantasticUnit(Data::unit("dark_elves_settlers")->as<SummonSpec>()),
     new RaceUnit(Data::unit("dark_elves_nightblades")->as<RaceUnitSpec>()),
+		new RaceUnit(Data::unit("dark_elves_settlers")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("dark_elves_halberdiers")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("dark_elves_cavalry")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("dark_elves_priests")->as<RaceUnitSpec>()),
@@ -103,9 +103,9 @@ void Game::dummyInit()
   });
   
   SpellCast cast = SpellCast(player, Data::spell("elemental_armor"));
-  a->get(0)->skills()->add(cast);
+  a->get(1)->skills()->add(cast);
   SpellCast cast2 = SpellCast(player, Data::spell("resist_elements"));
-  a->get(0)->skills()->add(cast2);
+  a->get(1)->skills()->add(cast2);
 
   
   //map.get(5, 5, ARCANUS).placeManaNode(mapMechanics.generateManaNode(world, 5, 5, ARCANUS));

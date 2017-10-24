@@ -342,9 +342,9 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
           
           // draw the fog sprites
           // TODO: if it is needed to save CPU just don't do it dinamically but with a tileMap
-          for (int i = 0; i < Util::DIRS_LENGTH; ++i)
+          for (int i = 0; i < Util::DIRS.size(); ++i)
           {
-            Position od = Position(vx+x+Util::DIRS[i].x,vy+y+Util::DIRS[i].y, p.plane);
+            Position od = Position(vx + x + Util::DIRS[i].x, vy + y + Util::DIRS[i].y, p.plane);
             /*int xd = vx+x+Util::DIRS[i].x;
             int yd = vy+y+Util::DIRS[i].y;*/
             

@@ -787,9 +787,9 @@ void CityMechanics::updateProduction(City *c)
       {
         bool done = false;
         
-        for (int i = 0; i < Util::DIRS_LENGTH; ++i)
+        for (const auto& delta : Util::DIRS)
         {
-          t = game->world->get(c->position, Util::DIRS[i]);
+          t = game->world->get(c->position, delta);
           a = t->army;
           
           if (a && a->getOwner() == c->owner && a->size() < 9)
@@ -802,9 +802,9 @@ void CityMechanics::updateProduction(City *c)
         
         if (!done)
         {
-          for (int i = 0; i < Util::DIRS_LENGTH; ++i)
+          for (const auto& delta : Util::DIRS)
           {
-            t = game->world->get(c->position, Util::DIRS[i]);
+            t = game->world->get(c->position, delta);
             a = t->army;
             
             if (!a)

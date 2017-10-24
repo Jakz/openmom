@@ -235,7 +235,7 @@ class SummonSpec;
 class UnitSpec : public Productable
 {
 protected:
-  UnitSpec(UnitType type, Upkeep upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+  UnitSpec(UnitType type, Upkeep upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, const skill_list& skills) :
   type(type), upkeep(upkeep), cost(cost), melee(melee), ranged(ranged), defense(defense), resistance(resistance), hits(hits), figures(figures), movement(movement), sight(sight), skills(skills) { }
 
 public:
@@ -269,7 +269,7 @@ public:
 class RaceUnitSpec : public UnitSpec
 {
 public:
-  RaceUnitSpec(const Race* race, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+  RaceUnitSpec(const Race* race, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, const skill_list& skills) :
     UnitSpec(UnitType::RACIAL, Upkeep(upkeep,0,1), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), race(race) { }
 
   const std::string fullName() const override;

@@ -38,7 +38,6 @@ public:
   
   static void drawStatic(const Army* army, s16 x, s16 y, bool forceDraw = false);
   static void drawStatic(const Unit* unit, s16 x, s16 y, bool backdrop, bool grayScale);
-  static void rawDrawStatic(const Army* army, s16 x, s16 y);
   static void drawUnitIso(const UnitSpec* unit, s16 x, s16 y, const Unit* realUnit, const Player* owner);
 	static void drawHeroPortrait(const Hero* unit, s16 x, s16 y);
 

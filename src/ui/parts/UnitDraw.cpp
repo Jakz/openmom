@@ -22,25 +22,34 @@
 /* color map of colors that change according to player color
    these should be correct because they've been hand picked from the game
 */
-// yellow
-// 216 217 218
-// 162 178 180
 
-// red
-// 216 217 218
-// 203 166  45
+/*
+ green
+   indices: 216 217 218
+   colors: { 0, 188, 0 } { 0, 164, 0 } { 0, 124 0, }
 
-// purple
-// 216 217 218
-// 123 124 125
+ yellow
+   indices: 162 178 180
+   colors: { 252 200 36 } { 236 164 36 } { 204 136 024 }
 
-// blue
-// 216 217 218
-// 107 108 109
+ red
+   indices: 203 166 45
+   colors: { 172 0 0 } { 152 0 0 } { 116 36 36 }
 
-// brown
-// 216 217 218
-//  50  51  52
+ purple
+   indices: 123 124 125
+   colors: { 164 084 164 } { 140 056 140 } { 116 036 116 }
+ 
+ blue
+   indices: 107 108 109
+   colors: { 84 84 164 } { 60 56 140 } { 36 36 116 }
+ 
+ brown
+   indices: 50 51 52
+   colors: { 188 152 116 } { 164 124 84 } { 140 96 56 }
+ 
+*/
+
 
 void UnitDraw::bindPlayerColorPalette(PlayerColor color)
 {
@@ -96,7 +105,7 @@ void UnitDraw::unbindPlayerColorPalette()
 
 bool UnitDraw::isInvisible(const UnitSpec* spec, const Unit* unit)
 {
-  return (unit && unit->skills()->hasSimpleEffect(SimpleEffect::Type::INVISIBILITY)) || spec->skills.hasSimpleEffect(SimpleEffect::Type::INVISIBILITY);
+  return (unit && unit->skills()->hasSimpleEffect(SimpleEffect::Type::INVISIBILITY)) || (!unit && spec && spec->skills.hasSimpleEffect(SimpleEffect::Type::INVISIBILITY));
 }
 
 std::string UnitDraw::stringForDoubleMovement(s16 moves, bool hideZero)
@@ -157,25 +166,11 @@ void UnitDraw::drawStatic(const Army *army, s16 x, s16 y, bool forceDraw)
     else
       first = army->get(0);
     
-    bindPlayerColorPalette(army->getOwner()->color);
-    
-    const SpriteInfo& info = GfxData::unitGfx(first->spec).still;
-    
-    if (!army->isPatrolling())
-      Gfx::draw(info, x+1, y+1);
-    else
-      Gfx::drawGrayScale(info, x+1, y+1);
-    
-    unbindPlayerColorPalette();
-
-    
-    School school = first->glow();
-    if (school != NO_SCHOOL)
-      Gfx::drawGlow(info, x+1, y+1, school);
+    drawStatic(first, x, y, false, army->isPatrolling());
   }
 }
 
-void UnitDraw::drawStatic(const Unit *unit, s16 x, s16 y, bool backdrop, bool grayScale)
+void UnitDraw::drawStatic(const Unit* unit, s16 x, s16 y, bool backdrop, bool grayScale)
 {
   if (backdrop)
     Gfx::draw(GfxData::playerGfxSpec(unit->getArmy()->getOwner()->color).unitBack, x, y);
@@ -183,6 +178,9 @@ void UnitDraw::drawStatic(const Unit *unit, s16 x, s16 y, bool backdrop, bool gr
   bindPlayerColorPalette(unit->getArmy()->getOwner()->color);
   
   const SpriteInfo& info = GfxData::unitGfx(unit->spec).still;
+  
+  if (isInvisible(nullptr, unit))
+    Gfx::drawSolidOutline(info, x+1, y+1, Gfx::mainPalette->get(1));
   
   if (grayScale)
     Gfx::drawGrayScale(info, x+1, y+1);
@@ -197,29 +195,10 @@ void UnitDraw::drawStatic(const Unit *unit, s16 x, s16 y, bool backdrop, bool gr
   
 }
 
-void UnitDraw::rawDrawStatic(const Army *army, s16 x, s16 y)
-{
-  // TODO: verify
-  Gfx::rawDraw(GfxData::playerGfxSpec(army->getOwner()->color).unitBack, x, y);
-  const Unit* first = army->get(0);
-  
-  bindPlayerColorPalette(army->getOwner()->color);
-
-  const SpriteInfo& info = GfxData::unitGfx(first->spec).still;
-  Gfx::draw(info, x+1, y+1);
-  
-  unbindPlayerColorPalette();
-
-  School school = first->glow();
-  if (school != NO_SCHOOL)
-    Gfx::drawGlow(info, x+1, y+1, school);
-}
-
 void UnitDraw::drawHeroPortrait(const Hero *unit, s16 x, s16 y)
 {
   Gfx::draw(GfxData::unitGfx(unit->spec).hero.portrait, x, y);
 }
-
 
 struct IsoOffset { s8 x, y; };
 

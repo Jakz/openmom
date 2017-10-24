@@ -48,6 +48,7 @@ namespace test
 {
   using unit_ptr = std::unique_ptr<Unit>;
   using unit_pair = std::pair<unit_ptr, unit_ptr>;
+  using unit_spec_ptr = std::unique_ptr<const UnitSpec>;
   using identifier = const std::string&;
   using identifier_list = const std::initializer_list<std::string>&;
   
@@ -92,8 +93,8 @@ namespace test
   }
   void testModifiers(const unit_ptr& unit1, const unit_ptr& unit2, const std::initializer_list<PropertyModifier>& modifiers) { testModifiers(unit1.get(), unit2.get(), modifiers); }
 
-  
   unit_ptr raceUnit(identifier unitSpec) { return unit_ptr(new RaceUnit(Data::unit(unitSpec)->as<RaceUnitSpec>())); }
+  
   unit_ptr raceUnitWithSkills(identifier unitSpec, identifier_list skills)
   {
     auto unit = raceUnit(unitSpec);
@@ -114,6 +115,7 @@ namespace test
   {
     return raceUnitWithSkills("barbarian_swordsmen", spellSkills);
   }
+
   
   unit_pair anyRaceUnitPairWithSkills(identifier_list skills)
   {
@@ -130,6 +132,18 @@ namespace test
     });
     
     return effects;
+  }
+  
+  unit_spec_ptr anyRaceUnitSpecWithSkills(identifier_list skillNames)
+  {
+    skill_list skills;
+    
+    std::for_each(skillNames.begin(), skillNames.end(), [&skills] (identifier ident) {
+      const Skill* skill = Data::skill(ident);
+      skills.push_back(skill);
+    });
+    
+    return std::unique_ptr<const UnitSpec>(new RaceUnitSpec(Data::race("barbarians"), 1, 10, 1, RangedInfo(), 1, 1, 1, 1, 1, 1, skills));
   }
 }
 
@@ -197,6 +211,20 @@ TEST_CASE("basic stats of units") {
         { Property::RESIST_NATURE, 3 },
         { Property::RESIST_CHAOS, 3 }
       });
+    }
+  }
+}
+
+TEST_CASE("basic skill set functions") {
+  GIVEN("a specific SimpleEffect") {
+    THEN("effect can be found through normal lookup methods on UnitSpec") {
+      const auto unitSpec = test::anyRaceUnitSpecWithSkills({"invisibility"});
+      REQUIRE(unitSpec->skills.hasSimpleEffect(SimpleEffect::Type::INVISIBILITY));
+    }
+    
+    THEN("effect can be found through normal lookup methods on Unit") {
+      const auto unit = test::anyRaceUnitWithSkills({"invisibility"});
+      REQUIRE(unit->skills()->hasSimpleEffect(SimpleEffect::Type::INVISIBILITY));
     }
   }
 }

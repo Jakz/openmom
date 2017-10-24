@@ -250,49 +250,6 @@ void Gfx::resetBuffer(u16 w, u16 h)
       buffer->set(xx, yy, 0x00000000);
   unlock(buffer);
 }
-
-void Gfx::maskBuffer(TextureID texture, int r, int c)
-{
-  const Texture* tex = Texture::get(texture);
-  
-  lock(tex);
-  lock(buffer);
-
-  for (int i = 0; i < tex->sw(r,c); ++i)
-    for (int j = 0; j < tex->sh(r,c); ++j)
-    {
-      Color p = tex->at(i,j,c,r);
-      
-      if ((p & 0xFF000000) == 0)
-        buffer->set(i, j, 0x00000000);
-    }
-  
-  unlock(buffer);
-  unlock(tex);
-}
-
-void Gfx::maskBufferWithImage(TextureID mask, TextureID snd, u16 r, u16 c, u16 r2, u16 c2)
-{
-  const Texture* tex1 = Texture::get(mask), *tex2 = Texture::get(snd);
-  
-  lock(tex1);
-  lock(tex2);
-  lock(buffer);
-  
-  for (int i = 0; i < tex1->sw(r,c); ++i)
-    for (int j = 0; j < tex1->sh(r,c); ++j)
-    {
-      int p = tex1->at(i,j,c,r);
-      
-      if ((p & 0xFF000000) == 0)
-        buffer->set(i, j, tex2->at(i,j,c,r));
-    }
-
-  unlock(tex1);
-  unlock(tex2);
-  unlock(buffer);
-}
-
 /*
 
 void Gfx::drawClippedToWidth(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t)
@@ -393,10 +350,9 @@ void Gfx::drawAnimated(SpriteInfo info, u16 x, u16 y, s16 offset, s16 animFactor
   }
 }
 
-void Gfx::drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School school)
+template<typename OutlineGfx>
+void Gfx::drawOutline(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, const OutlineGfx& gfx)
 {
-  //TODO: sometimes it looks like it fails (like great drake iso with glow)
-
   s32 w = sprite->sw(r,c);
   s32 h = sprite->sh(r,c);
   
@@ -406,32 +362,29 @@ void Gfx::drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School
   bindCanvas();
   
   lock(buffer);
-  const auto& glowColors = MiscMaps::SCHOOL_GLOW_COLORS[school];
-  u8 glowLength = glowColors.size();
-
-  // TODO: phase is too much linear compared to real one
-  int phase = (fticks%50)/3;
   
   for (s16 i = 0; i < w+2; ++i)
   {
     for (s16 j = 0; j < h+2; ++j)
     {
       bool found = false;
+      Color pixel = buffer->at(i,j);
       
-      /* for each orthogonal neighbour */
-      for (int k = 0; k < Util::ODIRS_LENGTH; ++k)
+      /* if pixel is transparent */
+      if ((pixel & 0x00FFFFFF) == 0)
       {
-        s16 dx = i+Util::ODIRS[k].x, dy = j+Util::ODIRS[k].y;
-        
-        Color pixel = buffer->at(i,j);
-        
-        /* if neighbour is transparent */
-        if ((pixel & 0x00FFFFFF) == 0)
+        /* for each orthogonal neighbour */
+        for (const auto& delta : Util::ODIRS)
         {
+          s32 dx = i + delta.x, dy = j + delta.y;
+          
+          /* if neighbour pixel is inside size of sprite */
           if (dx > 0 && dx < w+2 && dy > 0 && dy < h+2)
           {
+            /* and neighbour pixel is not trasparent */
             if ((buffer->at(dx,dy) & 0x00FFFFFF) != 0)
             {
+              /* then it's an outline pixel */
               found = true;
               break;
             }
@@ -440,12 +393,42 @@ void Gfx::drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School
       }
       
       if (found)
-        buffer->set(w+2+i, j, glowColors[(phase+i+j)%glowLength]);
+        buffer->set(w+2+i, j, gfx.getColor(i,j));
     }
   }
   
   unlock(buffer);
   mergeBuffer(w+2, 0, x-1, y-1, w+2, h+2);
+}
+
+void Gfx::drawGlow(SpriteInfo info, s16 x, s16 y, School school)
+{
+  struct GlowColors
+  {
+    const decltype(MiscMaps::SCHOOL_GLOW_COLORS)::mapped_type& data;
+    const int phase;
+    
+    // TODO: phase is too much linear compared to real one
+    GlowColors(School school) : data(MiscMaps::SCHOOL_GLOW_COLORS[school]), phase(fticks%50/3) { }
+    Color getColor(int x, int y) const { return data[(phase+x+y) % data.size()]; }
+  };
+    
+  const GlowColors colors(school);
+  drawOutline(info.sheet(), x, y, info.x(), info.y(), colors);
+}
+
+void Gfx::drawSolidOutline(SpriteInfo info, s16 x, s16 y, Color color)
+{
+  struct OutlineColors
+  {
+    const Color color;
+    OutlineColors(Color color) : color(color) { }
+    Color getColor(int x, int y) const { return color; }
+  };
+  
+  const OutlineColors colors(color);
+  
+  drawOutline(info.sheet(), x, y, info.x(), info.y(), colors);
 }
 
 void Gfx::drawGrayScale(const SpriteSheet* src, u16 r, u16 c, u16 x, u16 y)
@@ -484,9 +467,11 @@ void Gfx::mergeBuffer(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h)
   for (u16 y = 0; y < h; ++y)
     for (u16 x = 0; x < w; ++x)
     {
+      const u16 dx = xt + x, dy = yt + y;
+      
       Color color = buffer->at(xf + x, yf + y);
-      if (color.a)
-        canvas->set(xt + x, yt + y, buffer->at(xf + x, yf + y));
+      if (color.a && dx >= 0 && dx < WIDTH && dy >= 0 && dy < HEIGHT)
+        canvas->set(dx, dy, color);
     }
 }
 
