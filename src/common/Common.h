@@ -593,6 +593,7 @@ inline std::underlying_type<DirJoin>::type operator!(const DirJoin& lhs)
 class Palette;
 class IndexedPalette;
 class ColorMap;
+using ColorFilter = ColorMap;
 
 class SpriteSheet
 {

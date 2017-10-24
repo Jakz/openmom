@@ -23,6 +23,8 @@ class ColorMap
     virtual u32 get(u32 k) const = 0;
 };
 
+using ColorFilter = ColorMap;
+
 using color_list = std::initializer_list<Color>;
 using color_array = std::vector<Color>;
 using color_map = std::unordered_map<Color, Color>;
@@ -43,8 +45,19 @@ class BlinkMap : public ColorMap
       set(colors), s{r1,g1,b1}, d{static_cast<s16>(r2-r1),static_cast<s16>(g2-g1),static_cast<s16>(b2-b1)}, ticks(ticks) { }
   
     u32 get(u32 k) const override;
-  
 };
+
+namespace rgb_filters
+{
+  class ConstantColor : public ColorFilter
+  {
+  private:
+    const Color color;
+  public:
+    ConstantColor(Color color) : color(color) { }
+    u32 get(u32 k) const override { return color; }
+  };
+}
 
 class HashColorMap : public ColorMap
 {

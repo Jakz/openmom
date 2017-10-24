@@ -107,8 +107,8 @@ public:
   static void blit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, u16 tx, u16 ty, u16 w, u16 h, u16 r = 0, u16 c = 0) { rawBlit(gsrc,gdst,fx,fy,tx,ty,w,h,r,c); }
   static void rawBlit(const SpriteSheet* gsrc, SpriteSheet* gdst, u16 fx, u16 fy, s16 tx, s16 ty, u16 w, u16 h, u16 r = 0, u16 c = 0);
 
-  static void resetBuffer(u16 w = WIDTH, u16 h = HEIGHT);
-  static void mergeBuffer(u16 xf = 0, u16 yf = 0, u16 xt = 0, u16 yt = 0, u16 w = WIDTH, u16 h = HEIGHT);
+  static void resetBuffer(u16 w = WIDTH, u16 h = HEIGHT, u16 x = 0, u16 y = 0);
+  static void mergeBuffer(u16 xf = 0, u16 yf = 0, u16 xt = 0, u16 yt = 0, u16 w = WIDTH, u16 h = HEIGHT, const ColorFilter* filter = nullptr);
   static void mergeBufferDownScaled(u16 xf = 0, u16 yf = 0, u16 xt = 0, u16 yt = 0, u16 w = WIDTH, u16 h = HEIGHT);
 
   static void drawClipped(const SpriteSheet* sheet, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h);

@@ -50,6 +50,8 @@
  
 */
 
+constexpr Color INVISBLE_UNIT_COLOR = Color(255, 255, 255, 100);
+
 
 void UnitDraw::bindPlayerColorPalette(PlayerColor color)
 {
@@ -179,13 +181,27 @@ void UnitDraw::drawStatic(const Unit* unit, s16 x, s16 y, bool backdrop, bool gr
   
   const SpriteInfo& info = GfxData::unitGfx(unit->spec).still;
   
+  /* if unit is invisibile bind buffer to draw unit on it so that
+      we can make it transparent afterwards through mergeBuffer
+   */
   if (isInvisible(nullptr, unit))
+  {
     Gfx::drawSolidOutline(info, x+1, y+1, Gfx::mainPalette->get(1));
+    Gfx::bindBuffer();
+    Gfx::resetBuffer(info.sw(), info.sh(), x+1, y+1);
+  }
   
   if (grayScale)
     Gfx::drawGrayScale(info, x+1, y+1);
   else
     Gfx::draw(info, x+1, y+1);
+  
+  if (isInvisible(nullptr, unit))
+  {
+    rgb_filters::ConstantColor filter(INVISBLE_UNIT_COLOR);
+    Gfx::mergeBuffer(x+1, y+1, x+1, y+1, info.sw(), info.sh(), &filter);
+    Gfx::bindCanvas();
+  }
   
   unbindPlayerColorPalette();
   
@@ -255,20 +271,33 @@ void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realU
   
   for (int i = 0; i < unit->figures; ++i)
   {
+    const u16 fx = x + o[i].x, fy = y + o[i].y;
+    
     if (realUnit)
       bindPlayerColorPalette(realUnit->getArmy()->getOwner()->color);
     else if (owner)
       bindPlayerColorPalette(owner->color);
     
+    if (isInvisible(unit, realUnit))
+    {
+      Gfx::bindBuffer();
+      Gfx::resetBuffer(sprite.sw(), sprite.sh(), fx, fy);
+    }
+
+    Gfx::draw(sprite, fx, fy);
     
-    Gfx::draw(sprite, x+o[i].x, y+o[i].y);
+    if (isInvisible(unit, realUnit))
+    {
+      rgb_filters::ConstantColor filter(INVISBLE_UNIT_COLOR);
+      Gfx::mergeBuffer(x+1, y+1, x+1, y+1, sprite.sw(), sprite.sh(), &filter);
+      Gfx::bindCanvas();
+    }
     
     if (realUnit || owner)
       unbindPlayerColorPalette();
     
-    //TODO: seembs bugged, eg: great drake rightmost edge
     if (glow != School::NO_SCHOOL)
-      Gfx::drawGlow(sprite, x+o[i].x, y+o[i].y, glow);
+      Gfx::drawGlow(sprite, fx, fy, glow);
     
   }
 }
@@ -315,11 +344,29 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
   
   for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
   {
+    u32 fx = x + offsets[i].x, fy = y + offsets[i].y;
+    
     bindPlayerColorPalette(unit->getArmy()->getOwner()->color);
-    Gfx::draw(sprite.frame(action), x + offsets[i].x, y + offsets[i].y);
+    
+    if (isInvisible(nullptr, unit))
+    {
+      Gfx::bindBuffer();
+      Gfx::resetBuffer(sprite.sw(), sprite.sh(), fx, fy);
+    }
+    
+    Gfx::draw(sprite.frame(action), fx, fy);
+    
+    if (isInvisible(nullptr, unit))
+    {
+      rgb_filters::ConstantColor filter(INVISBLE_UNIT_COLOR);
+      Gfx::mergeBuffer(x+1, y+1, x+1, y+1, sprite.sw(), sprite.sh(), &filter);
+      Gfx::bindCanvas();
+    }
+    
     unbindPlayerColorPalette();
-    //if (glow != School::NO_SCHOOL)
-    //  Gfx::drawGlow(sprite.relative(action), x + offsets[i].x, y + offsets[i].y, glow); // TODO: check if it works with new management
+    
+    if (glow != School::NO_SCHOOL)
+      Gfx::drawGlow(sprite.relative(action), fx, fy, glow); // TODO: check if it works with new management
   }
 
 }

@@ -241,13 +241,13 @@ void Gfx::drawPixel(Color color, u16 x, u16 y)
   unlock(activeBuffer);
 }
 
-void Gfx::resetBuffer(u16 w, u16 h)
+void Gfx::resetBuffer(u16 w, u16 h, u16 x, u16 y)
 {
   lock(buffer);
   //TODO: can be optimized
   for (int yy = 0; yy < h; ++yy)
     for (int xx = 0; xx < w; ++xx)
-      buffer->set(xx, yy, 0x00000000);
+      buffer->set(x + xx, y + yy, 0x00000000);
   unlock(buffer);
 }
 /*
@@ -454,7 +454,7 @@ void Gfx::drawGrayScale(const SpriteSheet* src, u16 r, u16 c, u16 x, u16 y)
   bindCanvas();
 }
 
-void Gfx::mergeBuffer(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h)
+void Gfx::mergeBuffer(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h, const ColorFilter* filter)
 {
   /* TODO: todo, this could be optimized to use SDL directly, is it good? */
   /*buffer->lock();
@@ -464,14 +464,19 @@ void Gfx::mergeBuffer(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h)
   buffer->unlock();
   canvas->unlock(); */
   
+  //TODO this was blit(buffer, canvas, xf, yf, xt, yt, w, h); before but doens't work
+  // with new indexed mode
+  
   for (u16 y = 0; y < h; ++y)
     for (u16 x = 0; x < w; ++x)
     {
       const u16 dx = xt + x, dy = yt + y;
       
+      //TODO consider having a specialized method without filter for performance if it's needed
+      Color src = canvas->at(dx, dy);
       Color color = buffer->at(xf + x, yf + y);
       if (color.a && dx >= 0 && dx < WIDTH && dy >= 0 && dy < HEIGHT)
-        canvas->set(dx, dy, color);
+        canvas->set(dx, dy, src.blend(filter ? Color(filter->get(color)) : color));
     }
 }
 
