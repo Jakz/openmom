@@ -446,16 +446,19 @@ void Gfx::drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School
   
   unlock(buffer);
   mergeBuffer(w+2, 0, x-1, y-1, w+2, h+2);
-  mergeBuffer(w+2, 0, 0, 50, w+2, h+2);
 }
 
 void Gfx::drawGrayScale(const SpriteSheet* src, u16 r, u16 c, u16 x, u16 y)
 {
+  /*bindColorMap(&MiscMaps::GRAYSCALE);
+  draw(src, x, y, r, c);
+  unbindColorMap();*/
+  
   u16 tw = src->sw(r,c), th = src->sh(r,c);
   
   resetBuffer(tw,th);
   bindBuffer();
-  draw(src, r, c, 0, 0);
+  draw(src, 0, 0, r, c);
   
   lock(buffer);
   
@@ -466,6 +469,25 @@ void Gfx::drawGrayScale(const SpriteSheet* src, u16 r, u16 c, u16 x, u16 y)
   unlock(buffer);
   mergeBuffer(0, 0, x, y, tw, th);
   bindCanvas();
+}
+
+void Gfx::mergeBuffer(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h)
+{
+  /* TODO: todo, this could be optimized to use SDL directly, is it good? */
+  /*buffer->lock();
+  canvas->lock();
+  SDL_Rect src{xf, yf, w, h}, dest{xt, yt, w, h};
+  SDL_BlitSurface(buffer->data, &src, canvas->data, &dest);
+  buffer->unlock();
+  canvas->unlock(); */
+  
+  for (u16 y = 0; y < h; ++y)
+    for (u16 x = 0; x < w; ++x)
+    {
+      Color color = buffer->at(xf + x, yf + y);
+      if (color.a)
+        canvas->set(xt + x, yt + y, buffer->at(xf + x, yf + y));
+    }
 }
 
 void Gfx::mergeBufferDownScaled(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h)
