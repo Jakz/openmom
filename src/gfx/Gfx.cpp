@@ -393,7 +393,7 @@ void Gfx::drawAnimated(SpriteInfo info, u16 x, u16 y, s16 offset, s16 animFactor
   }
 }
 
-void Gfx::drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School color)
+void Gfx::drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School school)
 {
   //TODO: sometimes it looks like it fails (like great drake iso with glow)
 
@@ -406,8 +406,8 @@ void Gfx::drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School
   bindCanvas();
   
   lock(buffer);
-  const Color* glowColors = MiscMaps::SCHOOL_GLOW_COLORS[color];
-  u8 glowLength = MiscMaps::SCHOOL_GLOW_COUNT;
+  const auto& glowColors = MiscMaps::SCHOOL_GLOW_COLORS[school];
+  u8 glowLength = glowColors.size();
 
   // TODO: phase is too much linear compared to real one
   int phase = (fticks%50)/3;
@@ -418,15 +418,17 @@ void Gfx::drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School
     {
       bool found = false;
       
+      /* for each orthogonal neighbour */
       for (int k = 0; k < Util::ODIRS_LENGTH; ++k)
       {
         s16 dx = i+Util::ODIRS[k].x, dy = j+Util::ODIRS[k].y;
         
         Color pixel = buffer->at(i,j);
         
+        /* if neighbour is transparent */
         if ((pixel & 0x00FFFFFF) == 0)
         {
-          if (dx > 0 && dx < w && dy > 0 && dy < h)
+          if (dx > 0 && dx < w+2 && dy > 0 && dy < h+2)
           {
             if ((buffer->at(dx,dy) & 0x00FFFFFF) != 0)
             {
@@ -444,6 +446,7 @@ void Gfx::drawGlow(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, School
   
   unlock(buffer);
   mergeBuffer(w+2, 0, x-1, y-1, w+2, h+2);
+  mergeBuffer(w+2, 0, 0, 50, w+2, h+2);
 }
 
 void Gfx::drawGrayScale(const SpriteSheet* src, u16 r, u16 c, u16 x, u16 y)

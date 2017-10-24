@@ -90,9 +90,7 @@ class HashColorMap : public ColorMap
 class MiscMaps
 {
 public:
-  static const Color SCHOOL_GLOW_COLORS[][5];
-  static constexpr u8 SCHOOL_GLOW_COUNT = sizeof(SCHOOL_GLOW_COLORS[0])/sizeof(SCHOOL_GLOW_COLORS[0][0]);
-  
+  static const enum_simple_map<School, std::array<Color, 5>, SCHOOL_COUNT> SCHOOL_GLOW_COLORS;
   static const enum_simple_map<PlayerColor, HashColorMap, 6> FLAG_COLORS_MAP;
   static const enum_simple_map<PlayerColor, HashColorMap, 6> UNIT_COLORS_MAP;
   

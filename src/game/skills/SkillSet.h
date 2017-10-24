@@ -49,10 +49,7 @@ public:
   
   template<typename T> void findAllEffectsOftype(T& effects, SkillEffect::Type type) const
   {
-    for (const Skill* skill : *this)
-      for (const auto* effect : skill->getEffects())
-        if (effect->type == type)
-          effects.insert(effects.end(), static_cast<typename T::value_type>(effect));
+    skills::findAllEffectsOftype(*this, effects, type);
   }
   
   School glowEffect() const;

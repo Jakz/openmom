@@ -266,6 +266,25 @@ namespace skills
     SpriteInfo icon() const override { return _visual.icon; }
     bool isHidden() const override { return _visual.hidden; }
   };
+  
+  
+  template<typename T, typename S> void findAllEffectsOftype(const S& src, T& effects, SkillEffect::Type type)
+  {
+    for (const Skill* skill : src)
+      for (const auto* effect : skill->getEffects())
+        if (effect->type == type)
+          effects.insert(effects.end(), static_cast<typename T::value_type>(effect));
+  }
+  
+  template<typename S> bool hasSimpleEffect(const S& src, SimpleEffect::Type type)
+  {
+    for (const Skill* skill : src)
+      for (const auto e : skill->getEffects())
+        if (e->type == SkillEffect::Type::ABILITY && e->as<SimpleEffect>()->effect == type)
+          return true;
+    
+    return false;
+  }
 }
 
 class ConcreteSkill : public Skill
@@ -324,6 +343,8 @@ public:
   
   const_iterator begin() const { return skills.begin(); }
   const_iterator end() const { return skills.end(); }
+  
+  bool hasSimpleEffect(SimpleEffect::Type type) const { return skills::hasSimpleEffect(*this, type); }
 };
 
 class Skills

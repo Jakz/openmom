@@ -26,6 +26,8 @@ private:
   static void bindPlayerColorPalette(PlayerColor color);
   static void unbindPlayerColorPalette();
   
+  static bool isInvisible(const UnitSpec* spec, const Unit* unit);
+  
 public:
   enum class CombatAction : u8
   {

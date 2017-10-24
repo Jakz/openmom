@@ -94,6 +94,11 @@ void UnitDraw::unbindPlayerColorPalette()
   Gfx::unbindPalette();
 }
 
+bool UnitDraw::isInvisible(const UnitSpec* spec, const Unit* unit)
+{
+  return (unit && unit->skills()->hasSimpleEffect(SimpleEffect::Type::INVISIBILITY)) || spec->skills.hasSimpleEffect(SimpleEffect::Type::INVISIBILITY);
+}
+
 std::string UnitDraw::stringForDoubleMovement(s16 moves, bool hideZero)
 {
   if (hideZero && moves == 1)

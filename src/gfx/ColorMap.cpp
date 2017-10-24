@@ -72,49 +72,44 @@ const enum_simple_map<PlayerColor, HashColorMap, 6> MiscMaps::FLAG_COLORS_MAP = 
   }) },
 });
 
-const Color MiscMaps::SCHOOL_GLOW_COLORS[][5] = {
-  {0},
-  // chaos
-  {
+const enum_simple_map<School, std::array<Color, 5>, SCHOOL_COUNT> MiscMaps::SCHOOL_GLOW_COLORS = enum_simple_map<School, std::array<Color, 5>, SCHOOL_COUNT>({
+  { School::ARCANE, {} },
+  { School::CHAOS, {{
     {215,150,150},
     {190,117,117},
     {166,85,85},
     {142,56,56},
     {117,36,36}
-  },
-  // death
-  {
+  }} },
+  { School::DEATH, {{
     {239,195,215},
     {215,154,182},
     {190,117,150},
     {166,85,125},
     {142,56,97}
-  },
-  // life
-  {
+  }} },
+  { School::LIFE, {{
     {255,255,255},
     {243,235,231},
     {227,219,215},
     {211,203,199},
     {195,186,182}
-  },
-  // nature
-  {
+  }} },
+  { School::NATURE, {{
     {215,239,190},
     {186,215,154},
     {154,190,117},
     {125,166,85},
     {97,142,92}
-  },
-  // sorcery
-  {
+  }} },
+  { School::SORCERY, {{
     {195,219,239},
     {150,182,215},
     {113,154,190},
     {85,125,166},
     {56,101,142}
-  }
-};
+  }} }
+});
 
 
 Color BlinkingPalette::get(u8 index) const
