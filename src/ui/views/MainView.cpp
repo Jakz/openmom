@@ -672,7 +672,7 @@ void MainView::Surveyor::draw()
       Fonts::setFace(FontFaces::Small::WHITE_PALE, 0, 0);
       for (int i = 0; i < t.size(); ++i)
       {
-        Fonts::setMap(i == 0 ? FontFaces::Palettes::SMALL_YELLOW_PALE : FontFaces::Palettes::SMALL_WHITE_PALE);
+        Fonts::setPalette(i == 0 ? FontFaces::Palettes::SMALL_YELLOW_PALE : FontFaces::Palettes::SMALL_WHITE_PALE);
         Fonts::drawString(t[i], 274, 90+7*i, ALIGN_CENTER);
       }
     }

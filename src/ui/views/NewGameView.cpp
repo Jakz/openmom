@@ -121,7 +121,7 @@ static const Point gameOptionsButtonPositions[] = {
   { 251, 120 }
 };
 
-NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr, "", school_value_map(0)})
+NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr, "", school_value_map(0)}), fonts{school_map<const FontSpriteSheet*>(nullptr)}
 {
   nameField.setFace(new fonts::MediumBoldFont({158, 125, 101}));
   nameField.setOnCancel([this](){ switchToPhase(isPremadeWizard ? Phase::WIZARD_CHOICE : Phase::PORTRIT_CHOICE); });
@@ -144,7 +144,7 @@ NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr,
 void NewGameView::activate()
 {
   info.portrait = Data::wizard("kali"); //TODO nullptr
-  info.books = school_value_map({{CHAOS, 3}, {LIFE, 2}, {SORCERY, 4},  {ARCANE, 0}, {DEATH, 0}, {NATURE, 0}}); //TODO school_value_map(0);
+  info.books = school_value_map({{CHAOS, 3}, {LIFE, 4}, {SORCERY, 0},  {ARCANE, 0}, {DEATH, 0}, {NATURE, 0}}); //TODO school_value_map(0);
   info.name = "Jack"; // "";
   info.retorts.insert(Data::retort("archmage")); // ...
   info.retorts.insert(Data::retort("conjurer"));
@@ -233,8 +233,9 @@ void NewGameView::booksPicked(School school, u16 amount)
     {
       errorMessage("You have already made all your picks");
     }
-
   }
+  
+  bookPhaseOkButton->activateIf(freePicks() == 0);
 }
 
 void NewGameView::retortToggled(const Retort* retort)
@@ -290,7 +291,8 @@ void NewGameView::retortToggled(const Retort* retort)
       }
     }
   }
-
+  
+  bookPhaseOkButton->activateIf(freePicks() == 0);
 }
 
 void NewGameView::switchToPhase(Phase phase)
@@ -302,6 +304,7 @@ void NewGameView::switchToPhase(Phase phase)
   const u16 deltaY = 22;
   
   buttons.clear();
+  bookPhaseOkButton = nullptr;
   
   switch (phase)
   {
@@ -405,8 +408,8 @@ void NewGameView::switchToPhase(Phase phase)
     case Phase::BOOKS_CHOICE:
     {
       //TODO: background
-      const auto button = addButton(Button::buildOffsetted("spell_choice_ok", 252, 182, LSI(NEWGAME, 42), LSI(NEWGAME, 43)));
-      button->deactivate();
+      bookPhaseOkButton = addButton(Button::buildOffsetted("books_choice_ok", 252, 182, LSI(NEWGAME, 42), LSI(NEWGAME, 43)));
+      bookPhaseOkButton->deactivate();
       
       break;
     }

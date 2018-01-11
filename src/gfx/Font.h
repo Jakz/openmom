@@ -153,24 +153,24 @@ public:
 
 namespace fonts
 {
-  template<FontType FONT>
+  template<FontType FONT, typename TYPE>
   class SpecificFontSheet : public FontSpriteSheet
   {
   protected:
     SpecificFontSheet(const Palette* palette);
   };
   
-  class MediumBoldFont : public SpecificFontSheet<FONT_MEDIUM_THICK>
+  class MediumBoldFont : public SpecificFontSheet<FONT_MEDIUM_THICK, MediumBoldFont>
   {
   public:
     MediumBoldFont(Color color);
     MediumBoldFont(Color color, Color shadow);
   };
   
-  class SerifFont : public SpecificFontSheet<FONT_SERIF>
+  class SerifFont : public SpecificFontSheet<FONT_SERIF, SerifFont>
   {
   private:
-    SerifFont(const Palette* palette) : SpecificFontSheet<FONT_SERIF>(palette) { };
+    SerifFont(const Palette* palette) : SpecificFontSheet<FONT_SERIF, SerifFont>(palette) { };
     
   public:
     SerifFont(Color color);
@@ -182,10 +182,10 @@ namespace fonts
     static const SerifFont* withShadowAndSingle(const SerifFont* font, Color single, Color shadow);
   };
   
-  class TinyFont : public SpecificFontSheet<FONT_TINY>
+  class TinyFont : public SpecificFontSheet<FONT_TINY, TinyFont>
   {
   private:
-    TinyFont(const Palette* palette) : SpecificFontSheet<FONT_TINY>(palette) { };
+    TinyFont(const Palette* palette) : SpecificFontSheet<FONT_TINY, TinyFont>(palette) { };
   public:
     static const TinyFont* of(Color color, Color single, Color shadow);
   };
@@ -279,7 +279,7 @@ public:
   static inline u16 stringHeight() { return 0; }
     
   static inline void setFace(const FontSpriteSheet* face, s16 v, s16 h) { setFace(face); setVerHorSpace(v,h); }
-  static inline void setFace(const FontSpriteSheet* face, const Palette* palette, s16 v, s16 h) { setFace(face,v,h); setMap(palette); }
+  static inline void setFace(const FontSpriteSheet* face, const Palette* palette, s16 v, s16 h) { setFace(face,v,h); setPalette(palette); }
   
   static inline void setFace(const FontSpriteSheet* face)
   {
@@ -296,11 +296,11 @@ public:
   static inline void setVerSpace(s16 v) { vSpace = v; }
   static inline void setSpaceAdj(s16 s) { spaceCharAdj = s; }
   static inline void setVerHorSpace(s16 v, s16 h) { vSpace = v; hSpace = h; }
-  static inline void setMap(const Palette *p) { palette = p; opalette = p; }
+  static inline void setPalette(const Palette *p) { palette = p; opalette = p; }
   
   static u16 drawString(const std::string& string, u16 x, u16 y, TextAlign align, const Palette *palette)
   {
-    setMap(palette);
+    setPalette(palette);
     u16 r = drawString(string,x,y,align);
     return r;
   }
@@ -339,7 +339,7 @@ public:
     setFace(face);
     
     if (palette)
-      setMap(palette);
+      setPalette(palette);
     
     return drawStringBounded(string, x, y, bound, align);
   }

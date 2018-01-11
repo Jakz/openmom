@@ -89,17 +89,21 @@ private:
   u32 freePicks() const { return availablePicks - countPicks(); }
   u32 countPicks() const;
   
+  Button* bookPhaseOkButton;
   void booksPicked(School school, u16 amount);
   void retortToggled(const Retort* retort);
   
   struct
-  {
+  {    
+    school_map<const FontSpriteSheet*> schoolFonts;
+    
     const FontSpriteSheet* darkBoldFont;
     const FontSpriteSheet* brightBoldFont;
     
     const FontSpriteSheet* darkSerifFont;
     
     const FontSpriteSheet *tinyBright, *tinyGold, *tinyInactive, *tinyRetortList;
+    
   } fonts;
   
 public:

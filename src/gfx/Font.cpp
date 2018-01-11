@@ -122,13 +122,13 @@ const FontSpriteSheet* buildSmall(const Palette *palette) { return new FontSprit
 
 namespace fonts
 {
-  template<FontType FONT>
-  SpecificFontSheet<FONT>::SpecificFontSheet(const Palette* palette) : FontSpriteSheet(FontData::fonts[FONT], palette, 1, vspacings[FONT]) { }
+  template<FontType FONT, typename TYPE>
+  SpecificFontSheet<FONT, TYPE>::SpecificFontSheet(const Palette* palette) : FontSpriteSheet(FontData::fonts[FONT], palette, 1, vspacings[FONT]) { }
   
   /* color indices: background, high shadow, edge shadow, low shadow, unused?, main color, middle dots, single pixels */
-  MediumBoldFont::MediumBoldFont(Color color) : SpecificFontSheet<FONT_MEDIUM_THICK>(new IndexedPalette({0, 0, 0, 0, 0, color, color, color})) { }
+  MediumBoldFont::MediumBoldFont(Color color) : MediumBoldFont(color, 0) { }
   //TODO: should single shadow pixels considered part of low shadow?
-  MediumBoldFont::MediumBoldFont(Color color, Color shadow) : SpecificFontSheet<FONT_MEDIUM_THICK>(new IndexedPalette({0, 0, 0, shadow, 0, color, color, color})) { }
+  MediumBoldFont::MediumBoldFont(Color color, Color shadow) : SpecificFontSheet<FONT_MEDIUM_THICK, MediumBoldFont>(new IndexedPalette({0, 0, 0, shadow, 0, color, color, color})) { }
   
   /* color indices: background, high shadow, edge shadow, low shadow, single pixels, stripes x 4 (low to high) */
   SerifFont::SerifFont(Color color) : SerifFont(new IndexedPalette({0, 0, 0, 0, color, color, color, color, color})) { }
@@ -434,7 +434,7 @@ u16 Fonts::drawStringContext(const string& string, u16 x, u16 y, TextAlign align
 u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, TextAlign align, const Palette* palette)
 {
   if (palette)
-    setMap(palette);
+    setPalette(palette);
   
   vector<const string> lines;
   strings::split(str, lines, '\n');
