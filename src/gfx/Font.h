@@ -37,6 +37,28 @@ enum TextAlign : u8
   ALIGN_LEFT
 };
 
+struct FontPalette
+{
+  enum class Type
+  {
+    SOLID,
+    SOLID_WITH_SHADOW,
+    SOLID_WITH_HIGH_AND_LOW_SHADOW,
+  };
+  
+  Type type;
+  Color main;
+  Color highShadow;
+  Color lowShadow;
+  Color single;
+  
+public:
+  static FontPalette ofSolid(Color color) { return { Type::SOLID, color, 0, 0, 0 }; }
+  static FontPalette ofStroked(Color color, Color stroke) {
+    return { Type::SOLID_WITH_HIGH_AND_LOW_SHADOW, color, stroke, stroke, 0 };
+  }
+};
+
 
 const u16 GLYPH_COUNT = 96;
 
