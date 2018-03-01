@@ -212,9 +212,6 @@ void Viewport::drawTile(const Tile* t, u16 x, s16 y, Plane plane)
     }
 
   }
-  
-  //if (LocalGame.i.currentPlayer.mapGridEnabled)
-  //	Gfx::draw(TextureID::TILE_FOG, 0, 9, x, y);
 }
 
 Point Viewport::screenCoordsForTile(const LocalPlayer* player, Position p)
@@ -342,27 +339,24 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
           
           // draw the fog sprites
           // TODO: if it is needed to save CPU just don't do it dinamically but with a tileMap
-          for (int i = 0; i < Util::DIRS.size(); ++i)
+          DirMask fogMask = t->computeMask([player](const Tile* tile) {
+            return !tile || !player->fog()->get(tile->position);
+          });
+          fogMask = fogMask.pruneDiagonalIfIsolated();
+          
+          for (DirJoin f : fogMask)
           {
-            Position od = Position(vx + x + Util::DIRS[i].x, vy + y + Util::DIRS[i].y, p.plane);
-            /*int xd = vx+x+Util::DIRS[i].x;
-            int yd = vy+y+Util::DIRS[i].y;*/
-            
-            if (i % 2 == 0)
-            {
-              if (!player->fog()->get(od))
-                Gfx::draw(TextureID::TILE_FOG, 0, i, sx, sy);
-            }
-            else
-            {
-              Position od2 = Position(vx+x+Util::DIRS[(i+1)%8].x, vx+x+Util::DIRS[(i+1)%8].y, plane);
-              Position od3 = Position(vx+x+Util::DIRS[i-1 < 0 ? 8 + (i-1) : i-1].x, vx+x+Util::DIRS[i-1 < 0 ? 8 + (i-1) : i-1].y, plane);
-              
-              if (!player->fog()->get(od) && player->fog()->get(od2) && player->fog()->get(od3))
-                Gfx::draw(TextureID::TILE_FOG, 0, i, sx, sy);
+            switch (f) {
+              case DirJoin::N: Gfx::draw(fog_line_n, sx, sy); break;
+              case DirJoin::S: Gfx::draw(fog_line_s, sx, sy); break;
+              case DirJoin::W: Gfx::draw(fog_line_w, sx, sy); break;
+              case DirJoin::E: Gfx::draw(fog_line_e, sx, sy); break;
+              case DirJoin::NW: Gfx::draw(fog_corner_nw, sx, sy); break;
+              case DirJoin::SW: Gfx::draw(fog_corner_sw, sx, sy); break;
+              case DirJoin::NE: Gfx::draw(fog_corner_ne, sx, sy); break;
+              case DirJoin::SE: Gfx::draw(fog_corner_se, sx, sy); break;
             }
           }
-          
           
           if (darkenEdges && ((y == 0 || y == h-1) && (x == 0 || x == w - 1)))
             Gfx::fillRect(sx, sy, tileWidth, tileHeight, Color(0, 0, 0, 160));

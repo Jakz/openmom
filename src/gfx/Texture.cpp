@@ -17,9 +17,6 @@
 
 const Texture Texture::textures[] =
 {
-  Texture(TextureID::TILE_FOG,"tile/fog.png",1,10,20,18),
-  
-  
   Texture(TextureID::MAIN_CURSORS,"main/cursors.png",1,5,16,16),
   Texture(TextureID::MAIN_MIRROR,"static/mirror.png",1,17,128,129),
   

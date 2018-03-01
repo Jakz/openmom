@@ -417,12 +417,6 @@ struct Position
   bool same(const Position& p) const { return p.x == x && p.y == y && p.plane == plane; }
 };
 
-struct PositionOffset
-{
-  s8 x;
-  s8 y;
-};
-
 enum class Dir
 {
   NORTH = 0,
@@ -560,6 +554,62 @@ public:
     return mask;
   }
   
+  struct iterator
+  {
+  private:
+    const DirMask& mask;
+    size_t position;
+    
+  public:
+    iterator(const DirMask& mask, size_t pos = 0) : mask(mask), position(pos)
+    {
+      while (position < COUNT && !(mask.mask & (1 << position)))
+        ++position;
+    }
+    
+    inline bool operator!=(const iterator& other) const { return mask != other.mask || position != other.position; }
+    inline const iterator& operator++()
+    {
+      ++position;
+      while (position < COUNT && !(mask.mask & (1 << position)))
+        ++position;
+      
+      return *this;
+    }
+    
+    operator bool() const { return position < COUNT; }
+    
+    DirJoin operator*() const { return static_cast<DirJoin>(1 << position); }
+  };
+  
+  iterator begin() const { return iterator(*this); }
+  iterator end() const { return iterator(*this, COUNT); }
+  
+};
+
+struct PositionOffset
+{
+  s8 x;
+  s8 y;
+  
+  static PositionOffset forDirJoin(DirJoin d)
+  {
+    switch (d)
+    {
+      case DirJoin::N: return {0, -1};
+      case DirJoin::NE: return {-1, -1};
+      case DirJoin::E: return {1, 0};
+      case DirJoin::SE: return {1, 1};
+      case DirJoin::S: return {0, 1};
+      case DirJoin::SW: return {-1, 1};
+      case DirJoin::W: return {-1, 0};
+      case DirJoin::NW: return {-1, -1};
+      default: break;
+    }
+   
+    assert(false);
+    return {0,0};
+  }
 };
 
 

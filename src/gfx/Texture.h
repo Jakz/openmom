@@ -19,9 +19,7 @@
 class SDL_Surface;
 
 enum class TextureID : u16
-{
-  TILE_FOG,
-  
+{  
   MAIN_CURSORS,
   MAIN_MIRROR,
   
