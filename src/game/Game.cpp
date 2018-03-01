@@ -128,8 +128,8 @@ void Game::dummyInit()
   world->set(TileType::VOLCANO, 59, 39, ARCANUS);
   world->set(TileType::HILL, 1, 2, MYRRAN);
   
-  player->fog()->setRect(0, 0, 60, 40, ARCANUS);
-  player->fog()->setRect(0, 0, 60, 40, MYRRAN);
+  //player->fog()->setRect(0, 0, 60, 40, ARCANUS);
+  //player->fog()->setRect(0, 0, 60, 40, MYRRAN);
   player->setViewport(5, 5);
   
   player->book()->discoverSpell(Data::spell("bless"));

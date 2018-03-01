@@ -365,7 +365,7 @@ void Viewport::drawViewport(const World* map, const LocalPlayer* player, const P
           
           
           if (darkenEdges && ((y == 0 || y == h-1) && (x == 0 || x == w - 1)))
-            Gfx::draw(TextureID::TILE_FOG, 0, 8, sx, sy);
+            Gfx::fillRect(sx, sy, tileWidth, tileHeight, Color(0, 0, 0, 160));
           else
           {
             if (t->isResourceShared() && darkenEdges)

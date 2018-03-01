@@ -516,6 +516,53 @@ enum class DirJoin
   ALL = 0xFF
 };
 
+struct DirMask
+{
+private:
+  using ut = std::underlying_type<DirJoin>::type;
+  static constexpr u32 COUNT = 8;
+  static constexpr ut MASK = 0xFF;
+  ut mask;
+  ut value() const { return (ut)mask; }
+  
+public:
+  constexpr DirMask() : DirMask(0) { }
+  constexpr DirMask(ut mask) : mask(mask) { }
+  constexpr DirMask(const DirMask& other) : mask(other.mask) { }
+  constexpr DirMask(DirJoin join) : mask((ut)join) { }
+  constexpr DirMask(DirJoin j1, DirJoin j2) : mask((ut)j1 | (ut)j2) { }
+  
+  bool is(DirJoin dir) const { return (mask & static_cast<ut>(dir)) != 0; }
+  bool isJust(DirJoin dir) const { return mask == (static_cast<ut>(dir)); }
+  
+  bool operator&&(DirJoin dir) const { return is(dir); }
+  bool operator==(const DirJoin dir) const { return isJust(dir); }
+  bool operator!=(const DirJoin dir) const { return !isJust(dir); }
+  
+  bool operator==(const DirMask mask) const { return this->mask == mask.mask; }
+  bool operator!=(const DirMask mask) const { return this->mask != mask.mask; }
+  
+  void unset(DirMask mask) { this->mask &= ~mask.value(); this->mask &= MASK; }
+  void unset(DirJoin dir) { mask &= ~DirMask(dir).value(); }
+  
+  DirMask toOrthogonal() const { return DirMask((ut)mask & (ut)DirJoin::OCROSS); }
+  DirMask toDiagonal() const { return DirMask((ut)mask & (ut)DirJoin::CROSS); }
+  DirMask pruneDiagonal() const { return toOrthogonal(); }
+  DirMask pruneDiagonalIfIsolated() const
+  {
+    DirMask mask = DirMask(*this);
+    
+    if (mask.is(DirJoin::N)) { mask.unset(DirMask(DirJoin::NE, DirJoin::NW)); }
+    if (mask.is(DirJoin::E)) { mask.unset(DirMask(DirJoin::NE, DirJoin::SE)); }
+    if (mask.is(DirJoin::S)) { mask.unset(DirMask(DirJoin::SE, DirJoin::SW)); }
+    if (mask.is(DirJoin::W)) { mask.unset(DirMask(DirJoin::NW, DirJoin::SW)); }
+    
+    return mask;
+  }
+  
+};
+
+
 /* these utility functions are used to work with enum class through standard
  boolean operators
  */
