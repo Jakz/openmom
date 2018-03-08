@@ -149,6 +149,11 @@ public:
   IndexedPalette(Color* colors) : colors(colors) { }
   IndexedPalette(size_t size) : colors(new Color[size]) { }
   
+  template<size_t S> IndexedPalette(const std::array<Color,S>& colors) : colors(new Color[colors.size()])
+  {
+    std::copy(colors.begin(), colors.end(), this->colors);
+  }
+  
   IndexedPalette(const color_array& colors) : colors(new Color[colors.size()]) { for (size_t i = 0; i < colors.size(); ++i) this->colors[i] = colors[i]; }
   IndexedPalette(color_list colors) : colors(new Color[colors.size()]) { setPalette(colors); }
   

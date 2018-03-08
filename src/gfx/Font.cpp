@@ -131,10 +131,11 @@ namespace fonts
   MediumBoldFont::MediumBoldFont(Color color, Color shadow) : SpecificFontSheet<FONT_MEDIUM_THICK, MediumBoldFont>(new IndexedPalette({0, 0, 0, shadow, 0, color, color, color})) { }
   
   /* color indices: background, high shadow, edge shadow, low shadow, single pixels, stripes x 4 (low to high) */
+  SerifFont::SerifFont(const std::array<Color,9>& colors) : SerifFont(new IndexedPalette(colors)) { }
   SerifFont::SerifFont(Color color) : SerifFont(new IndexedPalette({0, 0, 0, 0, color, color, color, color, color})) { }
   SerifFont::SerifFont(Color color, Color shadow) : SerifFont(new IndexedPalette({0, 0, 0, shadow, color, color, color, color, color})) { }
   
-  const SerifFont* SerifFont::of(const std::array<Color, 4>& stripes, Color single) { return new SerifFont(new IndexedPalette({0, 0, 0, 0, single, stripes[0], stripes[1], stripes[2], stripes[3]})); }
+  const SerifFont* SerifFont::withStripes(const std::array<Color, 4>& stripes, Color single) { return new SerifFont(new IndexedPalette({0, 0, 0, 0, single, stripes[0], stripes[1], stripes[2], stripes[3]})); }
   
   const SerifFont* SerifFont::withShadow(const SerifFont* font, Color shadow) { return withShadowAndSingle(font, font->getPalette()->get(4), shadow); }
   const SerifFont* SerifFont::withShadowAndSingle(const SerifFont* font, Color single, Color shadow) {
@@ -255,7 +256,7 @@ void FontFaces::buildFonts()
   Serif::BROWN_HELP = buildSerif({0, 0, 0, 0, {97,69,36}, {69,4,4}, {69,4,4}, {69,4,4}, {69,4,4}});
   Serif::YELLOW_SHADOW = buildSerif({0, 0, 0, {15,49,56}, {115,84,69}, {245,161,39}, {229,145,31}, {213,133,27}, {213,133,27}});
   
-  fonts::base::SERIF_GOLD = fonts::SerifFont::of({{{213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}}}, {255,174,12});
+  fonts::base::SERIF_GOLD = fonts::SerifFont::withStripes({{{213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}}}, {255,174,12});
 
   Serif::GOLD_SHADOW = buildSerif({0, 0, 0, {67,43,36}, {74,51,44}, {213,133,27}, {245,161,39}, {255,199,103}, {255,243,127}});
   Serif::SILVER_SHADOW = buildSerif({0, 0, 0, {67,43,36}, {106,97,93}, {159,150,146}, {196,186,182}, {228,219,215}, {255,255,255}});  // TODO: take from fontColors map

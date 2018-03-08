@@ -392,32 +392,32 @@ bool LBX::loadHeader(FileInfo& info, const file_handle& in)
 
 void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *in)
 {
-  static const u16 FONT_NUM = 8;
-  static const u16 FONT_CHAR_NUM = 94;
+  constexpr size_t FONT_COUNT = 8;
+  constexpr size_t FONT_CHARACTERS = 94;
   
-  static const LBXOffset FONT_HEIGHTS_OFFSET = 0x16A;
-  static const LBXOffset FONT_WIDTH_OFFSET = 0x19A;
-  static const LBXOffset FONT_DATA_OFFSET = 0x49A;
+  constexpr LBXOffset FONT_HEIGHTS_OFFSET = 0x16A;
+  constexpr LBXOffset FONT_WIDTH_OFFSET = 0x19A;
+  constexpr LBXOffset FONT_DATA_OFFSET = 0x49A;
   
-  LOGD("[lbx] loading %u fonts from fonts.lbx", FONT_NUM)
+  LOGD("[lbx] loading %u fonts from fonts.lbx", FONT_COUNT)
   
   // position to start of character heights resource
   fseek(in, offsets[0] + FONT_HEIGHTS_OFFSET, SEEK_SET);
   
   u16 *heights = new u16[8];
-  fread(heights, FONT_NUM, sizeof(u16), in);
+  fread(heights, FONT_COUNT, sizeof(u16), in);
   
   // position to start of character widths
   fseek(in, offsets[0] + FONT_WIDTH_OFFSET, SEEK_SET);
   
-  u8 **widths = new u8*[FONT_NUM];
+  u8 **widths = new u8*[FONT_COUNT];
   
   // read widths
-  for (int i = 0; i < FONT_NUM; ++i)
+  for (int i = 0; i < FONT_COUNT; ++i)
   {
     // read 94 bytes for widths of current font
-    widths[i] = new u8[FONT_CHAR_NUM];
-    fread(widths[i], 1, FONT_CHAR_NUM, in);
+    widths[i] = new u8[FONT_CHARACTERS];
+    fread(widths[i], 1, FONT_CHARACTERS, in);
     
     // skip 2 control characters
     u8 padding[2];
@@ -428,25 +428,25 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
   // position to start of character offsets
   fseek(in, offsets[0] + FONT_DATA_OFFSET, SEEK_SET);
   
-  u16 **foffsets = new u16*[FONT_NUM];
+  u16 **foffsets = new u16*[FONT_COUNT];
   
-  for (int i = 0; i < FONT_NUM; ++i)
+  for (int i = 0; i < FONT_COUNT; ++i)
   {
-    foffsets[i] = new u16[FONT_CHAR_NUM];
+    foffsets[i] = new u16[FONT_CHARACTERS];
     
-    fread(foffsets[i], sizeof(u16), FONT_CHAR_NUM, in);
+    fread(foffsets[i], sizeof(u16), FONT_CHARACTERS, in);
     
     u16 padding[2];
     fread(&padding, sizeof(u16), 2, in);
   }
   
   //int i = 0;
-  for (int i = 0; i < FONT_NUM; ++i)
+  for (int i = 0; i < FONT_COUNT; ++i)
   {
 
 
     u8 width = 0;
-    for (int j = 0; j < FONT_CHAR_NUM; ++j) width = std::max(widths[i][j], width);
+    for (int j = 0; j < FONT_CHARACTERS; ++j) width = std::max(widths[i][j], width);
     width += 2;
     
 #if DEBUG
@@ -457,7 +457,7 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
     FontData::fonts[i] = new FontData(static_cast<FontType>(i), heights[i]+2, width);  // add 2 pixels by side for precomputed stroke
     u16 totalWidth = FontData::fonts[i]->tw();
     
-    for (int j = 0; j < FONT_CHAR_NUM; ++j)
+    for (int j = 0; j < FONT_CHARACTERS; ++j)
     {
       u8* glyph = FontData::fonts[i]->dataAt(0, j);
       
@@ -554,8 +554,8 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
     LOGD("[lbx] loading font %u, size: %ux%u, colors: %u", i, width-2, heights[i], maxColor)
   }
   
-  for_each(widths, widths+FONT_NUM, [](u8* ww) { delete [] ww; });
-  for_each(foffsets, foffsets+FONT_NUM, [](u16* ww) { delete [] ww; });
+  for_each(widths, widths+FONT_COUNT, [](u8* ww) { delete [] ww; });
+  for_each(foffsets, foffsets+FONT_COUNT, [](u16* ww) { delete [] ww; });
 
   
   delete [] foffsets;

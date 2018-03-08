@@ -132,7 +132,7 @@ NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr,
   
   fonts.darkBoldFont = new fonts::MediumBoldFont({52,40,28}, {166,134,105}); // TODO: fix last color?
   fonts.brightBoldFont = new fonts::MediumBoldFont({166,134,105}, {52,40,28});
-  fonts.darkSerifFont = new fonts::SerifFont({52,40,28}, {166, 134, 105});
+  fonts.darkSerifFont = fonts::SerifFont::of({52,40,28}, {166, 134, 105});
   
   fonts.tinyBright = fonts::TinyFont::of({190, 154, 117}, {113, 85, 69}, {56, 31, 27});
   fonts.tinyInactive = fonts::TinyFont::of({97, 73, 60}, {113, 85, 69}, {56, 31, 27});

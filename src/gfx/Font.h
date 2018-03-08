@@ -60,7 +60,7 @@ public:
 };
 
 
-const u16 GLYPH_COUNT = 96;
+constexpr size_t GLYPH_COUNT = 96;
 
 class SpriteRawData
 {
@@ -194,14 +194,26 @@ namespace fonts
   private:
     SerifFont(const Palette* palette) : SpecificFontSheet<FONT_SERIF, SerifFont>(palette) { };
     
-  public:
+  private:
+    SerifFont(const std::array<Color, 9>& colors);
     SerifFont(Color color);
     SerifFont(Color color, Color shadow);
     
   public:
-    static const SerifFont* of(const std::array<Color, 4>& stripes, Color single);
+    static const SerifFont* of(Color color, Color shadow) { return new SerifFont(color, shadow); }
+    static const SerifFont* withStripes(const std::array<Color, 4>& stripes, Color single);
     static const SerifFont* withShadow(const SerifFont* font, Color shadow);
     static const SerifFont* withShadowAndSingle(const SerifFont* font, Color single, Color shadow);
+    
+    static const SerifFont* of(const FontPalette& palette)
+    {
+      switch (palette.type) {
+          
+      };
+      
+      assert(false);
+      return nullptr;
+    }
   };
   
   class TinyFont : public SpecificFontSheet<FONT_TINY, TinyFont>

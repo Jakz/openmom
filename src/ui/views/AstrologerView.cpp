@@ -32,6 +32,8 @@ static const s16 BAR_X = 51;
 static const s16 BAR_WIDTH = 200;
 static const s16 ROW_DELTA = 7;
 
+static constexpr Color BAR_SHADOW_COLOR = { 24, 24, 44 };
+
 AstrologerView::AstrologerView(ViewManager* gvm) : ViewWithQueue(gvm)
 {
 
@@ -60,7 +62,7 @@ void AstrologerView::drawRow(int section, int row, const std::string& caption, f
   Rect barRect = Rect(base.delta(BAR_X, 2), Size(barWidth, 2));
   Rect shadowRect = Rect(barRect.origin.x, barRect.origin.y+1, barRect.size.w+1, 2);
   
-  rect(shadowRect, { 24, 24, 44});
+  rect(shadowRect, BAR_SHADOW_COLOR);
   rect(barRect, ccolor);
 }
 
