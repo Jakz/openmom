@@ -10,11 +10,11 @@ if(APPLE)
 elseif(UNIX)
 
 elseif(WIN32)
-set(SDL2_LIBRARY C:\\SDL2\\lib)
-set(SDL2_INCLUDE_DIR C:\\SDL2\\include)
+set(SDL2_LIBRARY C:\\SDL\\SDL2\\lib)
+set(SDL2_INCLUDE_DIR C:\\SDL\\SDL2\\include)
 
-set(SDL2_IMAGE_LIBRARY C:\\SDL2_image\\lib)
-set(SDL2_IMAGE_INCLUDE_DIR C:\\SDL2_image\\include)
+set(SDL2_IMAGE_LIBRARY C:\\SDL\\SDL2_image\\lib)
+set(SDL2_IMAGE_INCLUDE_DIR C:\\SDL\\SDL2_image\\include)
 endif()
 
 
@@ -44,8 +44,8 @@ set(CMAKE_C_FLAGS_RELEASE "-flto -O3 -DNDEBUG" CACHE STRING "" FORCE)
 set(CMAKE_C_FLAGS_RELWITHDEBINFO "-O3 -flto -g" CACHE STRING "" FORCE)
 
 message("Build Type is ${CMAKE_BUILD_TYPE}")
-message("C flags are ${CMAKE_C_FLAGS}")
-message("CXX flags are ${CMAKE_CXX_FLAGS}")
+message("Base flags are ${BASE_FLAGS}")
+message("Debug flags are ${CMAKE_CXX_FLAGS_DEBUG}")
 
 #if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 #  message(FATAL_ERROR "In-source builds are not permitted. Make a separate folder for building:\nmkdir build; cd build; cmake ..\nBefore that, remove the files already created:\nrm -rf CMakeCache.txt CMakeFiles")

@@ -3,8 +3,10 @@ set(srcs ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 set(LIBRARY_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/../libs)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
 
+if (NOT WIN32)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_Image REQUIRED)
+endif()
 
 set(YAML_INCLUDE_DIR ${LIBRARY_FOLDER}/yaml/include)
 add_library(YAML_LIBRARY STATIC IMPORTED)
