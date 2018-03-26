@@ -22,9 +22,7 @@ enum class TextureID : u16
 {  
   MAIN_CURSORS,
   MAIN_MIRROR,
-  
-  MAGIC_SCHOOL_ICONS,
-  
+    
   MESSAGE_LEFT,
   MESSAGE_RIGHT,
   //113 - 29

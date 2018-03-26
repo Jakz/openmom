@@ -97,6 +97,15 @@ private:
 public:
   enum_simple_map(V value) : data({value}) { }
   
+  enum_simple_map(V value, const std::initializer_list<init_element>& elements)
+  {
+    std::fill(data.begin(), data.end(), value);
+    std::for_each(elements.begin(), elements.end(), [this](const init_element& entry) {
+      assert(static_cast<size_t>(entry.first) < size);
+      set(entry.first, entry.second);
+    });
+  }
+  
   enum_simple_map(const std::initializer_list<init_element>& elements)
   {
     assert(elements.size() == size);
@@ -884,6 +893,9 @@ enum School : s8
   
   SCHOOL_COUNT,
   SCHOOL_NO_ARCANE_COUNT = 5,
+  
+  SCHOOL_FIRST = 1,
+  SCHOOL_LAST = 5,
   
   NO_SCHOOL = -1
 };

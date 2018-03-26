@@ -21,6 +21,8 @@
 #include "CityView.h"
 #include "CityScape.h"
 
+#include "GfxData.h"
+
 MessageView::MessageView(ViewManager* gvm) : View(gvm), message(nullptr)
 {
   buttons.resize(BUTTON_COUNT);
@@ -98,8 +100,8 @@ void MessageView::draw()
       Gfx::draw(TextureID::MESSAGE_LEFT, 7, 61);
       Gfx::draw(TextureID::MESSAGE_RIGHT, 243, 61);
       Gfx::draw(LSI(BACKGRND, 10), 249, 69); // building background
-      /* TODO: choose accordingly to major school of magic of the wizard and check if they are centered */
-      Gfx::draw(TextureID::MAGIC_SCHOOL_ICONS, 0, 1, 6, 40);
+      const auto& school = GfxData::schoolGfxSpec(msg->city->getOwner()->book()->predominantSchool());
+      Gfx::draw(school.messageMascot.gfx, school.messageMascot.offset);
       CityLayout::drawBuildingCentered(msg->city, msg->building, 249, 106);
       
       Fonts::drawStringBounded(msg->getMessage(), FontFaces::Serif::YELLOW_SHADOW, 79, 68, 170, ALIGN_LEFT);

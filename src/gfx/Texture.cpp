@@ -19,9 +19,7 @@ const Texture Texture::textures[] =
 {
   Texture(TextureID::MAIN_CURSORS,"main/cursors.png",1,5,16,16),
   Texture(TextureID::MAIN_MIRROR,"static/mirror.png",1,17,128,129),
-  
-  Texture(TextureID::MAGIC_SCHOOL_ICONS,"static/magic-school-icons.png",1,5,100,90),
-  
+    
   Texture(TextureID::MESSAGE_LEFT,"static/message-left.png",1,1,249,59),
   Texture(TextureID::MESSAGE_RIGHT,"static/message-right.png",1,1,55,59),
   //113 - 29

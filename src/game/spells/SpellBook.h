@@ -59,7 +59,8 @@ private:
   s32 manaToCast;
   s32 manaToResearch;
   
-  std::array<s8, 6> books;
+  enum_simple_map<School, s8, 6> books;
+  //std::array<s8, 6> books;
   
 public:
   enum Type
@@ -69,13 +70,26 @@ public:
     RESEARCH
   };
   
-  SpellBook(Player& player) : player(player), currentCast(nullptr), currentResearch(nullptr), manaToCast(0), manaToResearch(0)
+  SpellBook(Player& player) : player(player), currentCast(nullptr), currentResearch(nullptr), manaToCast(0), manaToResearch(0), books(0, { {School::CHAOS, 1}, { School::LIFE, 3}, { School::NATURE, 3} })
   {
-    books = {0,1,0,3,3,0}; // TODO: hardcoded
-  
+    
   }
   
   s16 totalBooks() const {return std::accumulate(books.begin(), books.end(), 0); }
+  
+  School predominantSchool() const
+  {
+    School predominant = School::SCHOOL_FIRST;
+    s8 count = 0;
+    for (School i = SCHOOL_FIRST; i <= SCHOOL_LAST; i = (School)(i + 1))
+    {
+      if (books[i] > count) { predominant = i; count = books[i]; }
+    }
+    
+    //TODO: if two school have same amount of books which one is chosen?
+   
+    return predominant;
+  }
   
   s16 booksForSchool(School school) const { return books[school]; }
   

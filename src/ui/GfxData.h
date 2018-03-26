@@ -102,6 +102,11 @@ struct SchoolGfxSpec
   SpriteInfo newGameBook; // 3 entries starting from this
   SpriteInfo book;
   SpriteInfo overlandUnitSpellCast;
+  
+  struct {
+    SpriteInfo gfx;
+    Point offset;
+  } messageMascot;
 };
 
 
