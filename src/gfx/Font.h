@@ -42,20 +42,24 @@ struct FontPalette
   enum class Type
   {
     SOLID,
-    SOLID_WITH_SHADOW,
-    SOLID_WITH_HIGH_AND_LOW_SHADOW,
+    SOLID_WITH_LOW_SHADOW,
+    SOLID_WITH_FULL_STROKE,
   };
   
   Type type;
   Color main;
+  Color single;
+
   Color highShadow;
   Color lowShadow;
-  Color single;
+  Color mixShadow;
   
 public:
-  static FontPalette ofSolid(Color color) { return { Type::SOLID, color, 0, 0, 0 }; }
+  static FontPalette ofSolid(Color color) { return { Type::SOLID, color, color, 0, 0, 0 }; }
+  static FontPalette ofSolid(Color color, Color single) { return { Type::SOLID, color, single, 0, 0, 0 }; }
+  
   static FontPalette ofStroked(Color color, Color stroke) {
-    return { Type::SOLID_WITH_HIGH_AND_LOW_SHADOW, color, stroke, stroke, 0 };
+    return { Type::SOLID_WITH_FULL_STROKE, color, color, stroke, stroke, stroke };
   }
 };
 
@@ -175,24 +179,26 @@ public:
 
 namespace fonts
 {
+  using FontFace = FontSpriteSheet;
+  
   template<FontType FONT, typename TYPE>
-  class SpecificFontSheet : public FontSpriteSheet
+  class SpecificFontFace : public FontFace
   {
   protected:
-    SpecificFontSheet(const Palette* palette);
+    SpecificFontFace(const Palette* palette);
   };
   
-  class MediumBoldFont : public SpecificFontSheet<FONT_MEDIUM_THICK, MediumBoldFont>
+  class MediumBoldFont : public SpecificFontFace<FONT_MEDIUM_THICK, MediumBoldFont>
   {
   public:
     MediumBoldFont(Color color);
     MediumBoldFont(Color color, Color shadow);
   };
   
-  class SerifFont : public SpecificFontSheet<FONT_SERIF, SerifFont>
+  class SerifFont : public SpecificFontFace<FONT_SERIF, SerifFont>
   {
   private:
-    SerifFont(const Palette* palette) : SpecificFontSheet<FONT_SERIF, SerifFont>(palette) { };
+    SerifFont(const Palette* palette) : SpecificFontFace<FONT_SERIF, SerifFont>(palette) { };
     
   private:
     SerifFont(const std::array<Color, 9>& colors);
@@ -216,10 +222,10 @@ namespace fonts
     }
   };
   
-  class TinyFont : public SpecificFontSheet<FONT_TINY, TinyFont>
+  class TinyFont : public SpecificFontFace<FONT_TINY, TinyFont>
   {
   private:
-    TinyFont(const Palette* palette) : SpecificFontSheet<FONT_TINY, TinyFont>(palette) { };
+    TinyFont(const Palette* palette) : SpecificFontFace<FONT_TINY, TinyFont>(palette) { };
   public:
     static const TinyFont* of(Color color, Color single, Color shadow);
   };
