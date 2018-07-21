@@ -1,4 +1,4 @@
-build/**
+*.dylib
 .DS_Store
 *.lbx
 data/lbx/*
