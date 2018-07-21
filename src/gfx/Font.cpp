@@ -123,12 +123,12 @@ const FontSpriteSheet* buildSmall(const Palette *palette) { return new FontSprit
 namespace fonts
 {
   template<FontType FONT, typename TYPE>
-  SpecificFontSheet<FONT, TYPE>::SpecificFontSheet(const Palette* palette) : FontSpriteSheet(FontData::fonts[FONT], palette, 1, vspacings[FONT]) { }
+  SpecificFontFace<FONT, TYPE>::SpecificFontFace(const Palette* palette) : FontSpriteSheet(FontData::fonts[FONT], palette, 1, vspacings[FONT]) { }
   
   /* color indices: background, high shadow, edge shadow, low shadow, unused?, main color, middle dots, single pixels */
   MediumBoldFont::MediumBoldFont(Color color) : MediumBoldFont(color, 0) { }
   //TODO: should single shadow pixels considered part of low shadow?
-  MediumBoldFont::MediumBoldFont(Color color, Color shadow) : SpecificFontSheet<FONT_MEDIUM_THICK, MediumBoldFont>(new IndexedPalette({0, 0, 0, shadow, 0, color, color, color})) { }
+  MediumBoldFont::MediumBoldFont(Color color, Color shadow) : SpecificFontFace<FONT_MEDIUM_THICK, MediumBoldFont>(new IndexedPalette({0, 0, 0, shadow, 0, color, color, color})) { }
   
   /* color indices: background, high shadow, edge shadow, low shadow, single pixels, stripes x 4 (low to high) */
   SerifFont::SerifFont(const std::array<Color,9>& colors) : SerifFont(new IndexedPalette(colors)) { }

@@ -70,3 +70,29 @@ bool UnitMovement::hasFinished()
   
   return h;
 }
+
+
+#include "ui/views/CombatView.h"
+
+constexpr float PROJECTILE_SPEED = 0.01f;
+
+CombatProjectile::CombatProjectile(coord_t from, coord_t to, SpriteInfo effect, size_t count) : ContinuousAnimation(0),
+from(from), to(to), effect(effect), count(count)
+{
+  start = CombatView::coordsForTile(from.x, from.y);
+  end = CombatView::coordsForTile(to.x, to.y);
+
+  
+  float distance = Util::distance(start.x, end.x, start.y, end.y);
+  setDuration(distance * PROJECTILE_SPEED);
+  //TODO: not nice to call setDuration but computations are long
+}
+
+void CombatProjectile::step()
+{
+  float percent = position();
+  auto gfx = effect.relative(spriteDeltaForFacing(facing));
+  
+  //TODO TODO
+  /* last 10% of the time is used to show frame on target tile, this requires different approach to animation */
+}

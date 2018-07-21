@@ -10,10 +10,10 @@
 #define _ANIMATIONS_H_
 
 #include "common/Common.h"
-#include "EventListener.h"
+#include "ui/EventListener.h"
 
-#include "Pathfind.h"
-#include "Gfx.h"
+#include "game/world/Pathfind.h"
+#include "gfx/Gfx.h"
 
 #include <list>
 
@@ -99,6 +99,8 @@ namespace anims
     u32 start;
     u32 duration;
     
+    void setDuration(u32 duration) { this->duration = duration; }
+    
   public:
     ContinuousAnimation(u32 duration) : start(Gfx::ticks), duration(duration) { }
     
@@ -158,6 +160,30 @@ namespace anims
     void step() override;
     bool hasFinished() override;
   };
+}
+
+#include "game/combat/CombatUtils.h"
+
+namespace anims
+{
+  class CombatProjectile : public ContinuousAnimation
+  {
+    using coord_t = combat::CombatCoord;
+    
+  private:
+    Dir facing;
+    Point start, end;
+    coord_t from, to;
+    SpriteInfo effect;
+    size_t count;
+    
+    //TODO: quite an hack since sprites are ordered starting by south in clockwise manner in LBX
+    s32 spriteDeltaForFacing(Dir facing) const { return ((s32)facing + 4) % 8; }
+    
+  public:
+    CombatProjectile(coord_t from, coord_t to, SpriteInfo effect, size_t count);
+    void step() override;
+  };
   
   // TODO
   class CombatAttack : public ContinuousAnimation
@@ -177,6 +203,8 @@ namespace anims
     CombatMovement(const combat::CombatUnit* unit) : ContinuousAnimation(500) { }
     void step() override { }
   };
+
+  
   /*
    class CombatUnitAttackAnimation
    {

@@ -1615,8 +1615,8 @@
 					"${LIBS_PATH}/SDL2.framework/Headers",
 					"${LIBS_PATH}/SDL2_image.framework/Headers",
 					"${LIBS_PATH}/yaml/include",
-					/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/include/,
-					/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/include/darwin,
+					/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/include/,
+					/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/include/darwin,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1649,8 +1649,8 @@
 					"${LIBS_PATH}/SDL2.framework/Headers",
 					"${LIBS_PATH}/SDL2_image.framework/Headers",
 					"${LIBS_PATH}/yaml/include",
-					/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/include/,
-					/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/include/darwin,
+					/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/include/,
+					/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/include/darwin,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;

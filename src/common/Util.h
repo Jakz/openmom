@@ -49,6 +49,12 @@ public:
   static u32 randi(u32 i) { return randomIntUpTo(i); }
   static u32 randomIntUpTo(u32 i) { return integer(rng)%i; }
   static u32 randomIntInclusive(s32 l, s32 h) { return l + integer(rng)%(h-l+1); }
+  
+  static float distance(s32 x1, s32 y1, s32 x2, s32 y2)
+  {
+    float dx = std::abs(x1 - x2), dy = std::abs(y1 - y2);
+    return std::sqrt(dx*dx + dy*dy);
+  }
 
   static bool oneOfTwoChance() { return rand() <= 0.50f; }
   static bool chance(u32 percent) { return randomIntUpTo(101) <= percent; }
