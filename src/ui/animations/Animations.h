@@ -162,30 +162,8 @@ namespace anims
   };
 }
 
-#include "game/combat/CombatUtils.h"
-
 namespace anims
 {
-  class CombatProjectile : public ContinuousAnimation
-  {
-    using coord_t = combat::CombatCoord;
-    
-  private:
-    Dir facing;
-    Point start, end;
-    coord_t from, to;
-    SpriteInfo effect;
-    size_t count;
-    bool lastPhase;
-    
-    //TODO: quite an hack since sprites are ordered starting by north in clockwise manner in LBX
-    s32 spriteDeltaForFacing(Dir facing) const { return (s32)facing; }
-    
-  public:
-    CombatProjectile(coord_t from, coord_t to, SpriteInfo effect, size_t count);
-    void step() override;
-  };
-  
   // TODO
   class CombatAttack : public ContinuousAnimation
   {

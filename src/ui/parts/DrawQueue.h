@@ -19,6 +19,16 @@ public:
     static_assert(std::is_base_of<DrawElement<T,S>, T>::value, "Template type must be subclass of DrawElement");
   }
   
+  using iterator = typename decltype(_elements)::iterator;
+  using const_iterator = typename decltype(_elements)::const_iterator;
+  
+  iterator begin() { return _elements.begin(); }
+  iterator end() { return _elements.end(); }
+  const_iterator begin() const { return _elements.begin(); }
+  const_iterator end() const { return _elements.end(); }
+  
+  template<typename U> void erase(U s, U e) { _elements.erase(s, e); }
+  
   void sort()
   {
     std::sort(_elements.begin(), _elements.end(), S());
@@ -39,6 +49,7 @@ public:
   
   void add(T* element)
   {
+    element->setQueue(this);
     _elements.push_back(std::unique_ptr<T>(element));
     _dirty = true;
   }
@@ -66,10 +77,11 @@ private:
   DrawQueue<T,S>* queue;
   
 protected:
-  DrawElement() : visible(true) { }
+  DrawElement() : queue(nullptr), visible(true) { }
   
 public:
-  void setDirty() { queue->setDirty(); }
+  void setQueue(DrawQueue<T,S>* queue) { this->queue = queue; }
+  void setDirty() const { queue->setDirty(); }
   
   bool isVisible() const { return visible; }
   void setVisible(bool visible) { this->visible = visible; }

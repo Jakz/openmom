@@ -76,6 +76,8 @@ public:
     virtual u16 y() const = 0;
 
     virtual void draw() const = 0;
+    
+    virtual bool destroyable() const { return false; }
   };
 
 private:

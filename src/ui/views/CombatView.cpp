@@ -71,6 +71,7 @@ enum priority : priority_t
   priority_static = priority_behind_units,
   priority_units = 200,
   priority_front_units = 300,
+  priority_projectiles = 350,
   
   priority_stone_wall_behind = priority_behind_units,
   priority_stone_wall_front = priority_front_units,
@@ -324,6 +325,69 @@ static const std::unordered_map<TileBuilding, BuildingGfxSpec, enum_hash> buildi
 #pragma mark Rivers
 
 using GfxEntry = CombatView::GfxEntry;
+
+class ProjectileGfxEntry : public GfxEntry
+{
+  using coord_t = combat::CombatCoord;
+  
+private:
+  enum Phase
+  {
+    MOVING,
+    HITTING
+  };
+  
+  u32 count;
+  SpriteInfo effect;
+  std::array<combat::CombatCoord, 2> coords;
+  std::array<Point, 2> points;
+  Point delta;
+  Dir facing;
+  Phase phase;
+  float speed = 0.005f;
+  
+  mutable CombatCoord position;
+  mutable float progress;
+  
+  //TODO: quite an hack since sprites are ordered starting by north in clockwise manner in LBX
+  s32 spriteDeltaForFacing(Dir facing) const { return (s32)facing; }
+  
+public:
+  ProjectileGfxEntry(CombatView* view, coord_t start, coord_t end, SpriteInfo effect) : CombatView::GfxEntry(view, priority_projectiles),
+  coords({start, end}), points({CombatView::coordsForTile(start.x, start.y), CombatView::coordsForTile(end.x, end.y)}),
+  delta(points[1] - points[0]), effect(effect), count(1), progress(0.0f), position(start), phase(Phase::MOVING)
+  {
+    facing = Dir::S;
+  }
+  
+  u16 x() const override { return position.x; }
+  u16 y() const override { return position.y; }
+  
+  void draw() const override
+  {
+    auto gfx = effect.frame(spriteDeltaForFacing(facing), (Gfx::fticks / 3) % 3);
+    Point point = points[0] + delta*progress;
+    
+    auto offset = UnitDraw::offsetForFigures(true, 1);
+    Gfx::draw(gfx,
+              point.x + offset[0].x,
+              point.y + offset[0].y - 17
+              );
+    
+    progress += speed;
+    
+    Coord newPosition = CombatView::tileForCoords(point.x, point.y);
+    
+    if (newPosition != position)
+    {
+      position = newPosition;
+      setDirty();
+    }
+    
+  }
+  
+  bool destroyable() const override { return progress >= 1.0f; }
+};
 
 class UnitGfxEntry : public GfxEntry
 {
@@ -873,6 +937,9 @@ void CombatView::draw()
   
   entries.draw();
   
+  auto nend = std::remove_if(entries.begin(), entries.end(), [] (const std::unique_ptr<GfxEntry>& entry) { return entry->destroyable(); });
+  entries.erase(nend, entries.end());
+  
   if (hover.x != -1)
   {
     Point hoverCoords = coordsForTile(hover.x, hover.y);
@@ -1067,7 +1134,9 @@ void CombatView::drawSelectedUnitProps(const combat::CombatUnit* unit)
 
 bool CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-  player->push(new anims::CombatProjectile({2,4}, {5,11}, LBXI(CMBMAGIC, 8), 1));
+  entries.add(new ProjectileGfxEntry(this, {3,5}, {3,17}, LBXI(CMBMAGIC, 8)));
+  
+  //player->push(new anims::CombatProjectile({2,4}, {5,11}, LBXI(CMBMAGIC, 8), 1));
   return true;
   //player->push(new anims::SpellEffect(LSI(CMBTFX, 22), CombatCoord(hover.x,hover.y)));
   
