@@ -108,7 +108,8 @@ void SpellBook::fillPool()
       {
         spell_list totspells = Spells::spellsByRarityAndSchool(static_cast<SpellRarity>(j), static_cast<School>(i));
         
-        remove_if(totspells.begin(), totspells.end(), [this](const Spell* spell){ return spells.find(spell) != spells.end(); });
+        auto nend = remove_if(totspells.begin(), totspells.end(), [this](const Spell* spell){ return spells.find(spell) != spells.end(); });
+        totspells.erase(nend, totspells.end());
         
         random_device rd;
         mt19937 gen(rd());

@@ -41,7 +41,8 @@ void HitPoints::applyDamage(s16 dmg)
 void HitPoints::applySameDamageToEachFigure(s16 dmg)
 {
   for_each(data.begin(), data.end(), [&](s16& hp){ hp -= dmg; });
-  remove_if(data.begin(), data.end(), [](s16& hp) { return hp <= 0; });
+  auto nend = remove_if(data.begin(), data.end(), [](s16& hp) { return hp <= 0; });
+  data.erase(nend, data.end());
 }
 
 void HitPoints::applyDifferentDamageToEachFigure(const hit_points& dmgs)
@@ -49,13 +50,15 @@ void HitPoints::applyDifferentDamageToEachFigure(const hit_points& dmgs)
   for (int i = 0; i < dmgs.size(); ++i)
     data[i] -= dmgs[i];
   
-  remove_if(data.begin(), data.end(), [](s16& hp) { return hp <= 0; });
+  auto nend = remove_if(data.begin(), data.end(), [](s16& hp) { return hp <= 0; });
+  data.erase(nend, data.end());
 }
 
 void HitPoints::killFigures(const unit_figure_flag& indices)
 {
   s16 current = 0;
-  remove_if(data.begin(), data.end(), [&](s16& hp) { return indices[current++]; });
+  auto nend = remove_if(data.begin(), data.end(), [&](s16& hp) { return indices[current++]; });
+  data.erase(nend, data.end());
 }
 
 void Unit::removeSpell(const Spell* spell)
