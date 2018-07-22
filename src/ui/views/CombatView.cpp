@@ -344,7 +344,7 @@ private:
   Point delta;
   Dir facing;
   Phase phase;
-  float speed = 0.005f;
+  float speed = 0.01f;
   
   mutable CombatCoord position;
   mutable float progress;
@@ -357,7 +357,41 @@ public:
   coords({start, end}), points({CombatView::coordsForTile(start.x, start.y), CombatView::coordsForTile(end.x, end.y)}),
   delta(points[1] - points[0]), effect(effect), count(1), progress(0.0f), position(start), phase(Phase::MOVING)
   {
-    facing = Dir::S;
+    if (delta.y == 0)
+      facing = delta.x > 0 ? Dir::E : Dir::W;
+    else
+    {
+      float dx = delta.x / (float)delta.y;
+      
+      /* steep directions */
+      if (std::abs(dx) < 0.5f)
+      {
+        if (delta.y >= 0)
+          facing = Dir::S;
+        else if (delta.y < 0)
+          facing = Dir::N;
+      }
+      /* flat directions */
+      else if (std::abs(dx) > 4.0f)
+      {
+        if (delta.x >= 0)
+          facing = Dir::E;
+        else if (delta.y < 0)
+          facing = Dir::W;
+      }
+      /* average directions */
+      else
+      {
+        if (delta.x > 0 && delta.y < 0)
+          facing = Dir::NE;
+        else if (delta.x > 0 && delta.y >= 0)
+          facing = Dir::SE;
+        else if (delta.x < 0 && delta.y < 0)
+          facing = Dir::NW;
+        else if (delta.x < 0 && delta.y >= 0)
+          facing = Dir::SW;
+      }
+    }
   }
   
   u16 x() const override { return position.x; }
@@ -376,7 +410,10 @@ public:
     
     progress += speed;
     
-    Coord newPosition = CombatView::tileForCoords(point.x, point.y);
+    Coord newPosition = CombatView::tileForCoords(point.x + 17, point.y);
+    
+    Gfx::drawAnimated(hover_tile, CombatView::coordsForTile(newPosition.x, newPosition.y), 0);
+
     
     if (newPosition != position)
     {
@@ -1134,7 +1171,8 @@ void CombatView::drawSelectedUnitProps(const combat::CombatUnit* unit)
 
 bool CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-  entries.add(new ProjectileGfxEntry(this, {3,5}, {3,17}, LBXI(CMBMAGIC, 8)));
+  if (hover.isValid())
+    entries.add(new ProjectileGfxEntry(this, {5,9}, hover, LBXI(CMBMAGIC, 16)));
   
   //player->push(new anims::CombatProjectile({2,4}, {5,11}, LBXI(CMBMAGIC, 8), 1));
   return true;
