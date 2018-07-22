@@ -22,7 +22,8 @@ class ViewManager;
 //TODO: required for dummyUnit()
 class UnitGfxEntry;
 
-using priority_t = s16;
+using priority_t = s32;
+constexpr priority_t always_front = 1 << 16;
 
 class CombatView : public View
 {
@@ -34,14 +35,23 @@ private:
   {
     bool operator()(const std::unique_ptr<CombatView::GfxEntry>& e1, const std::unique_ptr<CombatView::GfxEntry>& e2) const
     {
-      if (e1->priority() < 0 && e2->priority() >= 0)
+      const priority_t p1 = e1->priority(), p2 = e2->priority();
+      
+      if (p1 < 0 && p2 >= 0)
         return true;
-      else if (e1->priority() >= 0 && e2->priority() < 0)
+      else if (p1 >= 0 && p2 < 0)
         return false;
-      else if (e1->priority() < 0 && e2->priority() < 0)
-        return e1->priority() < e2->priority();
+      else if (p1 < 0 && p2 < 0)
+        return p1 < p2;
       else if (e1 == e2)
         return false;
+      
+      else if (p1 >= always_front && p2 < always_front)
+        return false;
+      else if (p1 < always_front && p2 >= always_front)
+        return true;
+      else if (p1 >= always_front && p2 >= always_front)
+        return p1 < p2;
       
       if (e1->x() != e2->x())
       {
@@ -56,8 +66,8 @@ private:
         return e1->y() < e2->y();
       else
       {
-        assert(e1->priority() != e2->priority());
-        return e1->priority() < e2->priority();
+        assert(p1 != p2);
+        return p1 < p2;
       }
     }
   };

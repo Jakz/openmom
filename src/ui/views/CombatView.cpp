@@ -63,6 +63,8 @@ enum priority : priority_t
   priority_fixed = -10,
   priority_roads = -50,
   
+  priority_always_front = always_front,
+  
   priority_prop = 50,
   
   priority_hover_symbol = 20,
@@ -71,7 +73,7 @@ enum priority : priority_t
   priority_static = priority_behind_units,
   priority_units = 200,
   priority_front_units = 300,
-  priority_projectiles = 350,
+  priority_projectiles = priority_always_front,
   
   priority_stone_wall_behind = priority_behind_units,
   priority_stone_wall_front = priority_front_units,
@@ -81,6 +83,8 @@ enum priority : priority_t
   
   priority_darkness_wall_behind = priority_stone_wall_behind - 1,
   priority_darkness_wall_front = priority_stone_wall_front + 1,
+  
+  
 };
 
 #pragma mark Tile Joins management
@@ -337,17 +341,17 @@ private:
     HITTING
   };
   
-  u32 count;
+  u32 count, figures;
   SpriteInfo effect;
   std::array<combat::CombatCoord, 2> coords;
   std::array<Point, 2> points;
   Point delta;
   Dir facing;
-  Phase phase;
   float speed = 0.01f;
   
   mutable CombatCoord position;
   mutable float progress;
+  mutable Phase phase;
   
   //TODO: quite an hack since sprites are ordered starting by north in clockwise manner in LBX
   s32 spriteDeltaForFacing(Dir facing) const { return (s32)facing; }
@@ -355,8 +359,10 @@ private:
 public:
   ProjectileGfxEntry(CombatView* view, coord_t start, coord_t end, SpriteInfo effect) : CombatView::GfxEntry(view, priority_projectiles),
   coords({start, end}), points({CombatView::coordsForTile(start.x, start.y), CombatView::coordsForTile(end.x, end.y)}),
-  delta(points[1] - points[0]), effect(effect), count(1), progress(0.0f), position(start), phase(Phase::MOVING)
+  delta(points[1] - points[0]), effect(effect), count(6), figures(6), progress(0.0f), position(start), phase(Phase::MOVING)
   {
+    speed = 3.0f / Util::distance(points[0].x, points[0].y, points[1].x, points[1].y);
+    
     if (delta.y == 0)
       facing = delta.x > 0 ? Dir::E : Dir::W;
     else
@@ -376,7 +382,7 @@ public:
       {
         if (delta.x >= 0)
           facing = Dir::E;
-        else if (delta.y < 0)
+        else if (delta.x < 0)
           facing = Dir::W;
       }
       /* average directions */
@@ -397,28 +403,50 @@ public:
   u16 x() const override { return position.x; }
   u16 y() const override { return position.y; }
   
+  /* TODO: animation logic is not bound to ticks but to calls to draw(), it should 
+     be frame rate indipendent */
   void draw() const override
   {
-    auto gfx = effect.frame(spriteDeltaForFacing(facing), (Gfx::fticks / 3) % 3);
-    Point point = points[0] + delta*progress;
-    
-    auto offset = UnitDraw::offsetForFigures(true, 1);
-    Gfx::draw(gfx,
-              point.x + offset[0].x,
-              point.y + offset[0].y - 17
-              );
-    
-    progress += speed;
-    
-    Coord newPosition = CombatView::tileForCoords(point.x + 17, point.y);
-    
-    Gfx::drawAnimated(hover_tile, CombatView::coordsForTile(newPosition.x, newPosition.y), 0);
-
-    
-    if (newPosition != position)
+    if (phase == Phase::MOVING)
     {
-      position = newPosition;
-      setDirty();
+      auto gfx = effect.frame(spriteDeltaForFacing(facing), (Gfx::fticks / 3) % 3);
+      Point point = points[0] + delta*progress;
+      auto offset = UnitDraw::offsetForFigures(true, figures);
+      
+      for (u32 c = 0; c < count; ++c)
+      {
+        auto offset = UnitDraw::offsetForFigures(true, figures);
+        Gfx::draw(gfx,
+                  point.x + offset[c].x,
+                  point.y + offset[c].y - 17
+                  );
+      }
+      
+      progress += speed;
+      
+      Coord newPosition = CombatView::tileForCoords(point.x + 17, point.y);
+      
+      //Gfx::drawAnimated(hover_tile, CombatView::coordsForTile(newPosition.x, newPosition.y), 0);
+      
+      //TODO: not used for now
+      /*if (newPosition != position)
+      {
+        position = newPosition;
+        setDirty();
+      }*/
+      
+      if (progress >= 1.0f)
+      {
+        progress = 0.0f;
+        phase = Phase::HITTING;
+      }
+    }
+    else
+    {
+      auto offset = UnitDraw::offsetForFigures(true, figures);
+      for (u32 c = 0; c < count; ++c)
+        Gfx::draw(effect.frame(spriteDeltaForFacing(facing), 3), points[1] + offset[c] + Point(0, -17));
+      progress += 0.05f;
     }
     
   }
@@ -974,6 +1002,14 @@ void CombatView::draw()
   
   entries.draw();
   
+  /*size_t index = 0;
+  std::for_each(entries.begin(), entries.end(), [&index] (const std::unique_ptr<GfxEntry>& entry) {
+    if (dynamic_cast<ProjectileGfxEntry*>(entry.get()))
+      printf("INDEX: %zu\n", index);
+    
+    ++index;
+  });*/
+  
   auto nend = std::remove_if(entries.begin(), entries.end(), [] (const std::unique_ptr<GfxEntry>& entry) { return entry->destroyable(); });
   entries.erase(nend, entries.end());
   
@@ -1172,7 +1208,7 @@ void CombatView::drawSelectedUnitProps(const combat::CombatUnit* unit)
 bool CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   if (hover.isValid())
-    entries.add(new ProjectileGfxEntry(this, {5,9}, hover, LBXI(CMBMAGIC, 16)));
+    entries.add(new ProjectileGfxEntry(this, {5,9}, hover, LBXI(CMBMAGIC, 48)));
   
   //player->push(new anims::CombatProjectile({2,4}, {5,11}, LBXI(CMBMAGIC, 8), 1));
   return true;
