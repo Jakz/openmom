@@ -437,6 +437,15 @@ enum class Dir
   WEST,
   NORTH_WEST,
   
+  N = NORTH,
+  NE = NORTH_EAST,
+  E = EAST,
+  SE = SOUTH_EAST,
+  S = SOUTH,
+  SW = SOUTH_WEST,
+  W = WEST,
+  NW = NORTH_WEST,
+  
   INVALID = -1
 };
 

@@ -216,7 +216,7 @@ void UnitDraw::drawHeroPortrait(const Hero *unit, s16 x, s16 y)
   Gfx::draw(GfxData::unitGfx(unit->spec).hero.portrait, x, y);
 }
 
-struct IsoOffset { s8 x, y; };
+using IsoOffset = Point;
 
 static const IsoOffset ISO_1FIGURES[] = {{0,0}};
 static const IsoOffset ISO_2FIGURES[] = {{-8,+1},{+8,+1}};
@@ -224,6 +224,22 @@ static const IsoOffset ISO_2FIGURES[] = {{-8,+1},{+8,+1}};
 static const IsoOffset ISO_4FIGURES[] = {{+2,-4},{+11,+1},{-8,+1},{+2,+6}};
 static const IsoOffset ISO_6FIGURES[] = {{+1,-5},{+4,-1},{+10,+2},{-10,0},{-3,+3},{+1,+7}};
 static const IsoOffset ISO_8FIGURES[] = {{+1,-5},{+7,-2},{+11,0},{-2,-1},{+4,+1},{-10,0},{-4,+3},{+2,+6}};
+
+static const IsoOffset ISOC_1FIGURES[] = {{1,2}}; //TODO 2 figures missing
+static const IsoOffset ISOC_4FIGURES[] = {{2,-4},{11,1},{-8,1,},{2,6}};
+static const IsoOffset ISOC_6FIGURES[] = {{1,-5},{4,-1},{10,2},{-10,0},{-3,3},{1,7}};
+static const IsoOffset ISOC_8FIGURES[] = {{1,-5},{7,-2},{11,0},{-2,-1},{4,1},{-10,0},{-4,3},{2,6}};
+
+static const IsoOffset* ISOC[] = {ISOC_1FIGURES, nullptr, nullptr, ISOC_4FIGURES, nullptr, ISOC_6FIGURES, nullptr, ISOC_8FIGURES };
+static const IsoOffset* ISO[] = {ISO_1FIGURES, ISO_2FIGURES, nullptr, ISOC_4FIGURES, nullptr, ISOC_6FIGURES, nullptr, ISOC_8FIGURES };
+
+const IsoOffset* UnitDraw::offsetForFigures(bool combat, u32 figures)
+{
+  assert(figures >= 1 && figures <= 8);
+  const IsoOffset* offsets = (combat ? ISOC : ISO)[figures-1];
+  assert(offsets);
+  return offsets;
+}
 
 void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realUnit, const Player* owner)
 {
@@ -235,29 +251,7 @@ void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realU
 
   x += 6;
   
-  const IsoOffset* o = nullptr;
-  
-  switch (unit->figures)
-  {
-    case 1:
-      o = ISO_1FIGURES;
-      break;
-    case 2:
-      o = ISO_2FIGURES;
-      break;
-    case 4:
-      o = ISO_4FIGURES;
-      break;
-    case 6:
-      o = ISO_6FIGURES;
-      break;
-    case 8:
-      o = ISO_8FIGURES;
-      break;
-    default:
-      assert(false);
-      break;
-  }
+  const IsoOffset* o = offsetForFigures(false, unit->figures);
   
   // TODO: bind color map flags missing, probably sohuld be passed by production view since it could come from a city (so no realUnit)
 
@@ -302,11 +296,6 @@ void UnitDraw::drawUnitIso(const UnitSpec *unit, s16 x, s16 y, const Unit *realU
   }
 }
 
-static const IsoOffset ISOC_1FIGURES[] = {{1,2}};
-static const IsoOffset ISOC_4FIGURES[] = {{2,-4},{11,1},{-8,1,},{2,6}};
-static const IsoOffset ISOC_6FIGURES[] = {{1,-5},{4,-1},{10,2},{-10,0},{-3,3},{1,7}};
-static const IsoOffset ISOC_8FIGURES[] = {{1,-5},{7,-2},{11,0},{-2,-1},{4,1},{-10,0},{-4,3},{2,6}};
-
 void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, CombatAction caction)
 {
   int action = 1;
@@ -333,14 +322,7 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
   
   School glow = unit->glow();
   
-  const IsoOffset* offsets = nullptr;
-  
-  switch (unit->spec->figures) {
-    case 1: offsets = ISOC_1FIGURES; break;
-    case 4: offsets = ISOC_4FIGURES; break;
-    case 6: offsets = ISOC_6FIGURES; break;
-    case 8: offsets = ISOC_8FIGURES; break;
-  }
+  const IsoOffset* offsets = offsetForFigures(true, unit->spec->figures);
   
   for (int i = 0; i < unit->getProperty(Property::ALIVE_FIGURES); ++i)
   {

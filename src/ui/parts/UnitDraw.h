@@ -36,6 +36,9 @@ public:
     ATTACK
   };
   
+  //TODO: make combat template value to optimize
+  static const Point* offsetForFigures(bool combat, u32 figures);
+  
   static void drawStatic(const Army* army, s16 x, s16 y, bool forceDraw = false);
   static void drawStatic(const Unit* unit, s16 x, s16 y, bool backdrop, bool grayScale);
   static void drawUnitIso(const UnitSpec* unit, s16 x, s16 y, const Unit* realUnit, const Player* owner);

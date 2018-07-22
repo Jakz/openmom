@@ -397,6 +397,7 @@ public:
         progress += PROGRESS_PER_TICK;
     }
     
+    // TODO: this -17 sounds like an hack, it's used also in CombatProjectile animation, maybewe should move it figure offsets
     UnitDraw::drawUnitIsoCombat(unit->getUnit(), coords.x, coords.y - 17, unit->facing(), action);
   }
   
@@ -1066,6 +1067,8 @@ void CombatView::drawSelectedUnitProps(const combat::CombatUnit* unit)
 
 bool CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
+  player->push(new anims::CombatProjectile({2,4}, {5,11}, LBXI(CMBMAGIC, 8), 1));
+  return true;
   //player->push(new anims::SpellEffect(LSI(CMBTFX, 22), CombatCoord(hover.x,hover.y)));
   
   if (std::any_of(unitsMap.begin(), unitsMap.end(), [](const decltype(unitsMap)::value_type& entry) { return entry.second->isAnimating(); }))
