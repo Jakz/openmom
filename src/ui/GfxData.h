@@ -25,6 +25,19 @@ class HeroSpec;
 class UnitSpec;
 class Spell;
 
+enum class CombatProjectile : sprite_ref
+{
+  LIGHTING = LBXI(CMBMAGIC, 0),
+  ARROW = LBXI(CMBMAGIC, 8),
+  FIREBALL = LBXI(CMBMAGIC, 16),
+  ILLUSION = LBXI(CMBMAGIC, 24),
+  ROCKS = LBXI(CMBMAGIC, 32),
+  SLING = LBXI(CMBMAGIC, 40),
+  DEATHBOLT = LBXI(CMBMAGIC, 48),
+  ICEBOLT = LBXI(CMBMAGIC, 56),
+  SCATTER = LBXI(CMBMAGIC, 64),
+};
+
 struct UnitGfxSpec
 {
   I18 name;

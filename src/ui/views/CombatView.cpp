@@ -1207,12 +1207,13 @@ void CombatView::drawSelectedUnitProps(const combat::CombatUnit* unit)
 
 bool CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-  if (hover.isValid())
-    entries.add(new ProjectileGfxEntry(this, {5,9}, hover, LBXI(CMBMAGIC, 48)));
+  //if (hover.isValid())
+  //  entries.add(new ProjectileGfxEntry(this, {5,9}, hover, SpriteInfo((SpriteInfo::data_type)CombatProjectile::SCATTER)));
+  player->push(new anims::SpellEffect(LSI(CMBTFX, 22), CombatCoord(hover.x,hover.y)));
   
   //player->push(new anims::CombatProjectile({2,4}, {5,11}, LBXI(CMBMAGIC, 8), 1));
   return true;
-  //player->push(new anims::SpellEffect(LSI(CMBTFX, 22), CombatCoord(hover.x,hover.y)));
+  //
   
   if (std::any_of(unitsMap.begin(), unitsMap.end(), [](const decltype(unitsMap)::value_type& entry) { return entry.second->isAnimating(); }))
     return true;

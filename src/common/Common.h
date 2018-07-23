@@ -771,6 +771,7 @@ private:
 public:
   SpriteInfo() : SpriteInfo(0) { }
   SpriteInfo(data_type data) : data(data) { }
+  //template<typename T, typename std::enable_if<std::is_enum<T>::value /*&& std::is_same<typename std::underlying_type<T>::type, data_type>::value*/, int>::type = 0> SpriteInfo(T v) : data(static_cast<data_type>(v)) { }
   
   SpriteInfo& operator=(const SpriteInfo& o) { this->data = o.data; return *this; }
   
