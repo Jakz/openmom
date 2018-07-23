@@ -83,7 +83,7 @@ void ItemCraftChargesView::populate(const Player* player)
     BasicTextEntry* entry = new BasicTextEntry(*it, spellNameFont, Point(x, y), ALIGN_LEFT);
     add(entry);
     Clickable* area = new Clickable(x, y - 1, 100, 10);
-    area->setAction([this,entry,it,i,y]() {
+    area->setAction([this,entry,it,i,y,ENTRIES_PER_PAGE]() {
       if (mode == Mode::SPELL_SELECT)
       {
         entry->setFace(spellNameSelectedFont);

@@ -129,12 +129,12 @@ CombatTile* CombatMap::placeRiverSegment(u16 x, u16 y, Dir dir, u16 length)
 }
 
 
-void CombatMap::placeRect(u16 x, u16 y, u16 w, u16 h, TileType type)
+void CombatMap::placeRect(u16 x, u16 y, u16 w, u16 h, combat::TileType type)
 {
   functorOnRect(x, y, w, h, [type](CombatTile* tile) { tile->type = type; });
 }
 
-void CombatMap::placeSegment(u16 x, u16 y, Dir dir, u16 length, TileType type)
+void CombatMap::placeSegment(u16 x, u16 y, Dir dir, u16 length, combat::TileType type)
 {
   functorOnSegment(x, y, dir, length, [type](CombatTile* tile) { tile->type = type; });
 }

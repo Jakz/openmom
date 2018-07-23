@@ -52,7 +52,7 @@ public:
   
   static float distance(s32 x1, s32 y1, s32 x2, s32 y2)
   {
-    float dx = std::abs(x1 - x2), dy = std::abs(y1 - y2);
+    float dx = (float)std::abs(x1 - x2), dy = (float)std::abs(y1 - y2);
     return std::sqrt(dx*dx + dy*dy);
   }
 

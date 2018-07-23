@@ -39,7 +39,7 @@ std::string strings::groupDigits(u32 value)
   return result;
 }
 
-const string strings::join(const vector<const string>& tokens, s16 s, s16 e)
+const string strings::join(const vector<string>& tokens, s16 s, s16 e)
 {
   assert(e <= tokens.size() - 1 && s >= 0 && s <= e);
   
@@ -60,7 +60,7 @@ const string strings::join(const vector<const string>& tokens, s16 s, s16 e)
   return result;
 }
 
-void strings::split(string s, vector<const std::string>& tokens, s8 delim)
+void strings::split(string s, vector<std::string>& tokens, s8 delim)
 {
   size_t pos = 0;
   std::string token;

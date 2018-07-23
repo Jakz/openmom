@@ -4,6 +4,10 @@
 #include <cerrno>
 #include <cassert>
 
+#ifdef _WIN32
+#include <codecvt>
+#endif
+
 class Path
 {
 private:

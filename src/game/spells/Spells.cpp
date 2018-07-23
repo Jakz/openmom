@@ -21,10 +21,10 @@ namespace spellimpl
 
 }
 
-const vector<const SpellKind>& Spells::spellKinds(bool combat)
+const vector<SpellKind>& Spells::spellKinds(bool combat)
 {
-  static const vector<const SpellKind> overland = {SpellKind::SUMMONING,SpellKind::SPECIAL,SpellKind::ENCHANTMENT,SpellKind::UNIT_SPELL};
-  static const vector<const SpellKind> combatb = {SpellKind::SUMMONING,SpellKind::SPECIAL,SpellKind::ENCHANTMENT,SpellKind::UNIT_SPELL,SpellKind::COMBAT_SPELL};
+  static const vector<SpellKind> overland = {SpellKind::SUMMONING,SpellKind::SPECIAL,SpellKind::ENCHANTMENT,SpellKind::UNIT_SPELL};
+  static const vector<SpellKind> combatb = {SpellKind::SUMMONING,SpellKind::SPECIAL,SpellKind::ENCHANTMENT,SpellKind::UNIT_SPELL,SpellKind::COMBAT_SPELL};
   return combat ? combatb : overland;
 }
 

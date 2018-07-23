@@ -46,10 +46,10 @@ struct SettingGroup
 {
   const SettingGroupID ident;
   const I18 name;
-  const std::vector<const Setting> group;
-  u8 selected;
+  const std::vector<Setting> group;
+  size_t selected;
   
-  SettingGroup(SettingGroupID ident, I18 name, SettingID start, std::initializer_list<const Setting> settings) : ident(ident), name(name), group(settings)
+  SettingGroup(SettingGroupID ident, I18 name, SettingID start, std::initializer_list<Setting> settings) : ident(ident), name(name), group(settings)
   {
     selected = std::find_if(group.begin(), group.end(), [&](const Setting& s){ return s.value == start; }) - group.begin();
   }

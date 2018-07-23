@@ -437,7 +437,7 @@ u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, T
   if (palette)
     setPalette(palette);
   
-  vector<const string> lines;
+  vector<string> lines;
   strings::split(str, lines, '\n');
   
   if (lines.size() > 1)
@@ -455,7 +455,7 @@ u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, T
   }
   else
   {
-    vector<const string> words;
+    vector<string> words;
     strings::split(str, words, ' ');
     
     int s = 0, e = 0;

@@ -50,7 +50,8 @@ public:
   }
   
 private:
-  std::vector<const movement_list> data;
+  //TODO: was const movement_list
+  std::vector<movement_list> data;
 
 public:
   using value_type = decltype(data)::value_type;

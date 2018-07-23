@@ -76,7 +76,7 @@ protected:
   std::list<Army*> armies;
   std::list<Hero*> heroes;
   std::list<ManaNode*> nodes;
-  std::list<const SpellCast> spells;
+  cast_list spells;
 
   std::unordered_set<const Retort*> retorts;
 

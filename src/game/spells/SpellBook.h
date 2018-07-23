@@ -138,7 +138,7 @@ public:
   
   const Spell* advanceResearch();
   
-  s16 size() { return spells.size(); }
+  size_t size() { return spells.size(); }
   
   void fillPool();
   

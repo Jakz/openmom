@@ -88,7 +88,7 @@ public:
     protected:
       const SkillSet& parent;
       s16 current = 0;
-      const s16 size;
+      s16 size;
   };
     
   using const_iterator = iterator<const Skill*>;

@@ -19,6 +19,6 @@ public:
   static std::string tolower(const std::string& text);
   static bool compareInsensitive(const std::string& s1, const std::string& s2) { return tolower(s1) == tolower(s2); }
   
-  static const std::string join(const std::vector<const std::string>& tokens, s16 s, s16 e);
-  static void split(std::string string, std::vector<const std::string>& tokens, s8 delim);
+  static const std::string join(const std::vector<std::string>& tokens, s16 s, s16 e);
+  static void split(std::string string, std::vector<std::string>& tokens, s8 delim);
 };

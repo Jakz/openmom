@@ -210,6 +210,9 @@ World* osave::OriginalSaveGame::getWorld()
 
 #pragma Original Save Game Checks
 
+//TODO: problems with MSVC
+#if !defined(_WIN32)
+
 using namespace osave;
 
 static_assert(sizeof(HeroStats) == 12, "");
@@ -281,3 +284,5 @@ static_assert(offsetof(SaveGameData, mapTerrainFlags)    == 0x1cbb8, "");
 static_assert(offsetof(SaveGameData, grandVizierEnabled) == 0x1de78, "");
 static_assert(offsetof(SaveGameData, itemsEnabled)       == 0x1de7a, "");
 static_assert(offsetof(SaveGameData, heroNames)          == 0x1df74, "");
+
+#endif

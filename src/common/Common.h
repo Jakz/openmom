@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstdint>
 #include <type_traits>
+#include <functional>
 #include <unordered_map>
 #include <array>
 #include "SDL.h"
@@ -34,6 +35,15 @@
   #define LOGG(...) do { } while (false);
 
   #define INTEGRITY_CHECK(x)
+#endif
+
+#ifdef _MSC_VER
+#define STRUCT_PACKING_PUSH __pragma(pack(push,1))
+#define STRUCT_PACKING_POP __pragma(pack(pop))
+#define PACKED
+#else
+#define STRUCT_PACKED
+#define PACKED __attribute__((packed))
 #endif
 
 #define WIDTH (320)
@@ -150,13 +160,21 @@ struct Color
   
   Color blend(Color dst, float dstAlpha) const {
     float da = dstAlpha, sa = 1.0f - dstAlpha;
-    return Color(r*sa + dst.r*da, g*sa + dst.g*da, b*sa + dst.b*da);
+    return Color(
+	    static_cast<u8>(r*sa + dst.r*da),
+      static_cast<u8>(g*sa + dst.g*da),
+	    static_cast<u8>(b*sa + dst.b*da)
+	  );
   }
 
   Color blend(Color dst, u8 dstAlpha) const {
     float sa = (255 - dstAlpha) / 255.0f;
     float da = dstAlpha / 255.0f;
-    return Color(r*sa + dst.r*da, g*sa + dst.g*da, b*sa + dst.b*da);
+    return Color(
+	    static_cast<u8>(r*sa + dst.r*da),
+	    static_cast<u8>(g*sa + dst.g*da),
+	    static_cast<u8>(b*sa + dst.b*da)
+	  );
   }
   operator u32() const { return data; }
   
@@ -328,7 +346,7 @@ struct Point
   Point operator+(const Point& o) const { return Point(x + o.x, y + o.y); }
   Point operator-(const Point& o) const { return Point(x - o.x, y - o.y); }
   
-  Point operator*(float v) const { return Point(x*v, y*v); }
+  Point operator*(float v) const { return Point(static_cast<int_type>(x*v), static_cast<int_type>(y*v)); }
   
   Point operator-(int_type v) const { return Point(x+v, y+v); }
   

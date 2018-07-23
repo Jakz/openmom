@@ -16,7 +16,7 @@
 #include <vector>
 #include <initializer_list>
 
-class SDL_Surface;
+struct SDL_Surface;
 
 enum class TextureID : u16
 {  

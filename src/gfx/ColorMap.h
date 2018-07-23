@@ -159,7 +159,7 @@ public:
   
   void setPalette(color_list colors) const
   {
-    for (int i = 0; i < colors.size(); ++i)
+    for (size_t i = 0; i < colors.size(); ++i)
       this->colors[i] = *std::next(colors.begin(), i);
   }
   

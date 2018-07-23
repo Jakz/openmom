@@ -1,5 +1,6 @@
 *.dylib
 .DS_Store
+.vs/**
 *.lbx
 data/lbx/*
 build/**

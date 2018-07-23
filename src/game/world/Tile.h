@@ -67,8 +67,7 @@ public:
   bool hasRoad, hasEnchantedRoad;
   std::array<bool, 2> resourceUsed;
   
-  std::list<const SpellCast> spells;
-  
+  cast_list spells;
   
   Tile() { }
   

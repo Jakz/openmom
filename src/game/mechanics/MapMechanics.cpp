@@ -162,7 +162,9 @@ s16 MapMechanics::movementCost(World* world, const Position& position, const mov
       case TileType::MOUNTAIN:
       case TileType::VOLCANO:
         return movement.contains(MovementType::MOUNTAINWALK) ? 2 : 8;
-      case TileType::NONE: assert(false);
+      case TileType::NONE: 
+      default:
+        assert(false);
     }
   }
 }

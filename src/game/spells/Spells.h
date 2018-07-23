@@ -218,13 +218,14 @@ struct ResearchStatus
   ResearchStatus(const Spell* spell, bool discovered = false) : spell(spell), discovered(discovered) { }
 };
 
-typedef std::list<const SpellCast> cast_list;
+//TODO: SpellCast should be const
+typedef std::list<SpellCast> cast_list;
 typedef std::vector<const Spell*> spell_list;
 
 class Spells
 {
 public:
-  static const std::vector<const SpellKind>& spellKinds(bool combat);
+  static const std::vector<SpellKind>& spellKinds(bool combat);
   static spell_list& spellsByRarityAndSchool(SpellRarity rarity, School school);
   
   static const Spell *ENDURANCE;

@@ -270,7 +270,7 @@ const list<const Building*> CityMechanics::availableBuildings(const City* city)
 {
   list<const Building*> buildings;
   
-  for (int i = 0; i < Building::COUNT; ++i)
+  for (size_t i = 0; i < Building::COUNT; ++i)
     if (isBuildingAllowed(city, Building::buildings[i]))
       buildings.push_back(Building::buildings[i]);
   
@@ -413,15 +413,15 @@ s16 CityMechanics::computeInitialPopulationGrowth(const City* city)
     {
       switch (tile->resource)
       {
-        case Resource::IRON_ORE: increaseChance += 0.05; break;
-        case Resource::SILVER: increaseChance += 0.05; break;
-        case Resource::COAL: increaseChance += 0.10; break;
-        case Resource::GEMS: increaseChance += 0.10; break;
-        case Resource::GOLD: increaseChance += 0.10; break;
-        case Resource::MITHRIL: increaseChance += 0.10; break;
-        case Resource::ADAMANTIUM: increaseChance += 0.10; break;
-        case Resource::QOURK_CRYSTAL: increaseChance += 0.10; break;
-        case Resource::CRYSX_CRYSTAL: increaseChance += 0.10; break;
+        case Resource::IRON_ORE: increaseChance += 0.05f; break;
+        case Resource::SILVER: increaseChance += 0.05f; break;
+        case Resource::COAL: increaseChance += 0.10f; break;
+        case Resource::GEMS: increaseChance += 0.10f; break;
+        case Resource::GOLD: increaseChance += 0.10f; break;
+        case Resource::MITHRIL: increaseChance += 0.10f; break;
+        case Resource::ADAMANTIUM: increaseChance += 0.10f; break;
+        case Resource::QOURK_CRYSTAL: increaseChance += 0.10f; break;
+        case Resource::CRYSX_CRYSTAL: increaseChance += 0.10f; break;
       }
     }
   });

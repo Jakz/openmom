@@ -36,19 +36,21 @@ namespace lbx
     MUSIC = 114,
     HELP
   };
+
+  STRUCT_PACKING_PUSH
   
   struct LBXHeader
   {
     u16 count;
     u32 magic;
     LBXFileType type;
-  } __attribute__((__packed__));
+  } PACKED;
 
   struct LBXArray
   {
     u16 count;
     u16 size;
-  } __attribute__((__packed__));
+  } PACKED;
 
   struct LBXFileName
   {
@@ -56,7 +58,7 @@ namespace lbx
     char padding;
     char name[22];
     char padding2;
-  } __attribute__((__packed__));
+  } PACKED;
 
   struct LBXGfxHeader
   {
@@ -70,7 +72,7 @@ namespace lbx
     u16 paletteOffset;
     u8 unknown2;
     u8 unknown3;
-  } __attribute__((__packed__));
+  } PACKED;
 
   struct LBXPaletteHeader
   {
@@ -79,14 +81,14 @@ namespace lbx
     u16 count;
     u16 unknown;
     
-  } __attribute__((__packed__));
+  } PACKED;
 
   struct LBXPaletteEntry
   {
     u8 r;
     u8 g;
     u8 b;
-  } __attribute__((__packed__));
+  } PACKED;
   
   enum LBXHelpEntryType
   {
@@ -104,7 +106,9 @@ namespace lbx
     
     bool hasGfx() const { return lbxName[0] != '\0'; }
     
-  } __attribute__((__packed__));
+  } PACKED;
+
+  STRUCT_PACKING_POP
 
   using LBXOffset = u32;
   using offset_list = std::vector<LBXOffset>;
