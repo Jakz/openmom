@@ -10,11 +10,12 @@ if(APPLE)
 elseif(UNIX)
 
 elseif(WIN32)
-set(SDL2_LIBRARY C:\\SDL\\SDL2\\lib)
-set(SDL2_INCLUDE_DIR C:\\SDL\\SDL2\\include)
+set(SDL2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/sdl2)
+#set(SDL2_LIBRARY C:\\SDL\\SDL2\\lib)
+#set(SDL2_INCLUDE_DIR C:\\SDL\\SDL2\\include)
 
-set(SDL2_IMAGE_LIBRARY C:\\SDL\\SDL2_image\\lib)
-set(SDL2_IMAGE_INCLUDE_DIR C:\\SDL\\SDL2_image\\include)
+#set(SDL2_IMAGE_LIBRARY C:\\SDL\\SDL2_image\\lib)
+#set(SDL2_IMAGE_INCLUDE_DIR C:\\SDL\\SDL2_image\\include)
 endif()
 
 
@@ -27,7 +28,9 @@ elseif(WIN32)
   add_compile_options(/wd4068) # unknown pragma
   add_compile_options(/wd4244) # conversion from T to U, possible loss of data
   add_compile_options(/wd4267) # conversion from T to U, possible loss of data
-
+  add_compile_options(/wd4996) # this function or variable may be unsafe
+  add_compile_options(/wd4390) # empty controlled statement found
+  add_compile_options(/wd4715) # not all control paths return a value
 endif()
 
 

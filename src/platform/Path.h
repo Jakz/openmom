@@ -104,18 +104,25 @@ public:
     
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
     std::wstring wpath = conv.from_bytes(path.c_str());
-    file = _wfopen(wpath.c_str(), smode);
+    _wfopen_s(&file, wpath.c_str(), smode);
+
+    if (!file || ferror(file))
+    {
+      char buf[256];
+      strerror_s(buf, 256, errno);
+      printf("FILE* %s (mode: %ls) error: (%d) %s\n", path.c_str(), smode, errno, buf);
+    }
 #else
     const char* smode = "rb";
     if (mode == file_mode::WRITING) smode = "wb+";
     else if (mode == file_mode::APPENDING) smode = "rb+";
     
     file = fopen(path.c_str() , smode);
-#endif
-    
+
     if (!file || ferror(file))
       printf("FILE* %s (mode: %s) error: (%d) %s\n", path.c_str(), smode, errno, strerror(errno));
-    
+#endif
+
     return file != nullptr;
   }
   

@@ -19,7 +19,7 @@ class Game;
 
 namespace combat
 {
-  class CombatTile;
+  struct CombatTile;
   class CombatMap;
   struct CombatEnvironment;
   enum class CombatObject;

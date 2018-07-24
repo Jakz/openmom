@@ -43,12 +43,12 @@ public:
   };
   
 private:
-  s16 currentPage;
+  size_t currentPage;
   std::vector<Page> bookPages;
-  const u16 pageSize;
+  const size_t pageSize;
 
 public:
-  BookView(u16 pageSize) : currentPage(0), pageSize(pageSize) { }
+  BookView(size_t pageSize) : currentPage(0), pageSize(pageSize) { }
 
   void populate(const Player* player, SpellBook::Type type);
   
@@ -59,11 +59,11 @@ public:
   void prevPage() { currentPage -= 2; }
   
   const Page* current() const { return bookPages.size() > currentPage ? &bookPages[currentPage] : nullptr; }
-  const Page* current(s16 i) const { return bookPages.size() > currentPage+i ? &bookPages[currentPage+i] : nullptr; }
+  const Page* current(s32 i) const { return bookPages.size() > currentPage+i ? &bookPages[currentPage+i] : nullptr; }
   
-  const Page& get(s16 i) { return bookPages[i]; }
+  const Page& get(size_t i) { return bookPages[i]; }
   
-  const ResearchStatus& getEntry(s16 i) { return bookPages.at(currentPage + i/pageSize).at(i%pageSize); }
+  const ResearchStatus& getEntry(size_t i) { return bookPages.at(currentPage + i/pageSize).at(i%pageSize); }
 };
 
 

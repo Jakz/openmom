@@ -18,8 +18,13 @@
 
 #include <cstdio>
 #include <string>
-#include <dirent.h>
 #include <vector>
+
+#if defined(_WIN32)
+#include "platform/windows/dirent.h"
+#else
+#include <dirent.h>
+#endif 
 
 /* FORMAT */
 

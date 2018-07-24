@@ -94,7 +94,7 @@ bool SkillSet::hasSpell(const Spell* spell) const {
 
 bool SkillSet::hasSkill(const Skill* skill) const
 {
-  return std::find(this->begin(), this->end(), skill) != this->end();
+  return std::find_if(this->begin(), this->end(), [skill](const Skill* it) { return it == skill; }) != this->end();
 }
 
 bool SkillSet::has(const std::function<bool(const SkillEffect*)>& predicate) const

@@ -106,3 +106,7 @@ void RadioButton<T>::draw()
   else
     Button::draw();
 }
+
+#include "Items.h" // FIXME: forced for explicit declaration of template method
+
+template class RadioButton<items::TypeID>;

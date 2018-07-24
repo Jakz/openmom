@@ -189,6 +189,8 @@ namespace osave
   using coord_t = s16;
   using spell_id = u16;
   using creature_id = u8;
+
+  STRUCT_PACKING_PUSH
   
   struct HeroStats
   {
@@ -197,7 +199,7 @@ namespace osave
     u8 castingSkill;
     u8 spells[4];
     u8 unused;
-  } __attribute__((__packed__));
+  } PACKED;
   
   struct OverallGameData
   {
@@ -211,7 +213,7 @@ namespace osave
     s16 unitCount;
     s16 turn;
     s16 currentActiveUnit;
-  } __attribute__((__packed__));
+  } PACKED;
     
   struct HiredHero
   {
@@ -231,7 +233,7 @@ namespace osave
     s16 itemIndex[3];
     ItemSlotType itemType[3];
     
-  } __attribute__((__packed__));;
+  } PACKED;
   
   struct WizardData
   {
@@ -326,7 +328,7 @@ namespace osave
     u16 booksColor;
     
     u16 __unknown11;
-  } __attribute__((__packed__));
+  } PACKED;
   
   using AllHeroData = std::array<HeroStats, 35>;
   using TileValue = u16;
@@ -356,7 +358,7 @@ namespace osave
     Type type;
     bit_mask<Flag> flags;
     u8 uknown;
-  } __attribute__((__packed__));
+  } PACKED;
   
   struct FortressData
   {
@@ -364,7 +366,7 @@ namespace osave
     u8 y;
     u8 plane;
     bool active;
-  } __attribute__((__packed__));
+  } PACKED;
   
   struct TowerData
   {
@@ -372,7 +374,7 @@ namespace osave
     u8 y;
     u8 plane;
     bool cleared;
-  } __attribute__((__packed__));
+  } PACKED;
   
   struct ItemData
   {
@@ -449,7 +451,7 @@ namespace osave
     u8 spellChargesImbuedIndex; // 0 = no spell
     s16 spellChargesAmount;
     bit_mask<Power> powers;
-  } __attribute__((__packed__));
+  } PACKED;
     
   struct UnitData
   {
@@ -549,7 +551,7 @@ namespace osave
     s8 roadStartX;
     s8 roadStartY;
     u8 roadStartParamForBuildAndMove;
-  } __attribute__((__packed__));
+  } PACKED;
   
   struct CityData
   {
@@ -605,7 +607,7 @@ namespace osave
     s8 research;
     s8 foodProduced;
     u8 connectedCities[0xD];
-  } __attribute__((__packed__));
+  } PACKED;
   
   struct PlaceData
   {
@@ -665,7 +667,7 @@ namespace osave
     u16 itemIndex1;
     u16 itemIndex2;
     u16 itemIndex3;
-  } __attribute__((__packed__));
+  } PACKED;
   
   
   constexpr size_t HERO_COUNT = 35;
@@ -741,8 +743,9 @@ namespace osave
     bool itemsEnabled[250];
     
     std::array<char[0x10], 35> heroNames;
-  } __attribute__((__packed__));
-  
+  } PACKED;
+
+  STRUCT_PACKING_POP
   
   class OriginalSaveGame
   {

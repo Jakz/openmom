@@ -3,10 +3,10 @@ set(srcs ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 set(LIBRARY_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/../libs)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
 
-if (NOT WIN32)
+#if (NOT WIN32)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_Image REQUIRED)
-endif()
+#endif()
 
 set(YAML_INCLUDE_DIR ${LIBRARY_FOLDER}/yaml/include)
 add_library(YAML_LIBRARY STATIC IMPORTED)
@@ -15,6 +15,12 @@ if (APPLE)
   set_target_properties(YAML_LIBRARY PROPERTIES IMPORTED_LOCATION
     ${LIBRARY_FOLDER}/yaml/lib/osx/libyaml-cpp.a
   )
+  set(YAML_LIBRARY_BINARY "${LIBRARY_FOLDER}/yaml/lib/osx/libyaml-cpp.a")
+elseif(WIN32)
+   set_target_properties(YAML_LIBRARY PROPERTIES IMPORTED_LOCATION
+    ${LIBRARY_FOLDER}/yaml/lib/win_x86/libyaml-cppmd.lib
+  )
+  set(YAML_LIBRARY_BINARY "${LIBRARY_FOLDER}/yaml/lib/win_x86/libyaml-cppmd.lib")
 elseif (UNIX)
   
 endif()
@@ -62,7 +68,7 @@ add_executable(openmom-tests tests/tests.cpp)
 set(LIBRARIES
   ${SDL2_LIBRARY}
   ${SDL2_IMAGE_LIBRARIES}
-  ${LIBRARY_FOLDER}/yaml/lib/osx/libyaml-cpp.a
+  ${YAML_LIBRARY_BINARY}
   COMMON_LIB
   GAME_LIB
   CITIES_LIB

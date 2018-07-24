@@ -7,6 +7,8 @@
 #include "platform/Platform.h"
 #include "common/mystrings.h"
 
+#include <cctype>
+
 using namespace lbx;
 
 size_t Repository::bytesUsed;

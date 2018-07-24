@@ -213,9 +213,10 @@ namespace fonts
     
     static const SerifFont* of(const FontPalette& palette)
     {
-      switch (palette.type) {
-          
-      };
+      /*switch (palette.type)
+      {
+        default: break;
+      };*/
       
       assert(false);
       return nullptr;

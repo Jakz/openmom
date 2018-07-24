@@ -59,12 +59,12 @@ public:
   {
   public:
 
-    iterator(const SkillSet& parent, s16 current = 0) : parent(parent), current(current), size(parent.size()) { }
+    iterator(const SkillSet& parent, s16 current = 0) : parent(&parent), current(current), size(parent.size()) { }
     iterator(const iterator<Skill> &other) = default;
     ~iterator() { }
     
-    bool operator==(const iterator<Skill> o) const { return &parent == &o.parent && current == o.current; }
-    bool operator!=(const iterator<Skill> o) const { return &parent != &o.parent || current != o.current; }
+    bool operator==(const iterator<Skill> o) const { return parent == o.parent && current == o.current; }
+    bool operator!=(const iterator<Skill> o) const { return parent != o.parent || current != o.current; }
     
     iterator<Skill>& operator+=(const s16& offset) { current += offset; return (*this); }
     iterator<Skill>& operator-=(const s16& offset) { current -= offset; return (*this); }
@@ -75,8 +75,8 @@ public:
     
     iterator<Skill>(const s16& offset) { auto old = current; current += offset; auto tmp(*this); current = old; return tmp; }
 
-    Skill operator*() { return parent.get(current); }
-    const Skill operator*() const { return parent.get(current); }
+    Skill operator*() { return parent->get(current); }
+    const Skill operator*() const { return parent->get(current); }
     //const Skill* operator->() { return parent.get(current); }
     
     using difference_type = ptrdiff_t;
@@ -86,7 +86,7 @@ public:
     using iterator_category = std::random_access_iterator_tag;
     
     protected:
-      const SkillSet& parent;
+      const SkillSet* parent;
       s16 current = 0;
       s16 size;
   };

@@ -300,8 +300,4 @@ public:
   void setToggled(bool t) { this->toggled = t; }
 };
 
-#include "Items.h" // FIXME: forced for explicit declaration of template method
-
-template class RadioButton<items::TypeID>;
-
 #endif
