@@ -703,6 +703,36 @@ public:
   void draw() const override { draw(info); }
 };
 
+class HoverTileGfxEntry : public GfxEntry
+{
+protected:
+  bool visible;
+  combat::CombatCoord position;
+  
+public:
+  HoverTileGfxEntry(CombatView* view) : CombatView::GfxEntry(view, priority_hover_symbol), visible(false) { }
+  
+  void draw() const override
+  {
+    if (visible)
+    {
+      Point pt = CombatView::coordsForTile(position.x, position.y);
+      Gfx::drawAnimated(hover_tile, pt, 0);
+    }
+  }
+  
+  void hide() { visible = false; }
+  void show() { visible = true; }
+  
+  void move(combat::CombatCoord position)
+  {
+    this->position = position; setDirty();
+  }
+  
+  u16 x() const override { return position.x; }
+  u16 y() const override { return position.y; }
+};
+
 class StoneWallGfxEntry : public StaticGfxEntry
 {
 private:
@@ -940,6 +970,9 @@ void CombatView::prepareGraphics()
 
       }
     }
+  
+  hoverGfx = new HoverTileGfxEntry(this);
+  entries.add(hoverGfx);
 }
 
 void CombatView::setEnvironment(combat::CombatEnvironment env)
@@ -1057,10 +1090,6 @@ void CombatView::draw()
   
   if (hover.x != -1)
   {
-    Point hoverCoords = coordsForTile(hover.x, hover.y);
-    //TODO: working?
-    Gfx::drawAnimated(hover_tile, hoverCoords, 0);
-    
     Fonts::drawString(Fonts::format("%u,%u", hover.x, hover.y), FontFaces::Small::WHITE, 5, 5, ALIGN_LEFT);
   }
 
@@ -1393,6 +1422,14 @@ bool CombatView::mouseMoved(u16 x, u16 y, MouseButton b)
     hover = tileForCoords(x, y);
   else
     hover.x = -1;
+  
+  if (hover.isValid())
+  {
+    hoverGfx->show();
+    hoverGfx->move(hover);
+  }
+  else
+    hoverGfx->hide();
   
   return true;
 }

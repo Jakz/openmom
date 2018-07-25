@@ -21,6 +21,7 @@ class ViewManager;
 
 //TODO: required for dummyUnit()
 class UnitGfxEntry;
+class HoverTileGfxEntry;
 
 using priority_t = s32;
 constexpr priority_t always_front = 1 << 16;
@@ -116,6 +117,7 @@ private:
   void drawPost() override { }
   
   Coord hover;
+  HoverTileGfxEntry* hoverGfx;
   
   combat::Combat* combat;
   
