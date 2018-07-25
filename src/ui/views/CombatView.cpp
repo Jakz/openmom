@@ -328,6 +328,37 @@ static const std::unordered_map<TileBuilding, BuildingGfxSpec, enum_hash> buildi
 
 #pragma mark Rivers
 
+static const std::unordered_map<DirJoin, SpriteInfo, enum_hash> arcanusRiverMap = {
+  { DirJoin::HORIZONTAL_NW_SE, LSI(CMBTCITY, 103) },
+  { DirJoin::HORIZONTAL_NE_SW, LSI(CMBTCITY, 104) },
+  
+  { DirJoin::NW, LSI(CMBTCITY, 103) },
+  { DirJoin::SE, LSI(CMBTCITY, 103) },
+  { DirJoin::NE, LSI(CMBTCITY, 104) },
+  { DirJoin::SW, LSI(CMBTCITY, 104) },
+  
+  { DirJoin::CORNER_NW_NE, LSI(CMBTCITY, 105) },
+  { DirJoin::CORNER_NE_SE, LSI(CMBTCITY, 106) },
+  { DirJoin::CORNER_SE_SW, LSI(CMBTCITY, 107) },
+  { DirJoin::CORNER_SW_NW, LSI(CMBTCITY, 108) },
+};
+
+static const std::unordered_map<DirJoin, SpriteInfo, enum_hash> myrranRiverMap = {
+  { DirJoin::HORIZONTAL_NW_SE, LSI(RESOURCE, 65) },
+  { DirJoin::HORIZONTAL_NE_SW, LSI(RESOURCE, 66) },
+  
+  { DirJoin::NW, LSI(CMBTCITY, 65) },
+  { DirJoin::SE, LSI(CMBTCITY, 65) },
+  { DirJoin::NE, LSI(CMBTCITY, 66) },
+  { DirJoin::SW, LSI(CMBTCITY, 66) },
+  
+  { DirJoin::CORNER_NW_NE, LSI(RESOURCE, 67) },
+  { DirJoin::CORNER_NE_SE, LSI(RESOURCE, 68) },
+  { DirJoin::CORNER_SE_SW, LSI(RESOURCE, 69) },
+  { DirJoin::CORNER_SW_NW, LSI(RESOURCE, 70) },
+};
+
+
 using GfxEntry = CombatView::GfxEntry;
 
 class ProjectileGfxEntry : public GfxEntry
@@ -765,9 +796,9 @@ void CombatView::prepareGraphics()
   for (size_t i = 0; i < 8; ++i)
     combat->map()->tileAt(7, i)->type = 16+8+i;*/
   
-  //this->combat->map()->placeSegment(4, 4, Dir::SOUTH_EAST, 3, combat::TileType::HILLS);
-  //this->combat->map()->placeSegment(5, 6, Dir::SOUTH_WEST, 4, combat::TileType::HILLS);
-  //this->combat->map()->placeSegment(3, 6, Dir::SOUTH_EAST, 3, combat::TileType::HILLS);
+  this->combat->map()->placeSegment(7, 4, Dir::SOUTH_EAST, 3, combat::TileType::RIVER);
+  this->combat->map()->placeSegment(8, 6, Dir::SOUTH_WEST, 4, combat::TileType::RIVER);
+  this->combat->map()->placeSegment(6, 9, Dir::SOUTH_EAST, 3, combat::TileType::RIVER);
   
 
   //this->combat->map()->placeRect(6, 4, 3, 7, combat::TileType::ROUGH);
@@ -883,6 +914,17 @@ void CombatView::prepareGraphics()
           DirJoin mask = computeMask(MaskMode::DIAGONAL, tile, [](const CombatTile* tile) { return !tile || tile->type == combat::TileType::HILLS; });
           SpriteInfo info = hillsMap.find(mask)->second;
           entries.add(new TileGfxEntry(this, info.lbx(environmentLBX), x, y));
+        }
+        else if (tile->type == combat::TileType::RIVER)
+        {
+          /* rivers are in CMBMAGIC for arcanum and RESOURCE for myrran (which are even duplicated, probably that's just a leftover) */
+          DirJoin mask = computeMask(MaskMode::DIAGONAL, tile, [](const CombatTile* tile) { return !tile || tile->type == combat::TileType::RIVER; });
+          
+          const auto& map = environment.plane == Plane::ARCANUS ? arcanusRiverMap : myrranRiverMap;
+          auto it = map.find(mask);
+          SpriteInfo gfx = it != map.end() ? it->second : map.begin()->second;
+          
+          entries.add(new TileGfxEntry(this, gfx, x, y));
         }
         else
         {

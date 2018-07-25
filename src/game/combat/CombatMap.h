@@ -36,7 +36,8 @@ namespace combat
   {
     GRASS,
     ROUGH,
-    HILLS
+    HILLS,
+    RIVER
   };
   
   enum class TileProp

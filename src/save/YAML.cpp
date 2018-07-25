@@ -925,7 +925,7 @@ void yaml::parseLevels()
     dest.resize(levels.size());
   
     const Level* next = nullptr;
-    for (size_t i = levels.size() - 1; i >= 0; --i)
+    for (int i = levels.size() - 1; i >= 0; --i)
     {
       const N node = levels[i];
       

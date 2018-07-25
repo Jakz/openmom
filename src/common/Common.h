@@ -43,6 +43,8 @@
 #define PACKED
 #else
 #define STRUCT_PACKED
+#define STRUCT_PACKING_PUSH
+#define STRUCT_PACKING_POP
 #define PACKED __attribute__((packed))
 #endif
 

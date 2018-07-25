@@ -124,8 +124,9 @@ CombatTile* CombatMap::placeRoadSegment(u16 x, u16 y, Dir dir, u16 length, bool 
 
 CombatTile* CombatMap::placeRiverSegment(u16 x, u16 y, Dir dir, u16 length)
 {
-  //TODO
-  return nullptr;
+  return functorOnSegment(x, y, dir, length, [](CombatTile* tile) {
+    tile->type = TileType::RIVER;
+  });
 }
 
 
