@@ -263,7 +263,11 @@ public:
   u16 productionCost() const override { return cost; }
   const Upkeep& productionUpkeep() const override { return upkeep; }
   
-  template<typename T> const T* as() const { return static_cast<const T*>(this); }
+  template<typename T> const T* as() const
+  {
+    assert(dynamic_cast<const T*>(this) != nullptr);
+    return static_cast<const T*>(this);
+  }
 };
 
 class RaceUnitSpec : public UnitSpec

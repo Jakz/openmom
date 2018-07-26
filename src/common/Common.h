@@ -26,7 +26,7 @@
     #define LOGD2(...) do { } while (false);
   #endif
 
-  #define INTEGRITY_CHECK(x) x
+  #define DEBUG_ASSERT(x, y) if (!(x)) { LOGD("Assertion failed: %s", y); abort(); }
 
 #else
   #define LOGD(...) do { } while (false);
@@ -34,7 +34,7 @@
   #define LOGD3(...) do { } while (false);
   #define LOGG(...) do { } while (false);
 
-  #define INTEGRITY_CHECK(x)
+  #define DEBUG_ASSERT(x)
 #endif
 
 #ifdef _MSC_VER
@@ -120,7 +120,7 @@ public:
   
   enum_simple_map(const std::initializer_list<init_element>& elements)
   {
-    assert(elements.size() == size);
+    //assert(elements.size() == size);
     size_t i = 0;
     for (auto it = elements.begin(); it != elements.end(); ++i, ++it)
     {

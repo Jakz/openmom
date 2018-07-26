@@ -172,7 +172,7 @@ void Game::dummyInit()
   
   world->calcSubTiles();
   
-  //player->send(new msgs::NewBuilding(milan, Building::ALCHEMISTS_GUILD));
+  player->send(new msgs::LairConfirmation(new Place(PlaceType::RUINS)));
   
   init();
 }

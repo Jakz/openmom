@@ -21,6 +21,8 @@
 #include "CityView.h"
 #include "CityScape.h"
 
+#include "game/world/Places.h"
+
 #include "GfxData.h"
 
 MessageView::MessageView(ViewManager* gvm) : View(gvm), message(nullptr)
@@ -199,22 +201,66 @@ void MessageView::draw()
       
       break;
     }
+      
+    case msgs::Message::Type::LAIR_CONFIRMATION:
+    {      
+      const msgs::LairConfirmation* msg = message->as<msgs::LairConfirmation>();
+      
+      const auto& spec = GfxData::placeGfxSpec(msg->place->type);
+      
+      const s32 x = 68;
+
+      const auto bg = LSI(BACKGRND, 25);
+      const auto footer = msg->isConfirmation() ? LSI(BACKGRND, 26) : LSI(BACKGRND, 27);
+      
+      //TODO: max line width is just set empirically
+      //TODO: all the magic numbers for adjustments on buffer are ugly
+      
+      Gfx::resetBuffer();
+      Gfx::bindBuffer();
+      Fonts::setFace(FontFaces::Serif::GOLD_SHADOW);
+      Fonts::setVerSpace(FontFaces::Serif::GOLD_SHADOW->ver + 1);
+      auto remainder = Fonts::drawStringBounded(msg->getMessage(), Point(5 + 49, 5), 118, 4, ALIGN_LEFT);
+      s32 h = Fonts::drawStringBounded(remainder.first, 5, remainder.second, 158, ALIGN_LEFT) + 4;
+      Gfx::bindCanvas();
+      
+      const s32 y = HEIGHT/2 - (h + footer.sh()) / 2;
+      
+      Gfx::drawClipped(bg, x, y, 0, 0, bg.sw(), h);
+      Gfx::draw(spec.enterMessage.icon, x + 7, y + 7);
+      Gfx::draw(footer, x, y + h);
+      
+      Gfx::mergeBuffer(6, 5, x + 9, y + 9, bg.sw(), h);
+      
+      if (msg->isConfirmation())
+      {
+        buttons[NO]->setPosition(x + 17, y + h + 5);
+        buttons[YES]->setPosition(x + 100, y + h + 5);
+        
+        buttons[NO]->show();
+        buttons[YES]->show();
+      }
+  
+      break;
+    }
     
     case msgs::Message::Type::ERROR:
     {
-      const msgs::Error* msg = message->as<const msgs::Error>();
+      const msgs::Error* msg = message->as<msgs::Error>();
       dialogs::drawErrorDialog(msg->getMessage());
       break;
     }
+
       
     default:
     {
-      Gfx::bindBuffer();
+      assert(false);
+      /*Gfx::bindBuffer();
       int h = Fonts::drawStringBounded(message->getMessage(), FontFaces::Small::BROWN, 76, 40, 175, ALIGN_LEFT);
       Gfx::bindCanvas();
       Gfx::drawClipped(TSI(HELP_BACKDROP,0,0), 55, 3+h, 0, 200, 210, 23);
       Gfx::drawClipped(TSI(HELP_BACKDROP,0,0), 55, 10, 0, 0, 210, h);
-      Gfx::mergeBuffer();
+      Gfx::mergeBuffer();*/
       
       break;
     }

@@ -432,7 +432,10 @@ u16 Fonts::drawStringContext(const string& string, u16 x, u16 y, TextAlign align
   return plength;
 }
 
-u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, TextAlign align, const Palette* palette)
+/* TODO: these bounded string draw functions must be radically optimized to avoid splitting joining and such, possibly
+   by working on individual characters */
+
+u16 Fonts::drawStringBounded(const string& str, int x, int y, int bound, TextAlign align, const Palette* palette)
 {
   if (palette)
     setPalette(palette);
@@ -440,6 +443,8 @@ u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, T
   vector<string> lines;
   strings::split(str, lines, '\n');
   
+  /* if there are multiple lines then for each line we have a separated procedure since a newline
+     resets the position they can be considered as indipendent */
   if (lines.size() > 1)
   {
     int dy = y;
@@ -478,4 +483,42 @@ u16 Fonts::drawStringBounded(const string& str, const int x, int y, int bound, T
     
     return y + vSpace + font->sh();
   }
+}
+
+std::pair<std::string, u16> Fonts::drawStringBounded(const std::string& text, Point p, int maxWidth, int maxLines, TextAlign align)
+{  
+  /* TODO: \n are ignored and collapsed as delimiters, maybe this should enhanced */
+  vector<string> words;
+  strings::split(text, words, " \n");
+  
+  int s = 0, e = 0;
+  int l = 0;
+  
+  while (e < words.size() - 1)
+  {
+    if (l >= maxLines)
+      return std::make_pair(strings::join(words, s, words.size()-1), p.y);
+    
+    ++e;
+    /* try to add a new word and check the total line length */
+    int w = stringWidth(font, strings::join(words, s, e));
+    
+    /* we go over bound by adding the word, then print current line */
+    if (w > maxWidth)
+    {
+      drawString(strings::join(words, s, e-1), p, align);
+      s = e;
+      p.y += vSpace + font->sh();
+      ++l;
+    }
+  }
+  
+  if (l < maxLines && (s != e || e < words.size()))
+  {
+    drawString(strings::join(words,s,e), p, align);
+    p.y += vSpace + font->sh();
+    s = e;
+  }
+  
+  return std::make_pair(strings::join(words, s, words.size()-1), p.y);
 }

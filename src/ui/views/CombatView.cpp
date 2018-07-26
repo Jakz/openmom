@@ -380,6 +380,7 @@ class FixedSpellGfxEntry : public AnimationGfxEntry
 {
 private:
   combat::CombatCoord position;
+  Point pt;
   SpriteInfo info;
   u32 sticks, rate;
   mutable u32 frame;
@@ -389,7 +390,8 @@ public:
   AnimationGfxEntry(view, priority_spell_effects), position(coord), info(effect),
   sticks(Gfx::fticks), frame(0), rate(rate)
   {
-
+    // TODO: check if how offset is calculated is correct
+    pt = CombatView::coordsForTile(coord.x, coord.y) + Point(CombatView::TILE_WIDTH/2 - effect.sw()/2 - 1, - effect.sh() + CombatView::TILE_HEIGHT - 4);
   }
   
   u16 x() const override { return position.x; }
@@ -398,8 +400,6 @@ public:
   
   void draw() const override
   {
-    // TODO: check if offset 0, -17 -4 is correct
-    Point pt = CombatView::coordsForTile(position.x, position.y) + Point(0, -17 - 4);
     frame = (Gfx::fticks - sticks) / rate;
     if (frame < info.count())
       Gfx::draw(info.frame(frame), pt);

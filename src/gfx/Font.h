@@ -372,6 +372,7 @@ public:
     return drawString(string, x, y, align);
   }
   
+  static u16 drawString(const std::string& string, Point pt, TextAlign align) { return drawString(string, pt.x, pt.y, align); }
   static u16 drawString(const std::string& string, u16 x, u16 y, TextAlign align);
   static u16 drawStringContext(const std::string& string, u16 x, u16 y, TextAlign align);
   
@@ -385,7 +386,16 @@ public:
     return drawStringBounded(string, x, y, bound, align);
   }
   
-  static u16 drawStringBounded(const std::string& string, const int x, int y, int bound, TextAlign align, const Palette* palette = nullptr);
+  static u16 drawStringBounded(const std::string& string, int x, int y, int bound, TextAlign align, const Palette* palette = nullptr);
+  
+  static std::pair<std::string, u16> drawStringBounded(const std::string& string, const FontSpriteSheet* font, Point p, int maxWidth, int maxLines, TextAlign align)
+  {
+    setFace(font);
+    return drawStringBounded(string, p, maxWidth, maxLines, align);
+  }
+  
+  static std::pair<std::string, u16> drawStringBounded(const std::string& string, Point p, int maxWidth, int maxLines, TextAlign align);
+
   
   static const Palette* paletteFor(char c) { return fontColors[c]; }
     

@@ -71,3 +71,15 @@ void strings::split(string s, vector<std::string>& tokens, s8 delim)
   }
   tokens.push_back(s);
 }
+
+void strings::split(string s, vector<std::string>& tokens, const std::string& delims)
+{
+  size_t pos = 0;
+  std::string token;
+  while ((pos = s.find_first_of(delims)) != std::string::npos) {
+    token = s.substr(0, pos);
+    tokens.push_back(token);
+    s.erase(0, pos + 1);
+  }
+  tokens.push_back(s);
+}

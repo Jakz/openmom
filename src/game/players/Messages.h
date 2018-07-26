@@ -19,6 +19,7 @@
 
 class Skill;
 class City;
+class Place;
 class Building;
 
 namespace msgs {
@@ -30,37 +31,41 @@ namespace msgs {
   protected:
     std::string message;
     
+    void setMessage(std::string&& message) { this->message = message; }
+    
   public:
-    enum Type
+    enum class Type
     {
       MESSAGE,
       ERROR,
       CONFIRM,
       NEW_BUILDING,
+      LAIR_CONFIRMATION,
       HELP
     } type;
     
     const std::string& getMessage() const { return message; }
     
-    Message(std::string message) : message(message), type(MESSAGE) { }
+    Message(std::string message) : message(message), type(Type::MESSAGE) { }
     
     template<typename T> const T* as() const { return static_cast<const T*>(this); }
     
   protected:
-    Message(std::string message, Type type) : message(message), type(type) { }
+    Message(Type type) : type(type) { }
+    Message(Type type, std::string message) : type(type), message(message) { }
   };
   
   class Error : public Message
   {
   public:
-    Error(const std::string& message) : Message(message, ERROR) { }
-    Error(std::string&& message) : Message(message, ERROR) { }
+    Error(const std::string& message) : Message(Type::ERROR, message) { }
+    Error(std::string&& message) : Message(Type::ERROR, message) { }
   };
   
   class Confirm : public Message
   {
   public:
-    Confirm(std::string message, Action&& action) : Message(message, CONFIRM), action(action) { }
+    Confirm(std::string message, Action&& action) : Message(Type::CONFIRM, message), action(action) { }
     const Action action;
   };
   
@@ -78,7 +83,18 @@ namespace msgs {
   public:
     const help::Paragraph* const data;
     
-    Help(const help::Paragraph* data) : Message("", HELP), data(data) { }
+    Help(const help::Paragraph* data) : Message(Type::HELP, ""), data(data) { }
+  };
+  
+  class LairConfirmation : public Message
+  {
+    const Unit* predominantUnit();
+  
+  public:
+    LairConfirmation(const Place* place);
+    bool isConfirmation() const { return true; }
+    
+    const Place* const place;
   };
   
 }

@@ -159,6 +159,16 @@ struct RaceHouseGfxSpec
   SpriteInfo combatHouse;
 };
 
+struct PlaceGfxSpec
+{
+  struct
+  {
+    SpriteInfo icon;
+    I18 firstName;
+    I18 lastName;
+  } enterMessage;
+};
+
 using SkillGfxSpec = SpriteInfo;
 
 
@@ -225,7 +235,11 @@ multi_enum_map<u64, Value, Master, enum_specializer> map = {
  */
 
 
-template<typename K, typename V, size_t SIZE = 0> using gfx_map = typename std::conditional<(std::is_enum<K>::value && SIZE > 0), enum_simple_map<K, V, SIZE>, std::unordered_map<K,V>>::type;
+template<typename K, typename V, size_t SIZE = 0> using gfx_map =
+  typename std::conditional<(std::is_enum<K>::value && SIZE > 0),
+    enum_simple_map<K, V, SIZE>,
+    std::unordered_map<K, V/*, typename std::conditional<std::is_enum<K>::value, enum_hash, std::hash<K>::type>*/>
+  >::type;
 
 class UnitPropGfxMap
 {
@@ -278,6 +292,8 @@ private:
   static const gfx_map<School, SchoolGfxSpec, 6> schoolSpecs;
   static const gfx_map<UpkeepSymbol, UpkeepSymbolSpec, 5> upkeepSymbolSpec;
   
+  static const gfx_map<PlaceType, PlaceGfxSpec, 10> placeSpecs;
+    
   static const UnitPropGfxMap unitPropSpecs;
   
   static constexpr s8 RANGED_INDEX[] = {-1,6,5,6,14,15,16,17,18};
@@ -298,6 +314,7 @@ public:
 
   static const SchoolGfxSpec& schoolGfxSpec(School school) { return schoolSpecs.find(school)->second; }
   static const UpkeepSymbolSpec& upkeepGfxSpec(UpkeepSymbol symbol) { return upkeepSymbolSpec.find(symbol)->second; }
+  static const PlaceGfxSpec& placeGfxSpec(PlaceType type) { return placeSpecs.find(type)->second; }
   
   static SpriteInfo specialSpellGfxEffect(const Spell* spell);
   

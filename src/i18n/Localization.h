@@ -252,7 +252,7 @@ public:
   static const std::string& s(I18 ident) { return data[ident]; }
   static const std::string& s(const std::string& key) { return s(keyForString(key)); }
   static const std::string& s(SkillBase skill) { return skills[skill]; }
-  
+    
   static const std::vector<std::string> surveyorDesc(TileType type) { return surveyorDescs[type]; }
   
   static const enum_simple_map<School, I18, 6> schools;

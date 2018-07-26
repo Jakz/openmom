@@ -27,6 +27,14 @@ DEFINE_GFX_MAP(const UnitSpec*, UnitGfxSpec);
 DEFINE_GFX_MAP(const Race*, RaceGfxSpec);
 DEFINE_GFX_MAP(const Wizard*, WizardGfxSpec);
 
+
+#include "i18n/Localization.h"
+
+const gfx_map<PlaceType, PlaceGfxSpec, 10> GfxData::placeSpecs = {
+  { PlaceType::RUINS, { LSI(RELOAD, 18), i18n::keyForString("messages_place_name_ruins_first"), i18n::keyForString("messages_place_name_ruins_last") } },
+  { PlaceType::TOWER_OF_WIZARDRY, { LSI(RELOAD, 9), i18n::keyForString("messages_place_name_tower_first"), i18n::keyForString("messages_place_name_tower_last") } },
+};
+
 #pragma mark Unit Props
 
 UnitPropGfxMap::UnitPropGfxMap() : map({
