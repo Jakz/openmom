@@ -22,6 +22,7 @@ class ViewManager;
 //TODO: required for dummyUnit()
 class UnitGfxEntry;
 class HoverTileGfxEntry;
+class AnimationGfxEntry;
 
 using priority_t = s32;
 constexpr priority_t always_front = 1 << 16;
@@ -116,6 +117,8 @@ private:
   void draw() override;
   void drawPost() override { }
   
+  const AnimationGfxEntry* animation;
+  
   Coord hover;
   HoverTileGfxEntry* hoverGfx;
   
@@ -164,6 +167,8 @@ public:
   
   const decltype(reachableTiles)& getReachableTiles() { return reachableTiles; }
   const combat::CombatUnit* getSelectedUnit() { return selectedUnit; }
+  
+  friend class AnimationGfxEntry;
 };
 
 #endif 

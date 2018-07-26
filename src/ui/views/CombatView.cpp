@@ -70,10 +70,14 @@ enum priority : priority_t
   priority_hover_symbol = 20,
   
   priority_behind_units = 100,
+  priority_ground_spell_effects = priority_behind_units - 1,
   priority_static = priority_behind_units,
+  
   priority_units = 200,
+  
   priority_front_units = 300,
   priority_projectiles = priority_always_front,
+  priority_spell_effects = priority_always_front,
   
   priority_stone_wall_behind = priority_behind_units,
   priority_stone_wall_front = priority_front_units,
@@ -361,7 +365,48 @@ static const std::unordered_map<DirJoin, SpriteInfo, enum_hash> myrranRiverMap =
 
 using GfxEntry = CombatView::GfxEntry;
 
-class ProjectileGfxEntry : public GfxEntry
+class AnimationGfxEntry : public GfxEntry
+{
+protected:
+  AnimationGfxEntry(CombatView* view, priority_t priority) : CombatView::GfxEntry(view, priority)
+  {
+    view->animation = this;
+  }
+  
+  bool canBeSkipped() { return false; }
+};
+
+class FixedSpellGfxEntry : public AnimationGfxEntry
+{
+private:
+  combat::CombatCoord position;
+  SpriteInfo info;
+  u32 sticks, rate;
+  mutable u32 frame;
+  
+public:
+  FixedSpellGfxEntry(CombatView* view, combat::CombatCoord coord, SpriteInfo effect, u32 rate) :
+  AnimationGfxEntry(view, priority_spell_effects), position(coord), info(effect),
+  sticks(Gfx::fticks), frame(0), rate(rate)
+  {
+
+  }
+  
+  u16 x() const override { return position.x; }
+  u16 y() const override { return position.y; }
+  bool destroyable() const override { return frame >= info.count(); }
+  
+  void draw() const override
+  {
+    // TODO: check if offset 0, -17 -4 is correct
+    Point pt = CombatView::coordsForTile(position.x, position.y) + Point(0, -17 - 4);
+    frame = (Gfx::fticks - sticks) / rate;
+    if (frame < info.count())
+      Gfx::draw(info.frame(frame), pt);
+  }
+};
+
+class ProjectileGfxEntry : public AnimationGfxEntry
 {
   using coord_t = combat::CombatCoord;
   
@@ -388,7 +433,7 @@ private:
   s32 spriteDeltaForFacing(Dir facing) const { return (s32)facing; }
   
 public:
-  ProjectileGfxEntry(CombatView* view, coord_t start, coord_t end, SpriteInfo effect) : CombatView::GfxEntry(view, priority_projectiles),
+  ProjectileGfxEntry(CombatView* view, coord_t start, coord_t end, SpriteInfo effect) : AnimationGfxEntry(view, priority_projectiles),
   coords({start, end}), points({CombatView::coordsForTile(start.x, start.y), CombatView::coordsForTile(end.x, end.y)}),
   delta(points[1] - points[0]), effect(effect), count(6), figures(6), progress(0.0f), position(start), phase(Phase::MOVING)
   {
@@ -536,6 +581,8 @@ public:
           progress = 0.0f;
           unit->setFacing(goal.front().facing);
         }
+        
+        setDirty();
       }
       else
       {
@@ -789,7 +836,7 @@ public:
 };
 
 
-CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1))
+CombatView::CombatView(ViewManager* gvm) : View(gvm), hover(Coord(-1,-1)), animation(nullptr)
 {
   buttons.resize(bt_count);
   
@@ -854,6 +901,8 @@ void CombatView::prepareGraphics()
     unitsMap[unit] = gfx;
     entries.add(gfx);
   }
+  
+  combat->getUnits()[7]->skills()->add(SpellCast(combat->getUnits()[0]->getOwner(), Data::spell("bless"), true));
 
   //addRoads();
 
@@ -1035,42 +1084,6 @@ void CombatView::draw()
   Gfx::rect(c.x, c.y, 30, 16, {255,0,0});*/
 
   /*
-  if (reachable != null)
-  {
-    for (int i : reachable)
-    {
-      int nx = (0x00FF0000 & i) >> 16;
-      int ny = i & 0x0000FFFF;
-      
-      int x = tileX(nx,ny);
-      int y = tileY(nx,ny);
-      
-      if (player.combat.positionEmpty(nx,ny))
-        Gfx.draw(Texture.COMBAT_MISC_TILES, 0, 1, x, y);
-      else
-        Gfx.draw(Texture.COMBAT_MISC_TILES, 0, 2, x, y);
-    }
-  }
-   
-  
-  Collections.sort(player.combat.units);
-  for (CombatUnit cunit : player.combat.units)
-  {
-    int x = tileX(cunit.x,cunit.y);
-    int y = tileY(cunit.x,cunit.y);
-    
-    if (cunit.selected)
-    {
-      Gfx.draw(Texture.COMBAT_MISC_TILES, 0, 1, x, y);
-      Gfx.draw(Texture.COMBAT_MISC_TILES, 0, 1, x, y);
-      //Texture.drawAnimated(Texture.COMBAT_MISC_TILES, 2, x, y, 0);
-      
-    }
-    
-    if (player.drawSelectedArmy || player.selectedCombatUnit != cunit)
-      UnitDraw.drawUnitIsoCombat(cunit.unit, x, y-17, cunit.facing, UnitDraw.CombatAction.STAY);
-  }
-  
   if (player.spellTarget() != null && player.spellTarget() != Target.NONE)
     Fonts.drawString("Spell", Fonts.Face.TEAL_MEDIUM, 20, 20, Align.LEFT);
   */
@@ -1278,12 +1291,13 @@ void CombatView::drawSelectedUnitProps(const combat::CombatUnit* unit)
 
 bool CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-  //if (hover.isValid())
+  if (hover.isValid())
+    entries.add(new FixedSpellGfxEntry(this, hover, LSI(CMBTFX, 4), 2));
   //  entries.add(new ProjectileGfxEntry(this, {5,9}, hover, SpriteInfo((SpriteInfo::data_type)CombatProjectile::SCATTER)));
-  player->push(new anims::SpellEffect(LSI(CMBTFX, 22), CombatCoord(hover.x,hover.y)));
+  //player->push(new anims::SpellEffect(LSI(CMBTFX, 22), CombatCoord(hover.x,hover.y)));
   
   //player->push(new anims::CombatProjectile({2,4}, {5,11}, LBXI(CMBMAGIC, 8), 1));
-  return true;
+  //return true;
   //
   
   if (std::any_of(unitsMap.begin(), unitsMap.end(), [](const decltype(unitsMap)::value_type& entry) { return entry.second->isAnimating(); }))

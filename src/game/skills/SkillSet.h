@@ -38,11 +38,17 @@ public:
   cast_list::iterator spellIterator() { return spells.begin(); }
   cast_list::const_iterator spellIterator() const { return spells.begin(); }
   
+  void purgeCombatSpells()
+  {
+    auto nend = std::remove_if(spells.begin(), spells.end(), [] (const cast_list::value_type& spell) { return spell.castedInCombat; });
+    spells.erase(nend, spells.end());
+  }
+  
   bool hasSpell(const Spell* spell) const;
   bool hasSkill(const Skill* skill) const;
   bool hasSkillEffect(const SkillEffect* effect) const;
   bool hasSimpleEffect(SimpleEffect::Type type) const;
-  
+    
   bool has(const std::function<bool(const SkillEffect*)>& predicate) const;
   
   bool has(MovementType type) const;

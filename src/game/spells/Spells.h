@@ -195,13 +195,15 @@ class SpellCast
 public:
   const Player* player;
   const Spell* spell;
-  const u16 extraMana;
-  const bool isVariable;
+  u16 extraMana;
+  bool isVariable;
+  bool castedInCombat;
 
-  SpellCast(const Player* player, const Spell* spell, u16 extraMana = 0) : player(player), spell(spell), extraMana(extraMana), isVariable(extraMana > 0) { }
-
-  bool operator==(const Spell* spell) const { return this->spell == spell; }
+  SpellCast(const Player* player, const Spell* spell, u16 extraMana = 0) : SpellCast(player, spell, false, extraMana) { }
+  SpellCast(const Player* player, const Spell* spell, bool castedInCombat, u16 extraMana = 0) : player(player), spell(spell), extraMana(extraMana), isVariable(extraMana > 0), castedInCombat(castedInCombat) { }
   
+  bool operator==(const Spell* spell) const { return this->spell == spell; }
+
   template<typename T> const T* as() const { return static_cast<const T*>(spell); }
 
   const UnitSpell* asUnitSpell() const { return as<UnitSpell>(); }

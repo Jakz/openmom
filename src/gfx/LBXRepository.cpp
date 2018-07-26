@@ -335,6 +335,8 @@ const LBXFile& Repository::loadLBXHelp()
      printf("\n");*/
   }
   
+  help::Data::helpMapping["spell_bless"] = &help::Data::data[474];
+  
   LOGD("[lbx] read %zu help entries", i);
   
   in.close();

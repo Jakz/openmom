@@ -348,7 +348,7 @@ void UnitDraw::drawUnitIsoCombat(const Unit *unit, s16 x, s16 y, Dir facing, Com
     unbindPlayerColorPalette();
     
     if (glow != School::NO_SCHOOL)
-      Gfx::drawGlow(sprite.relative(action), fx, fy, glow); // TODO: check if it works with new management
+      Gfx::drawGlow(sprite.frame(action), fx, fy, glow); // TODO: check if it works with new management
   }
 
 }
