@@ -228,13 +228,6 @@ namespace lbx { class Repository; }
 
 class i18n
 {
-public:
-  struct race_names
-  {
-    std::string name;
-    std::string unitName;
-  };
-  
 private:
   static I18 customMappingFreeIndex;
   static std::unordered_map<std::string, I18> customMapping;
@@ -243,6 +236,8 @@ private:
   static std::unordered_map<I18, std::string, enum_hash> data;
   static std::unordered_map<SkillBase, std::string, enum_hash> skills;
   static std::unordered_map<TileType, std::vector<std::string>, enum_hash> surveyorDescs;
+  
+  static decltype(customMapping)& getMapping();
   
 public:
   static void mapCustomEntry(std::string key, std::string value);

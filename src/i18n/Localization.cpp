@@ -7,21 +7,31 @@ using namespace std;
 
 
 I18 i18n::customMappingFreeIndex = I18::FIRST_AVAILABLE_INDEX;
-std::unordered_map<std::string, I18> i18n::customMapping;
+
+std::unordered_map<std::string, I18>& i18n::getMapping()
+{
+  static std::unordered_map<std::string, I18> customMapping;
+  return customMapping;
+}
 
 void i18n::mapCustomEntry(std::string key, std::string value)
 {
+  if (key == "messages_place_name_ruins_first")
+    assert(true);
   data[keyForString(key)] = value;
 }
 
 I18 i18n::keyForString(const std::string& key)
 {
-  auto it = customMapping.find(key);
-  if (it != customMapping.end())
+  if (key == "messages_place_name_ruins_first")
+    assert(true);
+  
+  auto it = getMapping().find(key);
+  if (it != getMapping().end())
     return it->second;
   
   I18 nkey = customMappingFreeIndex;
-  customMapping[key] = nkey;
+  getMapping()[key] = nkey;
   customMappingFreeIndex = static_cast<I18>(static_cast<u32>(customMappingFreeIndex) + 1);
   
   data[nkey] = "#"+key+"#";
@@ -34,7 +44,7 @@ std::vector<std::string> i18n::unlocalizedEntries()
 {
   std::vector<std::string> entries;
   
-  for (const auto& key : customMapping)
+  for (const auto& key : getMapping())
   {
     auto it = data.find(key.second);
     if (it == data.end() || it->second == "#"+key.first+"#")
