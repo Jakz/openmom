@@ -35,6 +35,7 @@ class StartView;
 class IntroView;
 class InfoMenuView;
 class CartographerView;
+class DiplomacyView;
 class AstrologerView;
 class HistorianView;
 class MerchantView;
@@ -112,6 +113,7 @@ public:
   IntroView* introView();
   InfoMenuView* infoMenuView();
   CartographerView* cartographerView();
+  DiplomacyView* diplomacyView();
   AstrologerView* astrologerView();
   HistorianView* historianView();
   MerchantView* merchantView();

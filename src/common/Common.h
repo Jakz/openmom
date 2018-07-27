@@ -405,6 +405,50 @@ struct Rect
 inline Point::Point(const Size& size) : x(size.w), y(size.h) { }
 inline Size::Size(const Point& point) : w(point.x), h(point.y) { }
 
+struct DiscreteTimer
+{
+private:
+  u32 base;
+  const u32 ticksPerTick;
+  u32 tickCounter;
+  u32 counter;
+  
+public:
+  DiscreteTimer(u32 ticksPerTick) :
+  ticksPerTick(ticksPerTick), counter(0), base(0) { }
+  
+  void mark(u32 base) { this->base = base; }
+  
+  void set(u32 value)
+  {
+    tick(value - base);
+    base = value;
+  }
+  
+  void tick(u32 delta)
+  {
+    tickCounter += delta;
+    if (tickCounter >= ticksPerTick)
+      counter += (tickCounter / ticksPerTick);
+    tickCounter %= ticksPerTick;
+  }
+  
+  void tick() { tick(1); }
+  
+  u32 value() const { return counter; }
+  operator u32() const { return counter; }
+  
+  void reset()
+  {
+    tickCounter = 0;
+    counter = 0;
+  }
+  
+  void resetCounter()
+  {
+    counter = 0;
+  }
+};
 
 constexpr size_t LBX_COUNT = static_cast<size_t>(LBXID::COUNT);
 
@@ -887,6 +931,7 @@ enum ViewID
   VIEW_MIRROR,
   VIEW_INFO_MENU,
   VIEW_CARTOGRAPHER,
+  VIEW_DIPLOMACY,
   VIEW_ASTROLOGER,
   VIEW_HISTORIAN,
   VIEW_COMBAT,

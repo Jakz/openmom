@@ -67,7 +67,8 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::CMBTFX);
   lbx::Repository::loadLBX(LBXID::COMPIX);
 
-  
+  lbx::Repository::loadLBX(LBXID::DIPLOMAC);
+
   lbx::Repository::loadLBX(LBXID::FIGURES1);
   lbx::Repository::loadLBX(LBXID::FIGURES3);
   lbx::Repository::loadLBX(LBXID::FIGURES4);
@@ -136,7 +137,7 @@ int main(int argc, char * arg[])
   SDL::gvm->unitDetailView()->setHeroHire(unit, 200);
   SDL::gvm->switchOverview(VIEW_UNIT);*/
   
-  SDL::gvm->switchView(VIEW_COMBAT);
+  SDL::gvm->switchView(VIEW_DIPLOMACY);
   //SDL::gvm->switchView(VIEW_LBX);
   
   SDL::loop();

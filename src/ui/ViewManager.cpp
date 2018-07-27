@@ -33,6 +33,7 @@
 #include "IntroView.h"
 #include "InfoMenuView.h"
 #include "CartographerView.h"
+#include "DiplomacyView.h"
 #include "AstrologerView.h"
 #include "HistorianView.h"
 #include "MerchantView.h"
@@ -72,6 +73,7 @@ ViewManager::ViewManager() : views{nullptr}, animating(false), current(nullptr)
   views[VIEW_OPTIONS] = new OptionsView(this);
   views[VIEW_INFO_MENU] = new InfoMenuView(this);
   views[VIEW_CARTOGRAPHER] = new CartographerView(this);
+  views[VIEW_DIPLOMACY] = new DiplomacyView(this);
   views[VIEW_ASTROLOGER] = new AstrologerView(this);
   views[VIEW_HISTORIAN] = new HistorianView(this);
   views[VIEW_MERCHANT] = new MerchantView(this);
@@ -105,6 +107,7 @@ StartView* ViewManager::startView() { return static_cast<StartView*>(views[VIEW_
 IntroView* ViewManager::introView() { return static_cast<IntroView*>(views[VIEW_INTRO]); }
 InfoMenuView* ViewManager::infoMenuView() { return static_cast<InfoMenuView*>(views[VIEW_INFO_MENU]); }
 CartographerView* ViewManager::cartographerView() { return static_cast<CartographerView*>(views[VIEW_CARTOGRAPHER]); }
+DiplomacyView* ViewManager::diplomacyView() { return static_cast<DiplomacyView*>(views[VIEW_DIPLOMACY]); }
 AstrologerView* ViewManager::astrologerView() { return static_cast<AstrologerView*>(views[VIEW_ASTROLOGER]); }
 HistorianView* ViewManager::historianView() { return static_cast<HistorianView*>(views[VIEW_HISTORIAN]); }
 
