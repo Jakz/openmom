@@ -78,7 +78,7 @@ void DiplomacyView::draw()
     }
       
     case Phase::SPEAKING:
-    {
+    {      
       Gfx::draw(speakingGfx.frame(timer % speakingGfx.count()), base);
       break;
     }

@@ -134,10 +134,10 @@ int main(int argc, char * arg[])
   //SDL::gvm->switchView(VIEW_NEW_GAME);
   
   /*Hero* unit = new Hero(*UnitSpec::heroSpec(UnitID::HERO_DWARF));
-  SDL::gvm->unitDetailView()->setHeroHire(unit, 200);
-  SDL::gvm->switchOverview(VIEW_UNIT);*/
+  SDL::gvm->unitDetailView()->setHeroHire(unit, 200);*/
+  //SDL::gvm->switchOverview(VIEW_CONSOLE);
   
-  SDL::gvm->switchView(VIEW_DIPLOMACY);
+  //SDL::gvm->switchView(VIEW_DIPLOMACY);
   //SDL::gvm->switchView(VIEW_LBX);
   
   SDL::loop();

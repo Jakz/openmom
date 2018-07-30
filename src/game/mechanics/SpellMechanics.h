@@ -32,8 +32,6 @@ public:
   s32 actualResearchGain(const Player* player, const Spell* spell);
   
   bool willDispel(const SpellCast& cast, const SpellCast& dispelCast);
-  
-
 };
 
 #endif

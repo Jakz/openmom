@@ -42,6 +42,8 @@ namespace combat
     bool isTileBlocked(const CombatTile* tile, const CombatUnit* unit);
     combat_pathfind_info reachableTiles(const Combat* combat, const CombatUnit* unit, s16 movement);
     
+    /* spells related functions */
+    void castCombatInstant(const SpellCast& cast, const CombatUnit* unit);
     
   };
 

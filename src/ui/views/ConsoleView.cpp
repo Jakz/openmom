@@ -30,7 +30,7 @@ void ConsoleView::executeCommand(std::string cmd)
 
 void ConsoleView::draw()
 {
-  Fonts::drawString(line, FontFaces::Small::WHITE, 10, 10, ALIGN_LEFT);
+  Fonts::drawString(line, FontFaces::Tiny::WHITE, 10, 10, ALIGN_LEFT);
 }
 
 bool ConsoleView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
@@ -39,7 +39,7 @@ bool ConsoleView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod
     line.pop_back();
   else
   {
-    if (isalpha(kkey) || isdigit(kkey) || isspace(kkey))
+    if ((isalpha(kkey) || isdigit(kkey) || isspace(kkey)) && kkey != '\r')
       line += kkey;
   }
   
