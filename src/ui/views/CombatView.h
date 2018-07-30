@@ -141,9 +141,7 @@ private:
   combat::CombatUnit* selectedUnit;
   
   combat::CombatUnit* findNextUsableUnit();
-  
-  
-    
+ 
 public:
   CombatView(ViewManager* gvm);
   

@@ -19,7 +19,7 @@ using namespace std;
 //TODO: GfxData here is not nice
 const string& UnitSpec::productionName() const { return i18n::s(GfxData::unitGfx(this).name); }
 
-s16 UnitSpec::getProperty(Property property) const
+prop_value UnitSpec::getProperty(Property property) const
 {
   switch (property) {
     case Property::MELEE: return melee;

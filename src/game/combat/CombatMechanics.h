@@ -17,6 +17,50 @@ enum class CombatModifier : u8;
 
 class Game;
 
+#include <numeric>
+class unit_figure_value : public std::vector<s32>
+{
+public:
+  unit_figure_value(size_t size) : std::vector<value_type>(size, 0) { }
+  unit_figure_value(size_t size, std::function<value_type(value_type)> generator) : unit_figure_value(size)
+  {
+    for (s32 i = 0; i < size; ++i)
+      (*this)[i] = generator(i);
+  }
+  
+  value_type sum() { return std::accumulate(begin(), end(), 0); }
+  
+  void forEach(std::function<void(value_type&)> lambda) { std::for_each(begin(), end(), lambda); }
+
+  void makeAtLeastZero() { forEach([] (value_type& v) { v = std::max(v, 0); }); }
+  
+  unit_figure_value operator-(const unit_figure_value& other) const
+  {
+    assert(size() == other.size());
+    
+    unit_figure_value result(*this);
+    for (size_t i = 0; i < size(); ++i)
+      result[i] -= other[i];
+    return result;
+  };
+  
+  unit_figure_value& operator-=(const unit_figure_value& other)
+  {
+    assert(size() == other.size());
+    
+    for (size_t i = 0; i < size(); ++i)
+      (*this)[i] = other[i];
+    
+    return *this;
+  };
+  
+  void generate(combat::CombatUnit* unit, std::function<value_type(combat::CombatUnit*, s32)> generator)
+  {
+    for (s32 i = 0; i < size(); ++i)
+      (*this)[i] = generator(unit, i);
+  }
+};
+
 namespace combat
 {
   struct CombatTile;
@@ -45,6 +89,7 @@ namespace combat
     /* spells related functions */
     void castCombatInstant(const SpellCast& cast, const CombatUnit* unit);
     
+    s32 computeAreaDamage(CombatUnit* target, s32 strength, School school, s32 toHit);
   };
 
   
@@ -123,8 +168,7 @@ namespace combat
     PHYSICAL_MELEE_ATTACK,
     PHYSICAL_MAGICAL_ATTACK,
     
-    AREA_IMMOLATION,
-    AREA_BLIZZARD
+    AREA_DAMAGE,
   };
   
   enum class AttackType

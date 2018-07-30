@@ -42,7 +42,8 @@ Combat::Combat(Army* defender, Army* attacker, CombatMechanics* mechanics) : pla
 
 Combat::~Combat()
 {
-  
+  //TODO: is this correct behavior?
+  std::for_each(deadUnits.begin(), deadUnits.end(), [](CombatUnit* unit) { delete unit; });
 }
 
 void Combat::endTurn()
@@ -117,4 +118,18 @@ void Combat::moveUnit(CombatUnit *unit, const combat_moves_list& moves)
   }
   
   unit->setPosition(moves.back());
+}
+
+void Combat::killUnit(CombatUnit* unit)
+{
+  auto& funits = friendlyUnits(unit->getOwner());
+  auto it = std::find(allUnits.begin(), allUnits.end(), unit);
+  auto fit = std::find(funits.begin(), funits.end(), unit);
+  
+  assert(it != allUnits.end() && fit != funits.end());
+  
+  allUnits.erase(it);
+  (funits == units[0] ? units[0] : units[1]).erase(fit); //TODO: ugly, to prevent constness from friendlyUnits
+  
+  deadUnits.push_back(unit);
 }

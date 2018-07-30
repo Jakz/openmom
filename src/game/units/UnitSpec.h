@@ -191,15 +191,15 @@ enum class Property : u8
   AVAILABLE_AMMO
 };
 
-using prop_value = s16;
+using prop_value = s32;
 
 class Propertable
 {
 public:
-  virtual s16 getBaseProperty(Property property) const { return 0; }
-  virtual s16 getBonusProperty(Property property) const { return 0; }
+  virtual prop_value getBaseProperty(Property property) const { return 0; }
+  virtual prop_value getBonusProperty(Property property) const { return 0; }
   
-  s16 getProperty(Property property) const { return getBaseProperty(property) + getBonusProperty(property); }
+  prop_value getProperty(Property property) const { return getBaseProperty(property) + getBonusProperty(property); }
   template<typename T> T getEnumProperty(Property property) const { return static_cast<T>(getProperty(property)); }
   
   MovementInfo getActualMovementInfo() const { return MovementInfo(getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE), getProperty(Property::AVAILABLE_MOVEMENT)); }
@@ -212,6 +212,22 @@ public:
   
   RangedInfo getRangedInfo() const { return RangedInfo(getEnumProperty<Ranged>(Property::RANGED_TYPE), getProperty(Property::RANGED), getProperty(Property::AMMO)); }
   RangedInfo getActualRangedInfo() const { return RangedInfo(getEnumProperty<Ranged>(Property::RANGED_TYPE), getProperty(Property::RANGED), getProperty(Property::AVAILABLE_AMMO)); }
+  
+  prop_value getDefenseForSchool(School school)
+  {
+    switch (school)
+    {
+      case School::CHAOS: return getProperty(Property::SHIELDS_CHAOS);
+      case School::NATURE: return getProperty(Property::SHIELDS_NATURE);
+      case School::SORCERY: return getProperty(Property::SHIELDS_SORCERY);
+      case School::LIFE: return getProperty(Property::SHIELDS_LIFE);
+      case School::DEATH: return getProperty(Property::SHIELDS_DEATH);
+      default: assert(false); return 0;
+    }
+  }
+  
+  prop_value getFigures() const { return getProperty(Property::FIGURES); }
+  prop_value getAliveFigures() const { return getProperty(Property::FIGURES); }
 };
 
 enum class HeroType : u8
@@ -256,7 +272,7 @@ public:
   
   const skill_list skills;
   
-  s16 getProperty(Property property) const;
+  prop_value getProperty(Property property) const;
   
   virtual const std::string fullName() const { return productionName(); }
   const std::string& productionName() const override;

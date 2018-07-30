@@ -37,11 +37,10 @@ namespace combat
     CombatUnit(Combat* combat, Side side, Unit* unit) : _combat(combat), unit(unit), player(unit->getArmy()->getOwner()), _side(side), moves(unit->getProperty(Property::MOVEMENT)*2), selected(false) { }
     
     Player* const getOwner() { return player; }
-    
-    
+
     Unit* getUnit() const { return unit; }
     
-    s16 getBaseProperty(Property property) const override
+    prop_value getBaseProperty(Property property) const override
     {
       if (property == Property::AVAILABLE_MOVEMENT)
         return moves;
@@ -49,7 +48,7 @@ namespace combat
         return unit->getBaseProperty(property);
     }
     
-    s16 getBonusProperty(Property property) const override
+    prop_value getBonusProperty(Property property) const override
     {
       return unit->getBonusProperty(property);
     }
@@ -103,6 +102,7 @@ namespace combat
     Player* players[2];
     std::vector<CombatUnit*> allUnits;
     std::list<CombatUnit*> units[2];
+    std::vector<CombatUnit*> deadUnits;
     
     CombatMechanics* const mechanics;
     
@@ -133,6 +133,8 @@ namespace combat
     CombatMap* map() { return _map.get(); }
     const std::list<CombatUnit*>& enemyUnits(Player* player) { return player == players[0] ? units[0] : units[1]; }
     const std::list<CombatUnit*>& friendlyUnits(Player* player) { return player == players[1] ? units[1] : units[0]; }
+    
+    void killUnit(CombatUnit* unit);
     
     void attack(CombatUnit *u1, CombatUnit *u2) override;
     void moveUnit(CombatUnit *unit, const combat_moves_list& moves) override;

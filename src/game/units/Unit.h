@@ -15,7 +15,7 @@ class Army;
 class SkillSet;
 class Damage;
 
-using hit_points = std::vector<s16>;
+using hit_points = std::vector<s32>;
 using unit_figure_flag = std::vector<bool>;
 
 class HitPoints
@@ -37,8 +37,8 @@ public:
   
   void healAll();
   
-  void applyDamage(s16 dmg);
-  void applySameDamageToEachFigure(s16 dmg);
+  void applyDamage(hit_points::value_type dmg);
+  void applySameDamageToEachFigure(hit_points::value_type dmg);
   void applyDifferentDamageToEachFigure(const hit_points& dmgs);
   void killFigures(const unit_figure_flag& indices);
 };
@@ -79,8 +79,8 @@ public:
   
   Productable::Type type() const { return spec->productionType(); }
   
-  s16 getBaseProperty(Property property) const override;
-  s16 getBonusProperty(Property property) const override;
+  prop_value getBaseProperty(Property property) const override;
+  prop_value getBonusProperty(Property property) const override;
   
   void resetMoves() { availableMoves = getProperty(Property::MOVEMENT)*2; }
   s16 getAvailableMoves() const { return availableMoves; }

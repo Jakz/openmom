@@ -1291,8 +1291,24 @@ void CombatView::drawSelectedUnitProps(const combat::CombatUnit* unit)
 
 bool CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-  if (hover.isValid())
-    entries.add(new FixedSpellGfxEntry(this, hover, LSI(CMBTFX, 4), 2));
+  CombatUnit* hunit = combat->unitAtTile(hover);
+
+  if (hunit)
+  {
+    s32 damage = g->combatMechanics.computeAreaDamage(hunit, 15, School::CHAOS, 30);
+    hunit->getUnit()->health()->applyDamage(damage);
+    
+    if (!hunit->getUnit()->health()->isAlive())
+    {
+      combat->killUnit(hunit);
+    }
+  }
+
+  return true;
+  
+  //if (hover.isValid())
+  //  entries.add(new FixedSpellGfxEntry(this, hover, LSI(CMBTFX, 4), 2));
+  
   //  entries.add(new ProjectileGfxEntry(this, {5,9}, hover, SpriteInfo((SpriteInfo::data_type)CombatProjectile::SCATTER)));
   //player->push(new anims::SpellEffect(LSI(CMBTFX, 22), CombatCoord(hover.x,hover.y)));
   

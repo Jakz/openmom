@@ -21,7 +21,7 @@ void HitPoints::healAll()
   data.assign(unit.getProperty(Property::FIGURES), unit.getProperty(Property::HIT_POINTS));
 }
 
-void HitPoints::applyDamage(s16 dmg)
+void HitPoints::applyDamage(s32 dmg)
 {
   while (dmg > 0 && isAlive())
   {
@@ -38,10 +38,10 @@ void HitPoints::applyDamage(s16 dmg)
   }
 }
 
-void HitPoints::applySameDamageToEachFigure(s16 dmg)
+void HitPoints::applySameDamageToEachFigure(hit_points::value_type dmg)
 {
-  for_each(data.begin(), data.end(), [&](s16& hp){ hp -= dmg; });
-  auto nend = remove_if(data.begin(), data.end(), [](s16& hp) { return hp <= 0; });
+  for_each(data.begin(), data.end(), [&](hit_points::value_type& hp){ hp -= dmg; });
+  auto nend = remove_if(data.begin(), data.end(), [](hit_points::value_type& hp) { return hp <= 0; });
   data.erase(nend, data.end());
 }
 
@@ -50,14 +50,14 @@ void HitPoints::applyDifferentDamageToEachFigure(const hit_points& dmgs)
   for (int i = 0; i < dmgs.size(); ++i)
     data[i] -= dmgs[i];
   
-  auto nend = remove_if(data.begin(), data.end(), [](s16& hp) { return hp <= 0; });
+  auto nend = remove_if(data.begin(), data.end(), [](hit_points::value_type& hp) { return hp <= 0; });
   data.erase(nend, data.end());
 }
 
 void HitPoints::killFigures(const unit_figure_flag& indices)
 {
   s16 current = 0;
-  auto nend = remove_if(data.begin(), data.end(), [&](s16& hp) { return indices[current++]; });
+  auto nend = remove_if(data.begin(), data.end(), [&](hit_points::value_type& hp) { return indices[current++]; });
   data.erase(nend, data.end());
 }
 
@@ -68,7 +68,7 @@ void Unit::removeSpell(const Spell* spell)
 }
 
 
-s16 Unit::getBaseProperty(Property property) const
+prop_value Unit::getBaseProperty(Property property) const
 {
   switch (property) {
     case Property::ALIVE_FIGURES:
@@ -102,7 +102,7 @@ s16 Unit::getBaseProperty(Property property) const
   }
 }
 
-s16 Unit::getBonusProperty(Property property) const
+prop_value Unit::getBonusProperty(Property property) const
 {
   int bonus = 0;
   
