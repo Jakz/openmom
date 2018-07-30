@@ -5,8 +5,8 @@ if (APPLE)
     osx.mm
     PROPERTIES COMPILE_FLAGS "-x objective-c++"
   )
-else()
-  
+elseif(WIN32)
+  set (PLATFORM_SOURCE windows/windows.cpp)  
 endif()
 
 set (PLATFORM_SOURCE ${PLATFORM_SOURCE} Path.cpp)

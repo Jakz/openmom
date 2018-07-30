@@ -10,12 +10,12 @@ if(APPLE)
 elseif(UNIX)
 
 elseif(WIN32)
-set(SDL2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/sdl2)
-#set(SDL2_LIBRARY C:\\SDL\\SDL2\\lib)
-#set(SDL2_INCLUDE_DIR C:\\SDL\\SDL2\\include)
+#set(SDL2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/sdl2)
+set(SDL2_LIBRARY C:\\SDL\\SDL2\\lib)
+set(SDL2_INCLUDE_DIR C:\\SDL\\SDL2\\include)
 
-#set(SDL2_IMAGE_LIBRARY C:\\SDL\\SDL2_image\\lib)
-#set(SDL2_IMAGE_INCLUDE_DIR C:\\SDL\\SDL2_image\\include)
+set(SDL2_IMAGE_LIBRARY C:\\SDL\\SDL2_image\\lib)
+set(SDL2_IMAGE_INCLUDE_DIR C:\\SDL\\SDL2_image\\include)
 endif()
 
 

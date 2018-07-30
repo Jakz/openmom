@@ -18,9 +18,18 @@ if (APPLE)
   set(YAML_LIBRARY_BINARY "${LIBRARY_FOLDER}/yaml/lib/osx/libyaml-cpp.a")
 elseif(WIN32)
    set_target_properties(YAML_LIBRARY PROPERTIES IMPORTED_LOCATION
-    ${LIBRARY_FOLDER}/yaml/lib/win_x86/libyaml-cppmd.lib
+    ${LIBRARY_FOLDER}/yaml/lib/win_x86/yaml-cpp.lib
   )
-  set(YAML_LIBRARY_BINARY "${LIBRARY_FOLDER}/yaml/lib/win_x86/libyaml-cppmd.lib")
+  set(YAML_LIBRARY_BINARY "${LIBRARY_FOLDER}/yaml/lib/win_x86/yaml-cpp.lib")
+
+
+  #add_library(SDL2_LIBRARY STATIC IMPORTED)
+  #set_target_properties(SDL2_LIBRARY PROPERTIES IMPORTED_LOCATION
+	#"${LIBRARY_FOLDER}/sdl2/win/lib/x86/SDL2.lib"
+  #)
+  set(SDL2_LIBRARY "${LIBRARY_FOLDER}/sdl2/win/lib/x86/SDL2.lib")
+  set(SDL2_IMAGE_LIBRARIES "${LIBRARY_FOLDER}/sdl2/win/lib/x86/SDL2_image.lib")
+
 elseif (UNIX)
   
 endif()
@@ -63,12 +72,13 @@ add_subdirectory(save)
 add_subdirectory(ui)
 
 add_executable(openmom ${srcs})
-add_executable(openmom-tests tests/tests.cpp)
+#add_executable(openmom-tests tests/tests.cpp)
 
 set(LIBRARIES
   ${SDL2_LIBRARY}
   ${SDL2_IMAGE_LIBRARIES}
   ${YAML_LIBRARY_BINARY}
+  ${SDL2_LIBRARY_BINARY}
   COMMON_LIB
   GAME_LIB
   CITIES_LIB
@@ -89,8 +99,7 @@ set(LIBRARIES
   VIEWS_LIB
   DEBUG_VIEWS_LIB
   EXTRA_VIEWS_LIB
-
 )
 
 target_link_libraries(openmom ${LIBRARIES})
-target_link_libraries(openmom-tests ${LIBRARIES})
+#target_link_libraries(openmom-tests ${LIBRARIES})
