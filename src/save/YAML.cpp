@@ -129,6 +129,8 @@ template<> LBXID yaml::parse(const N& node)
   static const std::unordered_map<std::string, LBXID> mapping = {
     { "backgrnd", LBXID::BACKGRND },
     
+    { "diplomac", LBXID::DIPLOMAC },
+    
     { "figures1", LBXID::FIGURES1 },
     { "figures3", LBXID::FIGURES3 },
     { "figures4", LBXID::FIGURES4 },
@@ -817,7 +819,6 @@ template<> std::pair<const Wizard*, WizardGfxSpec> yaml::parse(const N& node)
 {
   assert(node.IsMap());
   
-  
   // TODO: don't set fields, use constructor
   std::pair<const Wizard*, WizardGfxSpec> data;
   
@@ -846,18 +847,24 @@ template<> std::pair<const Wizard*, WizardGfxSpec> yaml::parse(const N& node)
     I18 name = i18n::keyForString(visual["i18n"]);
     SpriteInfo portraitSmall = parse<SpriteInfo>(visual["portrait_small"]);
     SpriteInfo portraitLarge = parse<SpriteInfo>(visual["portrait_large"]);
-    SpriteInfo diplomacyMood = parse<SpriteInfo>(visual["diplomacy_mood"]);
     SpriteInfo gemmedPortrait = parse<SpriteInfo>(visual["gemmed_portrait"]);
     SpriteInfo researchPose = parse<SpriteInfo>(visual["research_pose"]);
     SpriteInfo summonPose = parse<SpriteInfo>(visual["summon_pose"]);
     
+    SpriteInfo diplomacyMood = parse<SpriteInfo>(visual["diplomacy_mood"]);
+    SpriteInfo diplomacySpeaking = parse<SpriteInfo>(visual["diplomacy_speaking"]);
+    SpriteInfo diplomacyFadeIn = parse<SpriteInfo>(visual["diplomacy_fadein"]);
+    
     gfx.name = name;
     gfx.portraitSmall = portraitSmall;
     gfx.portraitLarge = portraitLarge;
-    gfx.diplomacyMood = diplomacyMood;
     gfx.gemmedPortrait = gemmedPortrait;
     gfx.researchPose = researchPose;
     gfx.summonPose = summonPose;
+    
+    gfx.diplomacy.mood = diplomacyMood;
+    gfx.diplomacy.speaking = diplomacySpeaking;
+    gfx.diplomacy.fadeIn = diplomacyFadeIn;
   }
   
   return data;

@@ -35,6 +35,8 @@ void DiplomacyView::activate()
 {
   eyesColorLevel = 4;
   
+  wizard = Data::wizard("freya");
+  mood = Mood::HAPPY;
   phase = Phase::FADING_IN;
   
   timer.reset();
@@ -60,15 +62,15 @@ void DiplomacyView::draw()
   timer.set(Gfx::fticks*2);
   
   const Point base = Point(107, 13);
-  SpriteInfo fadeInGfx = LSI(DIPLOMAC, 51);
-  SpriteInfo speakingGfx = LSI(DIPLOMAC, 37);
   
-  if (timer >= fadeInGfx.count() && phase == Phase::FADING_IN)
+  const auto& gfx = GfxData::wizardGfx(wizard).diplomacy;
+
+  if (timer >= gfx.fadeIn.count() && phase == Phase::FADING_IN)
   {
     phase = Phase::SPEAKING;
     timer.resetCounter();
   }
-  else if (timer >= speakingGfx.count() && phase == Phase::SPEAKING)
+  else if (timer >= gfx.speaking.count() && phase == Phase::SPEAKING)
   {
     phase = Phase::WAIT;
     timer.resetCounter();
@@ -78,19 +80,28 @@ void DiplomacyView::draw()
   {
     case Phase::FADING_IN:
     {
-      Gfx::draw(fadeInGfx.frame(timer), base);
+      Gfx::draw(gfx.fadeIn.frame(timer), base);
       break;
     }
       
     case Phase::SPEAKING:
     {
-      Gfx::draw(speakingGfx.frame(timer % speakingGfx.count()), base);
+      Gfx::draw(gfx.speaking.frame(timer % gfx.speaking.count()), base);
       break;
     }
       
     case Phase::WAIT:
     {
-      Gfx::draw(speakingGfx.frame(frame/*speakingGfx.count()-1*/), base);
+      SpriteInfo info;
+      
+      switch (mood)
+      {
+        case Mood::HAPPY: info = gfx.mood.frame(0); break;
+        case Mood::ANGRY: info = gfx.mood.frame(1); break;
+        case Mood::NEUTRAL: info = gfx.mood.frame(2); break;
+      }
+      
+      Gfx::draw(info, base);
       break;
     }
       

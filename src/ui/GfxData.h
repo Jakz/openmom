@@ -68,10 +68,17 @@ struct WizardGfxSpec
   I18 name;
   SpriteInfo portraitSmall;
   SpriteInfo portraitLarge;
-  SpriteInfo diplomacyMood;
+  
   SpriteInfo gemmedPortrait;
   SpriteInfo researchPose;
   SpriteInfo summonPose;
+  
+  struct
+  {
+    SpriteInfo mood;
+    SpriteInfo speaking;
+    SpriteInfo fadeIn;
+  } diplomacy;
   
   SpriteInfo getGemmedPortrait(PlayerColor color) const;
 };

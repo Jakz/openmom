@@ -91,6 +91,7 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::MAINSCRN);
   lbx::Repository::loadLBX(LBXID::MAPBACK);
   lbx::Repository::loadLBX(LBXID::MONSTER);
+  lbx::Repository::loadLBX(LBXID::MOODWIZ);
   lbx::Repository::loadLBX(LBXID::NEWGAME);
   lbx::Repository::loadLBX(LBXID::PORTRAIT);
   lbx::Repository::loadLBX(LBXID::RELOAD);

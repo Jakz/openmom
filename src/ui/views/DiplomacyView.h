@@ -21,6 +21,13 @@ private:
     WAIT
   };
   
+  enum Mood
+  {
+    HAPPY,
+    ANGRY,
+    NEUTRAL
+  };
+  
   void draw() override;
   void drawPost() override { }
     
@@ -30,8 +37,12 @@ private:
   
   void setup();
   
+  
   DiscreteTimer timer;
+  
+  const Wizard* wizard;
   Phase phase;
+  Mood mood;
 
 public:
   DiplomacyView(ViewManager* gvm);
