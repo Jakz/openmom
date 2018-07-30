@@ -17,7 +17,8 @@ private:
   enum Phase
   {
     FADING_IN,
-    SPEAKING
+    SPEAKING,
+    WAIT
   };
   
   void draw() override;
