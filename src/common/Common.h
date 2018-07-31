@@ -140,6 +140,8 @@ public:
   const_iterator end() const { return data.end(); }
   
   void set(K key, const V& value) { data[static_cast<size_t>(key)] = value; }
+  void set(K key, V&& value) { data[static_cast<size_t>(key)] = value; }
+
   
   const V& operator[](K key) const { return data[static_cast<size_t>(key)]; }
   dummy_pair find(K key) const { return { operator[](key) }; }

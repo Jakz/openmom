@@ -130,7 +130,7 @@ static const Point gameOptionsButtonPositions[] = {
   { 251, 120 }
 };
 
-NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr, "", school_value_map(0)}), fonts{school_map<const FontSpriteSheet*>(nullptr)}
+NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr, "", school_value_map(0)}), fonts({FontPalette()})
 {
   nameField.setFace(new fonts::MediumBoldFont({158, 125, 101}));
   nameField.setOnCancel([this](){ switchToPhase(isPremadeWizard ? Phase::WIZARD_CHOICE : Phase::PORTRIT_CHOICE); });
@@ -147,6 +147,10 @@ NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr,
   fonts.tinyInactive = fonts::TinyFont::of({97, 73, 60}, {113, 85, 69}, {56, 31, 27});
   fonts.tinyGold = fonts::TinyFont::of({239, 166, 35}, {97, 73, 60}, {56, 31, 27});
   fonts.tinyRetortList = fonts::TinyFont::of({239, 166, 35}, {142, 97, 36}, {52, 40, 28});
+  
+  /* take from main palette directly? it should be 13th */
+  fonts.schoolFonts.set(School::LIFE, FontPalette::ofSolidWithLowShadow({219, 219, 219}, {0, 0, 0}));
+  
   
 }
 
@@ -547,6 +551,10 @@ void NewGameView::draw()
     {
       auto books = info.books[spellChoiceSchool];
       auto& mechanics = g->spellMechanics;
+      
+      const fonts::SerifFont titleFont(&fonts.schoolFonts[School::LIFE]);
+      
+      Fonts::drawString("Select Life Spells", &titleFont, 241, 5, ALIGN_CENTER);
       
       Gfx::draw(divider, {181, 18});
 

@@ -97,7 +97,7 @@ private:
   
   struct
   {    
-    school_map<const FontSpriteSheet*> schoolFonts;
+    school_map<FontPalette> schoolFonts;
     
     const FontSpriteSheet* darkBoldFont;
     const FontSpriteSheet* brightBoldFont;

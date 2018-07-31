@@ -142,9 +142,7 @@ namespace fonts
     const Palette* p = font->getPalette();
     return new SerifFont(new IndexedPalette({0, 0, 0, shadow, single, p->get(5), p->get(6), p->get(7), p->get(8)}));
   }
-
-
-  
+ 
   /* color indices: background, high shadow, edge stroke, low shadow, single pixels, main */
   const TinyFont* TinyFont::of(Color color, Color single, Color shadow) { return new TinyFont(new IndexedPalette({0, 0, 0, shadow, single, color})); }
   

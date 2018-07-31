@@ -37,7 +37,7 @@ enum TextAlign : u8
   ALIGN_LEFT
 };
 
-struct FontPalette
+struct FontPalette : public Palette
 {
   enum class Type
   {
@@ -47,6 +47,7 @@ struct FontPalette
   };
   
   Type type;
+  
   Color main;
   Color single;
 
@@ -54,12 +55,36 @@ struct FontPalette
   Color lowShadow;
   Color mixShadow;
   
+  FontPalette() { }
+  
+  FontPalette(Type type, Color main, Color single, Color highShadow, Color lowShadow, Color mixShadow) :
+    type(type), main(main), single(single), highShadow(highShadow), lowShadow(lowShadow), mixShadow(mixShadow) { }
+  
+  Color get(u8 index) const override
+  {
+    switch (index) {
+      case 0: return Color(0,0,0);
+      case 1: return highShadow;
+      case 2: return mixShadow;
+      case 3: return lowShadow;
+      case 4: return single;
+      case 5: return main;
+        
+      default: return main;
+    }
+  }
+  
 public:
   static FontPalette ofSolid(Color color) { return { Type::SOLID, color, color, 0, 0, 0 }; }
   static FontPalette ofSolid(Color color, Color single) { return { Type::SOLID, color, single, 0, 0, 0 }; }
   
   static FontPalette ofStroked(Color color, Color stroke) {
     return { Type::SOLID_WITH_FULL_STROKE, color, color, stroke, stroke, stroke };
+  }
+  
+  /* TODO: mix shadow transparent or not? */
+  static FontPalette ofSolidWithLowShadow(Color color, Color lowShadow) {
+    return { Type::SOLID_WITH_LOW_SHADOW, color, color, Color::NONE, lowShadow, Color::NONE };
   }
 };
 
@@ -137,7 +162,8 @@ public:
   FontSpriteSheet(FontData *data, color_list palette, s16 hor, s16 ver) : rawData(data), palette(new IndexedPalette(palette)), hor(hor), ver(ver) { }
 
 public:
-  ~FontSpriteSheet() { delete palette; }
+  // TODO: FontSpriteSheet shouldn't delete palette or we can't use addresses to temporary, check leaks and such
+  ~FontSpriteSheet() { /*delete palette;*/ }
   
   u32 at(u16 x, u16 y, u16 r = 0, u16 c = 0) const override
   {
@@ -197,7 +223,7 @@ namespace fonts
   
   class SerifFont : public SpecificFontFace<FONT_SERIF, SerifFont>
   {
-  private:
+  public:
     SerifFont(const Palette* palette) : SpecificFontFace<FONT_SERIF, SerifFont>(palette) { };
     
   private:
@@ -210,17 +236,6 @@ namespace fonts
     static const SerifFont* withStripes(const std::array<Color, 4>& stripes, Color single);
     static const SerifFont* withShadow(const SerifFont* font, Color shadow);
     static const SerifFont* withShadowAndSingle(const SerifFont* font, Color single, Color shadow);
-    
-    static const SerifFont* of(const FontPalette& palette)
-    {
-      /*switch (palette.type)
-      {
-        default: break;
-      };*/
-      
-      assert(false);
-      return nullptr;
-    }
   };
   
   class TinyFont : public SpecificFontFace<FONT_TINY, TinyFont>
