@@ -66,6 +66,7 @@ int main(int argc, char * arg[])
   lbx::Repository::loadLBX(LBXID::CMBMAGIC);
   lbx::Repository::loadLBX(LBXID::CMBTFX);
   lbx::Repository::loadLBX(LBXID::COMPIX);
+  lbx::Repository::loadLBX(LBXID::CONQUEST);
 
   lbx::Repository::loadLBX(LBXID::DIPLOMAC);
 
@@ -136,7 +137,7 @@ int main(int argc, char * arg[])
   
   /*Hero* unit = new Hero(*UnitSpec::heroSpec(UnitID::HERO_DWARF));
   SDL::gvm->unitDetailView()->setHeroHire(unit, 200);*/
-  SDL::gvm->switchView(VIEW_DIPLOMACY);
+  SDL::gvm->switchView(VIEW_NEW_GAME);
   
   //SDL::gvm->switchView(VIEW_DIPLOMACY);
   //SDL::gvm->switchView(VIEW_LBX);

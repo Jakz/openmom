@@ -52,6 +52,7 @@ private:
     PORTRIT_CHOICE,
     NAME_CHOICE,
     BOOKS_CHOICE,
+    SPELLS_CHOICE,
     RACE_CHOICE,
   };
   
@@ -69,6 +70,7 @@ private:
   
   Phase phase;
   u32 availablePicks;
+  School spellChoiceSchool;
   
   Settings settings;
   
@@ -117,6 +119,7 @@ public:
 
   bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   bool mouseDragged(u16 x, u16 y, MouseButton b) override {
+    //TODO: this works for spell books but it's buggy for other things, eg retorts
     if (b == MouseButton::BUTTON_LEFT)
       mouseReleased(x,y,b);
     return true;

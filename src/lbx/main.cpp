@@ -523,8 +523,18 @@ public:
           
           int S = doubleScaleCheckbox->isToggled ? 4 : 2;
           const size_t spriteIndex = isAnimated ? ((ticks/5)%sprite->count) : i;
-
-          drawSprite(sprite->data[spriteIndex], sprite->width, sprite->height, sx, sy, S, defaultPaletteCheckbox->isToggled ? nullptr : sprite->palette);
+          const auto* palette = sprite->palette;
+          
+          /* forced palettes */
+          if (currentLBX->ident == LBXID::CONQUEST)
+          {
+            const LBXFile& file = Repository::holderForID(LBXID::WIZLAB);
+            if (file.sprites[19])
+              palette = file.sprites[19]->palette;
+          }
+          
+          
+          drawSprite(sprite->data[spriteIndex], sprite->width, sprite->height, sx, sy, S, defaultPaletteCheckbox->isToggled ? nullptr : palette);
 
           // draw palette
           

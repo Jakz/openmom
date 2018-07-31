@@ -12,6 +12,48 @@
 
 using namespace std;
 
+u32 SpellMechanics::guaranteedSpellAmountForRarity(SpellRarity rarity, u32 books)
+{
+  // no benefits from more than 11 books
+  if (books > 11)
+    books = 11;
+  
+  if (rarity == SpellRarity::COMMON)
+    return books - 1;
+  else if (rarity == SpellRarity::UNCOMMON && books == 11)
+    return 2;
+  else if (rarity == SpellRarity::RARE && books == 11)
+    return 1;
+  else
+    return 0;
+}
+
+enum_simple_map<SpellRarity, s32, 4> SpellMechanics::guaranteedSpells(u32 books)
+{
+  return enum_simple_map<SpellRarity, s32, 4>({
+    { SpellRarity::COMMON, guaranteedSpellAmountForRarity(SpellRarity::COMMON, books) },
+    { SpellRarity::UNCOMMON, guaranteedSpellAmountForRarity(SpellRarity::UNCOMMON, books) },
+    { SpellRarity::RARE, guaranteedSpellAmountForRarity(SpellRarity::RARE, books) },
+    { SpellRarity::VERY_RARE, guaranteedSpellAmountForRarity(SpellRarity::VERY_RARE, books) }
+  });
+}
+
+u32 SpellMechanics::researchableSpellAmountForRarity(SpellRarity rarity, School school, u32 books)
+{
+  static enum_simple_map<SpellRarity, std::array<u8, 12>, 4> data = {
+    { SpellRarity::COMMON,    { {0, 3, 5, 6, 7, 8, 9, 10, 10, 10, 10, 10} } },
+    { SpellRarity::UNCOMMON,  { {0, 1, 2, 3, 4, 5, 6,  8, 10, 10, 10, 10} } },
+    { SpellRarity::RARE,      { {0, 0, 1, 2, 3, 4, 5,  6,  7,  9, 10, 10} } },
+    { SpellRarity::VERY_RARE, { {0, 0, 0, 1, 2, 3, 4,  5,  6,  7, 10, 10} } },
+  };
+  
+  // no benefits from more than 11 books
+  if (books > 11)
+    books = 11;
+  
+  return data[rarity][books];
+}
+
 bool SpellMechanics::isGlobalAllowed(const Player *player, const Spell *spell)
 {
   auto spells = player->getSpells();

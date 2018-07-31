@@ -36,6 +36,8 @@ template<> s32 ValuesMechanics::get<s32>(Value value)
   switch (value)
   {
     case Value::WARPED_NODE_POWER_MALUS: return 5;
+    
+    case Value::MAX_RETORTS_FOR_NEW_WIZARD: return 6;
       
     default: assert(false); return 0;
   }

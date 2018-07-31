@@ -12,6 +12,9 @@
 #include "UnitDraw.h"
 #include "CommonDraw.h"
 
+#include "game/Game.h"
+#include "game/mechanics/SpellMechanics.h"
+
 #include "format.h"
 
 #include "Messages.h"
@@ -109,7 +112,13 @@ enum sprite_id : sprite_ref
   wizard_choice_bg = LBXI(NEWGAME, 8),
   portrait_choice_bg = LBXI(NEWGAME, 39),
   name_choice_bg = LBXI(NEWGAME, 40),
-  spell_choice_bg = LBXI(NEWGAME, 41),
+  books_choice_bg = LBXI(NEWGAME, 41),
+  
+  divider = LBXI(NEWGAME, 47),
+  
+  dark_region_1 = LBXI(NEWGAME, 48),
+  dark_region_2 = LBXI(NEWGAME, 49),
+  dark_region_3 = LBXI(NEWGAME, 50),
   
   checkmark = LBXI(NEWGAME, 52)
 };
@@ -144,16 +153,16 @@ NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr,
 void NewGameView::activate()
 {
   info.portrait = Data::wizard("kali"); //TODO nullptr
-  info.books = school_value_map({{CHAOS, 3}, {LIFE, 4}, {SORCERY, 0},  {ARCANE, 0}, {DEATH, 0}, {NATURE, 0}}); //TODO school_value_map(0);
+  info.books = school_value_map({{CHAOS, 3}, {LIFE, 4}, {SORCERY, 0},  {ARCANE, 0}, {DEATH, 0}, {NATURE, 5}}); //TODO school_value_map(0);
   info.name = "Jack"; // "";
-  info.retorts.insert(Data::retort("archmage")); // ...
+  /*info.retorts.insert(Data::retort("archmage")); // ...
   info.retorts.insert(Data::retort("conjurer"));
   info.retorts.insert(Data::retort("node_mastery"));
-  info.retorts.insert(Data::retort("charismatic"));
+  info.retorts.insert(Data::retort("charismatic"));*/
   isPremadeWizard = false; // TODO true
   
-  
-  switchToPhase(Phase::BOOKS_CHOICE);
+  spellChoiceSchool = School::LIFE;
+  switchToPhase(Phase::SPELLS_CHOICE);
   
   nameField.setPosition(Point(194,35));
   nameField.setText("Lo Pan");
@@ -213,7 +222,6 @@ void NewGameView::booksPicked(School school, u16 amount)
 {
   int dx = amount - info.books[school];
   
-  
   /* we're removing books, alwasys do it then check for broken retorts */
   if (dx < 0)
   {
@@ -238,6 +246,9 @@ void NewGameView::booksPicked(School school, u16 amount)
   bookPhaseOkButton->activateIf(freePicks() == 0);
 }
 
+//TODO: use value from ValueMechanics
+static constexpr s32 MAX_RETORTS = 6;
+
 void NewGameView::retortToggled(const Retort* retort)
 {
   //TODO: localize (this will be a problem for plurals )
@@ -246,12 +257,15 @@ void NewGameView::retortToggled(const Retort* retort)
   static const std::string no_enough_books_school_prefix = "To select %s you need:   ";
   static const std::string no_enough_books_any_school = "%d pick%s in any %sRealm%s of Magic";
   static const std::string no_enough_books_specific_school = "%d pick%s in %s Magic";
+  static const std::string too_many_retorts = "You may not select more than 6 special abilities";
 
   
   if (info.retorts.find(retort) != info.retorts.end())
     info.retorts.erase(retort);
-  else if (retort->canBePicked(freePicks(), info.books))
+  else if (info.retorts.size() < MAX_RETORTS && retort->canBePicked(freePicks(), info.books))
     info.retorts.insert(retort);
+  else if (info.retorts.size() >= MAX_RETORTS)
+    errorMessage(too_many_retorts);
   else if (freePicks() == 0)
     errorMessage(no_picks_available);
   else
@@ -411,7 +425,31 @@ void NewGameView::switchToPhase(Phase phase)
       bookPhaseOkButton = addButton(Button::buildOffsetted("books_choice_ok", 252, 182, LSI(NEWGAME, 42), LSI(NEWGAME, 43)));
       bookPhaseOkButton->deactivate();
       
+      bookPhaseOkButton->setAction([this] () {
+        /* if any school has > 1 books we must switch to spell choice */
+        if (std::any_of(info.books.begin(), info.books.end(), [] (s16 c) { return c > 1; }))
+        {
+          for (School school : CommonDraw::schools)
+          {
+            if (info.books[school] > 1)
+            {
+              spellChoiceSchool = school;
+              break;
+            }
+          }
+    
+          switchToPhase(Phase::SPELLS_CHOICE);
+        }
+      });
+      
       break;
+    }
+      
+    case Phase::SPELLS_CHOICE:
+    {
+      //TODO: background
+      bookPhaseOkButton = addButton(Button::buildOffsetted("spells_choice_ok", 252, 182, LSI(NEWGAME, 42), LSI(NEWGAME, 43)));
+      bookPhaseOkButton->deactivate();
     }
   }
   
@@ -465,7 +503,7 @@ void NewGameView::draw()
       
     case Phase::BOOKS_CHOICE:
     {
-      Gfx::draw(spell_choice_bg, 0, 0);
+      Gfx::draw(books_choice_bg, 0, 0);
       Fonts::drawString(std::to_string(availablePicks - countPicks())+ " picks", fonts.brightBoldFont, 221, 184, ALIGN_CENTER);
       
       /* draw spellbooks */
@@ -487,7 +525,7 @@ void NewGameView::draw()
         {
           const Retort* retort = *it;
           
-          bool canBePicked = retort->canBePicked(availablePicks - countPicks(), info.books);
+          bool canBePicked = info.retorts.size() < MAX_RETORTS && retort->canBePicked(availablePicks - countPicks(), info.books);
           const FontSpriteSheet* font = canBePicked ? fonts.tinyBright : fonts.tinyInactive;
           
           Point pos = Point(X[i / H], Y + (i % H) * RH);
@@ -502,9 +540,23 @@ void NewGameView::draw()
         }
       }
 
+      break;
+    }
       
+    case Phase::SPELLS_CHOICE:
+    {
+      auto books = info.books[spellChoiceSchool];
+      auto& mechanics = g->spellMechanics;
       
+      Gfx::draw(divider, {181, 18});
 
+      Gfx::draw(dark_region_1, {167, 37});
+      
+      Gfx::draw(dark_region_2, {167, 37+51});
+      
+      Gfx::draw(dark_region_3, {167, 37+51+51});
+
+      
       break;
     }
   }

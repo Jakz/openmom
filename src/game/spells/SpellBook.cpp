@@ -8,47 +8,6 @@
 
 using namespace std;
 
-u16 SpellBook::guaranteedSpellAmountForRarity(SpellRarity rarity, u16 books)
-{
-  // no benefits from more than 11 books
-  if (books > 11)
-    books = 11;
-  
-  if (rarity == SpellRarity::COMMON)
-    return books - 1;
-  else if (rarity == SpellRarity::UNCOMMON && books == 11)
-    return 2;
-  else if (rarity == SpellRarity::RARE && books == 11)
-    return 1;
-  else
-    return 0;
-}
-
-u16 SpellBook::researchableSpellAmountForRarity(SpellRarity rarity, School school, u16 books)
-{
-  static u8 common[] = {0,3,5,6,7,8,9,10,10,10,10,10};
-  static u8 uncommon[] = {0,1,2,3,4,5,6,8,10,10,10,10};
-  static u8 rare[] = {0,0,1,2,3,4,5,6,7,9,10,10};
-  static u8 very_rare[] ={0,0,0,1,2,3,4,5,6,7,10,10};
-  
-  // no benefits from more than 11 books
-  if (books > 11)
-    books = 11;
-  
-  u8* ptr = nullptr;
-  
-  switch (rarity)
-  {
-    case SpellRarity::COMMON: ptr = common; break;
-    case SpellRarity::UNCOMMON: ptr = uncommon; break;
-    case SpellRarity::RARE: ptr = rare; break;
-    case SpellRarity::VERY_RARE: ptr = very_rare; break;
-    default: return 0;
-  }
-  
-  return ptr[books];
-}
-
 s16 SpellBook::turnsToCompleteResearch(const Spell* spell) const
 {
   s16 turns = spell->mana.researchCost / player.researchPoints();
@@ -88,6 +47,8 @@ void SpellBook::startCast(const Spell* spell)
 
 void SpellBook::fillPool()
 {
+  auto& mechanics = player.game()->spellMechanics;
+  
   s8 currentStatus[SCHOOL_COUNT][(size_t)SpellRarity::COUNT] = {};
   s8 requiredStatus[SCHOOL_COUNT][(size_t)SpellRarity::COUNT] = {};
   
@@ -97,7 +58,7 @@ void SpellBook::fillPool()
   for (int i = 0; i < SCHOOL_COUNT; ++i)
     for (int j = 0; j < (size_t)SpellRarity::COUNT; ++j)
     {
-      requiredStatus[i][j] = researchableSpellAmountForRarity(static_cast<SpellRarity>(j), static_cast<School>(i), booksForSchool(static_cast<School>(i)));
+      requiredStatus[i][j] = mechanics.researchableSpellAmountForRarity(static_cast<SpellRarity>(j), static_cast<School>(i), booksForSchool(static_cast<School>(i)));
       requiredStatus[i][j] -= currentStatus[i][j];
     }
   

@@ -1047,11 +1047,14 @@ struct Wizard
   Wizard() : defaultBooks(0) { }
 };
 
+class Spell;
+
 struct PlayerSetupInfo
 {
   const Wizard* portrait;
   std::string name;
   school_value_map books;
+  enum_simple_map<School, std::vector<const Spell*>, 5> spells;
   std::set<const Retort*> retorts;
   PlayerColor color;
 };

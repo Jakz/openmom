@@ -12,6 +12,7 @@ class SpellCast;
 class VariableSpellCast;
 class Game;
 class UnitSpell;
+enum class SpellRarity : u8;
 
 class SpellMechanics
 {
@@ -32,6 +33,11 @@ public:
   s32 actualResearchGain(const Player* player, const Spell* spell);
   
   bool willDispel(const SpellCast& cast, const SpellCast& dispelCast);
+  
+  u32 guaranteedSpellAmountForRarity(SpellRarity rarity, u32 books);
+  enum_simple_map<SpellRarity, s32, 4> guaranteedSpells(u32 books);
+  
+  u32 researchableSpellAmountForRarity(SpellRarity rarity, School school, u32 books);
 };
 
 #endif

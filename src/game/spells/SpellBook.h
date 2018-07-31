@@ -48,9 +48,6 @@ typedef std::map<const Spell*, bool, SpellComparatorByResearch> spell_map;
 class SpellBook
 {
 private:
-  static u16 guaranteedSpellAmountForRarity(SpellRarity rarity, u16 books);
-  static u16 researchableSpellAmountForRarity(SpellRarity rarity, School school, u16 books);
-  
   spell_map spells;
   Player& player;
   
