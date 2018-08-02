@@ -1,17 +1,12 @@
 #include "Path.h"
 #include "platform/platform.h"
 
-class PlatformOSX : public Platform
+class PlatformWin : public Platform
 {
 public:
   Path getResourcePath() const override
   {
-#ifdef CMAKE_BUILD
-    return "Z:\c++\openmom\data";
-#else
-    NSString* nspath = [[NSBundle mainBundle] resourcePath];
-    return Path([nspath UTF8String]);
-#endif
+    return "C:\\Users\\Jack\\Documents\\dev\\openmom";
   }
 
   bool exists(const Path& path) const override
@@ -29,7 +24,7 @@ public:
 
 Platform* Platform::instance()
 {
-  static PlatformOSX platform;
+  static PlatformWin platform;
   return &platform;
 }
 

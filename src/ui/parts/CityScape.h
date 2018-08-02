@@ -41,7 +41,8 @@ private:
   static std::map<const City*, CityLayout*> layouts;
 
   
-  static struct {
+  static struct GfxComparator 
+  {
     bool operator()(const Building *b1, const Building* b2) const
     {
       const BuildingSpecs& s1 = specs[b1];

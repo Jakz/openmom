@@ -56,7 +56,7 @@ public:
   
   void generate(combat::CombatUnit* unit, std::function<value_type(combat::CombatUnit*, s32)> generator)
   {
-    for (s32 i = 0; i < size(); ++i)
+    for (u32 i = 0; i < size(); ++i)
       (*this)[i] = generator(unit, i);
   }
 };

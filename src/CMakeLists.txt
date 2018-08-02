@@ -17,11 +17,12 @@ if (APPLE)
   )
   set(YAML_LIBRARY_BINARY "${LIBRARY_FOLDER}/yaml/lib/osx/libyaml-cpp.a")
 elseif(WIN32)
-   set_target_properties(YAML_LIBRARY PROPERTIES IMPORTED_LOCATION
-    ${LIBRARY_FOLDER}/yaml/lib/win_x86/yaml-cpp.lib
-  )
-  set(YAML_LIBRARY_BINARY "${LIBRARY_FOLDER}/yaml/lib/win_x86/yaml-cpp.lib")
+  #set_target_properties(YAML_LIBRARY PROPERTIES IMPORTED_LOCATION
+  #  ${LIBRARY_FOLDER}/yaml/lib/win_x86/yaml-cpp.lib
+  #)
+  #set(YAML_LIBRARY_BINARY "${LIBRARY_FOLDER}/yaml/lib/win_x86/yaml-cpp.lib")
 
+  set(YAML_LIBRARY_BINARY "${LIBRARY_FOLDER}/yaml/lib/win_x86/libyaml-cppmdd.lib")
 
   #add_library(SDL2_LIBRARY STATIC IMPORTED)
   #set_target_properties(SDL2_LIBRARY PROPERTIES IMPORTED_LOCATION
@@ -29,7 +30,6 @@ elseif(WIN32)
   #)
   set(SDL2_LIBRARY "${LIBRARY_FOLDER}/sdl2/win/lib/x86/SDL2.lib")
   set(SDL2_IMAGE_LIBRARIES "${LIBRARY_FOLDER}/sdl2/win/lib/x86/SDL2_image.lib")
-
 elseif (UNIX)
   
 endif()
@@ -50,7 +50,6 @@ include_directories(
   game/units
   game/world
   gfx
-  gfx/filters
   i18n
   lbx
   platform
@@ -58,9 +57,6 @@ include_directories(
   ui
   ui/animations
   ui/parts
-  ui/views
-  ui/views/debug
-  ui/views/extra
 )
 
 add_subdirectory(common)
@@ -103,3 +99,11 @@ set(LIBRARIES
 
 target_link_libraries(openmom ${LIBRARIES})
 #target_link_libraries(openmom-tests ${LIBRARIES})
+
+#if(WIN32)
+#  add_custom_command(TARGET openmom POST_BUILD
+#	COMMAND ${CMAKE_COMMAND} -E copy_directory
+#	"${LIBRARY_FOLDER}/sdl2/win/lib/x86/SDL2.dll"
+#	${CMAKE_BINARY_DIR}
+# )
+#endif()

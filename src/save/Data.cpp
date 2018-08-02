@@ -12,6 +12,12 @@
 
 #if defined(DEBUG)
 template<> const char* Data::nameForDataType<const Retort*>() { return "Retort"; }
+template<> const char* Data::nameForDataType<const UnitSpec*>() { return "UnitSpec"; }
+template<> const char* Data::nameForDataType<const Spell*>() { return "Spell"; }
+template<> const char* Data::nameForDataType<const Race*>() { return "Race"; }
+template<> const char* Data::nameForDataType<const Wizard*>() { return "Wizard"; }
+template<> const char* Data::nameForDataType<const Skill*>() { return "Skill"; }
+template<> const char* Data::nameForDataType<const Building*>() { return "Building"; }
 #endif
 
 experience_levels Data::normalUnitLevels;

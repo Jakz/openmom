@@ -189,11 +189,14 @@ void MapEditorView::activate()
   world->fill(TileType::GRASS, Plane::MYRRAN);
   world->calcSubTiles();*/
   
+	//TODO: constructor is not found in MSVC2017
+#if !defined(_WIN32)
   Path path = "/Users/jack/Desktop/mom3x.app/Contents/Resources/mom/SAVE1.GAM";
   osave::OriginalSaveGame save(path);
   
   if (save.isLoaded())
     this->world = save.getWorld();
+#endif
   
   minimap = new MiniMap(world);
   minimap->discover(Rect(0,0,60,40), Plane::ARCANUS);

@@ -1,5 +1,6 @@
 #include <iostream>
 
+#define SDL_MAIN_HANDLED
 #include "SDL.h"
 
 #include "SDLHelper.h"
@@ -14,7 +15,7 @@
 
 #include "YAML.h"
 
-#include "UnitDetailView.h"
+#include "ui/views/UnitDetailView.h"
 
 /*
  Combat
@@ -41,9 +42,7 @@ void init()
   //gen.generate();
 }
 
-
-
-int main(int argc, char * arg[])
+int main(int argc, char* arg[])
 {
   yaml::parse();
   //return 0;

@@ -31,6 +31,9 @@ public:
   
   Path append(const Path& path) const;
   Path appendExt(const std::string &ext) const;
+
+  Path convertSeparatorToWindows() const;
+
   
   friend std::ostream& operator<<(std::ostream& os, const class Path& path) { os << path.data; return os; }
 };

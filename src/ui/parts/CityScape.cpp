@@ -11,7 +11,6 @@
 
 using namespace std;
 
-
 //TODO: finish conversion using LBX entries
 unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
   {Building::MAGE_FORTRESS,      BuildingSpecs(LSI(CITYSCAP, 40),  0, 2, 3)},
@@ -55,6 +54,9 @@ unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
   
   {Building::SUMMONING_CIRCLE,   BuildingSpecs(LSI(CITYSCAP, 6), 25, 3, 2)}
 };
+
+
+CityLayout::GfxComparator CityLayout::GFX_COMPARATOR;
 
 map<const City*, CityLayout*> CityLayout::layouts;
 

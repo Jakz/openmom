@@ -11,7 +11,7 @@
 #include "Font.h"
 #include "Gfx.h"
 
-#include "Hqx.h"
+#include "gfx/filters/Hqx.h"
 
 #include "ViewManager.h"
 

@@ -12,10 +12,10 @@ elseif(UNIX)
 elseif(WIN32)
 #set(SDL2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/sdl2)
 set(SDL2_LIBRARY C:\\SDL\\SDL2\\lib)
-set(SDL2_INCLUDE_DIR C:\\SDL\\SDL2\\include)
+set(SDL2_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}\\libs\\sdl2\\win\\include)
 
 set(SDL2_IMAGE_LIBRARY C:\\SDL\\SDL2_image\\lib)
-set(SDL2_IMAGE_INCLUDE_DIR C:\\SDL\\SDL2_image\\include)
+set(SDL2_IMAGE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}\\libs\\sdl2\\win\\include)
 endif()
 
 
@@ -31,29 +31,34 @@ elseif(WIN32)
   add_compile_options(/wd4996) # this function or variable may be unsafe
   add_compile_options(/wd4390) # empty controlled statement found
   add_compile_options(/wd4715) # not all control paths return a value
+
+  add_compile_options(/Zi)
+
+  #add_definitions(-DYAML_CPP_DLL)
 endif()
 
-
-add_definitions(-DCMAKE_BUILD)
-if (DEBUG_LEVEL)
-  add_definitions(-DDEBUG=${DEBUG_LEVEL})
+if(!WIN32)
+  add_definitions(-DCMAKE_BUILD)
+  if (DEBUG_LEVEL)
+    add_definitions(-DDEBUG=${DEBUG_LEVEL})
+  endif()
 endif()
 
 #set(BASE_FLAGS "${BASE_FLAGS} -fno-rtti -fno-exceptions")
 
 if (WIN32)
-set(DEBUG_FLAGS "")
+set(DEBUG_FLAGS "-DDEBUG:FULL")
 else()
 set(DEBUG_FLAGS "-O0 -g -fstandalone-debug")
 endif()
 
 
-set(CMAKE_CXX_FLAGS_DEBUG "${DEBUG_FLAGS} -DDEBUG=1 ${BASE_FLAGS}" CACHE FILEPATH "cache")
+set(CMAKE_CXX_FLAGS_DEBUG "${DEBUG_FLAGS} ${BASE_FLAGS}" CACHE FILEPATH "cache")
 set(CMAKE_CXX_FLAGS_MINSIZEREL "-O3 -flto -DNDEBUG ${BASE_FLAGS}" CACHE FILEPATH "cache")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -flto -DNDEBUG ${BASE_FLAGS}" CACHE FILEPATH "cache")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -flto -g ${BASE_FLAGS}" CACHE FILEPATH "cache")
 
-set(CMAKE_C_FLAGS_DEBUG "${DEBUG_FLAGS} -DDEBUG=1" CACHE FILEPATH "cache")
+set(CMAKE_C_FLAGS_DEBUG "${DEBUG_FLAGS}" CACHE FILEPATH "cache")
 set(CMAKE_C_FLAGS_MINSIZEREL "-Os -DNDEBUG" CACHE STRING "" FORCE)
 set(CMAKE_C_FLAGS_RELEASE "-flto -O3 -DNDEBUG" CACHE STRING "" FORCE)
 set(CMAKE_C_FLAGS_RELWITHDEBINFO "-O3 -flto -g" CACHE STRING "" FORCE)

@@ -333,8 +333,8 @@ struct Point
   int_type x;
   int_type y;
   
-  Point() : x(-1), y(-1) { }
-  Point(int_type x, int_type y) : x(x), y(y) { }
+  Point() noexcept : x(-1), y(-1) { }
+  Point(int_type x, int_type y) noexcept : x(x), y(y) { }
   Point(const Size& size);
   template<typename T, typename std::enable_if<std::is_base_of<Point, T>::value, int>::type = 0>
   Point(const T& other) : x(other.x), y(other.y) { }

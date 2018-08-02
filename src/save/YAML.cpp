@@ -16,6 +16,13 @@
 #include "Effects.h"
 #include "Items.h"
 
+#include <fstream>
+
+//TODO: no idea why symbol is not found in lib by linker
+/*#ifdef _WIN32
+std::string YAML::detail::node_data::empty_scalar;
+#endif*/
+
 #define PARSE_ERROR(x, ...) do { LOGD("[yaml] parse error: " x, __VA_ARGS__); } while (false)
 
 #define FETCH_OR_FAIL(name, map, n) do { \
@@ -88,12 +95,23 @@ bool operator==(const N& n, const std::string& string) { return n.Scalar() == st
 N yaml::parse(const std::string& fileName)
 {
   currentFile = fileName;
-  return N(YAML::LoadFile(yamlPath(fileName)));
+  std::string path = yamlPath(fileName);
+
+  std::string content = file_handle(path, file_mode::READING).toString();
+
+  Node node = YAML::Load(content.c_str());
+
+  return N(node);
 }
 
 Path yaml::yamlPath(const std::string& fileName)
 {
   Path path = Platform::instance()->getResourcePath() + "/data/yaml/" + fileName;
+
+#ifdef _WIN32
+  path = path.convertSeparatorToWindows();
+#endif
+
   
   if (!path.exists())
   {

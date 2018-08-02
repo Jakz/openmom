@@ -5,7 +5,7 @@
 #include "Font.h"
 
 #include "Unit.h"
-#include "CombatView.h"
+#include "ui/views/CombatView.h"
 
 #include "LBX.h"
 

@@ -2,7 +2,10 @@
 
 #include "platform.h"
 
+#include <algorithm>
+
 static constexpr const char SEPARATOR = '/';
+static constexpr const char WIN_SEPARATOR = '\\';
 
 bool endsWith(const std::string& str, char c)
 {
@@ -14,6 +17,12 @@ bool startsWith(const std::string& str, char c)
   return str.front() == c;
 }
 
+Path Path::convertSeparatorToWindows() const
+{
+  std::string ndata = data;
+  std::replace(ndata.begin(), ndata.end(), SEPARATOR, WIN_SEPARATOR);
+  return Path(ndata);
+}
 
 Path Path::append(const Path& path) const
 {

@@ -169,7 +169,7 @@ public:
   }
   
 #if defined(DEBUG)
-  template<typename T> static const char* nameForDataType() { return "unnamed"; }
+  template<typename T> static const char* nameForDataType();// { return "unnamed"; }
   
   template<typename T> static std::string getInfo(T data)
   {
