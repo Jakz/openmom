@@ -217,8 +217,12 @@ namespace fonts
   class MediumBoldFont : public SpecificFontFace<FONT_MEDIUM_THICK, MediumBoldFont>
   {
   public:
+    MediumBoldFont(const Palette* palette) : SpecificFontFace<FONT_MEDIUM_THICK, MediumBoldFont>(palette) { };
     MediumBoldFont(Color color);
     MediumBoldFont(Color color, Color shadow);
+    
+  private:
+
   };
   
   class SerifFont : public SpecificFontFace<FONT_SERIF, SerifFont>

@@ -553,17 +553,43 @@ void NewGameView::draw()
       auto& mechanics = g->spellMechanics;
       
       const fonts::SerifFont titleFont(&fonts.schoolFonts[School::LIFE]);
+      const fonts::MediumBoldFont headerFont(&fonts.schoolFonts[School::LIFE]);
       
-      Fonts::drawString("Select Life Spells", &titleFont, 241, 5, ALIGN_CENTER);
-      
+      Fonts::drawString("Select Life Spells", &titleFont, 241, 5, ALIGN_CENTER); //TODO: localize
+
+      /* top divider */
       Gfx::draw(divider, {181, 18});
-
-      Gfx::draw(dark_region_1, {167, 37});
       
-      Gfx::draw(dark_region_2, {167, 37+51});
       
-      Gfx::draw(dark_region_3, {167, 37+51+51});
+      static const char* raritiesNames[] = { "Common", "Uncommon", "Rare" }; //TODO: localize
+      static const std::array<SpellRarity, 3> rarities = { SpellRarity::COMMON, SpellRarity::UNCOMMON, SpellRarity::RARE };
+      u32 slotIndex = 0;
+      
+      for (size_t i = 0; i < rarities.size(); ++i)
+      {
+        SpellRarity rarity = rarities[i];
+        auto guaranteed = i > 0 ? 2 : 0; // mechanics.guaranteedSpellAmountForRarity(SpellRarity::COMMON, books);
+        
+        if (guaranteed > 0)
+        {
+          Fonts::drawString(fmt::sprintf("%s: %d", raritiesNames[i], guaranteed), &headerFont, 166, 37 - 12 + 51*slotIndex, ALIGN_LEFT);
+          Gfx::draw(SpriteInfo(dark_region_1).relative(slotIndex), Point(167, 37 + 51*slotIndex));
+          
+          //TODO: dummy data
+          const char* spellNames[] = { "True Sight", "Plane Shift", "Resurrection", "Dispel Evil", "Planar Seal", "Unicorns", "Raise Dead", "Planar Travel", "Heavenly Light", "Prayer" };
+          const static u32 X[] = { 174, 248 };
 
+          
+          constexpr size_t SPELLS_PER_COLUMN = 5;
+          for (size_t s = 0; s < 10; ++s)
+          {
+            Point p = Point(X[(s / SPELLS_PER_COLUMN)], 38 + 51*slotIndex + (s % SPELLS_PER_COLUMN)*7);
+            Fonts::drawString(spellNames[s], fonts.tinyBright, p.x, p.y, ALIGN_LEFT);
+          }
+          
+          ++slotIndex;
+        }
+      }
       
       break;
     }
