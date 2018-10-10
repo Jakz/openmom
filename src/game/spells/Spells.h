@@ -20,7 +20,9 @@ enum class SpellRarity : u32
   RARE,
   VERY_RARE,
   
-  COUNT
+  COUNT,
+  
+  NONE
 };
 
 enum class SpellType : u8

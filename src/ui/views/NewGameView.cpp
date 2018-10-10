@@ -315,6 +315,44 @@ void NewGameView::retortToggled(const Retort* retort)
   bookPhaseOkButton->activateIf(freePicks() == 0);
 }
 
+const Spell* NewGameView::spellForSlot(SpellRarity rarity, School school, s32 slot)
+{
+  static std::array<Spell*, 10> spells = { { nullptr } };
+
+  const char* spellNames[] = { "True Sight", "Plane Shift", "Resurrection", "Dispel Evil", "Planar Seal", "Unicorns", "Raise Dead", "Planar Travel", "Heavenly Light", "Prayer" };
+  
+  if (!spells[0])
+    for (int i = 0; i < 10; ++i)
+      spells[i] = new Spell(I18::SPELL_HEALING, SpellType::UNIT_SKILL, rarity, SpellKind::UNIT_SPELL, SpellDuration::PERMANENT, school, Target::FRIENDLY_UNIT, ManaInfo(0,0,0,0,0,0));
+
+  return spells[slot];
+}
+
+void NewGameView::spellToggled(const Spell* spell)
+{
+  std::set<const Spell*>& picks = info.spells[spell->school][spell->rarity];
+  
+  auto it = picks.find(spell);
+  
+  if (it == picks.end())
+  {
+    if (spellChoiceData.spellChoicePicks[spell->school][spell->rarity] == 0)
+    {
+      errorMessage("You have no picks left in this area, to deselect click on a selected item"); //TODO: localize
+      return;
+    }
+    
+    picks.insert(spell);
+    --spellChoiceData.spellChoicePicks[spell->school][spell->rarity];
+  }
+  else
+  {
+    picks.erase(it);
+    ++spellChoiceData.spellChoicePicks[spell->school][spell->rarity];
+  }
+ 
+}
+
 void NewGameView::switchToPhase(Phase phase)
 {
   const auto* face = fonts.darkBoldFont;
@@ -460,14 +498,29 @@ void NewGameView::switchToPhase(Phase phase)
       for (const School school : Data::schoolsWithoutArcane())
       {
         auto&& guaranteed = g->spellMechanics.guaranteedSpells(school, info.books[school]);
-        spellChoiceData.spellChoiceTotals.set(school, guaranteed);
-        spellChoiceData.spellChoicePicks.set(school, spell_rarity_map<s32>(0));
+        spellChoiceData.spellChoiceTotals[school] = guaranteed;
+        spellChoiceData.spellChoicePicks[school] = guaranteed;
       }
+      
+      spellChoiceData.shownRarities[0] = SpellRarity::COMMON;
+      spellChoiceData.shownRarities[1] = optional<SpellRarity>();
+
     }
   }
   
   this->phase = phase;
 }
+
+struct SpellChoice
+{
+  static constexpr s32 X[] = { 174, 248, 316 };
+  static constexpr s32 ROWS = 5;
+  static constexpr s32 ROW_HEIGHT = 7;
+  static constexpr s32 BASE_Y = 38;
+  static constexpr s32 DELTA_Y = 51;
+};
+
+constexpr s32 SpellChoice::X[];
 
 void NewGameView::draw()
 {
@@ -560,6 +613,7 @@ void NewGameView::draw()
     {
       const School school = spellChoiceData.currentSchool;
       
+      const auto& scd = spellChoiceData;
       const auto& schoolGfx = GfxData::schoolGfxSpec(school);
       
       const fonts::SerifFont titleFont(&fonts.schoolFonts[school]);
@@ -571,40 +625,44 @@ void NewGameView::draw()
       Gfx::draw(divider, {181, 18});
       /* bottom frame - no black border but in original game there is, why? */
       Gfx::draw(bottom_box_spell_choice, {196, 180});
-      
-      
-      static const char* raritiesNames[] = { "Common", "Uncommon", "Rare" }; //TODO: localize
-      static const std::array<SpellRarity, 3> rarities = { SpellRarity::COMMON, SpellRarity::UNCOMMON, SpellRarity::RARE };
+
+      static const spell_rarity_map<std::string> raritiesNames = {{ SpellRarity::COMMON, "Common" }, { SpellRarity::UNCOMMON, "Uncommon" }, { SpellRarity::RARE, "Rare" }, { SpellRarity::VERY_RARE, "Very Rare" }};
+
       u32 slotIndex = 0;
       
-      for (size_t i = 0; i < rarities.size(); ++i)
+      
+      for (s32 i = 0; i < scd.shownRarities.size(); ++i)
       {
-        const SpellRarity rarity = rarities[i];
-        auto guaranteed = spellChoiceData.spellChoiceTotals[school][rarity];
-        
-        if (guaranteed > 0)
+        if (scd.shownRarities[i].isPresent())
         {
-          Fonts::drawString(fmt::sprintf("%s: %d", raritiesNames[i], guaranteed), &headerFont, 166, 37 - 12 + 51*slotIndex, ALIGN_LEFT);
-          Gfx::draw(SpriteInfo(dark_region_1).relative(slotIndex), Point(167, 37 + 51*slotIndex));
-          
-          //TODO: dummy data
-          const char* spellNames[] = { "True Sight", "Plane Shift", "Resurrection", "Dispel Evil", "Planar Seal", "Unicorns", "Raise Dead", "Planar Travel", "Heavenly Light", "Prayer" };
-          const static u32 X[] = { 174, 248 };
+          const SpellRarity rarity = scd.shownRarities[i];
+          const Spell* spell = spellForSlot(rarity, school, i);
 
+          auto guaranteed = scd.spellChoiceTotals[school][rarity];
           
-          constexpr size_t SPELLS_PER_COLUMN = 5;
-          for (size_t s = 0; s < 10; ++s)
+          if (guaranteed > 0)
           {
-            Point p = Point(X[(s / SPELLS_PER_COLUMN)], 38 + 51*slotIndex + (s % SPELLS_PER_COLUMN)*7);
-            Fonts::drawString(spellNames[s], fonts.tinyBright, p.x, p.y, ALIGN_LEFT);
+            Fonts::drawString(fmt::sprintf("%s: %d", raritiesNames[rarity], guaranteed), &headerFont, 166, 37 - 12 + 51*slotIndex, ALIGN_LEFT);
+            Gfx::draw(SpriteInfo(dark_region_1).relative(slotIndex), Point(167, 37 + 51*slotIndex));
+            
+            //TODO: dummy data
+            
+            for (size_t s = 0; s < 10; ++s)
+            {
+              Point p = Point(SpellChoice::X[(s / SpellChoice::ROWS)], SpellChoice::BASE_Y + SpellChoice::DELTA_Y*slotIndex + (s % SpellChoice::ROWS) * SpellChoice::ROW_HEIGHT);
+              Fonts::drawString(i18n::s(spell->name), fonts.tinyBright, p.x, p.y, ALIGN_LEFT);
+            }
+            
+            ++slotIndex;
           }
-          
-          ++slotIndex;
         }
       }
       
-      s32 totalPicks = std::accumulate(spellChoiceData.spellChoiceTotals[school].begin(), spellChoiceData.spellChoiceTotals[school].end(), 0);
-      Fonts::drawString(std::to_string(totalPicks)+ " picks", fonts.brightBoldFont, 221, 184, ALIGN_CENTER);
+      s32 leftPicks = std::accumulate(scd.shownRarities.begin(), scd.shownRarities.end(), 0, [school, &scd] (s32 v, const optional<SpellRarity>& rarity) {
+        return !rarity.isPresent() ? v : (v + scd.spellChoicePicks[school][rarity]);
+      });
+      
+      Fonts::drawString(std::to_string(leftPicks)+ " picks", fonts.brightBoldFont, 221, 184, ALIGN_CENTER);
 
       break;
     }
@@ -690,8 +748,34 @@ bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
         retortToggled(retort);
       }
     }
+  }
+  else if (phase == Phase::SPELLS_CHOICE)
+  {
+    /* spells choice */
+    const auto& scd = spellChoiceData;
+    const auto& sr = scd.shownRarities;
     
-    
+    for (s32 i = 0; i < sr.size(); ++i)
+    {
+      if (sr[i].isPresent())
+      {
+        const SpellRarity rarity = sr[i];
+        const s32 baseY = SpellChoice::BASE_Y + i * SpellChoice::DELTA_Y;
+        
+        if (x >= SpellChoice::X[0] && x <= SpellChoice::X[2])
+        {
+          if (y >= baseY && y < baseY + SpellChoice::ROW_HEIGHT * SpellChoice::ROWS)
+          {
+            const s32 c = x > SpellChoice::X[1] ? 1 : 0;
+            const s32 r = (y - baseY) / SpellChoice::ROW_HEIGHT;
+            const s32 i = r + c * SpellChoice::ROWS;
+            
+            const Spell* spell = spellForSlot(rarity, scd.currentSchool, i);
+            spellToggled(spell);
+          }
+        }
+      }
+    }
   }
   
   

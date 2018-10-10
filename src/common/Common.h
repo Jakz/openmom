@@ -63,6 +63,7 @@ using byte = u8;
 
 template<typename... T> using predicate = std::function<bool(T...)>;
 
+//TODO: optimize for size(T) <= u32 to use a single u64
 template<typename T>
 class optional
 {
@@ -104,7 +105,7 @@ public:
     const dummy_pair* operator->() const { return this; }
   };
   
-private:
+protected:
   std::array<V, size> data;
 public:
   enum_simple_map() : data({V()}) { }
@@ -143,7 +144,7 @@ public:
   void set(K key, const V& value) { data[static_cast<size_t>(key)] = value; }
   void set(K key, V&& value) { data[static_cast<size_t>(key)] = value; }
 
-  
+  V& operator[](K key) { return data[static_cast<size_t>(key)]; }
   const V& operator[](K key) const { return data[static_cast<size_t>(key)]; }
   dummy_pair find(K key) const { return { operator[](key) }; }
 };
@@ -1054,14 +1055,14 @@ class Spell;
 enum class SpellRarity : u32;
 
 template<typename T> using spell_rarity_map = enum_simple_map<SpellRarity, T, 4>;
-template<typename T> using spell_enum_map = enum_simple_map<School, spell_rarity_map<T>, 5>;
+template<typename T> using spell_enum_map = enum_simple_map<School, enum_simple_map<SpellRarity, T, 4>, 5>;
 
 struct PlayerSetupInfo
 {
   const Wizard* portrait;
   std::string name;
   school_value_map books;
-  spell_enum_map<std::vector<const Spell*>> spells;
+  spell_enum_map<std::set<const Spell*>> spells;
   std::set<const Retort*> retorts;
   PlayerColor color;
 };

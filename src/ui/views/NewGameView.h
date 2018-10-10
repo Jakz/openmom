@@ -73,6 +73,7 @@ private:
   
   struct
   {
+    std::array<optional<SpellRarity>, 2> shownRarities;
     School currentSchool;
     spell_enum_map<s32> spellChoicePicks;
     spell_enum_map<s32> spellChoiceTotals;
@@ -97,9 +98,13 @@ private:
   u32 freePicks() const { return availablePicks - countPicks(); }
   u32 countPicks() const;
   
+  const Spell* spellForSlot(SpellRarity rarity, School school, s32 slot);
+  
   Button* bookPhaseOkButton;
+  
   void booksPicked(School school, u16 amount);
   void retortToggled(const Retort* retort);
+  void spellToggled(const Spell* spell);
   
   struct
   {    
