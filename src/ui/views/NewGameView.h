@@ -70,7 +70,13 @@ private:
   
   Phase phase;
   u32 availablePicks;
-  School spellChoiceSchool;
+  
+  struct
+  {
+    School currentSchool;
+    spell_enum_map<s32> spellChoicePicks;
+    spell_enum_map<s32> spellChoiceTotals;
+  } spellChoiceData;
   
   Settings settings;
   

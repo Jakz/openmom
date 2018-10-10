@@ -145,6 +145,9 @@ public:
     assert(it != map.end());
   }
   
+  static const std::array<School, 5>& schoolsWithoutArcane();
+  static const std::array<SpellRarity, 4>& spellRarities();
+  
   static const experience_levels& experienceLevelsForUnits() { return normalUnitLevels; }
   static const experience_levels& experienceLevelsForHeroes() { return heroLevels; }
   

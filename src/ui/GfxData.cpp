@@ -153,12 +153,12 @@ decltype(GfxData::raceHouseSpecs) GfxData::raceHouseSpecs = {
 //TODO: LIFE SPELL (SPECFX, 3) uses palette with multiple white alphas, understand how to manage it
 //TODO: message mascots have different offsets per each school, reverse them from original game, only chaos is correct for now
 decltype(GfxData::schoolSpecs) GfxData::schoolSpecs = {
-  { School::ARCANE, { {0,0,0}, LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD, LSI_PLACEHOLD, LSI(MAGIC, 48), LSI(SPECFX, 5), { LSI_PLACEHOLD } } },
-  { School::NATURE, { {0,255,0}, LSI(SPELLSCR, 62), LSI(SPELLS, 4), LSI(WIZLAB, 14), LSI(NEWGAME,30), LSI(MAGIC, 33), LSI(SPECFX, 0), { LSI(RESOURCE, 54) } } },
-  { School::SORCERY, { {0,0,255}, LSI(SPELLSCR, 63), LSI(SPELLS, 5), LSI(WIZLAB, 15), LSI(NEWGAME, 27), LSI(MAGIC, 36), LSI(SPECFX, 1), { LSI(RESOURCE, 55) } } },
-  { School::CHAOS, { {255,0,0}, LSI(SPELLSCR, 64), LSI(SPELLS, 6), LSI(WIZLAB, 16), LSI(NEWGAME, 36), LSI(MAGIC, 39), LSI(SPECFX, 2), { LSI(RESOURCE, 51), { 5, 63 } } } },
-  { School::LIFE, { {255,255,255}, LSI(SPELLSCR, 65), LSI(SPELLS, 7), LSI(WIZLAB, 17), LSI(NEWGAME, 24), LSI(MAGIC, 42), LSI(SPECFX, 3), { LSI(RESOURCE, 53) } } },
-  { School::DEATH, { {0,0,0}, LSI(SPELLSCR, 66), LSI(SPELLS, 8), LSI(WIZLAB, 18), LSI(NEWGAME, 33), LSI(MAGIC, 45), LSI(SPECFX, 4), { LSI(RESOURCE, 52) } } },
+  { School::ARCANE, { {0,0,0}, LSI(SPELLSCR, 61), LSI(SPELLS, 9), LSI_PLACEHOLD, LSI_PLACEHOLD, LSI(MAGIC, 48), LSI(SPECFX, 5), i18n::keyForString("school_arcane"), { LSI_PLACEHOLD } } },
+  { School::NATURE, { {0,255,0}, LSI(SPELLSCR, 62), LSI(SPELLS, 4), LSI(WIZLAB, 14), LSI(NEWGAME,30), LSI(MAGIC, 33), LSI(SPECFX, 0), i18n::keyForString("school_nature"), { LSI(RESOURCE, 54) } } },
+  { School::SORCERY, { {0,0,255}, LSI(SPELLSCR, 63), LSI(SPELLS, 5), LSI(WIZLAB, 15), LSI(NEWGAME, 27), LSI(MAGIC, 36), LSI(SPECFX, 1), i18n::keyForString("school_sorcery"), { LSI(RESOURCE, 55) } } },
+  { School::CHAOS, { {255,0,0}, LSI(SPELLSCR, 64), LSI(SPELLS, 6), LSI(WIZLAB, 16), LSI(NEWGAME, 36), LSI(MAGIC, 39), LSI(SPECFX, 2), i18n::keyForString("school_chaos"), { LSI(RESOURCE, 51), { 5, 63 } } } },
+  { School::LIFE, { {255,255,255}, LSI(SPELLSCR, 65), LSI(SPELLS, 7), LSI(WIZLAB, 17), LSI(NEWGAME, 24), LSI(MAGIC, 42), LSI(SPECFX, 3), i18n::keyForString("school_life"), { LSI(RESOURCE, 53) } } },
+  { School::DEATH, { {0,0,0}, LSI(SPELLSCR, 66), LSI(SPELLS, 8), LSI(WIZLAB, 18), LSI(NEWGAME, 33), LSI(MAGIC, 45), LSI(SPECFX, 4), i18n::keyForString("school_death"), { LSI(RESOURCE, 52) } } },
 };
 
 decltype(GfxData::upkeepSymbolSpec) GfxData::upkeepSymbolSpec = {

@@ -20,6 +20,19 @@ template<> const char* Data::nameForDataType<const Skill*>() { return "Skill"; }
 template<> const char* Data::nameForDataType<const Building*>() { return "Building"; }
 #endif
 
+const std::array<School, 5>& Data::schoolsWithoutArcane()
+{
+  static const std::array<School, 5> schools = { School::LIFE, School::DEATH, School::CHAOS, School::NATURE, School::SORCERY};
+  return schools;
+}
+
+const std::array<SpellRarity, 4>& spellRarities()
+{
+  static const std::array<SpellRarity, 4> rarities = { SpellRarity::COMMON, SpellRarity::UNCOMMON, SpellRarity::RARE, SpellRarity::VERY_RARE };
+  return rarities;
+}
+
+
 experience_levels Data::normalUnitLevels;
 experience_levels Data::heroLevels;
 

@@ -123,6 +123,8 @@ struct SchoolGfxSpec
   SpriteInfo book;
   SpriteInfo overlandUnitSpellCast;
   
+  I18 name;
+  
   struct {
     SpriteInfo gfx;
     Point offset;

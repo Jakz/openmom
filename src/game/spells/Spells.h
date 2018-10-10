@@ -13,7 +13,7 @@ class Skill;
 
 
 
-enum class SpellRarity : u8
+enum class SpellRarity : u32
 {
   COMMON = 0,
   UNCOMMON,

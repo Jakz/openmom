@@ -120,6 +120,8 @@ enum sprite_id : sprite_ref
   dark_region_2 = LBXI(NEWGAME, 49),
   dark_region_3 = LBXI(NEWGAME, 50),
   
+  bottom_box_spell_choice = LBXI(NEWGAME, 51),
+  
   checkmark = LBXI(NEWGAME, 52)
 };
 
@@ -150,7 +152,8 @@ NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr,
   
   /* take from main palette directly? it should be 13th */
   fonts.schoolFonts.set(School::LIFE, FontPalette::ofSolidWithLowShadow({219, 219, 219}, {0, 0, 0}));
-  
+  fonts.schoolFonts.set(School::DEATH, FontPalette::ofSolidWithLowShadow(Gfx::mainPalette->get(114), {0, 0, 0}));
+
   
 }
 
@@ -165,7 +168,6 @@ void NewGameView::activate()
   info.retorts.insert(Data::retort("charismatic"));*/
   isPremadeWizard = false; // TODO true
   
-  spellChoiceSchool = School::LIFE;
   switchToPhase(Phase::SPELLS_CHOICE);
   
   nameField.setPosition(Point(194,35));
@@ -433,15 +435,6 @@ void NewGameView::switchToPhase(Phase phase)
         /* if any school has > 1 books we must switch to spell choice */
         if (std::any_of(info.books.begin(), info.books.end(), [] (s16 c) { return c > 1; }))
         {
-          for (School school : CommonDraw::schools)
-          {
-            if (info.books[school] > 1)
-            {
-              spellChoiceSchool = school;
-              break;
-            }
-          }
-    
           switchToPhase(Phase::SPELLS_CHOICE);
         }
       });
@@ -454,6 +447,22 @@ void NewGameView::switchToPhase(Phase phase)
       //TODO: background
       bookPhaseOkButton = addButton(Button::buildOffsetted("spells_choice_ok", 252, 182, LSI(NEWGAME, 42), LSI(NEWGAME, 43)));
       bookPhaseOkButton->deactivate();
+      
+      for (School school : Data::schoolsWithoutArcane())
+      {
+        if (info.books[school] > 1)
+        {
+          spellChoiceData.currentSchool = school;
+          break;
+        }
+      }
+      
+      for (const School school : Data::schoolsWithoutArcane())
+      {
+        auto&& guaranteed = g->spellMechanics.guaranteedSpells(school, info.books[school]);
+        spellChoiceData.spellChoiceTotals.set(school, guaranteed);
+        spellChoiceData.spellChoicePicks.set(school, spell_rarity_map<s32>(0));
+      }
     }
   }
   
@@ -549,16 +558,19 @@ void NewGameView::draw()
       
     case Phase::SPELLS_CHOICE:
     {
-      auto books = info.books[spellChoiceSchool];
-      auto& mechanics = g->spellMechanics;
+      const School school = spellChoiceData.currentSchool;
       
-      const fonts::SerifFont titleFont(&fonts.schoolFonts[School::LIFE]);
-      const fonts::MediumBoldFont headerFont(&fonts.schoolFonts[School::LIFE]);
+      const auto& schoolGfx = GfxData::schoolGfxSpec(school);
       
-      Fonts::drawString("Select Life Spells", &titleFont, 241, 5, ALIGN_CENTER); //TODO: localize
+      const fonts::SerifFont titleFont(&fonts.schoolFonts[school]);
+      const fonts::MediumBoldFont headerFont(&fonts.schoolFonts[school]);
+      
+      Fonts::drawString(fmt::sprintf("Select %s Spells", i18n::c(schoolGfx.name)), &titleFont, 241, 5, ALIGN_CENTER); //TODO: localize
 
       /* top divider */
       Gfx::draw(divider, {181, 18});
+      /* bottom frame - no black border but in original game there is, why? */
+      Gfx::draw(bottom_box_spell_choice, {196, 180});
       
       
       static const char* raritiesNames[] = { "Common", "Uncommon", "Rare" }; //TODO: localize
@@ -567,8 +579,8 @@ void NewGameView::draw()
       
       for (size_t i = 0; i < rarities.size(); ++i)
       {
-        SpellRarity rarity = rarities[i];
-        auto guaranteed = i > 0 ? 2 : 0; // mechanics.guaranteedSpellAmountForRarity(SpellRarity::COMMON, books);
+        const SpellRarity rarity = rarities[i];
+        auto guaranteed = spellChoiceData.spellChoiceTotals[school][rarity];
         
         if (guaranteed > 0)
         {
@@ -591,6 +603,9 @@ void NewGameView::draw()
         }
       }
       
+      s32 totalPicks = std::accumulate(spellChoiceData.spellChoiceTotals[school].begin(), spellChoiceData.spellChoiceTotals[school].end(), 0);
+      Fonts::drawString(std::to_string(totalPicks)+ " picks", fonts.brightBoldFont, 221, 184, ALIGN_CENTER);
+
       break;
     }
   }

@@ -12,7 +12,7 @@
 
 using namespace std;
 
-u32 SpellMechanics::guaranteedSpellAmountForRarity(SpellRarity rarity, u32 books)
+u32 SpellMechanics::guaranteedSpellAmountForRarity(SpellRarity rarity, School school, u32 books)
 {
   // no benefits from more than 11 books
   if (books > 11)
@@ -28,13 +28,13 @@ u32 SpellMechanics::guaranteedSpellAmountForRarity(SpellRarity rarity, u32 books
     return 0;
 }
 
-enum_simple_map<SpellRarity, s32, 4> SpellMechanics::guaranteedSpells(u32 books)
+spell_rarity_map<s32> SpellMechanics::guaranteedSpells(School school, u32 books)
 {
-  return enum_simple_map<SpellRarity, s32, 4>({
-    { SpellRarity::COMMON, guaranteedSpellAmountForRarity(SpellRarity::COMMON, books) },
-    { SpellRarity::UNCOMMON, guaranteedSpellAmountForRarity(SpellRarity::UNCOMMON, books) },
-    { SpellRarity::RARE, guaranteedSpellAmountForRarity(SpellRarity::RARE, books) },
-    { SpellRarity::VERY_RARE, guaranteedSpellAmountForRarity(SpellRarity::VERY_RARE, books) }
+  return spell_rarity_map<s32>({
+    { SpellRarity::COMMON, guaranteedSpellAmountForRarity(SpellRarity::COMMON, School::NO_SCHOOL, books) },
+    { SpellRarity::UNCOMMON, guaranteedSpellAmountForRarity(SpellRarity::UNCOMMON, School::NO_SCHOOL, books) },
+    { SpellRarity::RARE, guaranteedSpellAmountForRarity(SpellRarity::RARE, School::NO_SCHOOL, books) },
+    { SpellRarity::VERY_RARE, guaranteedSpellAmountForRarity(SpellRarity::VERY_RARE, School::NO_SCHOOL, books) }
   });
 }
 

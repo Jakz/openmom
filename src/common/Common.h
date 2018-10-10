@@ -107,6 +107,7 @@ public:
 private:
   std::array<V, size> data;
 public:
+  enum_simple_map() : data({V()}) { }
   enum_simple_map(V value) : data({value}) { }
   
   enum_simple_map(V value, const std::initializer_list<init_element>& elements)
@@ -1050,13 +1051,17 @@ struct Wizard
 };
 
 class Spell;
+enum class SpellRarity : u32;
+
+template<typename T> using spell_rarity_map = enum_simple_map<SpellRarity, T, 4>;
+template<typename T> using spell_enum_map = enum_simple_map<School, spell_rarity_map<T>, 5>;
 
 struct PlayerSetupInfo
 {
   const Wizard* portrait;
   std::string name;
   school_value_map books;
-  enum_simple_map<School, std::vector<const Spell*>, 5> spells;
+  spell_enum_map<std::vector<const Spell*>> spells;
   std::set<const Retort*> retorts;
   PlayerColor color;
 };
