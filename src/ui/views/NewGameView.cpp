@@ -323,7 +323,7 @@ const Spell* NewGameView::spellForSlot(SpellRarity rarity, School school, s32 sl
   
   if (!spells[0])
     for (int i = 0; i < 10; ++i)
-      spells[i] = new Spell(I18::SPELL_HEALING, SpellType::UNIT_SKILL, rarity, SpellKind::UNIT_SPELL, SpellDuration::PERMANENT, school, Target::FRIENDLY_UNIT, ManaInfo(0,0,0,0,0,0));
+      spells[i] = new Spell(I18::SPELL_HEALING, SpellType::UNIT_SKILL, SpellRarity::COMMON, SpellKind::UNIT_SPELL, SpellDuration::PERMANENT, School::LIFE, Target::FRIENDLY_UNIT, ManaInfo(0,0,0,0,0,0));
 
   return spells[slot];
 }
@@ -331,26 +331,31 @@ const Spell* NewGameView::spellForSlot(SpellRarity rarity, School school, s32 sl
 void NewGameView::spellToggled(const Spell* spell)
 {
   std::set<const Spell*>& picks = info.spells[spell->school][spell->rarity];
+  auto& scd = spellChoiceData;
   
   auto it = picks.find(spell);
   
   if (it == picks.end())
   {
-    if (spellChoiceData.spellChoicePicks[spell->school][spell->rarity] == 0)
+    if (scd.spellChoicePicks[spell->school][spell->rarity] == 0)
     {
       errorMessage("You have no picks left in this area, to deselect click on a selected item"); //TODO: localize
       return;
     }
     
     picks.insert(spell);
-    --spellChoiceData.spellChoicePicks[spell->school][spell->rarity];
+    --scd.spellChoicePicks[spell->school][spell->rarity];
   }
   else
   {
     picks.erase(it);
-    ++spellChoiceData.spellChoicePicks[spell->school][spell->rarity];
+    ++scd.spellChoicePicks[spell->school][spell->rarity];
   }
- 
+  
+  s32 leftPicks = std::accumulate(scd.shownRarities.begin(), scd.shownRarities.end(), 0, [spell, &scd] (s32 v, const optional<SpellRarity>& rarity) {
+    return !rarity.isPresent() ? v : (v + scd.spellChoicePicks[spell->school][rarity]);
+  });
+  bookPhaseOkButton->activateIf(leftPicks == 0);
 }
 
 void NewGameView::switchToPhase(Phase phase)
@@ -636,28 +641,33 @@ void NewGameView::draw()
         if (scd.shownRarities[i].isPresent())
         {
           const SpellRarity rarity = scd.shownRarities[i];
-          const Spell* spell = spellForSlot(rarity, school, i);
-
           auto guaranteed = scd.spellChoiceTotals[school][rarity];
+
+          Fonts::drawString(fmt::sprintf("%s: %d", raritiesNames[rarity], guaranteed), &headerFont, 166, 37 - 12 + 51*slotIndex, ALIGN_LEFT);
+          Gfx::draw(SpriteInfo(dark_region_1).relative(slotIndex), Point(167, 37 + 51*slotIndex));
           
-          if (guaranteed > 0)
+          //TODO: dummy data
+          
+          for (s32 s = 0; s < 10; ++s)
           {
-            Fonts::drawString(fmt::sprintf("%s: %d", raritiesNames[rarity], guaranteed), &headerFont, 166, 37 - 12 + 51*slotIndex, ALIGN_LEFT);
-            Gfx::draw(SpriteInfo(dark_region_1).relative(slotIndex), Point(167, 37 + 51*slotIndex));
+            const Spell* spell = spellForSlot(rarity, school, s);
+            const bool isPicked = info.spells[school][rarity].find(spell) != info.spells[school][rarity].end();
             
-            //TODO: dummy data
+            const auto* font = isPicked ? fonts.tinyGold : fonts.tinyBright;
             
-            for (size_t s = 0; s < 10; ++s)
-            {
-              Point p = Point(SpellChoice::X[(s / SpellChoice::ROWS)], SpellChoice::BASE_Y + SpellChoice::DELTA_Y*slotIndex + (s % SpellChoice::ROWS) * SpellChoice::ROW_HEIGHT);
-              Fonts::drawString(i18n::s(spell->name), fonts.tinyBright, p.x, p.y, ALIGN_LEFT);
-            }
+            Point p = Point(SpellChoice::X[(s / SpellChoice::ROWS)], SpellChoice::BASE_Y + SpellChoice::DELTA_Y*slotIndex + (s % SpellChoice::ROWS) * SpellChoice::ROW_HEIGHT);
+            Fonts::drawString(i18n::s(spell->name), font, p.x, p.y, ALIGN_LEFT);
             
-            ++slotIndex;
+            if (isPicked)
+              Gfx::draw(checkmark, p.delta(-5, 2));
+
           }
+          
+          ++slotIndex;
         }
       }
       
+      /* TODO: code already used in spellToggled */
       s32 leftPicks = std::accumulate(scd.shownRarities.begin(), scd.shownRarities.end(), 0, [school, &scd] (s32 v, const optional<SpellRarity>& rarity) {
         return !rarity.isPresent() ? v : (v + scd.spellChoicePicks[school][rarity]);
       });
