@@ -154,7 +154,8 @@ NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr,
   fonts.schoolFonts.set(School::LIFE, FontPalette::ofSolidWithLowShadow({219, 219, 219}, {0, 0, 0}));
   fonts.schoolFonts.set(School::DEATH, FontPalette::ofSolidWithLowShadow(Gfx::mainPalette->get(114), {0, 0, 0}));
 
-  
+  fonts.schoolFonts.set(School::NATURE, FontPalette::ofSolidWithLowShadow({0, 190, 0}, {0, 0, 0}));
+
 }
 
 void NewGameView::activate()
@@ -333,23 +334,31 @@ void NewGameView::spellToggled(const Spell* spell)
   std::set<const Spell*>& picks = info.spells[spell->school][spell->rarity];
   auto& scd = spellChoiceData;
   
+  auto& available = scd.spellChoicePicks[spell->school][spell->rarity];
+  auto total = scd.spellChoiceTotals[spell->school][spell->rarity];
+  
   auto it = picks.find(spell);
   
   if (it == picks.end())
   {
-    if (scd.spellChoicePicks[spell->school][spell->rarity] == 0)
+    if (available == 0 && total > 1)
     {
-      errorMessage("You have no picks left in this area, to deselect click on a selected item"); //TODO: localize
-      return;
+      if (total > 1)
+      {
+        errorMessage("You have no picks left in this area, to deselect click on a selected item"); //TODO: localize
+        return;
+      }
+      else
+        picks.clear();
     }
-    
+
     picks.insert(spell);
-    --scd.spellChoicePicks[spell->school][spell->rarity];
+    --available;
   }
   else
   {
     picks.erase(it);
-    ++scd.spellChoicePicks[spell->school][spell->rarity];
+    ++available;
   }
   
   s32 leftPicks = std::accumulate(scd.shownRarities.begin(), scd.shownRarities.end(), 0, [spell, &scd] (s32 v, const optional<SpellRarity>& rarity) {
@@ -491,25 +500,38 @@ void NewGameView::switchToPhase(Phase phase)
       bookPhaseOkButton = addButton(Button::buildOffsetted("spells_choice_ok", 252, 182, LSI(NEWGAME, 42), LSI(NEWGAME, 43)));
       bookPhaseOkButton->deactivate();
       
-      for (School school : Data::schoolsWithoutArcane())
-      {
-        if (info.books[school] > 1)
-        {
-          spellChoiceData.currentSchool = school;
-          break;
-        }
-      }
-      
       for (const School school : Data::schoolsWithoutArcane())
       {
         auto&& guaranteed = g->spellMechanics.guaranteedSpells(school, info.books[school]);
         spellChoiceData.spellChoiceTotals[school] = guaranteed;
         spellChoiceData.spellChoicePicks[school] = guaranteed;
       }
-      
-      spellChoiceData.shownRarities[0] = SpellRarity::COMMON;
-      spellChoiceData.shownRarities[1] = optional<SpellRarity>();
 
+      for (School school : Data::schoolsWithoutArcane())
+      {
+        if (info.books[school] > 1)
+        {
+          spellChoiceData.currentSchool = school;
+          
+          auto count = spellChoiceData.spellChoiceTotals[school];
+          
+          /* TODO: this should be enhanced to be generic, for now it just has two cases
+             which are the one currently possible in the game */
+          
+          if (count[SpellRarity::COMMON] == 10)
+          {
+            spellChoiceData.shownRarities[0] = SpellRarity::UNCOMMON;
+            spellChoiceData.shownRarities[1] = SpellRarity::RARE;
+          }
+          else
+          {
+            spellChoiceData.shownRarities[0] = SpellRarity::COMMON;
+            spellChoiceData.shownRarities[1] = optional<SpellRarity>();
+          }
+          
+          break;
+        }
+      }
     }
   }
   
@@ -530,6 +552,7 @@ constexpr s32 SpellChoice::X[];
 void NewGameView::draw()
 {
   Gfx::draw(main_bg, 0, 0);
+  const Palette* palette = LBXU(main_bg).palette();
 
   /*Gfx::drawGrayScale(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30);
   Gfx::drawGlow(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30, CHAOS);*/
@@ -627,15 +650,12 @@ void NewGameView::draw()
       Fonts::drawString(fmt::sprintf("Select %s Spells", i18n::c(schoolGfx.name)), &titleFont, 241, 5, ALIGN_CENTER); //TODO: localize
 
       /* top divider */
-      Gfx::draw(divider, {181, 18});
+      Gfx::draw(divider, palette, {181, 18});
       /* bottom frame - no black border but in original game there is, why? */
-      Gfx::draw(bottom_box_spell_choice, {196, 180});
+      Gfx::draw(bottom_box_spell_choice, palette, {196, 180});
 
       static const spell_rarity_map<std::string> raritiesNames = {{ SpellRarity::COMMON, "Common" }, { SpellRarity::UNCOMMON, "Uncommon" }, { SpellRarity::RARE, "Rare" }, { SpellRarity::VERY_RARE, "Very Rare" }};
 
-      u32 slotIndex = 0;
-      
-      
       for (s32 i = 0; i < scd.shownRarities.size(); ++i)
       {
         if (scd.shownRarities[i].isPresent())
@@ -643,10 +663,10 @@ void NewGameView::draw()
           const SpellRarity rarity = scd.shownRarities[i];
           auto guaranteed = scd.spellChoiceTotals[school][rarity];
 
-          Fonts::drawString(fmt::sprintf("%s: %d", raritiesNames[rarity], guaranteed), &headerFont, 166, 37 - 12 + 51*slotIndex, ALIGN_LEFT);
-          Gfx::draw(SpriteInfo(dark_region_1).relative(slotIndex), Point(167, 37 + 51*slotIndex));
+          Fonts::drawString(fmt::sprintf("%s: %d", raritiesNames[rarity], guaranteed), &headerFont, 166, 37 - 12 + 51*i, ALIGN_LEFT);
           
-          //TODO: dummy data
+          //TODO: draw correct dark region
+          Gfx::draw(SpriteInfo(dark_region_1).relative(i), palette, Point(167, 37 + 51*i));
           
           for (s32 s = 0; s < 10; ++s)
           {
@@ -655,15 +675,13 @@ void NewGameView::draw()
             
             const auto* font = isPicked ? fonts.tinyGold : fonts.tinyBright;
             
-            Point p = Point(SpellChoice::X[(s / SpellChoice::ROWS)], SpellChoice::BASE_Y + SpellChoice::DELTA_Y*slotIndex + (s % SpellChoice::ROWS) * SpellChoice::ROW_HEIGHT);
+            Point p = Point(SpellChoice::X[(s / SpellChoice::ROWS)], SpellChoice::BASE_Y + SpellChoice::DELTA_Y*i + (s % SpellChoice::ROWS) * SpellChoice::ROW_HEIGHT);
             Fonts::drawString(i18n::s(spell->name), font, p.x, p.y, ALIGN_LEFT);
             
             if (isPicked)
               Gfx::draw(checkmark, p.delta(-5, 2));
 
           }
-          
-          ++slotIndex;
         }
       }
       
@@ -696,9 +714,11 @@ bool NewGameView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mo
   
   if (key == KeyboardCode::SDL_SCANCODE_ESCAPE)
   {
-    if (phase == Phase::PORTRIT_CHOICE)
+    switch (phase)
     {
-      switchToPhase(Phase::WIZARD_CHOICE);
+      case Phase::PORTRIT_CHOICE: switchToPhase(Phase::WIZARD_CHOICE); break;
+      
+      case Phase::SPELLS_CHOICE: switchToPhase(Phase::BOOKS_CHOICE); break;
     }
 
     return true;

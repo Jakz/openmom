@@ -108,9 +108,9 @@ public:
 protected:
   std::array<V, size> data;
 public:
-  enum_simple_map() : data({V()}) { }
-  enum_simple_map(V value) : data({value}) { }
-  
+  enum_simple_map() { std::fill(std::begin(data), std::end(data), V()); }
+  enum_simple_map(V value) { std::fill(std::begin(data), std::end(data), value); }
+
   enum_simple_map(V value, const std::initializer_list<init_element>& elements)
   {
     std::fill(data.begin(), data.end(), value);
