@@ -129,12 +129,7 @@ public:
   bool textInput(sdl_text_input data) override;
 
   bool mouseReleased(u16 x, u16 y, MouseButton b) override;
-  bool mouseDragged(u16 x, u16 y, MouseButton b) override {
-    //TODO: this works for spell books but it's buggy for other things, eg retorts
-    if (b == MouseButton::BUTTON_LEFT)
-      mouseReleased(x,y,b);
-    return true;
-  };
+  bool mouseDragged(u16 x, u16 y, MouseButton b) override;
 
 };
 
