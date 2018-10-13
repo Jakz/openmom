@@ -28,11 +28,12 @@ public:
       (*this)[i] = generator(i);
   }
   
-  value_type sum() { return std::accumulate(begin(), end(), 0); }
+  value_type sum() const { return std::accumulate(begin(), end(), 0); }
+  value_type max() const { return *std::max_element(begin(), end()); }
   
   void forEach(std::function<void(value_type&)> lambda) { std::for_each(begin(), end(), lambda); }
 
-  void makeAtLeastZero() { forEach([] (value_type& v) { v = std::max(v, 0); }); }
+  void clampNegativeValuesToZero() { forEach([] (value_type& v) { v = std::max(v, 0); }); }
   
   unit_figure_value operator-(const unit_figure_value& other) const
   {
@@ -68,10 +69,21 @@ namespace combat
   struct CombatEnvironment;
   enum class CombatObject;
   
-  class CombatMechanics
+  class CombatFormulas
+  {
+  private:
+    static u32 passingRolls(u32 count, u32 ch);
+    static u32 passingRollsf(u32 count, float ch);
+  public:
+    s32 computeAreaDamage(CombatUnit* target, s32 strength, School school, s32 toHit);
+
+  };
+  
+  class CombatMechanics : public CombatFormulas
   {
   private:
     Game* const game;
+
   public:
     CombatMechanics(Game* game) : game(game) { }
     
@@ -87,12 +99,9 @@ namespace combat
     combat_pathfind_info reachableTiles(const Combat* combat, const CombatUnit* unit, s16 movement);
     
     /* spells related functions */
-    void castCombatInstant(const SpellCast& cast, const CombatUnit* unit);
-    
-    s32 computeAreaDamage(CombatUnit* target, s32 strength, School school, s32 toHit);
+    void castCombatInstant(const SpellCast& cast, const CombatUnit* unit);    
   };
 
-  
   class Damage
   {
   public:
