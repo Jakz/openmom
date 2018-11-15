@@ -7,6 +7,7 @@
 #include <functional>
 #include <unordered_map>
 #include <array>
+#include <algorithm>
 #include "SDL.h"
 
 #ifdef DEBUG
