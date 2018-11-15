@@ -6,6 +6,7 @@
 
 #include <list>
 #include <unordered_set>
+#include <memory>
 
 class Unit;
 namespace pathfind { class Route; }
