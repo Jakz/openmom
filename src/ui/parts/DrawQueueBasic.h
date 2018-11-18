@@ -78,7 +78,7 @@ private:
   
 public:
   BasicRectEntry(const Rect& rect, Color color) : rect(rect), color(color) { }
-  BasicRectEntry(Rect::int_type x, Rect::int_type y, Rect::int_type w, Rect::int_type h, Color color) : BasicRectEntry(Rect(x,y,w,h), color) { }
+  BasicRectEntry(int_type x, int_type y, int_type w, int_type h, Color color) : BasicRectEntry(Rect(x,y,w,h), color) { }
   
   void draw() const override
   {
