@@ -35,7 +35,6 @@ public:
     std::vector<std::reference_wrapper<const key_type>> order;
     
   public:
-    using key_type = typename inner_type::key_type;
     using value_type = typename inner_type::value_type;
     using map_iterator = typename inner_type::const_iterator;
     using ordered_iterator = typename decltype(order)::const_iterator;
