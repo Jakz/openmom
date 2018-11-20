@@ -79,7 +79,7 @@ public:
     iterator<Skill> operator++(int) { auto tmp(*this); ++current; return tmp; }
     iterator<Skill> operator--(int) { auto tmp(*this); --current; return tmp; }
     
-    iterator<Skill>(const s16& offset) { auto old = current; current += offset; auto tmp(*this); current = old; return tmp; }
+//    iterator<Skill>(const s16& offset) { auto old = current; current += offset; auto tmp(*this); current = old; return tmp; }
 
     Skill operator*() { return parent->get(current); }
     const Skill operator*() const { return parent->get(current); }
