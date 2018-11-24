@@ -8,6 +8,7 @@
 #include "common/Util.h"
 
 #include <list>
+#include <memory>
 
 class World;
 class City;
