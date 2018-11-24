@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <type_traits>
 #include <array>
+#include <memory>
 
 #include "common/Common.h"
 
