@@ -18,7 +18,7 @@
 #include "LocalPlayer.h"
 #include "Game.h"
 
-#include "Minimap.h"
+#include "MiniMap.h"
 #include "World.h"
 #include "WorldGenerator.h"
 

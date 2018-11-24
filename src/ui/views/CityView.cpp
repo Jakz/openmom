@@ -34,7 +34,7 @@
 
 #include "ProductionView.h"
 
-#include "Lbx.h"
+#include "LBX.h"
 
 constexpr size_t CITY_ENCHANT_PER_PAGE = 6;
 
