@@ -11,6 +11,8 @@
 #include "Gfx.h"
 #include "common/mystrings.h"
 
+#include <memory>
+
 using namespace std;
 
 
