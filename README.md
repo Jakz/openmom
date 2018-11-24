@@ -7,6 +7,12 @@ The aim of the project is accuracy and extensibility: everything should be as mu
 
 The engine is written in C++11 while SDL is used for the graphics. The graphics engine is written to ease the management of the low level profile graphics of the original game. Everything is palette based and drawing is made by using an approach which probably resembles the one used originally for the game. While this implies that everything is quite low level, this really helps in mimicking the original behavior of most effects and animations.
 
+# Running
+
+The code compiles on macOS with the provided XCode project and on Debian Linux supposedly (through CMake). You need to copy all the original LBX files from the game into `data/lbx` to run the game.
+
+The XCode project also provides a LBX manager target which is used to see all the data inside LBX files and mark it as used.
+
 # Current status
 
 Master of Magic is a game of incredible complexity, each single and minor aspect is full of quirks and special considerations that have been made during the original development. Tthis probably means that a lot of spaghetti code was involved in the original game, which makes reproducing the structure while updating the design to something more manageable and extensible quite a challenging task.
