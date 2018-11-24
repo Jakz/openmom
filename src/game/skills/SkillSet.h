@@ -64,6 +64,11 @@ public:
   class iterator //: public /*std::iterator<std::forward_iterator_tag, Skill>/*, std::iterator_traits<iterator<Skill>>,*/
   {
   public:
+    using difference_type = ptrdiff_t;
+    using value_type = Skill*;
+    using reference = const Skill&;
+    using pointer = const Skill*;
+    using iterator_category = std::random_access_iterator_tag;
 
     iterator(const SkillSet& parent, s16 current = 0) : parent(&parent), current(current), size(parent.size()) { }
     iterator(const iterator<Skill> &other) = default;
@@ -79,17 +84,15 @@ public:
     iterator<Skill> operator++(int) { auto tmp(*this); ++current; return tmp; }
     iterator<Skill> operator--(int) { auto tmp(*this); --current; return tmp; }
     
+    difference_type operator-(const iterator<Skill>& other) const { return current - other.current; }
+    
 //    iterator<Skill>(const s16& offset) { auto old = current; current += offset; auto tmp(*this); current = old; return tmp; }
 
     Skill operator*() { return parent->get(current); }
     const Skill operator*() const { return parent->get(current); }
     //const Skill* operator->() { return parent.get(current); }
     
-    using difference_type = ptrdiff_t;
-    using value_type = Skill*;
-    using reference = const Skill&;
-    using pointer = const Skill*;
-    using iterator_category = std::random_access_iterator_tag;
+
     
     protected:
       const SkillSet* parent;

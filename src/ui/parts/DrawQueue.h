@@ -3,6 +3,7 @@
 #include "common/Common.h"
 
 #include <vector>
+#include <memory>
 
 template<typename T, typename S> class DrawElement;
 
