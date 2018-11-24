@@ -31,7 +31,10 @@ elseif(WIN32)
   set(SDL2_LIBRARY "${LIBRARY_FOLDER}/sdl2/win/lib/x86/SDL2.lib")
   set(SDL2_IMAGE_LIBRARIES "${LIBRARY_FOLDER}/sdl2/win/lib/x86/SDL2_image.lib")
 elseif (UNIX)
-  
+  set_target_properties(YAML_LIBRARY PROPERTIES IMPORTED_LOCATION
+    ${LIBRARY_FOLDER}/yaml/lib/linux/libyaml-cpp.a
+  )
+  set(YAML_LIBRARY_BINARY "${LIBRARY_FOLDER}/yaml/lib/linux/libyaml-cpp.a")
 endif()
 
 include_directories(
