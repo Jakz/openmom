@@ -10,7 +10,7 @@
 
 #include "Game.h"
 #include "Places.h"
-#include "tile.h"
+#include "Tile.h"
 
 enum LairType
 {

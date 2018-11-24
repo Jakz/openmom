@@ -7,6 +7,7 @@
 #include <functional>
 #include <unordered_map>
 #include <array>
+#include <algorithm>
 #include "SDL.h"
 
 #ifdef DEBUG
@@ -402,8 +403,6 @@ struct Rect
   {
     return point.x >= left() && point.x < right() && point.y >= top() && point.y <= bottom();
   }
-  
-  using int_type = ::int_type;
 };
 
 inline Point::Point(const Size& size) : x(size.w), y(size.h) { }

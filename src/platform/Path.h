@@ -3,6 +3,7 @@
 #include <string>
 #include <cerrno>
 #include <cassert>
+#include <memory>
 
 #ifdef _WIN32
 #include <codecvt>
