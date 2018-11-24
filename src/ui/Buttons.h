@@ -21,6 +21,29 @@ class FontSpriteSheet;
 
 typedef std::function<void()> Action;
 
+class ClickableGrid
+{
+  s32 x, y, w, h;
+  s32 r, c;
+
+public:
+  ClickableGrid(s32 x, s32 y, s32 w, s32 h, s32 r, s32 c) :
+  x(x), y(y), w(w), h(h), r(r), c(c) { }
+  
+  bool isInside(const Point& p) const
+  {
+    return p.x >= x && p.x < (x + w) && p.y >= y && p.y < (y + h);
+  }
+  
+  Point getCell(const Point& p)
+  {
+    if (isInside(p))
+      return Point((p.x - x) / c, (p.y - y) / r);
+    else
+      return Point(-1, -1);
+  }
+};
+
 class Clickable
 {
 protected:

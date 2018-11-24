@@ -485,7 +485,7 @@ void NewGameView::switchToPhase(Phase phase)
       
       bookPhaseOkButton->setAction([this] () {
         /* if any school has > 1 books we must switch to spell choice */
-        if (std::any_of(info.books.begin(), info.books.end(), [] (s16 c) { return c > 1; }))
+        if (std::any_of(info.books.begin(), info.books.end(), [] (auto c) { return c > 1; }))
         {
           switchToPhase(Phase::SPELLS_CHOICE);
         }
@@ -738,27 +738,48 @@ bool NewGameView::textInput(sdl_text_input data)
   return false;
 }
 
+struct BooksChoice
+{
+  static constexpr u16 BX = 189, BY = 44;
+  static constexpr u16 BW = 8, BH = 26, VH = 22;
+  static constexpr u16 MX = 13, MY = 5;
+  
+  static bool isInside(s32 x, s32 y)
+  {
+    int rx = (x - BX) / BW;
+    int ry = (y - BY) / BH;
+    return rx >= 0 && rx <= MX && ry >= 0 && ry < MY;
+  }
+  
+  static std::pair<School, s32> get(s32 x, s32 y)
+  {
+    int rx = (x - BX) / BW;
+    int ry = (y - BY) / BH;
+    
+    if (rx >= 0 && rx <= MX && ry >= 0 && ry < MY)
+    {
+      if (((y - BY) % BH) > (BH - VH))
+      {
+        School school = Data::schoolsWithoutArcane()[ry];
+        return std::make_pair(school, rx);
+      }
+    }
+    
+    return std::make_pair(School::NO_SCHOOL, 0);
+  }
+};
+
+
 bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   if (phase == Phase::BOOKS_CHOICE)
   {
     /* books selection grid */
     {
-      constexpr u16 BX = 189, BY = 44;
-      constexpr u16 BW = 8, BH = 26, VH = 22;
-      constexpr u16 MX = 13, MY = 5;
+      auto selection = BooksChoice::get(x, y);
       
-      int rx = (x - BX) / BW;
-      int ry = (y - BY) / BH;
-      
-      if (rx >= 0 && rx <= MX && ry >= 0 && ry < MY)
-      {
-        if (((y - BY) % BH) > (BH - VH))
-        {
-          School school = CommonDraw::schools[ry];
-          booksPicked(school, rx);
-        }
-      }
+      if (selection.first != School::NO_SCHOOL)
+        booksPicked(selection.first, selection.second);
     }
     
     /* retort selection grid */
@@ -811,3 +832,20 @@ bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
   
   return true;
 }
+
+bool NewGameView::mouseDragged(u16 x, u16 y, MouseButton b)
+{
+  switch (phase)
+  {
+    case Phase::BOOKS_CHOICE:
+    {
+      if (BooksChoice::get(x, y).first != School::NO_SCHOOL)
+        mouseReleased(x,y,b);
+    }
+      
+    default:
+      ;
+  }
+  
+  return true;
+};

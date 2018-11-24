@@ -26,23 +26,7 @@ public:
   static void seed(u32 s) { rng.seed(s); }
   static float rand() { return real(rng); }
   static float rand(float max) { return real(rng)*max; }
-  
-  static u32 passingRollsf(u32 count, float ch)
-  {
-    u32 passed = 0;
-    for (u32 i = 0; i < count; ++i)
-      if (chance(ch)) ++passed;
-    return passed;
-  }
-  
-  static u32 passingRolls(u32 count, u32 ch)
-  {
-    u32 passed = 0;
-    for (u32 i = 0; i < count; ++i)
-      if (chance(ch)) ++passed;
-    return passed;
-  }
-  
+    
   template <typename T, typename S> inline static T negativeWrap(T value, S total) { return value > 0 ? (value - 1) : (total - 1); }
   template <typename T, typename S> inline static T roundWithMod(T total, S size) { return total / size + (total % size != 0 ? 1 : 0); }
   
