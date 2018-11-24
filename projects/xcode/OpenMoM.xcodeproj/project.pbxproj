@@ -412,6 +412,7 @@
 		044E466C1980202D00E396AD /* MiniMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniMap.h; sourceTree = "<group>"; };
 		0450D0C11EE5181E007D5007 /* CitiesView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CitiesView.cpp; sourceTree = "<group>"; };
 		0450D0C21EE5181E007D5007 /* CitiesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CitiesView.h; sourceTree = "<group>"; };
+		045157E221AA0CE10074B3D4 /* unix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = unix.cpp; sourceTree = "<group>"; };
 		045755E11F0E93C6005F09D6 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
 		045755E21F0E93C6005F09D6 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
 		046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleView.cpp; sourceTree = "<group>"; };
@@ -1029,6 +1030,7 @@
 				045755E11F0E93C6005F09D6 /* Path.cpp */,
 				045755E21F0E93C6005F09D6 /* Path.h */,
 				04E282D41E0242C000DD673D /* osx.mm */,
+				045157E221AA0CE10074B3D4 /* unix.cpp */,
 				04E282D51E0242C000DD673D /* platform.h */,
 			);
 			path = platform;

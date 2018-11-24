@@ -16,16 +16,11 @@ std::unordered_map<std::string, I18>& i18n::getMapping()
 
 void i18n::mapCustomEntry(std::string key, std::string value)
 {
-  if (key == "messages_place_name_ruins_first")
-    assert(true);
   data[keyForString(key)] = value;
 }
 
 I18 i18n::keyForString(const std::string& key)
 {
-  if (key == "messages_place_name_ruins_first")
-    assert(true);
-  
   auto it = getMapping().find(key);
   if (it != getMapping().end())
     return it->second;

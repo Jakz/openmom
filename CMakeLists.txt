@@ -18,6 +18,7 @@ set(SDL2_IMAGE_LIBRARY C:\\SDL\\SDL2_image\\lib)
 set(SDL2_IMAGE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}\\libs\\sdl2\\win\\include)
 endif()
 
+set(LIBRARY_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
 
 if(APPLE)
@@ -66,6 +67,8 @@ set(CMAKE_C_FLAGS_RELWITHDEBINFO "-O3 -flto -g" CACHE STRING "" FORCE)
 message("Build Type is ${CMAKE_BUILD_TYPE}")
 message("Base flags are ${BASE_FLAGS}")
 message("Debug flags are ${CMAKE_CXX_FLAGS_DEBUG}")
+message("CXX path is ${CMAKE_CXX_COMPILER}")
+message("Libraries path is ${LIBRARY_FOLDER}")
 
 #if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 #  message(FATAL_ERROR "In-source builds are not permitted. Make a separate folder for building:\nmkdir build; cd build; cmake ..\nBefore that, remove the files already created:\nrm -rf CMakeCache.txt CMakeFiles")

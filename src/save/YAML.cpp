@@ -19,9 +19,9 @@
 #include <fstream>
 
 //TODO: no idea why symbol is not found in lib by linker
-/*#ifdef _WIN32
+#if defined(WIN32) || (defined(__unix__) && !defined(__APPLE__))
 std::string YAML::detail::node_data::empty_scalar;
-#endif*/
+#endif
 
 #define PARSE_ERROR(x, ...) do { LOGD("[yaml] parse error: " x, __VA_ARGS__); } while (false)
 

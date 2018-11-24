@@ -9,11 +9,7 @@ class PlatformUnix : public Platform
 public:
   Path getResourcePath() const override
   {
-#ifdef CMAKE_BUILD
     return "../..";
-#else
-    return "../..";
-#endif
   }
   
   bool exists(const Path& path) const override
