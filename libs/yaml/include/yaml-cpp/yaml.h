@@ -7,18 +7,18 @@
 #pragma once
 #endif
 
-#include "yaml-cpp/parser.h"
-#include "yaml-cpp/emitter.h"
-#include "yaml-cpp/emitterstyle.h"
-#include "yaml-cpp/stlemitter.h"
-#include "yaml-cpp/exceptions.h"
+#include "parser.h"
+#include "emitter.h"
+#include "emitterstyle.h"
+#include "stlemitter.h"
+#include "exceptions.h"
 
-#include "yaml-cpp/node/node.h"
-#include "yaml-cpp/node/impl.h"
-#include "yaml-cpp/node/convert.h"
-#include "yaml-cpp/node/iterator.h"
-#include "yaml-cpp/node/detail/impl.h"
-#include "yaml-cpp/node/parse.h"
-#include "yaml-cpp/node/emit.h"
+#include "node/node.h"
+#include "node/impl.h"
+#include "node/convert.h"
+#include "node/iterator.h"
+#include "node/detail/impl.h"
+#include "node/parse.h"
+#include "node/emit.h"
 
 #endif  // YAML_H_62B23520_7C8E_11DE_8A39_0800200C9A66

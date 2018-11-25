@@ -7,7 +7,7 @@
 #pragma once
 #endif
 
-#include "yaml-cpp/dll.h"
+#include "dll.h"
 
 namespace YAML {
 struct YAML_CPP_API Mark {

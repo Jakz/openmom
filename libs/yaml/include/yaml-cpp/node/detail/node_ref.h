@@ -7,10 +7,10 @@
 #pragma once
 #endif
 
-#include "yaml-cpp/dll.h"
-#include "yaml-cpp/node/type.h"
-#include "yaml-cpp/node/ptr.h"
-#include "yaml-cpp/node/detail/node_data.h"
+#include "../../dll.h"
+#include "../type.h"
+#include "../ptr.h"
+#include "node_data.h"
 
 namespace YAML {
 namespace detail {

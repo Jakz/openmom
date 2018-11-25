@@ -10,8 +10,8 @@
 #include <ios>
 #include <memory>
 
-#include "yaml-cpp/dll.h"
-#include "yaml-cpp/noncopyable.h"
+#include "dll.h"
+#include "noncopyable.h"
 
 namespace YAML {
 class EventHandler;

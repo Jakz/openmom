@@ -7,8 +7,8 @@
 #pragma once
 #endif
 
-#include "yaml-cpp/node/detail/node.h"
-#include "yaml-cpp/node/detail/node_data.h"
+#include "node.h"
+#include "node_data.h"
 #include <type_traits>
 
 namespace YAML {

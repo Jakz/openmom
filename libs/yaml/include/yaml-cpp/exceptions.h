@@ -7,8 +7,8 @@
 #pragma once
 #endif
 
-#include "yaml-cpp/mark.h"
-#include "yaml-cpp/traits.h"
+#include "mark.h"
+#include "traits.h"
 #include <sstream>
 #include <stdexcept>
 #include <string>

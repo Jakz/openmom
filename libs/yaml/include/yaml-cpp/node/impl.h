@@ -13,11 +13,11 @@
 #define THROW(x)
 #endif
 
-#include "yaml-cpp/node/node.h"
-#include "yaml-cpp/node/iterator.h"
-#include "yaml-cpp/node/detail/memory.h"
-#include "yaml-cpp/node/detail/node.h"
-#include "yaml-cpp/exceptions.h"
+#include "node.h"
+#include "iterator.h"
+#include "detail/memory.h"
+#include "detail/node.h"
+#include "../exceptions.h"
 #include <string>
 
 namespace YAML {

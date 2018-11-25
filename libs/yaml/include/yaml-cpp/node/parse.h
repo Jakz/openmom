@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "yaml-cpp/dll.h"
+#include "../dll.h"
 
 namespace YAML {
 class Node;

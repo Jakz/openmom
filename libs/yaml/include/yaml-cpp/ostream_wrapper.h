@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "yaml-cpp/dll.h"
+#include "dll.h"
 
 namespace YAML {
 class YAML_CPP_API ostream_wrapper {

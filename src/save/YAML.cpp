@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "yaml-cpp/yaml.h"
+#include "../libs/yaml/include/yaml-cpp/yaml.h"
 #include "Platform.h"
 
 #include "Data.h"

@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "yaml-cpp/dll.h"
+#include "dll.h"
 
 namespace YAML {
 YAML_CPP_API std::string EncodeBase64(const unsigned char *data,
