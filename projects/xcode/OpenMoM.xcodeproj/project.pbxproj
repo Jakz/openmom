@@ -1557,11 +1557,11 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/Cellar/fltk/1.3.4/include,
+					/usr/local/include/,
 				);
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
-					"-L/usr/local/Cellar/fltk/1.3.4/lib",
+					"-L/usr/local/lib",
 					"-lfltk",
 					"-lpthread",
 					"-framework",
@@ -1582,11 +1582,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/Cellar/fltk/1.3.4/include,
+					/usr/local/include/,
 				);
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
-					"-L/usr/local/Cellar/fltk/1.3.4/lib",
+					"-L/usr/local/lib",
 					"-lfltk",
 					"-lpthread",
 					"-framework",

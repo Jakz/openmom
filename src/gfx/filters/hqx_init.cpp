@@ -17,7 +17,7 @@
  */
 
 #include <cstdint>
-#include "hqx.h"
+#include "Hqx.h"
 
 //uint32_t   RGBtoYUV[16777216];
 uint32_t   YUV1, YUV2;

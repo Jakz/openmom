@@ -1,4 +1,4 @@
-#include "platform.h"
+#include "Platform.h"
 
 #include <sys/stat.h>
 
