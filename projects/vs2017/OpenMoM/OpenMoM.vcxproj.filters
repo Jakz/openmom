@@ -394,6 +394,15 @@
     <ClInclude Include="..\..\..\src\platform\windows\Precompiled.h">
       <Filter>platform\windows</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\common\Typedefs.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\common\Types.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\common\Enums.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\platform\windows\windows.cpp">

@@ -51,18 +51,13 @@
 #define PACKED __attribute__((packed))
 #endif
 
+
+#include <common/Typedefs.h>
+#include <common/Types.h>
+#include <common/Enums.h>
+
 #define WIDTH (320)
 #define HEIGHT (200)
-
-typedef uint8_t u8;
-typedef uint16_t u16;
-typedef uint32_t u32;
-typedef uint64_t u64;
-typedef int8_t s8;
-typedef int16_t s16;
-typedef int32_t s32;
-typedef int64_t s64;
-using byte = u8;
 
 template<typename... T> using predicate = std::function<bool(T...)>;
 
@@ -158,12 +153,12 @@ struct Color
   union
   {
     struct { u8 b,g,r,a; };
-    u32 data;
+    color_d data;
   };
   
   Color() = default;
   constexpr Color(u8 r, u8 g, u8 b, u8 a = 0xFF) : b(b), g(g), r(r), a(a) { }
-  constexpr Color(u32 data) : data(data) { }
+  constexpr Color(color_d data) : data(data) { }
   
   Color blend(Color dst) const { return blend(dst, dst.a); }
   
@@ -185,13 +180,13 @@ struct Color
 	    static_cast<u8>(b*sa + dst.b*da)
 	  );
   }
-  operator u32() const { return data; }
+  operator color_d() const { return data; }
   
   static const Color BLACK, WHITE, NONE;
   
   struct hash
   {
-    size_t operator()(const Color& color) const { return std::hash<u32>()(color.data); }
+    size_t operator()(const Color& color) const { return std::hash<color_d>()(color.data); }
   };
 };
 
@@ -212,107 +207,25 @@ enum MouseButton : u8
 
 enum class LBXID : u8
 {
-  ARMYLIST = 0,
-  BACKGRND,
-  BOOK,
-  BUILDDAT,
-  BUILDESC,
-  CHRIVER,
-  CITYNAME,
-  CITYSCAP,
-  CITYWALL,
-  CMBDESRC,
-  CMBDESRT,
-  CMBGRASC,
-  CMBGRASS,
-  CMBMAGIC,
-  CMBMOUNC,
-  CMBMOUNT,
-  CMBTCITY,
-  CMBTFX,
-  CMBTSND,
-  CMBTUNDC,
-  CMBTUNDR,
-  CMBTWALL,
-  COMBAT,
-  COMPIX,
-  CONQUEST,
-  DESC,
-  DESERT,
-  DIPLOMAC,
-  DIPLOMSG,
-  EVENTMSG,
-  EVENTS,
-  FIGURES1,
-  FIGURES2,
-  FIGURES3,
-  FIGURES4,
-  FIGURES5,
-  FIGURES6,
-  FIGURES7,
-  FIGURES8,
-  FIGURES9,
-  FIGURE10,
-  FIGURE11,
-  FIGURE12,
-  FIGURE13,
-  FIGURE14,
-  FIGURE15,
-  FIGURE16,
-  FONTS,
-  HALOFAM,
-  HELP,
-  HERODATA,
-  HIRE,
-  HLPENTRY,
-  INTRO,
-  INTROSFX,
-  INTROSND,
-  ITEMDATA,
-  ITEMISC,
-  ITEMPOW,
-  ITEMS,
-  LILWIZ,
-  LISTDAT,
-  LOAD,
-  LOSE,
-  MAGIC,
-  MAIN,
-  MAINSCRN,
-  MAPBACK,
-  MESSAGE,
-  MONSTER,
-  MOODWIZ,
-  MUSIC,
-  NAMES,
-  NEWGAME,
-  NEWSOUND,
-  PORTRAIT,
-  RELOAD,
-  RESOURCE,
-  SCROLL,
-  SNDDRV,
-  SOUNDFX,
-  SPECFX,
-  SPECIAL,
-  SPECIAL2,
-  SPELLDAT,
-  SPELLOSE,
-  SPELLS,
-  SPELLSCR,
-  SPLMASTR,
-  TERRAIN,
-  TERRSTAT,
-  TERRTYPE,
-  TUNDRA,
-  UNITS1,
-  UNITS2,
-  UNITVIEW,
-  VORTEX,
-  WALLRISE,
-  WIN,
-  WIZARDS,
-  WIZLAB,
+  ARMYLIST = 0, BACKGRND, BOOK, BUILDDAT, BUILDESC,
+  CHRIVER, CITYNAME, CITYSCAP, CITYWALL, CMBDESRC,
+  CMBDESRT, CMBGRASC, CMBGRASS, CMBMAGIC, CMBMOUNC,
+  CMBMOUNT, CMBTCITY, CMBTFX, CMBTSND, CMBTUNDC, 
+  CMBTUNDR, CMBTWALL, COMBAT, COMPIX, CONQUEST, DESC,
+  DESERT, DIPLOMAC, DIPLOMSG, EVENTMSG, EVENTS, FIGURES1,
+  FIGURES2, FIGURES3, FIGURES4, FIGURES5, FIGURES6,
+  FIGURES7, FIGURES8, FIGURES9, FIGURE10, FIGURE11,
+  FIGURE12, FIGURE13, FIGURE14, FIGURE15, FIGURE16,
+  FONTS, HALOFAM, HELP, HERODATA, HIRE, HLPENTRY,
+  INTRO, INTROSFX, INTROSND, ITEMDATA, ITEMISC,
+  ITEMPOW, ITEMS, LILWIZ, LISTDAT, LOAD, LOSE, MAGIC,
+  MAIN, MAINSCRN, MAPBACK, MESSAGE, MONSTER, MOODWIZ,
+  MUSIC, NAMES, NEWGAME, NEWSOUND, PORTRAIT, RELOAD,
+  RESOURCE, SCROLL, SNDDRV, SOUNDFX, SPECFX, SPECIAL,
+  SPECIAL2, SPELLDAT, SPELLOSE, SPELLS, SPELLSCR,
+  SPLMASTR, TERRAIN, TERRSTAT, TERRTYPE, TUNDRA,
+  UNITS1, UNITS2, UNITVIEW, VORTEX, WALLRISE, WIN,
+  WIZARDS, WIZLAB,
   
   COUNT
 };
@@ -325,109 +238,27 @@ enum class LBXID : u8
 #define TSI(x, y, z) SpriteInfo(TextureID::x, y, z)
 #define TSIS(x, y) SpriteInfo(TextureID::x, y)
 
-#pragma mark Geometric Types
-
-using int_type = s16;
-struct Size;
-
-struct Point
-{
-  int_type x;
-  int_type y;
-  
-  Point() noexcept : x(-1), y(-1) { }
-  Point(int_type x, int_type y) noexcept : x(x), y(y) { }
-  Point(const Size& size);
-  template<typename T, typename std::enable_if<std::is_base_of<Point, T>::value, int>::type = 0>
-  Point(const T& other) : x(other.x), y(other.y) { }
-  
-  bool operator!=(const Point& o) const { return !(*this == o); }
-  bool operator==(const Point& o) const { return x == o.x && y == o.y; }
-  
-  Point delta(int_type x, int_type y) const { return Point(this->x + x, this->y + y); }
-  
-  Point& operator+=(const Point& other) { x += other.x; y += other.y; return *this; }
-  Point& operator+=(int_type i) { x += i; y += i; return *this; }
-  
-  Point operator+(const Point& o) const { return Point(x + o.x, y + o.y); }
-  Point operator-(const Point& o) const { return Point(x - o.x, y - o.y); }
-  
-  Point operator*(float v) const { return Point(static_cast<int_type>(x*v), static_cast<int_type>(y*v)); }
-  
-  Point operator-(int_type v) const { return Point(x+v, y+v); }
-  
-  bool isValid() const { return x != -1; }
-  
-  static Point INVALID;
-  static Point ZERO;
-};
-
-struct Size
-{
-  int_type w;
-  int_type h;
-  
-  Size() : w(0), h(0) { }
-  Size(int_type w, int_type h) : w(w), h(h) { }
-  Size(const Point& point);
-  template<typename T, typename std::enable_if<std::is_base_of<Size, T>::value, int>::type = 0>
-  Size(const Size& other) : w(other.w), h(other.h) { }
-  
-  bool operator==(const Size& size) const { return w == size.w && h == size.h; }
-  bool operator!=(const Size& size) const { return !this->operator==(size); }
-  
-  Size operator*(int_type v) const { return Size(this->w*v, this->h*v); }
-  Size& operator*=(int_type v) { this->w *= v; this->h *= v; return *this; }
-  
-  Size operator/(int_type v) const { return Size(this->w/v, this->h/v); }
-  Size& operator/=(int_type v) { this->w /= v; this->h /= v; return *this; }
-};
-
-using Coord = Point;
-
-struct Rect
-{
-  Point origin;
-  Size size;
-  
-  Rect(int_type x, int_type y, int_type w, int_type h) : origin(x,y), size(w,h) { }
-  Rect(const Point& origin, const Size& size) : origin(origin), size(size) { }
-  
-  inline int_type right() const { return origin.x + size.w; }
-  inline int_type left() const { return origin.x; }
-  inline int_type top() const { return origin.y; }
-  inline int_type bottom() const { return origin.y + size.h; }
-  
-  bool contains(const Point& point) const
-  {
-    return point.x >= left() && point.x < right() && point.y >= top() && point.y <= bottom();
-  }
-};
-
-inline Point::Point(const Size& size) : x(size.w), y(size.h) { }
-inline Size::Size(const Point& point) : w(point.x), h(point.y) { }
-
 struct DiscreteTimer
 {
 private:
-  u32 base;
-  const u32 ticksPerTick;
-  u32 tickCounter;
-  u32 counter;
+  count_t base;
+  const count_t ticksPerTick;
+  count_t tickCounter;
+  count_t counter;
   
 public:
-  DiscreteTimer(u32 ticksPerTick) :
+  DiscreteTimer(count_t ticksPerTick) :
   ticksPerTick(ticksPerTick), counter(0), base(0) { }
   
-  void mark(u32 base) { this->base = base; }
+  void mark(count_t base) { this->base = base; }
   
-  void set(u32 value)
+  void set(count_t value)
   {
     tick(value - base);
     base = value;
   }
   
-  void tick(u32 delta)
+  void tick(count_t delta)
   {
     tickCounter += delta;
     if (tickCounter >= ticksPerTick)
@@ -437,8 +268,8 @@ public:
   
   void tick() { tick(1); }
   
-  u32 value() const { return counter; }
-  operator u32() const { return counter; }
+  count_t value() const { return counter; }
+  operator count_t() const { return counter; }
   
   void reset()
   {
@@ -461,15 +292,15 @@ using sdl_text_input = const char (&)[32];
 
 struct Position
 {
-  s16 x, y;
+  int_type x, y;
   Plane plane;
   
   Position() { }
-  Position(s16 x, s16 y, Plane plane) : x(x), y(y), plane(plane) { }
+  Position(int_type x, int_type y, Plane plane) : x(x), y(y), plane(plane) { }
   Position(Point pt, Plane plane) : x(pt.x), y(pt.y), plane(plane) { }
   
-  Position relative(s16 ox, s16 oy) const { return Position(x+ox, y+oy, plane); }
-  Position dx(s16 ox, s16 oy) const { return relative(ox, oy); }
+  Position relative(int_type ox, int_type oy) const { return Position(x+ox, y+oy, plane); }
+  Position dx(int_type ox, int_type oy) const { return relative(ox, oy); }
   
   inline bool wrapAndCheckValidity(u16 w, u16 h)
   {
@@ -539,14 +370,8 @@ enum class DirJoin
 {
   NONE = 0x00,
   
-  N  = 0x01,
-  NE = 0x02,
-  E  = 0x04,
-  SE = 0x08,
-  S  = 0x10,
-  SW = 0x20,
-  W  = 0x40,
-  NW = 0x80,
+  N  = 0x01, NE = 0x02, E  = 0x04, SE = 0x08,
+  S  = 0x10, SW = 0x20, W  = 0x40, NW = 0x80,
   
   /* orthogonal for map */
   
@@ -610,15 +435,15 @@ public:
   constexpr DirMask(DirJoin join) : mask((ut)join) { }
   constexpr DirMask(DirJoin j1, DirJoin j2) : mask((ut)j1 | (ut)j2) { }
   
-  bool is(DirJoin dir) const { return (mask & static_cast<ut>(dir)) != 0; }
-  bool isJust(DirJoin dir) const { return mask == (static_cast<ut>(dir)); }
+  inline bool is(DirJoin dir) const { return (mask & static_cast<ut>(dir)) != 0; }
+  inline bool isJust(DirJoin dir) const { return mask == (static_cast<ut>(dir)); }
   
-  bool operator&&(DirJoin dir) const { return is(dir); }
-  bool operator==(const DirJoin dir) const { return isJust(dir); }
-  bool operator!=(const DirJoin dir) const { return !isJust(dir); }
+  inline bool operator&&(DirJoin dir) const { return is(dir); }
+  inline bool operator==(const DirJoin dir) const { return isJust(dir); }
+  inline bool operator!=(const DirJoin dir) const { return !isJust(dir); }
   
-  bool operator==(const DirMask mask) const { return this->mask == mask.mask; }
-  bool operator!=(const DirMask mask) const { return this->mask != mask.mask; }
+  inline bool operator==(const DirMask mask) const { return this->mask == mask.mask; }
+  inline bool operator!=(const DirMask mask) const { return this->mask != mask.mask; }
   
   void unset(DirMask mask) { this->mask &= ~mask.value(); this->mask &= MASK; }
   void unset(DirJoin dir) { mask &= ~DirMask(dir).value(); }
@@ -907,11 +732,11 @@ class Upkeep
 public:
   enum class Type { GOLD, MANA, FOOD };
   
-  mutable s16 gold, mana, food;
+  mutable value_t gold, mana, food;
   
-  Upkeep(s16 gold = 0, s16 mana = 16, s16 food = 0) : gold(gold), mana(mana), food(food) { }
+  Upkeep(value_t gold = 0, value_t mana = 16, value_t food = 0) : gold(gold), mana(mana), food(food) { }
 
-  s16 operator[](Type type) const
+  value_t operator[](Type type) const
   {
     switch (type)
     {
@@ -933,82 +758,17 @@ public:
   Upkeep operator+(const Upkeep& o) const { return Upkeep(gold+o.gold, mana+o.mana, food+o.food); }
 };
 
-enum ViewID
-{
-  VIEW_MAIN,
-  VIEW_SPELL_BOOK,
-  VIEW_MAGIC,
-  VIEW_RESEARCH,
-  VIEW_ALCHEMY,
-  VIEW_ARMIES,
-  VIEW_ARMIES_ITEMS,
-  VIEW_ITEM_CRAFT,
-  VIEW_ITEM_CRAFT_CHARGES,
-  VIEW_MERCHANT,
-  VIEW_CITY,
-  VIEW_UNIT,
-  VIEW_ARMY,
-  VIEW_MESSAGE,
-  VIEW_CITIES,
-  VIEW_MIRROR,
-  VIEW_INFO_MENU,
-  VIEW_CARTOGRAPHER,
-  VIEW_DIPLOMACY,
-  VIEW_ASTROLOGER,
-  VIEW_HISTORIAN,
-  VIEW_COMBAT,
-  VIEW_PRODUCTION,
-  VIEW_OUTPOST,
-  VIEW_NEW_GAME,
-  VIEW_LOAD,
-  VIEW_OPTIONS,
-  VIEW_START,
-  VIEW_INTRO,
-  
-  VIEW_MAP_EDITOR,
-
-  VIEW_CONSOLE,
-  VIEW_DATA,
-  
-  VIEW_COUNT
-};
-
-
-
 #include <vector>
 #include <set>
 #include <string>
 
-enum School : s8
-{
-  ARCANE = 0,
-  CHAOS,
-  DEATH,
-  LIFE,
-  NATURE,
-  SORCERY,
-  
-  SCHOOL_COUNT,
-  SCHOOL_NO_ARCANE_COUNT = 5,
-  
-  SCHOOL_FIRST = 1,
-  SCHOOL_LAST = 5,
-  
-  NO_SCHOOL = -1
-};
+class Spell;
+enum class SpellRarity : u32;
 
+template<typename T> using spell_rarity_map = enum_simple_map<SpellRarity, T, 4>;
+template<typename T> using spell_enum_map = enum_simple_map<School, enum_simple_map<SpellRarity, T, 4>, 6>; //TODO: 6th element is necessary for arcane which is at index 0
 template<typename T> using school_map = enum_simple_map<School, T, SCHOOL_COUNT>;
-using school_value_map = school_map<s16>;
-
-enum PlayerColor : u8
-{
-  GREEN = 0,
-  BLUE,
-  RED,
-  PURPLE,
-  YELLOW,
-  NEUTRAL,
-};
+using school_value_map = school_map<value_t>;
 
 struct Retort
 {
@@ -1069,12 +829,6 @@ struct Wizard
   Wizard() : defaultBooks(0) { }
 };
 
-class Spell;
-enum class SpellRarity : u32;
-
-template<typename T> using spell_rarity_map = enum_simple_map<SpellRarity, T, 4>;
-template<typename T> using spell_enum_map = enum_simple_map<School, enum_simple_map<SpellRarity, T, 4>, 6>; //TODO: 6th element is necessary for arcane which is at index 0
-
 struct PlayerSetupInfo
 {
   const Wizard* portrait;
@@ -1084,74 +838,6 @@ struct PlayerSetupInfo
   std::set<const Retort*> retorts;
   PlayerColor color;
 };
-
-
-
-#pragma mark Map Related
-
-enum Plane : u8
-{
-  ARCANUS = 0,
-  MYRRAN,
-  
-  PLANE_COUNT
-};
-
-enum class TileType : u8
-{
-  NONE = 0, 
-  GRASS = 1,
-  OCEAN,
-  SHORE,
-  MOUNTAIN,
-  VOLCANO,
-  HILL,
-  FOREST,
-  SWAMP,
-  DESERT,
-  TUNDRA,
-  RIVER,
-  RIVER_MOUTH,
-
-};
-
-static constexpr size_t TILE_TYPES = 12;
-
-enum class Resource : u8
-{
-  ADAMANTIUM = 0,
-  COAL,
-  CRYSX_CRYSTAL,
-  GEMS,
-  GOLD,
-  IRON_ORE,
-  MITHRIL,
-  NIGHT_SHADE,
-  QOURK_CRYSTAL,
-  SILVER,
-  WILD_GAME,
-  NONE
-};
-
-enum class PlaceType : u8
-{  
-  TOWER_OF_WIZARDRY = 1,
-  
-  MYSTERIOUS_CAVE,
-  DUNGEON,
-  ANCIENT_TEMPLE,
-  ABANDONED_KEEP,
-  MONSTER_LAIR,
-  RUINS,
-  FALLEN_TEMPLE,
-  
-  MANA_NODE
-};
-
-using experience_t = s32;
-using prop_value = s32;
-using value_t = s32;
-using count_t = u32;
 
 /* forward declarations */
 

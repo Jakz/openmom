@@ -113,13 +113,13 @@ public:
 class FontData : public SpriteRawData
 {
 private:
-  u8* data;
+  byte* data;
   s8 glyphWidth[GLYPH_COUNT];
   const u8 width;
   const u8 height;
   
 public:
-  FontData(FontType type, u8 height, u8 width) : type(type), height(height), width(width), data(new u8[width*height*GLYPH_COUNT])
+  FontData(FontType type, u8 height, u8 width) : type(type), height(height), width(width), data(new byte[width*height*GLYPH_COUNT])
   {
     std::fill(data, data + width*height*GLYPH_COUNT, 0);
   }

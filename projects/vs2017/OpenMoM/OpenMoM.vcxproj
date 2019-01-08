@@ -161,8 +161,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\common\Common.h" />
+    <ClInclude Include="..\..\..\src\common\Enums.h" />
     <ClInclude Include="..\..\..\src\common\format.h" />
     <ClInclude Include="..\..\..\src\common\mystrings.h" />
+    <ClInclude Include="..\..\..\src\common\Typedefs.h" />
+    <ClInclude Include="..\..\..\src\common\Types.h" />
     <ClInclude Include="..\..\..\src\common\Util.h" />
     <ClInclude Include="..\..\..\src\game\cities\Buildings.h" />
     <ClInclude Include="..\..\..\src\game\cities\City.h" />

@@ -1,6 +1,7 @@
 *.dylib
 .DS_Store
-.vs/**
+**/.vs/**
+**/vs2017/**/Debug/**
 *.lbx
 data/lbx/*
 build/**
