@@ -11,23 +11,23 @@ using level_bonuses = std::unordered_map<Property, s16, enum_hash>;
 class Level
 {
 protected:
-  s16 _index;
-  s32 _minXP;
+  s32 _index;
+  experience_t _minXP;
   bool _canAdvanceToNext;
   const level_bonuses bonuses;
   const Level* const next;
 
 public:
-  Level(s16 index, I18 name, SpriteInfo icon, const Level* next, s32 minXP, level_bonuses bonuses, bool canAdvanceToNext = true) :
+  Level(s32 index, I18 name, SpriteInfo icon, const Level* next, s32 minXP, level_bonuses bonuses, bool canAdvanceToNext = true) :
   _index(index), visuals({name,icon}), next(next), _minXP(minXP), bonuses(bonuses), _canAdvanceToNext(canAdvanceToNext)
   { }
   
   bool hasLeveled(s32 xp) const { return next && _canAdvanceToNext && xp >= next->_minXP; }
   
-  s16 index() const { return _index; }
-  s16 ordinal() const { return index() + 1; }
+  s32 index() const { return _index; }
+  s32 ordinal() const { return index() + 1; }
   
-  s16 getBonusProperty(Property property) const { auto it = bonuses.find(property); return it != bonuses.end() ? it->second : 0; }
+  prop_value getBonusProperty(Property property) const { auto it = bonuses.find(property); return it != bonuses.end() ? it->second : 0; }
   
   struct
   {
@@ -43,7 +43,7 @@ class experience_level
 private:
   const experience_levels* _levels;
   const Level* _level;
-  s32 _xp;
+  experience_t _xp;
 
   void tryToLevelUp()
   {
@@ -52,7 +52,7 @@ private:
   }
   
 public:
-  experience_level(s32 startingXP, const experience_levels* levels) : _xp(startingXP), _levels(levels), _level(nullptr)
+  experience_level(experience_t startingXP, const experience_levels* levels) : _xp(startingXP), _levels(levels), _level(nullptr)
   {
     if (_levels)
     {
@@ -68,9 +68,9 @@ public:
   }
   
   bool isValid() const { return _levels != nullptr; }
-  s32 xp() const { return _xp; }
+  experience_t xp() const { return _xp; }
   const Level* level() const { return _level; }
-  s16 getBonusProperty(Property property) const { return _level ? _level->getBonusProperty(property) : 0; }
+  prop_value getBonusProperty(Property property) const { return _level ? _level->getBonusProperty(property) : 0; }
 };
 
 #endif

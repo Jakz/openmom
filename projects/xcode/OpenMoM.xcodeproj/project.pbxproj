@@ -71,6 +71,7 @@
 		0450D0C31EE5181E007D5007 /* CitiesView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0450D0C11EE5181E007D5007 /* CitiesView.cpp */; };
 		045755E31F0E93C6005F09D6 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045755E11F0E93C6005F09D6 /* Path.cpp */; };
 		045755E41F0E93C6005F09D6 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045755E11F0E93C6005F09D6 /* Path.cpp */; };
+		0459EB8621E43D7A00C23FF3 /* DiplomacyView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CAD5E6210BD33A008EE562 /* DiplomacyView.cpp */; };
 		046428F01E0AC4DC003A76D8 /* ConsoleView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */; };
 		046428F41E0CE81D003A76D8 /* Dialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F11E0CE6CB003A76D8 /* Dialogs.cpp */; };
 		046428F81E0D1ABA003A76D8 /* Animations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428F61E0D1ABA003A76D8 /* Animations.cpp */; };
@@ -415,6 +416,7 @@
 		045157E221AA0CE10074B3D4 /* unix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = unix.cpp; sourceTree = "<group>"; };
 		045755E11F0E93C6005F09D6 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
 		045755E21F0E93C6005F09D6 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
+		0459EB8521E43BB000C23FF3 /* precompiled.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = precompiled.pch; sourceTree = "<group>"; };
 		046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleView.cpp; sourceTree = "<group>"; };
 		046428EF1E0AC4DC003A76D8 /* ConsoleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleView.h; sourceTree = "<group>"; };
 		046428F11E0CE6CB003A76D8 /* Dialogs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dialogs.cpp; sourceTree = "<group>"; };
@@ -905,6 +907,15 @@
 			path = parts;
 			sourceTree = "<group>";
 		};
+		0459EB8421E43B9800C23FF3 /* macos */ = {
+			isa = PBXGroup;
+			children = (
+				0459EB8521E43BB000C23FF3 /* precompiled.pch */,
+				04E282D41E0242C000DD673D /* osx.mm */,
+			);
+			path = macos;
+			sourceTree = "<group>";
+		};
 		046428F51E0D1ABA003A76D8 /* animations */ = {
 			isa = PBXGroup;
 			children = (
@@ -1027,9 +1038,9 @@
 		04E282D31E0242C000DD673D /* platform */ = {
 			isa = PBXGroup;
 			children = (
+				0459EB8421E43B9800C23FF3 /* macos */,
 				045755E11F0E93C6005F09D6 /* Path.cpp */,
 				045755E21F0E93C6005F09D6 /* Path.h */,
-				04E282D41E0242C000DD673D /* osx.mm */,
 				045157E221AA0CE10074B3D4 /* unix.cpp */,
 				04E282D51E0242C000DD673D /* platform.h */,
 			);
@@ -1339,6 +1350,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0459EB8621E43D7A00C23FF3 /* DiplomacyView.cpp in Sources */,
 				047AE63F1F9BB3D400088E37 /* format.cc in Sources */,
 				0467070B1F892B9A00F38879 /* MapEditorView.cpp in Sources */,
 				0467070A1F892B9600F38879 /* DataView.cpp in Sources */,
@@ -1551,6 +1563,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "${srcroot}/../../src/platform/macos/precompiled.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"${inherited}",
 					"LBX_STATUS_PATH=\\\"${SRCROOT}/../../data\\\"",
@@ -1580,6 +1593,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "${srcroot}/../../src/platform/macos/precompiled.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/include/,

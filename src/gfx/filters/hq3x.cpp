@@ -19,7 +19,7 @@
  */
 
 #include <stdint.h>
-#include "hqx.h"
+#include "Hqx.h"
 
 #define PIXEL00_1M  *dp = Interp1(w[5], w[1]);
 #define PIXEL00_1U  *dp = Interp1(w[5], w[2]);

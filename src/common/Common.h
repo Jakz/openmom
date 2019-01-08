@@ -1146,6 +1146,10 @@ enum class PlaceType : u8
   MANA_NODE
 };
 
+using experience_t = s32;
+using prop_value = s32;
+using value_t = s32;
+
 /* forward declarations */
 
 class Race;

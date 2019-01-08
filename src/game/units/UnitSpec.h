@@ -192,6 +192,7 @@ enum class Property : u8
 };
 
 using prop_value = s32;
+using value_t = s32;
 
 class Propertable
 {
@@ -255,6 +256,8 @@ protected:
   type(type), upkeep(upkeep), cost(cost), melee(melee), ranged(ranged), defense(defense), resistance(resistance), hits(hits), figures(figures), movement(movement), sight(sight), skills(skills) { }
 
 public:
+  virtual ~UnitSpec() { }
+  
   // TODO: there is already productableType(), this should be useless and removed
   const UnitType type;
   

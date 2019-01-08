@@ -75,7 +75,7 @@ public:
   
   //TODO: manage bonus levels with retorts and such through getBonusProperty
   const Level* getExperienceLevel() const { return experience.level(); }
-  s32 getExperience() const { return experience.xp(); }
+  experience_t getExperience() const { return experience.xp(); }
   
   Productable::Type type() const { return spec->productionType(); }
   

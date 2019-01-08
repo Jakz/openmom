@@ -76,6 +76,6 @@ public:
   
   bool mouseWheel(s16 dx, s16 dy, u16 d) override;
   
-  bool keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod);
+  bool keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
 
 };

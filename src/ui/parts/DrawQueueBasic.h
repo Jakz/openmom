@@ -12,7 +12,7 @@ private:
   s32 _z;
 public:
   BasicDrawEntry() : _z(0) { }
-  ~BasicDrawEntry() { }
+  virtual ~BasicDrawEntry() { }
   
   virtual void draw() const = 0;
   
