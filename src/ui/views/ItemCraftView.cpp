@@ -49,11 +49,11 @@ void ItemCraftView::ClickableAffix::draw()
 {
   if (!left.empty())
   {
-    Fonts::drawString(left.c_str(), font(), x, y, ALIGN_RIGHT);
-    Fonts::drawString(right.c_str(), font(), x+2, y, ALIGN_LEFT);
+    Fonts::drawString(left, font(), x, y, ALIGN_RIGHT);
+    Fonts::drawString(right, font(), x+2, y, ALIGN_LEFT);
   }
   else
-    Fonts::drawString(right.c_str(), font(), x, y, ALIGN_LEFT);
+    Fonts::drawString(right, font(), x, y, ALIGN_LEFT);
   
   Clickable::draw();
 }
@@ -155,8 +155,8 @@ void ItemCraftView::updateClickableAreas()
     
     for (size_t i = 0; i < effectiveRange; ++i)
     {
-      std::string left = Fonts::format("%+d", affix.valueAt(i));
-      std::string right = Fonts::format("%s", affix.name().c_str());
+      std::string left = fmt::sprintf("%+d", affix.valueAt(i));
+      std::string right = fmt::sprintf("%s", affix.name());
       u16 width = Fonts::stringWidth(mediumFace, right) /*+ Fonts::stringWidth(mediumFace, left)*/ + 2;
       
       ClickableAffix* area = new ClickableAffix(group, i, left, right, bx, by, width, LINE_HEIGHT);

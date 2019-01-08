@@ -20,7 +20,7 @@
 class ColorMap
 {
   public:
-    virtual u32 get(u32 k) const = 0;
+    virtual color_d get(u32 k) const = 0;
 };
 
 using ColorFilter = ColorMap;

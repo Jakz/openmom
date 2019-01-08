@@ -136,7 +136,7 @@ int main(int argc, char* arg[])
   
   /*Hero* unit = new Hero(*UnitSpec::heroSpec(UnitID::HERO_DWARF));
   SDL::gvm->unitDetailView()->setHeroHire(unit, 200);*/
-  SDL::gvm->switchView(VIEW_NEW_GAME);
+  //SDL::gvm->switchView(VIEW_NEW_GAME);
   
   //SDL::gvm->switchView(VIEW_DIPLOMACY);
   //SDL::gvm->switchView(VIEW_LBX);

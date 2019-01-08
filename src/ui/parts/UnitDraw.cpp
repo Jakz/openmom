@@ -115,7 +115,7 @@ std::string UnitDraw::stringForDoubleMovement(s16 moves, bool hideZero)
   if (hideZero && moves == 1)
     return ".5";
   else
-    return Fonts::format("%d%s",moves/2, moves%2 == 0 ? "" : ".5");
+    return fmt::sprintf("%d%s",moves/2, moves%2 == 0 ? "" : ".5");
 }
 
 Color UnitDraw::colorForHealth(float percent)

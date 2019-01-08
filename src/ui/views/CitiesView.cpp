@@ -144,7 +144,7 @@ void CitiesView::draw()
 {
   Gfx::draw(LSI(RELOAD, 21), 0, 0);
 
-  std::string title = Fonts::format("The Cities Of %s", player->name.c_str()); //TODO: localize and check if player name or wizard name
+  std::string title = fmt::sprintf("The Cities Of %s", player->name); //TODO: localize and check if player name or wizard name
   Fonts::drawString(title, fonts::base::SERIF_GOLD, WIDTH/2 - 1, 2, ALIGN_CENTER); //TODO: correct font (with double shadow)
   
   Fonts::setFace(FontFaces::Small::RED_PALE, 0, 1);

@@ -14,7 +14,7 @@
 using namespace std;
 
 
-u32 BlinkMap::get(u32 k) const
+color_d BlinkMap::get(u32 k) const
 {
   if (set.find(k) == set.end()) return 0x00000000;
   else

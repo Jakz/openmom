@@ -63,7 +63,7 @@ CityView::CityView(ViewManager* gvm) : View(gvm)
   buttons[BUY]->deactivate();
   
   buttons[BUY]->setAction([this](){
-    player->send(new msgs::Confirm(Fonts::format("Do you wish to spend %d Gold by purchasing a %s?", city->getProductable()->productionCost(), city->getProductable()->productionName().c_str()), [&]() {
+    player->send(new msgs::Confirm(fmt::sprintf("Do you wish to spend %d Gold by purchasing a %s?", city->getProductable()->productionCost(), city->getProductable()->productionName()), [&]() {
       g->cityMechanics.buyProduction(city);
     }));
   });
@@ -87,7 +87,7 @@ void CityView::clickOnCitySpell(size_t index)
     const SpellCast& cast = *next(spells.begin(), realIndex);
     if (cast.player == player)
     {
-      player->send(new msgs::Confirm(Fonts::format("Do you wish to turn off ^s%s^^?", i18n::s(cast.spell->name).c_str()), [&]() {
+      player->send(new msgs::Confirm(fmt::sprintf("Do you wish to turn off ^s%s^^?", i18n::s(cast.spell->name)), [&]() {
         city->removeSpell(cast);
       }));
     }
@@ -140,7 +140,7 @@ void CityView::draw()
   Gfx::draw(LSI(BACKGRND, 6), 0, 0); // bg
   
   /* city name*/
-  std::string cityName = Fonts::format("%s of %s", i18n::c(i18n::CITY_SIZE_NAMES[city->tileSize()]), city->getName().c_str());
+  std::string cityName = fmt::sprintf("%s of %s", i18n::c(i18n::CITY_SIZE_NAMES[city->tileSize()]), city->getName());
   
   Fonts::drawString(cityName, FontFaces::Huge::GOLD, 104, 2, ALIGN_CENTER);
   
@@ -198,7 +198,7 @@ void CityView::draw()
   /* draw city info: race and population */
   Fonts::drawString(i18n::s(GfxData::raceGfxSpec(city->race).name), FontFaces::Small::YELLOW, 5, 18, ALIGN_LEFT);
   //TODO: localize digits
-  Fonts::drawString(Fonts::format("Population: %s (+%d)", strings::groupDigits(city->population).c_str(), city->growthRate), FontFaces::Small::YELLOW, 209, 18, ALIGN_RIGHT);
+  Fonts::drawString(fmt::sprintf("Population: %s (+%d)", strings::groupDigits(city->population), city->growthRate), FontFaces::Small::YELLOW, 209, 18, ALIGN_RIGHT);
   
   const Productable* production = city->getProductable();
   
@@ -260,6 +260,6 @@ void CityView::draw()
     const SpellCast& cast = *it;
     const FontSpriteSheet* face = Fonts::fontForColor(cast.player->color);
     //Fonts::drawString(i18n::s(cast.spell->name), face, 138, 50+7*i, ALIGN_LEFT);
-    Fonts::drawString(Fonts::format("%s%d", i18n::s(cast.spell->name).c_str(), cityEnchantPage*CITY_ENCHANT_PER_PAGE + i), face, 138, 50+7*i, ALIGN_LEFT);
+    Fonts::drawString(fmt::sprintf("%s%d", i18n::s(cast.spell->name), cityEnchantPage*CITY_ENCHANT_PER_PAGE + i), face, 138, 50+7*i, ALIGN_LEFT);
   }
 }

@@ -73,7 +73,7 @@ void SummonAnimation::step()
   Gfx::draw(LSI(SPELLSCR,11), palette, base.x + 65, base.y + 26+97-43, frame); // flame1
   
   //TODO: palette is not the same, single pixels different
-  Fonts::drawString(Fonts::format("%s Summoned", spec->productionName().c_str()), FontFaces::Serif::GOLD_SHADOW, base.x + 90, base.y + 116, ALIGN_CENTER);
+  Fonts::drawString(fmt::sprintf("%s Summoned", spec->productionName()), FontFaces::Serif::GOLD_SHADOW, base.x + 90, base.y + 116, ALIGN_CENTER);
 }
 
 bool SummonAnimation::mouseReleased(u16 x, u16 y, MouseButton b) { finish(); return true; }

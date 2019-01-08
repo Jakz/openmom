@@ -1,5 +1,7 @@
 
 LIBS_PATH = ${PROJECT_DIR}/../../libs
+CC = ${PROJECT_DIR}/ccache/ccache-clang
+CXX = ${PROJECT_DIR}/ccache/ccache-clang++
 
 FRAMEWORK_SEARCH_PATHS = ${inherited} $(PROJECT_DIR)/../../Libs
 LIBRARY_SEARCH_PATHS = ${PROJECT_DIR}/../../libs/yaml/lib/osx

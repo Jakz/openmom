@@ -849,7 +849,7 @@ void CityMechanics::growCity(City *c)
     if (c->population > 1000)
     {
       c->isStillOutpost = false;
-      c->getOwner()->send(new msgs::Error(Fonts::format(i18n::s(I18::MESSAGE_OUTPOST_GROWN_TO_CITY).c_str(), c->getName().c_str())));
+      c->getOwner()->send(new msgs::Error(fmt::sprintf(i18n::s(I18::MESSAGE_OUTPOST_GROWN_TO_CITY), c->getName())));
     }
   }
 }
