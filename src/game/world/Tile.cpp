@@ -10,22 +10,16 @@ void Tile::settleCity(City* city)
 {
   this->city = city;
   
-  for (size_t i = 0;  i < Util::DIRS.size()+1; ++i)
-  {
-    Tile* tile = i < 8 ? world->get(position, Util::DIRS[i]) : this;
-    
-    if (tile)
-    {
-      switch (tile->type) {
-        case TileType::OCEAN:
-        case TileType::SHORE: city->setPlacement(CITY_BY_SEA); break;
-        case TileType::RIVER: city->setPlacement(CITY_BY_RIVER); break;
-        case TileType::HILL: city->setPlacement(CITY_BY_HILL); break;
-        case TileType::MOUNTAIN: city->setPlacement(CITY_BY_MOUNTAIN); break;
-        default: break;
-      }
+  for_each_neighbor_and_itself([city] (Tile* tile) {
+    switch (tile->type) {
+      case TileType::OCEAN:
+      case TileType::SHORE: city->setPlacement(CITY_BY_SEA); break;
+      case TileType::RIVER: city->setPlacement(CITY_BY_RIVER); break;
+      case TileType::HILL: city->setPlacement(CITY_BY_HILL); break;
+      case TileType::MOUNTAIN: city->setPlacement(CITY_BY_MOUNTAIN); break;
+      default: break;
     }
-  }
+  });
 }
 
 void Tile::placeArmy(Army* army)
@@ -61,6 +55,12 @@ Tile* Tile::neighbor(DirJoin dir) const
     case DirJoin::NW: return world->get(position.dx(-1,-1));
     default: assert(false);
   }
+}
+
+void Tile::for_each_neighbor_and_itself(const std::function<void(Tile*)> lambda)
+{
+  lambda(this);
+  for_each_neighbor(lambda);
 }
 
 void Tile::for_each_neighbor(const std::function<void(Tile*)> lambda) const

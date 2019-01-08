@@ -186,15 +186,12 @@ struct Color
   operator u32() const { return data; }
   
   static const Color BLACK, WHITE, NONE;
-};
-
-namespace std
-{
-  template<> struct hash<Color>
+  
+  struct hash
   {
     size_t operator()(const Color& color) const { return std::hash<u32>()(color.data); }
   };
-}
+};
 
 class FontSpriteSheet;
 
@@ -795,6 +792,26 @@ public:
   virtual const Palette* getPalette() const { return nullptr; }
 };
 
+/*
+ This struct is used to refer to a specific graphic sprite by packing its attributes in
+ a single value, the struct can hold a LBX reference or a real texture reference according to mode.
+ 
+ LBX MODE
+  0x0000FFFF : mask for sprite number
+  0x00FF0000 : mask for LBX index (max 256 LBX files)
+  0x7F000000 : which frame of LBX entry (0-127)
+  0x80000000 : flag for LBX entry type, must be set
+ 
+ TEXTURE MODE
+  0x000000FF : mask for colum in spritesheet
+  0x0000FF00 : mask for row in spritesheet
+  0x00FF0000 : mask for texture ID (max 256 textures)
+ 
+ By extending with 4 additional bytes we could specify palette and other attributes useful in a single number,
+ this would require a large refactor but it maybe worth to simplify a lot of code around.
+ 
+ The graphics engine doesn't care about which kind you use since the implementation automatically manages this.
+ */
 struct SpriteInfo
 {
   using data_type = u32;

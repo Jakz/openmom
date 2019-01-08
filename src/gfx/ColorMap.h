@@ -27,7 +27,7 @@ using ColorFilter = ColorMap;
 
 using color_list = std::initializer_list<Color>;
 using color_array = std::vector<Color>;
-using color_map = std::unordered_map<Color, Color>;
+using color_map = std::unordered_map<Color, Color, Color::hash>;
 
 class BlinkMap : public ColorMap
 {
@@ -36,7 +36,7 @@ class BlinkMap : public ColorMap
     const s16 d[3];
     const u16 ticks, updatedForTick = -1;
   
-    std::unordered_set<Color> set;
+    std::unordered_set<Color, Color::hash> set;
     //Color color;
   
   

@@ -106,6 +106,7 @@ public:
   
   Tile* neighbor(DirJoin dir) const;
   
+  void for_each_neighbor_and_itself(const std::function<void(Tile*)> lambda);
   void for_each_neighbor(const std::function<void(Tile*)> lambda) const;
   
   DirJoin computeMask(const std::function<bool(const Tile*)> predicate) const;

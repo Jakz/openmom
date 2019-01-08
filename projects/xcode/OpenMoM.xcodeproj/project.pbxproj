@@ -474,8 +474,8 @@
 		04ABF7B21983286E00291B82 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		04ABF7B419833C1E00291B82 /* UnitDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitDraw.cpp; sourceTree = "<group>"; };
 		04ABF7B519833C1E00291B82 /* UnitDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitDraw.h; sourceTree = "<group>"; };
-		04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MapEditorView.cpp; path = extra/MapEditorView.cpp; sourceTree = "<group>"; };
-		04B6E01E1F17AA0200A4E4C3 /* MapEditorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MapEditorView.h; path = extra/MapEditorView.h; sourceTree = "<group>"; };
+		04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapEditorView.cpp; sourceTree = "<group>"; };
+		04B6E01E1F17AA0200A4E4C3 /* MapEditorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapEditorView.h; sourceTree = "<group>"; };
 		04BE3A7A1F89C6A000EF89E3 /* MerchantView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MerchantView.cpp; sourceTree = "<group>"; };
 		04BE3A7B1F89C6A000EF89E3 /* MerchantView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MerchantView.h; sourceTree = "<group>"; };
 		04BE3A7E1F8A672D00EF89E3 /* ItemCraftChargesView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemCraftChargesView.cpp; sourceTree = "<group>"; };
@@ -989,7 +989,7 @@
 				04B6E01E1F17AA0200A4E4C3 /* MapEditorView.h */,
 				04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */,
 			);
-			name = extra;
+			path = extra;
 			sourceTree = "<group>";
 		};
 		04C1F44A1B2526E700F7688A /* lbx */ = {
