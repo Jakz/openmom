@@ -33,15 +33,7 @@
 #define HQX_CALLCONV
 #endif
 
-#if defined(_WIN32)
-#ifdef DLL_EXPORT
-#define HQX_API __declspec(dllexport)
-#else
-#define HQX_API __declspec(dllimport)
-#endif
-#else
 #define HQX_API
-#endif
 
 HQX_API void HQX_CALLCONV hqxInit(void);
 HQX_API void HQX_CALLCONV hq2x_32( uint32_t * src, uint32_t * dest, int width, int height );

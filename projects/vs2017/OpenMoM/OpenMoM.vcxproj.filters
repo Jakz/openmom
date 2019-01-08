@@ -1,0 +1,720 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="platform">
+      <UniqueIdentifier>{9372e2e7-59ed-4130-bb2f-ac98e94986b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\windows">
+      <UniqueIdentifier>{e315e00a-c621-41b4-bfc7-aae045a8cc9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{988ece3c-2132-4ab6-989a-c7d008747dfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{e684c8a9-6136-4dd7-9c5b-929e25e45dc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\animations">
+      <UniqueIdentifier>{6b671420-fdcb-4f98-9fcf-840e345c93ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\parts">
+      <UniqueIdentifier>{3b948c99-d537-4326-a1d2-e25156275422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\views">
+      <UniqueIdentifier>{694d222a-568f-4e38-a48d-5ad25fdb71de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\views\debug">
+      <UniqueIdentifier>{9986c84d-7aef-46f1-bb6c-ae055325b612}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\views\extra">
+      <UniqueIdentifier>{48958cc6-7515-4044-8fe4-cd149d52a1ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="save">
+      <UniqueIdentifier>{d2852f6b-487f-495d-b38a-d8cdb6240e8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gfx">
+      <UniqueIdentifier>{903525fb-9c45-4c9e-ac0b-57f9f9244892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gfx\filters">
+      <UniqueIdentifier>{d06a6953-5f7c-485e-8f7e-755b7cda4822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game">
+      <UniqueIdentifier>{3aa8e966-ff86-4ce6-a4c8-3f387a934478}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\cities">
+      <UniqueIdentifier>{49f03ae4-3ca9-4b52-b372-6d8f37eac595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\combat">
+      <UniqueIdentifier>{0b734831-76b9-4a59-ad84-c0eabafd12c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\mechanics">
+      <UniqueIdentifier>{44d14e27-7198-42c3-8baf-ecba2db2f4eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\players">
+      <UniqueIdentifier>{e86f5a0c-a99c-4baf-81a4-eb587818faef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\skills">
+      <UniqueIdentifier>{37572459-d766-4639-860b-e0518e096652}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\spells">
+      <UniqueIdentifier>{1237c5ad-7377-44f1-a844-51b066a90675}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\units">
+      <UniqueIdentifier>{3ff8a9ae-e97a-4a8c-8e98-5cc6da216aab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\world">
+      <UniqueIdentifier>{ca87e436-943c-4b9d-b6ee-e6258d328db7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="i18n">
+      <UniqueIdentifier>{f18616f9-af04-4f6c-b0ce-75ad39477ce2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\platform\windows\dirent.h">
+      <Filter>platform\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\common\Util.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\common\Common.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\common\format.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\common\mystrings.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\Buttons.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\EventListener.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\GfxData.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\View.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\ViewManager.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\animations\Animations.h">
+      <Filter>ui\animations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\animations\SpellEffectAnim.h">
+      <Filter>ui\animations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\parts\BookView.h">
+      <Filter>ui\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\parts\CityScape.h">
+      <Filter>ui\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\parts\CommonDraw.h">
+      <Filter>ui\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\parts\Dialogs.h">
+      <Filter>ui\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\parts\DrawQueue.h">
+      <Filter>ui\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\parts\DrawQueueBasic.h">
+      <Filter>ui\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\parts\MiniMap.h">
+      <Filter>ui\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\parts\SkillDraw.h">
+      <Filter>ui\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\parts\UnitDraw.h">
+      <Filter>ui\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\parts\Viewport.h">
+      <Filter>ui\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\ResearchView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\SpellBookView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\StartView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\UnitDetailView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\AlchemyView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\ArmiesItemsView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\ArmiesView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\ArmyView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\AstrologerView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\CartographerView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\CitiesView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\CityView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\CombatView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\ConsoleView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\DiplomacyView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\HistorianView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\InfoMenuView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\IntroView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\ItemCraftChargesView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\ItemCraftView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\LoadView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\MagicView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\MainView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\MerchantView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\MessageView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\MirrorView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\NewGameView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\OptionsView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\OutpostView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\ProductionView.h">
+      <Filter>ui\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\debug\DataView.h">
+      <Filter>ui\views\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\ui\views\extra\MapEditorView.h">
+      <Filter>ui\views\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\save\YAML.h">
+      <Filter>save</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\save\Data.h">
+      <Filter>save</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\save\OriginalSave.h">
+      <Filter>save</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\i18n\Localization.h">
+      <Filter>i18n</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\i18n\Help.h">
+      <Filter>i18n</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gfx\SDLHelper.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gfx\Texture.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gfx\ColorMap.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gfx\Font.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gfx\Gfx.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gfx\GUISettings.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gfx\LBX.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gfx\LBXRepository.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gfx\filters\Hqx.h">
+      <Filter>gfx\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\Game.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\Settings.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\world\WorldGenerator.h">
+      <Filter>game\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\world\Pathfind.h">
+      <Filter>game\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\world\Places.h">
+      <Filter>game\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\world\Tile.h">
+      <Filter>game\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\world\World.h">
+      <Filter>game\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\units\Items.h">
+      <Filter>game\units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\units\Level.h">
+      <Filter>game\units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\units\Unit.h">
+      <Filter>game\units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\units\UnitSpec.h">
+      <Filter>game\units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\units\Army.h">
+      <Filter>game\units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\spells\Spells.h">
+      <Filter>game\spells</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\spells\CombatSpells.h">
+      <Filter>game\spells</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\spells\SpellBook.h">
+      <Filter>game\spells</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\skills\Skill.h">
+      <Filter>game\skills</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\skills\SkillSet.h">
+      <Filter>game\skills</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\skills\Effects.h">
+      <Filter>game\skills</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\players\Player.h">
+      <Filter>game\players</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\players\Race.h">
+      <Filter>game\players</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\players\Diplomacy.h">
+      <Filter>game\players</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\players\LocalPlayer.h">
+      <Filter>game\players</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\players\Messages.h">
+      <Filter>game\players</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\mechanics\LairMechanics.h">
+      <Filter>game\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\mechanics\MapMechanics.h">
+      <Filter>game\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\mechanics\PlayerMechanics.h">
+      <Filter>game\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\mechanics\SpellMechanics.h">
+      <Filter>game\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\mechanics\ValuesMechanics.h">
+      <Filter>game\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\mechanics\CityMechanics.h">
+      <Filter>game\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\mechanics\EventMechanics.h">
+      <Filter>game\mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\combat\CombatUtils.h">
+      <Filter>game\combat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\combat\Combat.h">
+      <Filter>game\combat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\combat\CombatMap.h">
+      <Filter>game\combat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\combat\CombatMechanics.h">
+      <Filter>game\combat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\cities\City.h">
+      <Filter>game\cities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game\cities\Buildings.h">
+      <Filter>game\cities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\platform\Path.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\platform\Platform.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\platform\windows\windows.cpp">
+      <Filter>platform\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\common\Common.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\common\format.cc">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\common\mystrings.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\common\Util.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\Buttons.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\GfxData.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\View.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\ViewManager.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\animations\Animations.cpp">
+      <Filter>ui\animations</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\animations\SpellEffectAnim.cpp">
+      <Filter>ui\animations</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\parts\BookView.cpp">
+      <Filter>ui\parts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\parts\CityScape.cpp">
+      <Filter>ui\parts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\parts\CommonDraw.cpp">
+      <Filter>ui\parts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\parts\Dialogs.cpp">
+      <Filter>ui\parts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\parts\DrawQueue.cpp">
+      <Filter>ui\parts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\parts\MiniMap.cpp">
+      <Filter>ui\parts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\parts\SkillDraw.cpp">
+      <Filter>ui\parts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\parts\UnitDraw.cpp">
+      <Filter>ui\parts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\parts\Viewport.cpp">
+      <Filter>ui\parts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\ResearchView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\SpellBookView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\StartView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\UnitDetailView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\AlchemyView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\ArmiesItemsView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\ArmiesView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\ArmyView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\AstrologerView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\CartographerView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\CitiesView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\CityView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\CombatView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\ConsoleView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\DiplomacyView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\HistorianView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\InfoMenuView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\IntroView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\ItemCraftChargesView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\ItemCraftView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\LoadView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\MagicView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\MainView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\MerchantView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\MessageView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\MirrorView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\NewGameView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\OptionsView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\OutpostView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\ProductionView.cpp">
+      <Filter>ui\views</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\debug\DataView.cpp">
+      <Filter>ui\views\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\views\extra\MapEditorView.cpp">
+      <Filter>ui\views\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\save\YAML.cpp">
+      <Filter>save</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\save\Data.cpp">
+      <Filter>save</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\save\OriginalSave.cpp">
+      <Filter>save</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\i18n\Localization.cpp">
+      <Filter>i18n</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\i18n\Help.cpp">
+      <Filter>i18n</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\Texture.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\ColorMap.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\Font.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\Gfx.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\GUISettings.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\LBX.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\LBXRepository.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\SDLHelper.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\filters\hq4x.cpp">
+      <Filter>gfx\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\filters\hqx_init.cpp">
+      <Filter>gfx\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\filters\hq2x.cpp">
+      <Filter>gfx\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gfx\filters\hq3x.cpp">
+      <Filter>gfx\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\Game.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\Settings.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\world\Pathfind.cpp">
+      <Filter>game\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\world\Places.cpp">
+      <Filter>game\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\world\Tile.cpp">
+      <Filter>game\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\world\World.cpp">
+      <Filter>game\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\world\WorldGenerator.cpp">
+      <Filter>game\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\units\Level.cpp">
+      <Filter>game\units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\units\Unit.cpp">
+      <Filter>game\units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\units\UnitSpec.cpp">
+      <Filter>game\units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\units\Army.cpp">
+      <Filter>game\units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\units\Items.cpp">
+      <Filter>game\units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\spells\Spells.cpp">
+      <Filter>game\spells</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\spells\CombatSpells.cpp">
+      <Filter>game\spells</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\spells\SpellBook.cpp">
+      <Filter>game\spells</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\skills\SkillSet.cpp">
+      <Filter>game\skills</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\skills\Effects.cpp">
+      <Filter>game\skills</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\skills\Skill.cpp">
+      <Filter>game\skills</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\players\Race.cpp">
+      <Filter>game\players</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\players\Diplomacy.cpp">
+      <Filter>game\players</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\players\LocalPlayer.cpp">
+      <Filter>game\players</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\players\Messages.cpp">
+      <Filter>game\players</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\players\Player.cpp">
+      <Filter>game\players</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\mechanics\LairMechanics.cpp">
+      <Filter>game\mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\mechanics\MapMechanics.cpp">
+      <Filter>game\mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\mechanics\PlayerMechanics.cpp">
+      <Filter>game\mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\mechanics\SpellMechanics.cpp">
+      <Filter>game\mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\mechanics\ValuesMechanics.cpp">
+      <Filter>game\mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\mechanics\CityMechanics.cpp">
+      <Filter>game\mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\mechanics\EventMechanics.cpp">
+      <Filter>game\mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\combat\CombatUtils.cpp">
+      <Filter>game\combat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\combat\Combat.cpp">
+      <Filter>game\combat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\combat\CombatMap.cpp">
+      <Filter>game\combat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\combat\CombatMechanics.cpp">
+      <Filter>game\combat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\cities\City.cpp">
+      <Filter>game\cities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game\cities\Buildings.cpp">
+      <Filter>game\cities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\platform\Path.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\src\ui\views\CMakeLists.txt">
+      <Filter>ui\views</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

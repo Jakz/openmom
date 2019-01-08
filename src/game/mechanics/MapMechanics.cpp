@@ -165,6 +165,7 @@ s16 MapMechanics::movementCost(World* world, const Position& position, const mov
       case TileType::NONE: 
       default:
         assert(false);
+        return 0;
     }
   }
 }

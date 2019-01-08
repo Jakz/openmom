@@ -84,8 +84,9 @@ CombatCoord CombatMechanics::defaultPositionForObject(CombatObject object)
 {
   switch (object)
   {
-    case CombatObject::MAIN_BUILDING: return {3,8};
-    case CombatObject::WALL: return {3, 6};
+    case CombatObject::MAIN_BUILDING: return { 3, 8 };
+    case CombatObject::WALL: return { 3, 6 };
+    default: assert(false); return { 0, 0 };
   }
 }
 

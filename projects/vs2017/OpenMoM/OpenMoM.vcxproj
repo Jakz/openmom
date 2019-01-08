@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{05F4E4B4-E97F-4B89-808E-13B45975F7F4}</ProjectGuid>
+    <RootNamespace>OpenMoM</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\include;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\common;$(SolutionDir)..\..\..\src\game;$(SolutionDir)..\..\..\src\game\cities;$(SolutionDir)..\..\..\src\game\combat;$(SolutionDir)..\..\..\src\game\data;$(SolutionDir)..\..\..\src\game\mechanics;$(SolutionDir)..\..\..\src\game\players;$(SolutionDir)..\..\..\src\game\skills;$(SolutionDir)..\..\..\src\game\spells;$(SolutionDir)..\..\..\src\game\units;$(SolutionDir)..\..\..\src\game\world;$(SolutionDir)..\..\..\src\gfx;$(SolutionDir)..\..\..\src\gfx\filters;$(SolutionDir)..\..\..\src\i18n;$(SolutionDir)..\..\..\src\platform;$(SolutionDir)..\..\..\src\platform\windows;$(SolutionDir)..\..\..\src\save;$(SolutionDir)..\..\..\src\ui;$(SolutionDir)..\..\..\src\ui\animations;$(SolutionDir)..\..\..\src\ui\parts;$(SolutionDir)..\..\..\src\ui\views;$(SolutionDir)..\..\..\src\ui\views\debug;$(SolutionDir)..\..\..\src\ui\views\extra;$(SolutionDir)..\..\..\libs\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4068;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>_MBCS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\lib\$(Platform);$(SolutionDir)..\..\..\libs\yaml\lib\win_$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\include;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\common;$(SolutionDir)..\..\..\src\game;$(SolutionDir)..\..\..\src\game\cities;$(SolutionDir)..\..\..\src\game\combat;$(SolutionDir)..\..\..\src\game\data;$(SolutionDir)..\..\..\src\game\mechanics;$(SolutionDir)..\..\..\src\game\players;$(SolutionDir)..\..\..\src\game\skills;$(SolutionDir)..\..\..\src\game\spells;$(SolutionDir)..\..\..\src\game\units;$(SolutionDir)..\..\..\src\game\world;$(SolutionDir)..\..\..\src\gfx;$(SolutionDir)..\..\..\src\gfx\filters;$(SolutionDir)..\..\..\src\i18n;$(SolutionDir)..\..\..\src\platform;$(SolutionDir)..\..\..\src\platform\windows;$(SolutionDir)..\..\..\src\save;$(SolutionDir)..\..\..\src\ui;$(SolutionDir)..\..\..\src\ui\animations;$(SolutionDir)..\..\..\src\ui\parts;$(SolutionDir)..\..\..\src\ui\views;$(SolutionDir)..\..\..\src\ui\views\debug;$(SolutionDir)..\..\..\src\ui\views\extra;$(SolutionDir)..\..\..\libs\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4068;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>_MBCS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\lib\$(Platform);$(SolutionDir)..\..\..\libs\yaml\lib\win_$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\common\Common.h" />
+    <ClInclude Include="..\..\..\src\common\format.h" />
+    <ClInclude Include="..\..\..\src\common\mystrings.h" />
+    <ClInclude Include="..\..\..\src\common\Util.h" />
+    <ClInclude Include="..\..\..\src\game\cities\Buildings.h" />
+    <ClInclude Include="..\..\..\src\game\cities\City.h" />
+    <ClInclude Include="..\..\..\src\game\combat\Combat.h" />
+    <ClInclude Include="..\..\..\src\game\combat\CombatMap.h" />
+    <ClInclude Include="..\..\..\src\game\combat\CombatMechanics.h" />
+    <ClInclude Include="..\..\..\src\game\combat\CombatUtils.h" />
+    <ClInclude Include="..\..\..\src\game\Game.h" />
+    <ClInclude Include="..\..\..\src\game\mechanics\CityMechanics.h" />
+    <ClInclude Include="..\..\..\src\game\mechanics\EventMechanics.h" />
+    <ClInclude Include="..\..\..\src\game\mechanics\LairMechanics.h" />
+    <ClInclude Include="..\..\..\src\game\mechanics\MapMechanics.h" />
+    <ClInclude Include="..\..\..\src\game\mechanics\PlayerMechanics.h" />
+    <ClInclude Include="..\..\..\src\game\mechanics\SpellMechanics.h" />
+    <ClInclude Include="..\..\..\src\game\mechanics\ValuesMechanics.h" />
+    <ClInclude Include="..\..\..\src\game\players\Diplomacy.h" />
+    <ClInclude Include="..\..\..\src\game\players\LocalPlayer.h" />
+    <ClInclude Include="..\..\..\src\game\players\Messages.h" />
+    <ClInclude Include="..\..\..\src\game\players\Player.h" />
+    <ClInclude Include="..\..\..\src\game\players\Race.h" />
+    <ClInclude Include="..\..\..\src\game\Settings.h" />
+    <ClInclude Include="..\..\..\src\game\skills\Effects.h" />
+    <ClInclude Include="..\..\..\src\game\skills\Skill.h" />
+    <ClInclude Include="..\..\..\src\game\skills\SkillSet.h" />
+    <ClInclude Include="..\..\..\src\game\spells\CombatSpells.h" />
+    <ClInclude Include="..\..\..\src\game\spells\SpellBook.h" />
+    <ClInclude Include="..\..\..\src\game\spells\Spells.h" />
+    <ClInclude Include="..\..\..\src\game\units\Army.h" />
+    <ClInclude Include="..\..\..\src\game\units\Items.h" />
+    <ClInclude Include="..\..\..\src\game\units\Level.h" />
+    <ClInclude Include="..\..\..\src\game\units\Unit.h" />
+    <ClInclude Include="..\..\..\src\game\units\UnitSpec.h" />
+    <ClInclude Include="..\..\..\src\game\world\Pathfind.h" />
+    <ClInclude Include="..\..\..\src\game\world\Places.h" />
+    <ClInclude Include="..\..\..\src\game\world\Tile.h" />
+    <ClInclude Include="..\..\..\src\game\world\World.h" />
+    <ClInclude Include="..\..\..\src\game\world\WorldGenerator.h" />
+    <ClInclude Include="..\..\..\src\gfx\ColorMap.h" />
+    <ClInclude Include="..\..\..\src\gfx\filters\Hqx.h" />
+    <ClInclude Include="..\..\..\src\gfx\Font.h" />
+    <ClInclude Include="..\..\..\src\gfx\Gfx.h" />
+    <ClInclude Include="..\..\..\src\gfx\GUISettings.h" />
+    <ClInclude Include="..\..\..\src\gfx\LBX.h" />
+    <ClInclude Include="..\..\..\src\gfx\LBXRepository.h" />
+    <ClInclude Include="..\..\..\src\gfx\SDLHelper.h" />
+    <ClInclude Include="..\..\..\src\gfx\Texture.h" />
+    <ClInclude Include="..\..\..\src\i18n\Help.h" />
+    <ClInclude Include="..\..\..\src\i18n\Localization.h" />
+    <ClInclude Include="..\..\..\src\platform\Path.h" />
+    <ClInclude Include="..\..\..\src\platform\Platform.h" />
+    <ClInclude Include="..\..\..\src\platform\windows\dirent.h" />
+    <ClInclude Include="..\..\..\src\save\Data.h" />
+    <ClInclude Include="..\..\..\src\save\OriginalSave.h" />
+    <ClInclude Include="..\..\..\src\save\YAML.h" />
+    <ClInclude Include="..\..\..\src\ui\animations\Animations.h" />
+    <ClInclude Include="..\..\..\src\ui\animations\SpellEffectAnim.h" />
+    <ClInclude Include="..\..\..\src\ui\Buttons.h" />
+    <ClInclude Include="..\..\..\src\ui\EventListener.h" />
+    <ClInclude Include="..\..\..\src\ui\GfxData.h" />
+    <ClInclude Include="..\..\..\src\ui\parts\BookView.h" />
+    <ClInclude Include="..\..\..\src\ui\parts\CityScape.h" />
+    <ClInclude Include="..\..\..\src\ui\parts\CommonDraw.h" />
+    <ClInclude Include="..\..\..\src\ui\parts\Dialogs.h" />
+    <ClInclude Include="..\..\..\src\ui\parts\DrawQueue.h" />
+    <ClInclude Include="..\..\..\src\ui\parts\DrawQueueBasic.h" />
+    <ClInclude Include="..\..\..\src\ui\parts\MiniMap.h" />
+    <ClInclude Include="..\..\..\src\ui\parts\SkillDraw.h" />
+    <ClInclude Include="..\..\..\src\ui\parts\UnitDraw.h" />
+    <ClInclude Include="..\..\..\src\ui\parts\Viewport.h" />
+    <ClInclude Include="..\..\..\src\ui\View.h" />
+    <ClInclude Include="..\..\..\src\ui\ViewManager.h" />
+    <ClInclude Include="..\..\..\src\ui\views\AlchemyView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\ArmiesItemsView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\ArmiesView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\ArmyView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\AstrologerView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\CartographerView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\CitiesView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\CityView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\CombatView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\ConsoleView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\debug\DataView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\DiplomacyView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\extra\MapEditorView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\HistorianView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\InfoMenuView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\IntroView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\ItemCraftChargesView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\ItemCraftView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\LoadView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\MagicView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\MainView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\MerchantView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\MessageView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\MirrorView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\NewGameView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\OptionsView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\OutpostView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\ProductionView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\ResearchView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\SpellBookView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\StartView.h" />
+    <ClInclude Include="..\..\..\src\ui\views\UnitDetailView.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\common\Common.cpp" />
+    <ClCompile Include="..\..\..\src\common\format.cc" />
+    <ClCompile Include="..\..\..\src\common\mystrings.cpp" />
+    <ClCompile Include="..\..\..\src\common\Util.cpp" />
+    <ClCompile Include="..\..\..\src\game\cities\Buildings.cpp" />
+    <ClCompile Include="..\..\..\src\game\cities\City.cpp" />
+    <ClCompile Include="..\..\..\src\game\combat\Combat.cpp" />
+    <ClCompile Include="..\..\..\src\game\combat\CombatMap.cpp" />
+    <ClCompile Include="..\..\..\src\game\combat\CombatMechanics.cpp" />
+    <ClCompile Include="..\..\..\src\game\combat\CombatUtils.cpp" />
+    <ClCompile Include="..\..\..\src\game\Game.cpp" />
+    <ClCompile Include="..\..\..\src\game\mechanics\CityMechanics.cpp" />
+    <ClCompile Include="..\..\..\src\game\mechanics\EventMechanics.cpp" />
+    <ClCompile Include="..\..\..\src\game\mechanics\LairMechanics.cpp" />
+    <ClCompile Include="..\..\..\src\game\mechanics\MapMechanics.cpp" />
+    <ClCompile Include="..\..\..\src\game\mechanics\PlayerMechanics.cpp" />
+    <ClCompile Include="..\..\..\src\game\mechanics\SpellMechanics.cpp" />
+    <ClCompile Include="..\..\..\src\game\mechanics\ValuesMechanics.cpp" />
+    <ClCompile Include="..\..\..\src\game\players\Diplomacy.cpp" />
+    <ClCompile Include="..\..\..\src\game\players\LocalPlayer.cpp" />
+    <ClCompile Include="..\..\..\src\game\players\Messages.cpp" />
+    <ClCompile Include="..\..\..\src\game\players\Player.cpp" />
+    <ClCompile Include="..\..\..\src\game\players\Race.cpp" />
+    <ClCompile Include="..\..\..\src\game\Settings.cpp" />
+    <ClCompile Include="..\..\..\src\game\skills\Effects.cpp" />
+    <ClCompile Include="..\..\..\src\game\skills\Skill.cpp" />
+    <ClCompile Include="..\..\..\src\game\skills\SkillSet.cpp" />
+    <ClCompile Include="..\..\..\src\game\spells\CombatSpells.cpp" />
+    <ClCompile Include="..\..\..\src\game\spells\SpellBook.cpp" />
+    <ClCompile Include="..\..\..\src\game\spells\Spells.cpp" />
+    <ClCompile Include="..\..\..\src\game\units\Army.cpp" />
+    <ClCompile Include="..\..\..\src\game\units\Items.cpp" />
+    <ClCompile Include="..\..\..\src\game\units\Level.cpp" />
+    <ClCompile Include="..\..\..\src\game\units\Unit.cpp" />
+    <ClCompile Include="..\..\..\src\game\units\UnitSpec.cpp" />
+    <ClCompile Include="..\..\..\src\game\world\Pathfind.cpp" />
+    <ClCompile Include="..\..\..\src\game\world\Places.cpp" />
+    <ClCompile Include="..\..\..\src\game\world\Tile.cpp" />
+    <ClCompile Include="..\..\..\src\game\world\World.cpp" />
+    <ClCompile Include="..\..\..\src\game\world\WorldGenerator.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\ColorMap.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\filters\hq2x.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\filters\hq3x.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\filters\hq4x.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\filters\hqx_init.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\Font.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\Gfx.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\GUISettings.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\LBX.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\LBXRepository.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\SDLHelper.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\Texture.cpp" />
+    <ClCompile Include="..\..\..\src\i18n\Help.cpp" />
+    <ClCompile Include="..\..\..\src\i18n\Localization.cpp" />
+    <ClCompile Include="..\..\..\src\platform\Path.cpp" />
+    <ClCompile Include="..\..\..\src\platform\windows\windows.cpp" />
+    <ClCompile Include="..\..\..\src\save\Data.cpp" />
+    <ClCompile Include="..\..\..\src\save\OriginalSave.cpp" />
+    <ClCompile Include="..\..\..\src\save\YAML.cpp" />
+    <ClCompile Include="..\..\..\src\ui\animations\Animations.cpp" />
+    <ClCompile Include="..\..\..\src\ui\animations\SpellEffectAnim.cpp" />
+    <ClCompile Include="..\..\..\src\ui\Buttons.cpp" />
+    <ClCompile Include="..\..\..\src\ui\GfxData.cpp" />
+    <ClCompile Include="..\..\..\src\ui\parts\BookView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\parts\CityScape.cpp" />
+    <ClCompile Include="..\..\..\src\ui\parts\CommonDraw.cpp" />
+    <ClCompile Include="..\..\..\src\ui\parts\Dialogs.cpp" />
+    <ClCompile Include="..\..\..\src\ui\parts\DrawQueue.cpp" />
+    <ClCompile Include="..\..\..\src\ui\parts\MiniMap.cpp" />
+    <ClCompile Include="..\..\..\src\ui\parts\SkillDraw.cpp" />
+    <ClCompile Include="..\..\..\src\ui\parts\UnitDraw.cpp" />
+    <ClCompile Include="..\..\..\src\ui\parts\Viewport.cpp" />
+    <ClCompile Include="..\..\..\src\ui\View.cpp" />
+    <ClCompile Include="..\..\..\src\ui\ViewManager.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\AlchemyView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\ArmiesItemsView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\ArmiesView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\ArmyView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\AstrologerView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\CartographerView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\CitiesView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\CityView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\CombatView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\ConsoleView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\debug\DataView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\DiplomacyView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\extra\MapEditorView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\HistorianView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\InfoMenuView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\IntroView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\ItemCraftChargesView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\ItemCraftView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\LoadView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\MagicView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\MainView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\MerchantView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\MessageView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\MirrorView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\NewGameView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\OptionsView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\OutpostView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\ProductionView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\ResearchView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\SpellBookView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\StartView.cpp" />
+    <ClCompile Include="..\..\..\src\ui\views\UnitDetailView.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\src\ui\views\CMakeLists.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

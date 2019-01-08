@@ -1071,7 +1071,7 @@ class Spell;
 enum class SpellRarity : u32;
 
 template<typename T> using spell_rarity_map = enum_simple_map<SpellRarity, T, 4>;
-template<typename T> using spell_enum_map = enum_simple_map<School, enum_simple_map<SpellRarity, T, 4>, 5>;
+template<typename T> using spell_enum_map = enum_simple_map<School, enum_simple_map<SpellRarity, T, 4>, 6>; //TODO: 6th element is necessary for arcane which is at index 0
 
 struct PlayerSetupInfo
 {

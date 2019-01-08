@@ -1,6 +1,6 @@
 #include "Buildings.h"
 
-#include "Localization.h"
+#include "i18n/Localization.h"
 
 namespace buildingimpl {
   static const Building BUILDERS_HALL = Building(I18::BUILDING_BUILDERS_HALL, I18::BUILDING_DESC_BUILDERS_HALL, 60, 1, 0);

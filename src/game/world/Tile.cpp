@@ -53,7 +53,7 @@ Tile* Tile::neighbor(DirJoin dir) const
     case DirJoin::SW: return world->get(position.dx(-1,+1));
     case DirJoin::W: return world->get(position.dx(-1,0));
     case DirJoin::NW: return world->get(position.dx(-1,-1));
-    default: assert(false);
+    default: assert(false); return nullptr;
   }
 }
 

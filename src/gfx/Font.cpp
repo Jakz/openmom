@@ -334,7 +334,7 @@ string Fonts::format(const char *fmt_str, ...) {
   va_list ap;
   while(1) {
     formatted.reset(new char[n]); /* wrap the plain char array into the unique_ptr */
-    strcpy(&formatted[0], fmt_str);
+    strncpy(&formatted[0], fmt_str, n - 1);
     va_start(ap, fmt_str);
     final_n = vsnprintf(&formatted[0], n, fmt_str, ap);
     va_end(ap);

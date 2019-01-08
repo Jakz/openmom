@@ -2,7 +2,7 @@
 #define _CITY_H_
 
 #include "common/Common.h"
-#include "Spells.h"
+#include "game/spells/Spells.h"
 
 #include <string>
 #include <set>

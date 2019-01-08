@@ -1,11 +1,11 @@
 #include "Common.h"
 
 #include "i18n/Localization.h"
-#include "Gfx.h"
-#include "Spells.h"
+#include "gfx/Gfx.h"
+#include "game/spells/Spells.h"
 
-#include "LBXRepository.h"
-#include "Texture.h"
+#include "gfx/LBXRepository.h"
+#include "gfx/Texture.h"
 
 using namespace std;
 

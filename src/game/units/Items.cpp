@@ -113,6 +113,7 @@ Affixes Affixes::forType(TypeID type)
     case TypeID::CHAIN:
     case TypeID::PLATE:
       return { armor_affixes };
+    default: assert(false); return { armor_affixes };
   }
 }
 

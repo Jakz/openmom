@@ -68,7 +68,7 @@ public:
     using value_type = Skill*;
     using reference = const Skill&;
     using pointer = const Skill*;
-    using iterator_category = std::random_access_iterator_tag;
+    using iterator_category = std::bidirectional_iterator_tag;
 
     iterator(const SkillSet& parent, s16 current = 0) : parent(&parent), current(current), size(parent.size()) { }
     iterator(const iterator<Skill> &other) = default;
