@@ -410,7 +410,7 @@ void Gfx::drawGlow(SpriteInfo info, s16 x, s16 y, School school)
     
     // TODO: phase is too much linear compared to real one
     GlowColors(School school) : data(MiscMaps::SCHOOL_GLOW_COLORS[school]), phase(fticks%50/3) { }
-    Color getColor(int x, int y) const { return data[(phase+x+y) % data.size()]; }
+    inline Color getColor(int x, int y) const { return data[(phase+x+y) % data.size()]; }
   };
     
   const GlowColors colors(school);
@@ -423,7 +423,7 @@ void Gfx::drawSolidOutline(SpriteInfo info, s16 x, s16 y, Color color)
   {
     const Color color;
     OutlineColors(Color color) : color(color) { }
-    Color getColor(int x, int y) const { return color; }
+    inline Color getColor(int x, int y) const { return color; }
   };
   
   const OutlineColors colors(color);

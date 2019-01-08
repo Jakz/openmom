@@ -156,6 +156,7 @@ public:
   
   std::string toString()
   {
+    assert(file != nullptr);
     size_t len = length();
     std::unique_ptr<char[]> data = std::unique_ptr<char[]>(new char[len+1]);
     read(data.get(), sizeof(char), len);

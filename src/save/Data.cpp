@@ -126,6 +126,14 @@ template<> Data::map_t<const Building*>& Data::containerFor() {
   return buildingMap;
 }
 
+const Skill* Data::skill(const key_type& ident) { return get<const Skill*>(ident); }
+const Building* Data::building(const key_type& ident) { return get<const Building*>(ident); }
+const UnitSpec* Data::unit(const key_type& ident) { return get<const UnitSpec*>(ident); }
+const Spell* Data::spell(const key_type& ident) { return get<const Spell*>(ident); }
+const Race* Data::race(const key_type& ident) { return get<const Race*>(ident); }
+const Retort* Data::retort(const key_type& ident) { return get<const Retort*>(ident); }
+const Wizard* Data::wizard(const key_type& ident) { return get<const Wizard*>(ident); }
+
 std::vector<const RaceUnitSpec*> Data::unitsForRace(const Race* race)
 {
   std::vector<const RaceUnitSpec*> racialUnits;

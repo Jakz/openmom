@@ -126,7 +126,11 @@ namespace fonts
 {
   template<FontType FONT, typename TYPE>
   SpecificFontFace<FONT, TYPE>::SpecificFontFace(const Palette* palette) : FontSpriteSheet(FontData::fonts[FONT], palette, 1, vspacings[FONT]) { }
-  
+
+  template class SpecificFontFace<FontType::FONT_SERIF, SerifFont>;
+  template class SpecificFontFace<FontType::FONT_TINY, TinyFont>;
+
+
   /* color indices: background, high shadow, edge shadow, low shadow, unused?, main color, middle dots, single pixels */
   MediumBoldFont::MediumBoldFont(Color color) : MediumBoldFont(color, 0) { }
   //TODO: should single shadow pixels considered part of low shadow?

@@ -348,7 +348,7 @@ void MainView::draw()
     Fonts::drawString("MP", FontFaces::Tiny::WHITE, 305, 67, ALIGN_LEFT);
   }
   
-#if DEBUG
+#if defined(DEBUG)
   {
     u32 turns = g->getTurnCount();
     const auto& players = g->getPlayers();

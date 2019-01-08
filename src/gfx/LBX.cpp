@@ -454,7 +454,7 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
     for (int j = 0; j < FONT_CHARACTERS; ++j) width = std::max(widths[i][j], width);
     width += 2;
     
-#if DEBUG
+#if defined(DEBUG)
     u8 maxColor = 0;
 #endif
     
@@ -495,7 +495,7 @@ void LBX::loadFonts(const LBXHeader& header, vector<LBXOffset>& offsets, FILE *i
         else
         {
           color = low + FontData::FIRST_FREE_COLOR_INDEX;
-#if DEBUG
+#if defined(DEBUG)
           maxColor = std::max(low, maxColor);
 #endif
           strain = high;

@@ -758,7 +758,7 @@ void Viewport::createMapTextureAtlas()
           Color* pixel = reinterpret_cast<Color*>(atlas->pixels) + bx + x + (by + y)*atlas->w;
           Color color = sprite->getPalette()->get(sprite->at(x, y, 0, 0));
           
-          if (used[i])
+          if (!used[i])
             color = color.blend(Color(255,0,0,128));
           
           *pixel = color;

@@ -29,15 +29,15 @@ public:
   
   bool applyTileSpell(const SpellCast& cast, Tile* tile);
   
-  s32 actualManaCost(Player* player, const Spell* spell, bool combat);
-  s32 actualResearchGain(const Player* player, const Spell* spell);
+  value_t actualManaCost(Player* player, const Spell* spell, bool combat);
+  value_t actualResearchGain(const Player* player, const Spell* spell);
   
   bool willDispel(const SpellCast& cast, const SpellCast& dispelCast);
   
-  u32 guaranteedSpellAmountForRarity(SpellRarity rarity, School school, u32 books);
+  count_t guaranteedSpellAmountForRarity(SpellRarity rarity, School school, count_t books);
   spell_rarity_map<s32> guaranteedSpells(School school, u32 books);
   
-  u32 researchableSpellAmountForRarity(SpellRarity rarity, School school, u32 books);
+  count_t researchableSpellAmountForRarity(SpellRarity rarity, School school, count_t books);
 };
 
 #endif

@@ -69,7 +69,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -79,6 +84,9 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\include;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\common;$(SolutionDir)..\..\..\src\game;$(SolutionDir)..\..\..\src\game\cities;$(SolutionDir)..\..\..\src\game\combat;$(SolutionDir)..\..\..\src\game\data;$(SolutionDir)..\..\..\src\game\mechanics;$(SolutionDir)..\..\..\src\game\players;$(SolutionDir)..\..\..\src\game\skills;$(SolutionDir)..\..\..\src\game\spells;$(SolutionDir)..\..\..\src\game\units;$(SolutionDir)..\..\..\src\game\world;$(SolutionDir)..\..\..\src\gfx;$(SolutionDir)..\..\..\src\gfx\filters;$(SolutionDir)..\..\..\src\i18n;$(SolutionDir)..\..\..\src\platform;$(SolutionDir)..\..\..\src\platform\windows;$(SolutionDir)..\..\..\src\save;$(SolutionDir)..\..\..\src\ui;$(SolutionDir)..\..\..\src\ui\animations;$(SolutionDir)..\..\..\src\ui\parts;$(SolutionDir)..\..\..\src\ui\views;$(SolutionDir)..\..\..\src\ui\views\debug;$(SolutionDir)..\..\..\src\ui\views\extra;$(SolutionDir)..\..\..\libs\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4068;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>_MBCS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Precompiled.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\lib\$(Platform);$(SolutionDir)..\..\..\libs\yaml\lib\win_$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -95,6 +103,9 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\include;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\common;$(SolutionDir)..\..\..\src\game;$(SolutionDir)..\..\..\src\game\cities;$(SolutionDir)..\..\..\src\game\combat;$(SolutionDir)..\..\..\src\game\data;$(SolutionDir)..\..\..\src\game\mechanics;$(SolutionDir)..\..\..\src\game\players;$(SolutionDir)..\..\..\src\game\skills;$(SolutionDir)..\..\..\src\game\spells;$(SolutionDir)..\..\..\src\game\units;$(SolutionDir)..\..\..\src\game\world;$(SolutionDir)..\..\..\src\gfx;$(SolutionDir)..\..\..\src\gfx\filters;$(SolutionDir)..\..\..\src\i18n;$(SolutionDir)..\..\..\src\platform;$(SolutionDir)..\..\..\src\platform\windows;$(SolutionDir)..\..\..\src\save;$(SolutionDir)..\..\..\src\ui;$(SolutionDir)..\..\..\src\ui\animations;$(SolutionDir)..\..\..\src\ui\parts;$(SolutionDir)..\..\..\src\ui\views;$(SolutionDir)..\..\..\src\ui\views\debug;$(SolutionDir)..\..\..\src\ui\views\extra;$(SolutionDir)..\..\..\libs\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4068;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>_MBCS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Precompiled.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\lib\$(Platform);$(SolutionDir)..\..\..\libs\yaml\lib\win_$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -110,10 +121,19 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\include;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\common;$(SolutionDir)..\..\..\src\game;$(SolutionDir)..\..\..\src\game\cities;$(SolutionDir)..\..\..\src\game\combat;$(SolutionDir)..\..\..\src\game\data;$(SolutionDir)..\..\..\src\game\mechanics;$(SolutionDir)..\..\..\src\game\players;$(SolutionDir)..\..\..\src\game\skills;$(SolutionDir)..\..\..\src\game\spells;$(SolutionDir)..\..\..\src\game\units;$(SolutionDir)..\..\..\src\game\world;$(SolutionDir)..\..\..\src\gfx;$(SolutionDir)..\..\..\src\gfx\filters;$(SolutionDir)..\..\..\src\i18n;$(SolutionDir)..\..\..\src\platform;$(SolutionDir)..\..\..\src\platform\windows;$(SolutionDir)..\..\..\src\save;$(SolutionDir)..\..\..\src\ui;$(SolutionDir)..\..\..\src\ui\animations;$(SolutionDir)..\..\..\src\ui\parts;$(SolutionDir)..\..\..\src\ui\views;$(SolutionDir)..\..\..\src\ui\views\debug;$(SolutionDir)..\..\..\src\ui\views\extra;$(SolutionDir)..\..\..\libs\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Precompiled.h</ForcedIncludeFiles>
+      <DisableSpecificWarnings>4068;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>_MBCS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\lib\$(Platform);$(SolutionDir)..\..\..\libs\yaml\lib\win_$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;yaml-cpp.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -124,10 +144,19 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\include;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\common;$(SolutionDir)..\..\..\src\game;$(SolutionDir)..\..\..\src\game\cities;$(SolutionDir)..\..\..\src\game\combat;$(SolutionDir)..\..\..\src\game\data;$(SolutionDir)..\..\..\src\game\mechanics;$(SolutionDir)..\..\..\src\game\players;$(SolutionDir)..\..\..\src\game\skills;$(SolutionDir)..\..\..\src\game\spells;$(SolutionDir)..\..\..\src\game\units;$(SolutionDir)..\..\..\src\game\world;$(SolutionDir)..\..\..\src\gfx;$(SolutionDir)..\..\..\src\gfx\filters;$(SolutionDir)..\..\..\src\i18n;$(SolutionDir)..\..\..\src\platform;$(SolutionDir)..\..\..\src\platform\windows;$(SolutionDir)..\..\..\src\save;$(SolutionDir)..\..\..\src\ui;$(SolutionDir)..\..\..\src\ui\animations;$(SolutionDir)..\..\..\src\ui\parts;$(SolutionDir)..\..\..\src\ui\views;$(SolutionDir)..\..\..\src\ui\views\debug;$(SolutionDir)..\..\..\src\ui\views\extra;$(SolutionDir)..\..\..\libs\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Precompiled.h</ForcedIncludeFiles>
+      <DisableSpecificWarnings>4068;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>_MBCS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\..\libs\sdl2\win\lib\$(Platform);$(SolutionDir)..\..\..\libs\yaml\lib\win_$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;yaml-cpp.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -185,6 +214,7 @@
     <ClInclude Include="..\..\..\src\platform\Path.h" />
     <ClInclude Include="..\..\..\src\platform\Platform.h" />
     <ClInclude Include="..\..\..\src\platform\windows\dirent.h" />
+    <ClInclude Include="..\..\..\src\platform\windows\Precompiled.h" />
     <ClInclude Include="..\..\..\src\save\Data.h" />
     <ClInclude Include="..\..\..\src\save\OriginalSave.h" />
     <ClInclude Include="..\..\..\src\save\YAML.h" />
@@ -294,6 +324,20 @@
     <ClCompile Include="..\..\..\src\i18n\Help.cpp" />
     <ClCompile Include="..\..\..\src\i18n\Localization.cpp" />
     <ClCompile Include="..\..\..\src\platform\Path.cpp" />
+    <ClCompile Include="..\..\..\src\platform\windows\Precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ForcedIncludeFiles>
+    </ClCompile>
     <ClCompile Include="..\..\..\src\platform\windows\windows.cpp" />
     <ClCompile Include="..\..\..\src\save\Data.cpp" />
     <ClCompile Include="..\..\..\src\save\OriginalSave.cpp" />

@@ -97,9 +97,9 @@ Upkeep PlayerMechanics::computeGain(const Player *player)
   return up;
 }
 
-s32 PlayerMechanics::computeManaFromNodes(const Player *player)
+value_t PlayerMechanics::computeManaFromNodes(const Player *player)
 {
-  s32 mana = 0;
+  value_t mana = 0;
   
   for (auto node : player->nodes)
   {
@@ -125,9 +125,9 @@ s32 PlayerMechanics::computeManaFromNodes(const Player *player)
   return mana;
 }
 
-s32 PlayerMechanics::computeResearchGain(const Player* player)
+value_t PlayerMechanics::computeResearchGain(const Player* player)
 {
-  s32 knowledge = 0;
+  value_t knowledge = 0;
   for (auto c : player->cities)
     knowledge += c->getKnowledge();
   return knowledge;
@@ -189,12 +189,12 @@ void PlayerMechanics::updateSpellCast(Player *player)
   
   if (spell)
   {
-    s32 maxAvailableMana = player->availableMana;
-    s32 actualManaCost = g->spellMechanics.actualManaCost(player, spell, false);
+    value_t maxAvailableMana = player->availableMana;
+    value_t actualManaCost = g->spellMechanics.actualManaCost(player, spell, false);
     
     LOGG("spell-cast","updating spell cast for '%s', castingSkill: %d, spellCost: %d, manaPool: %d", i18n::c(spell->name), maxAvailableMana, actualManaCost, player->manaPool);
     
-    s32 manaAvailable = std::min(maxAvailableMana, std::min(actualManaCost, player->manaPool));
+    value_t manaAvailable = std::min(maxAvailableMana, std::min(actualManaCost, player->manaPool));
 
     if (player->spellBook.spendManaForCast(manaAvailable))
     {
@@ -214,7 +214,7 @@ void PlayerMechanics::updateSpellResearch(Player *player)
   player->spellBook.advanceResearch();
 }
 
-s32 PlayerMechanics::computeBaseCastingSkill(const Player *player)
+value_t PlayerMechanics::computeBaseCastingSkill(const Player *player)
 {
   //TODO: does additional book found after game start contribute?
   s32 base = player->spellBook.totalBooks()*2;
@@ -225,10 +225,10 @@ s32 PlayerMechanics::computeBaseCastingSkill(const Player *player)
   return base;
 }
 
-s32 PlayerMechanics::computeBonusCastingSkill(const Player *player)
+value_t PlayerMechanics::computeBonusCastingSkill(const Player *player)
 {
-  s32 max = computeBaseCastingSkill(player) + player->castingSkillGained()*2;
-  s32 bonus = 0;
+  value_t max = computeBaseCastingSkill(player) + player->castingSkillGained()*2;
+  value_t bonus = 0;
   
   City* city = player->cityWithFortress();
   if (city)
@@ -253,7 +253,7 @@ s32 PlayerMechanics::computeBonusCastingSkill(const Player *player)
 
 void PlayerMechanics::updateBonusCastingSkill(Player *player)
 {
-  s32 totalBonus = player->castingSkillCounter + player->manaRatio(2);
+  value_t totalBonus = player->castingSkillCounter + player->manaRatio(2);
   
   // ARCHMAGE has a 50% bonus on mana diverted on spell cast gain
   // TODO: check if correct (rounded down and so on)

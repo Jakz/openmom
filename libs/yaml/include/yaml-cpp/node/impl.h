@@ -7,6 +7,11 @@
 #pragma once
 #endif
 
+#ifdef _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4390)
+#endif
+
 #if defined(__cpp_exceptions)
 #define THROW(x) throw x
 #else
@@ -451,5 +456,7 @@ inline void Node::force_insert(const Key& key, const Value& value) {
 // free functions
 inline bool operator==(const Node& lhs, const Node& rhs) { return lhs.is(rhs); }
 }
+
+#pragma warning(pop)
 
 #endif  // NODE_IMPL_H_62B23520_7C8E_11DE_8A39_0800200C9A66

@@ -10,7 +10,9 @@
 #include <algorithm>
 #include "SDL.h"
 
-#ifdef DEBUG
+#define DEBUG 3
+
+#if defined(DEBUG) || true
   extern void debugprintf(const char* str, ...);
   #define LOGD(...) debugprintf(__VA_ARGS__);
   #define LOGG(y, x, ...) LOGD("[game]%s " x, y, __VA_ARGS__);
@@ -1149,6 +1151,7 @@ enum class PlaceType : u8
 using experience_t = s32;
 using prop_value = s32;
 using value_t = s32;
+using count_t = u32;
 
 /* forward declarations */
 

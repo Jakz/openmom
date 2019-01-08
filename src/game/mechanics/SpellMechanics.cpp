@@ -12,7 +12,7 @@
 
 using namespace std;
 
-u32 SpellMechanics::guaranteedSpellAmountForRarity(SpellRarity rarity, School school, u32 books)
+count_t SpellMechanics::guaranteedSpellAmountForRarity(SpellRarity rarity, School school, count_t books)
 {
   // no benefits from more than 11 books
   if (books > 11)
@@ -38,7 +38,7 @@ spell_rarity_map<s32> SpellMechanics::guaranteedSpells(School school, u32 books)
   });
 }
 
-u32 SpellMechanics::researchableSpellAmountForRarity(SpellRarity rarity, School school, u32 books)
+u32 SpellMechanics::researchableSpellAmountForRarity(SpellRarity rarity, School school, count_t books)
 {
   static enum_simple_map<SpellRarity, std::array<u8, 12>, 4> data = {
     { SpellRarity::COMMON,    { {0, 3, 5, 6, 7, 8, 9, 10, 10, 10, 10, 10} } },
@@ -146,14 +146,14 @@ bool SpellMechanics::applyTileSpell(const SpellCast& cast, Tile *tile)
   return true;
 }
 
-s32 SpellMechanics::actualManaCost(Player *player, const Spell *spell, bool combat)
+value_t SpellMechanics::actualManaCost(Player *player, const Spell *spell, bool combat)
 {
   return combat ? spell->mana.combatManaCost : spell->mana.manaCost;
 }
 
-s32 SpellMechanics::actualResearchGain(const Player *player, const Spell *spell)
+value_t SpellMechanics::actualResearchGain(const Player *player, const Spell *spell)
 {
-  s32 research = player->baseResearchPoints();
+  value_t research = player->baseResearchPoints();
   
   //TODO: check how bonus is calculated, ceil floor?
   // 20% bonus by Sage Master
@@ -181,7 +181,7 @@ s32 SpellMechanics::actualResearchGain(const Player *player, const Spell *spell)
 
 bool SpellMechanics::willDispel(const SpellCast &cast, const SpellCast &dispelCast)
 {
-  s32 dispelMana = dispelCast.spell->mana.combatManaCost + dispelCast.extraMana;
+  value_t dispelMana = dispelCast.spell->mana.combatManaCost + dispelCast.extraMana;
   
   // TODO: only combat mana cost of spell to dispel is considered, should we distinguish
   // ever lasting

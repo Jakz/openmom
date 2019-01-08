@@ -391,6 +391,9 @@
     <ClInclude Include="..\..\..\src\platform\Platform.h">
       <Filter>platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\platform\windows\Precompiled.h">
+      <Filter>platform\windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\platform\windows\windows.cpp">
@@ -710,6 +713,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\platform\Path.cpp">
       <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\platform\windows\Precompiled.cpp">
+      <Filter>platform\windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

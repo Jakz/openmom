@@ -56,7 +56,8 @@ public:
   {
     return YAML::Node::operator[](key);
   }
-  
+
+  //TODO: this is istantiated for all char[4], char[8], char[11]...
   template<typename T> const
   YAML::Node operator[](const T& key) const
   {
@@ -68,6 +69,7 @@ public:
     {
       keyNotFoundError(key);
       assert(false);
+      return YAML::Node();
     }
   }
   
@@ -76,6 +78,19 @@ public:
     std::string v = asString();
     return std::all_of(v.begin(), v.end(), isdigit);
   }
+
+#if defined(DEBUG)
+  void debugPrint(size_t i) const
+  {
+    std::string v = asString();
+    printf("%s\n", v.c_str());
+    
+    for (const auto& child : *this)
+    {
+      Node(child).debugPrint(i + 2);
+    }
+  }
+#endif  
 };
 
 template<> void yaml::Node::keyNotFoundError(const int& key) const
@@ -98,6 +113,9 @@ N yaml::parse(const std::string& fileName)
   std::string path = yamlPath(fileName);
 
   std::string content = file_handle(path, file_mode::READING).toString();
+
+  LOGD("[yaml] loaded %s, size: %zu bytes", fileName.c_str(), content.length());
+
 
   Node node = YAML::Load(content.c_str());
 
@@ -141,6 +159,11 @@ template<typename T, typename std::enable_if<!std::is_pointer<T>::value, int>::t
 {
   return node.as<T>();
 }*/
+
+#ifdef _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4715)
+#endif
 
 template<> LBXID yaml::parse(const N& node)
 {
@@ -346,6 +369,10 @@ template<> PropertyBonus::Mode yaml::parse(const N& node)
   
   FETCH_OR_FAIL("SkillEffectGroup::Mode", mapping, node);
 }
+
+#ifdef _WIN32
+#pragma warning(pop)
+#endif
 
 template<> RangedInfo yaml::parse(const N& node)
 {
@@ -1090,7 +1117,7 @@ void yaml::parse()
   parseUnits();
   parseSpells();
   parseWizards();
-  
+
 #if defined(DEBUG)
   const auto i18missing = i18n::unlocalizedEntries();
   for (const auto& entry : i18missing)

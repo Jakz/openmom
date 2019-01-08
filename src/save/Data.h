@@ -151,13 +151,13 @@ public:
   static const experience_levels& experienceLevelsForUnits() { return normalUnitLevels; }
   static const experience_levels& experienceLevelsForHeroes() { return heroLevels; }
   
-  static const Skill* skill(const key_type& ident) { return get<const Skill*>(ident); }
-  static const Building* building(const key_type& ident) { return get<const Building*>(ident); }
-  static const UnitSpec* unit(const key_type& ident) { return get<const UnitSpec*>(ident); }
-  static const Spell* spell(const key_type& ident) { return get<const Spell*>(ident); }
-  static const Race* race(const key_type& ident) { return get<const Race*>(ident); }
-  static const Retort* retort(const key_type& ident) { return get<const Retort*>(ident); }
-  static const Wizard* wizard(const key_type& ident) { return get<const Wizard*>(ident); }
+  static const Skill* skill(const key_type& ident);
+  static const Building* building(const key_type& ident);
+  static const UnitSpec* unit(const key_type& ident);
+  static const Spell* spell(const key_type& ident);
+  static const Race* race(const key_type& ident);
+  static const Retort* retort(const key_type& ident);
+  static const Wizard* wizard(const key_type& ident);
   
   template <typename T> static const map_t<T>& values() {
     const auto& map = containerFor<T>();
@@ -188,7 +188,8 @@ public:
     for (const auto& entry : container)
       LOGD("  %s -> %s", entry.first.c_str(), getInfo(entry.second).c_str());
   }
-#endif
+ #endif
   
   friend class yaml;
 };
+

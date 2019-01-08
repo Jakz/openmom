@@ -31,7 +31,7 @@ template<> float ValuesMechanics::get<float>(Value value)
   }
 }
 
-template<> s32 ValuesMechanics::get<s32>(Value value)
+template<> value_t ValuesMechanics::get<value_t>(Value value)
 {
   switch (value)
   {

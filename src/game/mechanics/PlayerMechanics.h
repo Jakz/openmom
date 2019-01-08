@@ -18,14 +18,14 @@ public:
   Upkeep computeGain(const Player* player);
   Upkeep computeUpkeep(const Player* player);
   
-  s32 computeResearchGain(const Player* player);
+  value_t computeResearchGain(const Player* player);
 
   
-  s32 computeBaseCastingSkill(const Player* player);
-  s32 computeBonusCastingSkill(const Player* player);
+  value_t computeBaseCastingSkill(const Player* player);
+  value_t computeBonusCastingSkill(const Player* player);
   void updateBonusCastingSkill(Player* player);
   
-  s32 computeManaFromNodes(const Player* player);
+  value_t computeManaFromNodes(const Player* player);
   
   void castSpell(Player* player, const Spell* spell);
   void castCombatSpell(Player* player, const Spell* spell);
