@@ -15,31 +15,27 @@ class Army;
 class SkillSet;
 class Damage;
 
-using hit_points = std::vector<value_t>;
 using unit_figure_flag = std::vector<bool>;
 
-class HitPoints
+class HitPoints : public unit_figure_value
 {
 protected:
   const Unit& unit;
-  hit_points data;
 public:
-  HitPoints(const Unit& unit) : unit(unit)
-  {
-  }
+  HitPoints(const Unit& unit);
   
-  count_t aliveCount() const { return data.size(); }
-  bool isAlive() const { return !data.empty(); }
-  value_t hitsOfFigure(size_t index) const { return data[index]; }
-  value_t hitsOfLeadFigure() const { return data[0]; }
-  
+  count_t aliveCount() const { return size(); }
+  bool isAlive() const { return !empty(); }
+  value_t hitsOfFigure(size_t index) const { return operator[](index); }
+  value_t hitsOfLeadFigure() const { return operator[](0); }
+
   float percentHealth() const;
   
   void healAll();
   
-  void applyDamage(hit_points::value_type dmg);
-  void applySameDamageToEachFigure(hit_points::value_type dmg);
-  void applyDifferentDamageToEachFigure(const hit_points& dmgs);
+  void applyDamage(value_t dmg);
+  void applySameDamageToEachFigure(value_t dmg);
+  void applyDifferentDamageToEachFigure(const unit_figure_value& dmgs);
   void killFigures(const unit_figure_flag& indices);
 };
 

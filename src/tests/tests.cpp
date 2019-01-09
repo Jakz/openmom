@@ -1,54 +1,4 @@
-#define CATCH_CONFIG_RUNNER
-#define SDL_MAIN_HANDLED
-
-
-#include "tests/catch.hpp"
-
-#include "save/Data.h"
-#include "save/YAML.h"
-
-#include "mystrings.h"
-
-#include <iostream>
-
-#include "platform/Platform.h"
-#include "yaml-cpp/node/detail/node_data.h"
-std::string YAML::detail::node_data::empty_scalar;
-
-class PlatformWin : public Platform
-{
-public:
-  Path getResourcePath() const override
-  {
-    return "C:\\Users\\Jack\\Documents\\dev\\openmom";
-  }
-
-  bool exists(const Path& path) const override
-  {
-    struct stat buffer;
-    return stat(path.c_str(), &buffer) == 0;
-  }
-
-  Path absolute(const Path& path) const override
-  {
-    // TODO
-    return path;
-  }
-};
-
-Platform* Platform::instance()
-{
-  static PlatformWin platform;
-  return &platform;
-}
-
-int main( int argc, char* argv[] )
-{
-  yaml::parse();
-  int result = Catch::Session().run( argc, argv );
-  std::getchar();
-  return result < 0xff ? result : 0xff;
-}
+#include "tests.h"
 
 #include "Data.h"
 #include "Unit.h"
@@ -145,7 +95,7 @@ namespace test
     return std::make_pair(raceUnit(unitSpec), raceUnitWithSkills(unitSpec, skills));
   }
   
-  unit_ptr anyRaceUnit() { return raceUnit("barbarian_swordsmen"); }
+  unit_ptr anyRaceUnit() { return raceUnit("barbarian_berserkers"); }
   unit_ptr anyRaceUnitWithSkills(identifier_list spellSkills)
   {
     return raceUnitWithSkills("barbarian_swordsmen", spellSkills);
@@ -251,7 +201,7 @@ TEST_CASE("basic stats of units") {
 }
 
 TEST_CASE("basic skill set functions") {
-  GIVEN("a specific SimpleEffect") {
+  WHEN("a specific SimpleEffect is present") {
     THEN("effect can be found through normal lookup methods on UnitSpec") {
       const auto unitSpec = test::anyRaceUnitSpecWithSkills({"invisibility"});
       REQUIRE(unitSpec->skills.hasSimpleEffect(SimpleEffect::Type::INVISIBILITY));
@@ -265,7 +215,7 @@ TEST_CASE("basic skill set functions") {
 }
 
 TEST_CASE("skill effects groups") {
-  SECTION("keep greater group") {
+  WHEN("a skill with a keep greater group") {
     GIVEN("two skill effects, one more powerful") {
       const auto unit = test::anyRaceUnit();
       const effect_list effects = test::effectListWithSkills({"resistance_to_all_2", "resistance_to_all_1"});
@@ -291,4 +241,36 @@ TEST_CASE("skill effects groups") {
       }
     }
   }
+}
+TEST_CASE("health management of units") {
+  const auto unit = test::anyRaceUnit();
+  const value_t figures = unit->getProperty(Property::FIGURES);
+  const value_t hitPoints = unit->getProperty(Property::HIT_POINTS);
+  auto* health = unit->health();
+  
+  SECTION("a fully healed unit") {
+    REQUIRE(health->aliveCount() == unit->getAliveFigures());
+    REQUIRE(health->sum() == figures*hitPoints);
+  }
+
+  SECTION("a unit which has been damaged by less than its hitpoints") {
+    const value_t dmg = unit->getProperty(Property::HIT_POINTS) - 1;
+    health->applyDamage(dmg);
+
+    REQUIRE(dmg > 0);
+    REQUIRE(health->aliveCount() == unit->getAliveFigures());
+    REQUIRE(health->sum() == figures*hitPoints - dmg);
+    REQUIRE(health->hitsOfLeadFigure() == hitPoints - dmg);
+  }
+
+  SECTION("an unit damaged more than its single figure hitpoints") {
+    const value_t dmg = unit->getProperty(Property::HIT_POINTS) - 1;
+    health->applyDamage(dmg + hitPoints);
+    REQUIRE(health->aliveCount() == figures - 1);
+    REQUIRE(health->aliveCount() == unit->getAliveFigures());
+    REQUIRE(health->sum() == (figures - 1) * hitPoints - dmg);
+    REQUIRE(health->hitsOfLeadFigure() == hitPoints - dmg);
+  }
+
+
 }

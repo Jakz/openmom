@@ -840,31 +840,4 @@ struct PlayerSetupInfo
   PlayerColor color;
 };
 
-/* forward declarations */
-
-class Race;
-class Game;
-class City;
-class Army;
-class Hero;
-class ManaNode;
-class Unit;
-
-namespace combat
-{
-  class Combat;
-  class CombatUnit;
-}
-
-namespace anims
-{
-  class Animation;
-}
-
-namespace msgs
-{
-  class Message;
-}
-
-
 #endif

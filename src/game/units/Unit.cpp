@@ -11,54 +11,60 @@
 
 using namespace std;
 
+HitPoints::HitPoints(const Unit& unit) : unit(unit), unit_figure_value(unit.getFigures())
+{
+  
+}
+
 float HitPoints::percentHealth() const
 {
-  return accumulate(data.begin(), data.end(), 0) / (float) (unit.getProperty(Property::FIGURES) * unit.getProperty(Property::HIT_POINTS) );
+  return sum() / (float) (unit.getProperty(Property::FIGURES) * unit.getProperty(Property::HIT_POINTS) );
 }
 
 void HitPoints::healAll()
 {
-  data.assign(unit.getProperty(Property::FIGURES), unit.getProperty(Property::HIT_POINTS));
+  assign(unit.getProperty(Property::FIGURES), unit.getProperty(Property::HIT_POINTS));
 }
 
-void HitPoints::applyDamage(s32 dmg)
+void HitPoints::applyDamage(value_t dmg)
 {
   while (dmg > 0 && isAlive())
   {
-    s16 v = std::min(dmg, data[0]);
+    s16 v = std::min(dmg, operator[](0));
     
-    data[0] -= v;
+    operator[](0) -= v;
     dmg -= v;
     
-    if (data[0] <= 0)
-      data.erase(data.begin());
+    if (operator[](0) <= 0)
+      erase(0);
     
     if (aliveCount() == 0)
       return;
   }
 }
 
-void HitPoints::applySameDamageToEachFigure(hit_points::value_type dmg)
+void HitPoints::applySameDamageToEachFigure(value_t dmg)
 {
-  for_each(data.begin(), data.end(), [&](hit_points::value_type& hp){ hp -= dmg; });
-  auto nend = remove_if(data.begin(), data.end(), [](hit_points::value_type& hp) { return hp <= 0; });
-  data.erase(nend, data.end());
+  this->operator-=(dmg);
+  auto nend = remove_if(begin(), end(), [](value_t hp) { return hp <= 0; });
+  erase(nend, end());
 }
 
-void HitPoints::applyDifferentDamageToEachFigure(const hit_points& dmgs)
+void HitPoints::applyDifferentDamageToEachFigure(const unit_figure_value& dmgs)
 {
-  for (int i = 0; i < dmgs.size(); ++i)
-    data[i] -= dmgs[i];
+  this->operator-=(dmgs);
   
-  auto nend = remove_if(data.begin(), data.end(), [](hit_points::value_type& hp) { return hp <= 0; });
-  data.erase(nend, data.end());
+  auto nend = remove_if(begin(), end(), [](value_t& hp) { return hp <= 0; });
+  erase(nend, end());
 }
 
 void HitPoints::killFigures(const unit_figure_flag& indices)
 {
+  assert(indices.size() == size());
+  
   s16 current = 0;
-  auto nend = remove_if(data.begin(), data.end(), [&](hit_points::value_type& hp) { return indices[current++]; });
-  data.erase(nend, data.end());
+  auto nend = remove_if(begin(), end(), [&](value_t) { return indices[current++]; });
+  erase(nend, end());
 }
 
 void Unit::removeSpell(const Spell* spell)

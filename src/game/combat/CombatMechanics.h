@@ -17,68 +17,6 @@ enum class CombatModifier : u8;
 
 class Game;
 
-#include <numeric>
-
-/*
-  This utility class is used to manage a vector of multiple values for a single unit,
-  this is useful for combat related formulas which generate damage, make rolls on separate
-  figures in many occasions
-*/
-class unit_figure_value : public std::vector<value_t>
-{
-public:
-  using value_generator = std::function<value_type(const combat::CombatUnit*, size_t)>;
-
-  unit_figure_value(size_t size) : std::vector<value_type>(size, 0) { }
-
-  unit_figure_value(size_t size, std::function<value_type(size_t)> generator) : unit_figure_value(size)
-  {
-    for (size_t i = 0; i < size; ++i)
-      (*this)[i] = generator(i);
-  }
-
-  /*TODO: requires #include unit_figure_value(aliveOnly ? unit->getUnit()->getAliveFigures() : unit->getUnit()->getFigures()) */
-  unit_figure_value(size_t size, const combat::CombatUnit* unit, value_generator generator) : unit_figure_value(size)
-  {
-    generate(unit, generator);
-  }
-
-  void erase(size_t index) { std::vector<value_t>::erase(begin() + index); }
-  
-  value_type sum() const { return std::accumulate(begin(), end(), 0); }
-  value_type max() const { return *std::max_element(begin(), end()); }
-  
-  void forEach(std::function<void(value_type&)> lambda) { std::for_each(begin(), end(), lambda); }
-
-  void clampNegativeValuesToZero() { forEach([] (value_type& v) { v = std::max(v, 0); }); }
-  
-  unit_figure_value operator-(const unit_figure_value& other) const
-  {
-    assert(size() == other.size());
-    
-    unit_figure_value result(*this);
-    for (size_t i = 0; i < size(); ++i)
-      result[i] -= other[i];
-    return result;
-  };
-  
-  unit_figure_value& operator-=(const unit_figure_value& other)
-  {
-    assert(size() == other.size());
-    
-    for (size_t i = 0; i < size(); ++i)
-      (*this)[i] = other[i];
-    
-    return *this;
-  };
-  
-  void generate(const combat::CombatUnit* unit, value_generator generator)
-  {
-    for (size_t i = 0; i < size(); ++i)
-      (*this)[i] = generator(unit, i);
-  }
-};
-
 namespace combat
 {
   struct CombatTile;
@@ -159,9 +97,9 @@ namespace combat
   
   class DamageEachDifferent : public Damage
   {
-    const hit_points amounts;
+    const unit_figure_value amounts;
   public:
-    DamageEachDifferent(hit_points&& amounts) : Damage(Type::EACH_SAME), amounts(amounts) { }
+    DamageEachDifferent(unit_figure_value&& amounts) : Damage(Type::EACH_SAME), amounts(amounts) { }
     void apply(Unit* unit) const override
     {
       unit->health()->applyDifferentDamageToEachFigure(amounts);
