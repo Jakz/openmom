@@ -1293,7 +1293,7 @@ bool CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
   CombatUnit* hunit = combat->unitAtTile(hover);
 
-  if (hunit)
+  /*if (hunit)
   {
     s32 damage = g->combatMechanics.computeAreaDamage(hunit, 15, School::CHAOS, 30);
     hunit->getUnit()->health()->applyDamage(damage);
@@ -1304,7 +1304,7 @@ bool CombatView::mouseReleased(u16 x, u16 y, MouseButton b)
     }
   }
 
-  return true;
+  return true;*/
   
   //if (hover.isValid())
   //  entries.add(new FixedSpellGfxEntry(this, hover, LSI(CMBTFX, 4), 2));

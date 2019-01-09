@@ -20,8 +20,15 @@ using unit_figure_flag = std::vector<bool>;
 class HitPoints : public unit_figure_value
 {
 protected:
-  const Unit& unit;
+  const Unit* unit;
 public:
+  HitPoints(size_t count, value_t hits, value_t leadHits) : unit_figure_value(count), unit(nullptr)
+  {
+    assign(count, hits);
+    operator[](0) = leadHits;
+  }
+  
+  HitPoints(size_t count, value_t hits) : HitPoints(count, hits, hits) { }
   HitPoints(const Unit& unit);
   
   count_t aliveCount() const { return size(); }

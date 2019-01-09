@@ -11,19 +11,19 @@
 
 using namespace std;
 
-HitPoints::HitPoints(const Unit& unit) : unit(unit), unit_figure_value(unit.getFigures())
+HitPoints::HitPoints(const Unit& unit) : unit(&unit), unit_figure_value(unit.getFigures())
 {
   
 }
 
 float HitPoints::percentHealth() const
 {
-  return sum() / (float) (unit.getProperty(Property::FIGURES) * unit.getProperty(Property::HIT_POINTS) );
+  return sum() / (float) (unit->getProperty(Property::FIGURES) * unit->getProperty(Property::HIT_POINTS) );
 }
 
 void HitPoints::healAll()
 {
-  assign(unit.getProperty(Property::FIGURES), unit.getProperty(Property::HIT_POINTS));
+  assign(unit->getProperty(Property::FIGURES), unit->getProperty(Property::HIT_POINTS));
 }
 
 void HitPoints::applyDamage(value_t dmg)

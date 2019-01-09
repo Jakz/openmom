@@ -34,7 +34,9 @@ namespace combat
 
     
   public:
-    CombatUnit(Combat* combat, Side side, Unit* unit) : _combat(combat), unit(unit), player(unit->getArmy()->getOwner()), _side(side), moves(unit->getProperty(Property::MOVEMENT)*2), selected(false) { }
+    CombatUnit(Combat* combat, Side side, Unit* unit) : _combat(combat),
+    unit(unit), player(unit != nullptr && unit->getArmy() != nullptr ? unit->getArmy()->getOwner() : nullptr),
+    _side(side), moves(unit->getProperty(Property::MOVEMENT)*2), selected(false) { }
     
     Player* const getOwner() { return player; }
 

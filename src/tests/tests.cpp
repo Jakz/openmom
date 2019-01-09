@@ -6,6 +6,9 @@
 
 #include "save/Data.h"
 
+#include "game/combat/Combat.h"
+#include "game/combat/CombatMechanics.h"
+
 #include "common/mystrings.h"
 
 struct PropertyModifier
@@ -36,6 +39,7 @@ namespace test
 {
   using unit_ptr = std::unique_ptr<Unit>;
   using unit_pair = std::pair<unit_ptr, unit_ptr>;
+  using cunit_ptr = std::unique_ptr<combat::CombatUnit>;
   using unit_spec_ptr = std::unique_ptr<const UnitSpec>;
   using identifier = const std::string&;
   using identifier_list = const std::initializer_list<std::string>&;
@@ -103,6 +107,8 @@ namespace test
   {
     return raceUnitWithSkills("barbarian_swordsmen", spellSkills);
   }
+  
+  cunit_ptr cunit(const unit_ptr& unit) { return std::make_unique<combat::CombatUnit>(nullptr, combat::Side::ATTACKER, unit.get()); }
 
   
   unit_pair anyRaceUnitPairWithSkills(identifier_list skills)
@@ -292,3 +298,24 @@ TEST_CASE("health management of units") {
     REQUIRE(!health->isAlive());
   }
 }
+
+#pragma mark Combat Mechanics
+
+TEST_CASE("combat formulas") {
+  using namespace combat;
+  const auto unit = test::anyRaceUnit();
+  const auto cunit = test::cunit(unit);
+  CombatFormulas f;
+
+  
+  SECTION("area damage formulas") {
+    using namespace combat;
+    f.computeAreaDamage(10, 30, 6, 4, 30, 2);
+  }
+  
+  SECTION("physical damage formulas") {
+    f.computePhysicalDamage(30, 30, HitPoints(4, 4), 30, 2);
+  }
+}
+
+
