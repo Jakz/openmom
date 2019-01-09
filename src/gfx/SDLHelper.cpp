@@ -180,7 +180,7 @@ void SDL::handleEvents()
 
 void SDL::render()
 {
-  SDL_FillRect(Gfx::getCanvas(), nullptr, 0x00000000);
+  SDL_FillRect(Gfx::getCanvas(), nullptr, 0xFF000000);
   gvm->draw();
   
 #ifndef HQXFILTER

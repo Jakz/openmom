@@ -17,30 +17,9 @@
 
 #include "ui/views/UnitDetailView.h"
 
-/*
- Combat
- CombatAIThread
- CombatMechanics
- CombatMind
- CombatUnitAttack
- CombatUnitMovement
- CombatView
- CombatView.SubState
- GlobalSpellEffect
- SpellEffect
- SpellEffects
- Spells
-*/
+#include "common/format.h"
 
-void init()
-{
-  Game *game = new Game();
-  game->dummyInit();
-  
-  //Util::seed(time(nullptr));
-  //WorldGenerator gen = WorldGenerator(game->world);
-  //gen.generate();
-}
+void saveScreenshots(Game* game);
 
 int main(int argc, char* arg[])
 {
@@ -109,27 +88,19 @@ int main(int argc, char* arg[])
   lbx::Repository::loadLBX(LBXID::WIZARDS);
   
   Viewport::createMapTextureAtlas();
-  /*return 0;*/
-
   
   FontFaces::buildFonts();
-  //return 0;
   
-  //const Race &race = Race::race(RACE_BARBARIANS);
-  
-  //std::unordered_map<const void*, SpriteInfo> map;
-  
-  //const Race* ptRace = reinterpret_cast<const Race *>(&race);
-  
-  // init SDL
-        
-  init();
+  Game *game = new Game();
+  game->dummyInit();
   
   SDL::init();
   Gfx::init();
   Texture::load();
   SDL::initGVM();
   
+  //saveScreenshots(game);
+
   SDL::gvm->switchView(VIEW_MAIN);
 
   //SDL::gvm->switchView(VIEW_NEW_GAME);
@@ -149,4 +120,97 @@ int main(int argc, char* arg[])
   SDL::deinit();
   
   return 0;
+}
+
+#include "Player.h"
+#include "LocalPlayer.h"
+#include "CityView.h"
+#include "ArmyView.h"
+#include "MessageView.h"
+#include "ProductionView.h"
+#include "OutpostView.h"
+
+#include "Army.h"
+#include "format.h"
+
+const char* viewName(ViewID id)
+{
+  switch (id)
+  {
+    case VIEW_CITY: return "city";
+    case VIEW_UNIT: return "unit";
+    case VIEW_MAIN: return "main";
+    case VIEW_SPELL_BOOK: return "spellbook";
+    case VIEW_MAGIC: return "magic";
+    case VIEW_RESEARCH: return "research";
+    case VIEW_ALCHEMY: return "alchemy";
+    case VIEW_ARMIES: return "armies";
+    case VIEW_ARMIES_ITEMS: return "armies-items";
+    case VIEW_ITEM_CRAFT: return "item-craft";
+    case VIEW_ITEM_CRAFT_CHARGES: return "item-craft-charges";
+    case VIEW_MERCHANT: return "merchant";
+    case VIEW_ARMY: return "army";
+    case VIEW_MESSAGE: return "message";
+    case VIEW_CITIES: return "cities";
+    case VIEW_MIRROR: return "mirror";
+    case VIEW_INFO_MENU: return "info-menu";
+    case VIEW_CARTOGRAPHER: return "cartographer";
+    case VIEW_DIPLOMACY: return "diplomacy";
+    case VIEW_ASTROLOGER: return "astrologer";
+    case VIEW_HISTORIAN: return "historian";
+    case VIEW_COMBAT: return "combat";
+    case VIEW_PRODUCTION: return "production";
+    case VIEW_OUTPOST: return "outpost";
+    case VIEW_NEW_GAME: return "new-game";
+    case VIEW_LOAD: return "load";
+    case VIEW_OPTIONS: return "options";
+    case VIEW_START: return "start";
+    case VIEW_INTRO: return "intro";
+      
+    case VIEW_DATA:
+    case VIEW_CONSOLE:
+    case VIEW_MAP_EDITOR:
+    case VIEW_COUNT:
+      return "";
+  }
+}
+
+void saveScreenshots(Game* game)
+{
+  for (int i = VIEW_MAIN; i <= VIEW_INTRO; ++i)
+  {
+    if (i == VIEW_CITY)
+      SDL::gvm->cityView()->setCity(*game->getCities().begin());
+    else if (i == VIEW_UNIT)
+    {
+      Player* player = *game->getPlayers().begin();
+      Army* army = *player->getArmies().begin();
+      Unit* unit = *army->getUnits().begin();
+      SDL::gvm->unitDetailView()->setUnit(unit);
+    }
+    else if (i == VIEW_ARMY)
+    {
+      Player* player = *game->getPlayers().begin();
+      Army* army = *player->getArmies().begin();
+      SDL::gvm->armyView()->setArmy(army);
+    }
+    else if (i == VIEW_MESSAGE)
+    {
+      Player* player = *game->getPlayers().begin();
+      player->send(new msgs::Error("Error Message Test"));
+    }
+    else if (i == VIEW_PRODUCTION)
+    {
+      SDL::gvm->productionView()->setCity(*game->getCities().begin());
+    }
+    else if (i == VIEW_OUTPOST)
+    {
+      SDL::gvm->outpostView()->setCity(*game->getCities().begin());
+    }
+
+    SDL::gvm->switchView((ViewID)i);
+    //SDL::gvm->cityView()->setCity(SDL::gvm->cityView()->)
+    SDL::render();
+    Gfx::saveScreenshot(fmt::sprintf("screenshot-%s.png", viewName((ViewID)i)).c_str());
+  }
 }

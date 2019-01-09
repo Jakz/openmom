@@ -1,9 +1,12 @@
 #include "tests.h"
 
-#include "Data.h"
 #include "Unit.h"
 #include "UnitSpec.h"
 #include "Skill.h"
+
+#include "save/Data.h"
+
+#include "common/mystrings.h"
 
 struct PropertyModifier
 {
@@ -133,8 +136,8 @@ namespace test
 }
 
 TEST_CASE("direction mask operators") {
-  REQUIRE(DirJoin::N << 1 == DirJoin::NW);
-  REQUIRE(DirJoin::N << 2 == DirJoin::W);
+  REQUIRE((DirJoin::N << 1) == DirJoin::NW);
+  REQUIRE((DirJoin::N << 2) == DirJoin::W);
 }
 
 TEST_CASE("grouping of numbers formatting") {
@@ -242,6 +245,9 @@ TEST_CASE("skill effects groups") {
     }
   }
 }
+
+
+#pragma mark HitPoints
 TEST_CASE("health management of units") {
   const auto unit = test::anyRaceUnit();
   const value_t figures = unit->getProperty(Property::FIGURES);
@@ -249,28 +255,40 @@ TEST_CASE("health management of units") {
   auto* health = unit->health();
   
   SECTION("a fully healed unit") {
-    REQUIRE(health->aliveCount() == unit->getAliveFigures());
+    REQUIRE(health->aliveCount() == figures);
     REQUIRE(health->sum() == figures*hitPoints);
   }
 
-  SECTION("a unit which has been damaged by less than its hitpoints") {
+  SECTION("damage by less than its figure hitpoints") {
     const value_t dmg = unit->getProperty(Property::HIT_POINTS) - 1;
     health->applyDamage(dmg);
-
     REQUIRE(dmg > 0);
-    REQUIRE(health->aliveCount() == unit->getAliveFigures());
+    REQUIRE(health->aliveCount() == figures);
     REQUIRE(health->sum() == figures*hitPoints - dmg);
     REQUIRE(health->hitsOfLeadFigure() == hitPoints - dmg);
   }
 
-  SECTION("an unit damaged more than its single figure hitpoints") {
-    const value_t dmg = unit->getProperty(Property::HIT_POINTS) - 1;
+  SECTION("damage by more than its single figure hitpoints") {
+    const value_t dmg = hitPoints - 1;
     health->applyDamage(dmg + hitPoints);
     REQUIRE(health->aliveCount() == figures - 1);
-    REQUIRE(health->aliveCount() == unit->getAliveFigures());
     REQUIRE(health->sum() == (figures - 1) * hitPoints - dmg);
     REQUIRE(health->hitsOfLeadFigure() == hitPoints - dmg);
   }
-
-
+  
+  SECTION("damage by its total hitpoints") {
+    const value_t dmg = figures*hitPoints;
+    health->applyDamage(dmg);
+    REQUIRE(health->aliveCount() == 0);
+    REQUIRE(health->sum() == 0);
+    REQUIRE(!health->isAlive());
+  }
+  
+  SECTION("damage by more its total hitpoints") {
+    const value_t dmg = figures*hitPoints*2;
+    health->applyDamage(dmg);
+    REQUIRE(health->aliveCount() == 0);
+    REQUIRE(health->sum() == 0);
+    REQUIRE(!health->isAlive());
+  }
 }

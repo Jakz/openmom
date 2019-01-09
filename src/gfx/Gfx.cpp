@@ -503,6 +503,11 @@ void Gfx::mergeBufferDownScaled(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h)
   }
 }
 
+void Gfx::saveScreenshot(const char* path)
+{
+  IMG_SavePNG(canvas->data, path);
+}
+
 void CursorManager::hideCursor()
 {
   SDL_ShowCursor(false);
@@ -512,3 +517,5 @@ void CursorManager::showDefaultCursor()
 {
   SDL_ShowCursor(true);
 }
+
+

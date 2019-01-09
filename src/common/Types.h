@@ -3,6 +3,7 @@
 #include "common/Typedefs.h"
 
 #include <numeric>
+#include <vector>
 
 #pragma mark Geometric Types
 

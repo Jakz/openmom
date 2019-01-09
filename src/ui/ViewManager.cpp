@@ -134,8 +134,11 @@ void ViewManager::switchOverview(ViewID type)
 
 void ViewManager::closeOverview()
 {
-  overviews.back()->doDeactivate();
-  overviews.pop_back();
+  if (!overviews.empty())
+  {
+    overviews.back()->doDeactivate();
+    overviews.pop_back();
+  }
 }
 
 void ViewManager::draw()

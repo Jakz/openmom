@@ -143,6 +143,7 @@ public:
 
   static SDL_Surface *createSurface(u16 w, u16 h) { return SDL_CreateRGBSurface(0, w, h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000); }
 
+  static void saveScreenshot(const char* path);
   static inline void lock(const SpriteSheet *surface) { surface->lock(); }
   static inline void unlock(const SpriteSheet *surface) { surface->unlock(); }
 

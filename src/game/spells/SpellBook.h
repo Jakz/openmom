@@ -2,6 +2,7 @@
 #define _SPELLBOOK_H_
 
 #include "common/Common.h"
+#include "Data.h"
 #include "Spells.h"
 
 #include <map>

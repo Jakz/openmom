@@ -94,6 +94,9 @@ void MessageView::deactivate()
 
 void MessageView::draw()
 {
+  if (!message)
+    return;
+  
   switch (message->type) {
     case msgs::Message::Type::NEW_BUILDING:
     {

@@ -79,6 +79,8 @@ public:
   bool doKeyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) { return keyReleased(key,kkey,mod); }
   bool doTextInput(sdl_text_input data) { return textInput(data); }
 
+  LocalPlayer* currentPlayer() { return player; }
+  Game* game() { return g; }
   
   friend class ViewManager;
   

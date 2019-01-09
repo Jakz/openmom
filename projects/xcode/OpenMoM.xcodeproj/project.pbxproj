@@ -202,6 +202,10 @@
 		0493DA931E1B55FA0088FF42 /* ConsoleView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428EE1E0AC4DC003A76D8 /* ConsoleView.cpp */; };
 		0493DA941E1B56040088FF42 /* Help.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 046428FC1E117C2D003A76D8 /* Help.cpp */; };
 		0493DA971E1DFB0C0088FF42 /* YAML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0493DA951E1DFB0C0088FF42 /* YAML.cpp */; };
+		0495064321E64AE10021982B /* Typedefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495064021E64AE10021982B /* Typedefs.h */; };
+		0495064421E64AE10021982B /* Types.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495064121E64AE10021982B /* Types.h */; };
+		0495064521E64AE10021982B /* Enums.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495064221E64AE10021982B /* Enums.h */; };
+		0495064921E64AFF0021982B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495064821E64AFF0021982B /* main.cpp */; };
 		049B1CF01E2B3D8500A2A449 /* LoadView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CEC1E2B3D8500A2A449 /* LoadView.cpp */; };
 		049B1CF11E2B3D8500A2A449 /* OptionsView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CEE1E2B3D8500A2A449 /* OptionsView.cpp */; };
 		049B1CF41E2DD76700A2A449 /* CombatMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CF21E2DD76700A2A449 /* CombatMap.cpp */; };
@@ -468,6 +472,12 @@
 		048E08BB1982B20A009AED0A /* WorldGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldGenerator.h; sourceTree = "<group>"; };
 		0493DA951E1DFB0C0088FF42 /* YAML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YAML.cpp; sourceTree = "<group>"; };
 		0493DA961E1DFB0C0088FF42 /* YAML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YAML.h; sourceTree = "<group>"; };
+		0495064021E64AE10021982B /* Typedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Typedefs.h; sourceTree = "<group>"; };
+		0495064121E64AE10021982B /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
+		0495064221E64AE10021982B /* Enums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enums.h; sourceTree = "<group>"; };
+		0495064621E64AFF0021982B /* tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tests.h; sourceTree = "<group>"; };
+		0495064721E64AFF0021982B /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch.hpp; sourceTree = "<group>"; };
+		0495064821E64AFF0021982B /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		049B1CEC1E2B3D8500A2A449 /* LoadView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoadView.cpp; sourceTree = "<group>"; };
 		049B1CED1E2B3D8500A2A449 /* LoadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadView.h; sourceTree = "<group>"; };
 		049B1CEE1E2B3D8500A2A449 /* OptionsView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionsView.cpp; sourceTree = "<group>"; };
@@ -506,7 +516,6 @@
 		04E218851C02A386005784E1 /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = format.h; sourceTree = "<group>"; };
 		04E2829A1E01A7DB00DD673D /* OriginalSave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OriginalSave.cpp; sourceTree = "<group>"; };
 		04E2829B1E01A7DB00DD673D /* OriginalSave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OriginalSave.h; sourceTree = "<group>"; };
-		04E282A11E021C0600DD673D /* catch.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch.hpp; sourceTree = "<group>"; };
 		04E282A21E021C0600DD673D /* tests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tests.cpp; sourceTree = "<group>"; };
 		04E282A71E021C3300DD673D /* Tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Tests; sourceTree = BUILT_PRODUCTS_DIR; };
 		04E282B91E02278700DD673D /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Common.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -617,6 +626,9 @@
 		040375CA197990B900A5B5FC /* common */ = {
 			isa = PBXGroup;
 			children = (
+				0495064221E64AE10021982B /* Enums.h */,
+				0495064021E64AE10021982B /* Typedefs.h */,
+				0495064121E64AE10021982B /* Types.h */,
 				04E282BD1E0227CF00DD673D /* Util.cpp */,
 				04E282BE1E0227CF00DD673D /* Util.h */,
 				04E282B91E02278700DD673D /* Common.cpp */,
@@ -1035,7 +1047,9 @@
 		04E282A01E021C0600DD673D /* tests */ = {
 			isa = PBXGroup;
 			children = (
-				04E282A11E021C0600DD673D /* catch.hpp */,
+				0495064721E64AFF0021982B /* catch.hpp */,
+				0495064821E64AFF0021982B /* main.cpp */,
+				0495064621E64AFF0021982B /* tests.h */,
 				04E282A21E021C0600DD673D /* tests.cpp */,
 			);
 			path = tests;
@@ -1060,6 +1074,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0495064421E64AE10021982B /* Types.h in Headers */,
+				0495064521E64AE10021982B /* Enums.h in Headers */,
+				0495064321E64AE10021982B /* Typedefs.h in Headers */,
 				04DF5B551F1FA792000B1AA2 /* lbxlib.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1371,6 +1388,7 @@
 				046707021F892B4700F38879 /* AstrologerView.cpp in Sources */,
 				046707031F892B4700F38879 /* CartographerView.cpp in Sources */,
 				046707041F892B4700F38879 /* HistorianView.cpp in Sources */,
+				0495064921E64AFF0021982B /* main.cpp in Sources */,
 				046707051F892B4700F38879 /* IntroView.cpp in Sources */,
 				046707061F892B4700F38879 /* LoadView.cpp in Sources */,
 				046707071F892B4700F38879 /* StartView.cpp in Sources */,
