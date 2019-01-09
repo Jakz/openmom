@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{d622248b-f310-4b3b-b920-94fd6f92bce1}</ItemsProjectGuid>
+    <ItemsProjectName>Code</ItemsProjectName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Common.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\format.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\mystrings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Util.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\cities\Buildings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\cities\City.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\combat\Combat.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\combat\CombatMap.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\combat\CombatMechanics.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\combat\CombatUtils.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\Game.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\CityMechanics.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\EventMechanics.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\LairMechanics.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\MapMechanics.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\PlayerMechanics.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\SpellMechanics.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\ValuesMechanics.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Diplomacy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\LocalPlayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Messages.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Player.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Race.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\Settings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Effects.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Skill.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\SkillSet.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\CombatSpells.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\SpellBook.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\Spells.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\units\Army.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\units\Items.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\units\Level.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\units\Unit.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\units\UnitSpec.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\world\Pathfind.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\world\Places.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\world\Tile.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\world\World.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\world\WorldGenerator.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\ColorMap.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\filters\hq2x.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\filters\hq3x.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\filters\hq4x.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\filters\hqx_init.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\Font.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\Gfx.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\GUISettings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\LBX.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\LBXRepository.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\SDLHelper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\Texture.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\i18n\Help.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\i18n\Localization.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\platform\Path.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\platform\windows\Precompiled.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\save\Data.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\save\OriginalSave.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\save\YAML.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\animations\Animations.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\animations\SpellEffectAnim.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\Buttons.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\GfxData.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\BookView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\CityScape.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\CommonDraw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\Dialogs.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\DrawQueue.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\MiniMap.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\SkillDraw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\UnitDraw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\Viewport.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\View.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\ViewManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\AlchemyView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ArmiesItemsView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ArmiesView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ArmyView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\AstrologerView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\CartographerView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\CitiesView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\CityView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\CombatView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ConsoleView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\debug\DataView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\DiplomacyView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\extra\MapEditorView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\HistorianView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\InfoMenuView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\IntroView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ItemCraftChargesView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ItemCraftView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\LoadView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\MagicView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\MainView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\MerchantView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\MessageView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\MirrorView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\NewGameView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\OptionsView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\OutpostView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ProductionView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ResearchView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\SpellBookView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\StartView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\UnitDetailView.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Common.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Enums.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\format.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\mystrings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Typedefs.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Types.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Util.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\cities\Buildings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\cities\City.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\combat\Combat.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\combat\CombatMap.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\combat\CombatMechanics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\combat\CombatUtils.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\Game.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\CityMechanics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\EventMechanics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\LairMechanics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\MapMechanics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\PlayerMechanics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\SpellMechanics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\mechanics\ValuesMechanics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Diplomacy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\LocalPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Messages.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Player.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Race.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\Settings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Effects.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Skill.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\SkillSet.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\CombatSpells.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\SpellBook.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\Spells.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\units\Army.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\units\Items.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\units\Level.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\units\Unit.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\units\UnitSpec.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\world\Pathfind.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\world\Places.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\world\Tile.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\world\World.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\world\WorldGenerator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\ColorMap.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\filters\Hqx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\Font.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\Gfx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\GUISettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\LBX.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\LBXRepository.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\SDLHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\gfx\Texture.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\i18n\Help.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\i18n\Localization.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\platform\Path.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\platform\Platform.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\platform\windows\Precompiled.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\save\Data.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\save\OriginalSave.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\save\YAML.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\animations\Animations.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\animations\SpellEffectAnim.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\Buttons.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\EventListener.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\GfxData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\BookView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\CityScape.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\CommonDraw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\Dialogs.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\DrawQueue.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\DrawQueueBasic.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\MiniMap.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\SkillDraw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\UnitDraw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\parts\Viewport.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\View.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\ViewManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\AlchemyView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ArmiesItemsView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ArmiesView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ArmyView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\AstrologerView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\CartographerView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\CitiesView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\CityView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\CombatView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ConsoleView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\debug\DataView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\DiplomacyView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\extra\MapEditorView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\HistorianView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\InfoMenuView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\IntroView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ItemCraftChargesView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ItemCraftView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\LoadView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\MagicView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\MainView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\MerchantView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\MessageView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\MirrorView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\NewGameView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\OptionsView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\OutpostView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ProductionView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\ResearchView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\SpellBookView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\StartView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\UnitDetailView.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\Configuration.props">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+</Project>
