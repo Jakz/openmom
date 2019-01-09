@@ -18,15 +18,32 @@ enum class CombatModifier : u8;
 class Game;
 
 #include <numeric>
-class unit_figure_value : public std::vector<s32>
+
+/*
+  This utility class is used to manage a vector of multiple values for a single unit,
+  this is useful for combat related formulas which generate damage, make rolls on separate
+  figures in many occasions
+*/
+class unit_figure_value : public std::vector<value_t>
 {
 public:
+  using value_generator = std::function<value_type(const combat::CombatUnit*, size_t)>;
+
   unit_figure_value(size_t size) : std::vector<value_type>(size, 0) { }
-  unit_figure_value(size_t size, std::function<value_type(value_type)> generator) : unit_figure_value(size)
+
+  unit_figure_value(size_t size, std::function<value_type(size_t)> generator) : unit_figure_value(size)
   {
-    for (s32 i = 0; i < size; ++i)
+    for (size_t i = 0; i < size; ++i)
       (*this)[i] = generator(i);
   }
+
+  /*TODO: requires #include unit_figure_value(aliveOnly ? unit->getUnit()->getAliveFigures() : unit->getUnit()->getFigures()) */
+  unit_figure_value(size_t size, const combat::CombatUnit* unit, value_generator generator) : unit_figure_value(size)
+  {
+    generate(unit, generator);
+  }
+
+  void erase(size_t index) { std::vector<value_t>::erase(begin() + index); }
   
   value_type sum() const { return std::accumulate(begin(), end(), 0); }
   value_type max() const { return *std::max_element(begin(), end()); }
@@ -55,9 +72,9 @@ public:
     return *this;
   };
   
-  void generate(combat::CombatUnit* unit, std::function<value_type(combat::CombatUnit*, s32)> generator)
+  void generate(const combat::CombatUnit* unit, value_generator generator)
   {
-    for (u32 i = 0; i < size(); ++i)
+    for (size_t i = 0; i < size(); ++i)
       (*this)[i] = generator(unit, i);
   }
 };
@@ -72,10 +89,13 @@ namespace combat
   class CombatFormulas
   {
   private:
-    static u32 passingRolls(u32 count, u32 ch);
-    static u32 passingRollsf(u32 count, float ch);
+    static value_t passingRolls(value_t count, value_t chance);
+    static value_t passingRollsf(value_t count, float chance);
   public:
-    s32 computeAreaDamage(CombatUnit* target, s32 strength, School school, s32 toHit);
+
+    /* School is used but this for no school damage we're using School::NO_SCHOOL which is not a good design */
+    value_t computeAreaDamage(CombatUnit* target, value_t strength, School school, value_t toHit);
+    value_t computePhysicalDamage(const CombatUnit* target, value_t strength, School school, value_t toHit);
 
   };
   

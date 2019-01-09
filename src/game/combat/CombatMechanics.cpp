@@ -187,39 +187,78 @@ void CombatMechanics::castCombatInstant(const SpellCast& cast, const CombatUnit 
 
 #pragma mark CombatFormulas
 
-u32 CombatFormulas::passingRollsf(u32 count, float ch)
+value_t CombatFormulas::passingRollsf(value_t count, float chance)
 {
-  u32 passed = 0;
-  for (u32 i = 0; i < count; ++i)
-    if (Math::chance(ch)) ++passed;
+  value_t passed = 0;
+  for (value_t i = 0; i < count; ++i)
+    if (Math::chance(chance)) ++passed;
   return passed;
 }
 
-u32 CombatFormulas::passingRolls(u32 count, u32 ch)
+value_t CombatFormulas::passingRolls(value_t count, value_t chance)
 {
   u32 passed = 0;
   for (u32 i = 0; i < count; ++i)
-    if (Math::chance(ch)) ++passed;
+    if (Math::chance(chance)) ++passed;
   return passed;
 }
 
-s32 CombatFormulas::computeAreaDamage(CombatUnit* target, s32 strength, School school, s32 toHit)
+value_t CombatFormulas::computePhysicalDamage(const CombatUnit* target, value_t strength, School school, value_t toHit)
 {
   /* make attack rolls for each alive figure */
-  unit_figure_value registered_hits = unit_figure_value(target->getAliveFigures(), [strength, toHit] (s32 index) { return passingRolls(strength, toHit); });
+  unit_figure_value registered_hits = unit_figure_value(target->getAliveFigures(), [strength, toHit](size_t index) { return passingRolls(strength, toHit); });
+
+  /* build the set of hits for each living figure */
+  unit_figure_value defender_hp = unit_figure_value(target->getAliveFigures(), target, [](const CombatUnit* unit, size_t index) { return unit->getUnit()->health()->hitsOfFigure(index); });
+
+  /* total amount of hits that should be handled*/
+  value_t totalPossibleHits = registered_hits.sum();
+  value_t effectiveHits = 0;
+  auto currentDefender = defender_hp.begin();
+
+  /* physical damage for multi figure units will make a separate defense roll for each unblocked damage on the lead figure */
+  /* while there's still damage to be applied and there are still defenders */
+  while (totalPossibleHits > 0 && currentDefender != defender_hp.end())
+  {
+    /* figure makes defense rolls which are removed from potential hits */
+    value_t defendedHitsByFigure = passingRolls(target->getDefenseForSchool(school), target->getProperty(Property::TO_DEFEND));
+    totalPossibleHits - defendedHitsByFigure;
+
+    /* we apply to the figure at most its hp as damage */
+    value_t hitsToFigure = std::min(*currentDefender, totalPossibleHits);
+
+    /* we update values */
+    totalPossibleHits -= hitsToFigure;
+    currentDefender -= hitsToFigure;
+    effectiveHits += hitsToFigure;
+
+    assert(totalPossibleHits == 0 || *currentDefender == 0);
+
+    /* we go to next unit */
+    ++currentDefender;
+  }
+
+  return effectiveHits ;
+}
+
+
+value_t CombatFormulas::computeAreaDamage(CombatUnit* target, value_t strength, School school, value_t toHit)
+{
+  /* make attack rolls for each alive figure */
+  unit_figure_value registered_hits = unit_figure_value(target->getAliveFigures(), [strength, toHit] (size_t index) { return passingRolls(strength, toHit); });
   
   /* make defend rolls for each alive figure */
   unit_figure_value defended_hits = unit_figure_value(target->getAliveFigures(),
-                                                      [target, school] (s32 index) { return passingRolls(target->getDefenseForSchool(school), target->getProperty(Property::TO_DEFEND)); }
+                                                      [target, school] (size_t index) { return passingRolls(target->getDefenseForSchool(school), target->getProperty(Property::TO_DEFEND)); }
                                                       );
   
   /* remove blocked damage */
   unit_figure_value effective_hits = registered_hits - defended_hits;
   effective_hits.clampNegativeValuesToZero();
   /* clamp values, damage per figure is limited by maximum hp per figure */
-  effective_hits.forEach([target](s32& v) { v = std::min(v, target->getProperty(Property::HIT_POINTS)); });
+  effective_hits.forEach([target](value_t& v) { v = std::min(v, target->getProperty(Property::HIT_POINTS)); });
 
-  s32 totalDamage = effective_hits.sum();
+  value_t totalDamage = effective_hits.sum();
 
   COMBAT_LOG("computing area damage of magnitude %d to %s", strength, target->getUnit()->name().c_str());
   COMBAT_LOG("  attacking with %d%% hit, defending with %d shields and %d%% chance", toHit, target->getDefenseForSchool(school), target->getProperty(Property::TO_DEFEND));

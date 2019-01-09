@@ -214,7 +214,7 @@ public:
   RangedInfo getRangedInfo() const { return RangedInfo(getEnumProperty<Ranged>(Property::RANGED_TYPE), getProperty(Property::RANGED), getProperty(Property::AMMO)); }
   RangedInfo getActualRangedInfo() const { return RangedInfo(getEnumProperty<Ranged>(Property::RANGED_TYPE), getProperty(Property::RANGED), getProperty(Property::AVAILABLE_AMMO)); }
   
-  prop_value getDefenseForSchool(School school)
+  prop_value getDefenseForSchool(School school) const
   {
     switch (school)
     {
@@ -223,12 +223,13 @@ public:
       case School::SORCERY: return getProperty(Property::SHIELDS_SORCERY);
       case School::LIFE: return getProperty(Property::SHIELDS_LIFE);
       case School::DEATH: return getProperty(Property::SHIELDS_DEATH);
+      case School::NO_SCHOOL: return getProperty(Property::SHIELDS);
       default: assert(false); return 0;
     }
   }
   
   prop_value getFigures() const { return getProperty(Property::FIGURES); }
-  prop_value getAliveFigures() const { return getProperty(Property::FIGURES); }
+  prop_value getAliveFigures() const { return getProperty(Property::ALIVE_FIGURES); }
 };
 
 enum class HeroType : u8

@@ -15,7 +15,7 @@ class Army;
 class SkillSet;
 class Damage;
 
-using hit_points = std::vector<s32>;
+using hit_points = std::vector<value_t>;
 using unit_figure_flag = std::vector<bool>;
 
 class HitPoints
@@ -28,10 +28,10 @@ public:
   {
   }
   
-  s16 aliveCount() const { return data.size(); }
+  count_t aliveCount() const { return data.size(); }
   bool isAlive() const { return !data.empty(); }
-  s16 hitsOfFigure(u16 index) const { return data[index]; }
-  s16 hitsOfLeadFigure() const { return data[0]; }
+  value_t hitsOfFigure(size_t index) const { return data[index]; }
+  value_t hitsOfLeadFigure() const { return data[0]; }
   
   float percentHealth() const;
   

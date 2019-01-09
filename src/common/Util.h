@@ -57,6 +57,8 @@ public:
 
   static bool oneOfTwoChance() { return rand() <= 0.50f; }
   static bool chance(u32 percent) { return randomIntUpTo(101) <= percent; }
+  static bool chance(value_t percent) { return randomIntUpTo(101) <= percent; }
+
   static bool chance(float percent) { return rand() <= percent; }
 };
 
