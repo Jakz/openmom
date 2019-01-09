@@ -60,14 +60,14 @@ void AtlasMap::placeContinents(s32 count)
 {
   s32 m;
   for (int i = 0; i < count; i++) {
-    s32 j = (s32)(Util::randomIntUpTo(W) - 0.5f);
+    s32 j = (s32)(Math::randomIntUpTo(W) - 0.5f);
     int k = 0;
     for (m = 0; k == 0; m++) {
-      s32 n = (s32)(Util::randomIntUpTo(H) - 0.5f);
+      s32 n = (s32)(Math::randomIntUpTo(H) - 0.5f);
       k = n;
-      if (equatorDistance(n) <= 0.7f + 0.25f * Util::rand() - 0.02f * ISLAND_SIZE) continue; k = 0;
+      if (equatorDistance(n) <= 0.7f + 0.25f * Math::rand() - 0.02f * ISLAND_SIZE) continue; k = 0;
     }
-    m = (s32)std::ceil(6.0f * Util::rand()); // 0-6 inclusive but seed has 9 elements TODO
+    m = (s32)std::ceil(6.0f * Math::rand()); // 0-6 inclusive but seed has 9 elements TODO
     placeContinentSeed(j, k, m);
   }
 }
@@ -156,7 +156,7 @@ void AtlasMap::placeContinentSeed(s32 x,s32 y,s32 t) // TODO: optimizable by pla
 
 void AtlasMap::placeIslands(s32 count, IslandType type)
 {
-  if (type == IslandType::RANDOM) type = static_cast<IslandType>(Util::randomIntInclusive(1, 3));
+  if (type == IslandType::RANDOM) type = static_cast<IslandType>(Math::randomIntInclusive(1, 3));
   
   switch (type) {
     case IslandType::MIXED: mixedIslands(count); break;
@@ -170,8 +170,8 @@ void AtlasMap::lonelyIslands(s32 count)
 {
   for (int i = 0; i < count; ++i)
   {
-    s32 j = Util::randi(W); // TODO this order shouldn't work since it gives ( [0:1]*W ) - 0.5f
-    s32 k = Util::randi(H);
+    s32 j = Math::randi(W); // TODO this order shouldn't work since it gives ( [0:1]*W ) - 0.5f
+    s32 k = Math::randi(H);
     set(j, k, 'G');
   }
   cellCount4(3 * ISLAND_SIZE, 0.3f, 'G', 'w', 'G');
@@ -189,12 +189,12 @@ void AtlasMap::archipelago(s32 count, bool flag)
   s32 n, i1, i2, i3, i4, i5, i6;
   for (i6 = 0; i6 < k; i6++)
   {
-    n = Util::randomIntUpTo(W);
-    i1 = Util::randomIntUpTo(H);
+    n = Math::randomIntUpTo(W);
+    i1 = Math::randomIntUpTo(H);
     
     for (int i7 = 0; i7 < i; i7++) {
-      i2 = (s32)std::floor(Util::rand(2*j) - j);
-      i3 = (s32)std::floor(Util::rand(2*j) - j);
+      i2 = (s32)std::floor(Math::rand(2*j) - j);
+      i3 = (s32)std::floor(Math::rand(2*j) - j);
       if (i2 <= 0) i4 = downX(n, -1 * i2); else
         i4 = upX(n, i2);
       if (i3 <= 0) i5 = downY(i1, -1 * i3); else
@@ -204,15 +204,15 @@ void AtlasMap::archipelago(s32 count, bool flag)
     
   }
   
-  n = Util::randomIntUpTo(W);
-  i1 = Util::randomIntUpTo(H);
+  n = Math::randomIntUpTo(W);
+  i1 = Math::randomIntUpTo(H);
   
   if (m > 0)
   {
     for (i6 = 0; i6 < m; i6++)
     {
-      i2 = (s32)std::floor(Util::rand(2*j) - j);
-      i3 = (s32)std::floor(Util::rand(2*j) - j);
+      i2 = (s32)std::floor(Math::rand(2*j) - j);
+      i3 = (s32)std::floor(Math::rand(2*j) - j);
       if (i2 <= 0) i4 = downX(n, -1 * i2); else
         i4 = upX(n, i2);
       if (i3 <= 0) i5 = downY(i1, -1 * i3); else
@@ -224,7 +224,7 @@ void AtlasMap::archipelago(s32 count, bool flag)
 
 void AtlasMap::mixedIslands(s32 count)
 {
-  float d = Util::rand();
+  float d = Math::rand();
   
   int i = (int)(d * count);
   int j = count - i;
@@ -238,7 +238,7 @@ void AtlasMap::coastalCorrection(CoastWaters type)
   cellCountRadius(ISLAND_SIZE, 0.7f, 'w', 'g', 'w', 1);
   cellCountRadius(1, 1.0f, 'G', 'w', 'c', 1);
 
-  if (type == CoastWaters::RANDOM) type = static_cast<CoastWaters>(Util::randomIntInclusive(1, 6));
+  if (type == CoastWaters::RANDOM) type = static_cast<CoastWaters>(Math::randomIntInclusive(1, 6));
   
   switch (type)
   {
@@ -263,7 +263,7 @@ void AtlasMap::cellCount4(s32 count, float chance, char t1, char t2, char t3)
     {
       for (int j = 0; j < H; ++j)
       {
-        if (get(i,j) == t2 && Util::chance(chance) && adjacentType(i, j, t1) > 0)
+        if (get(i,j) == t2 && Math::chance(chance) && adjacentType(i, j, t1) > 0)
           tmp[i+j*W] = t3;
       }
     }
@@ -284,7 +284,7 @@ void AtlasMap::cellCountRadius(s32 count, float chance, char t1, char t2, char t
     {
       for (int j = 0; j < H; ++j)
       {
-        if (get(i,j) != t2 || Util::chance(1.0f-chance) || surroundingType(i, j, t1, radius) <= 0) continue;
+        if (get(i,j) != t2 || Math::chance(1.0f-chance) || surroundingType(i, j, t1, radius) <= 0) continue;
         else
           tmp[i+j*W] = t3;
       }
@@ -302,7 +302,7 @@ void AtlasMap::bays(s32 count)
   float d3 = 0.9f;
   s32 i = 3, j = 0;
   
-  if (coastlineMode == CoastMode::RANDOM) coastlineMode = static_cast<CoastMode>(Util::randomIntInclusive(1, 3));
+  if (coastlineMode == CoastMode::RANDOM) coastlineMode = static_cast<CoastMode>(Math::randomIntInclusive(1, 3));
   
   if (coastlineMode == CoastMode::IRREGULAR) { d1 = 0.1f; d2 = 0.6f; }
   if (coastlineMode == CoastMode::CHAOTIC) { d1 = 0.6f; d2 = 0.32f;
@@ -315,7 +315,7 @@ void AtlasMap::bays(s32 count)
   s32 k;
   for (j = 0; j < W; j++) {
     for (k = 0; k < H; k++) {
-      if ((get(j,k) != 'G') || (surroundingType(j, k, 'w', 1) <= 0) || (surroundingType(j, k, 'w', 1) >= 6) || (Util::chance(1.0f-d1)))
+      if ((get(j,k) != 'G') || (surroundingType(j, k, 'w', 1) <= 0) || (surroundingType(j, k, 'w', 1) >= 6) || (Math::chance(1.0f-d1)))
         continue;
      
       tmp[j + k*W] = 'b';
@@ -329,7 +329,7 @@ void AtlasMap::bays(s32 count)
     memcpy(tmp, mapGrid, W*H);
     for (k = 0; k < W; k++) {
       for (int m = 0; m < H; m++) {
-        if ((get(k,m) != 'G') || (surroundingType(k, m, 'b', 1) <= 0) || (surroundingType(k, m, 'b', 1) >= i) || (Util::chance(1.0f-d2)))
+        if ((get(k,m) != 'G') || (surroundingType(k, m, 'b', 1) <= 0) || (surroundingType(k, m, 'b', 1) >= i) || (Math::chance(1.0f-d2)))
           continue;
       
         tmp[k + m*W] = 'b';
@@ -344,7 +344,7 @@ void AtlasMap::bays(s32 count)
         tmp[j+k*W] = 'w';
       }
       
-      if ((tmp[j+k*W] != 'G') || (surroundingType(j, k, 'w', 1) + surroundingType(j, k, 'b', 1) <= 5) || (Util::chance(1.0f-d3))) {
+      if ((tmp[j+k*W] != 'G') || (surroundingType(j, k, 'w', 1) + surroundingType(j, k, 'b', 1) <= 5) || (Math::chance(1.0f-d3))) {
         continue;
       }
       tmp[j+k*W] = 'w';
@@ -364,7 +364,7 @@ void AtlasMap::removeIsles()
     for (int j = 0; j < W; j++)
       for (int k = 0; k < H; k++)
       {
-        if (get(j,k) != 'G' || surroundingType(j, k, 'w', 1) <= 5 || Util::chance(0.4f))
+        if (get(j,k) != 'G' || surroundingType(j, k, 'w', 1) <= 5 || Math::chance(0.4f))
           continue;
         set(j,k,'w');
       }
@@ -407,8 +407,8 @@ void WorldGenerator::makeAreas(Plane plane, TileType type,  float perc, float ex
   
   for (s32 i = 0; placed < itotal; ++i)
   {
-    s32 gx = Util::randomIntUpTo(W);
-    s32 gy = Util::randomIntUpTo(H);
+    s32 gx = Math::randomIntUpTo(W);
+    s32 gy = Math::randomIntUpTo(H);
     
     if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TileType::GRASS && (limit == 0 || (gy < limit && gy > H-limit)) )
     {
@@ -417,7 +417,7 @@ void WorldGenerator::makeAreas(Plane plane, TileType type,  float perc, float ex
       for (int x = -1; x <= 1; ++x)
         for (int y = -1; y <= 1;++y)
           if (gx+x >= 0 && gx+x < W && gy+y >= 0 && gy+y < H && std::abs(x) - std::abs(y) != 0 && (limit == 0 || (gy+y > limit && gy+y > H-limit)))
-            if (Util::chance(expandO) && world->get(gx+x, gy+y, plane)->type == TileType::GRASS)
+            if (Math::chance(expandO) && world->get(gx+x, gy+y, plane)->type == TileType::GRASS)
             {
               
               world->set(type, gx+x, gy+y, plane);
@@ -425,21 +425,21 @@ void WorldGenerator::makeAreas(Plane plane, TileType type,  float perc, float ex
               if (y != 0)
               {
                 Tile* t = world->get(gx+x-1, gy+y, plane);
-                if (Util::chance(expandT) && t && t->type == TileType::GRASS)
+                if (Math::chance(expandT) && t && t->type == TileType::GRASS)
                   world->set(type, gx+x-1, gy+y, plane);
                 
                 t = world->get(gx+x+1, gy+y, plane);
-                if (Util::chance(expandT) && t && t->type == TileType::GRASS)
+                if (Math::chance(expandT) && t && t->type == TileType::GRASS)
                   world->set(type, gx+x+1, gy+y, plane);
               }
               else if (x != 0)
               {
                 Tile* t = world->get(gx+x, gy+y-1, plane);
-                if (Util::chance(expandT) && t && t->type == TileType::GRASS)
+                if (Math::chance(expandT) && t && t->type == TileType::GRASS)
                   world->set(type, gx+x, gy+y-1, plane);
                 
                 t = world->get(gx+x, gy+y+1, plane);
-                if (Util::chance(expandT) && t && t->type == TileType::GRASS)
+                if (Math::chance(expandT) && t && t->type == TileType::GRASS)
                   world->set(type, gx+x, gy+y+1, plane);
               }
             }		
@@ -456,25 +456,25 @@ void WorldGenerator::makeChains(Plane plane, TileType type,  float perc, float b
   
   for (s32 i = 0; placed < itotal; ++i)
   {
-    int gx = Util::randomIntUpTo(W);
-    int gy = Util::randomIntUpTo(H);
+    int gx = Math::randomIntUpTo(W);
+    int gy = Math::randomIntUpTo(H);
     
     if (world->get(gx, gy, plane)->type == TileType::GRASS)
     {
       world->set(type, gx, gy, plane);
       
-      int l = Util::randomIntUpTo(length);
+      int l = Math::randomIntUpTo(length);
       PositionOffset d;
       
       for (int k = 0; k < l; ++k)
       {
-        if (k == 0 ||  Util::chance(branchProb))
-          d = Util::ODIRS[Util::randomIntUpTo(4)];
+        if (k == 0 ||  Math::chance(branchProb))
+          d = Util::ODIRS[Math::randomIntUpTo(4)];
         int rx = gx+d.x;
         int ry = gy+d.y;
         while (!(rx > 0 && rx < W && ry > 0 && ry < H))
         {
-          d = Util::ODIRS[Util::randomIntUpTo(4)];
+          d = Util::ODIRS[Math::randomIntUpTo(4)];
           rx = gx+d.x;
           ry = gy+d.y;
         }
@@ -499,8 +499,8 @@ void WorldGenerator::makeSpots(Plane plane, TileType type, float perc)
   
   for (s32 i = 0; placed < itotal; ++i)
   {
-    s32 gx = Util::randomIntUpTo(W);
-    s32 gy = Util::randomIntUpTo(H);
+    s32 gx = Math::randomIntUpTo(W);
+    s32 gy = Math::randomIntUpTo(H);
     
     if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TileType::GRASS )
     {
@@ -526,7 +526,7 @@ void WorldGenerator::makeTundraEdges(Plane plane)
     
     for (int k = 0; k < 2; ++k)
     {
-      if (Util::chance(c[k]/10.0f))
+      if (Math::chance(c[k]/10.0f))
       {
         l[k] = l[k] == 1 ? 2 : 1;
         c[k] = 1;
@@ -544,7 +544,7 @@ void WorldGenerator::makeTundraEdges(Plane plane)
      world->set(TileType::TUNDRA, x, y[k][0], Plane.ARCANUS);
      world->set(TileType::TUNDRA, x, y[k][1], Plane.ARCANUS);
      }
-     l[k] = Util::chance(0.5f) ? 1 : 2;
+     l[k] = Math::chance(0.5f) ? 1 : 2;
      }*/
   }
 }
@@ -556,8 +556,8 @@ void WorldGenerator::makeNodes(Plane plane)
   s32 cur = 0;
   while (cur < total)
   {
-    s32 gx = Util::randomIntUpTo(W);
-    s32 gy = Util::randomIntUpTo(H);
+    s32 gx = Math::randomIntUpTo(W);
+    s32 gy = Math::randomIntUpTo(H);
     
     if (gx > 0 && gx < W && gy > 0 && gy < H && world->get(gx, gy, plane)->type == TileType::GRASS)
     {
@@ -609,7 +609,7 @@ void WorldGenerator::makeNodes(Plane plane)
       School schools[] = {SORCERY,NATURE,CHAOS};
       School type = School::NO_SCHOOL;
       
-      if (sea == forest && mountain == forest) type = schools[Util::randomIntUpTo(3)];
+      if (sea == forest && mountain == forest) type = schools[Math::randomIntUpTo(3)];
       else if (sea >= forest && sea >= mountain) type = SORCERY;
       else if (forest >= sea && forest >= mountain) type = NATURE;
       else if (mountain >= sea && mountain >= forest) type = CHAOS;
@@ -646,9 +646,9 @@ void WorldGenerator::makeLairs()
     //counter = 1;
     while (c < lairs[plane])
     {
-      int gx = Util::randomIntUpTo(W);
-      int gy = Util::randomIntUpTo(H);
-      Plane gp = static_cast<Plane>(Util::randomIntUpTo(2)); // TODO: why extracting random plane? check behavior
+      int gx = Math::randomIntUpTo(W);
+      int gy = Math::randomIntUpTo(H);
+      Plane gp = static_cast<Plane>(Math::randomIntUpTo(2)); // TODO: why extracting random plane? check behavior
       
       Tile* t = world->get(gx, gy, gp);
       
@@ -679,7 +679,7 @@ void WorldGenerator::makeLairs()
         }
         
         //TODO: weak dipende da plane esterno ma poi plane viene estratto random? check behavior
-        t->placePlace(new Place(places[Util::randomIntUpTo(placeTypes)], plane == MYRRAN));
+        t->placePlace(new Place(places[Math::randomIntUpTo(placeTypes)], plane == MYRRAN));
         ++c;
       }
     }

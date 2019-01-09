@@ -53,7 +53,7 @@ private:
     {
       float chance = 0.05f*(turnStreak - 5);
       
-      if (Util::chance(chance))
+      if (Math::chance(chance))
       {
         resetStreak();
         return true;

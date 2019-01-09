@@ -210,8 +210,8 @@ public:
     }
     
     return info.index() == full ?
-      info.relative(Util::randomIntUpTo(4)) :
-      info.relative(Util::randomIntUpTo(1));
+      info.relative(Math::randomIntUpTo(4)) :
+      info.relative(Math::randomIntUpTo(1));
   }
 } roughTerrainMap;
 
@@ -437,7 +437,7 @@ public:
   coords({start, end}), points({CombatView::coordsForTile(start.x, start.y), CombatView::coordsForTile(end.x, end.y)}),
   delta(points[1] - points[0]), effect(effect), count(6), figures(6), progress(0.0f), position(start), phase(Phase::MOVING)
   {
-    speed = 3.0f / Util::distance(points[0].x, points[0].y, points[1].x, points[1].y);
+    speed = 3.0f / Math::distance(points[0].x, points[0].y, points[1].x, points[1].y);
     
     if (delta.y == 0)
       facing = delta.x > 0 ? Dir::E : Dir::W;
@@ -687,8 +687,8 @@ public:
     for (size_t i = 0; i < MAX_SPRITES; ++i)
       if (i < count)
       {
-        sprites[i] = { info.relative(Util::randomIntUpTo(VARIANTS_COUNT)),
-          Point(Util::randomIntInclusive(-MAX_OFFSET_X, MAX_OFFSET_X), Util::randomIntInclusive(-MAX_OFFSET_Y, MAX_OFFSET_Y)) };
+        sprites[i] = { info.relative(Math::randomIntUpTo(VARIANTS_COUNT)),
+          Point(Math::randomIntInclusive(-MAX_OFFSET_X, MAX_OFFSET_X), Math::randomIntInclusive(-MAX_OFFSET_Y, MAX_OFFSET_Y)) };
       }
       else
         sprites[i] = { LSI_PLACEHOLD };
@@ -961,13 +961,13 @@ void CombatView::prepareGraphics()
           auto it = roadGraphics.find(mask);
           assert(it != roadGraphics.end());
           
-          SpriteInfo info = (tile->road == RoadType::NORMAL ? it->second.normal : it->second.enchanted)[Util::oneOfTwoChance()];
+          SpriteInfo info = (tile->road == RoadType::NORMAL ? it->second.normal : it->second.enchanted)[Math::oneOfTwoChance()];
           entries.add(new StaticGfxEntry(this, priority_roads, info, tile->x(), tile->y(), 0, TILE_HEIGHT/2, true));
         }
         
         if (tile->prop != TileProp::NONE)
         {
-          size_t count = tile->prop == TileProp::TREES ? Util::randomIntInclusive(2, 3) : 1;
+          size_t count = tile->prop == TileProp::TREES ? Math::randomIntInclusive(2, 3) : 1;
           SpriteInfo info = tile->prop == TileProp::ROCK ? rock : tree;
           entries.add(new PropGfxEntry(this, tile->x(), tile->y(), tile->prop, info.lbx(environmentLBX) ,count));
         }
@@ -976,7 +976,7 @@ void CombatView::prepareGraphics()
         {
           const auto& spec = buildingGraphics.find(tile->building)->second;
           SpriteInfo gfx = tile->building == TileBuilding::HOUSE ? GfxData::raceHouseGfxSpec(houseType).combatHouse : spec.info;
-          entries.add(new StaticGfxEntry(this, gfx.relative(Util::randomIntUpTo(spec.count)), tile->x(), tile->y(), spec.offset.x, spec.offset.y));
+          entries.add(new StaticGfxEntry(this, gfx.relative(Math::randomIntUpTo(spec.count)), tile->x(), tile->y(), spec.offset.x, spec.offset.y));
         }
         
         /* manage base tile graphics */
@@ -1009,10 +1009,10 @@ void CombatView::prepareGraphics()
         {
           /* standard environment has 4 possible tiles for normal ground */
           if (environment.type != CombatEnvironment::Type::OCEAN)
-            entries.add(new TileGfxEntry(this, SpriteInfo(environmentLBX, Util::randomIntUpTo(4)), x, y));
+            entries.add(new TileGfxEntry(this, SpriteInfo(environmentLBX, Math::randomIntUpTo(4)), x, y));
           else
           /* ocean environment graphics is special as it has just these 4 tiles */
-            entries.add(new TileGfxEntry(this, SpriteInfo(environment.plane == Plane::ARCANUS ? water_tile_arcanus : water_tile_myrran).relative(Util::randomIntUpTo(4)), x, y, Util::randomIntUpTo(4)));
+            entries.add(new TileGfxEntry(this, SpriteInfo(environment.plane == Plane::ARCANUS ? water_tile_arcanus : water_tile_myrran).relative(Math::randomIntUpTo(4)), x, y, Math::randomIntUpTo(4)));
 
         }
         

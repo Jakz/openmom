@@ -79,7 +79,7 @@ ItemCraftView::ItemCraftView(ViewManager* gvm) : View(gvm), school(NATURE), curr
   itemType->setAction([this](RadioButton<TypeID>* b){
     currentType = b->getData();
     currentItemGfx = 0;
-    school = static_cast<School>(Util::randomIntInclusive(1, 5)); // TODO: why?
+    school = static_cast<School>(Math::randomIntInclusive(1, 5)); // TODO: why?
     updateClickableAreas();
     updateItemName();
   });

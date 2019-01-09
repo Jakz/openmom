@@ -15,7 +15,7 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
   switch (t->type)
   {
     case TileType::GRASS:
-      t->gfx.variant = Util::randi(TILE_COUNT_GRASSLANDS);
+      t->gfx.variant = Math::randi(TILE_COUNT_GRASSLANDS);
       break;
       
     case TileType::OCEAN:
@@ -31,7 +31,7 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
       t->gfx.joinMask = mask;
       
       /* if tile is ocean then 20% chance it's animated texture */
-      if (t->type == TileType::OCEAN && Util::chance(0.20f))
+      if (t->type == TileType::OCEAN && Math::chance(0.20f))
         t->gfx.variant = 1;
       else
         t->gfx.variant = 0;
@@ -50,7 +50,7 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
       
       /* if mask is none then it's a full tile, choose a variant */
       if (t->gfx.joinMask == DirJoin::NONE)
-        t->gfx.variant = Util::randi(count);
+        t->gfx.variant = Math::randi(count);
       
       break;
     }
@@ -68,11 +68,11 @@ void World::calcSubTile(u16 x, u16 y, Plane p)
     }
       
     case TileType::SWAMP:
-      t->gfx.variant = Util::randi(TILE_COUNT_SWAMP);
+      t->gfx.variant = Math::randi(TILE_COUNT_SWAMP);
       break;
       
     case TileType::FOREST:
-      t->gfx.variant = Util::randi(TILE_COUNT_FOREST);
+      t->gfx.variant = Math::randi(TILE_COUNT_FOREST);
       break;
       
     case TileType::VOLCANO:

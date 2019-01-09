@@ -37,7 +37,7 @@ float MapMechanics::chanceResourceForTile(TileType type, Plane which) const
 
 Resource MapMechanics::generateResourceForTile(TileType type, Plane which) const
 {
-  if (Util::chance(chanceResourceForTile(type,which)))
+  if (Math::chance(chanceResourceForTile(type,which)))
   {
     switch (type)
     {
@@ -45,7 +45,7 @@ Resource MapMechanics::generateResourceForTile(TileType type, Plane which) const
       case TileType::SWAMP: return Resource::NIGHT_SHADE;
       case TileType::DESERT:
       {
-        float x = Util::rand(100.0f);
+        float x = Math::rand(100.0f);
         for (int i = 0; i < sizeof(desertResource)/sizeof(desertResource[0]); ++i)
           if (x > desertChances[which][i])
             x -= desertChances[which][i];
@@ -54,7 +54,7 @@ Resource MapMechanics::generateResourceForTile(TileType type, Plane which) const
       }
       case TileType::MOUNTAIN:
       {
-        float x = Util::rand(100.0f);
+        float x = Math::rand(100.0f);
         for (int i = 0; i < sizeof(hillsResources)/sizeof(hillsResources[0]); ++i)
         {
           if (x > mountainChances[which][i])
@@ -65,7 +65,7 @@ Resource MapMechanics::generateResourceForTile(TileType type, Plane which) const
       }
       case TileType::HILL:
       {
-        float x = Util::rand(100.0f);
+        float x = Math::rand(100.0f);
         for (int i = 0; i < sizeof(hillsResources)/sizeof(hillsResources[0]); ++i)
           if (x > hillChances[which][i])
             x -= hillChances[which][i];
@@ -82,7 +82,7 @@ Resource MapMechanics::generateResourceForTile(TileType type, Plane which) const
 
 ManaNode* MapMechanics::generateManaNode(World* world, const Position position, const School school) const
 {
-  float mana = Util::randomIntUpTo(position.plane == ARCANUS ? 10 : 20);
+  float mana = Math::randomIntUpTo(position.plane == ARCANUS ? 10 : 20);
   
   if (g->settings.group(SETTING_MAGIC_POWER).value() == MAGIC_POWER_POWERFUL)
     mana += mana*0.5;

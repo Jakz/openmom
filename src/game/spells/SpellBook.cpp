@@ -8,16 +8,14 @@
 
 using namespace std;
 
-s16 SpellBook::turnsToCompleteResearch(const Spell* spell) const
+value_t SpellBook::turnsToCompleteResearch(const Spell* spell) const
 {
-  s16 turns = spell->mana.researchCost / player.researchPoints();
-  return turns + (spell->mana.researchCost % player.researchPoints() != 0 ? 1 : 0);
+  return Math::roundWithMod(spell->mana.researchCost, player.researchPoints());
 }
 
-s16 SpellBook::turnsToCompleteResearch() const
+value_t SpellBook::turnsToCompleteResearch() const
 {
-  s16 turns = manaToResearch / player.researchPoints();
-  return turns + (manaToResearch % player.researchPoints() != 0 ? 1 : 0);
+  return Math::roundWithMod(manaToResearch, player.researchPoints());
 }
 
 const Spell* SpellBook::advanceResearch()

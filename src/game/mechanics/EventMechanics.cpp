@@ -91,7 +91,7 @@ const Event* EventMechanics::pickRandomEvent() const
   
   while (!allowed)
   {
-    u16 r = Util::randomIntUpTo(size);
+    u16 r = Math::randomIntUpTo(size);
     e = events[r];
     
     // two events cannot occur before turn 150

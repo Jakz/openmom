@@ -50,12 +50,12 @@ CityView::CityView(ViewManager* gvm) : View(gvm)
   
   /* TODO: add behavior */
   buttons[PREV_CITY_ENCHANT] = Button::buildBistate("Prev City Enchant", 201, 50, LSI(BACKGRND,15))->setAction([this](){
-    const size_t pageCount = Util::roundWithMod(city->getSpells().size(), CITY_ENCHANT_PER_PAGE);
-    cityEnchantPage = Util::negativeWrap(cityEnchantPage, pageCount);
+    const size_t pageCount = Math::roundWithMod(city->getSpells().size(), CITY_ENCHANT_PER_PAGE);
+    cityEnchantPage = Math::negativeWrap(cityEnchantPage, pageCount);
   });
   
   buttons[NEXT_CITY_ENCHANT] = Button::buildBistate("Prev City Enchant", 201, 85, LSI(BACKGRND,16))->setAction([this](){
-    const size_t pageCount = Util::roundWithMod(city->getSpells().size(), CITY_ENCHANT_PER_PAGE);
+    const size_t pageCount = Math::roundWithMod(city->getSpells().size(), CITY_ENCHANT_PER_PAGE);
     cityEnchantPage = (cityEnchantPage + 1) % pageCount;
   });
 

@@ -89,7 +89,7 @@ void AstrologerView::setup()
   
   for (int i = 0; i < 3; ++i)
     for (int j = 0; j < 5; ++j)
-      drawRow(i, j, names[j], Util::rand(0.4f)+0.6f, colors[j]);
+      drawRow(i, j, names[j], Math::rand(0.4f)+0.6f, colors[j]);
 }
 
 bool AstrologerView::mouseReleased(u16 x, u16 y, MouseButton b)

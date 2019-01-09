@@ -194,7 +194,7 @@ bool SpellMechanics::willDispel(const SpellCast &cast, const SpellCast &dispelCa
   if (cast.player->hasMastery(cast.spell->school))
     chance /= 2.0f;
   
-  return Util::chance(chance);
+  return Math::chance(chance);
 }
 
 

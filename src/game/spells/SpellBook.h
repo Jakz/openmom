@@ -14,7 +14,7 @@ struct SpellComparatorByResearch : public std::binary_function<const Spell*, con
 {
   bool operator() (const Spell *s1, const Spell* s2) const
   {
-    s32 delta = s1->mana.researchCost - s2->mana.researchCost;
+    value_t delta = s1->mana.researchCost - s2->mana.researchCost;
     
     if (delta != 0) return delta < 0;
     else return s1->school < s2->school;
@@ -25,7 +25,7 @@ struct SpellComparatorByManaCost : public std::binary_function<const Spell*, con
 {
   bool operator() (const Spell *s1, const Spell* s2) const
   {
-    s32 delta = s1->mana.manaCost - s2->mana.manaCost;
+    value_t delta = s1->mana.manaCost - s2->mana.manaCost;
     
     if (delta != 0) return delta < 0;
     else return s1->school < s2->school;
@@ -36,14 +36,14 @@ struct SpellComparatorByManaCostCombat : public std::binary_function<const Spell
 {
   bool operator() (const Spell *s1, const Spell* s2) const
   {
-    s32 delta = s1->mana.combatManaCost - s2->mana.combatManaCost;
+    value_t delta = s1->mana.combatManaCost - s2->mana.combatManaCost;
     
     if (delta != 0) return delta < 0;
     else return s1->school < s2->school;
   }
 };
 
-typedef std::map<const Spell*, bool, SpellComparatorByResearch> spell_map;
+using spell_map =  std::map<const Spell*, bool, SpellComparatorByResearch>;
 
 class SpellBook
 {
@@ -53,8 +53,8 @@ private:
   
   const Spell* currentCast;
   const Spell* currentResearch;
-  s32 manaToCast;
-  s32 manaToResearch;
+  value_t manaToCast;
+  value_t manaToResearch;
   
   enum_simple_map<School, s8, 6> books;
   //std::array<s8, 6> books;
@@ -72,25 +72,30 @@ public:
     
   }
   
-  s16 totalBooks() const {return std::accumulate(books.begin(), books.end(), 0); }
+  value_t totalBooks() const {return std::accumulate(books.begin(), books.end(), 0); }
   
   School predominantSchool() const
   {
     School predominant = School::SCHOOL_FIRST;
-    s8 count = 0;
-    for (School i = SCHOOL_FIRST; i <= SCHOOL_LAST; i = (School)(i + 1))
+    value_t count = 0;
+
+    for (School school : Data::schoolsWithoutArcane())
     {
-      if (books[i] > count) { predominant = i; count = books[i]; }
+      if (books[school] > count)
+      {
+        predominant = school;
+        count = books[school];
+      }
     }
-    
+
     //TODO: if two school have same amount of books which one is chosen?
    
     return predominant;
   }
   
-  s16 booksForSchool(School school) const { return books[school]; }
+  value_t booksForSchool(School school) const { return books[school]; }
   
-  s16 baseCastingSkill() { return 100; /* TODO: forced */ }
+  value_t baseCastingSkill() { return 100; /* TODO: forced */ }
   
   void startCast(const Spell* spell);
   
@@ -102,7 +107,7 @@ public:
   bool spendManaForCast(s32 mana)
   {
     bool finished = mana >= manaToCast;
-    s32 valueSpent = std::min(mana, manaToCast);
+    value_t valueSpent = std::min(mana, manaToCast);
     manaToCast -= valueSpent;
     LOGG("spell-cast", "spending %d mana, %d mana still needed", valueSpent, manaToCast);
     return finished;
@@ -128,10 +133,10 @@ public:
   const Spell* getCurrentCast() const { return currentCast; }
   const Spell* getCurrentResearch() const { return currentResearch; }
   
-  s32 getManaToCast() const { return manaToCast; }
+  value_t getManaToCast() const { return manaToCast; }
   
-  s16 turnsToCompleteResearch(const Spell* spell) const;
-  s16 turnsToCompleteResearch() const ;
+  value_t turnsToCompleteResearch(const Spell* spell) const;
+  value_t turnsToCompleteResearch() const ;
   
   const Spell* advanceResearch();
   

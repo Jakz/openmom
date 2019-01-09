@@ -99,6 +99,7 @@ public:
   
   struct dummy_pair
   {
+    K first;
     const V& second;
     const dummy_pair* operator->() const { return this; }
   };
@@ -144,7 +145,7 @@ public:
 
   V& operator[](K key) { return data[static_cast<size_t>(key)]; }
   const V& operator[](K key) const { return data[static_cast<size_t>(key)]; }
-  dummy_pair find(K key) const { return { operator[](key) }; }
+  dummy_pair find(K key) const { return { key, operator[](key) }; }
 };
 
 using color_d = u32;

@@ -428,8 +428,8 @@ s16 CityMechanics::computeInitialPopulationGrowth(const City* city)
   
   // TODO: if city has Stream of Life +10% - if city has Gaia's Blessing +20%
   
-  if (Util::chance(increaseChance))
-    populationDelta += Util::randomIntInclusive(1, 3)*100;
+  if (Math::chance(increaseChance))
+    populationDelta += Math::randomIntInclusive(1, 3)*100;
   
   
   // let's compute the chance to decrease output population
@@ -441,8 +441,8 @@ s16 CityMechanics::computeInitialPopulationGrowth(const City* city)
   // +10% if famine spell
   // +10% if chaos rift spell
   
-  if (Util::chance(decreaseChance))
-    populationDelta -= Util::randomIntInclusive(1, 2)*100;
+  if (Math::chance(decreaseChance))
+    populationDelta -= Math::randomIntInclusive(1, 2)*100;
   
   return populationDelta;
 }
@@ -834,7 +834,7 @@ u16 CityMechanics::turnsRequiredForProduction(const City* city)
   else
   {
     int missing = city->production->productionCost() - city->productionPool;
-    return std::min(1, Util::roundWithMod(missing, city->work));
+    return std::min(1, Math::roundWithMod(missing, city->work));
   }
 }
 

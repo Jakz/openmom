@@ -75,7 +75,7 @@ public:
   Tile(World* const world, Position position) : world(world), position(position),
     resource(Resource::NONE), city(nullptr), army(nullptr), _place(nullptr), type(TileType::OCEAN),
   
-  gfx({DirJoin::NONE, DirJoin::NONE, DirJoin::NONE, 0, static_cast<s8>(Util::randi(10))}),
+  gfx({DirJoin::NONE, DirJoin::NONE, DirJoin::NONE, 0, static_cast<s8>(Math::randi(10))}),
   hasRoad(false), hasEnchantedRoad(false), resourceUsed({false})
   {
   }

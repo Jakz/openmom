@@ -282,7 +282,7 @@ void CityLayout::deploy()
   }
   
   // TODO: lower when building amount increases
-  int houses = 20 + Util::randomIntUpTo(10);
+  int houses = 20 + Math::randomIntUpTo(10);
   for (int i = 0; i < houses; ++i)
   {
     zone_iterator zone = Util::randomElementIterator(zones);
@@ -303,7 +303,7 @@ CityLayout::LayoutPosition CityLayout::createPosition(const LayoutZone& zone, s1
   if (building)
     return LayoutPosition(fx, fy, building);
   else
-    return LayoutPosition(fx, fy, Util::randomIntUpTo(5));
+    return LayoutPosition(fx, fy, Math::randomIntUpTo(5));
 }
 
 const vector<CityLayout::LayoutZone> CityLayout::findSuitable(const Building* building)

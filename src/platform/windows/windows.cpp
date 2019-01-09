@@ -56,7 +56,7 @@ void init()
   Game *game = new Game();
   game->dummyInit();
 
-  //Util::seed(time(nullptr));
+  //Math::seed(time(nullptr));
   //WorldGenerator gen = WorldGenerator(game->world);
   //gen.generate();
 }

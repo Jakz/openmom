@@ -191,7 +191,7 @@ u32 CombatFormulas::passingRollsf(u32 count, float ch)
 {
   u32 passed = 0;
   for (u32 i = 0; i < count; ++i)
-    if (Util::chance(ch)) ++passed;
+    if (Math::chance(ch)) ++passed;
   return passed;
 }
 
@@ -199,7 +199,7 @@ u32 CombatFormulas::passingRolls(u32 count, u32 ch)
 {
   u32 passed = 0;
   for (u32 i = 0; i < count; ++i)
-    if (Util::chance(ch)) ++passed;
+    if (Math::chance(ch)) ++passed;
   return passed;
 }
 
