@@ -35,6 +35,10 @@ city view
 
 ![city view](docs/screenshots/screenshot-city.png)
 
+combat view
+
+![combat view](docs/screenshots/screenshot-combat.png)
+
 unit view
 
 ![unit view](docs/screenshots/screenshot-unit.png)
@@ -80,6 +84,7 @@ army view
 ![army view](docs/screenshots/screenshot-army.png)
 
 message view
+
 ![message view](docs/screenshots/screenshot-message.png)
 
 cities view
@@ -110,16 +115,16 @@ historian view
 
 ![historian view](docs/screenshots/screenshot-historian.png)
 
-combat view
-![combat view](docs/screenshots/screenshot-combat.png)
-
 production view
+
 ![production view](docs/screenshots/screenshot-production.png)
 
 outpost view
+
 ![outpost view](docs/screenshots/screenshot-outpost.png)
 
 new-game view
+
 ![new-game view](docs/screenshots/screenshot-new-game.png)
 
 load view
