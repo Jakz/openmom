@@ -99,7 +99,7 @@ void SDL::capFPS()
     animTicksCounter = 0;
   }
     
-  sprintf(titleBuffer, "OpenMoM v0.01 (%2.2f)", 1000.0f/fmax(elapsed, TICKS_PER_FRAME));
+  sprintf(titleBuffer, "OpenMoM v0.02 (%2.2f)", 1000.0f/fmax(elapsed, TICKS_PER_FRAME));
   SDL_SetWindowTitle(window, titleBuffer);
   
   Gfx::ticks = SDL_GetTicks();

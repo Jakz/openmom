@@ -42,7 +42,7 @@ const Texture Texture::textures[] =
   Texture(TextureID::COMBAT_MISC_TILES,"combat/misc-tiles.png",3,8,30,16,true,1),
 };
 
-u32 Texture::at(u16 x, u16 y, u16 r, u16 c) const
+u32 Texture::at(index_t x, index_t y, index_t r, index_t c) const
 {
   static_assert(sizeof(textures)/sizeof(textures[0]) == static_cast<size_t>(TextureID::TEXTURES_COUNT), "");
   
@@ -63,7 +63,7 @@ u32 Texture::at(u16 x, u16 y, u16 r, u16 c) const
   return static_cast<u32*>(img->pixels)[sx+x + (sy+y)*img->w];
 }
 
-u16 Texture::sw(u16 r, u16 c) const
+index_t Texture::sw(index_t r, index_t c) const
 {
   if (w != -1)
     return w;
@@ -76,7 +76,7 @@ u16 Texture::sw(u16 r, u16 c) const
   }
 }
 
-u16 Texture::sh(u16 r, u16 c) const
+index_t Texture::sh(index_t r, index_t c) const
 {
   if (h != -1)
     return h;

@@ -148,7 +148,7 @@ void MessageView::draw()
           if (!p->icon.isPresent())
             ty += titleFace->ver + titleFace->sh();
           else
-            ty += std::max((int)p->icon->sh() + 1, titleFace->ver + titleFace->sh());
+            ty += std::max((index_t)p->icon->sh() + 1, titleFace->ver + titleFace->sh());
           
           int h = Fonts::drawStringBounded(p->text, textFace, textX, ty, bound, ALIGN_LEFT) - ty;
           ty += h;

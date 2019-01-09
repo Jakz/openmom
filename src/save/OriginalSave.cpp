@@ -210,8 +210,6 @@ World* osave::OriginalSaveGame::getWorld()
 
 #pragma Original Save Game Checks
 
-//TODO: problems with MSVC
-#if !defined(_WIN32)
 
 using namespace osave;
 
@@ -228,6 +226,9 @@ static_assert(sizeof(osave::ItemData) == 0x32, "");
 static_assert(sizeof(osave::CityData) == 0x72, "");
 static_assert(sizeof(osave::UnitData) == 0x20, "");
 static_assert(sizeof(SaveGameData) == 0x1e1a4, "");
+
+//TODO: problems with MSVC
+#if true || !defined(_WIN32)
 
 static_assert(sizeof(SaveGameData::heroes) == sizeof(HeroStats)*HERO_COUNT*WIZARD_COUNT, "");
 static_assert(sizeof(SaveGameData::unusedMap) == 0xc0*2, "");

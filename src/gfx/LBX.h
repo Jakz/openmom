@@ -161,13 +161,13 @@ namespace lbx
     u8 unknown2;
     u8 unknown3;
     
-    u32 at(u16 x, u16 y, u16 c, u16 r) const override { return data[c+r][x+y*width]; }
+    u32 at(index_t x, index_t y, index_t c, index_t r) const override { return data[c+r][x+y*width]; }
 
-    u16 tw() const override { return count*width; }
-    u16 th() const override { return height; }
+    index_t tw() const override { return count*width; }
+    index_t th() const override { return height; }
 
-    u16 sw(u16,u16) const override { return width; }
-    u16 sh(u16,u16) const override { return height; }
+    index_t sw(index_t, index_t) const override { return width; }
+    index_t sh(index_t, index_t) const override { return height; }
     
     const Palette* getPalette() const override { return palette; }
     

@@ -118,11 +118,11 @@ combat_pathfind_info CombatMechanics::reachableTiles(const Combat* combat, const
   struct node
   {
     const CombatTile* tile;
-    s16 cost;
+    value_t cost;
     Dir from;
     
     node() : node(nullptr, std::numeric_limits<s16>::max(), Dir::INVALID) { }
-    node(const CombatTile* tile, s16 cost, Dir from) : tile(tile), cost(cost), from(from) { }
+    node(const CombatTile* tile, value_t cost, Dir from) : tile(tile), cost(cost), from(from) { }
   };
 
   std::unordered_set<const CombatTile*> closedSet;
@@ -157,7 +157,7 @@ combat_pathfind_info CombatMechanics::reachableTiles(const Combat* combat, const
       if (!alreadyExplored && neighbour && !blockedByEnvironment && !blockedByOtherUnit)
       {
         auto& entry = closedMap[neighbour];
-        s16 cost = node.cost + movementCostForTile(unit, neighbour, dir);
+        value_t cost = node.cost + movementCostForTile(unit, neighbour, dir);
         
         /* the new path found to reach neighbour is cheaper that previous one 
            then this route path should be used instead

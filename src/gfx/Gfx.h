@@ -38,17 +38,17 @@ public:
     SDL_FreeSurface(data);
   }
   
-  u16 tw() const override { return data->w; }
-  u16 th() const override { return data->h; }
+  index_t tw() const override { return data->w; }
+  index_t th() const override { return data->h; }
   
-  u16 sw(u16 r = 0, u16 c = 0) const override { return data->w; }
-  u16 sh(u16 r = 0, u16 c = 0) const override { return data->h; }
+  index_t sw(index_t r = 0, index_t c = 0) const override { return data->w; }
+  index_t sh(index_t r = 0, index_t c = 0) const override { return data->h; }
   
   void lock() const override { SDL_LockSurface(data); }
   void unlock() const override { SDL_UnlockSurface(data); }
   
-  u32 at(u16 x, u16 y, u16 c = 0, u16 r = 0) const override { return pixels[x + y*data->w]; }
-  void set(u16 x, u16 y, Color c) override { pixels[x + y*data->w] = c; }
+  u32 at(index_t x, index_t y, index_t c = 0, index_t r = 0) const override { return pixels[x + y*data->w]; }
+  void set(index_t x, index_t y, Color c) override { pixels[x + y*data->w] = c; }
   
   friend class Gfx;
 };

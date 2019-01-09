@@ -14,6 +14,7 @@ using s32 = int32_t;
 using s64 = int64_t;
 
 using byte = u8;
+using index_t = u32;
 
 #pragma mark Common integral types
 using experience_t = s32;

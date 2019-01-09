@@ -605,14 +605,14 @@ using ColorFilter = ColorMap;
 class SpriteSheet
 {
 public:
-  virtual u32 at(u16 x, u16 y, u16 c = 0, u16 r = 0) const { return 0x00000000; }
-  virtual void set(u16 x, u16 y, Color c) { }
+  virtual u32 at(index_t x, index_t y, index_t c = 0, index_t r = 0) const { return 0x00000000; }
+  virtual void set(index_t x, index_t y, Color c) { }
   virtual ~SpriteSheet() { }
-  virtual u16 tw() const = 0;
-  virtual u16 th() const = 0;
+  virtual index_t tw() const = 0;
+  virtual index_t th() const = 0;
   
-  virtual u16 sw(u16 r, u16 c) const = 0;
-  virtual u16 sh(u16 r, u16 c) const = 0;
+  virtual index_t sw(index_t r, index_t c) const = 0;
+  virtual index_t sh(index_t r, index_t c) const = 0;
   
   virtual void lock() const { }
   virtual void unlock() const { }

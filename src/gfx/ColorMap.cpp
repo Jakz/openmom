@@ -112,7 +112,7 @@ const enum_simple_map<School, std::array<Color, 5>, SCHOOL_COUNT> MiscMaps::SCHO
 });
 
 
-Color BlinkingPalette::get(u8 index) const
+Color BlinkingPalette::get(index_t index) const
 {
   if (indices.find(index) == indices.end()) return 0x00000000;
   else

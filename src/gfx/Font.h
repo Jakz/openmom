@@ -60,7 +60,7 @@ struct FontPalette : public Palette
   FontPalette(Type type, Color main, Color single, Color highShadow, Color lowShadow, Color mixShadow) :
     type(type), main(main), single(single), highShadow(highShadow), lowShadow(lowShadow), mixShadow(mixShadow) { }
   
-  Color get(u8 index) const override
+  Color get(index_t index) const override
   {
     switch (index) {
       case 0: return Color(0,0,0);
@@ -95,14 +95,14 @@ class SpriteRawData
 {
   
 public:
-  virtual u8* dataAt(u16 x, u16 y) const = 0;
-  virtual u16 rows() const = 0;
-  virtual u16 columns() const = 0;
+  virtual byte* dataAt(index_t x, index_t y) const = 0;
+  virtual index_t rows() const = 0;
+  virtual index_t columns() const = 0;
   
-  virtual u16 tw() const = 0;
+  virtual index_t tw() const = 0;
   
-  virtual u16 w(u16 x = 0) const = 0;
-  virtual u16 h(u16 x = 0) const = 0;
+  virtual index_t w(index_t x = 0) const = 0;
+  virtual index_t h(index_t x = 0) const = 0;
 };
 
 /* glyph data is stored in a monodimensional array in which all glyphs are stored contiguously, eg
@@ -132,12 +132,12 @@ public:
   void setGlyphWidth(u8 index, s8 width) {  glyphWidth[index] = width; }
   s8 getGlyphWidth(u8 index) const { return glyphWidth[index - ' ']; }
   
-  u8* dataAt(u16 x = 0, u16 y = 0) const override { return &data[y*width]; }
-  u16 rows() const override { return 1; }
-  u16 columns() const override { return GLYPH_COUNT; }
-  u16 w(u16 x = 0) const override { return width; }
-  u16 h(u16 x = 0) const override { return height; }
-  u16 tw() const override { return width*GLYPH_COUNT; }
+  byte* dataAt(index_t x = 0, index_t y = 0) const override { return &data[y*width]; }
+  index_t rows() const override { return 1; }
+  index_t columns() const override { return GLYPH_COUNT; }
+  index_t w(index_t x = 0) const override { return width; }
+  index_t h(index_t x = 0) const override { return height; }
+  index_t tw() const override { return width*GLYPH_COUNT; }
   
   const FontType type;
   
@@ -165,21 +165,21 @@ public:
   // TODO: FontSpriteSheet shouldn't delete palette or we can't use addresses to temporary, check leaks and such
   ~FontSpriteSheet() { /*delete palette;*/ }
   
-  u32 at(u16 x, u16 y, u16 r = 0, u16 c = 0) const override
+  u32 at(index_t x, index_t y, index_t r = 0, index_t c = 0) const override
   {
-    const u8* data = rawData->dataAt(r,c);
-    u8 value = data[x + y*rawData->tw()];
+    const byte* data = rawData->dataAt(r,c);
+    byte value = data[x + y*rawData->tw()];
     
     //return {255,0,0};
     
     return value;
   }
   
-  u16 tw() const override { return rawData->tw(); }
-  u16 th() const override { return rawData->h(); }
+  index_t tw() const override { return rawData->tw(); }
+  index_t th() const override { return rawData->h(); }
   
-  u16 sw(u16 r, u16 c = 0) const override { return rawData->w(); }
-  u16 sh(u16 r = 0, u16 c = 0) const override { return rawData->h(); }
+  index_t sw(index_t r, index_t c = 0) const override { return rawData->w(); }
+  index_t sh(index_t r = 0, index_t c = 0) const override { return rawData->h(); }
   
   const s16 hor, ver;
   

@@ -120,10 +120,10 @@ void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
 {
   lock(canvas);
   
-  u8 a = (color & 0xFF000000) >> 24;
-  u8 r = (color & 0x00FF0000) >> 16;
-  u8 g = (color & 0x0000FF00) >> 8;
-  u8 b = (color & 0x000000FF);
+  u32 a = (color & 0xFF000000) >> 24;
+  u32 r = (color & 0x00FF0000) >> 16;
+  u32 g = (color & 0x0000FF00) >> 8;
+  u32 b = (color & 0x000000FF);
   
   for (s32 y = 0; y < rect.h; ++y)
   {
@@ -133,20 +133,20 @@ void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
       {
         u32 ps = canvas->at(rect.x+x, rect.y+y);
         
-        u8 a2 = (ps & 0xFF000000);
-        u8 r2 = (ps & 0x00FF0000) >> 16;
-        u8 g2 = (ps & 0x0000FF00) >> 8;
-        u8 b2 = (ps & 0x000000FF);
+        u32 a2 = (ps & 0xFF000000);
+        u32 r2 = (ps & 0x00FF0000) >> 16;
+        u32 g2 = (ps & 0x0000FF00) >> 8;
+        u32 b2 = (ps & 0x000000FF);
         
-        u16 rd = (r * a) + (r2 * (255-a));
-        u16 gd = (g * a) + (g2 * (255-a));
-        u16 bd = (b * a) + (b2 * (255-a));
+        u32 rd = (r * a) + (r2 * (255-a));
+        u32 gd = (g * a) + (g2 * (255-a));
+        u32 bd = (b * a) + (b2 * (255-a));
         
-        u8 rb = (rd+1 + (rd >> 8)) >> 8;
-        u8 gb = (gd+1 + (gd >> 8)) >> 8;
-        u8 bb = (bd+1 + (bd >> 8)) >> 8;
+        u32 rb = (rd+1 + (rd >> 8)) >> 8;
+        u32 gb = (gd+1 + (gd >> 8)) >> 8;
+        u32 bb = (bd+1 + (bd >> 8)) >> 8;
         
-        canvas->set(rect.x+x, rect.y+y, a2 | (rb << 16) | (gb << 8) | (bb));
+        canvas->set(rect.x+x, rect.y+y, a2 | (rb & 0xFF << 16) | (gb & 0xFF << 8) | (bb & 0xFF));
       }
     }
   }
@@ -220,7 +220,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
             int g1 = (ps & 0x0000FF00) >> 8;
             int b1 = (ps & 0x000000FF);
             
-            gdst->set(tx+x, ty+y,0xFF000000 | (((r2*da + r1*sa) >> 8) << 16) | (((g2*da + g1*sa) >> 8) << 8) | ((b2*da + b1*sa) >> 8));
+            gdst->set(tx+x, ty+y, 0xFF000000 | (((r2*da + r1*sa) >> 8) << 16) | (((g2*da + g1*sa) >> 8) << 8) | ((b2*da + b1*sa) >> 8));
           }
         }
       }

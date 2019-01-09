@@ -136,8 +136,8 @@ public:
 class Palette
 {
 public:
-  virtual Color get(u8 index) const = 0;
-  Color operator[](u8 index) const { return get(index); }
+  virtual Color get(index_t index) const = 0;
+  Color operator[](index_t index) const { return get(index); }
   virtual ~Palette() { }
 };
 
@@ -165,8 +165,8 @@ public:
   
   const Color* raw() const { return colors; }
   
-  void set(u8 index, Color color) { colors[index] = color; }
-  Color get(u8 index) const override { return colors[index]; }
+  void set(index_t index, Color color) { colors[index] = color; }
+  Color get(index_t index) const override { return colors[index]; }
     
   ~IndexedPalette() { delete [] colors; }
 };
@@ -179,7 +179,7 @@ public:
   SharedPalette(const IndexedPalette* palette) : colors(palette->raw()) { }
   SharedPalette(const Color* colors) : colors(colors) { }
   
-  Color get(u8 index) const override { return colors[index]; }
+  Color get(index_t index) const override { return colors[index]; }
 };
 
 class BlinkingPalette : public Palette
@@ -197,7 +197,7 @@ public:
 
   }
 
-  Color get(u8 index) const override;
+  Color get(index_t index) const override;
 };
 
 class DerivedPalette : public Palette
@@ -223,10 +223,10 @@ public:
       this->colors[i] = *std::next(colors.begin(), i);
   }
   
-  void set(u8 index, Color color) { assert(index >= start && index < end); colors[index - start] = color; }
+  void set(index_t index, Color color) { assert(index >= start && index < end); colors[index - start] = color; }
   void setPalette(const Palette* palette) { this->palette = palette; }
   
-  Color get(u8 index) const override { return index >= start && index < end ? colors[index - start] : palette->get(index); }
+  Color get(index_t index) const override { return index >= start && index < end ? colors[index - start] : palette->get(index); }
 };
     
 class GrayscalePalette : public Palette
@@ -236,7 +236,7 @@ private:
   
 public:
   GrayscalePalette(const Palette* palette) : palette(palette) { }
-  Color get(u8 index) const override
+  Color get(index_t index) const override
   {
     Color c = palette->get(index);
     u8 v = static_cast<u8>(0.21f*c.r + 0.72f*c.g + 0.07*c.b);

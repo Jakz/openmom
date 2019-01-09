@@ -101,9 +101,9 @@ private:
 public:
   Army(Player* owner, std::initializer_list<Unit*> units = {});
   
-  s16 sightRange();
+  value_t sightRange();
   
-  s16 availableMoves();
+  value_t availableMoves();
   void resetMoves();
   
   const movement_list& getMovementType() { return movementType; }
@@ -122,8 +122,8 @@ public:
   void add(Unit* unit);
   Unit* remove(Unit* unit);
   
-  const size_t size() const { return units.size(); }
-  Unit* get(u16 index) const { return *std::next(units.begin(), index); }
+  size_t size() const { return units.size(); }
+  Unit* get(size_t index) const { return *std::next(units.begin(), index); }
   const unit_list& getUnits() { return units; }
   const unit_list getUnits(std::function<bool(const Unit*)> predicate) const;
   

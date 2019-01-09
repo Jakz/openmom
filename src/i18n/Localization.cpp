@@ -158,20 +158,7 @@ unordered_map<I18, string, enum_hash> i18n::data =
   {I18::BUILDING_DESC_FORESTERS_GUILD,"desc"},
   {I18::BUILDING_DESC_TRADE_GOODS,"This special setting produces trade goods and converts 2 production to 1 gold."},
   {I18::BUILDING_DESC_HOUSING,"This special setting builds new housing for the local populace to draw them into the city and increase the city's population growth rate."},
-  
-  {I18::UNIT_SPEARMEN,"Spearmen"},
-  {I18::UNIT_SWORDSMEN,"Swordsmen"},
-  {I18::UNIT_BOWMEN,"Bowmen"},
-  {I18::UNIT_CAVALRY,"Cavalry"},
-  {I18::UNIT_SHAMAN,"Shaman"},
-  {I18::UNIT_HALBERDIERS,"Helberdiers"},
-  {I18::UNIT_PRIESTS,"Priests"},
-  {I18::UNIT_MAGICIANS,"Magicians"},
-  {I18::UNIT_ENGINEERS,"Engineers"},
-  {I18::UNIT_SETTLERS,"Settlers"},
-  
-  {I18::UNIT_BERSERKERS,"Berserkers"},
-  
+
   {I18::HERO_DWARF,"Dwarf"},
   {I18::HERO_ORC_WARRIOR,"Orc Warrior"},
   

@@ -41,18 +41,18 @@ void Army::updateMovementType()
 }
 
 
-s16 Army::sightRange()
+value_t Army::sightRange()
 {
   auto it = max_element(units.begin(), units.end(), [](const Unit* u1, const Unit* u2) { return u1->getProperty(Property::SIGHT) < u2->getProperty(Property::SIGHT); });
   return it != units.end() ? (*it)->getProperty(Property::SIGHT) : 0;
 }
 
-s16 Army::availableMoves()
+value_t Army::availableMoves()
 {  
-  s16 min = std::numeric_limits<s16>::max();
+  value_t min = std::numeric_limits<value_t>::max();
   for (auto u : units)
   {
-    s16 umoves = u->getAvailableMoves();
+    value_t umoves = u->getAvailableMoves();
     min = std::min(min, umoves);
   }
   
