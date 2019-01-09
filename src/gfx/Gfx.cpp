@@ -503,9 +503,42 @@ void Gfx::mergeBufferDownScaled(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h)
   }
 }
 
+
+#define PIXEL(s, w, x, y) s[(y)*(w) + x]
 void Gfx::saveScreenshot(const char* path)
 {
-  IMG_SavePNG(canvas->data, path);
+  auto* surface = Gfx::createSurface(canvas->data->w*2, canvas->data->h*2);
+  
+  auto src = canvas->data;
+  auto dst = surface;
+  auto w = canvas->data->w, h = canvas->data->h;
+  constexpr auto sx = 0, sy = 0, dx = 0, dy = 0;
+  auto f = 2;
+  
+  SDL_LockSurface(src);
+  SDL_LockSurface(dst);
+  
+  u32 *sp = (u32*)src->pixels;
+  u32 *dp = (u32*)dst->pixels;
+  
+  // for each pixel in source
+  for (u16 x = sx; x < sx+w; ++x)
+    for (u16 y = sy; y < sy+h; ++y)
+    {
+      u32 color = PIXEL(sp, src->w, x, y);
+      // for each dest pixel according to scale factor
+      for (u16 ix = 0; ix < f; ++ix)
+        for (u16 iy = 0; iy < f; ++iy)
+        {
+          PIXEL(dp, dst->w, dx + x*f + ix, dy + y*f + iy) = color;
+        }
+    }
+  
+  SDL_UnlockSurface(src);
+  SDL_UnlockSurface(dst);
+  
+  IMG_SavePNG(surface, path);
+  SDL_FreeSurface(surface);
 }
 
 void CursorManager::hideCursor()

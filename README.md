@@ -27,7 +27,91 @@ Given that anyone willing to contribute is welcome and I can provide any insight
 
 These screenshots are generated automatically for each view of the game, they don't respect the realtime status since, for example, intro view requires some timing to actually show something but they're here to showcase the status:
 
+main view
 ![main view](docs/screenshots/screenshot-main.png)
 
+city view
+![city view](docs/screenshots/screenshot-city.png)
 
+unit view
+![unit view](docs/screenshots/screenshot-unit.png)
 
+spellbook view
+![spellbook view](docs/screenshots/screenshot-spellbook.png)
+
+magic view
+![magic view](docs/screenshots/screenshot-magic.png)
+
+research view
+![research view](docs/screenshots/screenshot-research.png)
+
+alchemy view
+![alchemy view](docs/screenshots/screenshot-alchemy.png)
+
+armies view
+![armies view](docs/screenshots/screenshot-armies.png)
+
+armies-items view
+![armies-items view](docs/screenshots/screenshot-armies-items.png)
+
+item-craft view
+![item-craft view](docs/screenshots/screenshot-item-craft.png)
+
+item-craft-charges view
+![item-craft-charges view](docs/screenshots/screenshot-item-craft-charges.png)
+
+merchant view
+![merchant view](docs/screenshots/screenshot-merchant.png)
+
+army view
+![army view](docs/screenshots/screenshot-army.png)
+
+message view
+![message view](docs/screenshots/screenshot-message.png)
+
+cities view
+![cities view](docs/screenshots/screenshot-cities.png)
+
+mirror view
+![mirror view](docs/screenshots/screenshot-mirror.png)
+
+info-menu view
+![info-menu view](docs/screenshots/screenshot-info-menu.png)
+
+cartographer view
+![cartographer view](docs/screenshots/screenshot-cartographer.png)
+
+diplomacy view
+![diplomacy view](docs/screenshots/screenshot-diplomacy.png)
+
+astrologer view
+![astrologer view](docs/screenshots/screenshot-astrologer.png)
+
+historian view
+![historian view](docs/screenshots/screenshot-historian.png)
+
+combat view
+![combat view](docs/screenshots/screenshot-combat.png)
+
+production view
+![production view](docs/screenshots/screenshot-production.png)
+
+outpost view
+![outpost view](docs/screenshots/screenshot-outpost.png)
+
+new-game view
+![new-game view](docs/screenshots/screenshot-new-game.png)
+
+load view
+![load view](docs/screenshots/screenshot-load.png)
+
+options view
+![options view](docs/screenshots/screenshot-options.png)
+
+start view
+![start view](docs/screenshots/screenshot-start.png)
+
+intro view
+![intro view](docs/screenshots/screenshot-intro.png)
+
+    
