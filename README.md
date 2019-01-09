@@ -23,5 +23,11 @@ Many attempts of writing a remake of Master of Magic have been made and just a f
 
 Given that anyone willing to contribute is welcome and I can provide any insight on the structure of the engine to get up running.
 
+# Current screenshots
+
+These screenshots are generated automatically for each view of the game, they don't respect the realtime status since, for example, intro view requires some timing to actually show something but they're here to showcase the status:
+
+![main view](docs/screenshots/screenshot-main.png)
+
 
 
