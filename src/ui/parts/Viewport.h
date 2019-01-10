@@ -27,6 +27,8 @@ public:
   inline gfx_tile_t& operator[](size_t mask) { return std::array<gfx_tile_t, SIZE>::operator[](mask); }
 };
 
+using full_gfx_tile_mapping = gfx_tile_mapping<TILE_COUNT_SHORE>;
+
 
 struct TileToSpriteMap
 {  
@@ -60,10 +62,10 @@ struct TileToSpriteMap
         case DirJoin::N: return cap[2][index];
         case DirJoin::E: return cap[3][index];
           
-        case DirJoin::CORNER_N_E: return corner[0][index];
-        case DirJoin::CORNER_S_E: return corner[1][index];
-        case DirJoin::CORNER_S_W: return corner[2][index];
-        case DirJoin::CORNER_N_W: return corner[3][index];
+        case DirJoin::OCORNER_NE: return corner[0][index];
+        case DirJoin::OCORNER_SE: return corner[1][index];
+        case DirJoin::OCORNER_SW: return corner[2][index];
+        case DirJoin::OCORNER_NW: return corner[3][index];
           
         case DirJoin::VERTICAL: return straight[0][index];
         case DirJoin::HORIZONTAL: return straight[1][index];
@@ -94,10 +96,10 @@ struct TileToSpriteMap
         case DirJoin::E:
           return 1;
           
-        case DirJoin::CORNER_N_E:
-        case DirJoin::CORNER_N_W:
-        case DirJoin::CORNER_S_W:
-        case DirJoin::CORNER_S_E:
+        case DirJoin::OCORNER_NE:
+        case DirJoin::OCORNER_NW:
+        case DirJoin::OCORNER_SW:
+        case DirJoin::OCORNER_SE:
           return 3;
           
         case DirJoin::VERTICAL:
@@ -124,10 +126,10 @@ struct TileToSpriteMap
   
   struct
   {
-    gfx_tile_mapping<TILE_COUNT_SHORE> north, south, west, east;
-    gfx_tile_mapping<TILE_COUNT_SHORE> corner_ne, corner_nw, corner_sw, corner_se;
+    mutable full_gfx_tile_mapping north, south, west, east;
+    mutable full_gfx_tile_mapping corner_ne, corner_nw, corner_sw, corner_se;
 
-    const gfx_tile_mapping<TILE_COUNT_SHORE>& mapForRiverMask(DirJoin join) const
+    full_gfx_tile_mapping& mapForRiverMask(DirJoin join) const
     {
       switch (join)
       {
@@ -146,8 +148,6 @@ struct TileToSpriteMap
           return north;
       }
     }
-    //TODO: is this const_cast safe?
-    //gfx_tile_mapping<TILE_COUNT_SHORE>& mapForRiverMask(DirJoin join) { return const_cast<gfx_tile_mapping<TILE_COUNT_SHORE>&>(mapForRiverMask(join)); }
 
     gfx_tile_t spriteForRiverAndJoinMask(DirJoin river, DirJoin join) const
     {
@@ -158,10 +158,10 @@ struct TileToSpriteMap
         case DirJoin::S: return south[join];
         case DirJoin::W: return west[join];
           
-        case DirJoin::CORNER_N_E: return corner_ne[join];
-        case DirJoin::CORNER_N_W: return corner_nw[join];
-        case DirJoin::CORNER_S_E: return corner_se[join];
-        case DirJoin::CORNER_S_W: return corner_sw[join];
+        case DirJoin::OCORNER_NE: return corner_ne[join];
+        case DirJoin::OCORNER_NW: return corner_nw[join];
+        case DirJoin::OCORNER_SE: return corner_se[join];
+        case DirJoin::OCORNER_SW: return corner_sw[join];
           
         default: return LSI(TERRAIN, 0);
       }

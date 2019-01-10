@@ -1587,7 +1587,6 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "${srcroot}/../../src/platform/macos/precompiled.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"${inherited}",
 					"LBX_STATUS_PATH=\\\"${SRCROOT}/../../data\\\"",
@@ -1617,7 +1616,6 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "${srcroot}/../../src/platform/macos/precompiled.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/include/,

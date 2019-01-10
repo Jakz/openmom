@@ -142,8 +142,9 @@ namespace test
 }
 
 TEST_CASE("direction mask operators") {
-  REQUIRE((DirJoin::N << 1) == DirJoin::NW);
-  REQUIRE((DirJoin::N << 2) == DirJoin::W);
+  REQUIRE((DirJoin::N >> 1) == DirJoin::NW);
+  REQUIRE((DirJoin::N >> 2) == DirJoin::W);
+  REQUIRE((DirJoin::EDGE_S | DirJoin::EDGE_W) == (DirJoin::EDGE_S | DirJoin::W | DirJoin::NW));
 }
 
 TEST_CASE("grouping of numbers formatting") {

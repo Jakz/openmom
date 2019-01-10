@@ -28,11 +28,13 @@ private:
   enum class Mode
   {
     TERRAIN,
-    RESOURCES
+    RESOURCES,
+    PLACES
   };
   
   std::vector<Button*> terrainButtons;
   std::vector<Button*> resourceButtons;
+  std::vector<Button*> placeButtons;
   
   World* world;
   MiniMap* minimap;
@@ -42,6 +44,7 @@ private:
   
   void setup();
   
+  std::array<Brush, 2>::const_iterator place;
   std::array<Brush, 13>::const_iterator brush;
   std::array<Resource, 11>::const_iterator resource;
   

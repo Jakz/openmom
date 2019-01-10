@@ -81,8 +81,8 @@ enum lbx_indices
   fog_corner_sw = LBXI(MAPBACK, 13)
 };
 
-const static sprite_ref roads[] = { road_none, road_north, road_north_west, road_west, road_south_west, road_south, road_south_east, road_east, road_north_east };
-const static sprite_ref roads_ench[] = { road_ench_none, road_ench_north, road_ench_north_west, road_ench_west, road_ench_south_west, road_ench_south, road_ench_south_east, road_ench_east, road_ench_north_east };
+const static sprite_ref roads[] = { road_none, road_north, road_north_east, road_east, road_south_east, road_south, road_south_west, road_west, road_north_west };
+const static sprite_ref roads_ench[] = { road_ench_none, road_ench_north, road_ench_north_east, road_ench_east, road_ench_south_east, road_ench_south, road_ench_south_west, road_ench_west, road_ench_north_west };
 
 SpriteInfo Viewport::gfxForPlace(const Place* place)
 {
@@ -759,20 +759,93 @@ void Viewport::createMapTextureAtlas()
     {
       std::array<size_t, 4> dest = { 0xD9 + 0, 0xD9 + 1, 0xD9 + 2, 0xD9 + 3 };
       std::array<DirJoin, 4> src = { DJ::EDGE_S, DJ::S|DJ::SE, DJ::S|DJ::SW, DJ::S };
-      std::array<decltype(arcanus.riverMouths.south)*, 4> destArcanus = { &arcanus.riverMouths.south, &arcanus.riverMouths.west, &arcanus.riverMouths.north, &arcanus.riverMouths.east };
-      std::array<decltype(arcanus.riverMouths.south)*, 4> destMyrran = { &myrran.riverMouths.south, &myrran.riverMouths.west, &myrran.riverMouths.north, &myrran.riverMouths.east };
-
+      DJ riverDest = DJ::S;
+      
       for (int i = 0; i < 4; ++i)
       {
-        mapRiverSprite(src, dest, arcanus.shores, *destArcanus[i], *destMyrran[i]);
+        mapRiverSprite(src, dest, arcanus.shores, arcanus.riverMouths.mapForRiverMask(riverDest), myrran.riverMouths.mapForRiverMask(riverDest));
         for (int j = 0; j < dest.size(); ++j)
         {
           dest[j] += 4;
           src[j] <<= 2;
         }
+        
+        riverDest <<= 2;
+      }
+    }
+    
+    /* U shore with river on narrow side */
+    /* \ /  | /  \ |  | |
+       | |  | |  | |  | |
+       ---  ---  ---  ---
+     */
+    {
+      std::array<DirJoin, 4> src = { DJ::EDGE_S | DJ::W | DJ::E, DJ::EDGE_S | DJ::EDGE_W | DJ::E, DJ::EDGE_S | DJ::EDGE_E | DJ::W, DJ::ALL - DJ::N };
+      std::array<size_t, 4> dest = { 0x1C4, 0x1C4 + 4, 0x1C4 + 8, 0x1C4 + 12};
+      DJ riverDest = DJ::S;
+      
+      for (int i = 0; i < 4; ++i)
+      {
+        mapRiverSprite(src, dest, arcanus.shores, arcanus.riverMouths.mapForRiverMask(riverDest), myrran.riverMouths.mapForRiverMask(riverDest));
+        
+        std::for_each(src.begin(), src.end(), [](DirJoin& dj) { dj <<= 2; });
+        std::for_each(dest.begin(), dest.end(), [](size_t& index) { ++index; });
+        riverDest <<= 2;
+      }
+      
+    }
+    
+    /* double horizontal edges with rivers north and south */
+    /* --- --- --- ---  --/ --/ --/ --/  \-- \-- \-- \--  \-/ \-/ \-/ \-/
+       --- --\ /-- /-\  --- --\ /-- /-\  --- --\ /-- /-\  --- --\ /-- /-\
+     */
+    {
+      std::array<DirJoin, 4> top = { DJ::EDGE_N, DJ::NW | DJ::N, DJ::N | DJ::NE, DJ::N };
+      std::array<DirJoin, 4> bottom = { DJ::EDGE_S, DJ::SW | DJ::S, DJ::S | DJ::SE, DJ::S };
+      
+      for (size_t i = 0; i < top.size(); ++i)
+      {
+        for (size_t j = 0; j < bottom.size(); ++j)
+        {
+          mapRiverSprite<1UL>( { top[i] | bottom[j] }, { 0x219 + i*4 + j }, arcanus.shores, arcanus.riverMouths.mapForRiverMask(DJ::N), myrran.riverMouths.mapForRiverMask(DJ::N));
+          mapRiverSprite<1UL>( { top[i] | bottom[j] }, { 0x219 + i*4 + j + 16 }, arcanus.shores, arcanus.riverMouths.mapForRiverMask(DJ::S), myrran.riverMouths.mapForRiverMask(DJ::S));
+        }
+      }
+    }
+    
+    /* double vertical edges with rivers west and east */
+    {
+      std::array<DirJoin, 4> left = { DJ::EDGE_W, DJ::NW | DJ::W, DJ::W | DJ::SW, DJ::W };
+      std::array<DirJoin, 4> right = { DJ::E, DJ::E | DJ::SE, DJ::NE | DJ::E, DJ::EDGE_E };
+      
+      for (size_t i = 0; i < left.size(); ++i)
+      {
+        for (size_t j = 0; j < right.size(); ++j)
+        {
+          mapRiverSprite<1UL>( { left[i] | right[j] }, { 0x239 + i*4 + j }, arcanus.shores, arcanus.riverMouths.mapForRiverMask(DJ::W), myrran.riverMouths.mapForRiverMask(DJ::W));
+          mapRiverSprite<1UL>( { left[i] | right[j] }, { 0x239 + i*4 + j + 16 }, arcanus.shores, arcanus.riverMouths.mapForRiverMask(DJ::E), myrran.riverMouths.mapForRiverMask(DJ::E));
+        }
+      }
+    }
+    
+    /* corners with single rivers */
+    {
+      std::array<DirJoin, 8> src = {
+        DJ::CORNER_NW, DJ::CORNER_NW | DJ::NE, DJ::CORNER_NW | DJ::SW, DJ::CORNER_NW | DJ::NE | DJ::SW,
+        DJ::CORNER_SE, DJ::CORNER_SE | DJ::NE, DJ::CORNER_SE | DJ::SW, DJ::CORNER_SE | DJ::NE | DJ::SW
+      };
+      std::array<DirJoin, 8> riverMask = { DJ::W, DJ::S, DJ::N, DJ::S, DJ::N, DJ::E, DJ::E, DJ::W };
+      size_t base = 0x1D9;
+
+      for (size_t i = 0; i < 32; ++i)
+      {
+        const DirJoin fj = src[i % 8] << (((i / 8) % 2 == 1) ? 2 : 0);
+        mapRiverSprite<1UL>( { fj }, { base + i }, arcanus.shores, arcanus.riverMouths.mapForRiverMask(riverMask[i/4]), myrran.riverMouths.mapForRiverMask(riverMask[i/4]));
       }
     }
   }
+  
+
   
 
   
@@ -882,7 +955,7 @@ void Viewport::createMapTextureAtlas()
     
     const DirJoin dirs[] = {
       DirJoin::N, DirJoin::E, DirJoin::S, DirJoin::W,
-      DirJoin::CORNER_N_E, DirJoin::CORNER_S_E, DirJoin::CORNER_S_W, DirJoin::CORNER_N_W,
+      DirJoin::OCORNER_NE, DirJoin::OCORNER_SE, DirJoin::OCORNER_SW, DirJoin::OCORNER_NW,
       DirJoin::VERTICAL, DirJoin::HORIZONTAL,
       DirJoin::TCROSS_N, DirJoin::TCROSS_E, DirJoin::TCROSS_S, DirJoin::TCROSS_W,
       DirJoin::OCROSS

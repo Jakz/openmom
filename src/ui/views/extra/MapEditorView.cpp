@@ -137,6 +137,28 @@ const static std::array<Brush, 13> brushes = {
   }
 } };
 
+const static std::array<Brush, 2> places = {
+  {
+    {
+      LSI(MAPBACK, 46),
+      [](Tile* tile)
+      {
+        //TODO: check if tile allows road
+        tile->hasRoad = !tile->hasRoad;
+      }
+    },
+    {
+      LSI(MAPBACK, 55),
+      [](Tile* tile)
+      {
+        //TODO: check if tile allows road
+        if (tile->hasEnchantedRoad) { tile->hasRoad = tile->hasEnchantedRoad = false; }
+        else { tile->hasRoad = tile->hasEnchantedRoad = true; }
+      }
+    }
+  }
+};
+
 const static std::array<Resource, 11> resources = {
   Resource::ADAMANTIUM, Resource::COAL, Resource::CRYSX_CRYSTAL, Resource::GEMS,
   Resource::GOLD, Resource::IRON_ORE, Resource::MITHRIL, Resource::NIGHT_SHADE,
@@ -176,7 +198,22 @@ MapEditorView::MapEditorView(ViewManager* gvm) : ViewWithQueue(gvm)
     ++i;
   }
   
+  i = 0;
+  for (auto it = places.begin(); it != places.end(); ++it)
+  {
+    Point position = positionForBrush(i);
+    auto* button = addButton(Button::buildSimple("", position.x, position.y, it->info));
+    
+    placeButtons.push_back(button);
+    button->setAction([this, it]() {
+      this->place = it;
+    });
+    
+    ++i;
+  }
+  
   std::for_each(resourceButtons.begin(), resourceButtons.end(), [](Button* button) { button->hide(); });
+  std::for_each(placeButtons.begin(), placeButtons.end(), [](Button* button) { button->hide(); });
 
 }
 
@@ -213,6 +250,7 @@ void MapEditorView::activate()
   
   brush = brushes.begin();
   resource = resources.begin();
+  place = places.begin();
   
   toggleDownscale(false);
 }
@@ -289,6 +327,12 @@ void MapEditorView::draw()
     Point brushPosition = positionForBrush(brushIndex);
     Gfx::rect(brushPosition.x - 1, brushPosition.y - 1, 21, 19, {255,0,0});
   }
+  else if (mode == Mode::PLACES)
+  {
+    size_t brushIndex = std::distance(places.begin(), place);
+    Point brushPosition = positionForBrush(brushIndex);
+    Gfx::rect(brushPosition.x - 1, brushPosition.y - 1, 21, 19, {255,0,0});
+  }
   
   Gfx::draw(minimap->get(plane), 256, OY);
   
@@ -341,6 +385,8 @@ void MapEditorView::clickOnTile(Point coords)
       brush->lambda(tile);
     else if (mode == Mode::RESOURCES)
       tile->resource = *resource;
+    else if (mode == Mode::PLACES)
+      place->lambda(tile);
     
     world->calcSubTile(tile->x(), tile->y(), plane);
     tile->for_each_neighbor([this](Tile* t) { if (t) world->calcSubTile(t->x(), t->y(), plane); });
@@ -361,12 +407,21 @@ void MapEditorView::switchMode(Mode mode)
   {
     std::for_each(terrainButtons.begin(), terrainButtons.end(), [](Button* bt) { bt->show(); });
     std::for_each(resourceButtons.begin(), resourceButtons.end(), [](Button* bt) { bt->hide(); });
+    std::for_each(placeButtons.begin(), placeButtons.end(), [](Button* bt) { bt->hide(); });
 
   }
   else if (mode == Mode::RESOURCES)
   {
     std::for_each(terrainButtons.begin(), terrainButtons.end(), [](Button* bt) { bt->hide(); });
     std::for_each(resourceButtons.begin(), resourceButtons.end(), [](Button* bt) { bt->show(); });
+    std::for_each(placeButtons.begin(), placeButtons.end(), [](Button* bt) { bt->hide(); });
+  }
+  else if (mode == Mode::PLACES)
+  {
+    std::for_each(terrainButtons.begin(), terrainButtons.end(), [](Button* bt) { bt->hide(); });
+    std::for_each(resourceButtons.begin(), resourceButtons.end(), [](Button* bt) { bt->hide(); });
+    std::for_each(placeButtons.begin(), placeButtons.end(), [](Button* bt) { bt->show(); });
+
   }
 }
 
@@ -429,6 +484,16 @@ bool MapEditorView::mouseWheel(s16 dx, s16 dy, u16 d)
         ++resource;
       else if (dy > 0 && resource > resources.begin())
         --resource;
+      
+      break;
+    }
+      
+    case Mode::PLACES:
+    {
+      if (dy < 0 && place < places.end()-1)
+        ++place;
+      else if (dy > 0 && place > places.begin())
+        --place;
     }
   }
 
@@ -458,6 +523,11 @@ bool MapEditorView::keyPressed(KeyboardCode key, KeyboardKey kkey, KeyboardMod m
     case SDL_SCANCODE_2:
     {
       switchMode(Mode::RESOURCES);
+      break;
+    }
+    case SDL_SCANCODE_3:
+    {
+      switchMode(Mode::PLACES);
       break;
     }
     

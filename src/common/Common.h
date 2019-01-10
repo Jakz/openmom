@@ -379,10 +379,15 @@ enum class DirJoin
   HORIZONTAL = W | E,
   VERTICAL = N | S,
   
-  CORNER_N_E = N | E,
-  CORNER_N_W = N | W,
-  CORNER_S_E = S | E,
-  CORNER_S_W = S | W,
+  OCORNER_NE = N | E,
+  OCORNER_NW = N | W,
+  OCORNER_SE = S | E,
+  OCORNER_SW = S | W,
+  
+  CORNER_NW = N | NW | W,
+  CORNER_SW = S | SW | W,
+  CORNER_NE = N | NE | E,
+  CORNER_SE = S | SE | E,
   
   OCROSS = N | E | W | S,
   
@@ -395,6 +400,9 @@ enum class DirJoin
   EDGE_S = SW | S | SE,
   EDGE_W = NW | W | SW,
   EDGE_E = NE | E | SE,
+  
+  EDGES_NS = EDGE_N | EDGE_S,
+  EDGES_WE = EDGE_W | EDGE_E,
   
   
   /* diagonal for combat isometric */
@@ -417,7 +425,12 @@ enum class DirJoin
   
   CROSS = NW | SE | NE | SW,
   
-  ALL = 0xFF
+  ALL = 0xFF,
+  
+  ALL_NO_N = ALL - N,
+  ALL_NO_S = ALL - S,
+  ALL_NO_W = ALL - W,
+  ALL_NO_E = ALL - E,
 };
 
 struct DirMask
@@ -542,15 +555,21 @@ inline DirJoin operator|(const DirJoin& lhs, const DirJoin& rhs) {
   return static_cast<DirJoin>(static_cast<utype_t>(lhs) | static_cast<utype_t>(rhs));
 }
 
+inline DirJoin operator-(const DirJoin& lhs, const DirJoin& rhs) {
+  using utype_t = std::underlying_type<DirJoin>::type;
+  return static_cast<DirJoin>(static_cast<utype_t>(lhs) - static_cast<utype_t>(rhs));
+}
+
 inline void operator|=(DirJoin& lhs, const DirJoin& rhs) {
   using utype_t = std::underlying_type<DirJoin>::type;
   lhs = static_cast<DirJoin>(static_cast<utype_t>(lhs) | static_cast<utype_t>(rhs));
 }
 
-/* shift and rotate left */
+/* shift and rotate CW */
+
 inline DirJoin operator<<(DirJoin lhs, u32 v) {
   using utype_t = std::underlying_type<DirJoin>::type;
-  constexpr size_t bits = 8;/*sizeof(utype_t)*8;*/
+  constexpr size_t bits = 8;
   v %= bits;
   
   utype_t keep = static_cast<utype_t>(lhs) << v;
@@ -558,11 +577,11 @@ inline DirJoin operator<<(DirJoin lhs, u32 v) {
   
   return static_cast<DirJoin>((keep | rotate) & 0xFF);
 }
+/* shift and rotate CCW */
 
-/* shift and rotate right */
 inline DirJoin operator>>(DirJoin lhs, u32 v) {
   using utype_t = std::underlying_type<DirJoin>::type;
-  constexpr size_t bits = 8;/*sizeof(utype_t)*8;*/
+  constexpr size_t bits = 8;
   v %= bits;
   
   utype_t keep = static_cast<utype_t>(lhs) >> v;
