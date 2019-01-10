@@ -184,13 +184,13 @@ MapEditorView::MapEditorView(ViewManager* gvm) : ViewWithQueue(gvm)
 
 void MapEditorView::activate()
 {
-  /*world = new World(nullptr,60,40);
+  world = new World(nullptr,60,40);
   world->fill(TileType::GRASS, Plane::ARCANUS);
   world->fill(TileType::GRASS, Plane::MYRRAN);
-  world->calcSubTiles();*/
+  world->calcSubTiles();
   
 	//TODO: constructor is not found in MSVC2017
-#if !defined(_WIN32)
+#if false && !defined(_WIN32)
   Path path = "/Users/jack/Desktop/mom3x.app/Contents/Resources/mom/SAVE1.GAM";
   osave::OriginalSaveGame save(path);
   

@@ -553,8 +553,8 @@ inline DirJoin operator<<(DirJoin lhs, u32 v) {
   constexpr size_t bits = 8;/*sizeof(utype_t)*8;*/
   v %= bits;
   
-  utype_t keep = static_cast<utype_t>(lhs) >> v;
-  utype_t rotate = static_cast<utype_t>(lhs) << (bits - v);
+  utype_t keep = static_cast<utype_t>(lhs) << v;
+  utype_t rotate = static_cast<utype_t>(lhs) >> (bits - v);
   
   return static_cast<DirJoin>((keep | rotate) & 0xFF);
 }
@@ -565,8 +565,8 @@ inline DirJoin operator>>(DirJoin lhs, u32 v) {
   constexpr size_t bits = 8;/*sizeof(utype_t)*8;*/
   v %= bits;
   
-  utype_t keep = static_cast<utype_t>(lhs) << v;
-  utype_t rotate = static_cast<utype_t>(lhs) >> (bits - v);
+  utype_t keep = static_cast<utype_t>(lhs) >> v;
+  utype_t rotate = static_cast<utype_t>(lhs) << (bits - v);
   
   return static_cast<DirJoin>((keep | rotate) & 0xFF);
 }

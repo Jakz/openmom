@@ -101,7 +101,7 @@ int main(int argc, char* arg[])
   
   //saveScreenshots(game);
 
-  SDL::gvm->switchView(VIEW_MAIN);
+  SDL::gvm->switchView(VIEW_MAP_EDITOR);
 
   //SDL::gvm->switchView(VIEW_NEW_GAME);
   

@@ -126,7 +126,28 @@ struct TileToSpriteMap
   {
     gfx_tile_mapping<TILE_COUNT_SHORE> north, south, west, east;
     gfx_tile_mapping<TILE_COUNT_SHORE> corner_ne, corner_nw, corner_sw, corner_se;
-    
+
+    const gfx_tile_mapping<TILE_COUNT_SHORE>& mapForRiverMask(DirJoin join) const
+    {
+      switch (join)
+      {
+        case DirJoin::N: return north;
+        case DirJoin::S: return south;
+        case DirJoin::E: return east;
+        case DirJoin::W: return west;
+        
+        case DirJoin::NE: return corner_ne;
+        case DirJoin::NW: return corner_nw;
+        case DirJoin::SW: return corner_sw;
+        case DirJoin::SE: return corner_se;
+          
+        default:
+          assert(false);
+          return north;
+      }
+    }
+    //TODO: is this const_cast safe?
+    //gfx_tile_mapping<TILE_COUNT_SHORE>& mapForRiverMask(DirJoin join) { return const_cast<gfx_tile_mapping<TILE_COUNT_SHORE>&>(mapForRiverMask(join)); }
 
     gfx_tile_t spriteForRiverAndJoinMask(DirJoin river, DirJoin join) const
     {

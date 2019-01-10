@@ -495,28 +495,38 @@ void mapSprite(size_t gfxIndex, gfx_tile_t& dest)
   dest = spriteInfoToGfxTile(LSI(TERRAIN, gfxIndex));
 }
 
+/* map a specific tile index to destination for both planes */
 void mapSprite(size_t gfxIndex, gfx_tile_t& arcanusDest, gfx_tile_t& myrranDest)
 {
   mapSprite(gfxIndex, arcanusDest);
   mapSprite(gfxIndex+TILE_PER_PLANE, myrranDest);
 }
 
-void mapRiverSprite(size_t srcIndex, size_t length, size_t destIndex, gfx_tile_mapping<256>& source, gfx_tile_mapping<256>& arcanus, gfx_tile_mapping<256>& myrran)
+/* find matching index in source and use its position to map destIndex to both planes */
+template<size_t SIZE> void mapRiverSprite(const std::array<size_t,SIZE> srcIndices, const std::array<size_t,SIZE>& destIndices, gfx_tile_mapping<256>& source, gfx_tile_mapping<256>& arcanus, gfx_tile_mapping<256>& myrran)
 {
-  for (size_t i = 0; i < length; ++i)
+  for (size_t i = 0; i < srcIndices.size(); ++i)
   {
+    const auto srcIndex = srcIndices[i];
     for (size_t j = 0; j < source.size(); ++j)
     {
-      if (source[j].index() == srcIndex + i)
+      if (source[j].index() == srcIndex)
       {
-        mapSprite(destIndex + i, arcanus[j]);
-        mapSprite(destIndex + i + TILE_PER_PLANE, myrran[j]);
+        mapSprite(destIndices[i], arcanus[j]);
+        mapSprite(destIndices[i] + TILE_PER_PLANE, myrran[j]);
       }
     }
   }
-  
 }
 
+template<size_t SIZE> void mapRiverSprite(const std::array<DirJoin,SIZE> srcIndices, const std::array<size_t,SIZE>& destIndices, gfx_tile_mapping<256>& source, gfx_tile_mapping<256>& arcanus, gfx_tile_mapping<256>& myrran)
+{
+  std::array<size_t, SIZE> mapped;
+  std::transform(srcIndices.begin(), srcIndices.end(), mapped.begin(), [&source](DirJoin dj) { return source[(size_t)dj].index(); });
+  mapRiverSprite(mapped, destIndices, source, arcanus, myrran);
+}
+
+/* map a serie of indices for both planes */
 template<size_t SIZE> void mapSprite(const std::array<size_t, SIZE>& indices, gfx_tile_mapping<SIZE>& arcanus, gfx_tile_mapping<SIZE>& myrran)
 {
   for (size_t i = 0; i < SIZE; ++i)
@@ -718,19 +728,52 @@ void Viewport::createMapTextureAtlas()
   
   /* river mouths */
   /* TODO: not enough because for example the closed lake is used also for shores with diagonal elements */
-  
-  /* full lakes */
-  SpriteInfo info = arcanus.shores[DirJoin::ALL];
-  mapRiverSprite(info.index(), 1, 0xC5, arcanus.shores, arcanus.riverMouths.west, myrran.riverMouths.west);
-  mapRiverSprite(info.index(), 1, 0xC6, arcanus.shores, arcanus.riverMouths.north, myrran.riverMouths.north);
-  mapRiverSprite(info.index(), 1, 0xC7, arcanus.shores, arcanus.riverMouths.east, myrran.riverMouths.east);
-  mapRiverSprite(info.index(), 1, 0xC8, arcanus.shores, arcanus.riverMouths.south, myrran.riverMouths.south);
+  {
+    const auto& s = arcanus.shores;
+    using DJ = DirJoin;
+    
+    /* full lakes */
+    SpriteInfo info = arcanus.shores[DirJoin::ALL];
+    mapRiverSprite<1UL>({ DJ::ALL }, {0xC5}, arcanus.shores, arcanus.riverMouths.west, myrran.riverMouths.west);
+    mapRiverSprite<1UL>({ DJ::ALL }, {0xC6}, arcanus.shores, arcanus.riverMouths.north, myrran.riverMouths.north);
+    mapRiverSprite<1UL>({ DJ::ALL }, {0xC7}, arcanus.shores, arcanus.riverMouths.east, myrran.riverMouths.east);
+    mapRiverSprite<1UL>({ DJ::ALL }, {0xC8}, arcanus.shores, arcanus.riverMouths.south, myrran.riverMouths.south);
 
-  /* shore corners with double river */
-  mapRiverSprite(0x22, 4, 0xC9, arcanus.shores, arcanus.riverMouths.corner_nw, myrran.riverMouths.corner_nw);
-  mapRiverSprite(0x22+4, 4, 0xC9+4, arcanus.shores, arcanus.riverMouths.corner_se, myrran.riverMouths.corner_se);
-  mapRiverSprite(0x22+8, 4, 0xC9+8, arcanus.shores, arcanus.riverMouths.corner_ne, myrran.riverMouths.corner_ne);
-  mapRiverSprite(0x22+12, 4, 0xC9+12, arcanus.shores, arcanus.riverMouths.corner_sw, myrran.riverMouths.corner_sw);
+    /* shore corners with double river */
+    {
+      /* order is not the same as in normal shore mapping so we need to adjust it by hand */
+      std::array<size_t, 4> dest = { 0xC9 + 0, 0xC9 + 1, 0xC9 + 2, 0xC9 + 3};
+      std::array<size_t, 4> src = { 0x22 + 1, 0x22 + 0, 0x22 + 3, 0x22 + 2};
+      //TODO: still wrong in some corners
+      std::array<decltype(arcanus.riverMouths.corner_nw)*, 4> destArcanus = { &arcanus.riverMouths.corner_nw, &arcanus.riverMouths.corner_se, &arcanus.riverMouths.corner_ne, &arcanus.riverMouths.corner_sw };
+      std::array<decltype(arcanus.riverMouths.corner_nw)*, 4> destMyrran = { &myrran.riverMouths.corner_nw, &myrran.riverMouths.corner_se, &myrran.riverMouths.corner_ne, &myrran.riverMouths.corner_sw };
+      
+      for (int i = 0; i < 4; ++i)
+      {
+        mapRiverSprite(src, dest, arcanus.shores, *destArcanus[i], *destMyrran[i]);
+        for (int j = 0; j < dest.size(); ++j) { dest[j] += 4; src[j] += 4; }
+      }
+    }
+    
+    /* shore single edges with single river */
+    {
+      std::array<size_t, 4> dest = { 0xD9 + 0, 0xD9 + 1, 0xD9 + 2, 0xD9 + 3 };
+      std::array<DirJoin, 4> src = { DJ::EDGE_S, DJ::S|DJ::SE, DJ::S|DJ::SW, DJ::S };
+      std::array<decltype(arcanus.riverMouths.south)*, 4> destArcanus = { &arcanus.riverMouths.south, &arcanus.riverMouths.west, &arcanus.riverMouths.north, &arcanus.riverMouths.east };
+      std::array<decltype(arcanus.riverMouths.south)*, 4> destMyrran = { &myrran.riverMouths.south, &myrran.riverMouths.west, &myrran.riverMouths.north, &myrran.riverMouths.east };
+
+      for (int i = 0; i < 4; ++i)
+      {
+        mapRiverSprite(src, dest, arcanus.shores, *destArcanus[i], *destMyrran[i]);
+        for (int j = 0; j < dest.size(); ++j)
+        {
+          dest[j] += 4;
+          src[j] <<= 2;
+        }
+      }
+    }
+  }
+  
 
   
   {
@@ -758,10 +801,47 @@ void Viewport::createMapTextureAtlas()
           Color* pixel = reinterpret_cast<Color*>(atlas->pixels) + bx + x + (by + y)*atlas->w;
           Color color = sprite->getPalette()->get(sprite->at(x, y, 0, 0));
           
-          if (!used[i])
-            color = color.blend(Color(255,0,0,128));
+          /*if (!used[i])
+            color = color.blend(Color(255,0,0,128));*/
           
           *pixel = color;
+        }
+      }
+      
+      /* draw number */
+      {
+        constexpr size_t fw = 3, fh = 5;
+        static byte font[5][3*16] = {
+          { 1,1,1,  0,1,0,  1,1,1,  1,1,1,  1,0,0,  1,1,1,  1,1,1,  1,1,1,  1,1,1,  1,1,1,  1,1,1,  1,1,1,  0,1,1,  1,1,0,  1,1,1,  1,1,1 },
+          { 1,0,1,  0,1,0,  0,0,1,  0,0,1,  1,0,0,  1,0,0,  1,0,0,  0,0,1,  1,0,1,  1,0,1,  1,0,1,  1,0,1,  1,0,0,  1,0,1,  1,0,0,  1,0,0 },
+          { 1,0,1,  0,1,0,  1,1,1,  1,1,1,  1,0,0,  1,1,1,  1,1,1,  0,0,1,  1,1,1,  1,1,1,  1,1,1,  1,1,0,  1,0,0,  1,0,1,  1,1,1,  1,1,0 },
+          { 1,0,1,  0,1,0,  1,0,0,  0,0,1,  1,1,1,  0,0,1,  1,0,1,  0,0,1,  1,0,1,  0,0,1,  1,0,1,  1,0,1,  1,0,0,  1,0,1,  1,0,0,  1,0,0 },
+          { 1,1,1,  0,1,0,  1,1,1,  1,1,1,  0,1,0,  1,1,1,  1,1,1,  0,0,1,  1,1,1,  1,1,1,  1,0,1,  1,1,1,  0,1,1,  1,1,0,  1,1,1,  1,0,0 }
+        };
+        static char buffer[16];
+        
+        sprintf(buffer, "%X", (int)i);
+
+        color_d fontColor = 0xFFFFFFFF;
+        
+        if (!used[i])
+          fontColor = 0xFFFF0000;
+        
+        for (size_t c = 0; c < strlen(buffer); ++c)
+        {
+          const size_t bfx = bx + 1 + (fw+1)*c, bfy = by + 1;
+          const size_t index = buffer[c] >= 'A' ? (buffer[c] - 'A' + 10) : (buffer[c] - '0');
+          for (size_t fy = 0; fy < fh; ++fy)
+            for (size_t fx = 0; fx < fw; ++fx)
+            {
+              int v = font[fy][3*index + fx];
+              
+              if (v)
+              {
+                Color* pixel = reinterpret_cast<Color*>(atlas->pixels) + bfx + fx + (bfy + fy)*atlas->w;
+                *pixel = pixel->blend(fontColor, (u8)160);
+              }
+            }
         }
       }
       
@@ -780,7 +860,9 @@ void Viewport::createMapTextureAtlas()
   }
   
   {
-    SDL_Surface* atlas = SDL_CreateRGBSurface(0, 66*TILE_WIDTH, 32*TILE_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    bool withRivers = true;
+    
+    SDL_Surface* atlas = SDL_CreateRGBSurface(0, (66 + (withRivers ? 8*8 : 0)) *TILE_WIDTH, 32*TILE_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
     const auto& source = arcanus;
     
     for (size_t i = 0; i < source.grasslands.size(); ++i) blitTileToAtlas(source.grasslands[i], 0, i, atlas);
@@ -812,6 +894,7 @@ void Viewport::createMapTextureAtlas()
         blitTileToAtlas(source.rivers.spriteForMask(dirs[i], j), 9 + i, j, atlas);
     }
     
+    std::array<DirJoin, 8> riverMasks = { DirJoin::N, DirJoin::E, DirJoin::S, DirJoin::W, DirJoin::NE, DirJoin::NW, DirJoin::SE, DirJoin::SW };
     for (size_t i = 0; i < 256; ++i)
     {
       if (i)
@@ -819,7 +902,13 @@ void Viewport::createMapTextureAtlas()
         blitTileToAtlas(source.shores[i], 9 + 15 + i % 8, i / 8, atlas);
         blitTileToAtlas(source.desertJoin[i], 9 + 15 + 8 + i % 8, i / 8, atlas);
         blitTileToAtlas(source.tundraJoin[i], 9 + 15 + 8 + 8 + i % 8, i / 8, atlas);
-
+        
+        if (withRivers)
+        {
+          for (int r = 0; r < 8; ++r)
+            blitTileToAtlas(source.riverMouths.mapForRiverMask(riverMasks[r])[i], 9 + 15 + 8 + 8 + 8 + 8*r + i % 8, i / 8, atlas);
+        }
+      
       }
 
     }
