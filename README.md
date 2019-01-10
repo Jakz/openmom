@@ -9,7 +9,7 @@ The engine is written in C++14 and SDL2.0 is used for graphics, window managemen
 
 The graphics engine is written to ease the management of the low level profile graphics of the original game. Everything is palette based and drawing is made by using an approach which probably resembles the one used originally for the game. While this implies that everything is quite low level, this really helps in mimicking the original behavior of most effects and animations. This also makes the grapichs quite abstract from the effective graphics framework as long as it is able to draw a texture.
 
-#Philosophy
+# Philosophy
 
 While it might seems quite obsessive the first and more important thing is being similar to the original game in the first place. Every animation, font, colors, placement, should be as similar as possible to the original game. This doesn't mean that the game itself shouldn't be enhanced but that it should be possible to play it also as if it were the original game.
 
