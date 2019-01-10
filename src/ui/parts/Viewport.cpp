@@ -774,7 +774,7 @@ void Viewport::createMapTextureAtlas()
       }
     }
     
-    /* U shore with river on narrow side */
+    /* U shore with river on opposite side */
     /* \ /  | /  \ |  | |
        | |  | |  | |  | |
        ---  ---  ---  ---
@@ -792,7 +792,23 @@ void Viewport::createMapTextureAtlas()
         std::for_each(dest.begin(), dest.end(), [](size_t& index) { ++index; });
         riverDest <<= 2;
       }
+    }
+    
+    /* U shore with river one one of the sides */
+    {
+      const std::array<DirJoin, 4> srcs = { DJ::EDGE_S | DJ::W | DJ::E, DJ::EDGE_S | DJ::EDGE_W | DJ::E, DJ::EDGE_S | DJ::EDGE_E | DJ::W, DJ::ALL - DJ::N };
+      const std::array<DirJoin, 2> riverMasks = { DJ::W, DJ::E };
+      const size_t base = 0x1F9;
+      constexpr size_t total = 4 * 4 * 2;
       
+      for (int i = 0; i < total; ++i)
+      {
+        DirJoin src = srcs[(i / 4) % 4]; // 0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3 0 0 0 0 ...
+        src <<= (i % 4) * 2; // 0 2 4 6 0 2 4 6 0 ...
+        DirJoin riverMask = riverMasks[i / 16] << ((i % 4) * 2); // W N E S W N E S W N E S W N E S E S W N E S W ...
+        
+        mapRiverSprite<1UL>({ src }, { base + i }, arcanus.shores, arcanus.riverMouths.mapForRiverMask(riverMask), myrran.riverMouths.mapForRiverMask(riverMask));
+      }
     }
     
     /* double horizontal edges with rivers north and south */
