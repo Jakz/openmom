@@ -729,6 +729,17 @@ void Viewport::createMapTextureAtlas()
   /* river mouths */
   /* TODO: not enough because for example the closed lake is used also for shores with diagonal elements */
   {
+    /* set all to default shore tiles to be fancy also when not correct */
+    {
+      //TODO: define an iterator in common code to avoid this, like for (DirJoin join : Util::orthogonalDirections())
+      const std::array<DirJoin, 8> masks = { DirJoin::N, DirJoin::E, DirJoin::S, DirJoin::W, DirJoin::OCORNER_NE, DirJoin::OCORNER_NW, DirJoin::OCORNER_SE, DirJoin::OCORNER_SW };
+      for (int j = 0; j < 8; ++j)
+      {
+        arcanus.riverMouths.mapForRiverMask(masks[j]) = arcanus.shores;
+        myrran.riverMouths.mapForRiverMask(masks[j]) = myrran.shores;
+      }
+    }
+    
     const auto& s = arcanus.shores;
     using DJ = DirJoin;
     
@@ -983,7 +994,7 @@ void Viewport::createMapTextureAtlas()
         blitTileToAtlas(source.rivers.spriteForMask(dirs[i], j), 9 + i, j, atlas);
     }
     
-    std::array<DirJoin, 8> riverMasks = { DirJoin::N, DirJoin::E, DirJoin::S, DirJoin::W, DirJoin::NE, DirJoin::NW, DirJoin::SE, DirJoin::SW };
+    std::array<DirJoin, 8> riverMasks = { DirJoin::N, DirJoin::E, DirJoin::S, DirJoin::W, DirJoin::OCORNER_NE, DirJoin::OCORNER_NW, DirJoin::OCORNER_SE, DirJoin::OCORNER_SW };
     for (size_t i = 0; i < 256; ++i)
     {
       if (i)

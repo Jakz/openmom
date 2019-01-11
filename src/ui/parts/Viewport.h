@@ -138,10 +138,10 @@ struct TileToSpriteMap
         case DirJoin::E: return east;
         case DirJoin::W: return west;
         
-        case DirJoin::NE: return corner_ne;
-        case DirJoin::NW: return corner_nw;
-        case DirJoin::SW: return corner_sw;
-        case DirJoin::SE: return corner_se;
+        case DirJoin::OCORNER_NE: return corner_ne;
+        case DirJoin::OCORNER_NW: return corner_nw;
+        case DirJoin::OCORNER_SW: return corner_sw;
+        case DirJoin::OCORNER_SE: return corner_se;
           
         default:
           assert(false);
@@ -163,7 +163,9 @@ struct TileToSpriteMap
         case DirJoin::OCORNER_SE: return corner_se[join];
         case DirJoin::OCORNER_SW: return corner_sw[join];
           
-        default: return LSI(TERRAIN, 0);
+        default:
+          //assert(false);
+          return LSI(TERRAIN, 0);
       }
     }
     

@@ -254,6 +254,8 @@ TEST_CASE("skill effects groups") {
 }
 
 
+#pragma mark Combat Mechanics
+
 #pragma mark HitPoints
 TEST_CASE("health management of units") {
   const auto unit = test::anyRaceUnit();
@@ -265,7 +267,7 @@ TEST_CASE("health management of units") {
     REQUIRE(health->aliveCount() == figures);
     REQUIRE(health->sum() == figures*hitPoints);
   }
-
+  
   SECTION("damage by less than its figure hitpoints") {
     const value_t dmg = unit->getProperty(Property::HIT_POINTS) - 1;
     health->applyDamage(dmg);
@@ -274,7 +276,7 @@ TEST_CASE("health management of units") {
     REQUIRE(health->sum() == figures*hitPoints - dmg);
     REQUIRE(health->hitsOfLeadFigure() == hitPoints - dmg);
   }
-
+  
   SECTION("damage by more than its single figure hitpoints") {
     const value_t dmg = hitPoints - 1;
     health->applyDamage(dmg + hitPoints);
@@ -300,10 +302,49 @@ TEST_CASE("health management of units") {
   }
 }
 
-#pragma mark Combat Mechanics
+#include "common/Util.h"
+
+constexpr value_t MAX_CHANCE = 100;
+constexpr value_t NO_CHANCE = 0;
+
+TEST_CASE("general functions") {
+  constexpr value_t TEST_COUNT = 10000;
+  constexpr value_t CONFIDENCE = TEST_COUNT * 0.03f;
+  SECTION("roll chance") {
+    
+    SECTION("0% chance") {
+      value_t sum = 0;
+      for (value_t i = 0; i < TEST_COUNT; ++i)
+        sum += Math::chance(NO_CHANCE) ? 1 : 0;
+      REQUIRE(sum == 0);
+    }
+    
+    SECTION("100% chance") {
+      value_t sum = 0;
+      for (value_t i = 0; i < TEST_COUNT; ++i)
+        sum += Math::chance(MAX_CHANCE) ? 1 : 0;
+      REQUIRE(sum == TEST_COUNT);
+    }
+    
+    for (value_t c = 0; c < 100; ++c)
+    {
+      SECTION(std::string("fixed chance ") + std::to_string(c))
+      {
+        value_t sum = 0;
+        for (u32 i = 0; i < TEST_COUNT; ++i)
+          sum += Math::chance(c) ? 1 : 0;
+        
+        value_t expected = TEST_COUNT * (c / (float)MAX_CHANCE);
+        REQUIRE(std::abs(expected - sum) < CONFIDENCE);
+      }
+    }
+  }
+}
 
 TEST_CASE("combat formulas") {
   using namespace combat;
+
+  
   const auto unit = test::anyRaceUnit();
   const auto cunit = test::cunit(unit);
   CombatFormulas f;
@@ -311,11 +352,36 @@ TEST_CASE("combat formulas") {
   
   SECTION("area damage formulas") {
     using namespace combat;
-    f.computeAreaDamage(10, 30, 6, 4, 30, 2);
+    f.computeAreaDamage(30, 10, 6, 4, 30, 2);
   }
   
   SECTION("physical damage formulas") {
-    f.computePhysicalDamage(30, 30, HitPoints(4, 4), 30, 2);
+    
+    SECTION("each figure defends maximum hits")
+    {
+      /* first figure blocks 2, 3 inflicted, 6 pass, second figure blocks 2, 3 infliced, 1 pass which is blocked by third figure: result 6 */
+      auto damage = f.computePhysicalDamage(MAX_CHANCE, 11, HitPoints(6, 3), MAX_CHANCE, 2);
+      REQUIRE(damage == 6);
+    }
+    
+    SECTION("each figure defend no hits")
+    {
+      auto damage = f.computePhysicalDamage(MAX_CHANCE, 11, HitPoints(6, 3), NO_CHANCE, 2);
+      REQUIRE(damage == 11);
+    }
+    
+    SECTION("attack strength is higher than total hits of unit")
+    {
+      HitPoints hp = HitPoints(6, 3);
+      auto damage = f.computePhysicalDamage(MAX_CHANCE, 50, hp, NO_CHANCE, 2);
+      REQUIRE(damage == hp.sum());
+    }
+    
+    SECTION("attacker has no hit chance")
+    {
+      auto damage = f.computePhysicalDamage(NO_CHANCE, 11, HitPoints(6, 3), NO_CHANCE, 2);
+      REQUIRE(damage == 0);
+    }
   }
 }
 

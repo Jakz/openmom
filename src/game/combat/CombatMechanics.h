@@ -32,8 +32,8 @@ namespace combat
   public:
 
     /* School is used but this for no school damage we're using School::NO_SCHOOL which is not a good design */
-    value_t computeAreaDamage(value_t strength, value_t toHit, count_t figures, value_t hitPoints, value_t toDefend, value_t defense);
-    value_t computePhysicalDamage(value_t strength, value_t toHit, const HitPoints& hitPoints, value_t toDefend, value_t defense);
+    value_t computeAreaDamage(value_t toHit, value_t strength, count_t figures, value_t hitPoints, value_t toDefend, value_t defense);
+    value_t computePhysicalDamage(value_t toHit, value_t strength, const HitPoints& hitPoints, value_t toDefend, value_t defense);
 
   };
   

@@ -203,7 +203,7 @@ value_t CombatFormulas::passingRolls(value_t count, value_t chance)
   return passed;
 }
 
-value_t CombatFormulas::computePhysicalDamage(value_t strength, value_t toHit, const HitPoints& hitPoints, value_t toDefend, value_t defense)
+value_t CombatFormulas::computePhysicalDamage(value_t toHit, value_t strength, const HitPoints& hitPoints, value_t toDefend, value_t defense)
 {
   /* compute passing attack rolls */
   value_t registered_hits = passingRolls(strength, toHit);
@@ -217,7 +217,7 @@ value_t CombatFormulas::computePhysicalDamage(value_t strength, value_t toHit, c
   auto currentDefender = defender_hp.begin();
   
   
-  COMBAT_LOG("computing physical damage of magnitude %d against %d figures)", strength, hitPoints.size());
+  COMBAT_LOG("computing physical damage of magnitude %d against %d figures", strength, hitPoints.size());
   COMBAT_LOG("  attacking with %d%% hit, defending with %d shields and %d%% chance", toHit, defense, toDefend);
   COMBAT_LOG("  possible hits: %d", totalPossibleHits);
   
@@ -225,19 +225,20 @@ value_t CombatFormulas::computePhysicalDamage(value_t strength, value_t toHit, c
   /* while there's still damage to be applied and there are still defenders */
   while (totalPossibleHits > 0 && currentDefender != defender_hp.end())
   {
+    value_t startingHits = totalPossibleHits;
     /* figure makes defense rolls which are removed from potential hits */
     value_t defendedHitsByFigure = passingRolls(defense, toDefend);
-    totalPossibleHits -= defendedHitsByFigure;
-
+    /* remove defended hits but don't go < 0 */
+    totalPossibleHits = std::max(totalPossibleHits - defendedHitsByFigure, 0);
     /* apply to the figure at most its hp as damage */
-    value_t hitsToFigure = std::min(std::min(*currentDefender, totalPossibleHits), totalPossibleHits);
+    value_t hitsToFigure = std::min(*currentDefender, totalPossibleHits);
     
     /* update values */
     totalPossibleHits -= hitsToFigure;
     *currentDefender -= hitsToFigure;
     effectiveHits += hitsToFigure;
     
-    COMBAT_LOG("    lead figure blocked %d hits, received %d damage and %s", defendedHitsByFigure, hitsToFigure, *currentDefender == 0 ? "died" : "survived");
+    COMBAT_LOG("    lead figure blocked %d of %d hits, received %d damage and %s", defendedHitsByFigure, startingHits, hitsToFigure, *currentDefender == 0 ? "died" : "survived");
 
     assert(totalPossibleHits == 0 || *currentDefender == 0);
 
@@ -250,7 +251,7 @@ value_t CombatFormulas::computePhysicalDamage(value_t strength, value_t toHit, c
   return effectiveHits;
 }
 
-value_t CombatFormulas::computeAreaDamage(value_t strength, value_t toHit, count_t figures, value_t hitPoints, value_t toDefend, value_t defense)
+value_t CombatFormulas::computeAreaDamage(value_t toHit, value_t strength, count_t figures, value_t hitPoints, value_t toDefend, value_t defense)
 {
   /* make attack rolls for each alive figure */
   unit_figure_value registered_hits = unit_figure_value(figures, [strength, toHit] (size_t index) { return passingRolls(strength, toHit); });
