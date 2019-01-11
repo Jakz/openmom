@@ -227,6 +227,24 @@ TEST_CASE("nature spells") {
   }
 }
 
+#pragma mark effect_list
+
+TEST_CASE("effect_list class") {
+  SECTION("flatSize method with CompoundEffect") {
+    SECTION("nested once") {
+      const auto me1 = new MovementEffect(MovementType::FLYING);
+      const auto me2 = new MovementEffect(MovementType::FORESTWALK);
+      const auto me3 = new MovementEffect(MovementType::FORESTWALK);
+      const auto ce = new CompoundEffect({ me1, me2 });
+
+      effect_list effects = effect_list({ ce, me3 });
+
+      REQUIRE(effects.size() == 2);
+      REQUIRE(effects.flatSize() == 3);
+    }
+  }
+}
+
 #pragma mark SkillSet
 
 TEST_CASE("skill set class") {

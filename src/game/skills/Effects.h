@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Jack. All rights reserved.
 //
 
-#ifndef _SKILL_EFFECTS_H_
-#define _SKILL_EFFECTS_H_
+#pragma once
 
 #include "common/Common.h"
 
 #include <vector>
+#include <stack>
 
 enum class Property : u8;
 class Unit;
@@ -56,13 +56,17 @@ public:
     
     GRANT_SPELL,
     
-    SPECIAL_ATTACK
+    SPECIAL_ATTACK,
+
+    COMPOUND
   } type;
   
   
   SkillEffect(Type type, const SkillEffectGroup* group) : type(type), _group(group) { }
   SkillEffect(Type type) : SkillEffect(type, nullptr) { }
   
+  virtual size_t size() const { return 1; }
+
   void setGroup(const SkillEffectGroup* group) { this->_group = group; }
   const SkillEffectGroup* group() const { return _group; }
 
@@ -333,8 +337,6 @@ public:
   s16 strength() const { return _strength; }
 };
 
-
-
 using effect_init_list = const std::initializer_list<const SkillEffect*>;
 
 struct effect_list
@@ -356,6 +358,7 @@ public:
   iterator begin() const { return data.begin(); }
   iterator end() const { return data.end(); }
   size_t size() const { return data.size(); }
+  size_t flatSize() const { return std::accumulate(data.begin(), data.end(), 0UL, [](size_t v, const SkillEffect* effect) { return v + effect->size(); }); }
   
   const SkillEffect* operator[](size_t index) const { return data[index]; }
   
@@ -379,6 +382,25 @@ public:
   effect_list actuals(const Unit* unit) const;
 };
 
+struct effect_list_deep_iterator
+{
+private:
+  std::stack<std::pair<const effect_list*, effect_list::iterator>> stack;
+
+public:
+  using difference_type = ptrdiff_t;
+  using value_type = SkillEffect * ;
+  using reference = const SkillEffect&;
+  using pointer = const SkillEffect*;
+  using iterator_category = std::bidirectional_iterator_tag;
+
+public:
+  effect_list_deep_iterator(const effect_list* list, effect_list::iterator it) { stack.push(std::make_pair(list, it)); }
+
+  //TODO: complicated
+};
+
+
 //TODO: to remove after hardcoded effects has been removed
 static const effect_list unit_bonus_build(std::initializer_list<Property> properties, s16 value)
 {
@@ -388,4 +410,19 @@ static const effect_list unit_bonus_build(std::initializer_list<Property> proper
   return effects;
 }
 
-#endif
+
+class CompoundEffect : public SkillEffect
+{
+private:
+  effect_list effects;
+
+public:
+  CompoundEffect() : SkillEffect(SkillEffect::Type::COMPOUND) { }
+  CompoundEffect(SkillEffectGroup* group) : SkillEffect(SkillEffect::Type::COMPOUND, group) { }
+  CompoundEffect(const effect_list& effects) : SkillEffect(SkillEffect::Type::COMPOUND), effects(effects) { }
+
+  size_t size() const override { return effects.size(); }
+
+  effect_list::iterator begin() const { return effects.begin(); }
+  effect_list::iterator end() const { return effects.end(); }
+};
