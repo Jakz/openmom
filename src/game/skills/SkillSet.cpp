@@ -8,25 +8,23 @@
 
 using namespace std;
 
-SkillSet::SkillSet(Unit& unit) : unit(unit), nativeSkills(unit.spec->skills) { }
+SkillSet::SkillSet(const Unit* unit) : unit(unit), nativeSkills(unit->spec->skills) { }
 
 size_t SkillSet::size() const {
-  Army* army = unit.getArmy();
-  return nativeSkills.size() + additionalSkills.size() + spells.size() + (army ? army->getOwner()->globalSkillSpellsCount(&unit) : 0);
+  Army* army = unit ? unit->getArmy() : nullptr;
+  return nativeSkills.size() + spells.size() + (army ? army->getOwner()->globalSkillSpellsCount(unit) : 0);
 }
 
 const Skill* SkillSet::get(size_t index) const
 {
-  size_t native = nativeSkills.size(), additional = additionalSkills.size(), armyc = unit.getArmy() ? unit.getArmy()->getOwner()->globalSkillSpellsCount(&unit) : 0;
+  size_t native = nativeSkills.size(), armyc = unit && unit->getArmy() ? unit->getArmy()->getOwner()->globalSkillSpellsCount(unit) : 0;
   
   if (index < native)
     return nativeSkills[index];
-  else if (index < native + additional)
-    return additionalSkills[index - native];
-  else if (index < native + additional + armyc)
-    return unit.getArmy()->getOwner()->nthGlobalSkillSpell(index - native - additional, &unit)->skill;
+  else if (index < native + armyc)
+    return unit->getArmy()->getOwner()->nthGlobalSkillSpell(index - native, unit)->skill;
   else
-    return (*next(spells.begin(), index - native - additional - armyc)).asUnitSpell()->skill;
+    return (*next(spells.begin(), index - native - armyc)).asUnitSpell()->skill;
   
   return nullptr;
 }
@@ -45,7 +43,6 @@ value_t SkillSet::spellsUpkeep() const
 
 prop_value SkillSet::bonusForProperty(Property property) const
 {
-  prop_value bonus = 0;
 
   effect_list effects;
   
@@ -54,35 +51,38 @@ prop_value SkillSet::bonusForProperty(Property property) const
   // add bonuses from specific UnitBonus effect
   for (const Skill* skill : *this)
   {    
-    for (const auto e : skill->getEffects())
+    for (const SkillEffect* e : skill->getEffects())
     {
       const PropertyBonus* ub = e->as<UnitBonus>();
-      if (ub && ub->sameProperty(property))
+
+      if (e->type == SkillEffect::Type::UNIT_BONUS && ub && ub->sameProperty(property))
         effects.push_back(ub);
     }
   }
   
   // add bonuses from specific ArmyBonus effect
-  if (unit.getArmy())
+  if (unit->getArmy())
   {
-    for (const auto u : *unit.getArmy())
+    for (const auto u : *unit->getArmy())
     {
       for (const Skill* skill : *u->skills())
       {        
-        for (const auto e : skill->getEffects())
+        for (const SkillEffect* e : skill->getEffects())
         {
           const PropertyBonus* ub = e->as<ArmyBonus>();
-          if (ub && ub->sameProperty(property))
+          if (e->type == SkillEffect::Type::ARMY_BONUS && ub && ub->sameProperty(property))
             effects.push_back(ub);
         }
       }
     }
   }
 
-  effects = effects.actuals(&unit);
+  effects = effects.actuals(unit);
   
+  prop_value bonus = 0;
+
   for (const auto* effect : effects)
-    bonus += effect->as<PropertyBonus>()->getValue(&unit);
+    bonus += effect->as<PropertyBonus>()->getValue(unit);
 
   return bonus;
 }

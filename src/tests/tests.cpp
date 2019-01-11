@@ -141,6 +141,8 @@ namespace test
   }
 }
 
+#pragma mark Utilities Functions
+
 TEST_CASE("direction mask operators") {
   REQUIRE((DirJoin::N >> 1) == DirJoin::NW);
   REQUIRE((DirJoin::N >> 2) == DirJoin::W);
@@ -151,6 +153,8 @@ TEST_CASE("grouping of numbers formatting") {
   REQUIRE(strings::groupDigits(1) == "1");
   REQUIRE(strings::groupDigits(1000) == "1,000");
 }
+
+#pragma mark Unit Stats
 
 TEST_CASE("basic stats of units") {
   
@@ -195,11 +199,14 @@ TEST_CASE("basic stats of units") {
       delete unit;
     }
   }
-  
+}
+
+#pragma mark Nature Spells
+
+TEST_CASE("nature spells") {
   SECTION("nature unit spells") {
-    
-    GIVEN("resist elements spell") {
-      const auto pair = test::anyRaceUnitPairWithSkills({"spell_resist_elements"});
+    SECTION("resist elements spell") {
+      const auto pair = test::anyRaceUnitPairWithSkills({ Skills::SPELL_NATURE_RESIST_ELEMENTS });
       test::testModifiers(pair.second, pair.first, {
         { Property::SHIELDS_NATURE, 3 },
         { Property::SHIELDS_CHAOS, 3 },
@@ -207,6 +214,32 @@ TEST_CASE("basic stats of units") {
         { Property::RESIST_CHAOS, 3 }
       });
     }
+
+    SECTION("resist elements spell") {
+      const auto pair = test::anyRaceUnitPairWithSkills({ Skills::SPELL_NATURE_ELEMENTAL_ARMOR });
+      test::testModifiers(pair.second, pair.first, {
+        { Property::SHIELDS_NATURE, 10 },
+        { Property::SHIELDS_CHAOS, 10 },
+        { Property::RESIST_NATURE, 10 },
+        { Property::RESIST_CHAOS, 10 }
+      });
+    }
+  }
+}
+
+#pragma mark SkillSet
+
+TEST_CASE("skill set class") {
+  SECTION("empty constructor") {
+    SkillSet set = SkillSet(skill_init_list{});
+    REQUIRE(set.size() == 0);
+  }
+
+  SECTION("passing skills to constructor") {
+    SkillSet set = SkillSet({ Data::skill(Skills::SPELL_NATURE_ELEMENTAL_ARMOR), Data::skill(Skills::SPELL_NATURE_RESIST_ELEMENTS) });
+    REQUIRE(set.size() == 2);
+    REQUIRE(*set.begin() == Data::skill(Skills::SPELL_NATURE_ELEMENTAL_ARMOR));
+    REQUIRE(*++set.begin() == Data::skill(Skills::SPELL_NATURE_RESIST_ELEMENTS));
   }
 }
 

@@ -371,6 +371,10 @@ public:
   static const Skill *SPELL_RESIST_ELEMENTS, *SPELL_GIANT_STRENGTH, *SPELL_STONE_SKIN, *SPELL_SWIMMING, *SPELL_PATH_FINDER, *SPELL_ELEMENTAL_ARMOR, *SPELL_IRON_SKIN;
   static const Skill *SPELL_RESIST_MAGIC, *SPELL_GUARDIAN_WIND, *SPELL_FLYING, *SPELL_ENDURANCE, *SPELL_HEROISM, *SPELL_HOLY_ARMOR, *SPELL_HOLY_WEAPON, *SPELL_PLANAR_TRAVEL, *SPELL_TRUE_SIGHT;
     
+
+  /* nature spells*/
+  static constexpr const char* SPELL_NATURE_RESIST_ELEMENTS = "spell_resist_elements";
+  static constexpr const char* SPELL_NATURE_ELEMENTAL_ARMOR = "spell_elemental_armor";
 };
 
 #endif

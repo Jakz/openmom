@@ -75,7 +75,9 @@ protected:
   std::list<City*> cities;
   std::list<Army*> armies;
   std::list<Hero*> heroes;
+  /* mana nodes owned by the player */
   std::list<ManaNode*> nodes;
+  /* global spells of the player */
   cast_list spells;
 
   std::unordered_set<const Retort*> retorts;
@@ -85,20 +87,20 @@ protected:
   const combat::Combat* combat;
   mutable FogMap *fogMap;
 
-  u8 taxRate; // TODO: maybe enum
+  value_t taxRate; // TODO: maybe enum
 
-  s32 manaRatios[3];
-  s32 fame;
+  value_t manaRatios[3];
+  value_t fame;
 
-  s32 goldGain, manaGain, foodGain;
-  s32 goldUpkeep, manaUpkeep, foodUpkeep;
-  s32 goldPool, manaPool;
+  value_t goldGain, manaGain, foodGain;
+  value_t goldUpkeep, manaUpkeep, foodUpkeep;
+  value_t goldPool, manaPool;
 
-  s32 researchGain;
+  value_t researchGain;
   
-  s32 castingSkillCounter;
-  s32 castingSkillGained_;
-  s32 availableMana;
+  value_t castingSkillCounter;
+  value_t castingSkillGained_;
+  value_t availableMana;
 
   bool alive;
 
@@ -111,24 +113,24 @@ public:
   
   void spendGold(s32 amount) { goldPool -= amount; }
   
-  s32 totalGoldPool() const { return goldPool; }
-  s32 totalManaPool() const { return manaPool; }
+  value_t totalGoldPool() const { return goldPool; }
+  value_t totalManaPool() const { return manaPool; }
   
-  s32 goldDelta() const { return goldGain - goldUpkeep; }
-  s32 manaDelta() const { return manaRatios[0] - manaUpkeep; }
-  s32 foodDelta() const { return foodGain - foodUpkeep; }
+  value_t goldDelta() const { return goldGain - goldUpkeep; }
+  value_t manaDelta() const { return manaRatios[0] - manaUpkeep; }
+  value_t foodDelta() const { return foodGain - foodUpkeep; }
   
-  s32 castingSkillBase() const;
-  s32 castingSkill() const;
-  s32 castingSkillGained() const { return castingSkillGained_; }
-  s32 manaRatio(size_t index) const { return manaRatios[index]; }
-  s32 getAvailableMana() const { return availableMana; }
-  s32 getManaGain() const { return manaGain; }
+  value_t castingSkillBase() const;
+  value_t castingSkill() const;
+  value_t castingSkillGained() const { return castingSkillGained_; }
+  value_t manaRatio(size_t index) const { return manaRatios[index]; }
+  value_t getAvailableMana() const { return availableMana; }
+  value_t getManaGain() const { return manaGain; }
   
   const TaxRate& getTaxRate();
-  s32 getFame() const { return fame; }
+  value_t getFame() const { return fame; }
   
-  void alchemy(s32 gold, s32 mana) { goldPool += gold; manaPool -= mana; }
+  void alchemy(value_t gold, value_t mana) { goldPool += gold; manaPool -= mana; }
   
   const combat::Combat* getCombat() const { return combat; }
   void setCombat(combat::Combat* combat) { this->combat = combat; }
@@ -136,7 +138,7 @@ public:
   s32 baseResearchPoints() const { return researchGain + manaRatios[1]; }
   s32 researchPoints() const;
   
-  void setManaRatios(s32 m, s32 r, s32 s) { manaRatios[0] = m; manaRatios[1] = r; manaRatios[2] = s; }
+  void setManaRatios(value_t m, value_t r, value_t s) { manaRatios[0] = m; manaRatios[1] = r; manaRatios[2] = s; }
   
   void combatCast(const Spell* spell) { spellBook.combatCast(spell); }
 
@@ -180,7 +182,6 @@ public:
   City* cityWithSummoningCircle() const;
   
   bool hasRetort(const std::string& ident) const {
-    //TODO: Data::isKeyValid<Retort>(ident)
     return std::find_if(retorts.begin(), retorts.end(), [&ident](const Retort* retort) { return retort->identifier == ident; }) != retorts.end();
   }
   bool hasMastery(School school) const

@@ -68,12 +68,15 @@ public:
 
   virtual Order compare(const Unit* unit, const SkillEffect* other) const { return Order::UNCOMPARABLE; }
   
-  template<typename T> Type typeForClass();
-  template<typename T> const T* as() const { return type == typeForClass<T>() ? static_cast<const T*>(this) : nullptr; }
+  template<typename T> Type typeForClass() const { return SkillEffect::Type::UNIT_BONUS;  }
+  template<typename T> const T* as() const { return true || type == typeForClass<T>() ? static_cast<const T*>(this) : nullptr; }
 };
 
-template<> SkillEffect::Type SkillEffect::typeForClass<ArmyBonus>() { return SkillEffect::Type::ARMY_BONUS; }
-template<> SkillEffect::Type SkillEffect::typeForClass<UnitBonus>() { return SkillEffect::Type::UNIT_BONUS; }
+class ArmyBonus;
+class UnitBonus;
+
+template<> inline SkillEffect::Type SkillEffect::typeForClass<ArmyBonus>() const { return SkillEffect::Type::ARMY_BONUS; }
+template<> inline SkillEffect::Type SkillEffect::typeForClass<UnitBonus>() const { return SkillEffect::Type::UNIT_BONUS; }
 
 
 template<typename T, SkillEffect::Type TYPE>

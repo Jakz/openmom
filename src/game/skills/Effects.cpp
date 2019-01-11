@@ -35,7 +35,7 @@ s16 FilterUnitBonus::getValue(const Unit* unit) const
 
 effect_list effect_list::actuals(const Unit* unit) const
 {
-  std::unordered_map<const SkillEffectGroup*, const SkillEffect*> byGroup;
+  std::unordered_multimap<const SkillEffectGroup*, const SkillEffect*> byGroup;
 
   using pair_t = const decltype(byGroup)::value_type;
   auto sorter = [unit](const pair_t& e1, const pair_t& e2) { return e1.second->compare(unit, e2.second) == SkillEffect::Order::LESSER; };

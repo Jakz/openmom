@@ -20,21 +20,21 @@ class Unit;
 class SkillSet
 {
 private:
-  const Unit& unit;
+  const Unit* unit;
 
-  const skill_list& nativeSkills;
-  skill_list additionalSkills;
+  skill_list nativeSkills;
   cast_list spells;
 
 
 public:
-  SkillSet(Unit& unit);
+  SkillSet(const Unit* unit);
+  SkillSet(skill_init_list skills) : nativeSkills(skills) { }
 
   size_t size() const;
   const Skill* get(size_t index) const;
   const Skill* operator[](size_t index) const { return get(index); }
   
-  void add(const Skill* skill) { additionalSkills.push_back(skill); }
+  void add(const Skill* skill) { nativeSkills.push_back(skill); }
   void add(const SpellCast& cast) { spells.push_back(cast); }
   
   void remove(const Spell* spell);

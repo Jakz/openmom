@@ -826,6 +826,8 @@ struct Retort
     
     return std::all_of(requirements.begin(), requirements.end(), [&books](const Requirement& req) { return req.isSatisfied(books); });
   }
+
+  bool operator==(const std::string& identifier) const { return this->identifier == identifier; }
 };
 
 struct Wizard

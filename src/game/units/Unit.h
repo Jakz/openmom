@@ -55,7 +55,7 @@ private:
   Army* army;
 
 protected:
-  Unit(const UnitSpec* spec) : spec(spec), army(nullptr), _skills(*this), _health(*this), selected(true),
+  Unit(const UnitSpec* spec) : spec(spec), army(nullptr), _skills(this), _health(*this), selected(true),
   experience(0, spec->type == UnitType::RACIAL ? &Data::experienceLevelsForUnits() : (spec->type == UnitType::HERO ? &Data::experienceLevelsForHeroes() : nullptr))
   {
     resetMoves();
