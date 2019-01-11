@@ -148,15 +148,12 @@ prop_value Unit::getBonusProperty(Property property) const
     
     for (auto cast : spells)
     {
-      if (cast.spell->type == SpellType::COMBAT_ENCHANT)
-      {
-        const CombatEnchSpell* ench = cast.asCombatEnchSpell();
-        
-        if (ench->effect.type == CombatEnchEffect::Type::UNIT_MODIFIER)
-        {
-          const CombatEnchModifier& modifier = static_cast<const CombatEnchModifier&>(ench->effect);
-          modifier.apply(army->getOwner()->getCombat(), cast, this, property);
-        }
+      const CombatEnchSpell* ench = cast.asCombatEnchSpell();
+
+      if (ench && ench->effect.type == CombatEnchEffect::Type::UNIT_MODIFIER)
+      {        
+         const CombatEnchModifier& modifier = static_cast<const CombatEnchModifier&>(ench->effect);
+         modifier.apply(army->getOwner()->getCombat(), cast, this, property);
       }
     }
   }

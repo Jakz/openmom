@@ -38,28 +38,27 @@ void SkillSet::remove(const Spell* spell)
     spells.erase(it);
 }
 
-s16 SkillSet::spellsUpkeep() const
+value_t SkillSet::spellsUpkeep() const
 {
-  return accumulate(spells.begin(), spells.end(), 0, [](s16 value, const SpellCast& cast) { return value + cast.spell->mana.upkeep; });
+  return accumulate(spells.begin(), spells.end(), 0, [](value_t value, const SpellCast& cast) { return value + cast.spell->mana.upkeep; });
 }
 
-s16 SkillSet::bonusForProperty(Property property) const
+prop_value SkillSet::bonusForProperty(Property property) const
 {
-  s16 bonus = 0;
+  prop_value bonus = 0;
+
+  effect_list effects;
   
+  //TODO: rewrite interely, this only works with additive property bonuses, doesnt't sort them by priority and such
+
   // add bonuses from specific UnitBonus effect
   for (const Skill* skill : *this)
-  {
-    const effect_list& effects = skill->getEffects();
-    
-    for (const auto e : effects)
+  {    
+    for (const auto e : skill->getEffects())
     {
-      if (e->type == SkillEffect::Type::UNIT_BONUS)
-      {
-        const UnitBonus* ub = e->as<UnitBonus>();
-      
-        if (ub->sameProperty(property)) bonus += ub->getValue(&unit);
-      }
+      const PropertyBonus* ub = e->as<UnitBonus>();
+      if (ub && ub->sameProperty(property))
+        effects.push_back(ub);
     }
   }
   
@@ -69,22 +68,22 @@ s16 SkillSet::bonusForProperty(Property property) const
     for (const auto u : *unit.getArmy())
     {
       for (const Skill* skill : *u->skills())
-      {
-        const effect_list& effects = skill->getEffects();
-        
-        for (const auto e : effects)
+      {        
+        for (const auto e : skill->getEffects())
         {
-          if (e->type == SkillEffect::Type::ARMY_BONUS)
-          {
-            const ArmyBonus* ub = e->as<ArmyBonus>();
-            if (ub->sameProperty(property)) bonus += ub->getValue(&unit);
-          }
+          const PropertyBonus* ub = e->as<ArmyBonus>();
+          if (ub && ub->sameProperty(property))
+            effects.push_back(ub);
         }
       }
-
     }
   }
+
+  effects = effects.actuals(&unit);
   
+  for (const auto* effect : effects)
+    bonus += effect->as<PropertyBonus>()->getValue(&unit);
+
   return bonus;
 }
 

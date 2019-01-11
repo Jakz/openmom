@@ -130,9 +130,9 @@ bool Player::hasSpell(const GlobalSpell* spell) const
 }
 
 
-s16 Player::globalSkillSpellsCount(const Unit* u) const
+count_t Player::globalSkillSpellsCount(const Unit* u) const
 {
-  u32 count = static_cast<u32>(count_if(spells.begin(), spells.end(), [&](const SpellCast& cast) {
+  count_t count = static_cast<u32>(count_if(spells.begin(), spells.end(), [&](const SpellCast& cast) {
     const Spell* spell = cast.spell;
     return spell->type == SpellType::GLOBAL_SKILL;
   }));

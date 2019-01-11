@@ -210,7 +210,7 @@ public:
 
   const UnitSpell* asUnitSpell() const { return as<UnitSpell>(); }
   const CitySpell* asCitySpell() const { return as<CitySpell>(); }
-  const CombatEnchSpell* asCombatEnchSpell() { return as<CombatEnchSpell>(); }
+  const CombatEnchSpell* asCombatEnchSpell() { return spell->type == SpellType::COMBAT_ENCHANT ? as<CombatEnchSpell>() : nullptr; }
 };
 
 

@@ -116,14 +116,21 @@ void Gfx::rect(u16 x, u16 y, u16 w, u16 h, Color color)
   unlock(canvas);
 }
 
+constexpr color_d SHADOW_COLOR = 0xFF00FF00U;
+constexpr color_d TRANSPARENT_COLOR = 0xFFFF00FFU;
+constexpr color_d ALPHA_MASK = 0xFF000000U;
+constexpr color_d RED_MASK = 0x00FF0000U;
+constexpr color_d GREEN_MASK = 0x0000FF00U;
+constexpr color_d BLUE_MASK = 0x000000FFU;
+
 void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
 {
   lock(canvas);
   
-  u32 a = (color & 0xFF000000) >> 24;
-  u32 r = (color & 0x00FF0000) >> 16;
-  u32 g = (color & 0x0000FF00) >> 8;
-  u32 b = (color & 0x000000FF);
+  u32 a = (color & ALPHA_MASK) >> 24;
+  u32 r = (color & RED_MASK) >> 16;
+  u32 g = (color & GREEN_MASK) >> 8;
+  u32 b = (color & BLUE_MASK);
   
   for (s32 y = 0; y < rect.h; ++y)
   {
@@ -133,10 +140,10 @@ void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
       {
         u32 ps = canvas->at(rect.x+x, rect.y+y);
         
-        u32 a2 = (ps & 0xFF000000);
-        u32 r2 = (ps & 0x00FF0000) >> 16;
-        u32 g2 = (ps & 0x0000FF00) >> 8;
-        u32 b2 = (ps & 0x000000FF);
+        u32 a2 = (ps & ALPHA_MASK);
+        u32 r2 = (ps & RED_MASK) >> 16;
+        u32 g2 = (ps & GREEN_MASK) >> 8;
+        u32 b2 = (ps & BLUE_MASK);
         
         u32 rd = (r * a) + (r2 * (255-a));
         u32 gd = (g * a) + (g2 * (255-a));
@@ -155,6 +162,7 @@ void Gfx::alphaBlend(const SDL_Rect& rect, Color color)
 }
 
 #define ALPHA_SHIFT (1)
+
 void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s16 tx, s16 ty, u16 w, u16 h, u16 r, u16 c)
 {
   lock(gsrc);
@@ -179,7 +187,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
         if (palette)
           ps = palette->get(ps);
         
-        if (ps == 0xFF00FF00)
+        if (ps == SHADOW_COLOR)
         {
           Color pd = gdst->at(tx+x,ty+y);
           
@@ -191,7 +199,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
           
           gdst->set(tx+x, ty+y, {r,g,b});
         }
-        else if (ps == 0xFFFF00FF)
+        else if (ps == TRANSPARENT_COLOR)
           continue;
         else
         {
@@ -201,7 +209,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
           if (map)
             ps = map->get(ps);
           
-          u32 sa = ((ps & 0xFF000000) >> 24);
+          u32 sa = ((ps & ALPHA_MASK) >> 24);
           
           if (sa == 0xFF)
             gdst->set(tx+x, ty+y, ps);
@@ -212,13 +220,13 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
             int da = 256 - sa;
             
             Color pd = gdst->at(tx+x, ty+y);
-            int r2 = (pd & 0x00FF0000) >> 16;
-            int g2 = (pd & 0x0000FF00) >> 8;
-            int b2 = (pd & 0x000000FF);
+            int r2 = (pd & RED_MASK) >> 16;
+            int g2 = (pd & GREEN_MASK) >> 8;
+            int b2 = (pd & BLUE_MASK);
             
-            int r1 = (ps & 0x00FF0000) >> 16;
-            int g1 = (ps & 0x0000FF00) >> 8;
-            int b1 = (ps & 0x000000FF);
+            int r1 = (ps & RED_MASK) >> 16;
+            int g1 = (ps & GREEN_MASK) >> 8;
+            int b1 = (ps & BLUE_MASK);
             
             gdst->set(tx+x, ty+y, 0xFF000000 | (((r2*da + r1*sa) >> 8) << 16) | (((g2*da + g1*sa) >> 8) << 8) | ((b2*da + b1*sa) >> 8));
           }

@@ -68,8 +68,13 @@ public:
 
   virtual Order compare(const Unit* unit, const SkillEffect* other) const { return Order::UNCOMPARABLE; }
   
-  template<typename T> const T* as() const { return static_cast<const T*>(this); }
+  template<typename T> Type typeForClass();
+  template<typename T> const T* as() const { return type == typeForClass<T>() ? static_cast<const T*>(this) : nullptr; }
 };
+
+template<> SkillEffect::Type SkillEffect::typeForClass<ArmyBonus>() { return SkillEffect::Type::ARMY_BONUS; }
+template<> SkillEffect::Type SkillEffect::typeForClass<UnitBonus>() { return SkillEffect::Type::UNIT_BONUS; }
+
 
 template<typename T, SkillEffect::Type TYPE>
 class SkillEnumEffect : public SkillEffect
@@ -227,7 +232,7 @@ protected:
 public:
   const enum class Type { WHOLE_ARMY, NORMAL_UNITS } target;
   
-  ArmyBonus(Property property, Mode mode, s16 value, Type target) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, mode, value), target(target) { }
+  ArmyBonus(Property property, Mode mode, s16 value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, mode, value), target(target) { }
   ArmyBonus(Property property, s16 value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, PropertyBonus::Mode::ADDITIVE, value), target(target) { }
   s16 getValue(const Unit* unit) const override;
 };

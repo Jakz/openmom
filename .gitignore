@@ -1,7 +1,9 @@
 *.dylib
 .DS_Store
 **/.vs/**
+**/vs2017/**/x64/**
 **/vs2017/**/Debug/**
+**/vs2017/**/*.dll
 *.lbx
 data/lbx/*
 build/**

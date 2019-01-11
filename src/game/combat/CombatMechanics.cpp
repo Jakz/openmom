@@ -187,6 +187,13 @@ void CombatMechanics::castCombatInstant(const SpellCast& cast, const CombatUnit 
 
 #pragma mark CombatFormulas
 
+/*
+  http://masterofmagic.wikia.com/wiki/Defense#Order_of_Operations_for_Resolving_Defense_and_Immunities
+  http://masterofmagic.wikia.com/wiki/Resistance
+  http://masterofmagic.wikia.com/wiki/Conventional_Damage
+  http://masterofmagic.wikia.com/wiki/Attack_Strength#Table_Of_Attack_Strength_Modifiers
+*/
+
 value_t CombatFormulas::passingRollsf(value_t count, float chance)
 {
   value_t passed = 0;

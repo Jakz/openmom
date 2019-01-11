@@ -9,6 +9,14 @@
 
 class Unit;
 
+/*class SkillSetFetcher
+{
+  const Unit* unit();
+  const Army* army();
+  const combat::Combat* combat();
+  const Player* player();
+};*/
+
 class SkillSet
 {
 private:
@@ -31,9 +39,9 @@ public:
   
   void remove(const Spell* spell);
   
-  s16 spellsUpkeep() const;
+  value_t spellsUpkeep() const;
   
-  s16 bonusForProperty(Property property) const;
+  prop_value bonusForProperty(Property property) const;
   
   cast_list::iterator spellIterator() { return spells.begin(); }
   cast_list::const_iterator spellIterator() const { return spells.begin(); }
