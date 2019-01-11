@@ -85,8 +85,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\tests\catch.hpp" />
+    <ClInclude Include="..\..\..\src\tests\tests.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\tests\main.cpp" />
     <ClCompile Include="..\..\..\src\tests\tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -52,8 +52,6 @@ const vector<string> findFiles(string path, const char *ext)
 {
   vector<string> packs;
   
-  
-  
   DIR *dir;
   struct dirent *ent;
   if ((dir = opendir (path.c_str())) != NULL) {
@@ -375,7 +373,6 @@ std::vector<LBXTerrainSpriteSpecs> LBX::scanTerrainTileInfo(FILE* in)
   for (size_t i = 0; i < count; ++i)
   {
     fread(&data[i].minimapColor, sizeof(u8), 1, in);
-    //printf("index in array: %04x %04zu, values: %02x %02x, index in terrain: %d %04x, animated: %c, data: %02x\n", (u32)i, i, data[i].data[0], data[i].data[1], data[i].index(), data[i].index(), data[i].animated() ? 'y' : 'n', data[i].data2);
   }
   
   return data;

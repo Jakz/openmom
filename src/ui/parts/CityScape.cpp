@@ -164,7 +164,7 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
   //  Gfx::draw(TextureID::CITY_LANDSCAPE, 6+3*p, 0, 3, 101);
   
   
-  Gfx::draw(TextureID::CITY_ROADS, 0, 0, 5, 118);
+  Gfx::draw(TSI(CITY_ROADS, 0, 0), 5, 118);
   
   const auto& houseSpec = GfxData::raceHouseGfxSpec(GfxData::raceGfxSpec(city->race).houseType);
   

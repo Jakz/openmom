@@ -159,7 +159,7 @@ void Gfx::rawBlit(const SpriteSheet *gsrc, SpriteSheet *gdst, u16 fx, u16 fy, s1
 {
   lock(gsrc);
   lock(gdst);
-  
+
   bool nativePalette = !palette && gsrc->getPalette();
   if (nativePalette)
     palette = gsrc->getPalette();
@@ -250,25 +250,6 @@ void Gfx::resetBuffer(u16 w, u16 h, u16 x, u16 y)
       buffer->set(x + xx, y + yy, 0x00000000);
   unlock(buffer);
 }
-/*
-
-void Gfx::drawClippedToWidth(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t)
-{
-  const Texture* tex = Texture::get(texture);
-  drawClipped(texture, x, y, r*tex->w, c*tex->h, t, tex->h);
-}
-
-void Gfx::drawClippedFromWidth(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t)
-{
-  const Texture* tex = Texture::get(texture);
-  drawClipped(texture, x, y, r*tex->w + t, c*tex->h, tex->w - t, tex->h);
-}
-
-void Gfx::drawClippedFromHeight(TextureID texture, s16 r, s16 c, s16 x, s16 y, s16 t)
-{
-  const Texture* tex = Texture::get(texture);
-  drawClipped(texture, x, y, r*tex->w, c*tex->h + t, tex->w, tex->h - t);
-}*/
 
 void Gfx::drawClipped(const SpriteSheet* sheet, s16 x, s16 y, s16 fx, s16 fy, s16 w, s16 h)
 {
@@ -296,31 +277,6 @@ void Gfx::drawClipped(SpriteInfo info, u16 sx, u16 sy, s16 tx, s16 ty, s16 w, s1
 void Gfx::rawDraw(SpriteInfo info, u16 x, u16 y)
 {
   blit(info.sheet(), canvas, 0, 0, x, y, info.sw(), info.sh(), info.x(), info.y());
-}
-
-void Gfx::rawDraw(TextureID texture, u16 r, u16 c, u16 x, u16 y)
-{
-  const Texture* tex = Texture::get(texture);
-  blit(tex, canvas, 0, 0, x, y, tex->sw(r,c), tex->sh(r,c), c, r);
-}
-
-void Gfx::draw(TextureID texture, u16 x, u16 y)
-{
-  const Texture* tex = Texture::get(texture);
-  blit(tex, activeBuffer, 0, 0, x, y, tex->sw(), tex->sh(), 0, 0);
-}
-
-void Gfx::draw(TextureID texture, u16 i, u16 x, u16 y)
-{
-  const Texture* tex = Texture::get(texture);
-  draw(texture, i / tex->cols, i % tex->cols, x, y);
-}
-
-void Gfx::draw(TextureID texture, u16 r, u16 c, s16 x, s16 y)
-{
-  const Texture* tex = Texture::get(texture);
-  
-  blit(tex, activeBuffer, 0, 0, x, y, tex->sw(r,c), tex->sh(r,c), r, c);
 }
 
 void Gfx::draw(const SpriteSheet* sheet, s16 x, s16 y, u16 r, u16 c)

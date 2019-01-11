@@ -102,8 +102,8 @@ void MessageView::draw()
     {
       const msgs::NewBuilding* msg = message->as<const msgs::NewBuilding>();
       
-      Gfx::draw(TextureID::MESSAGE_LEFT, 7, 61);
-      Gfx::draw(TextureID::MESSAGE_RIGHT, 243, 61);
+      Gfx::draw(TSI(MESSAGE_LEFT, 0, 0), 7, 61);
+      Gfx::draw(TSI(MESSAGE_RIGHT, 0, 0), 243, 61);
       Gfx::draw(LSI(BACKGRND, 10), 249, 69); // building background
       const auto& school = GfxData::schoolGfxSpec(msg->city->getOwner()->book()->predominantSchool());
       Gfx::draw(school.messageMascot.gfx, school.messageMascot.offset);

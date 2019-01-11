@@ -89,8 +89,6 @@ public:
 
   u32 at(index_t x, index_t y, index_t r, index_t c) const override;
 
-  u16 span(u16 i) const { return ws.empty() ? w : ws[i]; }
-
 
   static inline u16 upTo(const std::vector<u16>& ws, u16 i) { u16 r = 0; for (u16 j = 0; j < i; ++j) r += ws[j]; return r; }
 

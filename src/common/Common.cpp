@@ -20,10 +20,7 @@ void debugprintf(const char* str, ...)
 
 SpriteInfo::SpriteInfo(TextureID texture, u16 i) : SpriteInfo(texture, i / Texture::get(texture)->cols, i % Texture::get(texture)->cols)
 {
-	//TODO: MSVC has strange size padding requirements for members with different types
-#if !_WIN32
 	static_assert(sizeof(SpriteInfo) == sizeof(SpriteInfo::data_type), "");
-#endif
 }
 
 const SpriteSheet* SpriteInfo::sheet() const

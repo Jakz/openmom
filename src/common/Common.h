@@ -44,11 +44,13 @@
 #define STRUCT_PACKING_PUSH __pragma(pack(push,1))
 #define STRUCT_PACKING_POP __pragma(pack(pop))
 #define PACKED
+#define PACKED_STRUCTS_REQUIRE_SAME_TYPE true
 #else
 #define STRUCT_PACKED
 #define STRUCT_PACKING_PUSH
 #define STRUCT_PACKING_POP
 #define PACKED __attribute__((packed))
+#define PACKED_STRUCTS_REQUIRE_SAME_TYPE false
 #endif
 
 
@@ -206,31 +208,6 @@ enum MouseButton : u8
   BUTTON_MIDDLE = SDL_BUTTON_MIDDLE
 };
 
-enum class LBXID : u8
-{
-  ARMYLIST = 0, BACKGRND, BOOK, BUILDDAT, BUILDESC,
-  CHRIVER, CITYNAME, CITYSCAP, CITYWALL, CMBDESRC,
-  CMBDESRT, CMBGRASC, CMBGRASS, CMBMAGIC, CMBMOUNC,
-  CMBMOUNT, CMBTCITY, CMBTFX, CMBTSND, CMBTUNDC, 
-  CMBTUNDR, CMBTWALL, COMBAT, COMPIX, CONQUEST, DESC,
-  DESERT, DIPLOMAC, DIPLOMSG, EVENTMSG, EVENTS, FIGURES1,
-  FIGURES2, FIGURES3, FIGURES4, FIGURES5, FIGURES6,
-  FIGURES7, FIGURES8, FIGURES9, FIGURE10, FIGURE11,
-  FIGURE12, FIGURE13, FIGURE14, FIGURE15, FIGURE16,
-  FONTS, HALOFAM, HELP, HERODATA, HIRE, HLPENTRY,
-  INTRO, INTROSFX, INTROSND, ITEMDATA, ITEMISC,
-  ITEMPOW, ITEMS, LILWIZ, LISTDAT, LOAD, LOSE, MAGIC,
-  MAIN, MAINSCRN, MAPBACK, MESSAGE, MONSTER, MOODWIZ,
-  MUSIC, NAMES, NEWGAME, NEWSOUND, PORTRAIT, RELOAD,
-  RESOURCE, SCROLL, SNDDRV, SOUNDFX, SPECFX, SPECIAL,
-  SPECIAL2, SPELLDAT, SPELLOSE, SPELLS, SPELLSCR,
-  SPLMASTR, TERRAIN, TERRSTAT, TERRTYPE, TUNDRA,
-  UNITS1, UNITS2, UNITVIEW, VORTEX, WALLRISE, WIN,
-  WIZARDS, WIZLAB,
-  
-  COUNT
-};
-
 #define LBXI(x, y) (0x80000000 | (static_cast<u32>(LBXID::x) << 16) | (y))
 #define LBXF(x, y, f) (0x80000000 | (static_cast<u32>(f) << 24) | (static_cast<u32>(LBXID::x) << 16) | (y))
 #define LBXU(x) SpriteInfo(x)
@@ -238,6 +215,7 @@ enum class LBXID : u8
 #define LSI_PLACEHOLD SpriteInfo(LBXID::COUNT, 0)
 #define TSI(x, y, z) SpriteInfo(TextureID::x, y, z)
 #define TSIS(x, y) SpriteInfo(TextureID::x, y)
+
 
 struct DiscreteTimer
 {
@@ -542,7 +520,7 @@ struct PositionOffset
 inline DirJoin operator~(const DirJoin& lhs)
 {
   using utype_t = std::underlying_type<DirJoin>::type;
-  return static_cast<DirJoin>(~static_cast<utype_t>(lhs));
+  return static_cast<DirJoin>(~static_cast<utype_t>(lhs) & 0xFF);
 }
 
 inline DirJoin operator&(const DirJoin& lhs, const DirJoin& rhs) {
@@ -695,34 +673,38 @@ private:
   union
   {
     data_type data;
+
+#if PACKED_STRUCTS_REQUIRE_SAME_TYPE
+    struct { u16 _index : 16; u16 _lbx : 8; u16 _frame : 7; u16 __is_lbx : 1; } as_lbx;
+    struct { u16 _y : 8; u16 _x : 8; u16 _tex : 15; u16 _is_lbx : 1; } as_texture;
+#else
     struct { u16 _index : 16; LBXID _lbx : 8; u8 _frame : 7; bool __is_lbx : 1; } as_lbx;
     struct { u16 _y : 8; u16 _x : 8; TextureID _tex : 15; bool _is_lbx : 1; } as_texture;
+#endif
   };
   
 public:
-  SpriteInfo() : SpriteInfo(0) { }
-  SpriteInfo(data_type data) : data(data) { }
-  //template<typename T, typename std::enable_if<std::is_enum<T>::value /*&& std::is_same<typename std::underlying_type<T>::type, data_type>::value*/, int>::type = 0> SpriteInfo(T v) : data(static_cast<data_type>(v)) { }
+  constexpr SpriteInfo() : SpriteInfo(0) { }
+  constexpr SpriteInfo(data_type data) : data(data) { }
   
   SpriteInfo& operator=(const SpriteInfo& o) { this->data = o.data; return *this; }
   
-  explicit SpriteInfo(TextureID texture, s8 x, s8 y) : data((static_cast<u32>(texture) << texture_id_shift) | (x << texture_x_shift) | (y << texture_y_shift)) { assert(x >= 0 && y >= 0); }
+  explicit constexpr SpriteInfo(TextureID texture, s8 x, s8 y) : data((static_cast<u32>(texture) << texture_id_shift) | (x << texture_x_shift) | (y << texture_y_shift)) { assert(x >= 0 && y >= 0); }
   explicit SpriteInfo(TextureID texture, u16 i);
   
   explicit constexpr SpriteInfo(LBXID lbx, u16 index) : data(lbx_flag_mask | (static_cast<u32>(lbx) << lbx_id_shift) | (index << lbx_index_shift)) { }
   explicit constexpr SpriteInfo(LBXID lbx, u16 index, u8 frame) : data(lbx_flag_mask | (frame << lbx_frame_shift) | (static_cast<u32>(lbx) << lbx_id_shift) | (index << lbx_index_shift)) { assert(frame <= 128); }
 
+  constexpr bool isLBX() const { return data & lbx_flag_mask; }
   
-  bool isLBX() const { return data & lbx_flag_mask; }
+  constexpr TextureID texture() const { return static_cast<TextureID>((data & texture_id_mask) >> texture_id_shift); }
   
-  TextureID texture() const { return static_cast<TextureID>((data & texture_id_mask) >> texture_id_shift); }
+  constexpr u16 x() const { return isLBX() ? 0 : (data & texture_x_mask) >> texture_x_shift; }
+  constexpr u16 y() const { return isLBX() ? frame() : (data & texture_y_mask) >> texture_y_shift; }
   
-  u16 x() const { return isLBX() ? 0 : (data & texture_x_mask) >> texture_x_shift; }
-  u16 y() const { return isLBX() ? frame() : (data & texture_y_mask) >> texture_y_shift; }
-  
-  LBXID lbx() const { return static_cast<LBXID>((data & lbx_id_mask) >> lbx_id_shift); }
-  u16 index() const { return (data & lbx_index_mask) >> lbx_index_shift; }
-  u8 frame() const { return (data & lbx_frame_mask) >> lbx_frame_shift; }
+  constexpr LBXID lbx() const { return static_cast<LBXID>((data & lbx_id_mask) >> lbx_id_shift); }
+  constexpr u16 index() const { return (data & lbx_index_mask) >> lbx_index_shift; }
+  constexpr u8 frame() const { return (data & lbx_frame_mask) >> lbx_frame_shift; }
   
   u16 sw() const { return sheet()->sw(x(), y()); }
   u16 sh() const { return sheet()->sh(x(), y()); }
@@ -731,12 +713,17 @@ public:
   
   u16 count() const;
   
-  SpriteInfo relative(s16 offset) const { return SpriteInfo(lbx(), index()+offset); }
-  SpriteInfo frame(s16 offset, u8 f) const { return SpriteInfo(lbx(), index()+offset, f); }
-  SpriteInfo frame(u8 f) const { return SpriteInfo(lbx(), index(), f); }
-  SpriteInfo lbx(LBXID l) const { return SpriteInfo(l, index(), frame()); }
-  
-  bool isValid() const { return lbx() < LBXID::COUNT; }
+  inline constexpr SpriteInfo relative(s16 offset) const { assert(isLBX()); return SpriteInfo(lbx(), index() + offset); }
+  inline constexpr SpriteInfo frame(s16 offset, u8 f) const { assert(isLBX()); return SpriteInfo(lbx(), index() + offset, f); }
+  inline constexpr SpriteInfo frame(u8 f) const { assert(isLBX()); return SpriteInfo(lbx(), index(), f); }
+  inline constexpr SpriteInfo lbx(LBXID l) const { assert(isLBX()); return SpriteInfo(l, index(), frame()); }
+
+  inline constexpr SpriteInfo x(u16 x) const { assert(!isLBX()); return SpriteInfo(texture(), x, y()); }
+  inline constexpr SpriteInfo y(u16 y) const { assert(!isLBX()); return SpriteInfo(texture(), x(), y); }
+  inline constexpr SpriteInfo xy(u16 x, u16 y) const { assert(!isLBX()); return SpriteInfo(texture(), x, y); }
+
+
+  constexpr bool isValid() const { return lbx() < LBXID::COUNT; }
   
   bool operator==(const SpriteInfo& other) const { return data == other.data; }
   bool operator!=(const SpriteInfo& other) const { return data != other.data; }
