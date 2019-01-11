@@ -65,6 +65,7 @@ public:
   SkillEffect(Type type, const SkillEffectGroup* group) : type(type), _group(group) { }
   SkillEffect(Type type) : SkillEffect(type, nullptr) { }
   
+  virtual bool isCompound() const { return false; }
   virtual size_t size() const { return 1; }
 
   void setGroup(const SkillEffectGroup* group) { this->_group = group; }
@@ -338,6 +339,28 @@ public:
 };
 
 using effect_init_list = const std::initializer_list<const SkillEffect*>;
+struct effect_list;
+
+struct effect_list_deep_iterator
+{
+private:
+  std::stack<std::pair<const effect_list*, effect_list::iterator>> stack;
+  void adjust();
+
+public:
+  using difference_type = ptrdiff_t;
+  using value_type = SkillEffect * ;
+  using reference = const SkillEffect&;
+  using pointer = const SkillEffect*;
+  using iterator_category = std::bidirectional_iterator_tag;
+
+public:
+  effect_list_deep_iterator(const effect_list* list, effect_list::iterator it) { stack.push(std::make_pair(list, it)); }
+
+  //TODO: complicated
+  effect_list_deep_iterator& operator++();
+  const SkillEffect* operator*() const { return *stack.top().second; }
+};
 
 struct effect_list
 {
@@ -355,8 +378,12 @@ public:
   
   void push_back(const SkillEffect* effect) { data.push_back(effect); }
   void resize(size_t size) { data.resize(size); }
+
   iterator begin() const { return data.begin(); }
   iterator end() const { return data.end(); }
+  
+  effect_list_deep_iterator dbegin() { return effect_list_deep_iterator(this, begin()); }
+
   size_t size() const { return data.size(); }
   size_t flatSize() const { return std::accumulate(data.begin(), data.end(), 0UL, [](size_t v, const SkillEffect* effect) { return v + effect->size(); }); }
   
@@ -382,24 +409,23 @@ public:
   effect_list actuals(const Unit* unit) const;
 };
 
-struct effect_list_deep_iterator
+/* traverse effect until a real effect is found */
+void effect_list_deep_iterator::adjust()
 {
-private:
-  std::stack<std::pair<const effect_list*, effect_list::iterator>> stack;
+  const SkillEffect* c = operator*();
+  
+  while (c->type == SkillEffect::Type::COMPOUND)
+  {
 
-public:
-  using difference_type = ptrdiff_t;
-  using value_type = SkillEffect * ;
-  using reference = const SkillEffect&;
-  using pointer = const SkillEffect*;
-  using iterator_category = std::bidirectional_iterator_tag;
+  }
+  
+  const auto& current = stack.top();
+}
 
-public:
-  effect_list_deep_iterator(const effect_list* list, effect_list::iterator it) { stack.push(std::make_pair(list, it)); }
-
-  //TODO: complicated
-};
-
+effect_list_deep_iterator& effect_list_deep_iterator::operator++()
+{
+  
+}
 
 //TODO: to remove after hardcoded effects has been removed
 static const effect_list unit_bonus_build(std::initializer_list<Property> properties, s16 value)
@@ -421,7 +447,11 @@ public:
   CompoundEffect(SkillEffectGroup* group) : SkillEffect(SkillEffect::Type::COMPOUND, group) { }
   CompoundEffect(const effect_list& effects) : SkillEffect(SkillEffect::Type::COMPOUND), effects(effects) { }
 
+  bool isCompound() const override { return true; }
   size_t size() const override { return effects.size(); }
+
+  effect_list_deep_iterator dbegin() { return effect_list_deep_iterator(&effects, effects.begin()); }
+  effect_list_deep_iterator dend() { return effect_list_deep_iterator(&effects, effects.end()); }
 
   effect_list::iterator begin() const { return effects.begin(); }
   effect_list::iterator end() const { return effects.end(); }
