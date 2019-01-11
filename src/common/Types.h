@@ -102,6 +102,7 @@ class unit_figure_value : public std::vector<value_t>
 public:
   template<typename T> using value_generator = std::function<value_type(const T*, size_t)>;
 
+  unit_figure_value(const std::initializer_list<value_t> values) : std::vector<value_t>(values) { }
   unit_figure_value(size_t size) : std::vector<value_type>(size, 0) { }
 
   unit_figure_value(size_t size, std::function<value_type(size_t)> generator) : unit_figure_value(size)
@@ -133,24 +134,24 @@ public:
 
   unit_figure_value& operator-=(value_t v) { std::for_each(begin(), end(), [v](value_t& value) { value -= v; }); return *this;  }
   unit_figure_value& operator+=(value_t v) { std::for_each(begin(), end(), [v](value_t& value) { value -= v; }); return *this;  }
+  
+  void apply(const unit_figure_value& values, std::function<value_t(value_t,value_t)> lambda)
+  {
+    assert(size() == values.size());
+    for (size_t i = 0; i < size(); ++i)
+      (*this)[i] = lambda((*this)[i], values[i]);
+  }
 
   unit_figure_value operator-(const unit_figure_value& other) const
   {
-    assert(size() == other.size());
-
     unit_figure_value result(*this);
-    for (size_t i = 0; i < size(); ++i)
-      result[i] -= other[i];
+    result.apply(other, [] (value_t v1, value_t v2) { return v1 - v2; });
     return result;
   };
 
   unit_figure_value& operator-=(const unit_figure_value& other)
   {
-    assert(size() == other.size());
-
-    for (size_t i = 0; i < size(); ++i)
-      (*this)[i] = other[i];
-
+    apply(other, [] (value_t v1, value_t v2) { return v1 - v2; });
     return *this;
   };
 

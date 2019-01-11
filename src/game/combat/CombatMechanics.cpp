@@ -203,7 +203,7 @@ value_t CombatFormulas::passingRolls(value_t count, value_t chance)
   return passed;
 }
 
-value_t CombatFormulas::computePhysicalDamage(value_t toHit, value_t strength, const HitPoints& hitPoints, value_t toDefend, value_t defense)
+damage_value CombatFormulas::computePhysicalDamage(value_t toHit, value_t strength, const HitPoints& hitPoints, value_t toDefend, value_t defense)
 {
   /* compute passing attack rolls */
   value_t registered_hits = passingRolls(strength, toHit);
@@ -251,7 +251,7 @@ value_t CombatFormulas::computePhysicalDamage(value_t toHit, value_t strength, c
   return effectiveHits;
 }
 
-value_t CombatFormulas::computeAreaDamage(value_t toHit, value_t strength, count_t figures, value_t hitPoints, value_t toDefend, value_t defense)
+damage_value CombatFormulas::computeAreaDamage(value_t toHit, value_t strength, count_t figures, value_t hitPoints, value_t toDefend, value_t defense)
 {
   /* make attack rolls for each alive figure */
   unit_figure_value registered_hits = unit_figure_value(figures, [strength, toHit] (size_t index) { return passingRolls(strength, toHit); });
@@ -274,4 +274,13 @@ value_t CombatFormulas::computeAreaDamage(value_t toHit, value_t strength, count
   COMBAT_LOG("  total damage: %d", totalDamage);
 
   return totalDamage;
+}
+
+unit_figure_value CombatFormulas::computeGazeDamage(gaze_strength strength, count_t figures, value_t resistance, value_t bonus)
+{
+  resistance = std::max(0, resistance + bonus);
+  unit_figure_value result = unit_figure_value(figures, [resistance, strength](size_t) {
+    return Math::chance(resistance) ? strength.toDamage() : 0;
+  });
+  return result;
 }

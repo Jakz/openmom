@@ -256,12 +256,30 @@ TEST_CASE("skill effects groups") {
 
 #pragma mark Combat Mechanics
 
+#pragma mark Unit Figure Value
+
+TEST_CASE("unit figure value helper") {
+  SECTION("constructors") {
+    REQUIRE(unit_figure_value(5) == std::vector<value_t>{ 0, 0, 0, 0, 0 });
+    REQUIRE(unit_figure_value(5, [](value_t i) { return i*2; }) == std::vector<value_t>{ 0, 2, 4, 6, 8 });
+  }
+  
+  SECTION("operators") {
+    REQUIRE(unit_figure_value({0, 1, 2, 3, 4}) - unit_figure_value({4, 3, 2, 1, 0}) == std::vector<value_t>{-4, -2, 0, 2, 4});
+  }
+}
+
 #pragma mark HitPoints
 TEST_CASE("health management of units") {
   const auto unit = test::anyRaceUnit();
   const value_t figures = unit->getProperty(Property::FIGURES);
   const value_t hitPoints = unit->getProperty(Property::HIT_POINTS);
   auto* health = unit->health();
+  
+  SECTION("constructors") {
+    REQUIRE(HitPoints(5, 4) == std::vector<value_t>{ 4, 4, 4, 4, 4 });
+    REQUIRE(HitPoints(5, 4, 2) == std::vector<value_t>{ 2, 4, 4, 4, 4 });
+  }
   
   SECTION("a fully healed unit") {
     REQUIRE(health->aliveCount() == figures);
@@ -328,7 +346,7 @@ TEST_CASE("general functions") {
     
     for (value_t c = 0; c < 100; ++c)
     {
-      SECTION(std::string("fixed chance ") + std::to_string(c))
+      DYNAMIC_SECTION("fixed chance " << c)
       {
         value_t sum = 0;
         for (u32 i = 0; i < TEST_COUNT; ++i)

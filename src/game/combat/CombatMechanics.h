@@ -17,12 +17,26 @@ enum class CombatModifier : u8;
 
 class Game;
 
+//TODO: this maybe not a good idea but for the moment it makes sense
+using damage_value = value_t;
+static constexpr damage_value FATAL_DAMAGE = std::numeric_limits<damage_value>::max();
+
 namespace combat
 {
   struct CombatTile;
   class CombatMap;
   struct CombatEnvironment;
   enum class CombatObject;
+  
+  struct gaze_strength
+  {
+    value_t strength;
+    bool fatal;
+    
+    gaze_strength(bool alwaysFatal) : strength(0), fatal(true) { }
+    gaze_strength(value_t strength) : strength(strength), fatal(false) { }
+    damage_value toDamage() const { return fatal ? FATAL_DAMAGE: strength; }
+  };
 
   class CombatFormulas
   {
@@ -32,9 +46,9 @@ namespace combat
   public:
 
     /* School is used but this for no school damage we're using School::NO_SCHOOL which is not a good design */
-    value_t computeAreaDamage(value_t toHit, value_t strength, count_t figures, value_t hitPoints, value_t toDefend, value_t defense);
-    value_t computePhysicalDamage(value_t toHit, value_t strength, const HitPoints& hitPoints, value_t toDefend, value_t defense);
-
+    damage_value computeAreaDamage(value_t toHit, value_t strength, count_t figures, value_t hitPoints, value_t toDefend, value_t defense);
+    damage_value computePhysicalDamage(value_t toHit, value_t strength, const HitPoints& hitPoints, value_t toDefend, value_t defense);
+    unit_figure_value computeGazeDamage(gaze_strength strength, count_t figures, value_t resistance, value_t bonus);
   };
   
   class CombatMechanics : public CombatFormulas
