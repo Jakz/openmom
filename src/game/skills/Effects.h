@@ -355,7 +355,7 @@ public:
   using iterator_category = std::bidirectional_iterator_tag;
 
 public:
-  effect_list_deep_iterator(const effect_list* list, effect_list::iterator it) { stack.push(std::make_pair(list, it)); }
+  effect_list_deep_iterator(const effect_list* list, effect_list::iterator it) { stack.emplace(list, it); }
 
   //TODO: complicated
   effect_list_deep_iterator& operator++();
@@ -416,7 +416,8 @@ void effect_list_deep_iterator::adjust()
   
   while (c->type == SkillEffect::Type::COMPOUND)
   {
-
+    const CompoundEffect* ce = c->as<CompoundEffect>();
+    stack.emplace(&ce->effects, ce->effects.begin());
   }
   
   const auto& current = stack.top();
@@ -455,4 +456,6 @@ public:
 
   effect_list::iterator begin() const { return effects.begin(); }
   effect_list::iterator end() const { return effects.end(); }
+
+  friend class effect_list_deep_iterator;
 };
