@@ -38,11 +38,8 @@ effect_list effect_list::actuals(const Unit* unit) const
   std::unordered_multimap<const SkillEffectGroup*, const SkillEffect*> byGroup;
 
   using pair_t = const decltype(byGroup)::value_type;
-  auto sorter = [unit](const pair_t& e1, const pair_t& e2) { return e1.second->compare(unit, e2.second) == SkillEffect::Order::LESSER; };
-
-  /* flatten nested effects */
-  std::vector<const SkillEffect*> data;
-  std::copy(dbegin(), dend(), std::back_inserter(data));
+  const auto sorterByEffect = [unit](const pair_t& e1, const pair_t& e2) { return e1.second->compare(unit, e2.second) == SkillEffect::Order::LESSER; };
+  static const auto sorterByPriority = [](const pair_t& e1, const pair_t& e2) { return e1.second->groupParam() < e2.second->groupParam(); };
 
   std::transform(data.begin(), data.end(), std::inserter(byGroup, byGroup.begin()), [] (const SkillEffect* effect) { return std::make_pair(effect->group(), effect); });
   
@@ -71,14 +68,22 @@ effect_list effect_list::actuals(const Unit* unit) const
           
         case SkillEffectGroup::Mode::KEEP_GREATER:
         {
-          auto max = std::max_element(pair.first, pair.second, sorter);
+          auto max = std::max_element(pair.first, pair.second, sorterByEffect);
           actuals.push_back(max->second);
           break;
         }
           
         case SkillEffectGroup::Mode::KEEP_LESSER:
         {
-          auto min = std::min_element(pair.first, pair.second, sorter);
+          auto min = std::min_element(pair.first, pair.second, sorterByEffect);
+          actuals.push_back(min->second);
+          break;
+        }
+
+        case SkillEffectGroup::Mode::PRIORITY:
+        {
+          /* higher has priority */
+          auto min = std::min_element(pair.first, pair.second, sorterByPriority);
           actuals.push_back(min->second);
           break;
         }
@@ -93,6 +98,10 @@ effect_list effect_list::actuals(const Unit* unit) const
     
     it = pair.second;
   }
+
+  /* flatten nested effects */
+  std::vector<const SkillEffect*> data;
+  std::copy(actuals.dbegin(), actuals.dend(), std::back_inserter(data));
   
-  return actuals;
+  return data;
 }

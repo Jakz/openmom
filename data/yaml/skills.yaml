@@ -3,7 +3,8 @@ groups:
     policy: keep_greater
   - identifier: healer
     policy: unique
-    
+  - identifier: spell_elemental_resistance
+    policy: priority
 skills:
 # movement
   - identifier: mountaineer
@@ -347,9 +348,9 @@ skills:
 # nature
   - identifier: spell_resist_elements
     type: spell
-    superseded_by: spell_elemental_armor
     effects:
       - type: compound
+        group: [spell_elemental_resistance, 1]
         elements:
           - type: unit_bonus
             property: resist_chaos
@@ -371,6 +372,7 @@ skills:
     type: spell
     effects:
       - type: compound
+        group: [spell_elemental_resistance, 0]
         elements:
           - type: unit_bonus
             property: resist_chaos

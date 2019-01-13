@@ -17,6 +17,7 @@ enum class Property : u8;
 class Unit;
 class SkillEffect;
 
+using SKillEffectGroupParam = value_t;
 struct SkillEffectGroup
 {
 public:
@@ -40,6 +41,7 @@ public:
   
 protected:
   const SkillEffectGroup* _group;
+  SKillEffectGroupParam _groupParam;
   
 public:
   const enum class Type : u8
@@ -68,8 +70,9 @@ public:
   virtual bool isCompound() const { return false; }
   virtual size_t size() const { return 1; }
 
-  void setGroup(const SkillEffectGroup* group) { this->_group = group; }
+  void setGroup(const SkillEffectGroup* group, SKillEffectGroupParam param = 0) { this->_group = group; this->_groupParam = param; }
   const SkillEffectGroup* group() const { return _group; }
+  SKillEffectGroupParam groupParam() const { return _groupParam;  }
 
   virtual Order compare(const Unit* unit, const SkillEffect* other) const { return Order::UNCOMPARABLE; }
   
@@ -367,6 +370,12 @@ public:
   
   size_t size() const { return data.size(); }
   size_t flatSize() const { return std::accumulate(data.begin(), data.end(), 0UL, [](size_t v, const SkillEffect* effect) { return v + effect->size(); }); }
+
+  void filter(std::function<bool(const SkillEffect*)> predicate)
+  {
+    auto nend = std::remove_if(data.begin(), data.end(), std::not1(predicate));
+    data.erase(nend, data.end());
+  }
   
   const SkillEffect* operator[](size_t index) const { return data[index]; }
   

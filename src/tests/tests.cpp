@@ -11,6 +11,12 @@
 
 #include "common/mystrings.h"
 
+class DummyEffect : public SkillEffect {
+public:
+  std::string v;
+  DummyEffect(std::string v) : SkillEffect(SkillEffect::Type::MOVEMENT), v(v) { }
+};
+
 struct PropertyModifier
 {
   Property property;
@@ -215,8 +221,18 @@ TEST_CASE("nature spells") {
       });
     }
 
-    SECTION("resist elements spell") {
+    SECTION("elemental armor spell") {
       const auto pair = test::anyRaceUnitPairWithSkills({ Skills::SPELL_NATURE_ELEMENTAL_ARMOR });
+      test::testModifiers(pair.second, pair.first, {
+        { Property::SHIELDS_NATURE, 10 },
+        { Property::SHIELDS_CHAOS, 10 },
+        { Property::RESIST_NATURE, 10 },
+        { Property::RESIST_CHAOS, 10 }
+      });
+    }
+
+    SECTION("elemental armor overrides resist elements") {
+      const auto pair = test::anyRaceUnitPairWithSkills({ Skills::SPELL_NATURE_RESIST_ELEMENTS, Skills::SPELL_NATURE_ELEMENTAL_ARMOR });
       test::testModifiers(pair.second, pair.first, {
         { Property::SHIELDS_NATURE, 10 },
         { Property::SHIELDS_CHAOS, 10 },
@@ -244,13 +260,7 @@ TEST_CASE("effect_list class") {
     }
   }
   
-  SECTION("deep iteration of effect_list") {
-    class DummyEffect : public SkillEffect {
-    public:
-      std::string v;
-      DummyEffect(std::string v) : SkillEffect(SkillEffect::Type::MOVEMENT), v(v) { }
-    };
-    
+  SECTION("deep iteration of effect_list") {    
     struct helper {
       static effect_list build(const std::string& encoding) {
         std::stack<effect_list> effects;
@@ -304,6 +314,39 @@ TEST_CASE("effect_list class") {
       REQUIRE(helper::print(helper::build("{12{3{4}}}")) == "1234");
     }
   }
+
+  SECTION("effect groups") {
+    SECTION("grouping by priority keeps higher priority effect")
+    {
+      SkillEffectGroup group = SkillEffectGroup(SkillEffectGroup::Mode::PRIORITY);
+      DummyEffect e1 = DummyEffect("first"), e2 = DummyEffect("second");
+      e1.setGroup(&group, 0);
+      e2.setGroup(&group, 1);
+
+      effect_list effects = effect_list({ &e2, &e1 });
+      effect_list actuals = effects.actuals(nullptr);
+
+      REQUIRE(actuals.size() == 1);
+      REQUIRE((*actuals.begin())->as<DummyEffect>()->v == "first");
+    }
+
+    SECTION("grouping by priority works with compound effects") {
+      SkillEffectGroup group = SkillEffectGroup(SkillEffectGroup::Mode::PRIORITY);
+      DummyEffect e1 = DummyEffect("first"), e2 = DummyEffect("second");
+      CompoundEffect c1 = CompoundEffect({ &e1 }), c2 = CompoundEffect({ &e2 });
+      c1.setGroup(&group, 0);
+      c2.setGroup(&group, 1);
+
+      effect_list effects = effect_list({ &c2, &c1 });
+      effect_list actuals = effects.actuals(nullptr);
+
+      REQUIRE(effects.flatSize() == 2);
+      REQUIRE(actuals.size() == 1);
+      REQUIRE((*actuals.begin())->as<DummyEffect>()->v == "first");
+    }
+  }
+
+
 }
 
 #pragma mark SkillSet

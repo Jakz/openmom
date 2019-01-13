@@ -45,21 +45,17 @@ prop_value SkillSet::bonusForProperty(Property property) const
 {
 
   effect_list effects;
-  
+
   //TODO: rewrite interely, this only works with additive property bonuses, doesnt't sort them by priority and such
 
-  // add bonuses from specific UnitBonus effect
+  /* add all effects from skill units to final list */
   for (const Skill* skill : *this)
-  {    
-    effect_list seffects = skill->getEffects().actuals(unit);
-    for (const SkillEffect* e : seffects)
-    {
-      const PropertyBonus* ub = e->as<UnitBonus>();
+    effects += skill->getEffects();
 
-      if (e->type == SkillEffect::Type::UNIT_BONUS && ub && ub->sameProperty(property))
-        effects.push_back(ub);
-    }
-  }
+  /* flatten list and remove overidden skills */
+  effects = effects.actuals(unit);
+  /* keep bonuses only */
+  effects.filter([property](const SkillEffect* e) { return e->type == SkillEffect::Type::UNIT_BONUS && static_cast<const PropertyBonus*>(e)->sameProperty(property); });
   
   // add bonuses from specific ArmyBonus effect
   if (unit->getArmy())
@@ -68,7 +64,7 @@ prop_value SkillSet::bonusForProperty(Property property) const
     {
       for (const Skill* skill : *u->skills())
       {        
-        effect_list seffects = skill->getEffects().actuals(unit);
+        effect_list seffects = skill->getEffects();
         for (const SkillEffect* e : seffects)
         {
           const PropertyBonus* ub = e->as<ArmyBonus>();

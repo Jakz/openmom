@@ -672,7 +672,19 @@ template<> const SkillEffect* yaml::parse(const N& node)
     
     if (hasStackableGroup)
     {
-      std::string groupIdentifier = node["group"];
+      std::string groupIdentifier;
+      SKillEffectGroupParam groupParam = 0;
+
+      if (node["group"].IsSequence())
+      {
+        groupIdentifier = node["group"][0];
+        groupParam = node["group"][1];
+      }
+      else
+      {
+        groupIdentifier = node["group"];
+      }
+      
       const auto it = skillGroups.find(groupIdentifier);
       
       if (it == skillGroups.end())
@@ -681,7 +693,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
         assert(false);
       }
       
-      effect->setGroup(it->second);
+      effect->setGroup(it->second, groupParam);
     }
   }
 
