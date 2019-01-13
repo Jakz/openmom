@@ -243,6 +243,56 @@ TEST_CASE("effect_list class") {
       REQUIRE(effects.flatSize() == 3);
     }
   }
+  
+  SECTION("deep iteration of effect_list") {
+    class DummyEffect : public SkillEffect {
+    public:
+      std::string v;
+      DummyEffect(std::string v) : SkillEffect(SkillEffect::Type::MOVEMENT), v(v) { }
+    };
+    
+    struct helper {
+      static effect_list build(const std::string& encoding) {
+        std::stack<effect_list> effects;
+        effects.push(effect_list());
+        
+        for (char c : encoding)
+        {
+          if (c == '{') effects.push(effect_list());
+          else if (c == '}') {
+            effect_list ceffs = effects.top();
+            effects.pop();
+            effects.top().push_back(new CompoundEffect(ceffs));
+          }
+          else
+            effects.top().push_back(new DummyEffect(std::string(1,c)));
+        }
+        
+        return effects.top();
+      }
+      
+      static std::string print(const effect_list& effects)
+      {
+        std::string v = "";
+        
+        auto it = effects.dbegin();
+        for (; it != effects.dend(); ++it)
+          v += static_cast<const DummyEffect*>(*it)->v;
+        return v;
+      }
+    };
+    
+    SECTION("flat list") {
+      REQUIRE(helper::print(helper::build("1234")) == "1234");
+      REQUIRE(helper::print(helper::build("1")) == "1");
+    }
+    
+    SECTION("single level nesting") {
+      REQUIRE(helper::print(helper::build("1{23}4")) == "1234");
+      REQUIRE(helper::print(helper::build("1{}234")) == "1234");
+
+    }
+  }
 }
 
 #pragma mark SkillSet

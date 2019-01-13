@@ -340,27 +340,7 @@ public:
 
 using effect_init_list = const std::initializer_list<const SkillEffect*>;
 struct effect_list;
-
-struct effect_list_deep_iterator
-{
-private:
-  std::stack<std::pair<const effect_list*, effect_list::iterator>> stack;
-  void adjust();
-
-public:
-  using difference_type = ptrdiff_t;
-  using value_type = SkillEffect * ;
-  using reference = const SkillEffect&;
-  using pointer = const SkillEffect*;
-  using iterator_category = std::bidirectional_iterator_tag;
-
-public:
-  effect_list_deep_iterator(const effect_list* list, effect_list::iterator it) { stack.emplace(list, it); }
-
-  //TODO: complicated
-  effect_list_deep_iterator& operator++();
-  const SkillEffect* operator*() const { return *stack.top().second; }
-};
+struct effect_list_deep_iterator;
 
 struct effect_list
 {
@@ -378,12 +358,13 @@ public:
   
   void push_back(const SkillEffect* effect) { data.push_back(effect); }
   void resize(size_t size) { data.resize(size); }
-
+  
   iterator begin() const { return data.begin(); }
   iterator end() const { return data.end(); }
   
-  effect_list_deep_iterator dbegin() { return effect_list_deep_iterator(this, begin()); }
-
+  effect_list_deep_iterator dbegin() const;
+  effect_list_deep_iterator dend() const;
+  
   size_t size() const { return data.size(); }
   size_t flatSize() const { return std::accumulate(data.begin(), data.end(), 0UL, [](size_t v, const SkillEffect* effect) { return v + effect->size(); }); }
   
@@ -405,28 +386,9 @@ public:
   }
   
   /* this method builds the actual effects taking into consideration
-     that some effects override or replace others */
+   that some effects override or replace others */
   effect_list actuals(const Unit* unit) const;
 };
-
-/* traverse effect until a real effect is found */
-void effect_list_deep_iterator::adjust()
-{
-  const SkillEffect* c = operator*();
-  
-  while (c->type == SkillEffect::Type::COMPOUND)
-  {
-    const CompoundEffect* ce = c->as<CompoundEffect>();
-    stack.emplace(&ce->effects, ce->effects.begin());
-  }
-  
-  const auto& current = stack.top();
-}
-
-effect_list_deep_iterator& effect_list_deep_iterator::operator++()
-{
-  
-}
 
 //TODO: to remove after hardcoded effects has been removed
 static const effect_list unit_bonus_build(std::initializer_list<Property> properties, s16 value)
@@ -436,7 +398,6 @@ static const effect_list unit_bonus_build(std::initializer_list<Property> proper
   std::transform(properties.begin(), properties.end(), std::back_inserter(effects), [&] (const Property& property) { return new UnitBonus(property, value); });
   return effects;
 }
-
 
 class CompoundEffect : public SkillEffect
 {
@@ -451,11 +412,86 @@ public:
   bool isCompound() const override { return true; }
   size_t size() const override { return effects.size(); }
 
-  effect_list_deep_iterator dbegin() { return effect_list_deep_iterator(&effects, effects.begin()); }
-  effect_list_deep_iterator dend() { return effect_list_deep_iterator(&effects, effects.end()); }
-
   effect_list::iterator begin() const { return effects.begin(); }
   effect_list::iterator end() const { return effects.end(); }
 
   friend class effect_list_deep_iterator;
 };
+
+struct effect_list_deep_iterator
+{
+private:
+  struct stack_v {
+    const effect_list* list;
+    effect_list::iterator it;
+    bool end() const { return it == list->end(); }
+    const SkillEffect* operator*() const { return *it; }
+    stack_v(const effect_list* list, effect_list::iterator it) : list(list), it(it) { }
+    bool operator==(const stack_v& other) const { return list == other.list && it == other.it; }
+  };
+  
+  std::stack<stack_v> stack;
+  
+  void adjust()
+  {
+    if (stack.top().end())
+      return;
+    
+    const SkillEffect* c = operator*();
+    
+    while (c->isCompound())
+    {
+      const CompoundEffect* ce = c->as<CompoundEffect>();
+      stack.emplace(&ce->effects, ce->effects.begin());
+      adjust();
+      c = operator*();
+    }
+  }
+  
+public:
+  using difference_type = ptrdiff_t;
+  using value_type = SkillEffect * ;
+  using reference = const SkillEffect&;
+  using pointer = const SkillEffect*;
+  using iterator_category = std::forward_iterator_tag;
+  
+public:
+  effect_list_deep_iterator(const effect_list* list, effect_list::iterator it) { stack.emplace(list, it); adjust(); }
+  
+  effect_list_deep_iterator& operator++()
+  {
+    auto& it = stack.top().it;
+    
+    /* iterator is not at end */
+    if (!stack.top().end())
+    {
+      ++it;
+      adjust();
+    }
+    
+    {
+      /* iterator is end of current child: pop and advance parent */
+      while (stack.top().end() && stack.size() > 1)
+      {
+        /* pop scope: we're at end */
+        stack.pop();
+        
+        /* now we're on parent, we should advance it */
+        ++stack.top().it;
+      }
+    }
+    
+    return *this;
+  }
+  
+  bool operator==(const effect_list_deep_iterator& other) const { return stack == other.stack; }
+  bool operator!=(const effect_list_deep_iterator& other) const { return stack != other.stack; }
+  
+  const SkillEffect* operator*() const { return *stack.top(); }
+};
+
+inline effect_list_deep_iterator effect_list::dbegin() const { return effect_list_deep_iterator(this, begin()); }
+inline effect_list_deep_iterator effect_list::dend() const { return effect_list_deep_iterator(this, end()); }
+
+
+

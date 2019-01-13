@@ -28,7 +28,7 @@ private:
 
 public:
   SkillSet(const Unit* unit);
-  SkillSet(skill_init_list skills) : nativeSkills(skills) { }
+  SkillSet(skill_init_list skills) : nativeSkills(skills), unit(nullptr) { }
 
   size_t size() const;
   const Skill* get(size_t index) const;
