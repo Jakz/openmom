@@ -25,6 +25,8 @@ private:
   
   static const std::string& getIdentifier(const N& node, const char* key = "identifier");
   
+  static void solveCopiedSkillEffects();
+  
 public:
   static void parse();
   static void parseLocalization();

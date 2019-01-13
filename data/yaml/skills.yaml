@@ -316,6 +316,16 @@ skills:
       icon: [lbx, special, 39]
       i18n: skill_fireball_spell        
 # hero abilities
+  - identifier: agility
+    type: hero
+    effects:
+      - type: unit_level_bonus
+        property: defense
+        multiplier: 1.0
+    visuals:
+      hide_value: true
+      icon: [lbx, special2, 32]
+      i18n: skill_agility
   - identifier: constitution
     type: hero
     effects:
@@ -392,3 +402,12 @@ skills:
       hide_value: true
       icon: [lbx, special, 73]
       i18n: skill_spell_elemental_armor
+# item powers
+# nature
+  - identifier: item_power_elemental_armor
+    type: item_power
+    copy_effects_from: spell_elemental_armor
+    visuals:
+      hide_value: true
+      icon: [lbx, itemisc, 14]
+      i18n: skill_item_power_elemental_armor

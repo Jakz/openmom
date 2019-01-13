@@ -141,8 +141,8 @@ public class App
       });
       
       parser.registerUnserializer(HouseType.class, new EnumUnserializer<HouseType>(HouseType.class));
-      parser.registerUnserializer(SkillType.class, new EnumUnserializer<>(SkillType.class, s -> s.equals("native") ? "_native" : s));
-      parser.registerUnserializer(EffectType.class, new EnumUnserializer<>(EffectType.class, s -> s, true));     
+      parser.registerUnserializer(SkillType.class, new EnumUnserializer<SkillType>(SkillType.class, s -> s.equals("native") ? "_native" : s));
+      parser.registerUnserializer(EffectType.class, new EnumUnserializer<EffectType>(EffectType.class, s -> s, true));     
 
       /* races.yaml */
       {

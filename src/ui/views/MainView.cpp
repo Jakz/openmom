@@ -296,7 +296,7 @@ void MainView::draw()
     
     s16 turnsRequired = 6;
     
-    Fonts::drawStringBounded(Fonts::format("It will take %d turns to complete the construction of this road", turnsRequired), 249, 105, 50, ALIGN_LEFT);
+    Fonts::drawStringBounded(fmt::sprintf("It will take %d turns to complete the construction of this road", turnsRequired), 249, 105, 50, ALIGN_LEFT);
     
     //TODO: management of multiple road by clicking
   }
@@ -335,9 +335,9 @@ void MainView::draw()
   {
     int gg = player->goldDelta(), f = player->foodDelta(), m = player->manaDelta();
     
-    Fonts::drawString(Fonts::format("%d Gold",gg), gg > 0 ? FontFaces::Tiny::YELLOW_STROKE : FontFaces::Tiny::RED_STROKE, 277, 100, ALIGN_CENTER);
-    Fonts::drawString(Fonts::format("%d Food",f), f > 0 ? FontFaces::Tiny::YELLOW_STROKE : FontFaces::Tiny::RED_STROKE, 277, 132, ALIGN_CENTER);
-    Fonts::drawString(Fonts::format("%d Mana",m), m > 0 ? FontFaces::Tiny::YELLOW_STROKE : FontFaces::Tiny::RED_STROKE, 277, 164, ALIGN_CENTER);
+    Fonts::drawString(fmt::sprintf("%d Gold",gg), gg > 0 ? FontFaces::Tiny::YELLOW_STROKE : FontFaces::Tiny::RED_STROKE, 277, 100, ALIGN_CENTER);
+    Fonts::drawString(fmt::sprintf("%d Food",f), f > 0 ? FontFaces::Tiny::YELLOW_STROKE : FontFaces::Tiny::RED_STROKE, 277, 132, ALIGN_CENTER);
+    Fonts::drawString(fmt::sprintf("%d Mana",m), m > 0 ? FontFaces::Tiny::YELLOW_STROKE : FontFaces::Tiny::RED_STROKE, 277, 164, ALIGN_CENTER);
   }
   
   if (substate == MAIN || substate == UNIT || substate == ROAD_BUILDING || substate == SURVEYOR)

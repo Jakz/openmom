@@ -116,12 +116,16 @@ N yaml::parse(const std::string& fileName)
 
   LOGD("[yaml] loaded %s, size: %zu bytes", fileName.c_str(), content.length());
 
+#if __cpp_exceptions == 199711
   try
   {
+#endif
     Node node = YAML::Load(content.c_str());
     return N(node);
+#if __cpp_exceptions == 199711
   }
   catch (YAML::ParserException e) { PARSE_ERROR("parse exception: %s", e.what()); }
+#endif
 }
 
 Path yaml::yamlPath(const std::string& fileName)
@@ -183,6 +187,8 @@ template<> LBXID yaml::parse(const N& node)
     { "figure10", LBXID::FIGURE10 },
     { "figure11", LBXID::FIGURE11 },
     { "figure12", LBXID::FIGURE12 },
+    
+    { "itemisc", LBXID::ITEMISC},
     
     { "lilwiz", LBXID::LILWIZ },
     { "magic", LBXID::MAGIC },
@@ -399,6 +405,8 @@ template<> skills::Type yaml::parse(const N& node)
     return skills::Type::HERO;
   else if (node == "spell")
     return skills::Type::SPELL;
+  else if (node == "item_power")
+    return skills::Type::ITEM_POWER;
   else
     assert(false);
 }
@@ -677,12 +685,12 @@ template<> const SkillEffect* yaml::parse(const N& node)
 
       if (node["group"].IsSequence())
       {
-        groupIdentifier = node["group"][0];
+        groupIdentifier = node["group"][0].asString();
         groupParam = node["group"][1];
       }
       else
       {
-        groupIdentifier = node["group"];
+        groupIdentifier = node["group"].asString();
       }
       
       const auto it = skillGroups.find(groupIdentifier);
@@ -700,26 +708,57 @@ template<> const SkillEffect* yaml::parse(const N& node)
   return effect;
 }
 
+std::unordered_map<Skill*, std::string> effectsCopyReferences;
+
+void yaml::solveCopiedSkillEffects()
+{
+  for (const auto& e : effectsCopyReferences)
+  {
+    Skill* dest = e.first;
+    std::string srcIdent = e.second;
+    const Skill* src = Data::skill(srcIdent);
+    
+    if (src == nullptr)
+      PARSE_ERROR("missing skill '%s' for referenced effects copy", srcIdent.c_str());
+    
+    dest->setEffects(src->getEffects());
+  }
+}
+
 #pragma mark Skill
 template<> const Skill* yaml::parse(const N& node)
 {
   skills::Type type = optionalParse(node, "type", skills::Type::NATIVE);
   
-  std::vector<const SkillEffect*> effects;
-  parse(node["effects"], effects);
-  
   auto visuals = node["visuals"];
   
   skills::VisualInfo visualInfo;
   visualInfo.hidden = optionalParse(visuals, "hidden", false);
+  
   if (!visualInfo.hidden)
   {
     visualInfo.name = i18n::keyForString(visuals["i18n"]);
     visualInfo.hideValue =  optionalParse(visuals, "hide_value", false);
     visualInfo.icon = parse<SpriteInfo>(visuals["icon"]);
   }
-  
-  return new skills::ConcreteSkill(type, effect_list(effects), visualInfo);
+
+  if (node.hasChild("effects"))
+  {
+    std::vector<const SkillEffect*> effects;
+    parse(node["effects"], effects);
+    return new skills::ConcreteSkill(type, effect_list(effects), visualInfo);
+  }
+  else if (node.hasChild("copy_effects_from"))
+  {
+    Skill* skill = new skills::ConcreteSkill(type, effect_list(), visualInfo);
+    effectsCopyReferences[skill] = node["copy_effects_from"].asString();
+    return skill;
+  }
+  else
+  {
+    PARSE_ERROR("skill '%s' has no effects or copy_effects_from element", currentEntry.c_str());
+    return nullptr;
+  }
 }
 
 template<> void yaml::parse(const N& node, skill_init_list& skills)
@@ -1139,6 +1178,8 @@ void yaml::parse()
   parseUnits();
   parseSpells();
   parseWizards();
+  
+  solveCopiedSkillEffects();
 
 #if defined(DEBUG)
   const auto i18missing = i18n::unlocalizedEntries();

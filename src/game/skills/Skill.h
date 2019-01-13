@@ -221,6 +221,7 @@ public:
   virtual const std::string name() const;
   virtual bool isHidden() const { return false; }
   
+  virtual void setEffects(const effect_list& effects) = 0;
   virtual const effect_list& getEffects() const = 0;
   
   virtual bool is(SkillBase base) const { return this->base == base; }
@@ -239,6 +240,7 @@ namespace skills
     NATIVE,
     HERO,
     SPELL,
+    ITEM_POWER
   };
   
   struct VisualInfo
@@ -253,13 +255,15 @@ namespace skills
   {
   private:
     Type _type;
-    const effect_list _effects;
+    effect_list _effects;
     VisualInfo _visual;
     
   public:
     ConcreteSkill(Type type, const effect_list effects, VisualInfo visual) : Skill(SkillBase::FIRST_STRIKE), _type(type), _effects(effects), _visual(visual) { }
     
     Type type() const { return _type; }
+    
+    void setEffects(const effect_list& effects) override { _effects = effects; }
     const effect_list& getEffects() const override { return _effects; }
     
     const std::string name() const override;
@@ -290,7 +294,7 @@ namespace skills
 class ConcreteSkill : public Skill
 {
 private:
-  const effect_list effects;
+  effect_list effects;
   
 public:
   bool hideValue;
@@ -298,7 +302,7 @@ public:
   ConcreteSkill(SkillBase base, effect_init_list effects, bool hideValue = true) : Skill(base), effects(effects), hideValue(hideValue) { }
   ConcreteSkill(SkillBase base, effect_list effects, bool hideValue = true) : Skill(base), effects(effects), hideValue(hideValue) { }
 
-  
+  void setEffects(const effect_list& efts) override { effects = efts; }
   const effect_list& getEffects() const override { return effects; }
   
   bool hasSimpleEffect(SimpleEffect::Type type);
@@ -315,6 +319,7 @@ private:
 public:
   WrapSkill(SkillBase base, const Skill& existingSkill) : Skill(base), existingSkill(existingSkill) { }
   
+  void setEffects(const effect_list& efts) override { }
   const effect_list& getEffects() const override { return existingSkill.getEffects(); }
   bool is(SkillBase base) const override { return this->base == base || existingSkill.is(base); }
 };

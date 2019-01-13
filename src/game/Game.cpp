@@ -102,6 +102,8 @@ void Game::dummyInit()
 		new RaceUnit(Data::unit("barbarian_berserkers")->as<RaceUnitSpec>()),
   });
   
+  //a->get(3)->skills()->add(Data::skill("item_power_elemental_armor"));
+  
   SpellCast cast = SpellCast(player, Data::spell("elemental_armor"));
   a->get(1)->skills()->add(cast);
   SpellCast cast2 = SpellCast(player, Data::spell("resist_elements"));
