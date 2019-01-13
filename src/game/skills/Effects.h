@@ -439,12 +439,19 @@ private:
     
     const SkillEffect* c = operator*();
     
-    while (c->isCompound())
+    while (c && c->isCompound())
     {
       const CompoundEffect* ce = c->as<CompoundEffect>();
       stack.emplace(&ce->effects, ce->effects.begin());
       adjust();
-      c = operator*();
+      
+      if (!stack.top().end())
+        c = operator*();
+      else
+      {
+        stack.pop();
+        break;
+      }
     }
   }
   

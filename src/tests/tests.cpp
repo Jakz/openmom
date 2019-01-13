@@ -290,6 +290,18 @@ TEST_CASE("effect_list class") {
     SECTION("single level nesting") {
       REQUIRE(helper::print(helper::build("1{23}4")) == "1234");
       REQUIRE(helper::print(helper::build("1{}234")) == "1234");
+      REQUIRE(helper::print(helper::build("1{}2{}34")) == "1234");
+      REQUIRE(helper::print(helper::build("{}1234")) == "1234");
+      REQUIRE(helper::print(helper::build("{1}234")) == "1234");
+      REQUIRE(helper::print(helper::build("1234{}")) == "1234");
+      REQUIRE(helper::print(helper::build("{1234}")) == "1234");
+    }
+
+    SECTION("multiple nesting levels") {
+      REQUIRE(helper::print(helper::build("{{1234}}")) == "1234");
+      REQUIRE(helper::print(helper::build("12{3{}}4")) == "1234");
+      REQUIRE(helper::print(helper::build("{12{3}4}")) == "1234");
+      REQUIRE(helper::print(helper::build("{12{3{4}}}")) == "1234");
 
     }
   }
