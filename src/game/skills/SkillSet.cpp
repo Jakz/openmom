@@ -51,7 +51,8 @@ prop_value SkillSet::bonusForProperty(Property property) const
   // add bonuses from specific UnitBonus effect
   for (const Skill* skill : *this)
   {    
-    for (const SkillEffect* e : skill->getEffects())
+    effect_list seffects = skill->getEffects().actuals(unit);
+    for (const SkillEffect* e : seffects)
     {
       const PropertyBonus* ub = e->as<UnitBonus>();
 
@@ -67,7 +68,8 @@ prop_value SkillSet::bonusForProperty(Property property) const
     {
       for (const Skill* skill : *u->skills())
       {        
-        for (const SkillEffect* e : skill->getEffects())
+        effect_list seffects = skill->getEffects().actuals(unit);
+        for (const SkillEffect* e : seffects)
         {
           const PropertyBonus* ub = e->as<ArmyBonus>();
           if (e->type == SkillEffect::Type::ARMY_BONUS && ub && ub->sameProperty(property))

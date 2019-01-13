@@ -40,6 +40,10 @@ effect_list effect_list::actuals(const Unit* unit) const
   using pair_t = const decltype(byGroup)::value_type;
   auto sorter = [unit](const pair_t& e1, const pair_t& e2) { return e1.second->compare(unit, e2.second) == SkillEffect::Order::LESSER; };
 
+  /* flatten nested effects */
+  std::vector<const SkillEffect*> data;
+  std::copy(dbegin(), dend(), std::back_inserter(data));
+
   std::transform(data.begin(), data.end(), std::inserter(byGroup, byGroup.begin()), [] (const SkillEffect* effect) { return std::make_pair(effect->group(), effect); });
   
   effect_list actuals;

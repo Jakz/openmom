@@ -20,7 +20,7 @@ class SkillEffect;
 struct SkillEffectGroup
 {
 public:
-  enum class Mode : u16 { KEEP_ALL, UNIQUE, KEEP_GREATER, KEEP_LESSER };
+  enum class Mode : u16 { KEEP_ALL, UNIQUE, KEEP_GREATER, KEEP_LESSER, PRIORITY };
  
 private:
   Mode _mode;

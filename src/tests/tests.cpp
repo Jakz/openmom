@@ -302,7 +302,6 @@ TEST_CASE("effect_list class") {
       REQUIRE(helper::print(helper::build("12{3{}}4")) == "1234");
       REQUIRE(helper::print(helper::build("{12{3}4}")) == "1234");
       REQUIRE(helper::print(helper::build("{12{3{4}}}")) == "1234");
-
     }
   }
 }

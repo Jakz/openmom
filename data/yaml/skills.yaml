@@ -349,18 +349,20 @@ skills:
     type: spell
     superseded_by: spell_elemental_armor
     effects:
-      - type: unit_bonus
-        property: resist_chaos
-        value: 3
-      - type: unit_bonus
-        property: resist_nature
-        value: 3
-      - type: unit_bonus
-        property: defense_nature
-        value: 3
-      - type: unit_bonus
-        property: defense_chaos
-        value: 3
+      - type: compound
+        elements:
+          - type: unit_bonus
+            property: resist_chaos
+            value: 3
+          - type: unit_bonus
+            property: resist_nature
+            value: 3
+          - type: unit_bonus
+            property: defense_nature
+            value: 3
+          - type: unit_bonus
+            property: defense_chaos
+            value: 3
     visuals:
       hide_value: true
       icon: [lbx, special, 72]
@@ -368,18 +370,20 @@ skills:
   - identifier: spell_elemental_armor
     type: spell
     effects:
-      - type: unit_bonus
-        property: resist_chaos
-        value: 10
-      - type: unit_bonus
-        property: resist_nature
-        value: 10
-      - type: unit_bonus
-        property: defense_nature
-        value: 10
-      - type: unit_bonus
-        property: defense_chaos
-        value: 10
+      - type: compound
+        elements:
+          - type: unit_bonus
+            property: resist_chaos
+            value: 10
+          - type: unit_bonus
+            property: resist_nature
+            value: 10
+          - type: unit_bonus
+            property: defense_nature
+            value: 10
+          - type: unit_bonus
+            property: defense_chaos
+            value: 10
     visuals:
       hide_value: true
       icon: [lbx, special, 73]

@@ -116,10 +116,12 @@ N yaml::parse(const std::string& fileName)
 
   LOGD("[yaml] loaded %s, size: %zu bytes", fileName.c_str(), content.length());
 
-
-  Node node = YAML::Load(content.c_str());
-
-  return N(node);
+  try
+  {
+    Node node = YAML::Load(content.c_str());
+    return N(node);
+  }
+  catch (YAML::ParserException e) { PARSE_ERROR("parse exception: %s", e.what()); }
 }
 
 Path yaml::yamlPath(const std::string& fileName)
@@ -530,7 +532,8 @@ template<> SkillEffectGroup::Mode yaml::parse(const N& node)
   using Mode = SkillEffectGroup::Mode;
   static const std::unordered_map<std::string, Mode> mapping = {
     { "keep_greater", SkillEffectGroup::Mode::KEEP_GREATER },
-    { "unique", SkillEffectGroup::Mode::UNIQUE }
+    { "unique", SkillEffectGroup::Mode::UNIQUE },
+    { "priority", SkillEffectGroup::Mode::PRIORITY }
   };
   
   FETCH_OR_FAIL("SkillEffectGroup::Mode", mapping, node);
@@ -648,6 +651,13 @@ template<> const SkillEffect* yaml::parse(const N& node)
     s16 strength = optionalParse(node, "strength", 0);
     
     effect = new SpellGrantEffect(nullptr, times, strength);
+  }
+  else if (type == "compound")
+  {
+    std::vector<const SkillEffect*> effects;
+    parse(node["elements"], effects);
+
+    effect = new CompoundEffect(effects);
   }
   else
   {
