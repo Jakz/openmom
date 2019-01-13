@@ -5,6 +5,8 @@ groups:
     policy: unique
   - identifier: spell_elemental_resistance
     policy: priority
+  - identifier: sight_property
+    policy: keep_greater
 skills:
 # movement
   - identifier: mountaineer
@@ -36,7 +38,7 @@ skills:
       - type: movement
         kind: flying
       - type: unit_bonus
-        mode: override_if_greater
+        group: sight_property
         property: sight
         value: 2
     visuals:
@@ -75,7 +77,7 @@ skills:
     type: native
     effects:
       - type: unit_bonus
-        mode: override_if_greater
+        group: sight_property
         property: sight
         value: 2
     visuals:
@@ -85,7 +87,7 @@ skills:
     type: native
     effects:
       - type: unit_bonus
-        mode: override_if_greater
+        group: sight_property
         property: sight
         value: 3
     visuals:

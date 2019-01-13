@@ -373,7 +373,7 @@ public:
 
   void filter(std::function<bool(const SkillEffect*)> predicate)
   {
-    auto nend = std::remove_if(data.begin(), data.end(), std::not1(predicate));
+    auto nend = std::remove_if(data.begin(), data.end(), [&predicate](const SkillEffect* effect) { return !predicate(effect); });
     data.erase(nend, data.end());
   }
   

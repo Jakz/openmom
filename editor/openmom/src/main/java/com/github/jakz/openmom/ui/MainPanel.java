@@ -15,7 +15,8 @@ public class MainPanel extends JPanel
   
   private UnitTable unitTable;
   private RaceTable raceTable;
-  
+  private SkillTable skillTable;
+
   public MainPanel(Data data)
   {
     tabs = new JTabbedPane(JTabbedPane.LEFT);
@@ -27,6 +28,10 @@ public class MainPanel extends JPanel
     unitTable = new UnitTable(data.units);
     TablePanel unitTablePanel = new TablePanel(unitTable, new Dimension(1024,600));
     tabs.addTab("Units", unitTablePanel);  
+    
+    skillTable = new SkillTable(data.skills);
+    TablePanel skillTablePanel = new TablePanel(skillTable, new Dimension(1024,600));
+    tabs.addTab("Skills", skillTablePanel);  
 
     this.setLayout(new BorderLayout());
     this.add(tabs, BorderLayout.CENTER);

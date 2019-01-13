@@ -18,9 +18,16 @@ import com.esotericsoftware.yamlbeans.YamlReader;
 import com.github.jakz.openmom.data.HouseType;
 import com.github.jakz.openmom.data.Race;
 import com.github.jakz.openmom.data.Ranged;
+import com.github.jakz.openmom.data.Skill;
+import com.github.jakz.openmom.data.SkillType;
 import com.github.jakz.openmom.data.SpriteInfo;
 import com.github.jakz.openmom.data.SpriteInfoLBX;
 import com.github.jakz.openmom.data.Unit;
+import com.github.jakz.openmom.data.effect.AbilityEffect;
+import com.github.jakz.openmom.data.effect.Effect;
+import com.github.jakz.openmom.data.effect.EffectType;
+import com.github.jakz.openmom.data.effect.MovementEffect;
+import com.github.jakz.openmom.data.effect.PropertyBonusEffect;
 import com.github.jakz.openmom.lbx.LBX;
 import com.github.jakz.openmom.lbx.SpriteSheet;
 import com.github.jakz.openmom.ui.MainPanel;
@@ -120,10 +127,22 @@ public class App
         }
       });
       
+      parser.registerUnserializer(Effect.class, y -> {
+        String stype = y.get("type").asString();
+        
+        switch (stype)
+        {
+        case "movement": return new MovementEffect(y.get("kind").asString());
+        case "ability": return new AbilityEffect(y.get("kind").asString());
+        case "unit_bonus": return new PropertyBonusEffect(EffectType.unit_bonus, y.get("property").asString(), y.get("value").asInt());
+        }
+        
+        return Effect.unknown();
+      });
+      
       parser.registerUnserializer(HouseType.class, new EnumUnserializer<HouseType>(HouseType.class));
-      
-      
-
+      parser.registerUnserializer(SkillType.class, new EnumUnserializer<>(SkillType.class, s -> s.equals("native") ? "_native" : s));
+      parser.registerUnserializer(EffectType.class, new EnumUnserializer<>(EffectType.class, s -> s, true));     
 
       /* races.yaml */
       {
@@ -152,13 +171,28 @@ public class App
         {
           Unit unit = uns.unserialize(node);
           units.add(unit);
-          System.out.println(unit.identifier+", "+unit.type+", "+unit.upkeep+", "+unit.visuals.i18n/*+", "+String.join(", ", unit.skills)*/);
-          if (unit.skills != null && !unit.skills.isEmpty())
-            System.out.println(">> "+unit.skills.get(0).getClass());
+          //System.out.println(unit.identifier+", "+unit.type+", "+unit.upkeep+", "+unit.visuals.i18n/*+", "+String.join(", ", unit.skills)*/);
         }
         
         data.units = ModifiableDataSource.of(units);
-
+      }
+      
+      /* skills.yaml */
+      {
+        Path path = base.resolve("skills.yaml");
+        YamlNode root = parser.parse(path);
+        
+        List<Skill> skills = new ArrayList<>();
+        
+        ReflectiveUnserializer<Skill> suns = new ReflectiveUnserializer<>(Skill.class);
+        
+        for (YamlNode node : root.get("skills"))
+        {
+          Skill skill = suns.unserialize(node);
+          skills.add(skill);
+        }
+        
+        data.skills = ModifiableDataSource.of(skills);
       }
 
       UIUtils.setNimbusLNF();

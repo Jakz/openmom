@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <string>
 
-#define DEBUG_LOG(x, y...) do { printf(x "\n", y); fflush(stdout); } while (false)
+#define DEBUG_LOG(x, ...) do { printf(x "\n", __VA_ARGS__); fflush(stdout); } while (false)
 
 #define JAVA_CLASS_PALETTE "com/pixbits/lib/ui/color/Palette"
 #define JAVA_CLASS_SPRITE_SHEET "com/github/jakz/openmom/lbx/SpriteSheet"
@@ -175,3 +175,38 @@ extern "C"
     headerCache.clear();
   }
 }
+
+
+#ifdef _WIN32
+
+#include "platform/Path.h"
+#include "platform/platform.h"
+
+class PlatformWin : public Platform
+{
+public:
+  Path getResourcePath() const override
+  {
+    return "C:\\Users\\Jack\\Documents\\dev\\openmom";
+  }
+
+  bool exists(const Path& path) const override
+  {
+    struct stat buffer;
+    return stat(path.c_str(), &buffer) == 0;
+  }
+
+  Path absolute(const Path& path) const override
+  {
+    // TODO
+    return path;
+  }
+};
+
+Platform* Platform::instance()
+{
+  static PlatformWin platform;
+  return &platform;
+}
+
+#endif
