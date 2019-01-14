@@ -41,6 +41,7 @@ effect_list effect_list::actuals(const Unit* unit) const
   const auto sorterByEffect = [unit](const pair_t& e1, const pair_t& e2) { return e1.second->compare(unit, e2.second) == SkillEffect::Order::LESSER; };
   static const auto sorterByPriority = [](const pair_t& e1, const pair_t& e2) { return e1.second->groupParam() < e2.second->groupParam(); };
 
+  /* group effects by group */
   std::transform(data.begin(), data.end(), std::inserter(byGroup, byGroup.begin()), [] (const SkillEffect* effect) { return std::make_pair(effect->group(), effect); });
   
   effect_list actuals;
@@ -51,7 +52,6 @@ effect_list effect_list::actuals(const Unit* unit) const
     
     auto pair = byGroup.equal_range(group);
     
-
     if (!group || group->mode()== SkillEffectGroup::Mode::KEEP_ALL)
       std::transform(pair.first, pair.second, std::back_inserter(actuals), [] (const pair_t& entry) { return entry.second; });
     else
@@ -99,9 +99,14 @@ effect_list effect_list::actuals(const Unit* unit) const
     it = pair.second;
   }
 
-  /* flatten nested effects */
+  return actuals;
+}
+
+/* flatten nested effects */
+effect_list effect_list::flatten()
+{
   std::vector<const SkillEffect*> data;
-  std::copy(actuals.dbegin(), actuals.dend(), std::back_inserter(data));
-  
+  std::copy(dbegin(), dend(), std::back_inserter(data));
+
   return data;
 }

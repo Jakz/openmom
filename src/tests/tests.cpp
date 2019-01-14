@@ -355,7 +355,7 @@ TEST_CASE("effect_list class") {
       c2.setGroup(&group, 1);
 
       effect_list effects = effect_list({ &c2, &c1 });
-      effect_list actuals = effects.actuals(nullptr);
+      effect_list actuals = effects.actuals(nullptr).flatten();
 
       REQUIRE(effects.flatSize() == 2);
       REQUIRE(actuals.size() == 1);

@@ -31,17 +31,21 @@ namespace items
   class Item
   {
   private:
-    std::vector<PropertyAffix> affixes;
-    effect_list effects;
+    std::vector<PropertyAffix> _affixes;
+    effect_list _effects;
 
 
   public:
     Item() { }
-    void addAffix(PropertyAffix affix) { affixes.push_back(affix); }
+    Item(effect_init_list effects) : _effects(effects) { }
 
+    void addAffix(PropertyAffix affix) { _affixes.push_back(affix); }
+    void add(const SkillEffect* effect) { _effects.push_back(effect); }
+
+    const effect_list& effects() { return _effects; };
     value_t getBonusProperty(Property property) const
     {
-      return std::accumulate(affixes.begin(), affixes.end(), 0, 
+      return std::accumulate(_affixes.begin(), _affixes.end(), 0,
                       [property](value_t v, const PropertyAffix& affix) { return affix.property == property ? v + affix.value : v; }
       );
     }

@@ -43,7 +43,6 @@ value_t SkillSet::spellsUpkeep() const
 
 prop_value SkillSet::bonusForProperty(Property property) const
 {
-
   effect_list effects;
 
   //TODO: rewrite interely, this only works with additive property bonuses, doesnt't sort them by priority and such
@@ -53,7 +52,7 @@ prop_value SkillSet::bonusForProperty(Property property) const
     effects += skill->getEffects();
 
   /* flatten list and remove overidden skills */
-  effects = effects.actuals(unit);
+  effects = effects.actuals(unit).flatten();
   /* keep bonuses only */
   effects.filter([property](const SkillEffect* e) { return e->type == SkillEffect::Type::UNIT_BONUS && static_cast<const PropertyBonus*>(e)->sameProperty(property); });
   

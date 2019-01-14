@@ -8,7 +8,6 @@
 
 using namespace items;
 
-//const PowerEnchant ItemEnchants::POWER_BLESS = PowerEnchant(new WrapSkill(SkillBase::ITEM_BLESS, Skills::BLESS), LIFE, 2)
 
 // TODO
 //const ItemClassSpec ItemEnchants::SPEC_SWORD

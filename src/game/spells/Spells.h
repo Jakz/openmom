@@ -222,8 +222,7 @@ struct ResearchStatus
   ResearchStatus(const Spell* spell, bool discovered = false) : spell(spell), discovered(discovered) { }
 };
 
-//TODO: SpellCast should be const
-typedef std::list<SpellCast> cast_list;
+typedef std::vector<SpellCast> cast_list;
 typedef std::vector<const Spell*> spell_list;
 
 class Spells

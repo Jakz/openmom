@@ -393,6 +393,9 @@ public:
     data.insert(data.end(), other.data.begin(), other.data.end());
     return *this;
   }
+
+  /* flatten nested effects */
+  effect_list flatten();
   
   /* this method builds the actual effects taking into consideration
    that some effects override or replace others */

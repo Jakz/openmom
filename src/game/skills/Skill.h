@@ -223,10 +223,7 @@ public:
   
   virtual void setEffects(const effect_list& effects) = 0;
   virtual const effect_list& getEffects() const = 0;
-  
-  virtual bool is(SkillBase base) const { return this->base == base; }
-  
-  
+    
   struct Comparator : public std::binary_function<const Skill*, const Skill*, bool>
   {
     bool operator() (const Skill *b1, const Skill* b2);
@@ -309,19 +306,6 @@ public:
   const SpecialAttackEffect* hasEffect(SimpleEffect::Type ident);
   
   const std::string name() const override;
-};
-
-class WrapSkill : public Skill
-{
-private:
-  const Skill& existingSkill;
-
-public:
-  WrapSkill(SkillBase base, const Skill& existingSkill) : Skill(base), existingSkill(existingSkill) { }
-  
-  void setEffects(const effect_list& efts) override { }
-  const effect_list& getEffects() const override { return existingSkill.getEffects(); }
-  bool is(SkillBase base) const override { return this->base == base || existingSkill.is(base); }
 };
 
 using skill_init_list = std::vector<const Skill*>;

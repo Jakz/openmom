@@ -145,7 +145,6 @@ namespace skillimpl
   static const ConcreteSkill HERO_CONSTITUTION = ConcreteSkill(SkillBase::HERO_CONSTITUTION, {new UnitLevelBonus(Property::HIT_POINTS, 1.0f)}); // TODO: missin effect in mechanics?
   // TODO: LEADERSHIP
   // TODO: LEGENDARY
-  static const WrapSkill HERO_LUCK = WrapSkill(SkillBase::HERO_LUCK, LUCKY);
   static const ConcreteSkill HERO_MIGHT = ConcreteSkill(SkillBase::HERO_MIGHT, {new UnitLevelBonus(Property::MELEE, 1.0f)}); // TODO: missin effect in mechanics?
   // TODO: NOBLE
   static const ConcreteSkill HERO_PRAYER_MASTER = ConcreteSkill(SkillBase::HERO_PRAYER_MASTER, {new ArmyLevelBonus(Property::RESIST, 1.0f, ArmyBonus::Type::WHOLE_ARMY)});
@@ -164,13 +163,10 @@ namespace skillimpl
   static const ConcreteSkill SPELL_IRON_SKIN = ConcreteSkill(SkillBase::SPELL_IRON_SKIN, {new UnitBonus(Property::SHIELDS,10)} );
 
   static const ConcreteSkill SPELL_RESIST_MAGIC = ConcreteSkill(SkillBase::SPELL_RESIST_MAGIC, {new UnitBonus(Property::RESIST,3)} );
-  static const WrapSkill SPELL_GUARDIAN_WIND = WrapSkill(SkillBase::SPELL_GUARDIAN_WIND, IMMUNITY_MISSILE);
   
   static const ConcreteSkill SPELL_ENDURANCE = ConcreteSkill(SkillBase::SPELL_ENDURANCE, {new UnitBonus(Property::MOVEMENT,1)} );
   static const ConcreteSkill SPELL_HOLY_ARMOR = ConcreteSkill(SkillBase::SPELL_HOLY_ARMOR, {new UnitBonus(Property::SHIELDS,2)}); // TODO: should be correct
   static const ConcreteSkill SPELL_HOLY_WEAPON = ConcreteSkill(SkillBase::SPELL_HOLY_WEAPON, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::TO_HIT,1)});
-  static const WrapSkill SPELL_TRUE_SIGHT = WrapSkill(SkillBase::SPELL_TRUE_SIGHT, IMMUNITY_ILLUSIONS);
-
 }
 
 const Skill* Skills::CREATE_ROAD = &skillimpl::CREATE_ROAD;
@@ -225,7 +221,6 @@ const Skill* Skills::SPELL_ELEMENTAL_ARMOR = &skillimpl::SPELL_ELEMENTAL_ARMOR;
 const Skill* Skills::SPELL_IRON_SKIN = &skillimpl::SPELL_IRON_SKIN;
 
 const Skill* Skills::SPELL_RESIST_MAGIC = &skillimpl::SPELL_RESIST_MAGIC;
-const Skill* Skills::SPELL_GUARDIAN_WIND = &skillimpl::SPELL_GUARDIAN_WIND;
 const Skill* Skills::SPELL_FLYING = nullptr;//TODO &skillimpl::SPELL_FLYING;
 
 const Skill* Skills::SPELL_ENDURANCE = &skillimpl::SPELL_ENDURANCE;
@@ -233,14 +228,12 @@ const Skill* Skills::SPELL_HEROISM = nullptr;//TODO &skillimpl::SPELL_HEROISM;
 const Skill* Skills::SPELL_HOLY_ARMOR = &skillimpl::SPELL_HOLY_ARMOR;
 const Skill* Skills::SPELL_HOLY_WEAPON = &skillimpl::SPELL_HOLY_WEAPON;
 const Skill* Skills::SPELL_PLANAR_TRAVEL = nullptr;//TODO &skillimpl::SPELL_PLANAR_TRAVEL;
-const Skill* Skills::SPELL_TRUE_SIGHT = &skillimpl::SPELL_TRUE_SIGHT;
 
 const Skill* Skills::HERO_AGILITY = &skillimpl::HERO_AGILITY;
 const Skill* Skills::HERO_ARMS_MASTER = &skillimpl::HERO_ARMS_MASTER;
 const Skill* Skills::HERO_BLADE_MASTER = &skillimpl::HERO_BLADE_MASTER;
 const Skill* Skills::HERO_CHARMED = &skillimpl::HERO_CHARMED;
 const Skill* Skills::HERO_CONSTITUTION = &skillimpl::HERO_CONSTITUTION;
-const Skill* Skills::HERO_LUCK = &skillimpl::HERO_LUCK;
 const Skill* Skills::HERO_MIGHT = &skillimpl::HERO_MIGHT;
 const Skill* Skills::HERO_PRAYER_MASTER = &skillimpl::HERO_PRAYER_MASTER;
 
