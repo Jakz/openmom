@@ -91,6 +91,8 @@ namespace test
   }
   void testModifiers(const unit_ptr& unit1, const unit_ptr& unit2, const std::initializer_list<PropertyModifier>& modifiers) { testModifiers(unit1.get(), unit2.get(), modifiers); }
 
+  std::unique_ptr<Hero> anyHeroUnit() { return std::unique_ptr<Hero>(new Hero(Data::unit("hero_dwarf")->as<HeroSpec>())); }
+
   unit_ptr raceUnit(identifier unitSpec) { return unit_ptr(new RaceUnit(Data::unit(unitSpec)->as<RaceUnitSpec>())); }
   
   unit_ptr raceUnitWithSkills(identifier unitSpec, identifier_list skills)
@@ -204,6 +206,21 @@ TEST_CASE("basic stats of units") {
       
       delete unit;
     }
+  }
+}
+
+TEST_CASE("items") {
+  SECTION("affix is applied to hero stats") {
+    auto hero1 = test::anyHeroUnit();
+    auto hero2 = test::anyHeroUnit();
+
+    items::Item item;
+    item.addAffix({ Property::MELEE, 3 });
+    hero1->placeItem(0, &item);
+
+    test::testModifiers(hero1.get(), hero2.get(), {
+      { Property::MELEE, 3}
+    });
   }
 }
 

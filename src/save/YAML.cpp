@@ -828,7 +828,7 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
     
     const N yslots = node["slots"];
     using iclass = items::Class;
-    items::Slots slots = items::Slots({parse<iclass>(yslots[0]), parse<iclass>(yslots[1]), parse<iclass>(yslots[2])});
+    items::AllowedSlots slots = items::AllowedSlots({parse<iclass>(yslots[0]), parse<iclass>(yslots[1]), parse<iclass>(yslots[2])});
 
     data.first = new HeroSpec(
                         HeroType::HERO,

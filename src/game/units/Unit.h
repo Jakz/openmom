@@ -122,11 +122,14 @@ protected:
   
 public:
   Hero(const HeroSpec* spec) : Unit(spec), items({nullptr}) { }
+
+  prop_value getBonusProperty(Property property) const override;
   
   // const std::string name() const; TODO: name management
   const std::string title() const;
   
-  const items::Item* itemAt(u16 index) const { return items[index]; }
+  void placeItem(size_t index, items::Item* item) { items[index] = item; }
+  const items::Item* itemAt(size_t index) const { return items[index]; }
   const HeroSpec* getSpec() const { return static_cast<const HeroSpec*>(spec); }
 };
 

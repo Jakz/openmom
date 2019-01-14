@@ -172,8 +172,20 @@ const std::string RaceUnit::name() const {
 
 
 
+#pragma mark Hero
 const std::string Hero::title() const
 {
   return "";
 }
+
+prop_value Hero::getBonusProperty(Property property) const
+{
+  value_t bonus = Unit::getBonusProperty(property);
+  value_t bonusFromItems = std::accumulate(items.begin(), items.end(), 0, 
+                                           [property](value_t v, const items::Item* item) { return item ? v + item->getBonusProperty(property) : v; }
+  );
+
+  return bonus + bonusFromItems;
+}
+
 

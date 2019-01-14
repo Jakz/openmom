@@ -2,6 +2,7 @@
 #define _ITEMS_H_
 
 #include "common/Common.h"
+#include "game/skills/Effects.h"
 
 #include <vector>
 #include <numeric>
@@ -20,9 +21,31 @@ namespace items
   enum class Class : u8 { MELEE = 0, RANGED, MELEE_STAFF, STAFF_WAND, ARMOR, MISC };
   enum TypeID : u8 { SWORD = 0, MACE, AXE, BOW, STAFF, WAND, MISC, SHIELD, CHAIN, PLATE };
   
+
+  struct PropertyAffix
+  {
+    Property property;
+    value_t value;
+  };
+
   class Item
   {
-    
+  private:
+    std::vector<PropertyAffix> affixes;
+    effect_list effects;
+
+
+  public:
+    Item() { }
+    void addAffix(PropertyAffix affix) { affixes.push_back(affix); }
+
+    value_t getBonusProperty(Property property) const
+    {
+      return std::accumulate(affixes.begin(), affixes.end(), 0, 
+                      [property](value_t v, const PropertyAffix& affix) { return affix.property == property ? v + affix.value : v; }
+      );
+    }
+
   public:
     
     struct TypeGroup
@@ -52,21 +75,21 @@ namespace items
     };
     
     static const Item::Type* typeForItem(TypeID type);
-    constexpr static u32 MAX_SLOTS = 3;
+    constexpr static count_t MAX_SLOTS = 3;
   };
   
-  class Slots
+  class AllowedSlots
   {
   public:
     const std::array<Class, 3> types;
-    Slots(Class c1, Class c2, Class c3) : types({c1,c2,c3}) { }
+    AllowedSlots(Class c1, Class c2, Class c3) : types({c1,c2,c3}) { }
   };
   
   class PropertyAffixSpec
   {
     const Property property;
-    std::vector<s16> values;
-    std::vector<u16> costs;
+    std::vector<value_t> values;
+    std::vector<value_t> costs;
     std::string _name; //TODO: localize
     
   public:
@@ -78,13 +101,13 @@ namespace items
     
     PropertyAffixSpec(const PropertyAffixSpec& other) : PropertyAffixSpec(other, other.size()) { }
     
-    PropertyAffixSpec(Property property, const std::string& name, const std::initializer_list<s16>& values, const std::initializer_list<u16>& costs) :
+    PropertyAffixSpec(Property property, const std::string& name, const std::initializer_list<value_t>& values, const std::initializer_list<value_t>& costs) :
     property(property), _name(name), values(values), costs(costs)
     {
       assert(values.size() == costs.size());
     }
     
-    size_t sizeForCost(u16 max) const
+    size_t sizeForCost(value_t max) const
     {
       if (max == 0) return size();
       
@@ -113,11 +136,10 @@ namespace items
   {
   private:
     const Spell* spell;
-    s16 amount;
+    value_t amount;
   public:
-    ItemSpellCharge(const Spell* spell, s16 amount) : spell(spell), amount(amount) { }
+    ItemSpellCharge(const Spell* spell, value_t amount) : spell(spell), amount(amount) { }
   };
-  
 }
 
 
