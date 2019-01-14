@@ -58,8 +58,9 @@ protected:
   Unit(const UnitSpec* spec) : spec(spec), army(nullptr), _skills(this), _health(*this), selected(true),
   experience(0, spec->type == UnitType::RACIAL ? &Data::experienceLevelsForUnits() : (spec->type == UnitType::HERO ? &Data::experienceLevelsForHeroes() : nullptr))
   {
-    resetMoves();
-    _health.healAll();
+    //TODO: commnted because t relies on ItemSlots which are initialized after in Hero class so it's UB
+    //resetMoves();
+    //_health.healAll();
   }
   
   SkillSet _skills;
@@ -113,23 +114,29 @@ public:
   
   virtual const std::string name() const { return spec->productionName(); }
   School glow() const { return _skills.glowEffect(); }
+  
+  Hero* asHero();
+  const Hero* asHero() const;
 };
 
 class Hero : public Unit
 {
 protected:
-  std::array<items::Item*, 3> items;
+  items::ItemSlots<3> _items;
   
 public:
-  Hero(const HeroSpec* spec) : Unit(spec), items({nullptr}) { }
+  Hero(const HeroSpec* spec) : Unit(spec), _items() { }
 
   prop_value getBonusProperty(Property property) const override;
   
   // const std::string name() const; TODO: name management
   const std::string title() const;
   
-  void placeItem(size_t index, items::Item* item) { items[index] = item; }
-  const items::Item* itemAt(size_t index) const { return items[index]; }
+  decltype(_items)& items() { return _items; }
+  const decltype(_items)& items() const { return _items; }
+  
+  void placeItem(size_t index, items::Item* item) { _items.set(index, item); }
+  const items::Item* itemAt(size_t index) const { return _items[index]; }
   const HeroSpec* getSpec() const { return static_cast<const HeroSpec*>(spec); }
 };
 
@@ -146,5 +153,9 @@ class FantasticUnit : public Unit
 public:
   FantasticUnit(const SummonSpec* spec) : Unit(spec) { }
 };
+
+inline Hero* Unit::asHero() { return type() == Productable::Type::HERO ? static_cast<Hero*>(this) : nullptr; }
+inline const Hero* Unit::asHero() const { return type() == Productable::Type::HERO ? static_cast<const Hero*>(this) : nullptr; }
+
 
 #endif

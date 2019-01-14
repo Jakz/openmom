@@ -125,6 +125,7 @@ N yaml::parse(const std::string& fileName)
 #if __cpp_exceptions == 199711
   }
   catch (YAML::ParserException e) { PARSE_ERROR("parse exception: %s", e.what()); }
+  return N(YAML::Node());
 #endif
 }
 
@@ -828,7 +829,7 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
     
     const N yslots = node["slots"];
     using iclass = items::Class;
-    items::AllowedSlots slots = items::AllowedSlots({parse<iclass>(yslots[0]), parse<iclass>(yslots[1]), parse<iclass>(yslots[2])});
+    items::AllowedSlots<3> slots = items::AllowedSlots<3>({parse<iclass>(yslots[0]), parse<iclass>(yslots[1]), parse<iclass>(yslots[2])});
 
     data.first = new HeroSpec(
                         HeroType::HERO,

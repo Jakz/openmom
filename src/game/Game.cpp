@@ -149,7 +149,14 @@ void Game::dummyInit()
     new RaceUnit(Data::unit("orc_engineers")->as<RaceUnitSpec>())
   }), Position(4, 3, ARCANUS));
   
-  placeArmy(new Army(player, {new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>()), new Hero(Data::unit("hero_dwarf")->as<HeroSpec>())}), Position(4, 8, ARCANUS));
+  {
+    Army* darmy = new Army(player, {new FantasticUnit(Data::unit("funit_great_drake")->as<SummonSpec>()), new Hero(Data::unit("hero_dwarf")->as<HeroSpec>())});
+    placeArmy(darmy, Position(4, 8, ARCANUS));
+    
+    items::Item* item = new items::Item(items::TypeID::MISC, 2);
+    item->add(Data::skill("item_power_elemental_armor"));
+    darmy->get(1)->asHero()->items().set(2, item);
+  }
   
   City* florence = new City(player, "Florence", 4000, Position(3, 3, ARCANUS));
   florence->addBuilding(Building::MAGE_FORTRESS);

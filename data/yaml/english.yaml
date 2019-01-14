@@ -131,6 +131,8 @@ entries:
   skill_spell_resist_elements: Resist Elements
   skill_spell_elemental_armor: Elemental Armor
   
+  skill_item_power_elemental_armor: Elemental Armor
+  
   unit_level_recruit: Recruit
   unit_level_regular: Regular
   unit_level_veteran: Veteran

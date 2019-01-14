@@ -310,29 +310,12 @@ public:
 
 using skill_init_list = std::vector<const Skill*>;
 
-struct skill_list
+struct skill_list : public std::vector<const Skill*>
 {
-private:
-  std::vector<const Skill*> skills;
-  
 public:
-  using iterator = decltype(skills)::iterator;
-  using const_iterator = decltype(skills)::const_iterator;
-  
-  skill_list() : skills() { }
-  skill_list(const skill_init_list& skills) : skills(skills) { }
-  
-  void push_back(const Skill* skill) { skills.push_back(skill); }
-  
-  size_t size() const { return skills.size(); }
-  const Skill* operator[](size_t index) const { return skills[index]; }
-  
-  iterator begin() { return skills.begin(); }
-  iterator end() { return skills.end(); }
-  
-  const_iterator begin() const { return skills.begin(); }
-  const_iterator end() const { return skills.end(); }
-  
+  skill_list() { }
+  skill_list(const skill_init_list& skills) : std::vector<const Skill*>(skills) { }
+
   bool hasSimpleEffect(SimpleEffect::Type type) const { return skills::hasSimpleEffect(*this, type); }
 };
 

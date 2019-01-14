@@ -125,11 +125,11 @@ int main(int argc, char* arg[])
 
 #include "Player.h"
 #include "LocalPlayer.h"
-#include "CityView.h"
-#include "ArmyView.h"
-#include "MessageView.h"
-#include "ProductionView.h"
-#include "OutpostView.h"
+#include "ui/views/CityView.h"
+#include "ui/views/ArmyView.h"
+#include "ui/views/MessageView.h"
+#include "ui/views/ProductionView.h"
+#include "ui/views/OutpostView.h"
 
 #include "Army.h"
 #include "format.h"
