@@ -27,7 +27,9 @@ import com.github.jakz.openmom.data.effect.AbilityEffect;
 import com.github.jakz.openmom.data.effect.Effect;
 import com.github.jakz.openmom.data.effect.EffectType;
 import com.github.jakz.openmom.data.effect.MovementEffect;
+import com.github.jakz.openmom.data.effect.ParametricAbilityEffect;
 import com.github.jakz.openmom.data.effect.PropertyBonusEffect;
+import com.github.jakz.openmom.data.effect.SpecialAttackEffect;
 import com.github.jakz.openmom.lbx.LBX;
 import com.github.jakz.openmom.lbx.SpriteSheet;
 import com.github.jakz.openmom.ui.MainPanel;
@@ -98,7 +100,7 @@ public class App
     {      
       final Path base = Paths.get("../../data/yaml");
       final Data data = new Data();
-      
+            
       YamlParser parser = new YamlParser();
       
       parser.setReflectiveUnserializeFieldRemapper(fieldNameToYaml);
@@ -135,6 +137,10 @@ public class App
         case "movement": return new MovementEffect(y.get("kind").asString());
         case "ability": return new AbilityEffect(y.get("kind").asString());
         case "unit_bonus": return new PropertyBonusEffect(EffectType.unit_bonus, y.get("property").asString(), y.get("value").asInt());
+        case "army_bonus": return new PropertyBonusEffect(EffectType.army_bonus, y.get("property").asString(), y.get("value").asInt());
+        case "parametric_ability": return new ParametricAbilityEffect(y.get("kind").asString(), y.get("value").asInt());
+        case "special_attack": return new SpecialAttackEffect(y.get("kind").asString(), y.get("value").asInt());
+
         }
         
         return Effect.unknown();

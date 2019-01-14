@@ -11,7 +11,14 @@ public class LBX
     return internalLoadSprite(BASE+lbxfile, index);
   }
   
+  public static int getEntryCount(String lbxFile)
+  {
+    return internalGetEntryCount(BASE+lbxFile);
+  }
+  
   public static native void init();
   public static native void clearCache();
+  
   private static native SpriteSheet internalLoadSprite(String path, int index);
+  public static native int internalGetEntryCount(String path);
 }

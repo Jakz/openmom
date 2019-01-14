@@ -107,6 +107,20 @@ extern "C"
    LBX::loadFonts(lbx.info.header, lbx.info.offsets, in.fd());
    LBX::loadPalettes(lbx.info.header, lbx.info.offsets, in.fd());
    */
+
+  void cacheHeaderIfNeeded(const Path& path)
+  {
+    file_handle handle = file_handle(path, file_mode::READING);
+
+    auto it = headerCache.find(path.c_str());
+
+    if (it == headerCache.end())
+    {
+      FileInfo info;
+      LBX::loadHeader(info, handle);
+      headerCache[path.c_str()] = info;
+    }
+  }
   
   JNIEXPORT void JNICALL Java_com_github_jakz_openmom_lbx_LBX_init(JNIEnv* env, jobject obj)
   {
@@ -125,6 +139,17 @@ extern "C"
     }
   }
   
+  JNIEXPORT jint JNICALL Java_com_github_jakz_openmom_lbx_LBX_internalGetEntryCount(JNIEnv* env, jobject obj, jstring jpath, jint index)
+  {
+    if (!isInit)
+      Java_com_github_jakz_openmom_lbx_LBX_init(env, obj);
+
+    Path path = Path(jni_string(env, jpath).toString());
+
+    cacheHeaderIfNeeded(path);
+
+    return headerCache[path.c_str()].header.count;
+  }
   
   JNIEXPORT jobject JNICALL Java_com_github_jakz_openmom_lbx_LBX_internalLoadSprite(JNIEnv* env, jobject obj, jstring jpath, jint index)
   {
@@ -136,19 +161,12 @@ extern "C"
     DEBUG_LOG("Loading sprite %d from %s", index, path.c_str());
     DEBUG_LOG("File exists: %s", path.exists() ? "yes" : "no");
     
-    file_handle handle = file_handle(path, file_mode::READING);
     
-    auto it = headerCache.find(path.c_str());
-    
-    if (it == headerCache.end())
-    {
-      FileInfo info;
-      LBX::loadHeader(info, handle);
-      headerCache[path.c_str()] = info;
-    }
-    
+    cacheHeaderIfNeeded(path);
+
     FileInfo info = headerCache[path.c_str()];
-    
+    file_handle handle = file_handle(path, file_mode::READING);
+
     const LBXSpriteData* sprite = LBX::scanGfx(info.header, info.offsets[index], handle.fd());
     DEBUG_LOG("Loaded sprite (size: %dx%d, count: %d)", sprite->width, sprite->height, sprite->count);
 
