@@ -17,6 +17,12 @@ class Unit;
   const Player* player();
 };*/
 
+class SkillProvider
+{
+  virtual size_t size();
+  virtual const Skill* at(size_t index);
+};
+
 class SkillSet
 {
 private:

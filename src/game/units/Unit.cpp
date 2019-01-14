@@ -181,7 +181,7 @@ const std::string Hero::title() const
 prop_value Hero::getBonusProperty(Property property) const
 {
   value_t bonus = Unit::getBonusProperty(property);
-  value_t bonusFromItems = std::accumulate(items.begin(), items.end(), 0, 
+  value_t bonusFromItems = std::accumulate(_items.begin(), _items.end(), 0, 
                                            [property](value_t v, const items::Item* item) { return item ? v + item->getBonusProperty(property) : v; }
   );
 

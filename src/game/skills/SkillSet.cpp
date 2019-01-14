@@ -11,22 +11,52 @@ using namespace std;
 SkillSet::SkillSet(const Unit* unit) : unit(unit), nativeSkills(unit->spec->skills) { }
 
 size_t SkillSet::size() const {
-  Army* army = unit ? unit->getArmy() : nullptr;
-  return nativeSkills.size() + spells.size() + (army ? army->getOwner()->globalSkillSpellsCount(unit) : 0);
+  size_t count = nativeSkills.size() + spells.size();
+  
+  if (unit)
+  {
+    const Hero* hero = unit->asHero();
+    if (hero)
+      count += hero->items().powers().size();
+    
+    if (unit->getArmy())
+      count += unit->getArmy()->getOwner()->globalSkillSpellsCount(unit);
+  }
+  
+  return count;
 }
 
 const Skill* SkillSet::get(size_t index) const
 {
-  size_t native = nativeSkills.size(), armyc = unit && unit->getArmy() ? unit->getArmy()->getOwner()->globalSkillSpellsCount(unit) : 0;
+  size_t globalCount = unit && unit->getArmy() ? unit->getArmy()->getOwner()->globalSkillSpellsCount(unit) : 0,
+         itemPowerCount = 0;
   
-  if (index < native)
-    return nativeSkills[index];
-  else if (index < native + armyc)
-    return unit->getArmy()->getOwner()->nthGlobalSkillSpell(index - native, unit)->skill;
+  const Hero* hero = unit->asHero();
+  
+  if (hero)
+  {
+    itemPowerCount = hero->items().powers().size();
+  }
+  
+  if (index < itemPowerCount)
+    return hero->items().powers()[index];
   else
-    return (*next(spells.begin(), index - native - armyc)).asUnitSpell()->skill;
+    index -= itemPowerCount;
+
+  if (index < spells.size())
+    return spells[index].asUnitSpell()->skill;
+  else
+    index -= spells.size();
   
-  return nullptr;
+  if (index < nativeSkills.size())
+    return nativeSkills[index];
+  else
+    index -= nativeSkills.size();
+  
+  if (index < globalCount)
+    return unit->getArmy()->getOwner()->nthGlobalSkillSpell(index, unit)->skill;
+  else
+    return nullptr;
 }
 
 void SkillSet::remove(const Spell* spell)
@@ -38,7 +68,9 @@ void SkillSet::remove(const Spell* spell)
 
 value_t SkillSet::spellsUpkeep() const
 {
-  return accumulate(spells.begin(), spells.end(), 0, [](value_t value, const SpellCast& cast) { return value + cast.spell->mana.upkeep; });
+  return accumulate(spells.begin(), spells.end(), 0,
+                    [](value_t value, const SpellCast& cast) { return value + cast.spell->mana.upkeep; }
+  );
 }
 
 prop_value SkillSet::bonusForProperty(Property property) const

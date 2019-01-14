@@ -1,6 +1,8 @@
 #include "SkillDraw.h"
 
 #include "Gfx.h"
+#include "GfxData.h"
+
 #include "Font.h"
 #include "Localization.h"
 #include "Items.h"
@@ -24,10 +26,10 @@ void SkillDraw::openHelpForSkill(const Unit* unit, int i)
   // TODO manage skills which are not real skills (xp, items, etc)
 }
 
-void SkillDraw::drawSkill(s16 index, SpriteInfo sprite, const std::string& text, s16 sx, s16 sy)
+void SkillDraw::drawSkill(s16 index, SpriteInfo sprite, const std::string& text, coord_t sx, coord_t sy)
 {
-  s16 x = spX(index,sx);
-  s16 y = spY(index,sy);
+  coord_t x = spX(index,sx);
+  coord_t y = spY(index,sy);
   
   Gfx::draw(LSI(UNITVIEW,5).relative(index), x-1, y-1);
   Gfx::draw(sprite, x, y);
@@ -36,34 +38,55 @@ void SkillDraw::drawSkill(s16 index, SpriteInfo sprite, const std::string& text,
 
 void SkillDraw::draw(const Unit* unit)
 {
-  s16 curOffset = 0;
+  int curOffset = 0;
   
   const Level* level = unit->getExperienceLevel();
   
   if (level && page == 0)
     drawSkill(curOffset++, level->visuals.icon, i18n::s(level->visuals.name)+Fonts::format(" (%u xp)",unit->getExperience()), base.x, base.y);
   
-  // if the unit is a hero and we are on first page we should draw the experience and the items
+  /* if the unit is a hero and we are on first page we should draw the experience and the items */
   if (unit->type() == Productable::Type::HERO && page == 0)
   {
     const Hero* hero = static_cast<const Hero*>(unit);
     
-    for (int i = 0; i < 3; ++i, ++curOffset)
+    for (int i = 0; i < items::Item::MAX_SLOTS; ++i, ++curOffset)
     {
-      if (!hero->itemAt(i))
+      const items::Item* item = hero->items()[i];
+      
+      if (!item)
       {
+        /* draw empty slot with background for type */
         const items::Class itemType = hero->getSpec()->items.types[i];
         drawSkill(curOffset, itemSprites[itemType], "", base.x, base.y);
+      }
+      else
+      {
+        auto itemGfx = GfxData::itemGfxSpec(item->type(), item->gfx());
+        
+        /* draw item on empty slot */
+        drawSkill(curOffset, LSI(SPECIAL, 3), item->name(), base.x, base.y);
+        drawSkill(curOffset, itemGfx, "", base.x, base.y);
+        
+        /* draw item glow if present */
+        if (item->school() != School::NO_SCHOOL)
+        {
+          coord_t x = spX(curOffset, base.x);
+          coord_t y = spY(curOffset, base.y);
+          Gfx::drawGlow(itemGfx, x, y, item->school());
+        }
       }
     }
   }
   else
   {
-    s16 p = unit->type() == Productable::Type::HERO ? page - 1 : page;
+    size_t p = unit->type() == Productable::Type::HERO ? page - 1 : page;
+    const auto* skills = unit->skills();
+    const size_t size = skills->size();
 
-    for (int i = p*8; i < unit->skills()->size(); ++i)
+    for (size_t i = p*8; i < size; ++i)
     {
-      const Skill* s = unit->skills()->get(i);
+      const Skill* s = skills->get(i);
       
       if (!s->isHidden())
         drawSkill(curOffset++, s->icon(), s->name(), base.x, base.y);

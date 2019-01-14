@@ -3,6 +3,7 @@
 
 #include "common/Common.h"
 #include "game/skills/Effects.h"
+#include "game/skills/Skill.h"
 
 #include <vector>
 #include <numeric>
@@ -31,24 +32,31 @@ namespace items
   class Item
   {
   private:
+    TypeID _type;
+    int _gfx;
+    
     std::vector<PropertyAffix> _affixes;
-    effect_list _effects;
+    skill_list _skills;
 
 
   public:
-    Item() { }
-    Item(effect_init_list effects) : _effects(effects) { }
+    Item(TypeID type, int gfx) : _type(type), _gfx(gfx) { }
 
     void addAffix(PropertyAffix affix) { _affixes.push_back(affix); }
-    void add(const SkillEffect* effect) { _effects.push_back(effect); }
+    void add(const Skill* skill) { _skills.push_back(skill); }
 
-    const effect_list& effects() { return _effects; };
+    const skill_list& skills() const { return _skills; };
     value_t getBonusProperty(Property property) const
     {
       return std::accumulate(_affixes.begin(), _affixes.end(), 0,
                       [property](value_t v, const PropertyAffix& affix) { return affix.property == property ? v + affix.value : v; }
       );
     }
+    
+    std::string name() const { return "Stick of the Mage"; } //TODO
+    TypeID type() const { return _type; }
+    int gfx() const { return _gfx; }
+    School school() const { return School::NATURE; } //TODO
 
   public:
     
@@ -82,11 +90,44 @@ namespace items
     constexpr static count_t MAX_SLOTS = 3;
   };
   
+  template<size_t SIZE>
   class AllowedSlots
   {
   public:
-    const std::array<Class, 3> types;
+    const std::array<Class, SIZE> types;
     AllowedSlots(Class c1, Class c2, Class c3) : types({c1,c2,c3}) { }
+  };
+  
+  
+  template<size_t SIZE>
+  class ItemSlots
+  {
+  private:
+    std::array<const Item*, SIZE> _items; //TODO: unique_ptr?
+    
+    /* we keep this cached because it's useful to have it cached */
+    skill_list _skills;
+
+    void cacheSkills()
+    {
+      std::for_each(_items.begin(), _items.end(), [this](const Item* item) {
+        if (item != nullptr)
+          _skills.insert(_skills.end(), item->skills().begin(), item->skills().end());
+      });
+    }
+    
+  public:
+    ItemSlots() : _items({nullptr}) { }
+    
+    using iterator = typename decltype(_items)::const_iterator;
+    
+    const skill_list& powers() const { return _skills; }
+    
+    iterator begin() const { return _items.begin(); }
+    iterator end() const { return _items.end(); }
+    
+    void set(size_t index, const Item* item) { _items[index] = item; cacheSkills(); }
+    const Item* operator[](size_t index) const { return _items[index]; }
   };
   
   class PropertyAffixSpec

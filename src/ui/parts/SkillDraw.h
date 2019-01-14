@@ -12,11 +12,11 @@ class SkillDraw
 private:
   Point base;
   
-  u16 page;
-  u16 totalPages;
+  size_t page;
+  size_t totalPages;
   
-  u16 spX(s16 i, s16 sx) { return sx + (i < 4 ? 0 : 107); }
-  u16 spY(s16 i, s16 sy) { return sy + (17*(i%4)); }
+  u16 spX(coord_t i, coord_t sx) { return sx + (i < 4 ? 0 : 107); }
+  u16 spY(coord_t i, coord_t sy) { return sy + (17*(i%4)); }
       
 public:
   SkillDraw(Point coord = Point(0,0)) : page(0), totalPages(0), base(coord) { }
@@ -28,17 +28,17 @@ public:
     totalPages = a/8 + (a%8 == 0 ? 0 : 1) + (unit->type() == Productable::Type::HERO ? 1 : 0);
   }
   
-  void setPosition(u16 x, u16 y) { base = Point(x,y); }
+  void setPosition(coord_t x, coord_t y) { base = Point(x,y); }
   
-  u16 pages() { return totalPages; }
-  bool showTopArrow() { return page > 0; }
-  bool showBottomArrow() { return totalPages > 0 && page < totalPages - 1;}
-  void nextPage() { ++page; }
-  void prevPage() { --page; }
+  size_t pages() { return totalPages; }
+  bool showTopArrow() { return totalPages > 1; }
+  bool showBottomArrow() { return totalPages > 1; }
+  void nextPage() { page = (page + 1) % totalPages; }
+  void prevPage() { page = page == 0 ? (totalPages-1) : page - 1; }
   bool isFirst() { return page == 0; }
     
   void openHelpForSkill(const Unit* unit, int i);
-  void drawSkill(s16 index, SpriteInfo sprite, const std::string& text, s16 sx, s16 sy);
+  void drawSkill(s16 index, SpriteInfo sprite, const std::string& text, coord_t sx, coord_t sy);
   void draw(const Unit* unit);
   void draw(const UnitSpec* spec);
 };

@@ -16,6 +16,7 @@
 
 #include "Buttons.h"
 #include "Gfx.h"
+#include "ui/GfxData.h"
 #include "Texture.h"
 
 #include "UnitDraw.h"
@@ -72,8 +73,18 @@ void ArmiesItemsView::draw()
     for (int j = 0; j < items::Item::MAX_SLOTS; ++j)
     {
       const items::Item* item = hero->itemAt(j);
+      const Point pos = Point(heroPositions[i].x+40+29*j, heroPositions[i].y+16);
+      
       if (!item)
-        Gfx::draw(emptyItemBackground[slots.types[j]], heroPositions[i].x+40+29*j, heroPositions[i].y+16);
+        Gfx::draw(emptyItemBackground[slots.types[j]], pos);
+      else
+      {
+        //TODO: check positioning
+        auto gfx = GfxData::itemGfxSpec(item->type(), item->gfx());
+        Gfx::draw(gfx, pos);
+        //TODO: enable
+        //Gfx::drawGlow(gfx, pos.x+1, pos.y, School::NATURE);
+      }
     }
     
   }
