@@ -1,0 +1,3 @@
+[submodule "editor/openmom"]
+	path = editor/openmom
+	url = git@github.com:Jakz/openmom-editor.git
