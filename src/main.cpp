@@ -132,7 +132,6 @@ int main(int argc, char* arg[])
 #include "ui/views/OutpostView.h"
 
 #include "Army.h"
-#include "format.h"
 
 const char* viewName(ViewID id)
 {

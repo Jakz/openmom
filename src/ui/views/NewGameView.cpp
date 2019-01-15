@@ -15,7 +15,7 @@
 #include "game/Game.h"
 #include "game/mechanics/SpellMechanics.h"
 
-#include "format.h"
+#include "fmt/format.h"
 
 #include "Messages.h"
 #include "LocalPlayer.h" //TODO: required for error message, maybe unneeded
