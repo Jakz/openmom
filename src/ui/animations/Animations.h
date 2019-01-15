@@ -162,43 +162,6 @@ namespace anims
   };
 }
 
-namespace anims
-{
-  // TODO
-  class CombatAttack : public ContinuousAnimation
-  {
-  private:
-    
-  public:
-    CombatAttack(const combat::CombatUnit* unit) : ContinuousAnimation(300) { }
-    void step() override { }
-  };
-  
-  class CombatMovement : public ContinuousAnimation
-  {
-  private:
-    
-  public:
-    CombatMovement(const combat::CombatUnit* unit) : ContinuousAnimation(500) { }
-    void step() override { }
-  };
-
-  
-  /*
-   class CombatUnitAttackAnimation
-   {
-   private:
-   s16 sx, sy;
-   s16 facing;
-   const CombatUnit* unit;
-   
-   public:
-   CombatUnitAttack(Comat)
-   
-   };
-   */
-}
-
 #include "SpellEffectAnim.h"
 
 #endif
