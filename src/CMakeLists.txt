@@ -43,6 +43,7 @@ include_directories(
   ${YAML_INCLUDE_DIR}
   .
   common
+  common/fmt
   game
   game/cities
   game/combat
