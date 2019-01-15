@@ -61,5 +61,17 @@ namespace anims
     bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   };
   
+  class GlobalEnchantmentAnimation : public ContinuousEndlessAnimation
+  {
+  private:
+    SpriteInfo wizard;
+    SpriteInfo enchant;
+    
+  public:
+    GlobalEnchantmentAnimation(const Wizard* wizard, SpriteInfo enchantment);
+    void step() override;
+    bool mouseReleased(u16 x, u16 y, MouseButton b) override;
+  };
+  
   
 };

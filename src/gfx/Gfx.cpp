@@ -314,6 +314,32 @@ void Gfx::drawAnimated(SpriteInfo info, u16 x, u16 y, s16 offset, s16 animFactor
   }
 }
 
+void Gfx::drawMasked(SpriteInfo ssrc, SpriteInfo smask, coord_t dx, coord_t dy, coord_t ox, coord_t oy)
+{
+  /* this is a dummy sprite sheet which uses a mask to return trasparent or the original color */
+  class MaskedSpriteSheet : public SpriteSheet
+  {
+    SpriteInfo ssrc, smask;
+    const SpriteSheet *src, *mask;
+    coord_t ox, oy;
+    
+  public:
+    MaskedSpriteSheet(SpriteInfo src, SpriteInfo mask, coord_t ox, coord_t oy) : ssrc(src), smask(mask), src(src.sheet()), mask(mask.sheet()), ox(ox), oy(oy) { }
+    
+    u32 at(index_t x, index_t y, index_t c = 0, index_t r = 0) const override { return mask->at(x+ox, y+oy, smask.x(), smask.y()) == 0 ? src->at(x,y, ssrc.x(), ssrc.y()) : 0; }
+    index_t tw() const override { return src->tw(); }
+    index_t th() const override { return src->th(); }
+    
+    index_t sw(index_t r, index_t c) const override { return src->sw(r,c); }
+    index_t sh(index_t r, index_t c) const override { return src->sh(r,c); }
+    
+    const Palette* getPalette() const override { return src->getPalette(); }
+  };
+  
+  MaskedSpriteSheet sheet(ssrc, smask, ox, oy);
+  Gfx::blit(&sheet, activeBuffer, 0, 0, dx, dy, ssrc.sw(), ssrc.sh(), ssrc.x(), ssrc.y());
+}
+
 template<typename OutlineGfx>
 void Gfx::drawOutline(const SpriteSheet* sprite, s16 x, s16 y, s16 r, s16 c, const OutlineGfx& gfx)
 {
@@ -418,7 +444,7 @@ void Gfx::drawGrayScale(const SpriteSheet* src, u16 r, u16 c, u16 x, u16 y)
   bindCanvas();
 }
 
-void Gfx::mergeBuffer(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h, const ColorFilter* filter)
+void Gfx::mergeBuffer(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h, const ColorFilter* const filter)
 {
   /* TODO: todo, this could be optimized to use SDL directly, is it good? */
   /*buffer->lock();
@@ -428,13 +454,13 @@ void Gfx::mergeBuffer(u16 xf, u16 yf, u16 xt, u16 yt, u16 w, u16 h, const ColorF
   buffer->unlock();
   canvas->unlock(); */
   
-  //TODO this was blit(buffer, canvas, xf, yf, xt, yt, w, h); before but doens't work
+  //TODO this was blit(buffer, canvas, xf, yf, xt, yt, w, h); before but doesn't work
   // with new indexed mode
   
-  for (u16 y = 0; y < h; ++y)
-    for (u16 x = 0; x < w; ++x)
+  for (u32 y = 0; y < h; ++y)
+    for (u32 x = 0; x < w; ++x)
     {
-      const u16 dx = xt + x, dy = yt + y;
+      const u32 dx = xt + x, dy = yt + y;
       
       //TODO consider having a specialized method without filter for performance if it's needed
       Color src = canvas->at(dx, dy);

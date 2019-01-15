@@ -106,3 +106,26 @@ void SpellDiscoverAnimation::step()
 
 bool SpellDiscoverAnimation::mouseReleased(u16 x, u16 y, MouseButton b) { finish(); return true; }
 
+#pragma mark GlobalEnchantment
+
+GlobalEnchantmentAnimation::GlobalEnchantmentAnimation(const Wizard* wizard, SpriteInfo enchantment) : ContinuousEndlessAnimation(5000),
+wizard(GfxData::wizardGfx(wizard).diplomacy.fadeIn.frame(4)), enchant(LSI(SPECFX, 33)) { }
+
+void GlobalEnchantmentAnimation::step()
+{
+  Point base = { 30, 30 };
+  
+  constexpr float delta = 1.0 / 14;
+  
+  int step = position() / delta;
+  
+  Gfx::draw(LSI(DIPLOMAC, 1), base);
+  Gfx::drawMasked(LSI(DIPLOMAC, 45).frame(4), LSI(SPECFX, step < 10 ? 54 : 55).frame(step % 10), base.x, base.y, 0, 0);
+  //Gfx::draw(wizard, base);
+}
+
+bool GlobalEnchantmentAnimation::mouseReleased(u16 x, u16 y, MouseButton b)
+{
+  finish();
+  return true;
+}

@@ -70,10 +70,6 @@ void Combat::attack(CombatUnit *u1, CombatUnit *u2)
 {
   u1->setFacing(relativeFacing(u1, u2));
   u2->setFacing(relativeFacing(u2, u1));
-  
-  //TODO: probably both animations should be pushed on both players
-  u1->getOwner()->push(new anims::CombatAttack(u1));
-  u2->getOwner()->push(new anims::CombatAttack(u2));
 }
 
 Dir Combat::relativeFacing(CombatUnit *u1, CombatUnit *u2)
