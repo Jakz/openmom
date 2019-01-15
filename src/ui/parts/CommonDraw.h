@@ -20,7 +20,7 @@ enum class MovementBaseType;
 
 class CommonDraw
 {
-  static void drawUnitPropValue(Property property, const Unit* unit, std::string_view prefix, coord_t x, coord_t y);
+  static void drawUnitPropValue(Property property, const Unit* unit, fast_string_ref prefix, coord_t x, coord_t y);
 
 public:
   static void drawMovement(u16 v, MovementBaseType icon, u16 x, u16 y, u16 c);
