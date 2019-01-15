@@ -60,7 +60,7 @@ namespace combat
     CombatMechanics(Game* game) : game(game) { }
     
     /* attack related functions */
-    bool canMeleeAttack(const Combat* combat, const CombatUnit* attacker, const CombatUnit* defender) { return true; }
+    bool canMeleeAttack(const Combat* combat, const CombatUnit* attacker, const CombatUnit* defender);
     bool canRangedAttack(const Combat* combat, const CombatUnit* attacker, const CombatUnit* defender) { return true; }
     
     /* map related functions */

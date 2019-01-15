@@ -18,6 +18,8 @@
 
 using namespace combat;
 
+#pragma mark Movement Mechanics
+
 u16 CombatMechanics::movementCostForTile(const CombatUnit* unit, const CombatTile* tile, Dir from)
 {
   bool isLongMove = from == Dir::EAST || from == Dir::WEST || from == Dir::SOUTH || from == Dir::NORTH;
@@ -184,6 +186,20 @@ void CombatMechanics::castCombatInstant(const SpellCast& cast, const CombatUnit 
 {
   
 }
+
+#pragma mark Combat Mechanics
+
+bool CombatMechanics::canMeleeAttack(const Combat* combat, const CombatUnit* attacker, const CombatUnit* defender)
+{
+  const auto& attackerSkills = attacker->skills();
+  const auto& defenderSkills = defender->skills();
+
+  if (defenderSkills->has(MovementType::FLYING))
+    return attackerSkills->has(MovementType::FLYING) || attackerSkills->hasSimpleEffect(SimpleEffect::Type::ALLOW_MELEE_ATTACKS_AGAINST_FLYING);
+  else
+    return true;
+}
+
 
 #pragma mark CombatFormulas
 

@@ -10,6 +10,8 @@
 #include "Gfx.h"
 #include "Font.h"
 
+#include "common/fmt/format.h"
+
 void CommonDraw::drawMovement(u16 v, MovementBaseType type, u16 x, u16 y, u16 c)
 {
   if (v > 0)
@@ -128,6 +130,18 @@ void CommonDraw::drawUnitProps(const UnitSpec* unit, u16 xx, u16 yy, s16 max)
   }
 }
 
+void CommonDraw::drawUnitPropValue(Property property, const Unit* unit, std::string_view prefix, coord_t x, coord_t y)
+{
+  prop_value base = unit->getBaseProperty(property);
+  prop_value bonus = unit->getBonusProperty(property);
+  
+  /*if (bonus > 0)
+    Fonts::drawString(fmt::sprintf("%s%d+%d", prefix, base, bonus), FontFaces::Small::TEAL, x, y, ALIGN_LEFT);
+  else
+    Fonts::drawString(fmt::sprintf("%s%d", prefix, base), FontFaces::Small::TEAL, x, y, ALIGN_LEFT);*/
+  Fonts::drawString(fmt::sprintf("%s%d", prefix, base+bonus), FontFaces::Small::TEAL, x, y, ALIGN_LEFT);
+}
+
 void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max)
 {
   // TODO: negative bonuses are missing (I think they darken the icon? 
@@ -178,7 +192,7 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
     int tx = xx;
     
     Gfx::draw(propGfx.xy(0,0), xx-43, yy-1);
-    Fonts::drawString(Fonts::format("Melee: %d",unit->getProperty(Property::MELEE)), FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
+    drawUnitPropValue(Property::MELEE, unit, "Melee: ", xx - 31, yy);
     yy += 10;
     
     
@@ -190,7 +204,7 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
       else
         Gfx::draw(propGfx.xy(0, GfxData::rangedGfxIndex(rtype)), xx-43, yy-1);
       
-      Fonts::drawString(Fonts::format("Ranged: %d",unit->getProperty(Property::RANGED)), FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
+      drawUnitPropValue(Property::RANGED, unit, "Ranged: ", xx - 31, yy);
     }
     yy += 10;
 
@@ -202,7 +216,7 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
     for (int i = 0; i < 7; ++i)
     {
       Gfx::draw(propGfx.xy(0, GfxData::propertyGfxIndex(pp[i])), xx-43, yy-1);
-      Fonts::drawString(Fonts::format("%d",unit->getProperty(pp[i])), FontFaces::Small::TEAL, xx - 33, yy, ALIGN_LEFT);
+      drawUnitPropValue(pp[i], unit, "", xx - 33, yy);
       xx += 22;
     }
     xx = tx;
@@ -215,7 +229,7 @@ void CommonDraw::drawUnitPropsComplete(const Unit* unit, u16 xx, u16 yy, s16 max
     for (int i = 0; i < 5; ++i)
     {
       Gfx::draw(propGfx.xy(0, 14+i), xx-43, yy-1);
-      Fonts::drawString(Fonts::format("%d",unit->getProperty(pp[i])), FontFaces::Small::TEAL, xx - 31, yy, ALIGN_LEFT);
+      drawUnitPropValue(pp[i], unit, "", xx - 31, yy);
       xx += 26;
     }
     xx = tx;

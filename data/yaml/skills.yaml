@@ -197,6 +197,8 @@ skills:
       - type: special_attack
         kind: thrown_weapon
         value: 1
+      - type: ability
+        kind: allow-melee-attacks-against-flying
     visuals:
       icon: [lbx, special2, 19]
       i18n: skill_thrown
@@ -206,6 +208,8 @@ skills:
       - type: special_attack
         kind: thrown_weapon
         value: 3
+      - type: ability
+        kind: allow-melee-attacks-against-flying
     visuals:
       icon: [lbx, special2, 19]
       i18n: skill_thrown
@@ -402,6 +406,16 @@ skills:
       hide_value: true
       icon: [lbx, special, 73]
       i18n: skill_spell_elemental_armor
+# combat effects
+  - identifier: combat_effect_web
+    type: combat_effect
+    effects:
+      - type: disallow-movement
+        kind: flying
+    visuals:
+      hide_value: true
+      icon: [lbx, special, 99]
+      i18n: combat_effect_web
 # item powers
 # nature
   - identifier: item_power_elemental_armor

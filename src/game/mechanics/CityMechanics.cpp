@@ -352,27 +352,27 @@ void CityMechanics::lambdaOnCitySurroundings(const City* city, const std::functi
 }
 
 
-s16 CityMechanics::countSurroundTileType(const City* city, TileType type)
+value_t CityMechanics::countSurroundTileType(const City* city, TileType type)
 {
-  s16 count = 0;
+  value_t count = 0;
   lambdaOnCitySurroundings(city, [&count, type](const Tile* tile) {
     count += tile->type == type ? 1 : 0;
   });
   return count;
 }
 
-s16 CityMechanics::countSurroundResource(const City* city, Resource type)
+value_t CityMechanics::countSurroundResource(const City* city, Resource type)
 {
-  s16 count = 0;
+  value_t count = 0;
   lambdaOnCitySurroundings(city, [&count, type](const Tile* tile) {
     count += tile->resource == type ? 1 : 0;
   });
   return count;
 }
 
-s16 CityMechanics::countSurroundManaNode(const City* city, School school)
+value_t CityMechanics::countSurroundManaNode(const City* city, School school)
 {
-  s16 count = 0;
+  value_t count = 0;
   lambdaOnCitySurroundings(city, [&count, school](const Tile* tile) {
     count += tile->node() && tile->node()->school == school ? 1 : 0;
   });
@@ -381,7 +381,7 @@ s16 CityMechanics::countSurroundManaNode(const City* city, School school)
 
 float CityMechanics::resourceBonus(const City* city, Resource resource, float value)
 {
-  s16 count = countSurroundResource(city, resource);
+  value_t count = countSurroundResource(city, resource);
   
   float ret = value*count;
   
@@ -392,14 +392,14 @@ float CityMechanics::resourceBonus(const City* city, Resource resource, float va
 }
 
 
-s16 CityMechanics::computeInitialPopulationGrowth(const City* city)
+value_t CityMechanics::computeInitialPopulationGrowth(const City* city)
 {
-  s16 populationDelta = 0;
+  value_t populationDelta = 0;
   
   // let's compute the chance to increase outpost population
   float increaseChance = 0;
   
-  Tile* t = game->world->get(city->position);
+  const Tile* t = game->world->get(city->position);
   
   // according to race there is a base chance of growing
   increaseChance += city->race->outpostGrowthChance;
@@ -456,10 +456,10 @@ Upkeep CityMechanics::computeUpkeep(const City* city)
   return u;
 }
 
-s16 CityMechanics::baseGold(const City* city)
+value_t CityMechanics::baseGold(const City* city)
 {
   // compute base gold income from taxes
-  s16 bgi = (s16)std::floor((city->population/1000) * city->owner->getTaxRate().goldPerCitizen);
+  value_t bgi = (value_t)std::floor((city->population/1000) * city->owner->getTaxRate().goldPerCitizen);
   
   // add bonus gold from resources surrounding the city
   int bonus = 0;
@@ -479,11 +479,11 @@ s16 CityMechanics::baseGold(const City* city)
   return bgi;
 }
 
-s16 CityMechanics::computeGold(const City *city)
+value_t CityMechanics::computeGold(const City *city)
 {
   // first compute base gold income
-  s16 base = baseGold(city);
-  s16 totalGold = base;
+  value_t base = baseGold(city);
+  value_t totalGold = base;
   
   // boost gold income according to buildings
   if (city->hasBuilding(Building::MARKETPLACE))
@@ -500,14 +500,14 @@ s16 CityMechanics::computeGold(const City *city)
   return totalGold;
 }
 
-s16 CityMechanics::baseProduction(const City *city)
+value_t CityMechanics::baseProduction(const City *city)
 {
   int multiplier = city->race->baseProduction;
   
   return (city->workers*multiplier) + (s16)std::ceil(city->farmers/2.0);
 }
 
-s16 CityMechanics::computeProductionBonus(const City *city)
+value_t CityMechanics::computeProductionBonus(const City *city)
 {
   float bonus = 0.0f;
   
@@ -532,7 +532,7 @@ s16 CityMechanics::computeProductionBonus(const City *city)
   return bonus;
 }
 
-s16 CityMechanics::computeProduction(const City* city)
+value_t CityMechanics::computeProduction(const City* city)
 {
   float production = baseProduction(city);
   float bonus = computeProductionBonus(city);
@@ -542,9 +542,9 @@ s16 CityMechanics::computeProduction(const City* city)
   return (s16)std::floor(production);
 }
 
-s16 CityMechanics::computeMana(const City *city)
+value_t CityMechanics::computeMana(const City *city)
 {
-  s16 totalMana = 0;
+  value_t totalMana = 0;
   
   // if city has fortress and it's on myrran then +5 mana bonus
   if (city->hasBuilding(Building::MAGE_FORTRESS))
@@ -570,11 +570,11 @@ s16 CityMechanics::computeMana(const City *city)
     totalMana += 3;
   
   // mana bonuses given by resources surrounding the city
-  s16 bonus = 0;
-  bonus += (s16)std::floor(resourceBonus(city, Resource::CRYSX_CRYSTAL, 5));
-  bonus += (s16)std::floor(resourceBonus(city, Resource::QOURK_CRYSTAL, 3));
-  bonus += (s16)std::floor(resourceBonus(city, Resource::ADAMANTIUM, 2));
-  bonus += (s16)std::floor(resourceBonus(city, Resource::MITHRIL, 1));
+  value_t bonus = 0;
+  bonus += (value_t) std::floor(resourceBonus(city, Resource::CRYSX_CRYSTAL, 5));
+  bonus += (value_t) std::floor(resourceBonus(city, Resource::QOURK_CRYSTAL, 3));
+  bonus += (value_t) std::floor(resourceBonus(city, Resource::ADAMANTIUM, 2));
+  bonus += (value_t) std::floor(resourceBonus(city, Resource::MITHRIL, 1));
   
   // dwarvens gets double bonuses from these resources
   bonus *= city->race->miningBonusMultiplier;
@@ -582,7 +582,7 @@ s16 CityMechanics::computeMana(const City *city)
   return totalMana + bonus;
 }
 
-s16 CityMechanics::computeKnowledge(const City *city)
+value_t CityMechanics::computeKnowledge(const City *city)
 {
   int knowledge = 0;
   
@@ -598,18 +598,18 @@ s16 CityMechanics::computeKnowledge(const City *city)
   return knowledge;
 }
 
-s16 CityMechanics::baseGrowthRate(const City *city)
+value_t CityMechanics::baseGrowthRate(const City *city)
 {
   return (s16)std::ceil((city->maxPopulation - city->population/1000 + 1) / 2.0);
 }
 
-s16 CityMechanics::computeGrowthRate(const City *city)
+value_t CityMechanics::computeGrowthRate(const City *city)
 {
   if (city->population == 25000)
     return 0;
   
   // base growth rate
-  s16 growthRate = baseGrowthRate(city)*10 + city->race->growthBonus;
+  value_t growthRate = baseGrowthRate(city)*10 + city->race->growthBonus;
   
   // bonus from buildings
   if (city->hasBuilding(Building::GRANARY))
@@ -633,7 +633,7 @@ s16 CityMechanics::computeGrowthRate(const City *city)
   return growthRate;
 }
 
-s16 CityMechanics::computeMaxPopulationForTile(const Tile* tile)
+value_t CityMechanics::computeMaxPopulationForTile(const Tile* tile)
 {
   float maxPop = 0.0f;
   
@@ -671,11 +671,11 @@ float CityMechanics::getRacialUnrest(const Race *cityRace, const Race *ownerRace
   return 0.1f;
 }
 
-s16 CityMechanics::computeUnrest(const City *city)
+value_t CityMechanics::computeUnrest(const City *city)
 {
   float globalMultiplier = 1.0f;
   float percentUnrest = 0.0f;
-  s16 flatUnrest = 0;
+  value_t flatUnrest = 0;
   
   /* unrest given by competition between city race and fortress city race */
   float racialUnrest = getRacialUnrest(city->race, city->owner->cityWithFortress()->race);
@@ -689,7 +689,7 @@ s16 CityMechanics::computeUnrest(const City *city)
   if (army)
   {
     const auto normalUnits = army->getUnits([](const Unit* unit) { return !unit->isFantastic(); });
-    s16 suppressionFromArmy = normalUnits.size() / 2;
+    value_t suppressionFromArmy = normalUnits.size() / 2;
     
     flatUnrest -= suppressionFromArmy;
   }
@@ -712,10 +712,10 @@ s16 CityMechanics::computeUnrest(const City *city)
    */
   
   /* ( (population * percentUnrest) + flatUnrest ) * globalMultiplier */
-  return std::max(0, (int)std::floor(((city->getPopulationInThousands()*percentUnrest) + flatUnrest) * globalMultiplier));
+  return std::max(0, (value_t) std::floor(((city->getPopulationInThousands()*percentUnrest) + flatUnrest) * globalMultiplier));
 }
 
-s16 CityMechanics::computeMaxPopulation(const City *city)
+value_t CityMechanics::computeMaxPopulation(const City *city)
 {
   float maxPop = computeMaxPopulationForTile(game->world->get(city->position));
   
@@ -724,7 +724,7 @@ s16 CityMechanics::computeMaxPopulation(const City *city)
   if (city->hasBuilding(Building::FARMERS_MARKET))
     maxPop += 3.0f;
   
-  return std::min(static_cast<int>(std::ceil(maxPop)), 25);
+  return std::min(static_cast<value_t>(std::ceil(maxPop)), 25);
 }
 
 void CityMechanics::partitionPopulation(City* city)
@@ -825,7 +825,7 @@ void CityMechanics::updateProduction(City *c)
   }
 }
 
-u16 CityMechanics::turnsRequiredForProduction(const City* city)
+value_t CityMechanics::turnsRequiredForProduction(const City* city)
 {
   // TODO: if housing or trade goods should return 1?
   

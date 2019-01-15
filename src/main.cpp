@@ -17,7 +17,7 @@
 
 #include "ui/views/UnitDetailView.h"
 
-#include "common/format.h"
+#include "common/fmt/format.h"
 
 void saveScreenshots(Game* game);
 
