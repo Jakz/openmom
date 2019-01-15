@@ -654,8 +654,8 @@ void MainView::Surveyor::draw()
         // draw city specs
         Fonts::drawString("City Resources", 272, 142, ALIGN_CENTER);
         
-        const std::string pop = Fonts::format(i18n::s(I18::SURVEYOR_MAX_POPULATION).c_str(), city->getMaxPopulation());
-        const std::string prod = Fonts::format(i18n::s(I18::SURVEYOR_MAX_POPULATION).c_str(), (s32)(view.g->cityMechanics.computeProductionBonus(city)*100));
+        const std::string pop = fmt::sprintf(i18n::s(I18::SURVEYOR_MAX_POPULATION), city->getMaxPopulation());
+        const std::string prod = fmt::sprintf(i18n::s(I18::SURVEYOR_MAX_POPULATION), (view.g->cityMechanics.computeProductionBonus(city)*100));
         
         Fonts::setFace(FontFaces::Small::WHITE_PALE, 0, 0);
         Fonts::drawString(pop, 244, 149, ALIGN_LEFT);

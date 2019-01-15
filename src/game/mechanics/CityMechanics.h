@@ -46,36 +46,36 @@ public:
   
   void lambdaOnCitySurroundings(const City* city, const std::function<void(Tile*)>& functor);
   
-  s16 countSurroundTileType(const City* city, TileType type);
-  s16 countSurroundResource(const City* city, Resource type);
-  s16 countSurroundManaNode(const City* city, School type);
+  value_t countSurroundTileType(const City* city, TileType type);
+  value_t countSurroundResource(const City* city, Resource type);
+  value_t countSurroundManaNode(const City* city, School type);
   float resourceBonus(const City* city, Resource resource, float value);
   
-  s16 computeInitialPopulation(const Player* player, const Position& position) { return 300; } // TODO: real behavior
-  s16 computeInitialPopulationGrowth(const City* city);
+  value_t computeInitialPopulation(const Player* player, const Position& position) { return 300; } // TODO: real behavior
+  value_t computeInitialPopulationGrowth(const City* city);
   
-  s16 computeFood(const City* city) { return 2*(city->population/1000) - city->necessaryFood; } // TODO: real behavior
+  value_t computeFood(const City* city) { return 2*(city->population/1000) - city->necessaryFood; } // TODO: real behavior
   Upkeep computeUpkeep(const City* city);
-  s16 computeGold(const City* city);
-  s16 computeProductionBonus(const City* city);
-  s16 computeProduction(const City* city);
-  s16 computeMana(const City* city);
-  s16 computeKnowledge(const City* city);
+  value_t computeGold(const City* city);
+  value_t computeProductionBonus(const City* city);
+  value_t computeProduction(const City* city);
+  value_t computeMana(const City* city);
+  value_t computeKnowledge(const City* city);
   
   float getRacialUnrest(const Race* cityRace, const Race* ownerRace);
-  s16 computeMaxPopulationForTile(const Tile* tile);
-  s16 computeMaxPopulation(const City* city);
-  s16 computeUnrest(const City* city);
+  value_t computeMaxPopulationForTile(const Tile* tile);
+  value_t computeMaxPopulation(const City* city);
+  value_t computeUnrest(const City* city);
   
   void partitionPopulation(City* city);
   
-  s16 computeGrowthRate(const City* city);
+  value_t computeGrowthRate(const City* city);
   
-  s16 baseGold(const City* city);
-  s16 baseProduction(const City* city);
-  s16 baseGrowthRate(const City* city);
+  value_t baseGold(const City* city);
+  value_t baseProduction(const City* city);
+  value_t baseGrowthRate(const City* city);
   
-  u16 turnsRequiredForProduction(const City* city);
+  value_t turnsRequiredForProduction(const City* city);
   
   bool canRoadBeBuiltOnTile(const Tile* tile);
   bool canCityBeBuiltOnTile(const Tile* tile);

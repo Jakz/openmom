@@ -8,7 +8,7 @@
 
 #include "Messages.h"
 
-#include "common/format.h"
+#include "common/fmt/format.h"
 #include "i18n/Localization.h"
 
 #include "City.h"

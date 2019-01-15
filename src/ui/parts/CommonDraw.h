@@ -14,11 +14,14 @@
 class UnitSpec;
 class Unit;
 class Player;
+enum class Property : u8;
 
 enum class MovementBaseType;
 
 class CommonDraw
 {
+  static void drawUnitPropValue(Property property, const Unit* unit, std::string_view prefix, coord_t x, coord_t y);
+
 public:
   static void drawMovement(u16 v, MovementBaseType icon, u16 x, u16 y, u16 c);
   static void drawGoldUpkeep(u16 g, u16 x, u16 y);
