@@ -130,7 +130,7 @@ void CommonDraw::drawUnitProps(const UnitSpec* unit, u16 xx, u16 yy, s16 max)
   }
 }
 
-void CommonDraw::drawUnitPropValue(Property property, const Unit* unit, std::string_view prefix, coord_t x, coord_t y)
+void CommonDraw::drawUnitPropValue(Property property, const Unit* unit, fast_string_ref prefix, coord_t x, coord_t y)
 {
   prop_value base = unit->getBaseProperty(property);
   prop_value bonus = unit->getBonusProperty(property);

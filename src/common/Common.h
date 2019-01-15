@@ -10,6 +10,9 @@
 #include <algorithm>
 #include "SDL.h"
 
+//#define OM_CONFIG_DONT_USE_STRING_VIEW false
+
+
 #define DEBUG 3
 
 #if defined(DEBUG) || true
@@ -52,6 +55,14 @@
 #define PACKED __attribute__((packed))
 #define PACKED_STRUCTS_REQUIRE_SAME_TYPE false
 #endif
+
+#if __has_include(<string_view>) && !OM_CONFIG_DONT_USE_STRING_VIEW
+#include <string_view>
+using fast_string_ref = std::string_view;
+#else
+using fast_string_ref = const std::string&;
+#endif
+
 
 
 #include <common/Typedefs.h>
