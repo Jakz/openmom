@@ -326,7 +326,14 @@ void Gfx::drawMasked(SpriteInfo ssrc, SpriteInfo smask, coord_t dx, coord_t dy, 
   public:
     MaskedSpriteSheet(SpriteInfo src, SpriteInfo mask, coord_t ox, coord_t oy) : ssrc(src), smask(mask), src(src.sheet()), mask(mask.sheet()), ox(ox), oy(oy) { }
     
-    u32 at(index_t x, index_t y, index_t c = 0, index_t r = 0) const override { return mask->at(x+ox, y+oy, smask.x(), smask.y()) == 0 ? src->at(x,y, ssrc.x(), ssrc.y()) : 0; }
+    u32 at(index_t x, index_t y, index_t c = 0, index_t r = 0) const override {
+      bool isInside = x+ox < mask->sw(smask.x(), smask.y()) && y < mask->sh(smask.x(), smask.y());
+      
+      if (isInside)
+        return mask->at(x+ox, y+oy, smask.x(), smask.y()) == 0 ? src->at(x,y, ssrc.x(), ssrc.y()) : 0;
+      else
+        return 0;
+    }
     index_t tw() const override { return src->tw(); }
     index_t th() const override { return src->th(); }
     

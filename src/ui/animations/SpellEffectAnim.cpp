@@ -113,7 +113,8 @@ wizard(GfxData::wizardGfx(wizard).diplomacy.fadeIn.frame(4)), enchant(LSI(SPECFX
 
 void GlobalEnchantmentAnimation::step()
 {
-  Point base = { 30, 30 };
+  const Point base = { 70, 40 };
+  const Point enchantDelta = { -2, -4 };
   
   wizard = LSI(DIPLOMAC, 45).frame(4);
   
@@ -123,14 +124,16 @@ void GlobalEnchantmentAnimation::step()
   
   constexpr float delta = MERGE_DURATION / MERGE_FRAME_COUNT;
   
-  const float progress = position();
+  float progress = position();
+  
+  Gfx::draw(LSI(BACKGRND, 18), base - Point(12, 12));
   
   if (progress < MERGE_DURATION)
   {
     /* mirror to wizard effect */
     const int step = progress / delta;
     
-    Gfx::draw(LSI(DIPLOMAC, 1), base);
+    Gfx::draw(LSI(DIPLOMAC, 1), base.x, base.y);
     Gfx::drawMasked(wizard, LSI(SPECFX, step < 10 ? 54 : 55).frame(step % 10), base.x, base.y, 0, 0);
   }
   else if (progress <= MERGE_DURATION + STILL_DURATION)
@@ -143,18 +146,18 @@ void GlobalEnchantmentAnimation::step()
     /* wizard to enchant effect */
     const int step = (progress - (MERGE_DURATION + STILL_DURATION)) / delta;
     Gfx::draw(LSI(DIPLOMAC, 45).frame(4), base);
-    Gfx::drawMasked(enchant, LSI(SPECFX, step < 10 ? 54 : 55).frame(step % 10), base.x, base.y, 0, 0);
+    Gfx::drawMasked(enchant, LSI(SPECFX, step < 10 ? 54 : 55).frame(step % 10), base.x + enchantDelta.x, base.y + enchantDelta.y, 0, 0);
   }
   else
   {
     /* enchant */
-    Gfx::draw(enchant, base);
+    Gfx::draw(enchant, base + enchantDelta);
   }
   
   if (progress < 1.0)
   {
     //TODO: font color positioning etc
-    Fonts::drawString("You have completed casting", FontFaces::Huge::GOLD, base.x + 50, base.y + 50, ALIGN_CENTER);
+    Fonts::drawString("You have completed casting...", FontFaces::Huge::GOLD, base.x + 50 - 1, base.y + 120, ALIGN_CENTER);
   }
 }
 
