@@ -31,7 +31,7 @@ const Skill* SkillSet::get(size_t index) const
   size_t globalCount = unit && unit->getArmy() ? unit->getArmy()->getOwner()->globalSkillSpellsCount(unit) : 0,
          itemPowerCount = 0;
   
-  const Hero* hero = unit->asHero();
+  const Hero* hero = unit ? unit->asHero() : nullptr;
   
   if (hero)
   {
@@ -128,16 +128,21 @@ bool SkillSet::hasSkill(const Skill* skill) const
 bool SkillSet::has(const std::function<bool(const SkillEffect*)>& predicate) const
 {
   return std::any_of(this->begin(), this->end(), [&predicate] (const Skill* skill) {
-    return std::any_of(skill->getEffects().begin(), skill->getEffects().end(), [&predicate] (const SkillEffect* effect) {
+    return std::any_of(skill->getEffects().dbegin(), skill->getEffects().dend(), [&predicate] (const SkillEffect* effect) {
       return predicate(effect);
     });
   });
 }
 
 bool SkillSet::has(MovementType type) const {
-  return has([type](const SkillEffect* effect) {
-    return effect->type == SkillEffect::Type::MOVEMENT && effect->as<MovementEffect>()->subType() == type;
+  bool hasType = false, hasPreventType = false;
+  
+  forEachEffect([&hasType, &hasPreventType, type] (const SkillEffect* effect) {
+    hasType |= effect->type == SkillEffect::Type::MOVEMENT && effect->as<MovementEffect>()->subType() == type;
+    hasPreventType |= effect->type == SkillEffect::Type::DISALLOW_MOVEMENT && effect->as<MovementEffect>()->subType() == type;
   });
+  
+  return hasType && !hasPreventType;
 }
 
 bool SkillSet::hasSkillEffect(const SkillEffect* effect) const
@@ -157,6 +162,15 @@ bool SkillSet::hasSkillEffect(const SkillEffect* effect) const
 bool SkillSet::hasSimpleEffect(SimpleEffect::Type type) const
 {
   return skills::hasSimpleEffect(*this, type);
+}
+
+void SkillSet::forEachEffect(std::function<void(const SkillEffect*)> lambda) const
+{
+  std::for_each(begin(), end(), [&lambda] (const Skill* skill) {
+    std::for_each(skill->getEffects().dbegin(), skill->getEffects().dend(), [&lambda] (const SkillEffect* effect) {
+      lambda(effect);
+    });
+  });
 }
 
 School SkillSet::glowEffect() const

@@ -47,6 +47,8 @@ public:
   const enum class Type : u8
   {
     MOVEMENT,
+    DISALLOW_MOVEMENT,
+    
     ABILITY,
     PARAMETRIC_ABILITY,
     IMMUNITY,
@@ -125,16 +127,7 @@ public:
     STONE_TOUCH,
     
     IMMOLATION,
-    
-    FIRE_BREATH,
-    LIGHTING_BREATH,
-    
-    THROWN_ATTACK,
-    
-    DOOM_GAZE,
-    DEATH_GAZE,
-    STONE_GAZE,
-    
+
     HEALER, 
     
     CREATE_OUTPOST,
@@ -147,7 +140,9 @@ public:
     NEGATE_FIRST_STRIKE,
     ARMOR_PIERCING,
     LONG_RANGE,
-    ILLUSIONARY_ATTACK
+    ILLUSIONARY_ATTACK,
+    
+    ALLOW_MELEE_ATTACKS_AGAINST_FLYING
   } effect;
   
   SimpleEffect(SkillEffect::Type type, Type effect) : SkillEffect(type), effect(effect) { }
@@ -302,6 +297,7 @@ enum class MovementType
 };
 
 using MovementEffect = SkillEnumEffect<MovementType, SkillEffect::Type::MOVEMENT>;
+using MovementDisallowEffect = SkillEnumEffect<MovementType, SkillEffect::Type::DISALLOW_MOVEMENT>;
 
 enum SpecialAttackType
 {
@@ -315,7 +311,7 @@ enum SpecialAttackType
 class SpecialAttackEffect : public SkillEnumEffect<SpecialAttackType, SkillEffect::Type::SPECIAL_ATTACK>
 {
 private:
-  s16 _strength;
+  value_t _strength;
   
 public:
   SpecialAttackEffect(SpecialAttackType type, s16 strength) : SkillEnumEffect(type), _strength(strength) { }

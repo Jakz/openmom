@@ -67,6 +67,8 @@ public:
   
   bool has(MovementType type) const;
   
+  void forEachEffect(std::function<void(const SkillEffect*)> lambda) const;
+  
   template<typename T> void findAllEffectsOftype(T& effects, SkillEffect::Type type) const
   {
     skills::findAllEffectsOftype(*this, effects, type);

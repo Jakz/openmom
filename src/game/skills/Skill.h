@@ -237,7 +237,8 @@ namespace skills
     NATIVE,
     HERO,
     SPELL,
-    ITEM_POWER
+    ITEM_POWER,
+    COMBAT_EFFECT
   };
   
   struct VisualInfo

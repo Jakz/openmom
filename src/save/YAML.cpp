@@ -408,6 +408,8 @@ template<> skills::Type yaml::parse(const N& node)
     return skills::Type::SPELL;
   else if (node == "item_power")
     return skills::Type::ITEM_POWER;
+  else if (node == "combat_effect")
+    return skills::Type::COMBAT_EFFECT;
   else
     assert(false);
 }
@@ -617,7 +619,8 @@ template<> const SkillEffect* yaml::parse(const N& node)
       { "create_road", SimpleEffect::Type::CREATE_ROAD },
       { "meld_with_node", SimpleEffect::Type::MELD_NODE },
       { "wall_crusher", SimpleEffect::Type::WALL_CRUSHING },
-      { "invisibility", SimpleEffect::Type::INVISIBILITY }
+      { "invisibility", SimpleEffect::Type::INVISIBILITY },
+      { "allow-melee-attacks-against-flying", SimpleEffect::Type::ALLOW_MELEE_ATTACKS_AGAINST_FLYING },
     };
     
     if (mapping.find(node["kind"]) == mapping.end())
@@ -636,7 +639,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
     else
       effect = new SimpleEffect(SkillEffect::Type::ABILITY, kind);
   }
-  else if (type == "movement")
+  else if (type == "movement" || type == "disallow-movement")
   {
     static std::unordered_map<std::string, MovementType> mapping = {
       { "mountaineer", MovementType::MOUNTAINWALK },
@@ -648,9 +651,11 @@ template<> const SkillEffect* yaml::parse(const N& node)
     if (mapping.find(node["kind"]) == mapping.end())
       assert(false);
     
+    bool isDisallow = type == "disallow-movement";
+    
     MovementType kind = mapping[node["kind"]];
     
-    effect = new MovementEffect(kind);
+    effect = isDisallow ? static_cast<SkillEffect*>(new MovementDisallowEffect(kind)) :  new MovementEffect(kind);
   }
   else if (type == "spell_grant")
   {

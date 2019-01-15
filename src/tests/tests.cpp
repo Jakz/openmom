@@ -1,6 +1,6 @@
 #include "tests.h"
 
-#include "Unit.h"
+#include "game/units/Unit.h"
 #include "UnitSpec.h"
 #include "Skill.h"
 
@@ -214,7 +214,7 @@ TEST_CASE("items") {
     auto hero1 = test::anyHeroUnit();
     auto hero2 = test::anyHeroUnit();
 
-    items::Item item;
+    items::Item item(items::TypeID::SWORD, 0);
     item.addAffix({ Property::MELEE, 3 });
     hero1->placeItem(0, &item);
 
@@ -396,6 +396,23 @@ TEST_CASE("basic skill set functions") {
   }
 }
 
+TEST_CASE("movement effects") {
+  SECTION("check if basic movement finding behavor works") {
+    MovementEffect movement(MovementType::FLYING);
+    skills::ConcreteSkill skill = skills::ConcreteSkill(skills::Type::NATIVE, { &movement }, skills::VisualInfo());
+    SkillSet set = SkillSet({ &skill });
+    REQUIRE(set.has(MovementType::FLYING));
+  }
+  
+  SECTION("behave like if no flying is present with disallow") {
+    MovementEffect movement(MovementType::FLYING);
+    MovementDisallowEffect dmovement(MovementType::FLYING);
+    skills::ConcreteSkill skill = skills::ConcreteSkill(skills::Type::NATIVE, { &movement, &dmovement }, skills::VisualInfo());
+    SkillSet set = SkillSet({ &skill });
+    REQUIRE(!set.has(MovementType::FLYING));
+  }
+}
+
 TEST_CASE("skill effects groups") {
   WHEN("a skill with a keep greater group") {
     GIVEN("two skill effects, one more powerful") {
@@ -444,6 +461,7 @@ TEST_CASE("unit figure value helper") {
 #pragma mark HitPoints
 TEST_CASE("health management of units") {
   const auto unit = test::anyRaceUnit();
+  unit->health()->healAll();
   const value_t figures = unit->getProperty(Property::FIGURES);
   const value_t hitPoints = unit->getProperty(Property::HIT_POINTS);
   auto* health = unit->health();
