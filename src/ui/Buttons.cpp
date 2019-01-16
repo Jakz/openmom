@@ -17,6 +17,13 @@ void Clickable::draw()
     Gfx::rect(x, y, w, h, Gfx::color(255, 0, 0));
 }
 
+void ClickableGrid::draw()
+{
+  forEachCell([](coord_t x, coord_t y, coord_t w, coord_t h) {
+    Gfx::rect(x, y, w, h, { 255, 0, 0 });
+  });
+}
+
 void ButtonGfx::draw(u16 x, u16 y, bool isActive, bool isPressed) const
 {
   /* if not active */

@@ -387,6 +387,7 @@ void NewGameView::switchToPhase(Phase phase)
   const u16 deltaY = 22;
   
   buttons.clear();
+  areas.clear();
   bookPhaseOkButton = nullptr;
   
   switch (phase)
@@ -758,15 +759,11 @@ void NewGameView::draw()
         y += 10;
       }
       
-      arcanusRacesGrid = clickable_grid(210, 36, 60, 10, sortedRaces[Plane::ARCANUS].size(), 1);
-      arcanusRacesGrid.forEachCell([] (coord_t x, coord_t y, coord_t w, coord_t h) {
-        Gfx::rect(x, y, w, h, { 255, 0, 0});
-      });
+      arcanusRacesGrid = ClickableGrid(210, 36, 60, 10, sortedRaces[Plane::ARCANUS].size(), 1);
+      arcanusRacesGrid.draw();
       
-      myrranRacesGrid = clickable_grid(210, 145, 60, 10, sortedRaces[Plane::MYRRAN].size(), 1);
-      myrranRacesGrid.forEachCell([] (coord_t x, coord_t y, coord_t w, coord_t h) {
-        Gfx::rect(x, y, w, h, { 255, 0, 0});
-      });
+      myrranRacesGrid = ClickableGrid(210, 145, 60, 10, sortedRaces[Plane::MYRRAN].size(), 1);
+      myrranRacesGrid.draw();
 
       break;
     }

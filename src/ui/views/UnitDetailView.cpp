@@ -47,21 +47,6 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
 
   buttons[UP_ARROW] = Button::buildTristate("Up", 0, 0, up_arrow)->setAction([this](){skillDraw.prevPage();});
   buttons[DOWN_ARROW] = Button::buildTristate("Down", 0, 0, down_arrow)->setAction([this](){skillDraw.nextPage();});
-  
-  /*for (int i = 0; i < 8; ++i)
-   {
-   Clickable area = SkillDraw.clickableForIndex(i);
-   areas.add(area);
-   }
-   
-   areas.get(0).setAction(new Action() { public void execute() { SkillDraw.openHelpForSkill(unit, 0); } });
-   areas.get(1).setAction(new Action() { public void execute() { SkillDraw.openHelpForSkill(unit, 1); } });
-   areas.get(2).setAction(new Action() { public void execute() { SkillDraw.openHelpForSkill(unit, 2); } });
-   areas.get(3).setAction(new Action() { public void execute() { SkillDraw.openHelpForSkill(unit, 3); } });
-   areas.get(4).setAction(new Action() { public void execute() { SkillDraw.openHelpForSkill(unit, 4); } });
-   areas.get(5).setAction(new Action() { public void execute() { SkillDraw.openHelpForSkill(unit, 5); } });
-   areas.get(6).setAction(new Action() { public void execute() { SkillDraw.openHelpForSkill(unit, 6); } });
-   areas.get(7).setAction(new Action() { public void execute() { SkillDraw.openHelpForSkill(unit, 7); } });*/
 }
 
 void UnitDetailView::buttonClicked(button button)

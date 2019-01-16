@@ -72,7 +72,7 @@ private:
   u32 availablePicks;
   
   std::array<std::vector<const Race*>, PLANE_COUNT> sortedRaces;
-  clickable_grid arcanusRacesGrid, myrranRacesGrid;
+  ClickableGrid arcanusRacesGrid, myrranRacesGrid;
   
   struct
   {

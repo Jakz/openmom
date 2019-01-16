@@ -20,14 +20,15 @@
 
 class FontSpriteSheet;
 
-typedef std::function<void()> Action;
+using Action = std::function<void()>;
+using positioned_action_t = std::function<void(coord_t, coord_t)>;
 
 class Clickable
 {
 protected:
-  u16 x, y, w, h;
-  const MouseButton button;
-  Action action;
+  coord_t x, y, w, h;
+  MouseButton button;
+  positioned_action_t action;
   Action onEnter;
   Action onExit;
   bool active;
@@ -47,8 +48,10 @@ public:
   
   virtual void setPosition(u16 x, u16 y) { this->x = x; this->y = y; }
   
-  virtual inline Clickable* setAction(Action action) { this->action = action; return this; }
-  inline Action getAction() { return action; }
+  Clickable* setAction(positioned_action_t action) { this->action = action; return this; }
+  Clickable* setAction(Action action) { this->action = [action](coord_t, coord_t) { action(); }; return this; }
+
+  inline const positioned_action_t& getAction() { return action; }
   
   void setOnEnterAction(Action action) { this->onEnter = action; }
   void setOnExitAction(Action action) { this->onExit = action; }
@@ -59,31 +62,35 @@ public:
   virtual void draw();
 };
 
-class clickable_grid
+class ClickableGrid : public Clickable
 {
 public:
   using action_t = std::function<void(index_t,index_t)>;
   
 private:
-  coord_t x, y, w, h;
+  coord_t cw, ch;
   size_t rows, cols;
-  action_t action;
+  action_t cellAction;
   
 public:
-  clickable_grid() : clickable_grid(0,0,1,1,0,0) { }
-  clickable_grid(coord_t x, coord_t y, coord_t w, coord_t h, size_t rows, size_t cols) :
-  x(x), y(y), w(w), h(h), rows(rows), cols(cols) { }
-  
-  bool isInside(coord_t x, coord_t y) const
-  {
-    return x >= this->x && x < (this->x + w*cols) && y >= this->y && y < (this->y + h*rows);
+  ClickableGrid() : ClickableGrid(0,0,1,1,0,0) { }
+  ClickableGrid(coord_t x, coord_t y, coord_t cw, coord_t ch, size_t rows, size_t cols) :
+    Clickable(x, y, cw*cols, ch*rows), 
+    cw(cw), ch(ch), rows(rows), cols(cols), cellAction([](index_t, index_t) {})
+  { 
+    Clickable::setAction([this](coord_t x, coord_t y) {
+      index_t cx = (x - this->x) / this->cw, cy = (y - this->y) / this->ch;
+      cellAction(cx, cy);
+    });
   }
+
+  void setCellAction(action_t action) { this->cellAction = action; }
   
   void forEachCell(std::function<void(coord_t,coord_t,coord_t,coord_t)> lambda)
   {
     for (int j = 0; j < cols; ++j)
       for (int i = 0; i < rows; ++i)
-        lambda(x + j*w, y + i*h, w, h);
+        lambda(x + j*cw, y + i*ch, cw, ch);
   }
   
   Point getCell(const Point& p)
@@ -93,6 +100,8 @@ public:
     else
       return Point(-1, -1);
   }
+
+  void draw() override;
 };
 
 template<typename T>
@@ -115,7 +124,7 @@ public:
     for (const auto& area : areas)
       if (area->isActive() && area->isCorrectButton(b) && area->isInside(x,y))
       {
-        area->getAction()();
+        area->getAction()(x,y);
         return true;
       }
     
@@ -174,6 +183,8 @@ public:
   Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal, pressed) { }
   Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal, pressed, inactive) { }
 
+  Button* setAction(Action action) { this->action = [action](coord_t, coord_t) { action(); }; return this; }
+
   virtual void setTextInfo(const TextInfo& info);
   virtual void setLabel(const std::string& string);
   
@@ -182,7 +193,7 @@ public:
   
   void setPalette(const Palette* palette) { gfx.palette = palette; }
   
-  inline void execute() { if (action) action(); }
+  inline void execute() { if (action) action(0,0); }
   virtual void click() { execute(); }
   
   inline void showIf(bool condition) { visible = condition;}
@@ -191,7 +202,6 @@ public:
   inline bool isVisible() { return visible;}
   
   bool isActive() override { return active && visible; }
-  inline Button* setAction(Action action) override { this->action = action; return this; }
 
   template<typename T> T* as() { return static_cast<T*>(this); }
   

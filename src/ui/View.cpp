@@ -65,7 +65,7 @@ bool View::doMouseReleased(u16 x, u16 y, MouseButton b)
   {
     if (c && c->isActive() && c->isCorrectButton(b) && c->isInside(x,y) && c->getAction())
     {
-      c->getAction()();
+      c->getAction()(x,y);
       handled = true;
     }
   }
