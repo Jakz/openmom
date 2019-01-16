@@ -71,6 +71,8 @@ private:
   Phase phase;
   u32 availablePicks;
   
+  std::array<std::vector<const Race*>, PLANE_COUNT> sortedRaces;
+  
   struct
   {
     std::array<optional<SpellRarity>, 2> shownRarities;
@@ -114,6 +116,8 @@ private:
     const FontSpriteSheet* brightBoldFont;
     
     const FontSpriteSheet* darkSerifFont;
+    
+    FontPalette brightMedium;
     
     const FontSpriteSheet *tinyBright, *tinyGold, *tinyInactive, *tinyRetortList;
     

@@ -228,6 +228,16 @@ template<> items::Class yaml::parse(const N& node)
   FETCH_OR_FAIL("items::Class", mapping, node);
 }
 
+template<> Plane yaml::parse(const N& node)
+{
+  if (node.asString() == "arcanus") return Plane::ARCANUS;
+  else if (node.asString() == "myrran") return Plane::MYRRAN;
+  
+  PARSE_ERROR("Plane not found for identifier '%s'", node.asString().c_str());
+  assert(false);
+  return Plane::ARCANUS;
+}
+
 template<> SpellRarity yaml::parse(const N& node)
 {
   static const std::unordered_map<std::string, SpellRarity> mapping = {
@@ -905,6 +915,7 @@ template<> std::pair<const Race*, RaceGfxSpec> yaml::parse(const N& node)
   float taxIncomeMultiplier = node["tax_income_multiplier"];
   float miningBonusMultiplier = node["mining_bonus_multiplier"];
   float manaProducedPerCitizen = node["mana_produced_per_citizen"];
+  Plane startingPlane = parse<Plane>(node["starting_plane"]);
   
   const Node& ycityNames = node["city_names"];
   assert(ycityNames.IsSequence());
@@ -913,7 +924,7 @@ template<> std::pair<const Race*, RaceGfxSpec> yaml::parse(const N& node)
   for (size_t i = 0; i < ycityNames.size(); ++i)
     cityNames.push_back(ycityNames[i].asString());
   
-  data.first = new Race(cityGrowthModifier, outpostGrowthChance, baseProduction, taxIncomeMultiplier, miningBonusMultiplier, manaProducedPerCitizen, foodProductionPerFramer, cityNames);
+  data.first = new Race(cityGrowthModifier, outpostGrowthChance, baseProduction, taxIncomeMultiplier, miningBonusMultiplier, manaProducedPerCitizen, foodProductionPerFramer, startingPlane, cityNames);
   
   /* parse graphics */
   data.second.houseType = parse<HouseType>(node["visuals"]["house_type"]);

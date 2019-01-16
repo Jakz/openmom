@@ -122,6 +122,9 @@ enum sprite_id : sprite_ref
   
   bottom_box_spell_choice = LBXI(NEWGAME, 51),
   
+  divider2 = LBXI(NEWGAME, 54),
+  races_background = LBXI(NEWGAME, 55),
+  
   checkmark = LBXI(NEWGAME, 52)
 };
 
@@ -155,6 +158,8 @@ NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr,
   fonts.schoolFonts.set(School::DEATH, FontPalette::ofSolidWithLowShadow(Gfx::mainPalette->get(114), {0, 0, 0}));
 
   fonts.schoolFonts.set(School::NATURE, FontPalette::ofSolidWithLowShadow({0, 190, 0}, {0, 0, 0}));
+  
+  fonts.brightMedium = FontPalette::ofSolidWithLowShadow({194, 154, 118}, { 113, 85, 69 }, { 10, 10, 10 });
 
 }
 
@@ -169,7 +174,7 @@ void NewGameView::activate()
   info.retorts.insert(Data::retort("charismatic"));*/
   isPremadeWizard = false; // TODO true
   
-  switchToPhase(Phase::SPELLS_CHOICE);
+  switchToPhase(Phase::RACE_CHOICE);
   
   nameField.setPosition(Point(194,35));
   nameField.setText("Lo Pan");
@@ -533,6 +538,32 @@ void NewGameView::switchToPhase(Phase phase)
         }
       }
     }
+      
+    case Phase::RACE_CHOICE:
+    {
+      /* cache races names for race choice */
+      /* algorithm is generic although there are just two planes */
+      if (sortedRaces[Plane::ARCANUS].empty())
+      {
+        const auto& races = Data::values<const Race*>();
+        
+        /* split by plane */
+        for (const auto& race : races)
+          sortedRaces[race.second->startingPlane].push_back(race.second);
+
+        /* sort alphabetically */
+        for (auto& races : sortedRaces)
+        {
+          std::sort(races.begin(), races.end(), [](const Race* r1, const Race* r2) {
+            auto i1 = GfxData::raceGfxSpec(r1).name;
+            auto i2 = GfxData::raceGfxSpec(r2).name;
+            return i18n::s(i1).compare(i18n::s(i2));
+          });
+        }
+      }
+      
+      break;
+    }
   }
   
   this->phase = phase;
@@ -564,7 +595,7 @@ void NewGameView::draw()
       Gfx::draw(main_bg, 0, 0);
       //TODO: draw buttons bg
       //const Color buttonBG = Color(12,12,12);
-      Gfx::draw(options_bg, 165, 0);
+      Gfx::draw(options_bg, palette, 165, 0);
       //Gfx::fillRect(0, 0, 100, 20, buttonBG);
       
       break;
@@ -574,7 +605,7 @@ void NewGameView::draw()
     {
       Gfx::draw(main_bg, 0, 0);
       Fonts::drawString("Select Wizard", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
-      Gfx::draw(wizard_choice_bg, 165, 17);
+      Gfx::draw(wizard_choice_bg, palette, 165, 17);
       break;
     }
       
@@ -582,7 +613,7 @@ void NewGameView::draw()
     {
       Gfx::draw(main_bg, 0, 0);
       Fonts::drawString("Select Picture", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
-      Gfx::draw(portrait_choice_bg, 165, 17);
+      Gfx::draw(portrait_choice_bg, palette, 165, 17);
       break;
     }
       
@@ -590,14 +621,14 @@ void NewGameView::draw()
     {
       Gfx::draw(main_bg, 0, 0);
       Fonts::drawString("Wizard's Name", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
-      Gfx::draw(name_choice_bg, 165+16, 17);
+      Gfx::draw(name_choice_bg, palette, 165+16, 17);
       nameField.draw();
       break;
     }
       
     case Phase::BOOKS_CHOICE:
     {
-      Gfx::draw(books_choice_bg, 0, 0);
+      Gfx::draw(books_choice_bg, palette, 0, 0);
       Fonts::drawString(std::to_string(availablePicks - countPicks())+ " picks", fonts.brightBoldFont, 221, 184, ALIGN_CENTER);
       
       /* draw spellbooks */
@@ -684,13 +715,41 @@ void NewGameView::draw()
           }
         }
       }
-      
+
       /* TODO: code already used in spellToggled */
       s32 leftPicks = std::accumulate(scd.shownRarities.begin(), scd.shownRarities.end(), 0, [school, &scd] (s32 v, const optional<SpellRarity>& rarity) {
         return !rarity.isPresent() ? v : (v + scd.spellChoicePicks[school][rarity]);
       });
       
       Fonts::drawString(std::to_string(leftPicks)+ " picks", fonts.brightBoldFont, 221, 184, ALIGN_CENTER);
+
+      break;
+    }
+      
+    case Phase::RACE_CHOICE:
+    {
+      Fonts::drawString("Select Race", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
+      Gfx::draw(divider2, palette, 164, 18);
+      Gfx::draw(races_background, palette, 208, 34);
+      
+      const fonts::MediumFont activeFont(&fonts.brightMedium);
+
+
+      /* draw races list */
+      int y = 37;
+      for (const Race* race : sortedRaces[Plane::ARCANUS])
+      {
+        Fonts::drawString(i18n::s(GfxData::raceGfxSpec(race).name), &activeFont, 219, y, ALIGN_LEFT);
+        y += 10;
+      }
+      
+      y = 146;
+      for (const Race* race : sortedRaces[Plane::MYRRAN])
+      {
+        Fonts::drawString(i18n::s(GfxData::raceGfxSpec(race).name), &activeFont, 219, y, ALIGN_LEFT);
+        y += 10;
+      }
+      
 
       break;
     }

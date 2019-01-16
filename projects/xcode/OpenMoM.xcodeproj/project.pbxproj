@@ -233,14 +233,12 @@
 		04CDA5E621ED51C0008D5DB3 /* ranges.h in Headers */ = {isa = PBXBuildFile; fileRef = 04CDA5DA21ED51BF008D5DB3 /* ranges.h */; };
 		04CDA5E721ED51C0008D5DB3 /* core.h in Headers */ = {isa = PBXBuildFile; fileRef = 04CDA5DB21ED51BF008D5DB3 /* core.h */; };
 		04CDA5E821ED51C0008D5DB3 /* printf.h in Headers */ = {isa = PBXBuildFile; fileRef = 04CDA5DC21ED51C0008D5DB3 /* printf.h */; };
-		04CDA5E921ED51C0008D5DB3 /* time.h in Headers */ = {isa = PBXBuildFile; fileRef = 04CDA5DD21ED51C0008D5DB3 /* time.h */; };
 		04CDA5EA21ED51C0008D5DB3 /* ostream.h in Headers */ = {isa = PBXBuildFile; fileRef = 04CDA5DE21ED51C0008D5DB3 /* ostream.h */; };
 		04CDA5EB21ED51C0008D5DB3 /* chrono.h in Headers */ = {isa = PBXBuildFile; fileRef = 04CDA5DF21ED51C0008D5DB3 /* chrono.h */; };
 		04CDA5EC21ED51C0008D5DB3 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04CDA5E021ED51C0008D5DB3 /* format.cc */; };
 		04CDA5ED21ED51C0008D5DB3 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04CDA5E021ED51C0008D5DB3 /* format.cc */; };
 		04CDA5EE21ED51C0008D5DB3 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04CDA5E021ED51C0008D5DB3 /* format.cc */; };
 		04CDA5EF21ED51C0008D5DB3 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04CDA5E021ED51C0008D5DB3 /* format.cc */; };
-		04CDA5F021ED51C0008D5DB3 /* locale.h in Headers */ = {isa = PBXBuildFile; fileRef = 04CDA5E121ED51C0008D5DB3 /* locale.h */; };
 		04CDA5F121ED51C0008D5DB3 /* posix.h in Headers */ = {isa = PBXBuildFile; fileRef = 04CDA5E221ED51C0008D5DB3 /* posix.h */; };
 		04CDA5F221ED51C0008D5DB3 /* color.h in Headers */ = {isa = PBXBuildFile; fileRef = 04CDA5E321ED51C0008D5DB3 /* color.h */; };
 		04CDA5F421ED51C0008D5DB3 /* format.h in Headers */ = {isa = PBXBuildFile; fileRef = 04CDA5E521ED51C0008D5DB3 /* format.h */; };
@@ -520,11 +518,9 @@
 		04CDA5DA21ED51BF008D5DB3 /* ranges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ranges.h; sourceTree = "<group>"; };
 		04CDA5DB21ED51BF008D5DB3 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
 		04CDA5DC21ED51C0008D5DB3 /* printf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = printf.h; sourceTree = "<group>"; };
-		04CDA5DD21ED51C0008D5DB3 /* time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = time.h; sourceTree = "<group>"; };
 		04CDA5DE21ED51C0008D5DB3 /* ostream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ostream.h; sourceTree = "<group>"; };
 		04CDA5DF21ED51C0008D5DB3 /* chrono.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chrono.h; sourceTree = "<group>"; };
 		04CDA5E021ED51C0008D5DB3 /* format.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = format.cc; sourceTree = "<group>"; };
-		04CDA5E121ED51C0008D5DB3 /* locale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = locale.h; sourceTree = "<group>"; };
 		04CDA5E221ED51C0008D5DB3 /* posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = posix.h; sourceTree = "<group>"; };
 		04CDA5E321ED51C0008D5DB3 /* color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = color.h; sourceTree = "<group>"; };
 		04CDA5E521ED51C0008D5DB3 /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = format.h; sourceTree = "<group>"; };
@@ -1058,12 +1054,10 @@
 				04CDA5DB21ED51BF008D5DB3 /* core.h */,
 				04CDA5E021ED51C0008D5DB3 /* format.cc */,
 				04CDA5E521ED51C0008D5DB3 /* format.h */,
-				04CDA5E121ED51C0008D5DB3 /* locale.h */,
 				04CDA5DE21ED51C0008D5DB3 /* ostream.h */,
 				04CDA5E221ED51C0008D5DB3 /* posix.h */,
 				04CDA5DC21ED51C0008D5DB3 /* printf.h */,
 				04CDA5DA21ED51BF008D5DB3 /* ranges.h */,
-				04CDA5DD21ED51C0008D5DB3 /* time.h */,
 			);
 			path = fmt;
 			sourceTree = "<group>";
@@ -1117,9 +1111,7 @@
 				0495064521E64AE10021982B /* Enums.h in Headers */,
 				04CDA5F221ED51C0008D5DB3 /* color.h in Headers */,
 				04CDA5F421ED51C0008D5DB3 /* format.h in Headers */,
-				04CDA5F021ED51C0008D5DB3 /* locale.h in Headers */,
 				04CDA5EB21ED51C0008D5DB3 /* chrono.h in Headers */,
-				04CDA5E921ED51C0008D5DB3 /* time.h in Headers */,
 				04CDA5E721ED51C0008D5DB3 /* core.h in Headers */,
 				0495064321E64AE10021982B /* Typedefs.h in Headers */,
 				04DF5B551F1FA792000B1AA2 /* lbxlib.h in Headers */,

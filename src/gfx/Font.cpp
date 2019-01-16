@@ -129,6 +129,7 @@ namespace fonts
 
   template class SpecificFontFace<FontType::FONT_SERIF, SerifFont>;
   template class SpecificFontFace<FontType::FONT_TINY, TinyFont>;
+  template class SpecificFontFace<FontType::FONT_MEDIUM, MediumFont>;
   template class SpecificFontFace<FontType::FONT_MEDIUM_THICK, MediumBoldFont>;
 
   /* color indices: background, high shadow, edge shadow, low shadow, unused?, main color, middle dots, single pixels */

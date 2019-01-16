@@ -7,6 +7,7 @@ races:
     tax_income_multiplier: 1.0 # dwarves 2.0
     mining_bonus_multiplier: 1.0 # dwarves 2.0
     mana_produced_per_citizen: 0.0 # high elves, beastmen, draconians 0.5 / dark elves 1.0
+    starting_plane: arcanus
     city_names: [ Norport, Bradenburg, Bromburg, Bamburg,
       Burglitz, Deventor, Danzig, Freiburg,
       Flensburg, Hamburg, Hannover, Konstanz
@@ -29,6 +30,7 @@ races:
     tax_income_multiplier: 1.0 
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 0.5
+    starting_plane: myrran
     city_names: [ Kempen, Bantanu, Saradash, Tanquil, 
       Jagan, Panjang, Mourndar, Turlock, 
       Tetrehahn, Fortalle, Tier, Raban, 
@@ -51,6 +53,7 @@ races:
     tax_income_multiplier: 1.0 
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 1.0
+    starting_plane: myrran
     city_names: [ Leer, Nightwath, Tyrlinith, Blademarsh, 
       Bloodrock, Darkhold, Darkmoor, Hellgate, 
       Bladewater, Tombstone, Midnight, Jet, 
@@ -73,6 +76,7 @@ races:
     tax_income_multiplier: 1.0 
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 0.5
+    starting_plane: myrran
     city_names: [ Vallis, Minnlow, Mishran, Alairium, 
       Dragon Pass, Doomcastle, Solanar, Farmist, 
       Dragonfall, Parch, Arie, Wynd, 
@@ -95,6 +99,7 @@ races:
     tax_income_multiplier: 2.0 
     mining_bonus_multiplier: 2.0
     mana_produced_per_citizen: 0.0
+    starting_plane: myrran
     city_names: [ Ebonsway, Ultigar, Pyre, Asengard, 
       Stonegate, Blade Stone, Rockwedge, Abanax, 
       Ailearth, Fire Keep, Asbraun, Axhome, 
@@ -117,6 +122,7 @@ races:
     tax_income_multiplier: 1.0
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 0.0
+    starting_plane: arcanus
     city_names: [ Basel, Aachen, Braunweig, Breslau, 
       Brunn, Dortmond, Maimz, Nymax, 
       Ozenwall, Posen, Speger, Steyr, 
@@ -139,6 +145,7 @@ races:
     tax_income_multiplier: 1.0
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 0.0
+    starting_plane: arcanus
     city_names: [ Miroban, Eastway, Palaor, Elyndendale, 
       Cornwell, Jollyville, Hickorydale, Hialanth, 
       Ethridge, Myrean, Mirndale, Honeypool, 
@@ -161,6 +168,7 @@ races:
     tax_income_multiplier: 1.0
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 0.5
+    starting_plane: arcanus
     city_names: [ Silverdale, Esterwood, Rivendale, Alm, 
       Arissawood, Karsol, Prose, Fairwall, 
       Arairia, Lylros, Lanerell, Venagreen, 
@@ -183,6 +191,7 @@ races:
     tax_income_multiplier: 1.0
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 0.0
+    starting_plane: arcanus
     city_names: [ Coventry, York, Nottingham, Birmingham, 
       Dover, Liverpool, Brighton, Oxford, 
       Reading, Exeter, Cambridge, Hastings, 
@@ -205,6 +214,7 @@ races:
     tax_income_multiplier: 1.0
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 0.0
+    starting_plane: arcanus
     city_names: [ Fa-rul, Niktock, Ixtu, Keltok,
       Hsi-raz, Cai-ru, Katax, Ni-aru,
       Chu-wak, Ty-go, Aiym, Tar-reash,
@@ -227,6 +237,7 @@ races:
     tax_income_multiplier: 1.0
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 0.0
+    starting_plane: arcanus
     city_names: [ South Wash, Thorn, Ulm, Ulna, 
       Lizard Caves, Longrift, Lizardmarch, Nar, 
       Mudspray, Sawtooth, Gore, Dirage, 
@@ -249,6 +260,7 @@ races:
     tax_income_multiplier: 1.0
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 0.0
+    starting_plane: arcanus
     city_names: [ Mecca, Naples, Sidon, Tyre, 
       Tarsus, Issus, Cunaxa, Cremona, 
       Cannae, Capua, Torin, Genoa, 
@@ -271,6 +283,7 @@ races:
     tax_income_multiplier: 1.0
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 0.0
+    starting_plane: arcanus
     city_names: [ Robenaar, Wrrmwood, Xanten, Charack, 
       Largut, Bangaak, Darkpool, Golcanar, 
       Skulltop, Gotartop, Zuul, Craagpool, 
@@ -293,6 +306,7 @@ races:
     tax_income_multiplier: 1.0
     mining_bonus_multiplier: 1.0
     mana_produced_per_citizen: 0.0
+    starting_plane: myrran
     city_names: [ Erfurt, Gorfite, Goslar, Graz, 
       Groningen, Koblenz, Mainz, Fauul, 
       Giant Peaks, Craagut, Bryn, Rothiem, 
