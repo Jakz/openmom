@@ -21,7 +21,6 @@ struct SDL_Surface;
 enum class TextureID : u16
 {  
   MAIN_CURSORS,
-  MAIN_MIRROR,
     
   MESSAGE_LEFT,
   MESSAGE_RIGHT,

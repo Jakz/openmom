@@ -32,14 +32,15 @@ public:
   const float miningBonusMultiplier;
   const float manaProducedPerCitizen;
   const s16 foodProductionPerFarmer;
+  const Plane startingPlane;
 
   const std::vector<std::string> cityNames;
   
-  Race(s16 growthBonus, float outpostGrowthChance, s16 baseProduction, float taxIncomeMultiplier, float miningBonusMultiplier, float manaProducedPerCitizen, s16 foodProductionPerFarmer, const std::vector<std::string>& cityNames) :
+  Race(s16 growthBonus, float outpostGrowthChance, s16 baseProduction, float taxIncomeMultiplier, float miningBonusMultiplier, float manaProducedPerCitizen, s16 foodProductionPerFarmer, Plane startingPlane, const std::vector<std::string>& cityNames) :
   growthBonus(growthBonus), outpostGrowthChance(outpostGrowthChance),
   baseProduction(baseProduction), taxIncomeMultiplier(taxIncomeMultiplier),
   miningBonusMultiplier(miningBonusMultiplier), manaProducedPerCitizen(manaProducedPerCitizen),
-  foodProductionPerFarmer(foodProductionPerFarmer),
+  foodProductionPerFarmer(foodProductionPerFarmer), startingPlane(startingPlane),
   cityNames(cityNames)
   {
     

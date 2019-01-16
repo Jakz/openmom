@@ -224,9 +224,9 @@ public:
   virtual void setEffects(const effect_list& effects) = 0;
   virtual const effect_list& getEffects() const = 0;
     
-  struct Comparator : public std::binary_function<const Skill*, const Skill*, bool>
+  struct Comparator
   {
-    bool operator() (const Skill *b1, const Skill* b2);
+    bool operator() (const Skill *b1, const Skill* b2) const;
   } comparator;
 };
 

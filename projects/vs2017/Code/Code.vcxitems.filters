@@ -67,12 +67,12 @@
     <Filter Include="platform\windows">
       <UniqueIdentifier>{f4337b38-01fb-4cf3-be0b-77b9894da5fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common\fmt">
+      <UniqueIdentifier>{8e4c0f82-eb98-4ebb-9cf5-fd99a63042e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Common.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\format.cc">
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\mystrings.cpp">
@@ -387,15 +387,15 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\platform\windows\Precompiled.cpp">
       <Filter>platform\windows</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\fmt\format.cc">
+      <Filter>common\fmt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Common.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Enums.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\format.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\mystrings.h">
@@ -715,6 +715,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\platform\windows\Precompiled.h">
       <Filter>platform\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\fmt\format.h">
+      <Filter>common\fmt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

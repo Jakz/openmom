@@ -86,6 +86,10 @@ public:
   static FontPalette ofSolidWithLowShadow(Color color, Color lowShadow) {
     return { Type::SOLID_WITH_LOW_SHADOW, color, color, Color::NONE, lowShadow, Color::NONE };
   }
+  
+  static FontPalette ofSolidWithLowShadow(Color color, Color single, Color lowShadow) {
+    return { Type::SOLID_WITH_LOW_SHADOW, color, single, Color::NONE, lowShadow, Color::NONE };
+  }
 };
 
 
@@ -222,7 +226,12 @@ namespace fonts
     MediumBoldFont(Color color, Color shadow);
     
   private:
-
+  };
+  
+  class MediumFont : public SpecificFontFace<FONT_MEDIUM, MediumFont>
+  {
+  public:
+    MediumFont(const Palette* palette) : SpecificFontFace<FONT_MEDIUM, MediumFont>(palette) { }
   };
   
   class SerifFont : public SpecificFontFace<FONT_SERIF, SerifFont>
@@ -249,6 +258,7 @@ namespace fonts
   public:
     static const TinyFont* of(Color color, Color single, Color shadow);
   };
+  
   
   struct base
   {

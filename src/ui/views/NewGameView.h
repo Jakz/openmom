@@ -71,6 +71,9 @@ private:
   Phase phase;
   u32 availablePicks;
   
+  std::array<std::vector<const Race*>, PLANE_COUNT> sortedRaces;
+  clickable_grid arcanusRacesGrid, myrranRacesGrid;
+  
   struct
   {
     std::array<optional<SpellRarity>, 2> shownRarities;
@@ -115,7 +118,11 @@ private:
     
     const FontSpriteSheet* darkSerifFont;
     
+    FontPalette brightMedium, hoverMedium, inactiveMedium;
+    FontPalette racesTitle;
+    
     const FontSpriteSheet *tinyBright, *tinyGold, *tinyInactive, *tinyRetortList;
+    
     
   } fonts;
   

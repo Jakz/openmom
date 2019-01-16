@@ -25,7 +25,7 @@ const std::string skills::ConcreteSkill::name() const
   return base;
 }
 
-bool Skill::Comparator::operator()(const Skill *b1, const Skill *b2)
+bool Skill::Comparator::operator()(const Skill *b1, const Skill *b2) const
 {
   /* TODO: reenable after new management is complete by using skill->type */
   /*if (isHeroBase(b1->base)) return true;

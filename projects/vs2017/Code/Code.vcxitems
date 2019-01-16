@@ -16,7 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Common.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\format.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\fmt\format.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\mystrings.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Util.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\cities\Buildings.cpp" />
@@ -127,7 +127,7 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Common.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Enums.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\format.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\fmt\format.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\mystrings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Typedefs.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Types.h" />
