@@ -8,9 +8,9 @@
       <WarningLevel>Level3</WarningLevel>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\libs\sdl2\win\include;$(SolutionDir)..\..\src;$(SolutionDir)..\..\src\common;$(SolutionDir)..\..\src\game;$(SolutionDir)..\..\src\game\cities;$(SolutionDir)..\..\src\game\combat;$(SolutionDir)..\..\src\game\data;$(SolutionDir)..\..\src\game\mechanics;$(SolutionDir)..\..\src\game\players;$(SolutionDir)..\..\src\game\skills;$(SolutionDir)..\..\src\game\spells;$(SolutionDir)..\..\src\game\units;$(SolutionDir)..\..\src\game\world;$(SolutionDir)..\..\src\gfx;$(SolutionDir)..\..\src\gfx\filters;$(SolutionDir)..\..\src\i18n;$(SolutionDir)..\..\src\platform;$(SolutionDir)..\..\src\platform\windows;$(SolutionDir)..\..\src\save;$(SolutionDir)..\..\src\ui;$(SolutionDir)..\..\src\ui\animations;$(SolutionDir)..\..\src\ui\parts;$(SolutionDir)..\..\src\ui\views;$(SolutionDir)..\..\src\ui\views\debug;$(SolutionDir)..\..\src\ui\views\extra;$(SolutionDir)..\..\libs\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\libs\sdl2\win\include;$(SolutionDir)..\..\src;$(SolutionDir)..\..\src\common;$(SolutionDir)..\..\src\common\fmt;$(SolutionDir)..\..\src\game;$(SolutionDir)..\..\src\game\cities;$(SolutionDir)..\..\src\game\combat;$(SolutionDir)..\..\src\game\data;$(SolutionDir)..\..\src\game\mechanics;$(SolutionDir)..\..\src\game\players;$(SolutionDir)..\..\src\game\skills;$(SolutionDir)..\..\src\game\spells;$(SolutionDir)..\..\src\game\units;$(SolutionDir)..\..\src\game\world;$(SolutionDir)..\..\src\gfx;$(SolutionDir)..\..\src\gfx\filters;$(SolutionDir)..\..\src\i18n;$(SolutionDir)..\..\src\platform;$(SolutionDir)..\..\src\platform\windows;$(SolutionDir)..\..\src\save;$(SolutionDir)..\..\src\ui;$(SolutionDir)..\..\src\ui\animations;$(SolutionDir)..\..\src\ui\parts;$(SolutionDir)..\..\src\ui\views;$(SolutionDir)..\..\src\ui\views\debug;$(SolutionDir)..\..\src\ui\views\extra;$(SolutionDir)..\..\libs\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4068;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <PreprocessorDefinitions>_MBCS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Precompiled.h</ForcedIncludeFiles>
@@ -24,6 +24,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
   	<ClCompile>
       <Optimization>Disabled</Optimization>
+      <LanguageStandard>stdcpp17</LanguageStandard>
 	</ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -31,6 +32,7 @@
   	  <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <Optimization>MaxSpeed</Optimization>
+      <LanguageStandard>stdcpp17</LanguageStandard>
 	</ClCompile>
 	<Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

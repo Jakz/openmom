@@ -11,7 +11,7 @@
 
 class Player;
 
-struct SpellComparatorByResearch : public std::binary_function<const Spell*, const Spell*, bool>
+struct SpellComparatorByResearch
 {
   bool operator() (const Spell *s1, const Spell* s2) const
   {
@@ -22,7 +22,7 @@ struct SpellComparatorByResearch : public std::binary_function<const Spell*, con
   }
 };
 
-struct SpellComparatorByManaCost : public std::binary_function<const Spell*, const Spell*, bool>
+struct SpellComparatorByManaCost
 {
   bool operator() (const Spell *s1, const Spell* s2) const
   {
@@ -33,7 +33,7 @@ struct SpellComparatorByManaCost : public std::binary_function<const Spell*, con
   }
 };
 
-struct SpellComparatorByManaCostCombat : public std::binary_function<const Spell*, const Spell*, bool>
+struct SpellComparatorByManaCostCombat
 {
   bool operator() (const Spell *s1, const Spell* s2) const
   {

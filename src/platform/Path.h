@@ -106,7 +106,7 @@ public:
     const wchar_t* smode = L"rb";
     if (mode == file_mode::WRITING) smode = L"wb+";
     else if (mode == file_mode::APPENDING) smode = L"rb+";
-    
+  
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
     std::wstring wpath = conv.from_bytes(path.c_str());
     _wfopen_s(&file, wpath.c_str(), smode);

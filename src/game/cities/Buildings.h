@@ -42,9 +42,9 @@ class Building : public Productable
     const Upkeep& productionUpkeep() const override { return upkeep; }
     Productable::Type productionType() const override { return Type::BUILDING; }
   
-    struct ComparatorByName : public std::binary_function<const Productable*, const Productable*, bool>
+    struct ComparatorByName
     {
-      bool operator() (const Productable *b1, const Productable* b2)
+      bool operator() (const Productable *b1, const Productable* b2) const
       {
         return b1->productionName().compare(b2->productionName()) < 0;
       }
