@@ -22,29 +22,6 @@ class FontSpriteSheet;
 
 typedef std::function<void()> Action;
 
-class ClickableGrid
-{
-  s32 x, y, w, h;
-  s32 r, c;
-
-public:
-  ClickableGrid(s32 x, s32 y, s32 w, s32 h, s32 r, s32 c) :
-  x(x), y(y), w(w), h(h), r(r), c(c) { }
-  
-  bool isInside(const Point& p) const
-  {
-    return p.x >= x && p.x < (x + w) && p.y >= y && p.y < (y + h);
-  }
-  
-  Point getCell(const Point& p)
-  {
-    if (isInside(p))
-      return Point((p.x - x) / c, (p.y - y) / r);
-    else
-      return Point(-1, -1);
-  }
-};
-
 class Clickable
 {
 protected:
@@ -80,6 +57,42 @@ public:
   inline Action getOnExit() { return onExit; }
   
   virtual void draw();
+};
+
+class clickable_grid
+{
+public:
+  using action_t = std::function<void(index_t,index_t)>;
+  
+private:
+  coord_t x, y, w, h;
+  size_t rows, cols;
+  action_t action;
+  
+public:
+  clickable_grid() : clickable_grid(0,0,1,1,0,0) { }
+  clickable_grid(coord_t x, coord_t y, coord_t w, coord_t h, size_t rows, size_t cols) :
+  x(x), y(y), w(w), h(h), rows(rows), cols(cols) { }
+  
+  bool isInside(const Point& p) const
+  {
+    return p.x >= x && p.x < (x + w*cols) && p.y >= y && p.y < (y + h*rows);
+  }
+  
+  void forEachCell(std::function<void(coord_t,coord_t,coord_t,coord_t)> lambda)
+  {
+    for (int j = 0; j < cols; ++j)
+      for (int i = 0; i < rows; ++i)
+        lambda(x + j*w, y + i*h, w, h);
+  }
+  
+  Point getCell(const Point& p)
+  {
+    if (isInside(p))
+      return Point((p.x - x) / w, (p.y - y) / h);
+    else
+      return Point(-1, -1);
+  }
 };
 
 template<typename T>

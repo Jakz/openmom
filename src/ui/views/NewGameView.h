@@ -72,6 +72,7 @@ private:
   u32 availablePicks;
   
   std::array<std::vector<const Race*>, PLANE_COUNT> sortedRaces;
+  clickable_grid arcanusRacesGrid, myrranRacesGrid;
   
   struct
   {
@@ -117,9 +118,11 @@ private:
     
     const FontSpriteSheet* darkSerifFont;
     
-    FontPalette brightMedium;
+    FontPalette brightMedium, hoverMedium, inactiveMedium;
+    FontPalette racesTitle;
     
     const FontSpriteSheet *tinyBright, *tinyGold, *tinyInactive, *tinyRetortList;
+    
     
   } fonts;
   

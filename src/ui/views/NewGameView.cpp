@@ -144,12 +144,14 @@ NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr,
     switchToPhase(isPremadeWizard ? Phase::RACE_CHOICE : Phase::BOOKS_CHOICE);
   });
   
+  const Color single = {113, 85, 69};
+  
   fonts.darkBoldFont = new fonts::MediumBoldFont({52,40,28}, {166,134,105}); // TODO: fix last color?
   fonts.brightBoldFont = new fonts::MediumBoldFont({166,134,105}, {52,40,28});
   fonts.darkSerifFont = fonts::SerifFont::of({52,40,28}, {166, 134, 105});
   
-  fonts.tinyBright = fonts::TinyFont::of({190, 154, 117}, {113, 85, 69}, {56, 31, 27});
-  fonts.tinyInactive = fonts::TinyFont::of({97, 73, 60}, {113, 85, 69}, {56, 31, 27});
+  fonts.tinyBright = fonts::TinyFont::of({190, 154, 117}, single, {56, 31, 27});
+  fonts.tinyInactive = fonts::TinyFont::of({97, 73, 60}, single, {56, 31, 27});
   fonts.tinyGold = fonts::TinyFont::of({239, 166, 35}, {97, 73, 60}, {56, 31, 27});
   fonts.tinyRetortList = fonts::TinyFont::of({239, 166, 35}, {142, 97, 36}, {52, 40, 28});
   
@@ -159,8 +161,12 @@ NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr,
 
   fonts.schoolFonts.set(School::NATURE, FontPalette::ofSolidWithLowShadow({0, 190, 0}, {0, 0, 0}));
   
-  fonts.brightMedium = FontPalette::ofSolidWithLowShadow({194, 154, 118}, { 113, 85, 69 }, { 10, 10, 10 });
+  /* TODO: shadow is incorrect because edge shadow is transparent but these make it same color as low shadow */
+  fonts.brightMedium = FontPalette::ofSolidWithLowShadow({ 194, 154, 118 }, single, { 10, 10, 10 });
+  fonts.hoverMedium = FontPalette::ofSolidWithLowShadow({ 255, 202, 100 }, {89, 65, 52}, { 10, 10, 10 });
+  fonts.inactiveMedium = FontPalette::ofSolidWithLowShadow({ 97, 73, 60 }, single, { 10, 10, 10 });
 
+  fonts.racesTitle = FontPalette::ofSolidWithLowShadow({207, 138, 23}, {0, 0, 0});
 }
 
 void NewGameView::activate()
@@ -557,7 +563,7 @@ void NewGameView::switchToPhase(Phase phase)
           std::sort(races.begin(), races.end(), [](const Race* r1, const Race* r2) {
             auto i1 = GfxData::raceGfxSpec(r1).name;
             auto i2 = GfxData::raceGfxSpec(r2).name;
-            return i18n::s(i1).compare(i18n::s(i2));
+            return i18n::s(i1) < i18n::s(i2);
           });
         }
       }
@@ -733,6 +739,7 @@ void NewGameView::draw()
       Gfx::draw(races_background, palette, 208, 34);
       
       const fonts::MediumFont activeFont(&fonts.brightMedium);
+      const fonts::MediumFont inactiveFont(&fonts.inactiveMedium);
 
 
       /* draw races list */
@@ -744,12 +751,22 @@ void NewGameView::draw()
       }
       
       y = 146;
+      const auto& myrranFont = info.retorts.find(Data::retort("myrran")) == info.retorts.end() ? inactiveFont : activeFont;
       for (const Race* race : sortedRaces[Plane::MYRRAN])
       {
-        Fonts::drawString(i18n::s(GfxData::raceGfxSpec(race).name), &activeFont, 219, y, ALIGN_LEFT);
+        Fonts::drawString(i18n::s(GfxData::raceGfxSpec(race).name), &myrranFont, 219, y, ALIGN_LEFT);
         y += 10;
       }
       
+      arcanusRacesGrid = clickable_grid(210, 36, 60, 10, sortedRaces[Plane::ARCANUS].size(), 1);
+      arcanusRacesGrid.forEachCell([] (coord_t x, coord_t y, coord_t w, coord_t h) {
+        Gfx::rect(x, y, w, h, { 255, 0, 0});
+      });
+      
+      myrranRacesGrid = clickable_grid(210, 145, 60, 10, sortedRaces[Plane::MYRRAN].size(), 1);
+      myrranRacesGrid.forEachCell([] (coord_t x, coord_t y, coord_t w, coord_t h) {
+        Gfx::rect(x, y, w, h, { 255, 0, 0});
+      });
 
       break;
     }
