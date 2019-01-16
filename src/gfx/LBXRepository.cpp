@@ -522,7 +522,7 @@ void Repository::loadBuildDesc()
         };
         
         if (index > 0)
-          i18n::data[buildings[index-1]] = str;
+          i18n::getData()[buildings[index-1]] = str;
       })
     };
     

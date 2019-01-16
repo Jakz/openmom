@@ -214,23 +214,25 @@ namespace lbx { class Repository; }
 
 class i18n
 {
+public:
+  template<typename T> using strings_table = std::unordered_map<T, std::string, enum_hash>;
+  using reverse_strings_table = std::unordered_map<std::string, I18>;
+
 private:
   static I18 customMappingFreeIndex;
-  static std::unordered_map<std::string, I18> customMapping;
   
-  
-  static std::unordered_map<I18, std::string, enum_hash> data;
-  static std::unordered_map<SkillBase, std::string, enum_hash> skills;
+  static strings_table<SkillBase> skills;
   static std::unordered_map<TileType, std::vector<std::string>, enum_hash> surveyorDescs;
   
-  static decltype(customMapping)& getMapping();
+  static reverse_strings_table& getMapping();
+  static strings_table<I18>& getData();
   
 public:
   static void mapCustomEntry(std::string key, std::string value);
   static I18 keyForString(const std::string& key);
   
-  static const char* c(I18 ident) { return data[ident].c_str(); }
-  static const std::string& s(I18 ident) { return data[ident]; }
+  static const char* c(I18 ident) { return getData()[ident].c_str(); }
+  static const std::string& s(I18 ident) { return getData()[ident]; }
   static const std::string& s(const std::string& key) { return s(keyForString(key)); }
   static const std::string& s(SkillBase skill) { return skills[skill]; }
     
