@@ -74,9 +74,9 @@ public:
   clickable_grid(coord_t x, coord_t y, coord_t w, coord_t h, size_t rows, size_t cols) :
   x(x), y(y), w(w), h(h), rows(rows), cols(cols) { }
   
-  bool isInside(const Point& p) const
+  bool isInside(coord_t x, coord_t y) const
   {
-    return p.x >= x && p.x < (x + w*cols) && p.y >= y && p.y < (y + h*rows);
+    return x >= this->x && x < (this->x + w*cols) && y >= this->y && y < (this->y + h*rows);
   }
   
   void forEachCell(std::function<void(coord_t,coord_t,coord_t,coord_t)> lambda)
@@ -88,7 +88,7 @@ public:
   
   Point getCell(const Point& p)
   {
-    if (isInside(p))
+    if (isInside(p.x, p.y))
       return Point((p.x - x) / w, (p.y - y) / h);
     else
       return Point(-1, -1);

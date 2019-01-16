@@ -904,6 +904,14 @@ bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
       }
     }
   }
+  else if (phase == Phase::RACE_CHOICE)
+  {
+    if (myrranRacesGrid.isInside(x, y))
+    {
+      if (info.retorts.find(Data::retort("myrran")) == info.retorts.end())
+        errorMessage("You can not select a Myrran race unless you have the Myrran special."); //TODO: localize
+    }
+  }
   
   
   return true;
