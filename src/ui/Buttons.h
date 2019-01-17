@@ -39,19 +39,19 @@ public:
     onEnter([](){}), onExit([](){})
   { }
   
-  bool isCorrectButton(MouseButton b) { return b == button; }
-  bool isInside(u16 x, u16 y) { return x >= this->x && x <= this->x+w && y >= this->y && y <= this->y+h; }
-  virtual bool isActive() { return active; }
+  bool isCorrectButton(MouseButton b) const { return b == button; }
+  //TODO: removed <= in favor of < for rect check, this was necessary because otherwise ClickableGrid ad a dummy 1 pixel wide cell over the bounds
+  bool isInside(coord_t x, coord_t y) const { return x >= this->x && x < this->x+w && y >= this->y && y < this->y+h; }
+  virtual bool isActive() const { return active; }
   inline void activate() { active = true; }
   inline void deactivate() { active = false; }
   inline void activateIf(bool condition) { active = condition; }
-  
   virtual void setPosition(u16 x, u16 y) { this->x = x; this->y = y; }
   
   Clickable* setAction(positioned_action_t action) { this->action = action; return this; }
   Clickable* setAction(Action action) { this->action = [action](coord_t, coord_t) { action(); }; return this; }
 
-  inline const positioned_action_t& getAction() { return action; }
+  inline const positioned_action_t& getAction() const { return action; }
   
   void setOnEnterAction(Action action) { this->onEnter = action; }
   void setOnExitAction(Action action) { this->onExit = action; }
@@ -65,6 +65,8 @@ public:
 class ClickableGrid : public Clickable
 {
 public:
+  struct Cell { index_t x, y; };
+
   using action_t = std::function<void(index_t,index_t)>;
   
 private:
@@ -79,26 +81,24 @@ public:
     cw(cw), ch(ch), rows(rows), cols(cols), cellAction([](index_t, index_t) {})
   { 
     Clickable::setAction([this](coord_t x, coord_t y) {
-      index_t cx = (x - this->x) / this->cw, cy = (y - this->y) / this->ch;
-      cellAction(cx, cy);
+      const auto cell = getCell(x, y);
+      cellAction(cell.x, cell.y);
     });
   }
 
-  void setCellAction(action_t action) { this->cellAction = action; }
+  ClickableGrid* setCellAction(action_t action) { this->cellAction = action; return this; }
   
-  void forEachCell(std::function<void(coord_t,coord_t,coord_t,coord_t)> lambda)
+  void forEachCell(std::function<void(coord_t,coord_t,coord_t,coord_t)> lambda) const
   {
     for (int j = 0; j < cols; ++j)
       for (int i = 0; i < rows; ++i)
         lambda(x + j*cw, y + i*ch, cw, ch);
   }
   
-  Point getCell(const Point& p)
+  inline Cell getCell(index_t x, index_t y) const
   {
-    if (isInside(p.x, p.y))
-      return Point((p.x - x) / w, (p.y - y) / h);
-    else
-      return Point(-1, -1);
+    index_t cx = (x - this->x) / this->cw, cy = (y - this->y) / this->ch;
+    return { cx, cy };
   }
 
   void draw() override;
@@ -201,7 +201,7 @@ public:
   inline Button* show() { visible = true; return this; }
   inline bool isVisible() { return visible;}
   
-  bool isActive() override { return active && visible; }
+  bool isActive() const override { return active && visible; }
 
   template<typename T> T* as() { return static_cast<T*>(this); }
   

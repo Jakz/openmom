@@ -135,7 +135,7 @@ static const Point gameOptionsButtonPositions[] = {
   { 251, 120 }
 };
 
-NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr, "", school_value_map(0)}), fonts({FontPalette()})
+NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr, "", school_value_map(0)}), fonts({FontPalette()}), hoveredRace(nullptr)
 {
   nameField.setFace(new fonts::MediumBoldFont({158, 125, 101}));
   nameField.setOnCancel([this](){ switchToPhase(isPremadeWizard ? Phase::WIZARD_CHOICE : Phase::PORTRIT_CHOICE); });
@@ -548,6 +548,8 @@ void NewGameView::switchToPhase(Phase phase)
       
     case Phase::RACE_CHOICE:
     {
+      hoveredRace = nullptr;
+      
       /* cache races names for race choice */
       /* algorithm is generic although there are just two planes */
       if (sortedRaces[Plane::ARCANUS].empty())
@@ -568,7 +570,23 @@ void NewGameView::switchToPhase(Phase phase)
           });
         }
       }
-      
+
+      ClickableGrid* arcanusGrid = (new ClickableGrid(210, 36, 60, 10, sortedRaces[Plane::ARCANUS].size(), 1))->setCellAction([this](index_t x, index_t y) {
+        printf("Clicked %s\n", i18n::s(GfxData::raceGfxSpec(sortedRaces[Plane::ARCANUS][y]).name).c_str());
+      });
+
+      ClickableGrid* myrranGrid = (new ClickableGrid(210, 145, 60, 10, sortedRaces[Plane::MYRRAN].size(), 1))->setCellAction([this](index_t x, index_t y) {
+        if (info.retorts.find(Data::retort("myrran")) == info.retorts.end())
+          errorMessage("You can not select a Myrran race unless you have the Myrran special.");
+        else
+          printf("Clicked %s\n", i18n::s(GfxData::raceGfxSpec(sortedRaces[Plane::MYRRAN][y]).name).c_str());
+
+        
+      });
+
+      addArea(arcanusGrid);
+      addArea(myrranGrid);
+
       break;
     }
   }
@@ -741,29 +759,25 @@ void NewGameView::draw()
       
       const fonts::MediumFont activeFont(&fonts.brightMedium);
       const fonts::MediumFont inactiveFont(&fonts.inactiveMedium);
+      const fonts::MediumFont hoverFont(&fonts.hoverMedium);
 
+      bool hasMyrranRetort = info.retorts.find(Data::retort("myrran")) == info.retorts.end();
 
       /* draw races list */
       int y = 37;
       for (const Race* race : sortedRaces[Plane::ARCANUS])
       {
-        Fonts::drawString(i18n::s(GfxData::raceGfxSpec(race).name), &activeFont, 219, y, ALIGN_LEFT);
+        Fonts::drawString(i18n::s(GfxData::raceGfxSpec(race).name), hoveredRace == race ? &hoverFont : &activeFont, 219, y, ALIGN_LEFT);
         y += 10;
       }
       
       y = 146;
-      const auto& myrranFont = info.retorts.find(Data::retort("myrran")) == info.retorts.end() ? inactiveFont : activeFont;
+      const auto& myrranFont = hasMyrranRetort ? inactiveFont : activeFont;
       for (const Race* race : sortedRaces[Plane::MYRRAN])
       {
-        Fonts::drawString(i18n::s(GfxData::raceGfxSpec(race).name), &myrranFont, 219, y, ALIGN_LEFT);
+        Fonts::drawString(i18n::s(GfxData::raceGfxSpec(race).name), hoveredRace == race ? &hoverFont : &myrranFont, 219, y, ALIGN_LEFT);
         y += 10;
       }
-      
-      arcanusRacesGrid = ClickableGrid(210, 36, 60, 10, sortedRaces[Plane::ARCANUS].size(), 1);
-      arcanusRacesGrid.draw();
-      
-      myrranRacesGrid = ClickableGrid(210, 145, 60, 10, sortedRaces[Plane::MYRRAN].size(), 1);
-      myrranRacesGrid.draw();
 
       break;
     }
@@ -901,15 +915,6 @@ bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
       }
     }
   }
-  else if (phase == Phase::RACE_CHOICE)
-  {
-    if (myrranRacesGrid.isInside(x, y))
-    {
-      if (info.retorts.find(Data::retort("myrran")) == info.retorts.end())
-        errorMessage("You can not select a Myrran race unless you have the Myrran special."); //TODO: localize
-    }
-  }
-  
   
   return true;
 }
@@ -930,3 +935,27 @@ bool NewGameView::mouseDragged(u16 x, u16 y, MouseButton b)
   
   return true;
 };
+
+bool NewGameView::mouseMoved(u16 x, u16 y, MouseButton b)
+{
+  switch (phase)
+  {
+    case Phase::RACE_CHOICE:
+    {
+      if (areas[0]->isInside(x, y))
+      {
+        ClickableGrid::Cell cell = static_cast<const ClickableGrid*>(areas[0].get())->getCell(x, y);
+        hoveredRace = sortedRaces[Plane::ARCANUS][cell.y];
+      }
+      else if (areas[1]->isInside(x, y))
+      {
+        ClickableGrid::Cell cell = static_cast<const ClickableGrid*>(areas[1].get())->getCell(x, y);
+        hoveredRace = sortedRaces[Plane::MYRRAN][cell.y];
+      }
+      else
+        hoveredRace = nullptr;
+    }
+  }
+
+  return true;
+}

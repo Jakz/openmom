@@ -67,13 +67,19 @@ private:
     
     BUTTON_COUNT
   };
+
+  enum
+  {
+    RACE_CHOICE_ARCANUS = 0,
+    RACE_CHOICE_MYRRAN
+  };
   
   Phase phase;
   u32 availablePicks;
   
   std::array<std::vector<const Race*>, PLANE_COUNT> sortedRaces;
-  ClickableGrid arcanusRacesGrid, myrranRacesGrid;
-  
+  const Race* hoveredRace;
+
   struct
   {
     std::array<optional<SpellRarity>, 2> shownRarities;
@@ -135,6 +141,7 @@ public:
   bool keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod) override;
   bool textInput(sdl_text_input data) override;
 
+  bool mouseMoved(u16 x, u16 y, MouseButton b) override;
   bool mouseReleased(u16 x, u16 y, MouseButton b) override;
   bool mouseDragged(u16 x, u16 y, MouseButton b) override;
 
