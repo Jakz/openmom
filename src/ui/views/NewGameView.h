@@ -54,6 +54,8 @@ private:
     BOOKS_CHOICE,
     SPELLS_CHOICE,
     RACE_CHOICE,
+    COLOR_CHOICE,
+    GENERATE_WORLD
   };
   
   enum
@@ -114,6 +116,7 @@ private:
   void booksPicked(School school, u16 amount);
   void retortToggled(const Retort* retort);
   void spellToggled(const Spell* spell);
+  void raceSelected(const Race* race);
   
   struct
   {    

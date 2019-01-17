@@ -125,6 +125,9 @@ enum sprite_id : sprite_ref
   divider2 = LBXI(NEWGAME, 54),
   races_background = LBXI(NEWGAME, 55),
   
+  generation_dialog = LBXI(NEWGAME, 53),
+  banners = LBXI(NEWGAME, 46),
+  
   checkmark = LBXI(NEWGAME, 52)
 };
 
@@ -135,7 +138,7 @@ static const Point gameOptionsButtonPositions[] = {
   { 251, 120 }
 };
 
-NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr, "", school_value_map(0)}), fonts({FontPalette()}), hoveredRace(nullptr)
+NewGameView::NewGameView(ViewManager * gvm) : ViewWithQueue(gvm), info({nullptr, nullptr, "", school_value_map(0)}), fonts({FontPalette()}), hoveredRace(nullptr)
 {
   nameField.setFace(new fonts::MediumBoldFont({158, 125, 101}));
   nameField.setOnCancel([this](){ switchToPhase(isPremadeWizard ? Phase::WIZARD_CHOICE : Phase::PORTRIT_CHOICE); });
@@ -174,13 +177,14 @@ void NewGameView::activate()
   info.portrait = Data::wizard("kali"); //TODO nullptr
   info.books = school_value_map({{CHAOS, 3}, {LIFE, 4}, {SORCERY, 0},  {ARCANE, 0}, {DEATH, 0}, {NATURE, 5}}); //TODO school_value_map(0);
   info.name = "Jack"; // "";
+  info.race = nullptr;
   /*info.retorts.insert(Data::retort("archmage")); // ...
   info.retorts.insert(Data::retort("conjurer"));
   info.retorts.insert(Data::retort("node_mastery"));
   info.retorts.insert(Data::retort("charismatic"));*/
   isPremadeWizard = false; // TODO true
   
-  switchToPhase(Phase::RACE_CHOICE);
+  switchToPhase(Phase::COLOR_CHOICE);
   
   nameField.setPosition(Point(194,35));
   nameField.setText("Lo Pan");
@@ -378,6 +382,12 @@ void NewGameView::spellToggled(const Spell* spell)
   bookPhaseOkButton->activateIf(leftPicks == 0);
 }
 
+void NewGameView::raceSelected(const Race* race)
+{
+  info.race = race;
+  switchToPhase(Phase::COLOR_CHOICE);
+}
+
 void NewGameView::switchToPhase(Phase phase)
 {
   const auto* face = fonts.darkBoldFont;
@@ -571,22 +581,36 @@ void NewGameView::switchToPhase(Phase phase)
         }
       }
 
+      //TODO: there is a blink animation effect on clicked race that needs to be implemented
       ClickableGrid* arcanusGrid = (new ClickableGrid(210, 36, 60, 10, sortedRaces[Plane::ARCANUS].size(), 1))->setCellAction([this](index_t x, index_t y) {
-        printf("Clicked %s\n", i18n::s(GfxData::raceGfxSpec(sortedRaces[Plane::ARCANUS][y]).name).c_str());
+        raceSelected(sortedRaces[Plane::ARCANUS][y]);
       });
 
       ClickableGrid* myrranGrid = (new ClickableGrid(210, 145, 60, 10, sortedRaces[Plane::MYRRAN].size(), 1))->setCellAction([this](index_t x, index_t y) {
         if (info.retorts.find(Data::retort("myrran")) == info.retorts.end())
           errorMessage("You can not select a Myrran race unless you have the Myrran special.");
         else
-          printf("Clicked %s\n", i18n::s(GfxData::raceGfxSpec(sortedRaces[Plane::MYRRAN][y]).name).c_str());
-
-        
+          raceSelected(sortedRaces[Plane::MYRRAN][y]);
       });
 
       addArea(arcanusGrid);
       addArea(myrranGrid);
 
+      break;
+    }
+      
+    case Phase::COLOR_CHOICE:
+    {
+      //TODO: maybe use a generic Data::playerColors() if order is always the same
+      static const std::array<PlayerColor, 5> colors = { { PlayerColor::GREEN, PlayerColor::BLUE, PlayerColor::RED, PlayerColor::PURPLE, PlayerColor::YELLOW } };
+      
+      ClickableGrid* grid = (new ClickableGrid(174, 20, 140, 35, colors.size(), 1))->setCellAction([this](index_t x, index_t y) {
+        info.color = colors[y];
+        switchToPhase(Phase::GENERATE_WORLD);
+      });
+      
+      addArea(grid);
+ 
       break;
     }
   }
@@ -609,6 +633,16 @@ void NewGameView::draw()
 {
   Gfx::draw(main_bg, 0, 0);
   const Palette* palette = LBXU(main_bg).palette();
+  
+  if (info.portrait)
+  {
+    Gfx::draw(GfxData::wizardGfx(info.portrait).portraitLarge, 24, 10);
+    Fonts::drawString(info.name, fonts.darkSerifFont, 76, 118, ALIGN_CENTER);
+  }
+  
+  drawRetortList();
+  
+  CommonDraw::drawSpellBooks(info.books, Point(36, 135), false);
 
   /*Gfx::drawGrayScale(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30);
   Gfx::drawGlow(GfxData::unitGfxSpec(UnitSpec::summonSpec(UnitID::GREAT_DRAKE)).still, 30, 30, CHAOS);*/
@@ -753,9 +787,15 @@ void NewGameView::draw()
       
     case Phase::RACE_CHOICE:
     {
-      Fonts::drawString("Select Race", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER);
       Gfx::draw(divider2, palette, 164, 18);
       Gfx::draw(races_background, palette, 208, 34);
+      
+      /* titles */
+      const fonts::MediumBoldFont titleFont(&fonts.racesTitle);
+      Fonts::drawString("Select Race", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER); //TODO: localize
+      Fonts::drawString("Arcanian Races:", &titleFont, 239, 24, ALIGN_CENTER);
+      Fonts::drawString("Myrran Races:", &titleFont, 240, 133, ALIGN_CENTER);
+
       
       const fonts::MediumFont activeFont(&fonts.brightMedium);
       const fonts::MediumFont inactiveFont(&fonts.inactiveMedium);
@@ -775,23 +815,32 @@ void NewGameView::draw()
       const auto& myrranFont = hasMyrranRetort ? inactiveFont : activeFont;
       for (const Race* race : sortedRaces[Plane::MYRRAN])
       {
-        Fonts::drawString(i18n::s(GfxData::raceGfxSpec(race).name), hoveredRace == race ? &hoverFont : &myrranFont, 219, y, ALIGN_LEFT);
+        Fonts::drawString(i18n::s(GfxData::raceGfxSpec(race).name), (hoveredRace == race && !hasMyrranRetort) ? &hoverFont : &myrranFont, 219, y, ALIGN_LEFT);
         y += 10;
       }
 
       break;
     }
+      
+    case Phase::COLOR_CHOICE:
+    {
+      Gfx::draw(banners, 158, 0);
+      Fonts::drawString("Select Banner", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER); //TODO: localize
+   
+      break;
+    }
+      
+    case Phase::GENERATE_WORLD:
+    {
+      /* same as color choice */
+      Gfx::draw(banners, 158, 0);
+      Fonts::drawString("Select Banner", FontFaces::Huge::GOLD, 242, 0, ALIGN_CENTER); //TODO: localize
+      
+      Gfx::draw(generation_dialog, 75, 67);
+      
+      break;
+    }
   }
-  
-  if (info.portrait)
-  {
-    Gfx::draw(GfxData::wizardGfx(info.portrait).portraitLarge, 24, 10);
-    Fonts::drawString(info.name, fonts.darkSerifFont, 76, 118, ALIGN_CENTER);
-  }
-  
-  drawRetortList();
-  
-  CommonDraw::drawSpellBooks(info.books, Point(36, 135), false);
 }
 
 bool NewGameView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mod)
@@ -806,6 +855,11 @@ bool NewGameView::keyReleased(KeyboardCode key, KeyboardKey kkey, KeyboardMod mo
       case Phase::PORTRIT_CHOICE: switchToPhase(Phase::WIZARD_CHOICE); break;
       
       case Phase::SPELLS_CHOICE: switchToPhase(Phase::BOOKS_CHOICE); break;
+        
+      case Phase::COLOR_CHOICE:
+        info.race = nullptr;
+        switchToPhase(Phase::RACE_CHOICE);
+        break;
     }
 
     return true;

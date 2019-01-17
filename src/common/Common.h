@@ -852,6 +852,7 @@ struct Wizard
 struct PlayerSetupInfo
 {
   const Wizard* portrait;
+  const Race* race;
   std::string name;
   school_value_map books;
   spell_enum_map<std::set<const Spell*>> spells;
