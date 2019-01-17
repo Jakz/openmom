@@ -31,11 +31,13 @@ protected:
   positioned_action_t action;
   Action onEnter;
   Action onExit;
+  
   bool active;
+  bool hover;
   
 public:
   Clickable(u16 x, u16 y, u16 w, u16 h, MouseButton b = BUTTON_LEFT) :
-    x(x), y(y), w(w), h(h), button(b), active(true),
+    x(x), y(y), w(w), h(h), button(b), active(true), hover(false),
     onEnter([](){}), onExit([](){})
   { }
   
@@ -56,9 +58,18 @@ public:
   void setOnEnterAction(Action action) { this->onEnter = action; }
   void setOnExitAction(Action action) { this->onExit = action; }
   
-  inline Action getOnEnter() { return onEnter; }
-  inline Action getOnExit() { return onExit; }
+  void mouseEntered()
+  {
+    hover = true;
+    onEnter();
+  }
   
+  void mouseExited()
+  {
+    hover = false;
+    onExit();
+  }
+
   virtual void draw();
 };
 
@@ -144,9 +155,10 @@ struct ButtonGfx
   optional<SpriteInfo> normal;
   optional<SpriteInfo> pressed;
   optional<SpriteInfo> inactive;
+  optional<SpriteInfo> hover;
   bool shouldOffsetNormal;
   
-  void draw(u16 x, u16 y, bool isActive, bool isPressed) const;
+  void draw(u16 x, u16 y, bool isActive, bool isPressed, bool isHover) const;
   
   ButtonGfx() : palette(nullptr) { }
   ButtonGfx(SpriteInfo normal, bool shouldOffsetNormal = false) : normal(normal), palette(nullptr), shouldOffsetNormal(shouldOffsetNormal) { }
@@ -184,6 +196,8 @@ public:
   Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal, pressed, inactive) { }
 
   Button* setAction(Action action) { this->action = [action](coord_t, coord_t) { action(); }; return this; }
+  
+  ButtonGfx& graphics() { return gfx; }
 
   virtual void setTextInfo(const TextInfo& info);
   virtual void setLabel(const std::string& string);
@@ -204,7 +218,7 @@ public:
   bool isActive() const override { return active && visible; }
 
   template<typename T> T* as() { return static_cast<T*>(this); }
-  
+
   inline void press() { pressed = true;}
   inline void release() { pressed = false; }
   

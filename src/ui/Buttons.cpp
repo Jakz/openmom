@@ -24,7 +24,7 @@ void ClickableGrid::draw()
   });
 }
 
-void ButtonGfx::draw(u16 x, u16 y, bool isActive, bool isPressed) const
+void ButtonGfx::draw(u16 x, u16 y, bool isActive, bool isPressed, bool hovered) const
 {
   /* if not active */
   if (!isActive)
@@ -52,6 +52,8 @@ void ButtonGfx::draw(u16 x, u16 y, bool isActive, bool isPressed) const
         Gfx::draw(normal, palette, x, y);
     }
   }
+  else if (hovered && hover.isPresent())
+    Gfx::draw(hover, palette, x, y);
   else if (normal.isPresent())
     Gfx::draw(normal, palette, x, y);
 }
@@ -63,7 +65,7 @@ void Button::draw()
   if (!isVisible())
     return;
   
-  gfx.draw(x, y, isActive(), pressed);
+  gfx.draw(x, y, isActive(), pressed, hover);
 
   /* if there is a label draw it accordingly */
   if (labelGfx.isPresent())

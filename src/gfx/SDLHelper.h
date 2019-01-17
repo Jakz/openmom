@@ -45,6 +45,8 @@ public:
   
   static void capFPS();
   
+  static void quit() { willQuit = true; }
+  
   static ViewManager *gvm;
 };
 

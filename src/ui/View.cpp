@@ -123,7 +123,7 @@ bool View::doMouseMoved(u16 x, u16 y, MouseButton b)
 {
   if (currentHoverButton && !currentHoverButton->isInside(x, y))
   {
-    currentHoverButton->getOnExit()();
+    currentHoverButton->mouseExited();
     currentHoverButton = nullptr;
   }
 
@@ -132,7 +132,7 @@ bool View::doMouseMoved(u16 x, u16 y, MouseButton b)
     if (bt && bt != currentHoverButton && bt->isActive() && bt->isInside(x, y))
     {
       currentHoverButton = bt;
-      currentHoverButton->getOnEnter()();
+      currentHoverButton->mouseEntered();
       return true;
     }
   }
@@ -142,7 +142,7 @@ bool View::doMouseMoved(u16 x, u16 y, MouseButton b)
     if (bt && bt.get() != currentHoverButton && bt->isActive() && bt->isInside(x, y))
     {
       currentHoverButton = bt.get();
-      currentHoverButton->getOnEnter()();
+      currentHoverButton->mouseEntered();
       return true;
     }
   }

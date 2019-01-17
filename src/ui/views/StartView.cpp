@@ -22,23 +22,28 @@
 
 #include "ViewManager.h"
 
+#include "gfx/SDLHelper.h" //TODO: for quit
+
 StartView::StartView(ViewManager* gvm) : View(gvm)
 {
   buttons.resize(BUTTON_COUNT);
   
   const char* names[] = { "continue", "load game", "new game", "hall of fame", "quit to dos" };
   const int gfxIndices[] = { 1, 5, 4, 2, 3};
-  const coord_t x = 160;
-  coord_t y = 50;
+  const coord_t x = 123;
+  coord_t y = 141;
   
   //TODO: palette should be LSI(MAINSCRN,0) palette
   for (int i = 0; i < BUTTON_COUNT; ++i)
   {
-    buttons[i] = Button::buildSimple(names[i], x, y + i*12, LSI(VORTEX, gfxIndices[i]).frame(1));
+    buttons[i] = Button::buildBistate(names[i], x, y + i*12, LSI(VORTEX, gfxIndices[i]).frame(1), LSI(VORTEX, gfxIndices[i]).frame(0));
+    buttons[i]->graphics().palette = LSI(MAINSCRN, 0).palette();
+    buttons[i]->graphics().hover = buttons[i]->graphics().pressed;
   }
   
-  
-  
+  buttons[BUTTON_EXIT_TO_DOS]->setAction([]() {
+    SDL::quit();
+  });
 }
 
 void StartView::activate()

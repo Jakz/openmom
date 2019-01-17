@@ -627,7 +627,7 @@ value_t CityMechanics::computeGrowthRate(const City *city)
     if (city->hasBuilding(Building::BUILDERS_HALL))
       ratio += 0.15f;
     
-    growthRate += 10*((s16)(ratio*(growthRate)/10));
+    growthRate += 10*((value_t)(ratio*(growthRate)/10));
   }
   
   return growthRate;
