@@ -19,6 +19,17 @@ private:
   
   FontSpriteSheet* mainFont;
   
+  enum
+  {
+    BUTTON_CONTINUE = 0,
+    BUTTON_HALL_OF_FAME,
+    BUTTON_LOAD_GAME,
+    BUTTON_NEW_GAME,
+    BUTTON_EXIT_TO_DOS,
+    
+    BUTTON_COUNT
+  };
+  
 public:
   StartView(ViewManager* gvm);
   
