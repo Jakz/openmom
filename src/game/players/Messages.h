@@ -41,7 +41,8 @@ namespace msgs {
       CONFIRM,
       NEW_BUILDING,
       LAIR_CONFIRMATION,
-      HELP
+      HELP,
+      ITEM_DETAIL
     } type;
     
     const std::string& getMessage() const { return message; }
@@ -95,6 +96,14 @@ namespace msgs {
     bool isConfirmation() const { return true; }
     
     const Place* const place;
+  };
+  
+  class ItemDetail : public Message
+  {    
+  public:
+    const items::Item* const item;
+    //TODO: pass position for dialog placement
+    ItemDetail(const items::Item* item) : Message(Type::ITEM_DETAIL, ""), item(item) { }
   };
   
 }

@@ -11,6 +11,8 @@
 #include "common/Common.h"
 #include "View.h"
 
+#include "ui/parts/Dialogs.h"
+
 namespace items
 {
   class Item;
@@ -35,6 +37,7 @@ private:
   
   void setup();
   
+  dialogs::ItemDetailDialog itemDetails;
   Mode mode;
 
 public:

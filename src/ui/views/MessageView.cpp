@@ -253,6 +253,17 @@ void MessageView::draw()
       dialogs::drawErrorDialog(msg->getMessage());
       break;
     }
+      
+    case msgs::Message::Type::ITEM_DETAIL:
+    {
+      const msgs::ItemDetail* msg = message->as<msgs::ItemDetail>();
+      
+      static dialogs::ItemDetailDialog dialog;
+      dialog.setPosition({30, 50});
+      dialog.draw(msg->item);
+      
+      break;
+    }
 
       
     default:

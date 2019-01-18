@@ -533,7 +533,9 @@ void Repository::loadBuildDesc()
 
 Path Repository::getLBXPath(const std::string& name)
 {
-  return Platform::instance()->getResourcePath() + "/data/lbx/" + name ^ ".lbx";
+  const auto p = Platform::instance();
+  
+  return p->findFile(p->getResourcePath() + "/data/lbx", name + ".lbx");
 }
 
 file_handle Repository::getDescriptor(const LBXFile& lbx)

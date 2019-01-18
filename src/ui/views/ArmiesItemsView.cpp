@@ -38,6 +38,7 @@ enum_simple_map<items::Class, SpriteInfo, 6> emptyItemBackground = {
   { items::Class::MISC, LBXI(ITEMISC, 23 ) }
 };
 
+static constexpr size_t MAX_HEROES = 6;
 static const Point heroPositions[] = {{32,15},{32,61},{32,107},{167,15},{167,61},{167,107}};
 
 ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
@@ -46,6 +47,16 @@ ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
   
   buttons[ALCHEMY] = Button::buildBistate("Alchemy", 236, 157, LSI(ARMYLIST, 7))->setAction([gvm](){gvm->switchOverview(VIEW_ALCHEMY);});
   buttons[OK] = Button::buildBistate("Ok", 236, 177, LSI(ARMYLIST, 8))->setAction([gvm](){gvm->closeOverview();});
+  
+  for (int i = 0; i < MAX_HEROES; ++i)
+  {
+    ClickableGrid* grid = new ClickableGrid(heroPositions[i].x+38+29*0, heroPositions[i].y+14, 24, 20, 1, 3);
+    grid->setMargin(5, 0);
+    grid->setCellAction([this, i](coord_t x, coord_t y) {
+      clickOnHeroItemSlot(i, x);
+    });
+    addArea(grid);
+  }
 }
 
 void ArmiesItemsView::draw()
@@ -88,4 +99,9 @@ void ArmiesItemsView::draw()
     }
     
   }
+}
+
+void ArmiesItemsView::clickOnHeroItemSlot(index_t heroIndex, index_t slotIndex)
+{
+  LOGD("Clicked on slot %d of hero %d", slotIndex, heroIndex);
 }

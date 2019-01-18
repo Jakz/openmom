@@ -27,6 +27,8 @@ private:
   void draw() override;
   void drawPost() override { }
   
+  void clickOnHeroItemSlot(index_t heroIndex, index_t slotIndex);
+  
 public:
   ArmiesItemsView(ViewManager* gvm);
   

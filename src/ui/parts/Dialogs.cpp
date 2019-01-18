@@ -3,6 +3,9 @@
 #include "Gfx.h"
 #include "Font.h"
 #include "LBX.h"
+#include "GfxData.h"
+
+#include "game/units/Items.h"
 
 using namespace std;
 using namespace dialogs;
@@ -96,8 +99,23 @@ void InfoMenu::draw() const
 }
 
 
-void ItemDetailDialog::draw()
+
+void ItemDetailDialog::draw(const items::Item* item)
 {
   static const SpriteInfo background = LSI(ITEMISC, 25);
   static const SpriteInfo pin = LSI(ITEMISC, 26);
+  
+  Gfx::draw(background, b);
+  
+  Gfx::draw(GfxData::itemGfxSpec(item->type(), item->gfx()), b.x + 11, b.y + 8);
+  Fonts::drawString(item->name(), FontFaces::Serif::GOLD_SHADOW, b.x + 30, b.y + 11, ALIGN_LEFT);
+  
+  const char* properties[] = { "+1 Defense", "+1 Resistance" };
+  
+  for (size_t i = 0; i < sizeof(properties)/sizeof(properties[0]); ++i)
+  {
+    Gfx::draw(pin, b.x + 11, b.y + 34 + 11*i);
+    //TODO: font color?
+    Fonts::drawString(properties[i], FontFaces::Medium::TEAL_STROKE, b.x + 19, b.y + 32 + 11*i, ALIGN_LEFT);
+  }
 }

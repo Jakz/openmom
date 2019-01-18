@@ -46,9 +46,9 @@ namespace dialogs
     Point b;
     
   public:
+    ItemDetailDialog() : ItemDetailDialog({0,0}) { }
     ItemDetailDialog(Point base) : b(base) { }
-    void draw();
-    
-    
+    void draw(const items::Item* item);
+    void setPosition(const Point& b) { this->b = b; }
   };
 }

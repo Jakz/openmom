@@ -9,6 +9,7 @@ class FileSystem
 public:
   virtual bool exists(const Path& path) const = 0;
   virtual Path absolute(const Path& path) const = 0;
+  virtual Path findFile(const Path& folder, const std::string& name) = 0;
 };
 
 #pragma mark Platform

@@ -55,7 +55,7 @@ namespace items
     
     std::string name() const { return "Stick of the Mage"; } //TODO
     TypeID type() const { return _type; }
-    int gfx() const { return _gfx; }
+    int gfx() const { return _gfx; } //TODO: this shouldn't be an int but rather a SpriteInfo
     School school() const;
 
   public:

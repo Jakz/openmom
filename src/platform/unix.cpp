@@ -1,6 +1,7 @@
 #include "Platform.h"
 
 #include <sys/stat.h>
+#include <dirent.h>
 
 #include "Path.h"
 
@@ -22,6 +23,26 @@ public:
   {
     // TODO
     return path;
+  }
+  
+  Path findFile(const Path& folder, const std::string& name) override
+  {
+    DIR *dir;
+    struct dirent *ent;
+    
+    if ((dir = opendir (folder.c_str())) != NULL)
+    {
+      while ((ent = readdir (dir)) != NULL)
+      {
+        if (strings::compareInsensitive(name, ent->d_name))
+          return folder + ent->d_name;
+      }
+      closedir (dir);
+    } else {
+      /* could not open directory */
+    }
+    
+    return folder + name;
   }
 };
 

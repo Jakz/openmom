@@ -42,6 +42,8 @@ MerchantView::MerchantView(ViewManager* gvm) : ViewWithQueue(gvm)
   buttons[BUY] = Button::buildBistate("buy", 257, 136, button, "Buy", fonts::base::SERIF_GOLD);
   buttons[REJECT] = Button::buildBistate("reject", 257, 155, button, "Reject", fonts::base::SERIF_GOLD);
 
+  itemDetails.setPosition({19, 80});
+
   openWithOffer(nullptr, 200);
 }
 
@@ -58,22 +60,13 @@ void MerchantView::draw()
   {
     Gfx::draw(item_box, 19, 80);
     
-    //TODO: hardcoded for positioning so far
-    
+    //TODO: hardcoded for now
     const char* header = "A merchant arrives and offers a magic Shield of Demos for sale. The price is only 200 gold pieces.";
     Fonts::drawStringBounded(header, fonts::base::SERIF_GOLD, 61, 23, 185, ALIGN_LEFT);
     
-    Gfx::draw(LSI(ITEMS, 62), 30, 88);
-    Fonts::drawString("Shield of Demos", FontFaces::Serif::GOLD_SHADOW, 49, 91, ALIGN_LEFT);
+    items::Item item = items::Item(items::TypeID::SHIELD, 0);
     
-    const char* properties[] = { "+1 Defense", "+1 Resistance" };
-    
-    for (size_t i = 0; i < sizeof(properties)/sizeof(properties[0]); ++i)
-    {
-      Gfx::draw(list_pin, 30, 114 + 11*i);
-      Fonts::drawString(properties[i], FontFaces::Medium::TEAL_STROKE, 38, 112 + 11*i, ALIGN_LEFT);
-    }
-    
+    itemDetails.draw(&item);
   }
 }
 

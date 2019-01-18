@@ -19,7 +19,15 @@ string strings::tolower(const std::string &text)
   return lname;
 }
 
-std::string strings::groupDigits(u32 value)
+string strings::toupper(const std::string &text)
+{
+  string lname;
+  lname.resize(text.size());
+  std::transform(text.begin(), text.end(), lname.begin(), ::toupper);
+  return lname;
+}
+
+std::string strings::groupDigits(uint32_t value)
 {
   constexpr char separator = ',';
   
@@ -39,7 +47,7 @@ std::string strings::groupDigits(u32 value)
   return result;
 }
 
-const string strings::join(const vector<string>& tokens, s16 s, s16 e)
+const string strings::join(const vector<string>& tokens, int32_t s, int32_t e)
 {
   assert(e <= tokens.size() - 1 && s >= 0 && s <= e);
   
@@ -60,7 +68,7 @@ const string strings::join(const vector<string>& tokens, s16 s, s16 e)
   return result;
 }
 
-void strings::split(string s, vector<std::string>& tokens, s8 delim)
+void strings::split(string s, vector<std::string>& tokens, char delim)
 {
   size_t pos = 0;
   std::string token;

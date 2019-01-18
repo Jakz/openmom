@@ -78,40 +78,54 @@ public:
 class ClickableGrid : public Clickable
 {
 public:
-  struct Cell { index_t x, y; };
+  struct Cell { coord_t x, y; };
 
-  using action_t = std::function<void(index_t,index_t)>;
+  using action_t = std::function<void(coord_t,coord_t)>;
   
 private:
   coord_t cw, ch;
+  coord_t mx, my;
   size_t rows, cols;
   action_t cellAction;
   
 public:
   ClickableGrid() : ClickableGrid(0,0,1,1,0,0) { }
   ClickableGrid(coord_t x, coord_t y, coord_t cw, coord_t ch, size_t rows, size_t cols) :
-    Clickable(x, y, cw*cols, ch*rows), 
-    cw(cw), ch(ch), rows(rows), cols(cols), cellAction([](index_t, index_t) {})
+    Clickable(x, y, cw*cols, ch*rows),
+    cw(cw), ch(ch), mx(0), my(0), rows(rows), cols(cols), cellAction([](coord_t, coord_t) {})
   { 
     Clickable::setAction([this](coord_t x, coord_t y) {
       const auto cell = getCell(x, y);
-      cellAction(cell.x, cell.y);
+      if (cell.x >= 0)
+        cellAction(cell.x, cell.y);
     });
   }
 
+  void setMargin(coord_t x, coord_t y)
+  {
+    mx = x; my = y;
+    w = (cw+mx)*cols; h = (ch+my)*rows;
+  }
+  
   ClickableGrid* setCellAction(action_t action) { this->cellAction = action; return this; }
   
   void forEachCell(std::function<void(coord_t,coord_t,coord_t,coord_t)> lambda) const
   {
     for (int j = 0; j < cols; ++j)
       for (int i = 0; i < rows; ++i)
-        lambda(x + j*cw, y + i*ch, cw, ch);
+        lambda(x + j*(cw+mx), y + i*(ch+my), cw, ch);
   }
   
-  inline Cell getCell(index_t x, index_t y) const
+  inline Cell getCell(coord_t x, coord_t y) const
   {
-    index_t cx = (x - this->x) / this->cw, cy = (y - this->y) / this->ch;
-    return { cx, cy };
+    coord_t dx = x - this->x, dy = y - this->y;
+    coord_t cx = dx / (this->cw + mx);
+    coord_t cy = dy / (this->ch + my);
+    
+    if (dx % (this->cw + mx) < cw && dy % (this->ch + my) < ch)
+      return { cx, cy };
+    else
+      return { -1, -1 };
   }
 
   void draw() const override;

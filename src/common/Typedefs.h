@@ -51,3 +51,8 @@ namespace msgs
 {
   class Message;
 }
+
+namespace items
+{
+  class Item;
+}
