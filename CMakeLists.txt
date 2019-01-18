@@ -20,9 +20,9 @@ endif()
 
 set(LIBRARY_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
-
+#-fprofile-instr-generate -fcoverage-mapping --coverage
 if(APPLE)
-  set(BASE_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping --coverage -Wno-reorder -std=c++14 -stdlib=libc++ -fdiagnostics-show-option") # -Wall
+  set(BASE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-reorder -Wno-inconsistent-missing-override -std=c++14 -stdlib=libc++ -fdiagnostics-show-option") # -Wall
 elseif(UNIX)
   set(BASE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-reorder -Wno-inconsistent-missing-override -std=c++14 -stdlib=libstdc++ -fdiagnostics-show-option") # -Wall
 elseif(WIN32)
@@ -67,6 +67,7 @@ set(CMAKE_C_FLAGS_RELWITHDEBINFO "-O3 -flto -g" CACHE STRING "" FORCE)
 message("Build Type is ${CMAKE_BUILD_TYPE}")
 message("Base flags are ${BASE_FLAGS}")
 message("Debug flags are ${CMAKE_CXX_FLAGS_DEBUG}")
+message("Release flags are ${CMAKE_CXX_FLAGS_RELEASE}")
 message("CXX path is ${CMAKE_CXX_COMPILER}")
 message("Libraries path is ${LIBRARY_FOLDER}")
 

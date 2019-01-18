@@ -1,4 +1,4 @@
-#include "Platform.h"
+#include "platform/platform.h"
 
 #include <sys/stat.h>
 #include <dirent.h>
@@ -14,7 +14,7 @@ public:
   Path getResourcePath() const override
   {
 #ifdef CMAKE_BUILD
-    return "../..";
+    return "";
 #else
     NSString* nspath = [[NSBundle mainBundle] resourcePath];
     return Path([nspath UTF8String]);

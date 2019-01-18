@@ -107,6 +107,17 @@ set(LIBRARIES
 target_link_libraries(openmom ${LIBRARIES})
 #target_link_libraries(openmom-tests ${LIBRARIES})
 
+set_target_properties(openmom
+  PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+)
+
+add_custom_command(TARGET openmom POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  "${CMAKE_SOURCE_DIR}/data"
+  "${CMAKE_BINARY_DIR}/data"
+)
+
 #if(WIN32)
 #  add_custom_command(TARGET openmom POST_BUILD
 #	COMMAND ${CMAKE_COMMAND} -E copy_directory

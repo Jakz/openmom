@@ -10,7 +10,7 @@ class PlatformUnix : public Platform
 public:
   Path getResourcePath() const override
   {
-    return "../..";
+    return "";
   }
   
   bool exists(const Path& path) const override
