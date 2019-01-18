@@ -170,12 +170,11 @@ const std::string RaceUnit::name() const {
   return i18n::s(GfxData::raceGfxSpec(rspec->race).unitName) + " " + spec->productionName();
 }
 
-
-
 #pragma mark Hero
-const std::string Hero::title() const
+const std::string Hero::name() const
 {
-  return "";
+  //TODO: choose name according to owner
+  return fmt::format("{} the {}", spec->as<HeroSpec>()->names()[0], GfxData::unitGfx(spec).name);
 }
 
 prop_value Hero::getBonusProperty(Property property) const

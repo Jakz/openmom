@@ -556,9 +556,9 @@ void blitTileToAtlas(size_t tileIndex, size_t atlasIndex, size_t atlasWidth, SDL
   const size_t bx = 20 * (atlasIndex % atlasWidth);
   const size_t by = 18 * (atlasIndex / atlasWidth);
   
-  for (size_t x = 0; x < TILE_WIDTH; ++x)
+  for (coord_t x = 0; x < TILE_WIDTH; ++x)
   {
-    for (size_t y = 0; y < TILE_HEIGHT; ++y)
+    for (coord_t y = 0; y < TILE_HEIGHT; ++y)
     {
       Color* pixel = reinterpret_cast<Color*>(atlas->pixels) + bx + x + (by + y)*atlas->w;
       *pixel = sprite->getPalette()->get(sprite->at(x, y, 0, 0));
@@ -575,9 +575,9 @@ void blitTileToAtlas(gfx_tile_t info, size_t xx, size_t yy, SDL_Surface* atlas)
   
   const SpriteSheet* sprite = gfxTileToSprite(info);
   
-  for (size_t x = 0; x < TILE_WIDTH; ++x)
+  for (coord_t x = 0; x < TILE_WIDTH; ++x)
   {
-    for (size_t y = 0; y < TILE_HEIGHT; ++y)
+    for (coord_t y = 0; y < TILE_HEIGHT; ++y)
     {
       Color* pixel = reinterpret_cast<Color*>(atlas->pixels) + bx + x + (by + y)*atlas->w;
       *pixel = sprite->getPalette()->get(sprite->at(x, y, 0, 0));

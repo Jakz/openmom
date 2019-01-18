@@ -12,7 +12,7 @@
 
 class LoadView : public View
 {
-private:
+private:  
   void draw() override;
   void drawPost() override { }
   

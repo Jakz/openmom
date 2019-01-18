@@ -340,6 +340,16 @@ skills:
       hide_value: true
       icon: [lbx, special, 50]
       i18n: skill_constitution
+  - identifier: might
+    type: hero
+    effects:
+      - type: unit_level_bonus
+        property: melee
+        multiplier: 1.0
+    visuals:
+      hide_value: true
+      icon: [lbx, special, 52]
+      i18n: skill_might
 # spell skills
 # life
   - identifier: spell_bless

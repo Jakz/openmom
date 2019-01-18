@@ -95,10 +95,12 @@ entries:
   funit_hell_hounds: Hell Hounds
   funit_great_drake: Great Drake
   
-  hero_dwarf: Dwarf
-  hero_orc_warrior: Orc Warrior
+  unit_hero_dwarf: Dwarf
+  unit_hero_barbarian: Barbarian
 
+  skill_agility: Agility
   skill_constitution: Constitution  
+  skill_might: Might
 
   skill_construction: Construction
   skill_create_outpost: Create Outpost

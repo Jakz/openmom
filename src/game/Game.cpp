@@ -44,6 +44,22 @@ void Game::init()
   // Relations.initRelations blabla
 }
 
+Unit* unit(const std::string& identifier)
+{
+  const auto* spec = Data::unit(identifier);
+  
+  if (spec->type == UnitType::RACIAL)
+    return new RaceUnit(spec->as<RaceUnitSpec>());
+  else if (spec->type == UnitType::FANTASTIC)
+    return new FantasticUnit(spec->as<SummonSpec>());
+  else if (spec->type == UnitType::HERO)
+    return new Hero(spec->as<HeroSpec>());
+  else
+    assert(false);
+  
+  return nullptr;
+}
+
 void Game::dummyInit()
 {
   LocalPlayer *player = new LocalPlayer(this, "Kali", Data::wizard("kali"), PURPLE, Data::race("barbarians"), 60, 40);
@@ -51,7 +67,7 @@ void Game::dummyInit()
 
   
   Army* army2 = new Army(player2, {
-    new Hero(Data::unit("hero_dwarf")->as<HeroSpec>()),
+    unit("hero_barbarian"),
     new RaceUnit(Data::unit("beastmen_priests")->as<RaceUnitSpec>()),
     new FantasticUnit(Data::unit("funit_magic_spirit")->as<SummonSpec>()),
     new RaceUnit(Data::unit("barbarian_shamans")->as<RaceUnitSpec>()),
@@ -93,8 +109,8 @@ void Game::dummyInit()
   //WorldGenerator.generate(world, MYRRAN);
 
   Army* a = new Army(player, {
-    new RaceUnit(Data::unit("dark_elves_nightblades")->as<RaceUnitSpec>()),
-		new RaceUnit(Data::unit("dark_elves_settlers")->as<RaceUnitSpec>()),
+    unit("hero_barbarian"),
+    unit("hero_dwarf"),
 		new RaceUnit(Data::unit("dark_elves_halberdiers")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("dark_elves_cavalry")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("dark_elves_priests")->as<RaceUnitSpec>()),

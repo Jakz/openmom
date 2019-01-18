@@ -129,8 +129,7 @@ public:
 
   prop_value getBonusProperty(Property property) const override;
   
-  // const std::string name() const; TODO: name management
-  const std::string title() const;
+  const std::string name() const;
   
   decltype(_items)& items() { return _items; }
   const decltype(_items)& items() const { return _items; }

@@ -41,7 +41,7 @@ LoadView::LoadView(ViewManager* gvm) : View(gvm)
   
   buttons[OK] = Button::buildOffsetted("ok", 231, 171, LSI(LOAD,4), LSI(LOAD,8));
   buttons[OK]->setPalette(palette);
-  buttons[OK]->setAction([this](){ this->gvm->switchView(VIEW_MAIN); });
+  buttons[OK]->setAction([this](){ this->gvm->switchView(VIEW_MAIN); }); //TODO: go back to main or start according to if there's a game running
   
   buttons[SETTINGS] = Button::buildOffsetted("settings", 172, 171, LSI(LOAD,12));
   buttons[SETTINGS]->setPalette(palette);

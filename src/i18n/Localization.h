@@ -259,4 +259,19 @@ public:
   i18n_cached_key(const std::string& ident) : ident(ident), key(i18n::keyForString(ident)) { }
 };
 
+#include "common/fmt/format.h"
+
+namespace fmt
+{
+  template <>
+  struct formatter<I18> : formatter<string_view>
+  {
+    template <typename CTX>
+    auto format(I18 i18, CTX& ctx)
+    {
+      return formatter<string_view>::format(i18n::s(i18), ctx);
+    }
+  };
+}
+
 #endif

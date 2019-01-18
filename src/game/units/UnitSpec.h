@@ -315,13 +315,18 @@ public:
 
 class HeroSpec : public UnitSpec
 {
+private:
+  std::vector<std::string> _names;
+  
 public:
-  HeroSpec(HeroType type, u32 requiredFame, items::AllowedSlots<3> items, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
-    UnitSpec(UnitType::HERO, Upkeep(upkeep,0,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items), requiredFame(requiredFame) { }
+  HeroSpec(HeroType type, u32 requiredFame, items::AllowedSlots<3> items, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, const std::vector<std::string>& names, skill_init_list skills) :
+    UnitSpec(UnitType::HERO, Upkeep(upkeep,0,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items), requiredFame(requiredFame), _names(names) { }
   
   const HeroType type;
   const items::AllowedSlots<3> items;
   const u32 requiredFame;
+  
+  const std::vector<std::string>& names() const { return _names; }
   
   Type productionType() const override { return Type::HERO; }
 };

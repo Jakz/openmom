@@ -585,11 +585,33 @@ units:
     movement: 2
     sight: 1
     skills: [ mountaineer, constitution ]
+    names: [ Brax, Dolgin, Grendel, Beorn, Flynn ]
     visuals:
       i18n: unit_hero_dwarf
       icon: [lbx, units1, 0]
       figure: [lbx, figures1, 0]
       portrait: [lbx, portrait, 10]
+  - identifier: hero_barbarian
+    type: hero
+    slots: [melee, armor, jewelry]
+    required_fame: 0
+    upkeep: 2
+    cost: 100
+    melee: 5
+    ranged: none
+    defense: 3
+    resistance: 6
+    hits: 9
+    figures: 1
+    movement: 2
+    sight: 1
+    skills: [ thrown_3, might ]
+    names: [ Gunther, Wolfar, Angus, Fritz, Johan ]
+    visuals:
+      i18n: unit_hero_barbarian
+      icon: [lbx, units1, 1]
+      figure: [lbx, figures1, 8]
+      portrait: [lbx, portrait, 17]
 # fantastic units
 # arcane
   - identifier: funit_magic_spirit
