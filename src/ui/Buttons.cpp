@@ -14,7 +14,7 @@
 void Clickable::draw() const
 {
   if (x+w < WIDTH && y+h < HEIGHT)
-    Gfx::rect(x, y, w, h, Gfx::colora(255, 0, 0));
+    Gfx::rect(x, y, w, h, Gfx::color(255, 0, 0));
 }
 
 void ClickableGrid::draw() const
