@@ -133,9 +133,12 @@ entries:
   skill_spell_resist_elements: Resist Elements
   skill_spell_elemental_armor: Elemental Armor
   
+  skill_spell_guardian_wind: Guardian Wind
+  
   combat_effect_web: Web
   
   skill_item_power_elemental_armor: Elemental Armor
+  skill_item_power_guardian_wind: Guardian Wind
   
   unit_level_recruit: Recruit
   unit_level_regular: Regular
@@ -150,6 +153,8 @@ entries:
   
   spell_resist_elements: Resist Elements
   spell_elemental_armor: Elemental Armor
+  
+  spell_guardian_wind: Guardian Wind
 
   game_option_difficulty_intro: Intro
   game_option_difficulty_easy: Easy

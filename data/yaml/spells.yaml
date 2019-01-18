@@ -45,7 +45,18 @@ spells:
     skill: spell_elemental_armor
     visuals:
       i18n: spell_elemental_armor
-
+# sorcery
+  - identifier: guardian_wind
+    kind: unit_enchantment
+    rarity: common
+    school: sorcery
+    research_cost: 80
+    mana_cost: 50
+    combat_mana_cost: 10
+    upkeep: 2
+    skill: spell_guardian_wind
+    visuals:
+      i18n: spell_guardian_wind
 # city spells
   - identifier: earth_gate
     kind: city_enchantment

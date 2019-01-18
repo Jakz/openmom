@@ -155,7 +155,8 @@ void Game::dummyInit()
   player->book()->discoverSpell(Spells::CHANGE_TERRAIN);
   player->book()->discoverSpell(Spells::RAISE_VOLCANO);
   player->book()->discoverSpell(Data::spell("guardian_spirit"));
-  
+  player->book()->discoverSpell(Data::spell("guardian_wind"));
+
   new LocalGame(this);
   
   placeArmy(a, Position(5, 6, ARCANUS));
@@ -170,8 +171,10 @@ void Game::dummyInit()
     placeArmy(darmy, Position(4, 8, ARCANUS));
     
     items::Item* item = new items::Item(items::TypeID::MISC, 2);
-    item->add(Data::skill("item_power_elemental_armor"));
+    item->add(Data::skill("item_power_guardian_wind"));
     darmy->get(1)->asHero()->items().set(2, item);
+    
+    darmy->get(0)->skills()->add({ player, Data::spell("guardian_wind")});
   }
   
   City* florence = new City(player, "Florence", 4000, Position(3, 3, ARCANUS));

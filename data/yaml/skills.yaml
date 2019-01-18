@@ -322,6 +322,7 @@ skills:
 # hero abilities
   - identifier: agility
     type: hero
+    classes: [ any, fighter ]
     effects:
       - type: unit_level_bonus
         property: defense
@@ -332,6 +333,7 @@ skills:
       i18n: skill_agility
   - identifier: constitution
     type: hero
+    classes: [ any, fighter ]
     effects:
       - type: unit_level_bonus
         property: hits
@@ -342,6 +344,7 @@ skills:
       i18n: skill_constitution
   - identifier: might
     type: hero
+    classes: [ any, fighter ]
     effects:
       - type: unit_level_bonus
         property: melee
@@ -416,6 +419,18 @@ skills:
       hide_value: true
       icon: [lbx, special, 73]
       i18n: skill_spell_elemental_armor
+# sorcery
+  - identifier: spell_guardian_wind
+    type: spell
+    effects:
+      - type: unit_bonus
+        #TODO group: group_guardian_wind is it unique with item power or they stack?
+        property: defense_ranged
+        value: 50
+    visuals:
+      hide_value: true
+      icon: [lbx, special2, 7]
+      i18n: skill_spell_guardian_wind
 # combat effects
   - identifier: combat_effect_web
     type: combat_effect
@@ -431,7 +446,17 @@ skills:
   - identifier: item_power_elemental_armor
     type: item_power
     copy_effects_from: spell_elemental_armor
+    required_books: [ nature, 4 ]
     visuals:
       hide_value: true
       icon: [lbx, itemisc, 14]
       i18n: skill_item_power_elemental_armor
+# sorcery
+  - identifier: item_power_guardian_wind
+    type: item_power
+    copy_effects_from: spell_guardian_wind
+    required_books: [ sorcery, 3 ]
+    visuals:
+      hide_value: true
+      icon: [lbx, itemisc, 35]
+      i18n: skill_item_power_guardian_wind

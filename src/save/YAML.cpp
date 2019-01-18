@@ -34,7 +34,7 @@ std::string YAML::detail::node_data::empty_scalar;
 
 #define YAML_ASSERT_OR_RETURN_NULL(c, x, ...) do { if (!(c)) { PARSE_ERROR(x, __VA_ARGS__); return nullptr; } } while (false)
 
-#define YAML_ASSERT(c, x, ...) do { if (!c) { PARSE_ERROR(x, __VA_ARGS__); } } while (false)
+#define YAML_ASSERT(c, x, ...) do { if (!(c)) { PARSE_ERROR(x, __VA_ARGS__); } } while (false)
 
 using namespace YAML;
 using N = yaml::N;
@@ -757,6 +757,12 @@ template<> const Skill* yaml::parse(const N& node)
     visualInfo.hideValue =  optionalParse(visuals, "hide_value", false);
     visualInfo.icon = parse<SpriteInfo>(visuals["icon"]);
   }
+  
+  /* this is valid only for hero skills */
+  if (node.hasChild("classes"))
+  {
+    YAML_ASSERT(type == skills::Type::HERO, "only hero skills support classes entry but '%s' is is not", currentEntry.c_str());
+  }
 
   if (node.hasChild("effects"))
   {
@@ -846,9 +852,10 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
     using iclass = items::Class;
     items::AllowedSlots<3> slots = items::AllowedSlots<3>({parse<iclass>(yslots[0]), parse<iclass>(yslots[1]), parse<iclass>(yslots[2])});
     
+    /* names of heroes per player */
     std::vector<std::string> names;
     parse(node["names"], names);
-
+    
     data.first = new HeroSpec(
                         HeroType::HERO,
                         requiredFame,

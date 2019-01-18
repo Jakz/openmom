@@ -101,10 +101,11 @@ int main(int argc, char* arg[])
   Texture::load();
   SDL::initGVM();
   
-  //saveScreenshots(game);
-
   //SDL::gvm->switchView(VIEW_MAP_EDITOR);
   LocalGame::i->switchToPlayer(game->currentPlayer());
+
+  //saveScreenshots(game);
+
   SDL::gvm->switchView(VIEW_MAIN);
 
   //SDL::gvm->switchView(VIEW_NEW_GAME);
