@@ -30,18 +30,20 @@ MiniMap::~MiniMap()
 
 void MiniMap::discover(const Position& position)
 {
-  Gfx::lock(maps[position.plane]);
+  maps[position.plane]->lock();
   maps[position.plane]->set(position.x, position.y,  minimapColor(world->get(position)));
-  Gfx::unlock(maps[position.plane]);
+  maps[position.plane]->unlock();
 }
 
 void MiniMap::discover(const Rect& rect, Plane plane)
 {
-  Gfx::lock(maps[plane]);
+  maps[plane]->lock();
+  
   for (s16 x = rect.origin.x; x < rect.origin.x + rect.size.w; ++x)
     for (s16 y = rect.origin.y; y < rect.origin.y + rect.size.h; ++y)
       maps[plane]->set(x, y, minimapColor(world->get(x, y, plane)));
-  Gfx::unlock(maps[plane]);
+  
+  maps[plane]->unlock();
 }
 
 Color MiniMap::minimapColor(const Tile* tile)

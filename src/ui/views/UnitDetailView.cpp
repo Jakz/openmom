@@ -160,6 +160,8 @@ void UnitDetailView::draw()
   // TODO: should it be getProperty and not getBaseProperty?
   CommonDraw::drawMovement(unit->getBaseProperty(Property::MOVEMENT), unit->getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE), c.x + 84, c.y + 25, 0);
   CommonDraw::drawUpkeep(uk, c.x + 85, c.y + 33);
+  
+  skillDraw.clickable()->draw();
 }
 
 void UnitDetailView::setHeroHire(Hero* hero, u32 cost)

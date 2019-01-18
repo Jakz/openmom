@@ -56,11 +56,11 @@ private:
     std::string left;
     std::string right;
     
-    const FontSpriteSheet* font();
-    const FontSpriteSheet* fontSelected();
+    const FontSpriteSheet* font() const;
+    const FontSpriteSheet* fontSelected() const;
   public:
     ClickableAffix(affix_radio_group_t* group, size_t index, std::string left, std::string right, u16 x, u16 y, u16 w, u16 h);
-    void draw() override;
+    void draw() const override;
   };
   
   class ClickableGroup

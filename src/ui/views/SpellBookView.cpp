@@ -101,12 +101,12 @@ void SpellBookView::drawPage(u16 index)
       if (spell != player->book()->getCurrentCast())
       {
         clip = Fonts::drawString(i18n::s(spell->name), FontFaces::Small::BROWN, topLeftX[index]-1, curY-1, ALIGN_LEFT);
-        clip2 = Fonts::drawString(Fonts::format("%d MP",g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BROWN, topLeftX[index]+ROW_WIDTH+7, curY-1, ALIGN_RIGHT);
+        clip2 = Fonts::drawString(fmt::sprintf("%d MP", g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BROWN, topLeftX[index]+ROW_WIDTH+7, curY-1, ALIGN_RIGHT);
       }
       else
       {
         clip = Fonts::drawString(i18n::s(spell->name), FontFaces::Small::BLINK_WHITE_GREY, topLeftX[index]-1, curY-1, ALIGN_LEFT);
-        clip2 = Fonts::drawString(Fonts::format("%d MP",g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BLINK_WHITE_GREY, topLeftX[index]+ROW_WIDTH+7, curY-1, ALIGN_RIGHT);
+        clip2 = Fonts::drawString(fmt::sprintf("%d MP", g->spellMechanics.actualManaCost(player, spell, combatMode)), FontFaces::Small::BLINK_WHITE_GREY, topLeftX[index]+ROW_WIDTH+7, curY-1, ALIGN_RIGHT);
       }
       
       Gfx::drawClipped(LSI(SPELLS,10), topLeftX[index]+clip+3, curY, clip+3, ROW_HEIGHT*i, -3-clip2, 6);

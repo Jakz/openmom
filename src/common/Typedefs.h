@@ -34,6 +34,7 @@ class Army;
 class Hero;
 class ManaNode;
 class Unit;
+class UnitSpec;
 
 namespace combat
 {

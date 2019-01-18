@@ -7,6 +7,9 @@
 
 template<typename T, typename S> class DrawElement;
 
+/* this is a simple auto-sorting drawing queue which can be used
+   to arrange drawing of generic objects
+ */
 template<typename T, typename S = std::less<std::unique_ptr<T>>>
 class DrawQueue
 {

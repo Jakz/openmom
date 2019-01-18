@@ -11,13 +11,13 @@
 #include "Gfx.h"
 #include "Font.h"
 
-void Clickable::draw()
+void Clickable::draw() const
 {
   if (x+w < WIDTH && y+h < HEIGHT)
-    Gfx::rect(x, y, w, h, Gfx::color(255, 0, 0));
+    Gfx::rect(x, y, w, h, Gfx::colora(255, 0, 0));
 }
 
-void ClickableGrid::draw()
+void ClickableGrid::draw() const
 {
   forEachCell([](coord_t x, coord_t y, coord_t w, coord_t h) {
     Gfx::rect(x, y, w, h, { 255, 0, 0 });
@@ -59,7 +59,7 @@ void ButtonGfx::draw(u16 x, u16 y, bool isActive, bool isPressed, bool hovered) 
 }
 
 
-void Button::draw()
+void Button::draw() const
 {
   /* if not visible don't draw anything */
   if (!isVisible())
@@ -98,13 +98,13 @@ void Button::setPosition(u16 x, u16 y)
     labelGfx->position = Point(x + gfx.normal->sw()/2, y + gfx.normal->sh()/2 - labelGfx->font->sh()/2);
 }
 
-void TwoPartButton::draw()
+void TwoPartButton::draw() const
 {
   /* TODO: finish */
 }
 
 template<typename T>
-void RadioButton<T>::draw()
+void RadioButton<T>::draw() const
 {
   if (!isVisible()) return;
   

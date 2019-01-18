@@ -100,19 +100,36 @@ void Gfx::drawLine(Color color, u16 x1, u16 y1, u16 x2, u16 y2)
 void Gfx::rect(u16 x, u16 y, u16 w, u16 h, Color color)
 {  
   lock(canvas);
+  
+  if (color.a == 0xFF)
+  {
+    for (int i = 0; i <= w; ++i)
+    {
+      canvas->set(x+i, y, color);
+      canvas->set(x+i, y+h, color);
+    }
+    
+    for (int i = 0; i < h; ++i)
+    {
+      canvas->set(x, y+i, color);
+      canvas->set(x+w, y+i, color);
+    }
+  }
+  else
+  {
+    for (int i = 0; i <= w; ++i)
+    {
+      canvas->set(x+i, y, color.blend(canvas->at(x+i, y), color.a));
+      canvas->set(x+i, y+h, color.blend(canvas->at(x+i, y+h), color.a));
+    }
+    
+    for (int i = 0; i < h; ++i)
+    {
+      canvas->set(x, y+i, color.blend(canvas->at(x, y+1), color.a));
+      canvas->set(x+w, y+i, color.blend(canvas->at(x+w, y+i), color.a));
+    }
+  }
 
-  for (int i = 0; i <= w; ++i)
-  {
-    canvas->set(x+i, y, color);
-    canvas->set(x+i, y+h, color);
-  }
-  
-  for (int i = 0; i < h; ++i)
-  {
-    canvas->set(x, y+i, color);
-    canvas->set(x+w, y+i, color);
-  }
-  
   unlock(canvas);
 }
 

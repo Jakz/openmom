@@ -737,7 +737,7 @@ void NewGameView::draw()
       const fonts::SerifFont titleFont(&fonts.schoolFonts[school]);
       const fonts::MediumBoldFont headerFont(&fonts.schoolFonts[school]);
       
-      Fonts::drawString(fmt::sprintf("Select %s Spells", i18n::c(schoolGfx.name)), &titleFont, 241, 5, ALIGN_CENTER); //TODO: localize
+      Fonts::drawString(fmt::format("Select {} Spells", schoolGfx.name), &titleFont, 241, 5, ALIGN_CENTER); //TODO: localize
 
       /* top divider */
       Gfx::draw(divider, palette, {181, 18});

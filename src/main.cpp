@@ -94,6 +94,7 @@ int main(int argc, char* arg[])
   
   Game *game = new Game();
   game->dummyInit();
+
   
   SDL::init();
   Gfx::init();
@@ -103,6 +104,7 @@ int main(int argc, char* arg[])
   //saveScreenshots(game);
 
   //SDL::gvm->switchView(VIEW_MAP_EDITOR);
+  LocalGame::i->switchToPlayer(game->currentPlayer());
   SDL::gvm->switchView(VIEW_MAIN);
 
   //SDL::gvm->switchView(VIEW_NEW_GAME);

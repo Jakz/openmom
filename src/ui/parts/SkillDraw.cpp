@@ -1,5 +1,7 @@
 #include "SkillDraw.h"
 
+#include "Unit.h"
+
 #include "Gfx.h"
 #include "GfxData.h"
 
@@ -26,6 +28,24 @@ void SkillDraw::openHelpForSkill(const Unit* unit, int i)
   // TODO manage skills which are not real skills (xp, items, etc)
 }
 
+SkillDraw::SkillDraw(Point coord) : page(0), totalPages(0), base(coord)
+{
+  grid = ClickableGrid(coord.x, coord.y, CELL_WIDTH - 4, CELL_HEIGHT, ROWS, TOTAL / ROWS);
+}
+
+void SkillDraw::setPosition(coord_t x, coord_t y)
+{
+  base = Point(x, y);
+  grid.setXY(x, y);
+}
+
+void SkillDraw::reset(const Unit* unit)
+{
+  page = 0;
+  size_t a = unit->skills()->size();
+  totalPages = Math::roundWithMod(a, 8) + (unit->type() == Productable::Type::HERO ? 1 : 0);
+}
+
 void SkillDraw::drawSkill(s16 index, SpriteInfo sprite, const std::string& text, coord_t sx, coord_t sy)
 {
   coord_t x = spX(index,sx);
@@ -43,7 +63,7 @@ void SkillDraw::draw(const Unit* unit)
   const Level* level = unit->getExperienceLevel();
   
   if (level && page == 0)
-    drawSkill(curOffset++, level->visuals.icon, i18n::s(level->visuals.name)+Fonts::format(" (%u xp)",unit->getExperience()), base.x, base.y);
+    drawSkill(curOffset++, level->visuals.icon, fmt::format("{} ({} xp)", level->visuals.name, unit->getExperience()), base.x, base.y);
   
   /* if the unit is a hero and we are on first page we should draw the experience and the items */
   if (unit->type() == Productable::Type::HERO && page == 0)

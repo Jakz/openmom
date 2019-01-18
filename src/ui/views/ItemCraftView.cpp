@@ -40,12 +40,12 @@ sprite_ref TYPE_BUTTONS[][2] = {
   { LBXI(SPELLSCR, 23), LBXI(SPELLSCR, 34) }
 };
 
-const FontSpriteSheet* ItemCraftView::ClickableAffix::font() { return toggled ? FontFaces::MediumBold::GOLD_ITEM_CRAFT : FontFaces::MediumBold::BROWN_ITEM_CRAFT; }
+const FontSpriteSheet* ItemCraftView::ClickableAffix::font() const { return toggled ? FontFaces::MediumBold::GOLD_ITEM_CRAFT : FontFaces::MediumBold::BROWN_ITEM_CRAFT; }
 
 ItemCraftView::ClickableAffix::ClickableAffix(affix_radio_group_t* group, size_t index, std::string left, std::string right, u16 x, u16 y, u16 w, u16 h)
 : affix_clickable_t(index, group, x, y, w, 10), left(left), right(right) { }
 
-void ItemCraftView::ClickableAffix::draw()
+void ItemCraftView::ClickableAffix::draw() const
 {
   if (!left.empty())
   {

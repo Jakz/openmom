@@ -41,6 +41,8 @@ public:
     onEnter([](){}), onExit([](){})
   { }
   
+  void setXY(coord_t x, coord_t y) { this->x = x; this->y = y; }
+  
   bool isCorrectButton(MouseButton b) const { return b == button; }
   //TODO: removed <= in favor of < for rect check, this was necessary because otherwise ClickableGrid ad a dummy 1 pixel wide cell over the bounds
   bool isInside(coord_t x, coord_t y) const { return x >= this->x && x < this->x+w && y >= this->y && y < this->y+h; }
@@ -70,7 +72,7 @@ public:
     onExit();
   }
 
-  virtual void draw();
+  virtual void draw() const;
 };
 
 class ClickableGrid : public Clickable
@@ -112,7 +114,7 @@ public:
     return { cx, cy };
   }
 
-  void draw() override;
+  void draw() const override;
 };
 
 template<typename T>
@@ -129,7 +131,7 @@ public:
   void emplace_back(T* area) { areas.emplace_back(area); }
   void clear() { areas.clear(); }
   
-  void draw() { for (const auto& area : areas) area->draw(); }
+  void draw() const { for (const auto& area : areas) area->draw(); }
   bool handleEvent(u16 x, u16 y, MouseButton b)
   {
     for (const auto& area : areas)
@@ -202,7 +204,7 @@ public:
   virtual void setTextInfo(const TextInfo& info);
   virtual void setLabel(const std::string& string);
   
-  void draw() override;
+  void draw() const override;
   void setPosition(u16 x, u16 y) override;
   
   void setPalette(const Palette* palette) { gfx.palette = palette; }
@@ -213,7 +215,7 @@ public:
   inline void showIf(bool condition) { visible = condition;}
   inline Button* hide() { visible = false; return this; }
   inline Button* show() { visible = true; return this; }
-  inline bool isVisible() { return visible;}
+  inline bool isVisible() const { return visible;}
   
   bool isActive() const override { return active && visible; }
 
@@ -264,7 +266,7 @@ public:
   TwoPartButton(const std::string& name, u16 x, u16 y, SpriteInfo normal1, SpriteInfo normal2, SpriteInfo pressed1, SpriteInfo pressed2, Clip clip1, Clip clip2) :
     Button(name, x, y, normal1, pressed1), gfx2(normal2, pressed2), clip1(clip1), clip2(clip2) { }
   
-  void draw() override;
+  void draw() const override;
 };
 
 template<typename T>
@@ -329,7 +331,7 @@ private:
   : Button(name, x, y, normal, pressed), data(data), toggledGfx(normalToggled, pressedToggled), toggled(false), group(group) { }
   
 public:
-  void draw() override;
+  void draw() const override;
   
   const T getData() const { return data; }
   

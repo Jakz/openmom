@@ -648,7 +648,7 @@ void MainView::Surveyor::draw()
       else
       {
         // draw city name and size
-        Fonts::drawString(i18n::s(i18n::CITY_SIZE_NAMES[city->tileSize()])+" of", 275, 114, ALIGN_CENTER);
+        Fonts::drawString(fmt::format("{} of", i18n::CITY_SIZE_NAMES[city->tileSize()]), 275, 114, ALIGN_CENTER);
         Fonts::drawString(city->getName(), 275, 114+7, ALIGN_CENTER);
         
         // draw city specs
