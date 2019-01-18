@@ -788,6 +788,13 @@ template<typename T> using spell_enum_map = enum_simple_map<School, enum_simple_
 template<typename T> using school_map = enum_simple_map<School, T, SCHOOL_COUNT>;
 using school_value_map = school_map<value_t>;
 
+template <typename T>
+struct school_value
+{
+  School school;
+  T value;
+};
+
 struct Retort
 {
   struct Requirement

@@ -56,7 +56,7 @@ namespace items
     std::string name() const { return "Stick of the Mage"; } //TODO
     TypeID type() const { return _type; }
     int gfx() const { return _gfx; }
-    School school() const { return School::NATURE; } //TODO
+    School school() const;
 
   public:
     

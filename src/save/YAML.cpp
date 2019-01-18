@@ -432,7 +432,7 @@ template<> school_value_map yaml::parse(const N& node)
   for (size_t i = 0; i < node.size(); i += 2)
   {
     School school = parse<School>(node[i]);
-    s16 value = parse<s16>(node[i+1]);
+    value_t value = parse<value_t>(node[i+1]);
     values.set(school, value);
   }
   
@@ -744,6 +744,8 @@ void yaml::solveCopiedSkillEffects()
 #pragma mark Skill
 template<> const Skill* yaml::parse(const N& node)
 {
+  Skill* skill = nullptr;
+  
   skills::Type type = optionalParse(node, "type", skills::Type::NATIVE);
   
   auto visuals = node["visuals"];
@@ -763,24 +765,31 @@ template<> const Skill* yaml::parse(const N& node)
   {
     YAML_ASSERT(type == skills::Type::HERO, "only hero skills support classes entry but '%s' is is not", currentEntry.c_str());
   }
-
+  
   if (node.hasChild("effects"))
   {
     std::vector<const SkillEffect*> effects;
     parse(node["effects"], effects);
-    return new skills::ConcreteSkill(type, effect_list(effects), visualInfo);
+    skill = new skills::ConcreteSkill(type, effect_list(effects), visualInfo);
   }
   else if (node.hasChild("copy_effects_from"))
   {
-    Skill* skill = new skills::ConcreteSkill(type, effect_list(), visualInfo);
+    skill = new skills::ConcreteSkill(type, effect_list(), visualInfo);
     effectsCopyReferences[skill] = node["copy_effects_from"].asString();
-    return skill;
   }
   else
   {
     PARSE_ERROR("skill '%s' has no effects or copy_effects_from element", currentEntry.c_str());
     return nullptr;
   }
+  
+  if (type == skills::Type::ITEM_POWER)
+  {
+    school_value_map requiredBooks = parse<school_value_map>(node["required_books"]);
+    Data::_itemPowerRequirements[skill] = requiredBooks;
+  }
+  
+  return skill;
 }
 
 template<> void yaml::parse(const N& node, skill_init_list& skills)

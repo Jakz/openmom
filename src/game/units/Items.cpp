@@ -135,4 +135,24 @@ const Item::Type* Item::typeForItem(TypeID type)
   return &types[static_cast<u16>(type)];
 }
 
+#include "Data.h"
+
+School Item::school() const
+{
+  /* TODO: for now just first school of first skill is used to determine the school */
+  /* maybe cache value since it's expensive? */
+  for (const auto* skill : _skills)
+  {
+    const auto* reqs = Data::itemPowerRequirements(skill);
+    if (reqs != nullptr)
+    {
+      for (School school : Data::schoolsWithoutArcane())
+        if (reqs->find(school)->second > 0)
+          return school;
+    }
+  }
+  
+  return School::NO_SCHOOL;
+}
+  
 

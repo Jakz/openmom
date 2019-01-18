@@ -37,6 +37,8 @@ experience_levels Data::normalUnitLevels;
 experience_levels Data::heroLevels;
 
 Data::unit_dependency_map_t Data::unitDependsOnBuilding;
+Data::item_power_requirements_map_t Data::_itemPowerRequirements;
+
 
 template<> Data::map_t<const Skill*>& Data::containerFor() {
   static map_t<const Skill*> skillsMap;

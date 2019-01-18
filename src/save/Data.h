@@ -100,8 +100,7 @@ public:
   template<typename T> using map_t = insertion_ordered_map<T>; //std::unordered_map<key_type, T>;
 
   using unit_dependency_map_t = std::unordered_map<const UnitSpec*, const Building*>;
-  
-  using skill_replacement_map_t = std::unordered_map<const Skill*, const Skill*>;
+  using item_power_requirements_map_t = std::unordered_map<const Skill*, school_value_map>;
   
   static experience_levels normalUnitLevels, heroLevels;
   
@@ -109,10 +108,10 @@ private:
   template<typename T> static map_t<T>& containerFor();
   
   static unit_dependency_map_t unitDependsOnBuilding;
+  static item_power_requirements_map_t _itemPowerRequirements;
   
-  static skill_replacement_map_t skillReplacementMap;
-  
-public:  
+public:
+  /* register data associated with an identifier, requires containerFor<T> to be istantiated */
   template<typename T> static bool registerData(const key_type& ident, const T data)
   {
     auto& container = containerFor<T>();
@@ -123,6 +122,7 @@ public:
     return true;
   }
   
+  /* get data associated with an identifier, requires containerFor<T> to be istantiated */
   template<typename T> static const T get(const key_type& ident)
   {
     const auto& map = containerFor<T>();
@@ -150,6 +150,10 @@ public:
   
   static const experience_levels& experienceLevelsForUnits() { return normalUnitLevels; }
   static const experience_levels& experienceLevelsForHeroes() { return heroLevels; }
+  static const school_value_map* itemPowerRequirements(const Skill* skill) {
+    auto it = _itemPowerRequirements.find(skill);
+    return it != _itemPowerRequirements.end() ? &it->second : nullptr;
+  }
   
   static const Skill* skill(const key_type& ident);
   static const Building* building(const key_type& ident);
