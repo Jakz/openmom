@@ -8,6 +8,8 @@
 #include "mystrings.h"
 
 #include <numeric>
+#include <algorithm>
+#include <cassert>
 
 using namespace std;
 
