@@ -103,5 +103,11 @@ void ArmiesItemsView::draw()
 
 void ArmiesItemsView::clickOnHeroItemSlot(index_t heroIndex, index_t slotIndex)
 {
+  const auto* hero = player->getHeroes()[heroIndex];
+  const auto* item = hero->items()[slotIndex];
+  
+  if (item)
+    player->send(new msgs::ItemDetail(item));
+
   LOGD("Clicked on slot %d of hero %d", slotIndex, heroIndex);
 }

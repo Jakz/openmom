@@ -38,7 +38,7 @@ ArmiesView::ArmiesView(ViewManager* gvm) : View(gvm), offset(0), unit(nullptr), 
   
   buttons[PREV1] = Button::buildTristate("Prev1", 60, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
   buttons[NEXT1] = Button::buildTristate("Next1", 60, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
-  buttons[PREV2] = Button::buildTristate("Prev2", 259, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
+  buttons[PREV2] = Button::buildTristate("Prev2", 250, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
   buttons[NEXT2] = Button::buildTristate("Next1", 250, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
 }
 
@@ -50,7 +50,7 @@ void ArmiesView::updateScrollButtons()
   buttons[NEXT2]->activateIf(offset + 6 + 1 < player->getArmies().size());
 }
 
-static const u16 HERO_PORTRAITS[][2] = {{12,5},{12,56},{12,107},{277,5},{277,56},{277,107}};
+static const coord_t HERO_PORTRAITS[][2] = {{12,5},{12,56},{12,107},{277,5},{277,56},{277,107}};
 
 void ArmiesView::draw()
 {
@@ -127,13 +127,13 @@ void ArmiesView::draw()
 
 bool ArmiesView::mouseMoved(u16 x, u16 y, MouseButton b)
 {
-  u8 ap[] = {78,24};
-  u8 ayd = 22;
+  coord_t ap[] = {78,24};
+  coord_t ayd = 22;
   
   // select an army and an unit according to where the mouse is hovering
-  s8 whichArmy = -1, whichUnit = -1;
+  int whichArmy = -1, whichUnit = -1;
   
-  for (u8 i = 0; i < 6; ++i)
+  for (coord_t i = 0; i < 6; ++i)
     if (y > ap[1]+ayd*i && y <= ap[1]+ayd*i + 16)
       whichArmy = i;
   
@@ -160,7 +160,7 @@ bool ArmiesView::mouseMoved(u16 x, u16 y, MouseButton b)
   // hover on hero portrait
   for (int i = 0; i < 6; ++i)
   {
-    const u16* bounds = HERO_PORTRAITS[i];
+    const coord_t* bounds = HERO_PORTRAITS[i];
     
     if (x >= bounds[0] && x < bounds[0]+32 && y >= bounds[1] && y < bounds[1]+32)
     {

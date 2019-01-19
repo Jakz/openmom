@@ -74,7 +74,7 @@ class Player : public PlayerInterface, public CombatPlayerInterface
 protected:
   std::list<City*> cities;
   std::list<Army*> armies;
-  std::list<Hero*> heroes;
+  std::vector<Hero*> heroes;
   /* mana nodes owned by the player */
   std::list<ManaNode*> nodes;
   /* global spells of the player */
@@ -164,7 +164,7 @@ public:
   
   Relations* getRelations() { return &relations; }
   
-  const std::list<Hero*>& getHeroes() const { return heroes; }
+  const std::vector<Hero*>& getHeroes() const { return heroes; }
   const std::list<Army*>& getArmies() const { return armies; }
   const std::list<City*>& getCities() const { return cities; }
   

@@ -41,8 +41,8 @@ CitiesView::CitiesView(ViewManager* gvm) : View(gvm), offset(0), city(nullptr)
   auto lambdaScrollUp = [this](){ scrollUp(); };
 
   
-  buttons[PREV1] = Button::buildTristate("Prev1", 20, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
-  buttons[NEXT1] = Button::buildTristate("Next1", 20, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
+  buttons[PREV1] = Button::buildTristate("Prev1", 15, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
+  buttons[NEXT1] = Button::buildTristate("Next1", 15, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
   buttons[PREV2] = Button::buildTristate("Prev2", 259, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
   buttons[NEXT2] = Button::buildTristate("Next1", 250, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
 }

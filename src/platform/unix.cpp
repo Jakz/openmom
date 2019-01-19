@@ -3,6 +3,8 @@
 #include <sys/stat.h>
 #include <dirent.h>
 
+
+#include "common/mystrings.h"
 #include "Path.h"
 
 class PlatformUnix : public Platform
