@@ -62,3 +62,10 @@ namespace items
   class Item;
   enum class Class : u8;
 }
+
+namespace help
+{
+  class Paragraph;
+};
+
+using help_ref = const help::Paragraph*;

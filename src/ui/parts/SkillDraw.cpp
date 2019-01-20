@@ -20,13 +20,18 @@ enum_simple_map<items::Class, SpriteInfo, 6> itemSprites = {
 
 SkillDraw::SkillDraw(Point coord) : page(0), totalPages(0), base(coord)
 {
-  grid = ClickableGrid(coord.x - 2, coord.y - 1, CELL_WIDTH - 7, CELL_HEIGHT, ROWS, TOTAL / ROWS, 7, 0);
+  //grid = new ClickableGrid(coord.x - 2, coord.y - 1, CELL_WIDTH - 7, CELL_HEIGHT, ROWS, TOTAL / ROWS, 7, 0);
 }
 
 void SkillDraw::setPosition(coord_t x, coord_t y)
 {
   base = Point(x, y);
-  grid.setXY(x-2, y-1);
+  //grid->setXY(x-2, y-1);
+}
+
+ClickableGrid* SkillDraw::createClickable()
+{
+  return new ClickableGrid(base.x - 2, base.y - 1, CELL_WIDTH - 7, CELL_HEIGHT, ROWS, TOTAL / ROWS, 7, 0);
 }
 
 void SkillDraw::reset(const Unit* unit)

@@ -178,7 +178,11 @@ struct PlaceGfxSpec
   } enterMessage;
 };
 
-using SkillGfxSpec = SpriteInfo;
+struct SkillGfxSpec
+{
+  SpriteInfo icon;
+  help_ref help;
+};
 
 
 template<typename K, typename V, typename M, template<class> class S>

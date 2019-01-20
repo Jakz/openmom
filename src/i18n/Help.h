@@ -54,5 +54,10 @@ namespace help
     friend class lbx::Repository;
     friend class ::yaml;
   };
+  
+  struct Ref
+  {
+    const Paragraph* paragraph;
+  };
 }
 

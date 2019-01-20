@@ -145,15 +145,15 @@ void MessageView::draw()
       SpriteInfo upperBG = LSI(HELP, 0);
       SpriteInfo lowerBG = LSI(HELP, 1);
       
-      const u16 px = WIDTH/2 - upperBG.sw()/2;
-      const u16 bound = 180;
+      const coord_t px = WIDTH/2 - upperBG.sw()/2;
+      const coord_t bound = 180;
       
       int tth = 0;
       
       Gfx::resetBuffer();
       Gfx::bindBuffer();
       {
-        int ty = 4;
+        int ty = 5;
         
         const auto* p = msg->data;
         
@@ -167,7 +167,7 @@ void MessageView::draw()
             titleX += p->icon->sw() + 3;
           }
           
-          Fonts::drawString(p->title, titleFace, titleX, ty, ALIGN_LEFT);
+          Fonts::drawString(p->title, titleFace, titleX, ty+2, ALIGN_LEFT);
           
           if (!p->icon.isPresent())
             ty += titleFace->ver + titleFace->sh();

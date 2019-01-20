@@ -753,13 +753,16 @@ template<> const Skill* yaml::parse(const N& node)
   
   skills::VisualInfo visualInfo;
   visualInfo.hidden = optionalParse(visuals, "hidden", false);
-  
+
   if (!visualInfo.hidden)
   {
     visualInfo.name = i18n::keyForString(visuals["i18n"]);
     visualInfo.hideValue =  optionalParse(visuals, "hide_value", false);
     visualInfo.icon = parse<SpriteInfo>(visuals["icon"]);
   }
+  
+  /* use same key used for the name of the skill to search for help mapping */
+  visualInfo.help = help::Data::get(visuals["i18n"]);
   
   /* this is valid only for hero skills */
   if (node.hasChild("classes"))

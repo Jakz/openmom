@@ -44,6 +44,7 @@ private:
     HERO_HIRE
   } mode;
   
+  ClickableGrid* skillGrid;
   SkillDraw skillDraw;
   Point c;
   

@@ -220,6 +220,7 @@ public:
   virtual SpriteInfo icon() const;
   virtual const std::string name() const;
   virtual bool isHidden() const { return false; }
+  virtual help_ref help() const { return nullptr; }
   
   virtual void setEffects(const effect_list& effects) = 0;
   virtual const effect_list& getEffects() const = 0;
@@ -247,6 +248,7 @@ namespace skills
     I18 name;
     bool hideValue;
     bool hidden;
+    help_ref help;
   };
   
   class ConcreteSkill : public Skill
@@ -267,6 +269,7 @@ namespace skills
     const std::string name() const override;
     SpriteInfo icon() const override { return _visual.icon; }
     bool isHidden() const override { return _visual.hidden; }
+    help_ref help() const override { return _visual.help; }
   };
   
   

@@ -51,19 +51,28 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
   buttons[UP_ARROW] = Button::buildTristate("Up", 0, 0, up_arrow)->setAction([this](){skillDraw.prevPage();});
   buttons[DOWN_ARROW] = Button::buildTristate("Down", 0, 0, down_arrow)->setAction([this](){skillDraw.nextPage();});
   
-  skillDraw.clickable()->setCellAction([this](coord_t x, coord_t y, MouseButton bt) {
+  skillGrid = skillDraw.createClickable()->setCellAction([this](coord_t x, coord_t y, MouseButton bt) {
     if (bt == MouseButton::BUTTON_RIGHT)
     {
       //help::Data::get(const std::string &i)
       
-      size_t index = y * 4 + x;
-      const auto& entry = skillDraw.visibleEntryAt(index);
-      this->gvm->showMessage(new msgs::Help(help::Data::get("might")));
+      const size_t index = y + x * 4;
+      const auto* entry = skillDraw.visibleEntryAt(index);
+      
+      if (entry && entry->type == SkillDraw::Entry::Type::SKILL)
+      {
+        const auto help = entry->skill->help();
+        if (help)
+          this->gvm->showMessage(new msgs::Help(help));
+      }
+      
       return true;
     }
     else
       return false;
   });
+  
+  addArea(skillGrid);
 }
 
 void UnitDetailView::buttonClicked(button button)
@@ -127,6 +136,8 @@ void UnitDetailView::switchMode(Mode mode)
   buttons[DOWN_ARROW]->setPosition(c.x + 205, c.y + 168);
   
   skillDraw.setPosition(c.x + 8, c.y + 108);
+  skillGrid->setPosition(c.x + 8 - 1, c.y + 108 -1);
+  
 }
 
 void UnitDetailView::draw()
@@ -177,8 +188,6 @@ void UnitDetailView::draw()
   // TODO: should it be getProperty and not getBaseProperty?
   CommonDraw::drawMovement(unit->getBaseProperty(Property::MOVEMENT), unit->getEnumProperty<MovementBaseType>(Property::MOVEMENT_BASE_TYPE), c.x + 84, c.y + 25, 0);
   CommonDraw::drawUpkeep(uk, c.x + 85, c.y + 33);
-  
-  skillDraw.clickable()->draw();
 }
 
 void UnitDetailView::setHeroHire(Hero* hero, u32 cost)

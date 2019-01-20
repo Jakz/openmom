@@ -53,7 +53,7 @@ private:
   static constexpr coord_t CELL_HEIGHT = 17;
   
   Point base;
-  ClickableGrid grid;
+  //ClickableGrid* grid;
   
   size_t page;
   size_t totalPages;
@@ -83,9 +83,15 @@ public:
   void drawSkill(size_t index, SpriteInfo sprite, const std::string& text, coord_t sx, coord_t sy);
   void draw();
   
-  const Entry& visibleEntryAt(size_t index) const { return entries[index + page*TOTAL]; }
+  const Entry* visibleEntryAt(size_t index) const
+  {
+    if (index + page * TOTAL < entries.size())
+      return &entries[index + page*TOTAL];
+    else
+      return nullptr;
+  }
   
-  ClickableGrid* clickable() { return &grid; }
+  ClickableGrid* createClickable();
 };
 
 #endif
