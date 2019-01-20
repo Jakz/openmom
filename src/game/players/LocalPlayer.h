@@ -92,6 +92,7 @@ public:
   void setViewport(s16 x, s16 y);
 
   void push(anims::Animation* animation) override;
+  
 
   void send(msgs::Message* message) override { messages.push_back(std::unique_ptr<msgs::Message>(message)); }
   bool hasMessage() { return !messages.empty(); }

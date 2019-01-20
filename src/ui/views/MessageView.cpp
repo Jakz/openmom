@@ -25,19 +25,29 @@
 
 #include "GfxData.h"
 
+enum class MessageHandlingState
+{
+  NORMAL,
+  FORCED,
+  IGNORE_NEXT_MESSAGES
+};
+
 MessageView::MessageView(ViewManager* gvm) : View(gvm), message(nullptr)
 {
   buttons.resize(BUTTON_COUNT);
   
   buttons[NO] = Button::buildBistate("No", 0, 0, LSI(RESOURCE,4))->setAction([this]() { handleMessage(); });
   buttons[YES] = Button::buildBistate("Yes", 30, 0, LSI(RESOURCE,3));
+  
+  state = MessageHandlingState::NORMAL;
 }
 
 void MessageView::handleMessage()
 {
-  if (player->hasMessage())
+  if ((player->hasMessage() && state != MessageHandlingState::IGNORE_NEXT_MESSAGES) || state == MessageHandlingState::FORCED)
   {
-    message = player->fetchMessage();
+    if (state != MessageHandlingState::FORCED)
+      message = player->fetchMessage();
     
     for (auto b : buttons) b->hide();
     
@@ -51,9 +61,15 @@ void MessageView::handleMessage()
       buttons[NO]->show();
       buttons[YES]->show();
     }
+    
+    if (state == MessageHandlingState::FORCED)
+      state = MessageHandlingState::IGNORE_NEXT_MESSAGES;
   }
   else
+  {
+    state = MessageHandlingState::NORMAL;
     gvm->closeOverview();
+  }
 }
 
 void MessageView::discardMessage()
@@ -68,20 +84,25 @@ void MessageView::discardAllMessages()
 
 bool MessageView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-  if (message->type == msgs::Message::Type::NEW_BUILDING)
+  using Type = msgs::Message::Type;
+  switch (message->type)
   {
-    discardAllMessages();
-    
-    /* TODO: così smista tutti i messaggi prima di switchare la vista (ad esempio due buildings completati), ci piace? */
-    const msgs::NewBuilding* msg = message->as<const msgs::NewBuilding>();
-    City* city = msg->city;
-    gvm->closeOverview(); /* this will deallocate message */
-    gvm->cityView()->setCity(city);
-    gvm->switchView(VIEW_CITY);
-  }
-  else if (message->type == msgs::Message::Type::ERROR || message->type == msgs::Message::Type::HELP || message->type == msgs::Message::Type::MESSAGE)
-  {
-    handleMessage();
+    case Type::NEW_BUILDING:
+    {
+      discardAllMessages();
+      
+      /* TODO: così smista tutti i messaggi prima di switchare la vista (ad esempio due buildings completati), ci piace? */
+      const msgs::NewBuilding* msg = message->as<const msgs::NewBuilding>();
+      City* city = msg->city;
+      gvm->closeOverview(); /* this will deallocate message */
+      gvm->cityView()->setCity(city);
+      gvm->switchView(VIEW_CITY);
+    }
+      
+    default:
+    {
+      handleMessage();
+    }
   }
   
   return true;
@@ -279,4 +300,13 @@ void MessageView::draw()
       break;
     }
   }
+}
+
+void MessageView::showMessage(const msgs::Message* message)
+{
+  assert(!this->message);
+  this->message.reset(message);
+  
+  state = MessageHandlingState::FORCED;
+  gvm->switchOverview(VIEW_MESSAGE);
 }

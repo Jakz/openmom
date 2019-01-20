@@ -14,6 +14,8 @@
 class ViewManager;
 namespace msgs { class Message; }
 
+enum class MessageHandlingState;
+
 class MessageView : public View
 {
 private:
@@ -34,6 +36,8 @@ private:
   void discardAllMessages();
   void handleMessage();
   
+  MessageHandlingState state;
+  
 public:
   MessageView(ViewManager* gvm);
   
@@ -41,6 +45,9 @@ public:
   
   void activate() override { handleMessage(); }
   void deactivate() override;
+  
+  /* since messages are handled in main view we need a way to force immediate handling for things like dialogs or help */
+  void showMessage(const msgs::Message* message);
 };
 
 #endif

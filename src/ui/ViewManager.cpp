@@ -267,3 +267,7 @@ void ViewManager::setPlayer(LocalPlayer* player)
 
 
 //CityView* ViewManager::cityView() { return static_cast<CityView*>(views[VIEW_CITY]); }
+
+
+
+void ViewManager::showMessage(const msgs::Message* message) { messageView()->showMessage(message); }

@@ -29,10 +29,12 @@ private:
   
   void clickOnHeroItemSlot(index_t heroIndex, index_t slotIndex);
   
+  const items::Item* heldItem;
+  
 public:
   ArmiesItemsView(ViewManager* gvm);
   
-  void activate() override { }
+  void activate() override;
   void deactivate() override { }
 };
 

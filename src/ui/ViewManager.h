@@ -48,7 +48,13 @@ class DataView;
 
 class LocalPlayer;
 
-class ViewManager : public EventListener
+class ViewManagerInterface
+{
+public:
+  virtual void showMessage(const msgs::Message* message) = 0;
+};
+
+class ViewManager : public EventListener, public ViewManagerInterface
 {
 private:
   View* views[VIEW_COUNT];
@@ -121,6 +127,10 @@ public:
   MapEditorView* mapEditorView();
   
   ConsoleView* consoleView();
+  
+  
+  
+  void showMessage(const msgs::Message* message);
 };
 
 #endif
