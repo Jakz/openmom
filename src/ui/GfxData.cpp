@@ -31,7 +31,7 @@ DEFINE_GFX_MAP(const Wizard*, WizardGfxSpec);
 #include "i18n/Localization.h"
 
 const gfx_map<PlaceType, PlaceGfxSpec, 10> GfxData::placeSpecs = {
-  { PlaceType::RUINS, { LSI(RELOAD, 18), i18n::keyForString("messages_place_name_ruins_first"), i18n::keyForString("messages_place_name_ruins_last") } },
+  { PlaceType::RUINS, { LSI(RELOAD, 18), "messages_place_name_ruins_first"_i18n, "messages_place_name_ruins_last"_i18n } },
   { PlaceType::TOWER_OF_WIZARDRY, { LSI(RELOAD, 9), i18n::keyForString("messages_place_name_tower_first"), i18n::keyForString("messages_place_name_tower_last") } },
 };
 
