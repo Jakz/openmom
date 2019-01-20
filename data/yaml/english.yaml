@@ -146,6 +146,16 @@ entries:
   unit_level_elite: Elite
   unit_level_ultra_elite: Ultra-Elite
   unit_level_champion: Champion
+  
+  hero_level_hero: Hero
+  hero_level_myrmidon: Myrmidon
+  hero_level_captain: Captain
+  hero_level_commander: Commander
+  hero_level_champion: Champion
+  hero_level_lord: Lord
+  hero_level_grand_lord: Grand Lord
+  hero_level_super_hero: Super Hero
+  hero_level_demi_god: Demi-God
 
   spell_bless: Bless
   spell_earth_gate: Earth Gate

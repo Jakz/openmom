@@ -175,6 +175,9 @@ void Game::dummyInit()
     darmy->get(1)->asHero()->items().set(2, item);
     
     darmy->get(0)->skills()->add({ player, Data::spell("guardian_wind")});
+    darmy->get(0)->skills()->add({ player, Data::spell("elemental_armor")});
+    darmy->get(0)->skills()->add({ player, Data::spell("bless")});
+
   }
   
   City* florence = new City(player, "Florence", 4000, Position(3, 3, ARCANUS));

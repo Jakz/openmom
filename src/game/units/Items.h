@@ -96,6 +96,7 @@ namespace items
   public:
     const std::array<Class, SIZE> types;
     AllowedSlots(Class c1, Class c2, Class c3) : types({c1,c2,c3}) { }
+    Class operator[](size_t index) const { return types[index]; }
   };
   
   

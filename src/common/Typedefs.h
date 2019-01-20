@@ -38,6 +38,8 @@ class Hero;
 class ManaNode;
 class Unit;
 class UnitSpec;
+class Skill;
+class Level;
 
 namespace combat
 {
@@ -58,4 +60,5 @@ namespace msgs
 namespace items
 {
   class Item;
+  enum class Class : u8;
 }

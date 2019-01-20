@@ -21,6 +21,8 @@
 #include "UnitSpec.h"
 #include "Unit.h"
 
+#include "Help.h"
+
 static const Point normalBaseCoords = Point(31, 6);
 static const Point viewOnlyBaseCoord = Point(61, 6);
 static const Point heroHireCoords = Point(25, 17);
@@ -47,6 +49,18 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
 
   buttons[UP_ARROW] = Button::buildTristate("Up", 0, 0, up_arrow)->setAction([this](){skillDraw.prevPage();});
   buttons[DOWN_ARROW] = Button::buildTristate("Down", 0, 0, down_arrow)->setAction([this](){skillDraw.nextPage();});
+  
+  skillDraw.clickable()->setCellAction([](coord_t x, coord_t y, MouseButton bt) {
+    if (bt == MouseButton::BUTTON_RIGHT)
+    {
+      //help::Data::get(<#const std::string &i#>)
+      
+      size_t index = y * 4 + x;
+      return true;
+    }
+    else
+      return false;
+  });
 }
 
 void UnitDetailView::buttonClicked(button button)
@@ -151,7 +165,7 @@ void UnitDetailView::draw()
   buttons[DOWN_ARROW]->showIf(skillDraw.showBottomArrow());
   
   // then draw currently visible skills
-  skillDraw.draw(unit);
+  skillDraw.draw();
   
   // draw upkeep cost of the unit and movement
   Upkeep uk = unit->upkeep();

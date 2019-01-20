@@ -91,8 +91,7 @@ void ProductionView::draw()
     UnitDraw::drawUnitIso(spec, 83, 5, nullptr, player);
     CommonDraw::drawUnitProps(spec, 128, 47, 10);
     Fonts::drawString(Fonts::format("Cost %u(%u)", cost, cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
-    
-    skillDraw.draw(spec);
+    skillDraw.draw();
   }
   
   Fonts::drawString(product->productionName(), FontFaces::Serif::TEAL, 128, 5, ALIGN_LEFT);
@@ -155,6 +154,7 @@ bool ProductionView::mousePressed(u16 x, u16 y, MouseButton b)
     if (x >= 320-80 && x < 320 && y >= 4 && y < right.size()*14 + 4)
     {
       selected = (y - 4) / 14;
+      skillDraw.reset(static_cast<const UnitSpec*>(*std::next(right.begin(), selected)));
       which = SIDE_RIGHT;
     }
   }
