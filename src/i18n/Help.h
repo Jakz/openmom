@@ -9,6 +9,8 @@ namespace lbx {
   class Repository;
 }
 
+class yaml;
+
 namespace help
 {
   struct Paragraph
@@ -33,14 +35,24 @@ namespace help
   class Data
   {
   private:
+    static std::unordered_map<std::string, const Paragraph*> mapping;
+
     static std::vector<Paragraph> data;
-    static std::unordered_map<std::string, const Paragraph*> helpMapping;
+    static std::unordered_map<std::string, const Paragraph*> lbxHelpMapping;
     
   public:
     static const Paragraph* at(size_t i) { return &data[i]; }
-    static const Paragraph* get(const std::string& i) { auto it = helpMapping.find(i); return it != helpMapping.end() ? it->second : nullptr; }
+    static const Paragraph* get(const std::string& i) { auto it = mapping.find(i); return it != mapping.end() ? it->second : nullptr; }
+    
+    static const Paragraph* getFromLBX(const std::string& title)
+    {
+      auto it = lbxHelpMapping.find(title);
+      assert(it != lbxHelpMapping.end());
+      return it->second;
+    }
     
     friend class lbx::Repository;
+    friend class ::yaml;
   };
 }
 

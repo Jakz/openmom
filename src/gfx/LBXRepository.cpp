@@ -335,9 +335,52 @@ const LBXFile& Repository::loadLBXHelp()
      printf("\n");*/
   }
   
-  help::Data::helpMapping["spell_bless"] = &help::Data::data[474];
   
-  LOGD("[lbx] read %zu help entries", i);
+  std::unordered_map<const help::Paragraph*, const help::Paragraph*> depMap;
+  for (const auto& p : help::Data::data)
+    if (p.next)
+      depMap[p.next] = &p;
+  
+  size_t counter = 0;
+  for (const auto& p : help::Data::data)
+    if (depMap.find(&p) == depMap.end())
+    {
+      help::Data::lbxHelpMapping[p.title] = &p;
+      ++counter;
+    }
+  
+  LOGD("[lbx] read %zu help entries to %zu elements", i, counter);
+
+  
+  /*auto out = file_handle("help.txt", file_mode::WRITING);
+  
+  std::unordered_map<const help::Paragraph*, const help::Paragraph*> depMap;
+  for (const auto& p : help::Data::data)
+    if (p.next)
+      depMap[p.next] = &p;
+  
+  size_t idx = 0;
+  for (const auto& p : help::Data::data)
+  {
+    if (depMap.find(&p) == depMap.end())
+    {
+      const help::Paragraph* cp = &p;
+      
+      while (cp)
+      {
+        std::string f = fmt::format("{}: {}\n{}\n\n", idx, cp->title, cp->text);
+        out.write(f.c_str(), 1, f.length());
+        cp = cp->next;
+      }
+      
+      out.write("\n\n\n", 1, 1);
+    }
+    ++idx;
+  }
+  
+  out.close();*/
+  
+  
   
   in.close();
   

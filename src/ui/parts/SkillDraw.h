@@ -83,6 +83,8 @@ public:
   void drawSkill(size_t index, SpriteInfo sprite, const std::string& text, coord_t sx, coord_t sy);
   void draw();
   
+  const Entry& visibleEntryAt(size_t index) const { return entries[index + page*TOTAL]; }
+  
   ClickableGrid* clickable() { return &grid; }
 };
 

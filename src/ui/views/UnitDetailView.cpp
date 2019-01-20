@@ -22,6 +22,7 @@
 #include "Unit.h"
 
 #include "Help.h"
+#include "Messages.h"
 
 static const Point normalBaseCoords = Point(31, 6);
 static const Point viewOnlyBaseCoord = Point(61, 6);
@@ -50,12 +51,14 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
   buttons[UP_ARROW] = Button::buildTristate("Up", 0, 0, up_arrow)->setAction([this](){skillDraw.prevPage();});
   buttons[DOWN_ARROW] = Button::buildTristate("Down", 0, 0, down_arrow)->setAction([this](){skillDraw.nextPage();});
   
-  skillDraw.clickable()->setCellAction([](coord_t x, coord_t y, MouseButton bt) {
+  skillDraw.clickable()->setCellAction([this](coord_t x, coord_t y, MouseButton bt) {
     if (bt == MouseButton::BUTTON_RIGHT)
     {
-      //help::Data::get(<#const std::string &i#>)
+      //help::Data::get(const std::string &i)
       
       size_t index = y * 4 + x;
+      const auto& entry = skillDraw.visibleEntryAt(index);
+      this->gvm->showMessage(new msgs::Help(help::Data::get("might")));
       return true;
     }
     else

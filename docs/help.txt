@@ -1,0 +1,4072 @@
+0: EXIT SPELL BOOK
+Click here to exit the spell book, taking no action.
+
+
+1: EARTH TO MUD
+Effects: Instant Combat
+Target: 5 x 5 area
+Casting Cost: 15 mana
+Upkeep: none
+Turns a 5 x 5 area into thick, sticking mud for the duration of a battle. Mud costs a unit (enemy or friendly) all its movement points to enter. Flying and non-corporeal units are unaffected.
+
+
+2: RESIST ELEMENTS
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 5/25 mana
+Upkeep: 1 mana/turn
+Gives a target unit increased resistance (+3) to the elemental magics of chaos and nature, and improved defense against normal magic ranged attacks (+3 to ranged defense).
+
+
+3: WALL OF STONE
+Effects: City Enchantment
+Target: city
+Casting Cost: 50 mana
+Upkeep: none
+Surrounds a target city with a sturdy stone wall.
+
+
+4: GIANT STRENGTH
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 8/40 mana
+Upkeep: 1 mana/turn
+Makes a target unit's creatures stronger (adds +1 to each figure's melee attack strength).
+
+
+5: WEB
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 10 mana
+Upkeep: none
+Casts a sticky, 12 hit point web over a target unit. Creatures cannot move until they destroy the web with melee and magic ranged attacks. Web remnants prevent flying units from flying for the rest of the battle.
+
+
+6: WAR BEARS
+Effects: Summoning
+Target: n/a
+Casting Cost: 70 mana
+Upkeep: 2 mana/turn
+Summons a group of ferocious bears.
+
+
+7: STONE SKIN
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 10/50 mana
+Upkeep: 1 mana/turn
+Causes a target unit's skin to harden, increasing the unit's defense (shields) by one.
+
+
+8: WATER WALKING
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 50 mana
+Upkeep: 1 mana/turn
+Endows a unit with the ability to walk on water. The unit's movement speed remains unchanged.
+
+
+9: SPRITES
+Effects: Summoning
+Target: n/a
+Casting Cost: 100 mana
+Upkeep: 3 mana/turn
+Summons sprites. Sprites are small, flying forest creatures that can hurl tiny magic attacks over long distances.
+
+
+10: EARTH LORE
+Effects: Instant
+Target: map window
+Casting Cost: 30 mana
+Upkeep: none
+Fully reveals terrain, terrain specials, cities and armies on all squares in a targeted 'map window.'
+
+
+11: CRACKS CALL
+Effects: Instant Combat
+Target: map square
+Casting Cost: 20 mana
+Upkeep: none
+Rends the earth. Any non-flying, corporeal creature standing over the newly created fissure has a 25% chance (regardless of defense) of dying. Stone walls that cross the fissure are destroyed.
+
+
+12: NATURE'S EYE
+Effects: City Enchantment
+Target: city
+Casting Cost: 75 mana
+Upkeep: 1 mana/turn
+Extends the scouting range of a friendly target city to 4 squares in any direction, revealing all lands and all non-invisible enemy troops within that radius.
+
+
+13: ICE BOLT
+Effects: Instant Combat
+Target: one unit
+Casting Cost: 10+ mana
+Upkeep: none
+Showers a target unit with shards of ice (strength 5 magic cold attack, with every extra point of magic power spent adding a strength of 1 to the attack).
+
+
+14: GIANT SPIDERS
+Effects: Summoning
+Target: n/a
+Casting Cost: 200 mana
+Upkeep: 4 mana/turn
+Summons two giant, poisonous, web-casting spiders.
+
+
+15: CHANGE TERRAIN
+Effects: Instant Overland
+Target: map square
+Casting Cost: 50 mana
+Upkeep: none
+Alters a target map square,changing deserts, forests, hills and swamps to grasslands; grasslands to forests; volcanoes to mountains; and mountains to hills. Terrain not listed is not a valid target.
+
+
+16: PATH FINDING
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 50 mana
+Upkeep: 1 mana/turn
+Endows a target unit (and any units stacked with it) with the ability to travel over all land terrain as if it were traveling over roads (i.e., the cost is only 1/2 movement point per square).
+
+
+17: COCKATRICES
+Effects: Summoning
+Target: n/a
+Casting Cost: 275 mana
+Upkeep: 8 mana/turn
+Summons a cockatrice. The deceptively soft, feathered touch of the cockatrice is capable of turning even the hardiest creatures to stone.
+
+
+18: TRANSMUTE
+Effects: Instant Overland
+Target: map special
+Casting Cost: 60 mana
+Upkeep: none
+Transforms coal and ores in hills and mountains: coal to gems, iron to gold and silver to mithril. Transmute will also reverse these transformations gems to coal, gold to iron, and mithril to silver.
+
+
+19: NATURE'S CURES
+Effects: Instant Overland
+Target: map square
+Casting Cost: 75 mana
+Upkeep: none
+Completely heals all units (except for creatures of death) that are stacked in a target land square.
+
+
+20: BASILISKS
+Effects: Summoning
+Target: map square
+Casting Cost: 325 mana
+Upkeep: 7 mana/turn
+Summons a giant basilisk. Basilisks are so frightening to behold that they can turn their enemies to stone simply by gazing in their direction.
+
+
+21: ELEMENTAL ARMOR
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 35/175 mana
+Upkeep: 5 mana/turn
+Improves a target unit's defenses (shields) and resistance to Chaos and Nature magic (crosses), by 10 each. These bonuses do not exert cumulative effects with the spell resist elements.
+
+
+22: PETRIFY
+Effects: Instant Combat
+Target: one unit
+Casting Cost: 35 mana
+Upkeep: none
+Attempts to turn an entire enemy unit into stone.
+
+
+23: STONE GIANT
+Effects: Summoning
+Target: n/a
+Casting Cost: 450 mana
+Upkeep: 9 mana/turn
+Summons an enormous, wall-crushing stone giant. The massive stone giant is impervious to stoning attacks and can hurl huge boulders at its enemies.
+
+
+24: IRON SKIN
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 40/200 mana
+Upkeep: 5 mana/turn
+Fuses iron with a target unit's skin, making it able to withstand most attacks (adds 5 to defense).
+
+
+25: ICE STORM
+Effects: Instant Overland
+Target: map square
+Casting Cost: 200 mana
+Upkeep: none
+Causes the skies above a target map square to rain down a torrent of icy hail. All figures occupying that area are struck with a strength 6 magic cold attack.
+
+
+26: EARTHQUAKE
+Effects: Instant Overland
+Target: city
+Casting Cost: 200 mana
+Upkeep: none
+Causes a violent earthquake to shake a target city. All buildings have a 10% chance of being destroyed. All non- flying, corporeal creatures have a 15% chance of dying.
+
+
+27: GORGONS
+Effects: Summoning
+Target: n/a
+Casting Cost: 600 mana
+Upkeep: 15 mana/turn
+Summons gorgons. These monstrosities, just as their mythological namesakes, are so ugly and frightening to behold that enemies who mistakenly peek in their direction are turned to stone.
+
+
+28: MOVE FORTRESS
+Effects: Instant Overland
+Target: fortress
+Casting Cost: 200 mana
+Upkeep: none
+Moves a wizard's enchanted fortress (with summoning circle, if the circle has not previously been moved) to the target friendly city.
+
+
+29: GAIA'S BLESSING
+Effects: City Enchantment
+Target: city
+Casting Cost: 300 mana
+Upkeep: 3 mana/turn
+A target city's maximum food harvest increases by 50%. Every turn there is a 10% chance the city's deserts convert to grasslands and volcanoes to verdant hills, and a 20% chance that its corrupted lands return to their pristine state.
+
+
+30: EARTH ELEMENTAL
+Effects: Summoning
+Target: n/a
+Casting Cost: 60 mana
+Upkeep: none
+Summons an earth elemental. The creature cannot be summoned if there are already nine friendly units on the battlefield. The wall-crushing earth elemental disappears when the battle is over.
+
+
+31: REGENERATION
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 60/300 mana
+Upkeep: 10 mana/turn
+Target unit can regenerate during combat (1 hit point/ turn) and afterwards (immediate return to full health). If the unit dies in combat, it returns in full health if its side won. Spell cannot return a creature that has been banished or unsummoned.
+
+
+32: BEHEMOTH
+Effects: Summoning
+Target: n/a
+Casting Cost: 700 mana
+Upkeep: 15 mana/turn
+Summons a fierce behemoth. A behemoth is one of the strongest creatures that can be summoned to Arcanus and Myrror.
+
+
+33: ENTANGLE
+Effects: Combat Enchantment
+Target: flying units
+Casting Cost: 50 mana
+Upkeep: none
+Causes all non-flying, corporeal enemy creatures to lose one movement point per turn. If a creature's movement points are zero, it cannot attack or move the rest of combat; but it can still strike back if attacked.
+
+
+34: NATURE'S AWARENESS
+Effects: Global Enchantment
+Target: map
+Casting Cost: 800 mana
+Upkeep: 7 mana/turn
+Reveals all lands, cities and non- invisible creatures on both Arcanus and Myrror!
+
+
+35: CALL LIGHTNING
+Effects: Combat
+Target: opponent
+Casting Cost: 60 mana
+Upkeep: none
+Calls a powerful electrical storm from which deadly lightning bolts issue. Three to five lightning bolts of strength 8 strike random enemy units at the beginning of every turn until the end of combat.
+
+
+36: COLOSSUS
+Effects: Summoning
+Target: n/a
+Casting Cost: 800 mana
+Upkeep: 17 mana/turn
+Summons an awe-inspiring colossus. A colossus is a rock- wielding fighting machine immune to all known forms of poison and petrification.
+
+
+37: EARTH GATE
+Effects: City Enchantment
+Target: city
+Casting Cost: 250 mana
+Upkeep: 5 mana/turn
+Creates a teleporting device within a target city. Friendly units can teleport between any two of the casting wizard's cities equipped with earth gates, for the cost of one movement point.
+
+
+38: HERB MASTERY
+Effects: Global Enchantment
+Target: all units
+Casting Cost: 1000 mana
+Upkeep: 10 mana/turn
+Completely heals all of a wizard's damaged units every game turn.
+
+
+39: GREAT WYRM
+Effects: Summoning
+Target: n/a
+Casting Cost: 1000 mana
+Upkeep: 20 mana/turn
+Summons a gigantic, poisonous, tunneling land wyrm. For all its bulk a great wyrm, with its ability to tunnel underground, is frighteningly fast on the battlefield.
+
+
+40: NATURE'S WRATH
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1250 mana
+Upkeep: 10 mana/turn
+For every non-combat death or chaos spell cast, all the casting wizard's cities suffer tremors. Each non-flying, corporeal unit has a 10% chance of dying and each building a 5% chance of collapsing.
+
+
+41: RESIST MAGIC
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 5/25 mana
+Upkeep: 1 mana/turn
+Adds 3 to all resistance rolls versus magic.
+
+
+42: DISPEL MAGIC TRUE
+Effects: Instant Combat
+Target: n/a
+Casting Cost: 10+ mana
+Upkeep: none
+A stronger version of the arcane Dispel Magic . Every point of mana spent on casting this spell counts as three for the purposes of dispelling the target unit's enchantments.
+
+
+43: FLOATING ISLANDS
+Effects: Summoning
+Target: n/a
+Casting Cost: 50 mana
+Upkeep: 5 mana/turn
+Summons an apparently solid cloud to any visible ocean map square of a wizard's choice. This thick body of vapors can carry up to eight units across water and moves at a speed of two map squares/turn.
+
+
+44: GUARDIAN WIND
+Effects: Unit Enchantment
+Target: friendly unit
+Casting Cost: 10/50 mana
+Upkeep: 1 mana/turn
+Surrounds the unit with a magically protective wall of air, making the unit almost totally immune to arrow and sling attacks.
+
+
+45: PHANTOM WARRIORS
+Effects: Summoning
+Target: n/a
+Casting Cost: 10 mana
+Upkeep: none
+Summons a group of illusory phantom warriors and binds them to the will of the wizard. The phantoms attack with illusory weapons that completely ignore the effects of armor. When combat ends, the phantom warriors disappear.
+
+
+46: CONFUSION
+Effects: Unit Enchantment
+Target: enemy unit
+Casting Cost: 15 mana
+Upkeep: none
+Attempts to disorient a target unit. A confused unit does not recover (unless disenchanted) until after combat ends. Every turn the confused unit randomly does one of the following: stand around and do nothing, move randomly, attack allies, or attack enemies.
+
+
+47: WORD OF RECALL
+Effects: Instant
+Target: one friendly unit
+Casting Cost: 20 mana
+Upkeep: none
+Transports a target friendly unit back to a wizard's summoning circle. If there is no space in the city for the recalled unit, one of the units already occupying the city square is displaced to a neighboring land square.
+
+
+48: COUNTER MAGIC
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 10+ mana
+Upkeep: none
+Creates a reserve of counter magic power which resists all spells cast by an opponent wizard as if you had cast an equally-strong dispel magic. Each spell casting attempt by the opposing wizard reduces the strength of the counter magic reserve by five mana.
+
+
+49: NAGAS
+Effects: Summoning
+Target: n/a
+Casting Cost: 100 mana
+Upkeep: 2 mana/turn
+Summons a pair of trident-wielding nagas. These swimming creatures spit poison at their foes during combat.
+
+
+50: PSIONIC BLAST
+Effects: Instant Combat
+Target: one unit
+Casting Cost: 10+ mana
+Upkeep: none
+Targets a unit with an intensely damaging stream of mental energy. This strength 5 non-physical attack can be increased in strength by one per every two extra mana points spent on the spell.
+
+
+51: BLUR
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 20 mana 
+Upkeep: none
+Blurs the outline of all friendly units making them more difficult to hit. There is a 10% chance that each point of damage done to the target unit will miss.
+
+
+52: DISENCHANT TRUE
+Effects: Instant
+Target: map square
+Casting Cost: 50+ mana
+Upkeep: none
+A much stronger version of Disenchant Area, with triple the chance of removing target enchantments (each point of mana spent casting the spell counts as three for the purposes of dispelling a target enchantment).
+
+
+53: VERTIGO
+Effects: Unit Enchantment
+Target: enemy unit
+Casting Cost: 25 mana
+Upkeep: none
+If a targeted unit fails to resist, it suffers a penalty to hit of 2 (i.e., it has a -20% chance to hit) and has more trouble defending than usual (lose 1 shield).
+
+
+54: SPELL LOCK
+Effects: Unit Enchantment
+Target: friendly unit
+Casting Cost: 20/100 mana
+Upkeep: 1 mana/turn
+ Prevents a target unit's positive enchantments from being dispelled. If the target unit is a summoned creature, spell lock also protects the bonds that tie it to the controlling wizard. Spell lock must be dispelled (resistance of 150) before any further enchantments can be removed from the creature or unit.
+
+
+55: ENCHANT ROAD
+Effects: Instant
+Target: 5 x 5 map area (one full screen)
+Casting Cost: 100 mana
+Upkeep: none
+Makes all roads within two map squares of the targeted area cost no movement points to travel over for non-flying units. Note that all roads on Myrror are automatically enchanted.
+
+
+56: FLIGHT
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 25/ 125 mana
+Upkeep: 3 mana/turn
+Bestows the power of flight upon a target unit.
+
+
+57: WIND MASTERY
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 400 mana
+Upkeep: 5 mana/turn
+Doubles the speed of all ships and sky masters controlled by a wizard, and halves the speed of all others.
+
+
+58: SPELL BLAST
+Effects: Instant
+Target: opponent wizard
+Casting Cost: 50+ mana
+Upkeep: none
+Attempts to counter an enemy wizard's spell as it is being cast. When spell blast takes effect, a wizard must expend as much of his or her own magic power (from mana reserves) as the enemy wizard has spent on the opposing spell to blast that spell out of existence. If a wizard does not have enough mana to match his target, spell blast fails.
+
+
+59: AURA OF MAJESTY
+Effects: Global Enchantment
+Target: yourself
+Casting Cost: 400 mana
+Upkeep: 5 mana/turn
+Hoodwinks all enemy wizards into liking the casting wizard. Each turn the spell is in effect, relations are shifted by +1 diplomatic point on a scale of -100 to +100.
+
+
+60: PHANTOM BEAST
+Effects: Combat Summoning
+Target: n/a
+Casting Cost: 35 mana
+Upkeep: none
+Summons an illusory phantom beast. A beast only appears if a battle is on land and if there are fewer than nine units already fighting for the wizard. The phantom beast is immune to all forms of death magic and disappears when combat ends.
+
+
+61: DISJUNCTION TRUE
+Effects: Instant 
+Target: one global enchantment
+Casting Cost: 200+ mana
+Upkeep: none
+Equivalent to a very strong version of the arcane magic Disjunction, with triple the chance of success. Each mana spent on casting this spell counts as three for the purposes of dispelling the target global enchantment.
+
+
+62: INVISIBILITY
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 35/175 mana
+Upkeep: 10 mana/turn
+Renders the unit invisible to all units, except those Immune to Illusion and those that have True Sight. In combat, the unit becomes visible when adjacent to an enemy unit, but still penalizes the to hit roll of enemy units by -1.
+
+
+63: WIND WALKING
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 250 mana
+Upkeep: 10 mana/turn
+Allows the enchanted unit and all units in its stack to fly (with a speed of 3) on the overland map. Does not work in combat.
+
+
+64: BANISH
+Effects: Instant Combat
+Target: one fantastic unit
+Casting Cost: 20+ mana
+Upkeep: none
+Destroys the magical bond that keeps a fantastic unit with its controlling magician. Each figure within the unit must resist at -3 or be returned whence they were summoned. Every additional 15 mana lowers the targets' resistance by one.
+
+
+65: STORM GIANT
+Effects: Summoning
+Target: n/a
+Casting Cost: 500 mana
+Upkeep: 10 mana/turn
+ Summons a lightning bolt-wielding storm giant. Storm giants not only hurl vicious lightning bolts over long distances, they also use lightning bolts when fighting hand-to-hand with their enemies.
+
+
+66: AIR ELEMENTAL
+Effects: Summoning
+Target: n/a
+Casting Cost: 50 mana
+Upkeep: none
+Summons an invisible, flying air elemental during battle. The creature disappears when combat ends. Note that a wizard must have fewer than nine units in a battle to summon this creature.
+
+
+67: MIND STORM
+Effects: Unit Enchantment
+Target: enemy unit
+Casting Cost: 35 mana
+Upkeep: none
+Causes intense mental anguish to the creature(s) in a target enemy unit. Unable to concentrate, the creatures automatically (with no chance to resist) lose 5 to all of their melee, thrown and ranged attack strengths, defense and resistance. This spell does not effect units that have Immunity to Illusions.
+
+
+68: STASIS
+Effects: Unit Enchantment
+Target: one map square
+Casting Cost: 250 mana
+Upkeep: none
+Paralyzes all enemy units in a target map square for a minimum of one turn. After the first turn a unit passes in stasis, it has one opportunity per turn to free itself by successfully resisting (at a penalty of 5 to resistance) the stasis field.
+
+
+69: MAGIC IMMUNITY
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 50/250 mana
+Upkeep: 5 mana/turn
+Makes a target unit completely immune to all magic spells and spell-like effects. It also gives the unit immunity to breath and gaze attacks. Finally, the unit is almost completly immune to all magical ranged attacks.
+
+
+70: HASTE
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 50 mana
+Upkeep: none
+Doubles the movement (speed) and number of attacks (both melee and ranged) of a target unit. The target unit becomes so fast that it even counterattacks (when defending during melee combat) twice.
+
+
+71: DJINN
+Effects: Summoning
+Target: n/a
+Casting Cost: 650 mana
+Upkeep: 17 mana/turn
+Summons a djinn. This powerful, flying being can hurl ranged magic attacks at its opponents and is capable of casting up to 20 spell points of sorcery magic during every combat.
+
+
+72: SPELL WARD
+Effects: City Enchantment
+Target: friendly city
+Casting Cost: 350 mana
+Upkeep: 5 mana/turn
+Provides total immunity for the city from one specific realm of spells (including combat spells) and prohibits any fantastic creatures of that realm from entering the protected city. Caster must select which realm to ward against: chaos, death, life, nature, or sorcery.
+
+
+73: CREATURE BINDING
+Effects: Unit Enchantment
+Target: one fantastic unit
+Casting Cost: 70 mana
+Upkeep: none
+Attempts to alter the allegiance of a fantastic (i.e., summoned) creature. If a target creature fails to resist the spell (at a penalty of 2 to its resistance), it is bound to fight for the casting wizard until the end of combat (or until disenchanted). The bound creature disappears after combat ends.
+
+
+74: MASS INVISIBILITY
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 80 mana
+Upkeep: none
+Makes all friendly units invisible to their opponents. While invisible, the units cannot be targeted by ranged weapons and all melee attacks against them suffer a penalty to hit of one (i.e., -10% chance to hit).
+
+
+75: GREAT UNSUMMONING
+Effects: Instant
+Target: n/a
+Casting Cost: 1000 mana
+Upkeep: none
+Tries to banish all fantastic creatures (including those bound to the casting wizard) from both Arcanus and Myrror! Creatures suffer a penalty of 2 to their resistance when attempting to oppose this spell.
+
+
+76: SPELL BINDING
+Effects: Instant
+Target: Global Enchantment
+Casting Cost: 1000 mana
+Upkeep: as for target enchantment
+Steals a global enchantment from another wizard. The stolen global spell becomes the property of the casting wizard in terms of maintenance and control.
+
+
+77: FLYING FORTRESS
+Effects: Fortress Enchantment
+Target: wizard's city
+Casting Cost: 500 mana
+Upkeep: 25 mana/turn
+Suspends a wizard's enchanted fortress far above the earth. Only flying units may enter (or attack) and leave this 'city in the clouds.' The wizard's own foot troops may enter and exit the city overland; during combat, once a foot troop (non-flying unit) leaves the floating city it cannot re-enter until the battle is over.
+
+
+78: SKY DRAKE
+Effects: Summoning
+Target: n/a
+Casting Cost: 1000 mana
+Upkeep: 25 mana/turn
+Summons a fierce, lightning-breathing wind dragon from the realm of air. The powerful sky drake is immune to magic and illusions. Its lightning breath can easily vaporize most opponents.
+
+
+79: SUPPRESS MAGIC
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1250 mana
+Upkeep: 50 mana/turn
+All overland spells not cast by caster must overcome a 500 mana strength dispel or be eliminated.
+
+
+80: TIME STOP
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1500 mana
+Upkeep: 200 mana/turn
+Stops the passage of time for all enemy wizards and their troops and spells. Only the casting wizard may move units. He or she must pay maintenance on this spell, but only on this spell.
+
+
+81: WARP WOOD
+Effects: Instant
+Target: missile-armed enemy unit
+Casting Cost: 10 mana
+Upkeep: none
+ Immediately twists and destroys all missile ammunition of a target normal unit, removing that unit's ability to attack at range. There is no way to prevent the effect of this spell.
+
+
+82: DISRUPT
+Effects: Instant
+Target: one wall section
+Casting Cost: 15 mana
+Upkeep: none
+Destroys one section of stone wall, clearing a way for troops to pass through.
+
+
+83: FIRE BOLT
+Effects: Instant
+Target: enemy unit
+Casting Cost: 5+ mana
+Upkeep: none
+Shoots a bolt of intense flames at one figure in a target unit, striking as 5 strength magical fire attack, +1 point of strength per additional mana spent.
+
+
+84: HELL HOUNDS
+Effects: Summoning
+Target: n/a
+Casting Cost: 40 mana
+Upkeep: 1 mana/turn
+
+Summons and binds a wild pack of fire-breathing hell hounds to the will of the wizard.
+
+
+85: CORRUPTION
+Effects: Instant
+Target: land map square
+Casting Cost: 40 mana
+Upkeep: none
+Desecrates the target land square. Corrupted lands produce no food or minerals, and can only be restored to production by the prayers of clerics or shamans.
+
+
+86: ELDRITCH WEAPON
+Effects: Unit Enchantment
+Target: one normal unit
+Casting Cost: 15/75 mana
+Upkeep: 1 mana/turn
+Imbues the target unit's weapons with a powerful chaotic spirit. These weapons are harder to defend against (an opponent's ability to defend decreases by 10%) and can effectively hit creatures with weapon immunity. Effects are cumulative with Flame Blade.
+
+
+87: WALL OF FIRE
+Effects: City Enchantment
+Target: friendly city
+Casting Cost: 30/150 mana
+Upkeep: 2 mana/turn
+Encircles a city with a protective wall of flames. Each figure of any non-flying unit that attempts to pass through suffers a 5 strength magical fire attack. Ranged attacks are not affected.
+
+
+88: SHATTER
+Effects: Instant
+Target: one normal unit
+Casting Cost: 12 mana
+Upkeep: none
+A target unit receives one resistance roll to ignore Shatter's effects; if it is unsuccessful, all of the unit's melee, thrown, and missile attack strengths decrease to one.
+
+
+89: WARP CREATURE
+Effects: Unit Enchantment
+Target: one normal unit
+Casting Cost: 18 mana
+Upkeep: none
+Attempts to mutate all creatures within a target unit. Target creatures suffer a penalty of one to their resistance when trying to withstand being warped. Mutated or warped creatures suffer one of the following degenerative changes: half strength attacks, half strength defense, or no magic resistance.
+
+
+90: FIRE ELEMENTAL
+Effects: Summoning
+Target: n/a
+Casting Cost: 20 mana
+Upkeep: none
+Summons a fire elemental to do battle for the wizard. Fire elementals have weapon immunity and fire immunity. Once combat ends, the fire elemental returns to the plane of chaos.
+
+
+91: LIGHTNING BOLT
+Effects: Instant Combat
+Target: one unit
+Casting Cost: 10+ mana
+Upkeep: none
+Shoots a bolt of intense electricity at the target unit, striking as a strength 5 armor-piercing magical attack, +1 strength per additional mana spent.
+
+
+92: FIRE GIANT
+Effects: Summoning
+Target: n/a
+Casting Cost: 150 mana
+Upkeep: 3 mana/turn
+Summons a fire giant and binds it to the will of the wizard. Fire giants have fire immunity and can destroy walls.
+
+
+93: CHAOS CHANNELS
+Effects: Permanent Unit Enchantment
+Target: one normal unit
+Casting Cost: 50 mana
+Upkeep: none
+Transforms the target into a creature of chaos. Target unit receives one of following mutations: demon-skin armor (+2 defense), demon wings (2 speed flight), or fire-breathing (2 strength fiery breath). Once affected by this spell, the creature can never be Chaos Channeled again.
+
+
+94: FLAME BLADE
+Effects: Unit Enchantment
+Target: one normal unit
+Casting Cost: 25/125 mana
+Upkeep: 2 mana/turn
+Causes the weapons of a target unit to burst into flames, increasing the strength of melee and missile attacks of the unit by 2. Flame Blades also allow units to hit creatures which have weapon immunity, and exerts cumulative effects with Eldritch Weapon.
+
+
+95: GARGOYLES
+Effects: Summoning
+Target: n/a
+Casting Cost: 200 mana
+Upkeep: 5 mana/turn
+Summons flying gargoyles. Gargoyles are extremely difficult to damage, as one might expect flying chunks of masonry to be, and exhibit immunity to stoning and poison attacks.
+
+
+96: FIREBALL
+Effects: Instant Combat
+Target: one unit
+Casting Cost: 15+ mana
+Upkeep: none
+Hurls a flying ball of exploding flames at a target unit, striking each figure in the unit with a strength 5 magic fire attack, +1 strength for every additional 3 mana spent.
+
+
+97: DOOM BAT
+Effects: Summoning
+Target: n/a
+Casting Cost: 300 mana
+Upkeep: 8 mana/turn
+Summons a doom bat and binds it to the will of the wizard. The doom bat has a fearsome fiery aura which strikes all units it engages with a 4 strength fireball.
+
+
+98: RAISE VOLCANO
+Effects: Instant 
+Target: map square
+Casting Cost: 200 mana
+Upkeep: none
+Raises a volcano, destroying any food and minerals provided by a target map square (mountains, hills, and nodes may not be targeted). The volcano provides 1 magic power each turn to the caster. If this spell is cast on a city, each building has a 15 % chance of collapsing.
+
+
+99: IMMOLATION
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 30/150 mana
+Upkeep: 2 mana/turn
+Surrounds the target unit with a fiery aura that inflicts a strength 4 magical fire attack on all enemies engaging the immolating unit in melee combat.
+
+
+100: CHIMERA
+Effects: Summoning
+Target: n/a
+Casting Cost: 350 mana
+Upkeep: 10 mana/turn
+Summons a horrific flying, fire breathing, three-headed chimera.
+
+
+101: WARP LIGHTNING
+Effects: Instant Combat
+Target: one unit
+Casting Cost: 35 mana
+Upkeep: none
+Sends a chain of lightning bolts ripping through a target unit. The first bolt of lightning has a strength of 10, the second a strength of 9, and so on until the last bolt delivers a 1 strength attack or the unit is destroyed.
+
+
+102: METAL FIRES
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 40 mana
+Upkeep: none
+Bestows a reduced strength Flame Blade on all normal units, increasing their melee and missile attack strengths by 1 and allowing them to inflict damage on units with Weapon Immunity. This spell is not cumulative with Flame Blade.
+
+
+103: CHAOS SPAWN
+Effects: Summoning
+Target: n/a
+Casting Cost: 500 mana
+Upkeep: 12 mana/turn
+Summons a chaos spawn and binds it to the will of the wizard. Chaos spawn cause fear in melee, are poisonous, and have Doom, Death and Stoning Gaze attacks.
+
+
+104: DOOM BOLT
+Effects: Instant Combat
+Target: one unit
+Casting Cost: 40 mana
+Upkeep: none
+Calls forth the awesome power of chaos to strike the target enemy unit for 10 points of damage, regardless of the unit's defenses.
+
+
+105: MAGIC VORTEX
+Effects: Summoning
+Target: map square
+Casting Cost: 50 mana
+Upkeep: none
+Vortex moves 3 squares randomly and one controlled by the caster. Any unit in the path of the vortex take 5 hits regardless of defense. In addition, each time the vortex moves, adjacent units may be struck by lightning bolts. A magic vortex does terrible damage to a city that it moves through.
+
+
+106: EFREET
+Effects: Summoning
+Target: n/a
+Casting Cost: 550 mana
+Upkeep: 15 mana/turn
+Summons a fire bolt-throwing, flying efreet and binds it to the will of the wizard. Efreeti are immune to magical fire and have the ability to cast 20 points of Chaos spells each combat.
+
+
+107: FIRE STORM
+Effects: Instant
+Target: map square
+Casting Cost: 250 mana
+Upkeep: none
+Rains fiery balls of flaming stone down on an entire map square, striking all figures in each unit within the area with a strength 8 magical fire attack. Even units within cities are affected.
+
+
+108: WARP REALITY
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 50 mana
+Upkeep: none
+Warps the fabric of reality and distorts a unit's senses. All non-chaos units, enemy or friendly, have a -2 to their chance to hit.
+
+
+109: FLAME STRIKE
+Effects: Instant Combat
+Target: n/a
+Casting Cost: 60 mana
+Upkeep: none
+Strikes all enemy units with a 15 strength magical fire attack.
+
+
+110: CHAOS RIFT
+Effects: City Enchantment
+Target: enemy city
+Casting Cost: 300 mana
+Upkeep: 10 mana/turn
+Opens a great magical vortex over an enemy city. Each turn, units inside the city sustain five strength 8 Lightning Bolt attacks, and there is a 5% chance of a building being destroyed.
+
+
+111: HYDRA
+Effects: Summoning
+Target: n/a
+Casting Cost: 650 mana
+Upkeep: 14 mana/turn
+Summons a nine-headed hydra. Each fire-breathing head on this monstrous creature can regenerate during and after combat.
+
+
+112: DISINTEGRATE
+Effects: Instant Combat
+Target: one unit
+Casting Cost: 50 mana
+Upkeep: none
+If the target has a resistance of less than 10 it is instantly and irrevocably destroyed. There is no method to restore a unit that has been disintegrated.
+
+
+113: METEOR STORM
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 900 mana
+Upkeep: 10 mana/turn
+Rains down fiery hail upon both planes, striking all creatures outside cities with a strength 4 magical fire attack. Buildings within cities may also be destroyed (1% chance each turn a building is destroyed). The casting wizard's cities are immune to the effects.
+
+
+114: GREAT WASTING
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1000 mana
+Upkeep: 20 mana/turn
+Once this enchantment has been cast, the entire world begins to slowly be corrupted. Each turn 3-6 map squares are withered as per the spell Corruption. The caster's cities and surrounding areas are, of course, exempt.
+
+
+115: CALL CHAOS
+Effects: Instant Combat
+Target: n/a
+Casting Cost: 75 mana
+Upkeep: none
+Strikes every enemy unit with a random effect from the following list: Nothing, Healing, Chaos Channels, Warp Creature, Fire Bolt (15 strength), Warp Lightning, Doom Bolt, or Disintegrate. Note some of these effects can actually be beneficial to the target unit.
+
+
+116: CHAOS SURGE
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1000 mana
+Upkeep: 40 mana/turn
+All creatures of chaos have 2 added to their hand-to-hand, missile, fire-breath, and magic attacks
+
+
+117: DOOM MASTERY
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1100 mana
+Upkeep: 15 mana /turn
+All newly created normal units controlled by the casting wizard are mutated by the effects of chaos, the same as if Chaos Channels had been cast on them.
+
+
+118: GREAT DRAKE
+Effects: Creature Summoning
+Target: n/a
+Casting Cost: 900 mana
+Upkeep: 30 mana/turn
+Summons an avenging fire-breathing dragon from the depths of chaos. The flames spewing from a great drake's jaws are so hot that weak opponents may be incinerated before ever getting a chance to fight back.
+
+
+119: CALL THE VOID
+Effects: Instant 
+Target: enemy city
+Casting Cost: 500 mana
+Upkeep: none
+Every building in the target city has a 50% chance to be destroyed, and each unit inside the city takes 10 points of damage regardless of defense. The amount of pure chaos being released also corrupts the surrounding area.
+
+
+120: ARMAGEDON
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1250 mana
+Upkeep: 40 mana/turn
+ Begins to destroy the entire world, as volcano after volcano rises, ravaging the lands of both worlds. Like Raise Volcano, the casting wizard gains one point of power from each new volcano created.
+
+
+121: BLESS
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 8/40 mana
+Upkeep: 1 mana/turn
+Adds 3 to the target unit's defense and resistance against all death or chaos related spells or monster attacks.
+
+
+122: STAR FIRES
+Effects: Instant Combat
+Target: one chaos or death unit
+Casting Cost: 5 mana
+Upkeep: none
+Causes a holy blaze of burning light from the stars (strength 15 magic attack) to fall upon a target chaos or death unit (no other creatures can be affected).
+
+
+123: ENDURANCE
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 30 mana
+Upkeep: 1 mana/turn
+Fills the target unit with a holy purpose and increases the target unit's movement speed by one.
+
+
+124: HOLY WEAPON
+Effects: Unit Enchantment
+Target: one normal unit
+Casting Cost: 10/50 mana
+Upkeep: 1 mana/turn
+Blesses the target's weapons, allowing them to hit creatures which are immune to non-magical attacks and giving a +1 to-hit bonus in combat.
+
+
+125: HEALING
+Effects: Instant Combat
+Target: non-death unit
+Casting Cost: 15 mana
+Upkeep: none
+Heals up to 5 hits of damage taken by the target unit.
+
+
+126: HOLY ARMOR
+Effects: Unit Enchantment
+Target: one normal unit
+Casting Cost: 18/90 mana
+Upkeep: 2 mana/turn
+The target unit's defense is increased by 2.
+
+
+127: JUST CAUSE
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 150 mana
+Upkeep: 3 mana/turn
+Increases the fame of the casting wizard by 10 in addition to any other bonuses as long as the spell is in effect.
+
+
+128: TRUE LIGHT
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 20 mana
+Upkeep: none
+Basks the entire battlefield in rays of holy light, increasing the attack, defense, and resistance of all creatures of life by 1. At the same time, creatures of death lose 1 from their attack, defense, and resistance. True Light and Darkness negate the effects of one another.
+
+
+129: GUARDIAN SPIRIT
+Effects: Summoning
+Target: n/a
+Casting Cost: 80 mana
+Upkeep: 1 mana/turn
+Summons a Guardian Spirit which can meld with a node to focus its power and direct it to the controlling wizard. A melded node radiates a magic aura the color of the wizard's banner.
+
+
+130: HEROISM
+Effects: Unit Enchantment
+Target: one normal unit
+Casting Cost: 20/100 mana
+Upkeep: 2 mana/turn
+An entire unit becomes elite. This spell is automatically dispelled when the unit becomes elite naturally.
+
+
+131: TRUE SIGHT
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 20/100 mana
+Upkeep: 2 mana/turn
+ Endows a target unit with the gift of Immunity to Illusions and allows the unit to see through Wall of Darkness.
+
+
+132: PLANE SHIFT
+Effects: Instant
+Target: one map square
+Casting Cost: 125 mana
+Upkeep: none
+All friendly units within the target map square are transported to the other plane of existence. If the unit is transported to an area which cannot normally entered by movement or into combat, the spell fails.
+
+
+133: RESURRECTION
+Effects: Instant 
+Target: one dead hero
+Casting Cost: 250 mana
+Upkeep: none
+Resurrects a hero from the dead, regardless of the length of time he or she has been dead. The hero reappears at the wizard's summoning circle and is fully healed. If six other heros have already been hired the spell fails.
+
+
+134: DISPEL EVIL
+Effects: Instant Combat
+Target: one chaos or death unit
+Casting Cost: 25 mana
+Upkeep: none
+Each chaos or death creature within the target group must resist at -4 or be destroyed by the holy fires. Created undead units suffer an additional -5 penalty.
+
+
+135: PLANAR SEAL
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 500 mana
+Upkeep: 5 mana/turn
+Closes the junctions between the planes, sealing Arcanus from Myrror. No unit can travel between the planes by Plane Shift, Planar Travel, Astral Gates or through towers of wizardry.
+
+
+136: UNICORNS
+Effects: Creature Summoning
+Target: n/a
+Casting Cost: 250 mana
+Upkeep: 5 mana/turn
+ Calls a herd of magic unicorns. These lovely creatures can teleport to any location on the battlefield and inspire their allies to with an increased ability to resist the effects of negative spells.
+
+
+137: RAISE DEAD
+Effects: Instant Combat
+Target: one dead normal unit
+Casting Cost: 35 mana
+Upkeep: none
+Raises a fallen unit from the dead. The unit returns with half its normal creatures. All enchantments cast on the unit are lost. The spell does not work on fantastic creatures, since they go back to their home world when slain.
+
+
+138: PLANAR TRAVEL
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 150 mana
+Upkeep: 5 mana/turn
+Allows a target unit to shift between Arcanus and Myrror at will. Note that units may not move into 'illegal' terrain types or initiate combat by Planar Travel.
+
+
+139: HEAVENLY LIGHT
+Effects: City Enchantment
+Target: friendly city
+Casting Cost: 150 mana
+Upkeep: 2 mana/turn
+Calls forth the light of the heavens to shower the city in holy light. Any combat taking place within the area of the city is treated as if True Light was in effect.
+
+
+140: PRAYER
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 30 mana
+Upkeep: none
+Adds 1 to all rolls by all friendly units, including resistance rolls, attacks to hit, and defense rolls.
+
+
+141: LION HEART
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 40/200 mana
+Upkeep: 4 mana/turn
+Adds 3 to the target unit's attack strength, hits, and resistance.
+
+
+142: INCARNATION
+Effects: Hero Summoning
+Target: n/a
+Casting Cost: 500 mana
+Upkeep: 12 mana/turn
+Summons Torin the Chosen to aid your cause. There is only one Chosen for each wizard. If he is killed or disbanded and summoned again he retains all experience from his previous incarnations.
+
+
+143: INVULNERABILITY
+Effects: Unit Enchantment
+Target: one friendly unit
+Casting Cost: 40/200 mana
+Maintenance: 5 mana/turn
+Target unit is resistant to damage from non-magical attacks, and the first two hits sustained by the unit from any attack are ignored.
+
+
+144: RIGHTEOUSNESS
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 40/200 mana
+Maintenance: 2 mana/turn
+Gives a target unit a tremendous sense of holy purpose, which calls so strongly upon the forces of life that they manifest themselves in the unit, providing it with complete immunity to all death and chaos magic spells and spell effects.
+
+
+145: PROSPERITY
+Effects: City Enchantment
+Target: friendly city
+Casting Cost: 250 mana
+Upkeep: 2 mana/turn
+Increases the gold obtained from the target city by 50% as long as the enchantment is in effect.
+
+
+146: ALTAR OF BATTLE
+Effects: City Enchantment
+Target: friendly city
+Casting Cost: 300 mana
+Upkeep: 5 mana/turn
+All units built in the target city are Elite.
+
+
+147: ANGEL
+Effects: Summoning
+Casting Cost: 550 mana
+Upkeep: 15 mana/turn
+Summons an angel. Angels enhance the fighting ability of friendly units and their touch Dispels Evil.
+
+
+148: STREAM OF LIFE
+Effects: City Enchantment
+Target: friendly city
+Casting Cost: 300 mana
+Upkeep: 8 mana/turn
+Turns an ordinary friendly city into a fertile utopia. Population growth rates double and all units in the city heal completely at the end of every game turn. The citizens are so pleased that unrest completely disappears.
+
+
+149: MASS HEALING
+Effects: Instant Combat
+Target: n/a
+Casting Cost: 50 mana
+Upkeep: none
+ Heals all friendly units for 5 hit points (or less, if a unit has sustained fewer than 5 hit points of damage).
+
+
+150: HOLY WORD
+Effects: Instant Combat
+Target: n/a
+Casting Cost: 60 mana
+Upkeep: none
+Attempts to banish outright all fantastic and/or undead creatures (whether Animated or Black Channeled). Each figure within each enemy unit must resist this holy utterance separately (at a penalty of 2 to resistance). Undead have a much more difficult time resisting Holy Word than do other creatures.
+
+
+151: HIGH PRAYER
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 60 mana
+Upkeep: none
+ Calls upon the forces of holiness and light to make all friendly units fight and defend exceptionally well; attack strengths (swords), ability to hit, and defense (shields) all increase by 2, while resistance (crosses) increases by 3 and the ability to block an attack and to hit increases by 10%.
+
+
+152: INSPIRATIONS
+Effects: City Enchantment
+Target: friendly city
+Casting Cost: 350 mana
+Upkeep: 2 mana/turn
+ Instills a sense of greater purpose into the local citizenry; that city's production rate rises by 50%.
+
+
+153: ASTRAL GATE
+Effects: City Enchantment
+Target: friendly city
+Casting Cost: 350 mana
+Upkeep: 5 mana/turn
+Generates a portal in a target city that allows travel to the other plane. This spell only works as long as the portal does not lead directly to another city on the other world. If the portal leads to stationed enemy troops, movement through the Astral Gate is blocked.
+
+
+154: HOLY ARMS
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 900 mana
+Upkeep: 10 mana/turn
+All normal units' weapons are blessed with a +1 attack bonus and can strike creatures immune to non- magical attacks.
+
+
+155: CONSECRATION
+Effects: City Enchantment
+Target: friendly city
+Casting Cost: 400 mana
+Upkeep: 8 mana/turn
+ Dispels all negative enchantments on a city and protects the city from further chaos and death enchantments (whether city-specific or global).
+
+
+156: LIFE FORCE
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1000 mana
+Upkeep: 10 mana/turn
+All non-combat death spells cast must resist against Life Force as if a Dispel Magic of 500 strength had been cast.
+
+
+157: TRANQUILITY
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1000 mana
+Upkeep: 10 mana/turn
+Tries to prevent all chaos magic spells, requiring them to resist the forces of life as if a strong Disjunction--strength 500--had just been cast.
+
+
+158: CRUSADE
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1100 mana
+Upkeep: 10 mana/turn
+ Inspires all of a wizard's normal units so that their levels all raise by one (recruit become regulars, regulars become veterans, etc.).
+
+
+159: ARCHANGEL
+Effects: Summoning
+Target: n/a
+Casting Cost: 950 mana
+Upkeep: 20 mana/turn
+Summons an archangel. Archangels are immune to illusions, inspire friendly units to fight better than normal and can cast up to 40 mana in life magic spells every battle.
+
+
+160: CHARM OF LIFE
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1250 mana
+Upkeep: 10 mana/turn
+Adds 25% of total hit points (with a minimum of one hit point added) to the hit points of each of a wizard's creatures. Yes, that means every individual figure in every single unit!
+
+
+161: SKELETONS
+Effects: Summoning
+Target: n/a
+Casting Cost: 25 mana
+Upkeep: 1 mana/turn
+Summons a group of 6 skeletons and binds them to the will of the wizard. Skeletons have missile immunity.
+
+
+162: WEAKNESS
+Effects: Combat Enchantment
+Target: enemy unit
+Casting Cost: 5 mana
+Upkeep: none
+Saps the strength from a target unit's creatures, who suffer a penalty of 2 to their melee, thrown and ranged attack strengths, unless the unit resists the spell at a -2 penalty.
+
+
+163: DARK RITUALS
+Effects: City Enchantment
+Target: friendly city
+Casting Cost: 30 mana
+Upkeep: none
+ Generates a frenzy of sacrificing to the gods of death, which doubles the magic power obtained from shrines, temples, parthenons and cathedrals. However, the rituals reduce the city population growth by 25% and increase the level of unrest by one.
+
+
+164: CLOAK OF FEAR
+Effects: Unit Enchantment
+Target: one unit
+Casting Cost: 12/60 mana
+Upkeep: 1 mana/turn
+Surrounds the target unit with a fear- inspiring aura. Any time enemy units attempt to engage in melee combat with the cloaked unit they must first try to overcome their fright (on a per figure basis) before they can attack or counterattack.
+
+
+165: BLACK SLEEP
+Effects: Combat Enchantment
+Target: enemy unit
+Casting Cost: 15 mana
+Upkeep: none
+If the target unit fails to resist at -2, all creatures within are thrust into a deep sleep. The unit is unable to take any actions and any attacks on the unit automatically do maximum damage.
+
+
+166: GHOULS
+Effects: Summoning
+Target: n/a
+Casting Cost: 80 mana
+Upkeep: 1 mana/turn
+Summons a pack of ghouls and binds them to the will of the wizard. Any units slain mostly by the ghouls arise after the battle to serve the wizard in his undead army.
+
+
+167: LIFE DRAIN
+Effects: Instant Combat
+Target: enemy unit
+Casting Cost: 10+ mana
+Upkeep: none
+Siphons life from a target unit and gives it to a spell caster hero or converts the drained life into mana for a spell caster wizard. Additional mana makes the spell harder to resist. Units destroyed mainly by Life Drain become Undead under the caster's control.
+
+
+168: TERROR
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 20 mana
+Upkeep: none
+Casts a pall of fear on all enemy units. During every combat turn, each enemy unit must attempt (+1 bonus to resistance) to overcome the terror that grips it, or cower in fear. When a unit is cowering it cannot attack; however, the unit can still counterattack when it is defending against melee attacks initiated by the enemy.
+
+
+169: DARKNESS
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 25 mana
+Upkeep: none
+Drapes a shroud of darkness over the entire battlefield inspiring creatures of death who gain one point each in attack strength (swords), defense (shields) and resistance (crosses). Creatures of life, on the other hand, are dispirited and lose one point each in attack strength, defense and resistance.
+
+
+170: MANA LEAK
+Effects: Instant Combat
+Target: enemy wizard
+Casting Cost: 20 mana
+Upkeep: none
+All enemy spell casters are drained 5 mana each combat turn. This includes the opponent wizard you are currently battling. Additionally, all units with magical ranged attacks lose one spell shot each turn.
+
+
+171: DRAIN POWER
+Effects: Instant
+Target: enemy wizard
+Casting Cost: 50 mana
+Upkeep: none
+Drains 50-150 mana points from a target wizard's mana reserve.
+
+
+172: POSSESSION
+Effects: Combat Enchantment
+Target: one normal unit
+Casting Cost: 30 mana
+Upkeep: none
+Attempts to change the allegiance of a normal enemy unit to that of the casting wizard. If the target unit becomes possessed, it fights for the casting wizard until combat ends. Note that fantastic creatures and heroes may not be possessed.
+
+
+173: LYCANTHROPY
+Effects: Permanent Unit Enchantment
+Target: one normal unit
+Casting Cost: 180 mana
+Upkeep: 5 mana/turn
+'Curses' a normal unit with the effects of lycanthropy, changing them into werewolves with the ability to regenerate and weapon immunity.
+
+
+174: BLACK PRAYER
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 35 mana
+Upkeep: none
+The attack strength and defense of all enemy units is reduced by 1 and their resistance is reduced by 2.
+
+
+175: BLACK CHANNELS
+Effects: Unit Enchantment
+Target: normal unit
+Casting Cost: 100 mana
+Upkeep: 1 mana/turn
+Transforms a target creature into a vile undead being with +2 melee attack strength, +1 to missile attack strength, breath attacks, hit points, resistance and defense. Undead can not be healed or animated, but gain all the immunities of Death creatures.
+
+
+176: NIGHT STALKER
+Effects: Creature Summoning
+Target: n/a
+Casting Cost: 250 mana
+Upkeep: 1 mana/turn
+Summons a night stalker and binds it to the will of the wizard. Night Stalkers are invisible, non- corporeal, and have the dreaded death gaze.
+
+
+177: SUBVERSION
+Effects: Instant
+Target: enemy wizard
+Casting Cost: 100 mana
+Upkeep: none
+Creates a feeling of contempt for the target wizard in all other wizards, reducing relations by 25 diplomatic points.
+
+
+178: WALL OF DARKNESS
+Effects: Combat/City Enchantment
+Target: one city
+Casting Cost: 40 mana
+Upkeep: 5 mana / turn
+No enemy unit outside a Wall of Darkness may attack a friendly unit inside with a ranged attack, unless the enemy unit has illusions immunity.
+
+
+179: BERSERK
+Effects: Combat Enchantment
+Target: one unit
+Casting Cost: 30 mana
+Upkeep: none
+The target unit's melee attack strength is doubled and its defense is reduced to 0.
+
+
+180: SHADOW DEMONS
+Effects: Creature Summoning
+Target: n/a
+Casting Cost: 325 mana
+Upkeep: 7 mana/turn
+Summons a group of 4 shadow demons and binds them to the will of the wizard. Shadow demons can plane shift and regenerate.
+
+
+181: WRAITH FORM
+Effects: Combat/Unit Enchantment
+Target: one unit
+Casting Cost: 30 / 150 mana
+Upkeep: 3 man/turn
+Target unit becomes non-corporeal. Non- corporeal units gain weapon immunity and the ability to move across any terrain at a cost of 1/2 movement point.
+
+
+182: WRACK
+Effects: Combat Enchantment
+Target: n/a
+Casting Cost: 40 mana
+Upkeep: none
+Wracks all enemy non-death creatures with the powers of darkness. Each figure in every enemy unit must resist with a +1 bonus or take 1 point of damage.
+
+
+183: EVIL PRESENCE
+Effects: City Enchantment
+Target: enemy city
+Casting Cost: 100 mana
+Upkeep: 4 mana/turn
+A demonic presence enters the target city, destroying any magic power generated by shrines, temples, parthenons, and cathedrals. The spell has no effect if the city's owner can use death magic.
+
+
+184: WRAITHS
+Effects: Creature Summoning
+Target: n/a
+Casting Cost: 500 mana
+Upkeep: 5 mana/turn
+Summons a group of 4 wraiths and binds them to the will of the wizard. Wraiths are non-corporeal and have a -3 resistance life-stealing attack.
+
+
+185: CLOUD OF SHADOW
+Effects: City Enchantment
+Target: friendly city
+Casting Cost: 150 mana
+Upkeep: 3 mana/turn
+Summons a great cloud of shadow which surrounds the city as long as the enchantment is in effect. All combats taking place at the city are treated as though a Darkness spell has been cast.
+
+
+186: WARP NODE
+Effects: Overland Enchantment
+Target: owned magic node
+Casting Cost: 75 mana
+Upkeep: none
+Corrupts the targeted magic node, cursing the controller and drawing out 5 mana from the wizard instead of generating more. Once warped, a node can only be returned to normal by a Disenchant Area or Disenchant True spell. Until then the node will continue to draw out magical power.
+
+
+187: BLACK WIND
+Effects: Instant
+Target: map square
+Casting Cost: 200 mana
+Upkeep: none
+All figures in each unit within the targeted land must resist at -1 or rot away from a vile degenerative disease that slays almost immediately.
+
+
+188: ZOMBIE MASTERY
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 800 mana
+Upkeep: 40 mana/turn
+All normal creatures falling in battle become zombies at the end of the battle under the control of the casting wizard if that wizard is victorious.
+
+
+189: FAMINE
+Effects: City Enchantment
+Target: enemy city
+Casting Cost: 200 mana
+Upkeep: 5 mana/turn
+Halves the food production of the afflicted city as long as the famine is in effect. If the city has an insufficient food supply, the citizens will begin to starve.
+
+
+190: CURSED LANDS
+Effects: City Enchantment
+Target: enemy city
+Casting Cost: 150 mana
+Upkeep: 2 mana/turn
+Halves the production of a city.
+
+
+191: CRUEL UNMINDING
+Effects: Instant
+Target: enemy wizard
+Casting Cost: 250 mana
+Upkeep: none
+Target wizard loses 1-10% of spell casting skill permanently.
+
+
+192: WORD OF DEATH
+Effects: Instant Combat
+Target: one unit
+Casting Cost: 40 mana
+Upkeep: none
+Each figure in one unit must save at -5 or be slain instantly.
+
+
+193: DEATH KNIGHTS
+Effects: Creature Summoning
+Target: n/a
+Casting Cost: 600 mana
+Upkeep: 8 mana / turn
+Summons a group of 4 death knights and binds them to the will of the wizard. Death knights attack with +2 to-hit, armor piercing and first strike. They also have a -4 resistance life-stealing attack.
+
+
+194: DEATH SPELL
+Effects: Instant Combat
+Target: n/a
+Casting Cost: 50 mana
+Upkeep: none
+All figures in each enemy unit must resist at - 2 or be struck dead where they stand.
+
+
+195: ANIMATE DEAD
+Effects: Permanent Creature Enchantment
+Target: one dead unit
+Casting Cost: 50 mana
+Upkeep: Special
+Raises one slain enemy (not protected by magic immunity) or ally unit from the dead and places it under your control. The creature becomes undead, and is treated as a creature of death for all purposes. Animated fantastic units cost 50% more in maintenance.
+
+
+196: PESTILENCE
+Effects: City Enchantment
+Target: enemy city
+Casting Cost: 350 mana
+Upkeep: 5 mana/turn
+Spreads a deadly plague throughout the affected city killing one population each turn if the current population exceeds a 1-10 roll.
+
+
+197: ETERNAL NIGHT
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1000 mana
+Upkeep: 15 mana/turn
+Covers the world in a blanket of darkness. Except for those cities protected by Heavenly Light, all combats are assumed to be covered by the spell of Darkness.
+
+
+198: EVIL OMENS
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 1100 mana
+Upkeep: 10 mana/turn
+All nature and life spells cost 50% more than normal to cast.
+
+
+199: DEATH WISH
+Effects: Instant
+Target: n/a
+Casting Cost: 500 mana
+Upkeep: none
+All enemy normal units on both planes must resist or be slain.
+
+
+200: DEMON LORD
+Effects: Creature Summoning
+Target: n/a
+Casting Cost: 1000 mana
+Upkeep: 15 mana/turn
+Summons a demon lord and binds it to the will of the wizard. Demon lords can summon up to 3 lesser demons per combat, have weapon immunity, and have a -1 resistance life-stealing attack both in melee and at range.
+
+
+201: MAGIC SPIRIT
+Effects: Creature Summoning
+Target: n/a
+Casting Cost: 30 mana
+Upkeep: 1 mana/turn
+Summons a magic spirit which can meld with magical nodes and direct the node's power to the controlling wizard.
+
+
+202: DISPEL MAGIC
+Effects: Instant Combat
+Target: single unit
+Casting Cost: 10+ mana
+Upkeep: none
+Attempts to destroy all enemy enchantments on a unit. The chance for success is equal to the mana spent on this spell divided by the sum of the costs for this spell and the target enchantment. For example if this spell is cast with 30 mana on a unit with an Eldritch Weapon enchantment (cost 15) the chance to dispel it would be 30/(30+15) or 67%.
+
+
+203: SUMMONING CIRCLE
+Effects: Instant
+Target: friendly city
+Casting Cost: 50 mana
+Upkeep: none
+Moves your summoning circle to another city. All creatures summoned by spells will appear in this new city.
+
+
+204: DISENCHANT AREA
+Effects: Instant Combat/Global
+Target: n/a
+Casting Cost: 50+ mana
+Upkeep: none
+Attempts to dispel all enemy spells in the targeted map square. The chance of successfully dispelling an enchantment is calculated as in Dispel Magic.
+
+
+205: RECALL HERO
+Effects: Instant Combat
+Target: friendly hero
+Casting Cost: 20 mana
+Upkeep: none
+Instantly summons the target hero to your summoning circle, removing her from the current combat.
+
+
+206: DETECT MAGIC
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 200 mana
+Upkeep: 3 mana / turn
+The current spell being cast by all wizards that you are in contact with will be displayed on the Magic Screen at the top of each wizard's gem.
+
+
+207: ENCHANT ITEM
+Effects:Permanent Item Enchantment
+Target: n/a
+Casting Cost: special
+Upkeep: none
+Creates a lesser magical item for use by your heroes. Only powers that cost 200 mana or less may be used. For details, see magic item creation in your manual.
+
+
+208: SUMMON HERO
+Effects:Creature Summoning
+Target: n/a
+Casting Cost: 300 mana
+Upkeep: none
+Summons a lesser hero to lead your army. The hero will not require any initial gold to join, but still requires maintenance. This spell will fail if you already control six heroes.
+
+
+209: AWARENESS
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 500 mana
+Upkeep: 3 mana / turn
+Reveals the location of all cities on both planes.
+
+
+210: DISJUNCTION
+Effects: Instant
+Target: one Global Enchantment
+Casting Cost: 200+ mana
+Upkeep: none
+Attempts to dispel one enemy global enchantment. The chance of successfully dispelling this enchantment is calculated as in Dispel Magic.
+
+
+211: CREATE ARTIFACT
+Effects: Permanent Item Enchantment
+Target: n/a
+Casting Cost: special
+Upkeep: none
+Creates a magical artifact for use by your heroes. Any powers may be used. For details, see magic item creation in your manual.
+
+
+212: SUMMON CHAMPION
+Effects: Creature Summoning
+Target: n/a
+Casting Cost: 750 mana
+Upkeep: none
+Summons a greater hero to lead your army. The hero will not require any initial gold to join,but still requires maintenance. This spell will fail if you already control six heroes.
+
+
+213: SPELL OF MASTERY
+Effects: Global Enchantment
+Target: n/a
+Casting Cost: 5000
+Caster obtains total control of all magic in both planes. Enemy wizards lose their ability to cast any spells and all summoned creatures come under your control. Successfully casting the Spell of Mastery ends the game in a glorious victory for the caster.
+
+
+214: PAGE BACK
+Click here to turn to the previous page of your spell book
+
+
+215: PAGE FORWARD
+Click here to turn to the next page of your spell book
+
+
+216: GAME
+The game button brings up the game options screen, which can be used to load and save games, and set special game options.
+
+
+217: SPELLS
+The spells button opens your spell book, which lists only those spells which can be cast overland.
+
+
+218: ARMIES
+The army list button brings up a complete list of all armies under your control. Units may also be dismissed from this screen.
+
+
+219: CITIES
+The city list button calls up the list of all cities under your control. Not only can you see what is being built and the resources being produced by your cities, you can also change the items that the cities are currently building.
+
+
+220: MAGIC
+The magic button brings up the magic summary screen, which contains a list of all enemy spell casters, their relations with you, the breakdown in the way magical power is being divided up, a list of overland spells, the alchemy screen, and your spell casting skill.
+
+
+221: INFORMATION
+The info button provides you with information from various advisors: surveyor, cartographer, apprentice, historian, astrologer, chancellor, tax collector, and mirror.
+
+
+222: PLANE
+The plane button toggles between the Prime and Myrror planes. If the current unit is able to switch planes, the unit will move from the current plane to the next.
+
+
+223: DONE
+The done button ends the turn for all active units. Right-click to re-activate the unit. Next turn the unit will be cycled to as normal.
+
+
+224: PATROL
+The patrol button sets all active units in the stack to patrol status. Units set to patrol will not take any further action for the rest of the game. Units set to patrol may be taken off patrol status by clicking on them.
+
+
+225: WAIT
+The wait button sets all active units in the stack to wait status. Units set to wait will take no action now, but will need to be given an action before the end of the turn.
+
+
+226: BUILD
+The build button allows you to build either an outpost or a road. If there are settlers in the stack, an outpost will be built. If there are engineers in the stack, a road will be built.
+
+
+227: PURIFY
+The purify button allows you to clean up corrupted areas of the world. It takes three turns to completely purify each area.
+
+
+228: MELD
+The meld button allows you to take control of a magic node.
+
+
+229: NEXT TURN
+The next turn button allows you to begin the next turn of the game.
+
+
+230: REDUCED MAP
+The reduced map displays the entire plane in a reduced form. Clicking will change your current view. The white box corresponds to your normal viewing window.
+
+
+231: TOTAL GOLD
+This is the total amount of gold in your treasury.
+
+
+232: TOTAL MANA
+This is the total number of mana crystals in your reserve that you can draw from to cast spells.
+
+
+233: GOLD INCOME
+The amount of gold you have as profitable income each turn.
+
+
+234: FOOD RESERVE
+The amount of food in excess of that needed to support your troops. If negative, units will starve to death.
+
+
+235: MANA INCOME
+The number of mana crystals that are being saved/spent each turn.
+
+
+236: MOVES
+The total number of movement points the units in a stack can move.
+
+236: WALKING
+
+
+236: FORESTER
+
+
+236: MOUNTAINEER
+
+
+236: FLYING
+
+
+236: PATHFINDING
+
+
+236: SWIMMING
+
+
+236: SAILING
+
+
+236: WIND WALKING
+
+
+236: PLANAR TRAVEL
+
+
+
+237: REDUCED MAP
+This shows you where your unit is located on the plane. The blinking white dot represents the actual location of the unit.
+
+
+238: UNIT NAME
+The name or type of the currently highlighted unit.
+
+
+239: UNIT ENCHANTMENTS
+A list of all of the enchantments that the currently highlighted unit has.
+
+
+240: ITEMS
+The items button allows you to allocate magic items to heroes.
+
+
+241: OK
+The OK button allows you to exit the army list screen.
+
+
+242: UPKEEP
+This is the total that you are spending on food, gold, and mana each turn to support your armies.
+
+
+243: EMPTY HERO SLOT
+When a hero is hired, his or her portrait will appear here.
+
+
+244: UP ARROW
+Scrolls the list up one row at a time.
+
+
+245: DOWN ARROW
+Scrolls the list down one row at a time.
+
+
+246: ANVIL
+Allows you to destroy unwanted magical items, for which you add one half the base creation cost in mana to your reserve.
+
+
+247: ALCHEMY
+Allows you to convert gold to mana or mana to gold.
+
+
+248: OK
+The OK button allows you to exit the item screen.
+
+
+249: REDUCED MAP
+This shows you where your city is located on the plane. The blinking white dot represents the actual location of the city.
+
+
+250: CITY NAME
+The name of the currently highlighted city.
+
+
+251: CITY ENCHANTMENTS
+A list of all of the enchantments currently cast on the highlighted city.
+
+
+252: OK
+The OK button allows you to exit the city list screen.
+
+
+262: GRAY GEM
+The gray gem indicates that either you have not come into contact with the wizard yet or, if there are fewer than 5 players in the game, the extra gems appear as gray.
+
+
+263: SHATTERED GEM
+The shattered gem indicates that the wizard has been eliminated from the game or has been banished.
+
+
+265: CASTING SKILL RATIO
+Your spell casting skill dictates how many mana you can channel into spells each turn.
+
+265: POWER DISTRIBUTION
+The total power you are receiving is divided up into three ratios according to the highlight height on each staff. Below each group will appear the actual number of points being accumulated for each category, adjusted for all special abilities.
+
+
+266: MANA POINTS RATIO
+The mana reserve represents the pool of magical power that you can draw from to cast spells. All spell maintenance will be drawn from the mana reserve. If you are placing less magical power into the mana reserve than what you are spending, the reserve will drop to zero, enchantments will fade away and magical creatures will disappear.
+
+266: POWER DISTRIBUTION
+The total power you are receiving is divided up into three ratios according to the highlight height on each staff. Below each group will appear the actual number of points being accumulated for each category, adjusted for all special abilities.
+
+
+267: RESEARCH RATIO
+Each magic point allocated toward spell research adds one research point toward getting the spell that you are currently researching. Note that research also includes all points being obtained from cities with libraries, sages guilds, etc.
+
+267: POWER DISTRIBUTION
+The total power you are receiving is divided up into three ratios according to the highlight height on each staff. Below each group will appear the actual number of points being accumulated for each category, adjusted for all special abilities.
+
+
+268: ALCHEMY
+Allows you to convert gold to mana or mana into gold.
+
+
+269: OK
+The OK button allows you to exit the magic screen.
+
+
+270: ENCHANTMENTS
+A list of all current overland enchantments will appear in this window. The color of the spell indicates the color of the caster.
+
+
+271: RELATIONS
+This shows your diplomatic relations with the wizard whose portrait appears in the gem. Relations are as follows: hate, troubled, tense, restless, unease, neutral, relaxed, calm, peaceful, friendly, and harmony.
+
+
+272: WIZARD STATISTICS delete
+This displays your wizard statistics.
+
+
+273: SPELL CASTING SKILL
+Your spell casting skill dictates how much mana you can channel into spells each turn. The value on the left is your casting skill plus any channeling ability offered by heroes. The value in parenthesis is your base casting skill.
+
+273: MAGIC RESERVE
+The magic reserve represents the pool of magical power that you can draw from to cast spells.
+
+273: POWER BASE
+Your power base is the total power that you are able to distribute between skill, mana, and research before any bonuses are applied.
+
+
+276: CASTING
+The spell that you are currently casting.
+
+276: RESEARCHING
+The spell that you are currently researching.
+
+276: SUMMON TO
+This is the name of the city where your summoning circle is located. All summoned creatures will appear in the city with your summoning circle.
+
+
+279: BARBARIAN TOWNSFOLK
+Barbarians grow very fast (+20 people/turn) and may not build Animist's Guilds, Cathedrals, or Universities.
+
+279: Barbarian Farmers
+2 food and 1/2 production/farmer
+
+279: Barbarian Workers
+2 production/worker
+
+279: Barbarian Rebels
+Produce nothing and cannot be taxed
+
+
+280: BEASTMEN TOWNSFOLK
+Beastmen cities receive 1/2 power/population and may not build Fantastic Stables or Shipyards.
+
+280: Beastmen Farmers
+2 food and 1/2 production/farmer
+
+280: Beastmen Workers
+2 production/worker
+
+280: Beastmen Rebels
+Produce nothing and cannot be taxed
+
+
+281: DARK ELF TOWNSFOLK
+Dark elf grow very slowly (-20 people/turn) and may not build Cathedrals or Maritime Guilds.
+
+281: Dark Elf Farmers
+2 food and 1/2 production/farmer
+
+281: Dark Elf Workers
+2 production/worker
+
+281: Dark Elf Rebels
+Produce nothing and cannot be taxed
+
+
+282: DRACONIAN TOWNSFOLK
+Draconian cities receive 1/2 power/population, grow slowly (-10 people/turn), and cannot build Fantastic Stables, Maritime Guild's or Mechanician's Guilds.
+
+282: Draconian Farmers
+2 food and 1/2 production/farmer
+
+282: Draconian Workers
+2 production/worker
+
+282: Draconian Rebels
+Produce nothing and cannot be taxed
+
+
+283: DWARF TOWNSFOLK
+Dwarves double special mine bonuses and taxed gold, grow very slowly (-20 people/turn), and cannot build Parthenons, Shipyards, Stables, or Universities.
+
+283: Dwarf Farmers
+2 food and 1/2 production/farmer
+
+283: Dwarf Workers
+3 production/worker
+
+283: Dwarf Rebels
+Produce nothing and cannot be taxed
+
+
+284: GNOLL TOWNSFOLK
+Gnoll cities grow slowly (-10 people/turn), and cannot build Animist's Guilds, Sage's Guilds, Armorer's Guilds, Maritime Guilds or Parthenons.
+
+284: Gnoll Farmers
+2 food and 1/2 production/farmer
+
+284: Gnoll Workers
+2 production/worker
+
+284: Gnoll Rebels
+Produce nothing and cannot be taxed
+
+
+285: HALFLING TOWNSFOLK
+Halflings cannot build Armorer's Guilds, Stables, Shipyards or Universities.
+
+285: Halfling Farmers
+3 food and 1/2 production/farmer
+
+285: Halfling Workers
+2 production/worker
+
+285: Halfling Rebels
+Produce nothing and cannot be taxed
+
+
+286: HIGH ELF TOWNSFOLK
+High elf cities receive 1/2 power/population, grow very slowly (-20 people/turn), and cannot build Parthenons or Maritime Guilds.
+
+286: High Elf Farmers
+2 food and 1/2 production/farmer
+
+286: High Elf Workers
+2 production/worker
+
+286: High Elf Rebels
+Produce nothing and cannot be taxed
+
+
+287: HIGH MEN TOWNSFOLK
+High men may not build Fantastic Stables.
+
+287: High Men Farmers
+2 food and 1/2 production/farmer
+
+287: High Men Workers
+2 production/worker
+
+287: High Men Rebels
+Produce nothing and cannot be taxed
+
+
+288: KLACKON TOWNSFOLK
+Klackon cities grow slowly (-10 people/turn) and cannot build Sage's Guilds, Shipyards, or Temples. If your capitol race is klackon, unrest in klackon cities is reduced by -2.
+
+288: Klackon Farmers
+2 food and 1/2 production/farmer
+
+288: Klackon Workers
+3 production/worker
+
+288: Klackon Rebels
+Produce nothing and cannot be taxed
+
+
+289: LIZARDMEN TOWNSFOLK
+Lizardman grow quickly (+10 people/turn) and cannot build Animist's Guilds, War Colleges, Builder's Halls, Sage's Guild, Parthenons, or Ship Wright's Guild.
+
+289: Lizardmen Farmers
+2 food and 1/2 production/farmer
+
+289: Lizardmen Workers
+2 production/worker
+
+289: Lizardmen Rebels
+Produce nothing and cannot be taxed
+
+
+290: NOMAD TOWNSFOLK
+Nomad cities receive a +50% trade bonus that is treated as a road gold bonus, grow slowly (-10 people/turn), and cannot build Maritime or Wizard's Guilds.
+
+290: Nomad Farmers
+2 food and 1/2 production/farmer
+
+290: Nomad Workers
+2 production/worker
+
+290: Nomad Rebels
+Produce nothing and cannot be taxed
+
+
+291: ORC TOWNSFOLK
+
+
+291: Orc Farmers
+2 food and 1/2 production/farmer
+
+291: Orc Workers
+2 production/worker
+
+291: Orc Rebels
+Produce nothing and cannot be taxed
+
+
+292: TROLL TOWNSFOLK
+Troll cities grow very slowly (-20 people/turn) and may not build Fantastic Stables, Miner's Guilds, Sage's Guilds, or Shipyards.
+
+292: Troll Farmers
+2 food and 1/2 production/farmer
+
+292: Troll Workers
+2 production/worker
+
+292: Troll Rebels
+Produce nothing and cannot be taxed
+
+
+293: CITY NAME
+This is the name and size of the city.
+
+
+294: CITY RESOURCES delete
+Cities have the potential of producing 5 different resources: food, production, gold, magical power, and spell research. People produce gold and production. The other resources are either obtained from working the surrounding lands, special buildings, and mines.
+
+
+295: FOOD
+Each city is surrounded by farms and/or fishing colonies that provide food for the city's populace. The amount each farmer produces depends on the race inhabiting the city. Surplus food produced above the minimum needed to feed the city is used to feed your military units. The minimum amount of food required to support the city is shown in the group on the left. Surplus food is shown in the group to the right. If the city happens to be starving, a small gray food icon will represent the amount of food the city is short. Each large icon represents 10 food, while the smaller icon represents 1 food.
+
+
+296: PRODUCTION
+Production is used to construct new buildings and create new military units. Workers generate production according to their race. Each large icon represents 10 production, while the smaller icon represents 1 production.
+
+
+297: GOLD
+The amount of gold shown on the left is how much gold is required to operate the city. Net gold income is shown on the right (income - maintenance). Rivers, oceans, marketplaces, banks and merchant guilds increase your gold income by increasing commerce. Each large icon represents 10 gold, while the smaller icon represents 1 gold.
+
+297: GOLD MAINTENANCE
+This is the amount of gold the city is losing each turn.
+
+
+299: MAGICAL POWER
+Some races inherently generate magical power. Buildings such as shrines, temples, parthenons and libraries also produce magical power. This power is added to your power income. Each large icon represents 10 power, while the smaller icon represents 1 power.
+
+
+300: SPELL RESEARCH
+Spell research is obtained from special buildings and from power allocated to research. The research is placed directly into the wizard's spell research total each turn. Each large icon represents 10 research, while the smaller icon represents 1 research.
+
+
+301: ENCHANTMENTS
+This window displays all enchantments that you or other wizards have cast on a city. Each enchantment is shown in the color of the spell caster.
+
+
+302: CITY VIEW
+This shows the current city and the surrounding area. The city does not control/work the darkened corners. If a nearby city and this city control the same square, each city receives only half of the square's value.
+
+
+303: CITY SCAPE
+This shows the layout of the city, with all of the buildings. Passing the mouse across a building will display its building type. A click on a building will allow you to sell the building.
+
+
+304: PRODUCING
+This area shows the item that is currently being built, and how many turns until it is completed.
+
+
+305: BUY
+The buy button allows you to buy the item that is currently being produced, providing you have enough gold. This completes the production of that item in one turn.
+
+
+306: CHANGE
+The change button allows you to change what the city is currently producing.
+
+
+307: OK
+The OK button exits the city screen.
+
+
+350: PORTRAIT
+A portrait of the wizard is displayed on a gem corresponding to his or her banner-color.
+
+
+351: NAME
+This is the name of the wizard.
+
+
+352: STATISTICS
+This area shows your relations with the wizard, any treaties you may have with that wizard, the personality of the wizard, and the overall objective of the wizard.
+
+
+353: GOLD
+This displays the total amount of gold in the wizard's treasury.
+
+
+354: MANA
+This displays the total amount of mana crystals in the wizard's reserve that he or she can draw from to cast spells.
+
+
+355: SPELL RANKS
+The spell ranks in the various realms are represented as books, with one book indicating one spell pick.
+
+
+356: SPECIAL ABILITIES
+Special abilities bestow extraordinary powers on wizards.
+
+
+357: HEROES
+A complete list of heroes belonging to the wizard is shown here.
+
+
+358: PLANE
+This is the name of the plane of the current map.
+
+
+359: MAP
+The overland map shows a complete reduced view of all of the areas you have already explored. Cities are shown as squares, and units are shown as tiny dots in the appropriate color of their wizard owner. You can click on a particular point on the map and you are automatically centered on that location in the main view.
+
+
+360: CLOSE
+Click here to exit the map.
+
+
+361: CHANGE PLANES
+You can switch back and forth between viewing the two planes by clicking on the fold.
+
+
+362: MAP KEY
+The map key shows a complete list of all wizards (and their colors) with whom you have thus far come into contact.
+
+
+363: POWER GRAPH
+The power graph shows a list of all wizards in the game and their overall power shown over time.
+
+
+364: STATUS
+The status screen gives a quick comparison of wizard strengths and weaknesses. The longer the bar, the stronger the wizard is in that area.
+
+364: MAGIC POWER
+Magic power is a comparison of the raw power a wizard is obtaining each turn.
+
+364: SPELL RESEARCH
+Spell research is a comparison of the size of a wizard's spell book measured in total base points of spells known.
+
+364: ARMY STRENGTH
+Army Strength is a measure of overall army strength.
+
+
+368: ALCHEMY GOLD
+If you are transmuting gold to power, this is the amount of gold you wish to convert. If you are transmuting power to gold, this is the amount of gold that you will receive for the given amount of power.
+
+
+369: ALCHEMY RATIO
+By sliding this back and forth, you affect the amount gold and power involved.
+
+
+370: ALCHEMY POWER
+If you are transmuting power to gold, this is the amount of power you wish to convert. If you are transmuting gold to power, this is the amount of power that you will receive for the given amount of gold.
+
+
+371: CANCEL
+The cancel button cancels the alchemy process.
+
+
+372: ALCHEMY TOGGLE
+The arrow button toggles between transmuting gold to power and power to gold.
+
+
+373: OK
+The OK button accepts the amount of transmutation.
+
+
+374: BUILDING OPTIONS
+Choose one of these buildings to have your city construct.
+
+
+375: UNIT OPTIONS
+Choose one of these units to have your city construct.
+
+
+376: CANCEL
+The cancel button exits the building screen, taking no action.
+
+
+377: OK
+The OK button exits the building screen, beginning construction on the selected building or unit.
+
+
+378: BUILDING DESCRIPTION
+This describes the benefits of constructing the selected building.
+
+
+379: ALLOWS
+Certain building types allow the construction of other buildings or units.
+
+
+380: MAINTENANCE
+This is the amount of gold that is required each turn for this city to maintain the building.
+
+
+381: COST
+This is the production cost of the building/unit. If you are building a unit, the cost is reduced due to any coal and iron mines that the city controls. The cost in parenthesis is the unit's base cost.
+
+
+382: UNIT MOVES
+The total number of movement points the unit can move.
+
+382: WALKING
+
+
+382: FORESTER
+
+
+382: MOUNTAINEER
+
+
+382: FLYING
+
+
+382: PATHFINDING
+
+
+382: SWIMMING
+
+
+382: SAILING
+
+
+382: WIND WALKING
+
+
+382: PLANAR TRAVEL
+
+
+
+383: MELEE
+Each icon represents a hand to hand strength of one in one of the following areas. A gold icon represents a bonus due to spells or special abilities. A darkened icon represents a minus.
+
+383: Sword
+
+
+383: Magic Weapon
+
+
+383: Mithril Weapon
+
+
+383: Adamantium Weapon
+
+
+
+387: RANGE
+Each icon represents a ranged attack strength of one in one of the following areas. A gold icon represents a bonus due to spells or special abilities. A darkened icon represents a minus.
+
+387: Bow
+
+
+387: Rock
+
+
+387: Magical Attack
+
+
+
+388: THROWN delete
+
+
+
+392: MAGICAL BREATH delete
+
+
+
+393: ARMOR
+Each icon represents an armor value of one. A gold icon represents a bonus due to spells or special abilities. A darkened icon represents a minus.
+
+
+394: RESISTANCE
+Each icon represents a resistance value of one. A gold icon represents a bonus due to spells or special abilities. A darkened icon represents a minus.
+
+
+395: HITS
+Each icon represents one hit point. A gold icon represents a bonus due to spells or special abilities. A darkened icon represents damage already taken.
+
+
+396: LARGE SHIELD
+Large shields add +2 to the unit's defense against all ranged attacks.
+
+
+397: PLANE SHIFT
+Plane shift allows the unit to shift back and forth between the planes at will.
+
+
+398: WALL CRUSHER
+Wall crusher allows the unit to destroy a section of a stone wall 50% of the time.
+
+
+399: HEALER
+Healers will heal 25% of the damage that all units stacked with the healer have sustained after a combat.
+
+
+400: CREATE OUTPOST
+Create outpost is reserved for settlers and allows them to build an outpost. The square must be at least four squares from any city. Forming the outpost eliminates the settlers.
+
+
+401: INVISIBILITY
+Invisibility makes the unit susceptible only to ranged attacks when adjacent to an enemy, and otherwise reduces the attacker's chance to hit by 1.
+
+
+402: CREATE UNDEAD
+Create undead allows the unit to create new undead of the same type from any units that it has eliminated in combat. This cannot be used on heroes.
+
+
+403: LONG RANGE
+Long range limits range penalties for missile attacks to a maximum of -1.
+
+
+404: LAND CORRUPTION
+Land corruption allows the unit to corrupt any overland square that it remains on for an entire turn.
+
+
+405: MELD WITH NODE
+Meld with nodes allows spirits to merge with a magical node and begin channeling the power of the node to you. The process of melding destroys the spirit.
+
+
+406: NON CORPOREAL
+Non-corporeal allows the unit to pass through any land square at a cost of 1/2 movement point, and allows it to move through walls unimpeded.
+
+
+407: WIND WALKING
+Wind walking allows the unit and all stacked with it to fly.
+
+
+408: REGENERATION
+Regeneration allows the unit to heal one hit per combat phase, and be completely healed at the end of a combat. If the unit was destroyed but its side was victorious, the unit will come back to life, completely healed.
+
+
+409: PURIFY
+Purify allows a unit to clean corruption from a square.
+
+
+410: NEGATE FIRST STRIKE
+Negate first strike allows the unit to nullify the first strike ability of attackers. This special ability has no effect on thrown, breath, or gaze attacks.
+
+
+411: LUCKY
+Luck adds +1 to all of the unit's rolls, including attack, defense, and resistance.
+
+
+412: POISON IMMUNITY
+Poison immunity makes the unit immune to all forms of poison attacks.
+
+
+413: FIRE IMMUNITY
+Fire immunity makes units immune to fire attacks.
+
+
+414: STONING IMMUNITY
+Stoning immunity makes the unit immune to all forms of stoning.
+
+
+415: WEAPON IMMUNITY
+Weapon immunity makes the unit nearly impervious to attacks from normal units that do not have mithril, adamantium, blessed, or flaming weapons, and increases the unit's defense to 10 against magical attacks. Weapon immunity does not protect against fantastic creatures and spells.
+
+
+416: MISSILES IMMUNITY
+Missiles immunity makes the unit immune to all forms of missile attacks.
+
+
+417: ILLUSIONS IMMUNITY
+Illusions immunity negates the illusionary bonus of illusionary attacks and makes the unit impervious to illusion-resistance spells. In addition, the unit can see invisible units.
+
+
+418: COLD IMMUNITY
+Cold immunity makes the unit impervious to cold attacks.
+
+
+419: MAGIC IMMUNITY
+Magic immunity makes a unit immune to all forms of magic including ranged magical attacks and all spell effects, regardless of realm.
+
+
+420: DEATH IMMUNITY
+Death immunity negates all spells which cause death and fear.
+
+
+421: HEALING SPELL
+Heals a target unit by 5 hit points (or less, if the unit has sustained fewer than 5 hit points of damage).
+
+
+422: FIRE BALL SPELL
+Throws a giant exploding ball of flames at all the figures in a target unit. The intensity of the flames' heat and the amount of damage inflicted by this mini-inferno depends on the amount of magic power pumped into the spell. A fireball has a base strength of 5; the strength increases by one for every 3 additional units of mana added.
+
+
+423: DOOMBOLT SPELL
+Calls upon the forces of chaos to viciously tear into the target unit, causing ten points of damage regardless of defenses.
+
+
+424: IMMOLATION
+Surrounds a target unit with a fiery aura that inflicts a strength 4 magic attack on all enemies engaged in melee combat with the target unit. This magic attack is in addition to the unit's normal attacks.
+
+
+425: CAUSE FEAR SPELL
+Each individual enemy unit engaging the fearful in melee must resist magic or stand frozen in terror, unable to attack, even if swung upon.
+
+
+426: WEB SPELL
+Casts a sticky web over the creatures in a target unit. Creatures stuck in this web may not move until they have destroyed the web. The web has a total of 12 'hit points' (hearts, but no defenses) and can only be destroyed by the trapped unit's melee and magic ranged attacks, both of which do their full force in damage against webs. The sticky remnants of the web prevent flying units that were trapped from flying for the remainder of the battle.
+
+
+427: RESISTANCE TO ALL
+Resistance to all increases the resistance of all friendly units in the combat by the listed bonus level. The bonus is not cumulative with other creatures with the same ability.
+
+
+428: HOLY BONUS
+Holy bonus increases the attack strength, defense, and resistance of all friendly units in the combat by the bonus level of the holy bonus. The bonus is not cumulative.
+
+
+429: ARMOR PIERCING
+Armor piercing halves the effectiveness of the defender's defense rating.
+
+
+430: FIRST STRIKE
+First strike allows the unit to deal its damage before hand-to- hand attacks, but after breath, thrown, and gaze attacks.
+
+
+431: POISON
+Poison attacks force the attacked unit to resist for each level of the poison or suffer one hit for each failure.
+
+
+432: LIFE STEAL
+Life stealing attacks have an additional resistance check, usually with a penalty. For each point the resistance is failed, the defending unit loses one hit, while the attacker gains one. Units killed mainly by life steal return as undead under the control of their destroyer.
+
+
+433: CHAOS
+Weapon ability that does half its attack strength in damage automatically -- no to-hit roll, no resistance, no defense.
+
+
+434: DESTRUCTION
+Weapon ability that causes the target to make a resistance roll or be disintegrated.
+
+
+435: ILLUSION
+Illusionary attack allows the attacking unit to ignore the defender's armor entirely.
+
+
+436: STONING TOUCH
+Stoning touch makes one enemy unit resist or be turned to stone in addition to any other hand-to-hand attack.
+
+
+437: CAUSE DEATH
+Special ability that causes the target to save at -3 or die.
+
+
+438: POWER DRAIN
+Special ability that causes the enemy spell casting unit to resist or lose 2-20 spell points.
+
+
+439: DISPEL EVIL
+Calls upon the forces of light to envelop a target chaos or death creature (unit) with holy fires. A unit unable to withstand (at a penalty of 4 to resistance) the bright, holy flames is instantly destroyed. Units that are undead (black channeled or animated) are particularly susceptible to this spell, having to resist its effects at a penalty of 10.
+
+
+440: CHAOS CHANNEL
+Adds demon-skin armor (+2 defense).
+
+
+441: CHAOS CHANNEL
+Adds demon wings (2 speed flight).
+
+
+442: CHAOS CHANNEL
+Adds a 2 strength fiery breath.
+
+
+443: THROWN
+Thrown weapons allows an attacking unit to hurl its thrown weapons before engaging in hand-to-hand.
+
+
+444: FIRE BREATH
+Fire breath allows an attacking unit to breathe a fiery blast before engaging in hand-to-hand.
+
+
+445: LIGHTNING BREATH
+Lightning breath allows an attacking unit to breathe an armor piercing blast of lightning before entering hand-to-hand.
+
+
+446: STONING GAZE
+Stoning gaze makes all enemy figures resist or be stoned before engaging in hand-to-hand combat. Gaze attacks come after breath and thrown attacks.
+
+
+447: DOOM GAZE
+Doom gaze is a gaze attack that automatically does damage, with no to-hit or defense rolls.
+
+
+448: DEATH GAZE
+Death gaze makes all enemy units resist or die instantly. The gaze takes effect before actual melee is entered.
+
+
+449: IMMOLATION
+Immolation strikes all enemy units engaged in hand-to-hand with a fire attack of strength 4.
+
+
+450: GUARDIAN WIND
+Unit is impervious to all missile attacks (Missile Immunity).
+
+
+451: BERSERK
+Unit fights (melee) with twice normal strength (swords) while disregarding its own safety (defense of zero, regardless of other defense modifiers).
+
+
+452: CLOAK OF FEAR
+Any time that enemy units attempt to engage in melee combat with the cloaked unit they must first try to overcome their fright (on a per figure basis) before they can attack or counterattack.
+
+
+453: BLACK CHANNELS
+Creature is now a vile undead being with +3 melee attack strength (swords), +1 to missile attack strength (bows), breath attacks, hit points (hearts), resistance (crosses) and defense (shields).
+
+
+454: WRAITH FORM
+Unit has weapon immunity and an insubstantial wraith-like form (the unit is non-corporeal). In addition, the unit may move on the overland map as if every land square was a road.
+
+
+455: REGENERATE
+Endows the target unit with the ability to regenerate during combat (by 1 hit point/ turn) and afterwards (by an immediate return to full health at the end of combat). If the creature dies in combat it returns from the dead in a state of full health, if its side won the battle. Note that this spell is not able to return a creature that has been banished or unsummoned (banish, death wish, holy word, unsummon).
+
+
+456: PATHFINDING
+Endows the target unit (and any units currently stacked with that unit) with the ability to travel over all land terrain as if it were traveling on roads (i.e., the cost is only 1/2 movement point per square).
+
+
+457: WATER WALKING
+Endows the unit with the ability to walk on water. The unit's movement speed remains unchanged.
+
+
+458: ELEMENTAL ARMOR
+Improves a unit's defenses (shields) and resistance to Chaos and Nature magic (crosses), by 10 each. These bonuses do not exert cumulative effects with the spell resist elements.
+
+
+459: RESIST ELEMENTS
+Instills in target unit an increased resistance (+3) to the elemental magics of chaos and nature. In addition, the unit gains improved defenses to normal magic ranged attacks (+3 to ranged defense).
+
+
+460: STONE SKIN
+Causes the unit's skin to harden, increasing the unit's defense (shields) by one.
+
+
+461: IRON SKIN
+Fuses iron with the unit's skin, making it able to withstand most attacks (adds 5 to defense).
+
+
+462: ENDURANCE
+Fills the unit with a holy purpose and increases the unit's movement speed by 1.
+
+
+463: SPELL LOCK
+As long as the Spell Lock is in effect, no friendly enchantment on the unit may be dispelled. This also protects fantastic units from the effects of Dispel Evil, Banish, etc. The Spell Lock resists being dispelled as if it had a strength of 150.
+
+
+464: INVISIBILITY
+Renders the unit invisible to all units, except those immune to illusion and those that have True Sight. In combat, the unit becomes visible when adjacent to an enemy unit, but still penalizes the to-hit roll of enemy units by -2.
+
+
+465: WIND WALKING
+Allows the enchanted unit and all units in its stack to fly on the overland map. Does not work in combat.
+
+
+466: FLIGHT
+Bestows the power of flight upon the unit.
+
+
+467: RESIST MAGIC
+Endows the unit with a tremendously improved resistance (+3 crosses) to negative spells from all magic realms!
+
+
+468: MAGIC IMMUNITY
+Unit is completely immune to all magic spells and their effects, breath and gaze attacks. Unit's defense (shields) is raised to 50 against all magic ranged and melee attacks.
+
+
+469: FLAME BLADE
+Adds +2 attack strengths to both melee and missile attacks. Flaming weapons can hit creatures with Weapon Immunity and exert cumulative effects with eldritch weapon.
+
+
+470: ELDRITCH WEAPON
+Ranged and melee attacks are harder to defend against (an opponent's ability to defend decreases by one; i.e., each shield loses 10% in its ability to block a hit) and can effectively hit creatures that have Weapon Immunity. Eldritch weapon exerts cumulative effects with flame blade.
+
+
+471: TRUE SIGHT
+The unit does not suffer from the ignores-armor effect of illusionary attacks, always makes resistance rolls for Sorcery spells, and can see invisible units and through Walls of Darkness.
+
+
+472: HOLY WEAPON
+Blesses the unit's weapons, allowing them to hit creatures which are immune to non-magical attacks and giving a +1 to-hit bonus in combat.
+
+
+473: HEROISM
+The entire unit becomes elite. This spell will automatically be dispelled when the unit becomes elite naturally.
+
+
+474: BLESS
+Adds +3 to the unit's defense and resistance against all death or chaos related spells or monster attacks.
+
+
+475: LION HEART
+Adds + 3 to the unit's attack strength, hits, and resistance.
+
+
+476: GIANT STRENGTH
+Adds +1 to each figure's melee attack strength.
+
+
+477: PLANAR TRAVEL
+Allows the unit to shift planes at will, back and forth. While the unit is active and the plane is changed, the unit will move back and forth between planes.
+
+
+478: HOLY ARMOR
+The units' defense is increased by +3.
+
+
+479: RIGHTEOUSNESS
+Protected unit gains almost total immunity from death and chaos magic.
+
+
+480: INVULNERABILITY
+The unit is resistant to damage from non-magical attacks, and the first two hits sustained by the unit from any attack are ignored.
+
+
+481: VERTIGO
+If the unit fails to resist, it loses -2 from its chance to hit and all attackers gain a +2 to hit.
+
+
+482: CONFUSION
+If the victim unit fails to resist at -4, it becomes confused. At the beginning of each turn, the effects of this spell will be determined randomly from this list: 1) unit stands confused, 2) unit moves randomly, 3) unit is controlled by opponent, and 4) no effect.
+
+
+483: WHIRLWIND
+
+
+
+484: MIND STORM
+All creatures within the unit lose -5 to their attacks, defense, and resistance rolls. Mind storm is automatic and does not have a resistance roll. The spell does not work against units immune to illusions.
+
+
+485: SHATTER
+Attempts to shatter all the weapons in a normal target unit. The unit gets one chance to resist these powers of chaos; if it is unsuccessful all of the unit's melee, thrown, and missile attack strengths decrease to one.
+
+
+486: WEAKNESS
+Saps the strength out of a target unit's creatures, who suffer a penalty of 2 to their melee, thrown and ranged attack strengths. Units get no chance to resist.
+
+
+487: BLACK SLEEP
+Affected unit sleeps through the remainder of combat, providing a defenseless target for enemies. If attacked by an enemy unit while in this condition, a sleeping unit takes the full force of the attack in damage.
+
+
+488: WARP CREATURE
+Reduces the attack strength of the unit by half.
+
+
+489: WARP CREATURE
+Reduced the defense strength of the unit by half.
+
+
+490: WARP CREATURE
+Reduces the magical resistance of the unit to zero.
+
+
+491: MANA LEAK
+All enemy spell casters are drained 5 mana each combat turn This includes the opponent wizard you are currently battling. Additionally, all units with magical ranged attacks lose one spell shot each turn.
+
+
+492: HASTE
+Doubles the unit's movement and number of attacks in combat.
+
+
+493: WEB
+Web entangles an enemy unit in a web which traps the unit where it stands.
+
+
+494: CREATURE BINDING
+Affected creature is bound to fight for the casting wizard until the end of combat (or until disenchanted). The bound creature disappears after combat ends.
+
+
+495: POSSESSION
+Possessed unit fights for the casting wizard until combat ends. Fantastic creatures and heroes may not be possessed.
+
+
+496: UPKEEP
+This indicates how much gold, food, and magic it costs to maintain this unit each turn.
+
+
+497: PAGE UP
+Scrolls the list up one page at a time.
+
+
+498: PAGE DOWN
+Scrolls the list down one page at a time.
+
+
+499: DISMISS
+The dismiss button allows you to get rid of units that you no longer need.
+
+
+500: OK
+The OK button exits the unit view screen.
+
+
+501: CITY SCAPE
+This shows the layout of the city with all of the buildings. Passing the mouse across the buildings will display their names.
+
+
+502: CITY GARRISONS
+Troops within the city.
+
+
+503: UNIT LIST
+This lists all units in the square.
+
+
+504: OUTPOST SIZE
+Each home represents 1/10th of a townsfolk. Each 10th of a population is shown as a house appropriate to the race of the inhabitants. Darkened homes indicate the rest of the 10 homes required to grow into a hamlet.
+
+
+505: OUTPOST SIZE
+Each home represents 1/10th of a townsfolk. Each 10th of a population is shown as a house appropriate to the race of the inhabitants. Darkened homes indicate the rest of the 10 homes required to grow into a hamlet.
+
+
+506: OUTPOST SIZE
+Each home represents 1/10th of a townsfolk. Each 10th of a population is shown as a house appropriate to the race of the inhabitants. Darkened homes indicate the rest of the 10 homes required to grow into a hamlet.
+
+
+507: OUTPOST SCAPE
+This shows the basic layout of the outpost.
+
+
+508: CANCEL
+The cancel button aborts the casting of the spell.
+
+
+509: CASTING
+This area explains what type of spell you are casting and the name of the spell.
+
+
+510: ROAD BUILDING
+By Clicking on the overland map, you can select where you want your engineers to build a road. A red line indicates that a road cannot be constructed over that path, while a blue line indicates a valid path. The number of turns it will take to complete construction of the road is also displayed.
+
+
+511: OK
+The OK button tells the engineers to begin building the road.
+
+
+512: CANCEL
+The cancel button aborts the building of a road.
+
+
+513: SURVEY
+The surveyor gives an explanation of the land that you pass your mouse pointer over.
+
+
+514: CANCEL
+The cancel button exits the surveyor.
+
+
+515: LEADERSHIP
+Leadership increases the attack strength of all units in combat by one per 2 levels of the hero. Super leadership (*) increases this bonus by 50%.
+
+
+516: LEGENDARY
+Legendary represents the hero's reputation and increases the frequency and strength of mercenaries approaching the wizard for hire, as well as decreases the initial hiring cost. The hero adds +3 fame per level of the hero directly to the controlling wizard's fame total. Super legendary (*) increases this bonus by 50%.
+
+
+517: BLADEMASTER
+Blademaster increases the hero's chance to hit by +1 per 2 levels of experience. Super blademaster (*) increases this bonus by 50%.
+
+
+518: ARMSMASTER
+Armsmaster adds 2 experience to all units stacked with the hero at the end of each turn, per level of experience. Additional levels of Armsmaster increases this bonus by 50%.
+
+
+519: CONSTITUTION
+Constitution increases the hero's hits beyond human norms, adding the +1/level to the hero's defense. Super constitution (*) increases this bonus by 50%.
+
+
+520: MIGHT
+Might increases the hero's hand-to-hand attack by +1 per level of experience. Super might (*) increases this bonus by 50%.
+
+
+521: ARCANE POWER
+Arcane power increases the hero's magical ranged attack by +1 per level of experience. Super arcane power (*) increases this bonus by 50%.
+
+
+522: SAGE
+Sage heroes contribute 3 spell research points per level of experience each turn to the controlling wizards research total. Super sage ability (*) increases this bonus by 50%.
+
+
+523: PRAYERMASTER
+Prayermaster adds +1/level of experience to all resistance rolls for all units in the battle. Super prayermaster (*) increases this bonus by 50%.
+
+
+524: LUCKY
+Luck adds +1 to all of the hero's rolls, including attack, defense, and resistance.
+
+
+525: CHARMED
+Charmed heroes never fail a resistance roll.
+
+
+526: NOBLE
+Noble heroes do not cost money but instead contribute 10 gold to your cause each turn.
+
+
+527: RECRUIT
+Normal troops begin as recruits. It requires 20 experience points to reach Regular status.
+
+
+528: REGULAR
+Regulars have enhanced combat factors. Troops created in a city with a Fighter's Guild begin as Regulars. It requires 60 experience points to achieve Veteran status.
+
+
+529: VETERAN
+Veterans have enhanced combat factors. Troops created in a city with a War College begin as Veterans. It requires 120 experience points to achieve Elite status.
+
+
+530: ELITE
+Elite troops have enhanced combat factors. It requires the Warlord ability or Crusade spell to achieve Ultra Elite status.
+
+
+531: ULTRA ELITE
+Ultra Elite troops have enhanced combat factors. It requires both the Warlord ability and the Crusade spell to achieve Champion status.
+
+
+532: CHAMPION
+Champion troops have enhanced combat factors. Normal troops may never achieve a level of experience above Champion.
+
+
+533: HERO
+All heroes begin the game at this level. It requires 20 experience points to achieve Myrmidon status.
+
+
+534: MYRMIDON
+Myrmidons have enhanced combat factors and abilities. It requires 60 experience points to achieve Captain status.
+
+
+535: CAPTAIN
+Captains have enhanced combat factors and abilities. It requires 120 experience points to achieve Commander status.
+
+
+536: COMMANDER
+Commanders have enhanced combat factors and abilities. It requires 200 experience points to achieve Champion status.
+
+
+537: CHAMPION
+Champions have enhanced combat factors and abilities. It requires 300 experience points to achieve Lord status.
+
+
+538: LORD
+Lords have enhanced combat factors and abilities. It requires 450 experience points to achieve Grand Lord status.
+
+
+539: GRAND LORD
+Grand Lords have enhanced combat factors and abilities. It requires 600 experience points to achieve Super Hero status.
+
+
+540: SUPER HERO
+Super Heroes have enhanced combat factors and abilities. It requires 1000 experience points to achieve Demi-god status.
+
+
+541: DEMI-GOD
+Demi-gods have enhanced combat factors and abilities. A hero can never rise above Demi-god status.
+
+
+542: QUIVER
+Quiver indicates the total number of ranged attacks the unit has remaining. The shots are replaced after each combat.
+
+
+543: + TO HIT
+Each plus increases the unit's chance to hit by 10%.
+
+
+544: - TO HIT
+Each minus decreases the unit's chance to hit by 10%.
+
+
+545: CONSTRUCTION
+Construction allows units to build roads.
+
+
+546: SCOUTING
+Scouting increases the range a unit can see on the overland map by the scouting level.
+
+
+547: MERGING
+The unit has the ability to merge with the earth, pass through it, and reform itself at its destination.
+
+
+548: TELEPORTING
+Teleporting allows a unit to move anywhere on the combat map for a cost of 1 movement point.
+
+
+549: PATHFINDING
+Pathfinding allows the unit and all stacked with it to move across any land square at the cost of 1/2 movement point.
+
+
+550: MOUNTAINEER
+Mountaineer allows all units stacked to cross mountains and hills at a cost of one movement point per square.
+
+
+551: FORESTER
+Forester allows all units stacked to pass through forest at a cost of one movement point per square.
+
+
+552: SUMMON DEMONS
+Summon demons allows the unit to summon demons in combat. Instead of attacking, the summoner may conjure one demon into combat. The demon always appears where the wizard's units began. The summoned demon will remain even after the summoning creature is slain, but the demon will disappear after combat.
+
+
+553: UNDEAD
+Undead creatures never heal normally or magically and gain all the immunities and vulnerabilities of Death creatures. In addition Undead fantastic creatures have a 50% higher maintenance cost.
+
+
+554: STASIS
+Places all units in the targeted overland map square in stasis for 1 turn. Thereafter, each unit in stasis must resist at -3 to be freed.
+
+
+555: CASTER
+Caster allows the unit to cast spells like a wizard in combat, without cost of mana points drawn from the wizard's mana reserve. Furthermore, heroes with caster ability add half the caster's skill to a wizard casting overland spells if the hero is inside the wizard's fortress. You must still provide the required mana to support the skill.
+
+
+556: MAGIC IMMUNITY
+Unit is completely immune to all magic spells and their effects, breath and gaze attacks. Unit's defense (shields) is raised to 50 against all magic ranged and melee attacks.
+
+
+557: REGENERATE
+Unit regenerates during combat (by 1 hit point/ turn) and afterwards (by an immediate return to full health at the end of combat). If the creature dies in combat it returns from the dead in a state of full health, if its side won the battle. Note that this spell is not able to return a creature that has been banished or unsummoned (banish, death wish, holy word, unsummon).
+
+
+558: HASTE
+Doubles the unit's movement and number of attacks in combat.
+
+
+559: TRUE SIGHT
+The unit does not suffer from the ignores-armor effect of illusionary attacks, always makes resistance rolls for Sorcery spells, and can see invisible units and through Walls of Darkness.
+
+
+560: PATH FINDING
+Pathfinding allows the unit and all stacked with it to move across any land square at the cost of one movement point.
+
+
+561: WATER WALKING
+Endows the unit with the ability to walk on water. The unit's movement speed remains unchanged.
+
+
+562: BLESS
+Adds +3 to the unit's defense and resistance against all death or chaos related spells or monster attacks.
+
+
+563: LION HEART
+Adds + 3 to the unit's attack strength, hits, and resistance.
+
+
+564: INVISIBILITY
+Renders the unit invisible to all units, except those immune to illusion and those that have True Sight. In combat, the unit becomes visible when adjacent to an enemy unit, but still penalizes the to-hit roll of enemy units by -2.
+
+
+565: PLANAR TRAVEL
+Allows the unit to shift back and forth between planes at will. Changing planes while the unit is active will move the unit between planes.
+
+
+566: ENDURANCE
+Fills the unit with a holy purpose and increases the unit's movement speed by 1.
+
+
+567: RIGHTEOUSNESS
+Protected unit gains almost total immunity from death and chaos magic.
+
+
+568: INVULNERABILITY
+The unit is resistant to damage from non-magical attacks, and the first two hits sustained by the unit from any attack are ignored.
+
+
+569: RESIST ELEMENTS
+Instills in target unit an increased resistance (+3) to the elemental magics of chaos and nature. In addition, the unit gains improved defenses to normal magic ranged attacks (+3 to ranged defense).
+
+
+570: ELEMENTAL ARMOR
+Improves a unit's defenses (shields) and resistance to Chaos and Nature magic (crosses), by 10 each. These bonuses do not exert cumulative effects with the spell resist elements.
+
+
+571: CLOAK OF FEAR
+Any time that enemy units attempt to engage in melee combat with the cloaked unit they must first try to overcome their fright (on a per figure basis) before they can attack or counterattack.
+
+
+572: FLIGHT
+Bestows the power of flight upon the unit.
+
+
+573: RESIST MAGIC
+Endows the unit with a tremendously improved resistance (+3 crosses) to negative spells from all magic realms!
+
+
+574: GUARDIAN WIND
+Surrounds the unit with a magically protective wall of air, making the unit almost totally immune to arrow and sling attacks.
+
+
+575: GIANT STRENGTH
+Adds +1 to each figure's melee attack strength.
+
+
+576: MERGING
+The unit has the ability to merge with the earth, pass through it, and reform itself at its destination.
+
+
+577: SWORD SLOT
+The hero normally uses a sword. This icon allows the hero to use a sword, mace, or an axe in this slot. The hero cannot equip with a bow or staff.
+
+
+578: BOW SLOT
+The hero normally fires a bow. This icon also allows the hero to use a sword, mace, or axe.
+
+
+579: STAVE/SWORD SLOT
+The hero can use any melee weapon, staff, or wand.
+
+
+580: STAVE SLOT
+The hero normally uses a staff. The hero can equip with a staff or wand.
+
+
+581: ARMOR SLOT
+This slot can hold any type of armor.
+
+
+582: MISCELLANEOUS SLOT
+This slot can hold any miscellaneous item.
+
+
+583: SWORD SLOT
+The hero normally uses a sword. This icon allows the hero to use a sword, mace, or an axe in this slot. The hero cannot equip with a bow or staff.
+
+
+584: BOW SLOT
+The hero normally fires a bow. This icon also allows the hero to use a sword, mace, or axe.
+
+
+585: STAVE/SWORD SLOT
+The hero can use any weapon including staves, bows, and wands.
+
+
+586: STAVE SLOT
+The hero normally uses a staff. The hero can equip with a staff or wand.
+
+
+587: ARMOR SLOT
+This slot can hold any type of armor.
+
+
+588: MISCELLANEOUS SLOT
+This slot can hold any miscellaneous item.
+
+
+589: SPELL BUTTON
+The spell button allows you to throw spells.
+
+
+590: WAIT BUTTON
+The wait button moves to the next unit.
+
+
+591: INFO BUTTON
+The info button will show you what overland enchantments, city spells, and nodes affect the combat.
+
+
+592: AUTO BUTTON
+The auto button allows the computer to control both sides.
+
+
+593: FLEE BUTTON
+The flee button allows you to retreat from battle. Each fleeing unit has a 50% chance of being destroyed; fleeing heroes have a 25% chance.
+
+
+594: DONE BUTTON
+The done button ends the turn for the unit.
+
+
+595: SKILL
+Your skill represents the total number of mana you can spend to cast spells for the entire combat.
+
+595: MANA
+The total amount of mana crystals in your reserve that you can draw from to cast spells.
+
+595: RANGE
+Range is a multiplier that effects the mana cost of a spell. The farther away the combat is from your Tower, the greater the multiplier.
+
+
+598: ATTACKER
+This is the name of the attacker.
+
+
+599: DEFENDER
+This is the name of the defender.
+
+
+600: LIGHT
+All creatures of life are bathed in the light's glow and gain one to their attack strengths (swords), defense (shield), and resistance (cross). Creatures of death are hampered by the brightness, losing one to each of their attack strengths, defense, and resistance. True Light and Darkness exert opposite effects and therefore cancel each other's effects.
+
+
+601: DARKNESS
+Creatures of death gain one point each in attack strength (swords), defense (shields) and resistance (crosses). Creatures of life, on the other hand, are dispirited and lose one point each in attack strength, defense and resistance. True Light and Darkness exert opposite effects and therefore cancel each other's effects.
+
+
+602: WARP REALITY
+Distorts ALL (both friendly and enemy) non-chaos units' perception of reality. Affected units suffer a penalty to hit of two (20%).
+
+
+603: BLACK PRAYER
+Curses all enemy units, weakening their attack strength (swords) and defense (shields) by one. Their resistance to magic (crosses) is decreased by two.
+
+
+604: WRACK
+Wracks all non-death creatures with the agonies of darkness every combat turn. All enemy figures that cannot resist this pain lose one hit point.
+
+
+605: METAL FIRES
+Flaming melee and missile weapons have a +1 attack strength and can inflict damage on units with Weapon Immunity. Metal fires and flame blade do not exert cumulative effects.
+
+
+606: PRAYER
+Adds +1 to all rolls by all friendly units, including resistance rolls, attacks to hit and defense rolls.
+
+
+607: HIGH PRAYER
+Unit with High Prayer has its attack strength (swords), ability to hit, and defense (shields) all increased by 2 (20% improvement in each area), while resistance (crosses) is increased by 3 and the ability to block an attack and to hit is increased by 10%.
+
+
+608: TERROR
+During every combat turn, each enemy unit must attempt (+1 bonus to resistance) to overcome the terror that grips it, or cower in fear. When a unit is cowering it cannot attack; however, the unit can still counterattack when it is defending against melee attacks initiated by the enemy.
+
+
+609: CALL LIGHTNING
+Calls down a powerful electrical storm from which deadly lightning bolts issue. Three to 5 lightning bolts of strength 8 strike random opponents at the beginning of every turn until the end of combat.
+
+
+610: COUNTER MAGIC
+Creates a standing dispel magic spell over the entire battlefield. A spell cast by the enemy wizard or an enemy hero must first overcome the effects of this dispel magic spell (of strength equal to the magic power poured into the counter magic spell) before it can exert its effects. Every spell cast by the enemy drains the magic power (strength) of the counter magic spell by 5 mana points and, therefore, lessens its effectiveness against subsequent spells.
+
+
+611: MASS INVISIBILITY
+As invisibility except all friendly units are rendered invisible.
+
+
+612: DISPELS NON-SORCERY
+Dispels all non-Sorcery magic.
+
+
+613: DISPELS NON-CHAOS
+Dispels all non-Chaos magic.
+
+
+614: DISPELS NON-NATURE
+Dispels all non-Nature magic.
+
+
+615: SORCERY NODE AURA
+Being under the influence of a Sorcery node adds +2 attack and +2 defense to all Sorcery creatures.
+
+
+616: CHAOS NODE AURA
+Being under the influence of a Chaos node adds +2 attack and +2 defense to all Chaos creatures.
+
+
+617: NATURE NODE AURA
+Being under the influence of a Nature node adds +2 attack and +2 defense to all Nature creatures.
+
+
+618: CLOUD OF DARKNESS
+Envelops the target friendly city in a dense cloud of darkness (equivalent in effect to the darkness spell). All combat in the city takes place under this effect.
+
+
+619: HOLY LIGHT
+Bathes a target friendly city in life-enhancing rays from the heavens, aiding creatures of life and dispiriting creatures of death (equivalent in effect to true light). All combat in the city takes place as if true light were cast.
+
+
+620: CHAOS SURGE
+Endows ALL creatures of chaos with destructive power increasing their melee (swords), missile, magic and Fiery Breath attack strengths by two.
+
+
+621: ETERNAL NIGHT
+Causes an impenetrable mantle of blackness to smother all the lands in the worlds. This thick cloak of blackness has the same effect as Darkness cast on every map square. Only map squares protected by Heavenly Light are unaffected.
+
+
+622: CRUSADE
+Inspires all of a wizard's normal units so that their levels all raise by one (recruit become regulars, regulars become veterans, etc.).
+
+
+623: HOLY ARMS
+Calls upon the heavens to bless all friendly normal units' weapons, giving them +1 (i.e., +10%) to hit and the ability to hit creatures with Weapon Immunity. This effect is not cumulative with holy weapon.
+
+
+624: CHARM OF LIFE
+Adds 25% of total hit points (with a minimum of one hit point added) to the hit points of each of a wizard's creatures.
+
+
+625: ZOMBIE MASTERY
+Causes all normal units that die in any combat to become, after the battle ends, mindless zombies under the control of the casting wizard. These zombies do not heal in any way, nor can they be raised from the dead.
+
+
+626: DAMAGE
+This indicates how much damage the unit has taken.
+
+
+627: AGILE
+Increases the defense of the unit by +1 per level of experience. Super Agility (*) increases this bonus by +50%.
+
+
+628: CONTINUE
+Loads and runs the most recently played game.
+
+
+629: LOAD
+Allows you to load a previously saved game and/or change the game settings.
+
+
+630: NEW GAME
+Starts a new game.
+
+
+631: QUIT TO DOS
+Exit Master Of Magic and return to DOS.
+
+
+632: ENTANGLE
+Causes all non-flying, corporeal enemy creatures to suffer a loss of one movement point per turn. If a creature's movement points are zero, it may not attack or move for the remainder of the combat; the creature can still strike back if attacked.
+
+
+633: LOAD BUTTON
+Loads a selected game.
+
+
+634: QUIT BUTTON
+Returns to Main Menu Screen.
+
+
+635: SETTINGS BUTTON
+Allows you to change the game settings.
+
+
+636: SAVE BUTTON
+Save the current game to the selected file.
+
+
+637: OK BUTTON
+Returns to the main screen.
+
+
+638: SAVED GAMES
+Click on an existing file in order to load that game.
+
+
+639: SAVED GAMES
+Click on a file name to save your current game or load a previous one.
+
+
+640: OK BUTTON
+Accept the current game options.
+
+
+641: CANCEL BUTTON
+Go back to the Main Menu Screen.
+
+
+642: DIFFICULTY LEVEL
+Controls how skillfully the enemy races play.
+
+642: INTRO
+Recommended for first time players.
+
+642: EASY
+Recommended for effortless play.
+
+642: NORMAL
+At this setting all enemy operations are at normal levels.
+
+642: HARD
+For players wanting a challenge.
+
+642: IMPOSSIBLE
+This setting should only be chosen by players who have mastered the rules, and the game.
+
+
+648: OPPONENTS
+Choose from one to four opposing wizards that you will face on both worlds.
+
+
+649: LAND SIZE
+Determines the number and size of the continents of the worlds.
+
+649: SMALL
+Creates many small island-size continents that represent about 15% of the worlds size.
+
+649: MEDIUM
+Creates average size continents that take up about 20% of the worlds.
+
+649: LARGE
+Lands take up approximately 25% of the world size and provide for huge areas to expand into.
+
+
+653: MAGIC INTENSITY
+Determines the strength of the magic nodes. In Myrror, all nodes produce twice the normal level of power on Arcanus.
+
+653: WEAK
+Magic nodes produce 1/2 point of power per map square they cover.
+
+653: NORMAL
+Magical nodes produce 1 point of power per map square covered.
+
+653: POWERFUL
+Magical nodes produce 1 1/2 points of power per map square covered.
+
+
+657: SPELL OF RETURN
+Effects: Global Enchantment
+Target: yourself
+Casting Cost: 1000
+Upkeep none
+When your enchanted fortress is captured by an enemy you are banished to Limbo until you finish casting the Spell of Return. You may not cast any other spells while banished and you receive no power income.
+
+
+658: SELECT A BANNER
+Click on a banner to select your wizard's banner color. This color will be used on your units and your city flags.
+
+
+659: MERLIN
+Wizard of nature and life. He has the special ability of Sage which increases his spell research by 25%.
+
+
+660: RAVEN
+Native Shaman who specializes in nature and sorcery magic.
+
+
+661: SHAREE
+Voodoo priestess that specializes in chaos and death magic. She is also a Conjurer, paying 25% less for all summoning spells.
+
+
+662: LO PAN
+Oriental mystic that specializes in chaos and sorcery magic. He is also a Channeler and does not pay increased mana rates for casting spells in combat and only pays half the normal spell maintenance.
+
+
+663: JAFAR
+Nomad Sorcerer. He has the special ability of Alchemy which allows him to exchange gold and power without loss and gives all units built in cities magic weapons.
+
+
+664: OBERIC
+Elementalist that specializes in chaos and nature magic. He has the ability of Mana Focusing which increases the power he obtains from his mana reserve by 25%.
+
+
+665: TAURON
+Demonic force specializing in chaos magic. He has the ability of Chaos Mastery which increases his chaos research by 10%, makes it twice as hard to dispel his spells, and doubles the magic power he receives from chaos nodes.
+
+
+666: SSS'RA
+Draconian warlock specializing in chaos and life magic. He is a Myrran and begins the game on the Myrror plane controlling a special race (beastmen, dark elves, draconians, dwarves, or trolls).
+
+
+667: RJAK
+Warlock specializing in death magic. He also possesses Infernal Power which doubles the power and pacifying effects received from shrines, temples, and parthenons.
+
+
+668: FREYA
+Elvish sylph that specializes in nature magic. She has the special ability of Nature Mastery which increases her nature research by 10%, makes it twice as hard to dispel her spells, and doubles the power she receives from nature nodes.
+
+
+669: HORUS
+Prodigal sorcerer specializing in life and sorcery magic. He is an Archmage, which adds +10 to his spell casting skill.
+
+
+670: ARIEL
+High priestess specializing in life magic. She is Charismatic which halves the cost of hero, mercenary, and magic items, doubles the effect of good and halves that of bad diplomatic actions.
+
+
+671: TLALOC
+Aztec priest who specializes in nature and death magic. He possesses the special ability of Warlord which adds +1 level to all of his units, allowing them to rise above their limit of elite
+
+
+672: KALI
+Black witch who specializes in death and sorcery magic. She is an Artificer which allows her to start with the Enchant Item and Create Artifact spells and to pay 50% less to create magic items.
+
+
+673: CUSTOM
+Allows you to customize your wizard.
+
+
+674: SELECT WIZARD PICTURE
+Select your new wizard's picture.
+
+
+675: SOUND EFFECTS
+Controls whether or not digitized sounds are played. This option is ignored if your card does not support digitized sound.
+
+
+676: BACKGROUND MUSIC
+Controls whether or not continuous 'mood' music is played in the background.
+
+
+677: EVENT MUSIC
+Controls whether or not special music is played when events or reports are played.
+
+
+678: CITY SPELL EVENTS
+Controls whether or not you will view when city enchantment spells are thrown on your cities or enemy cities.
+
+
+679: OVERLAND SPELL EVENTS
+Controls whether or not you will view when overland enchantment spells are thrown on your cities or enemy cities.
+
+
+680: SUMMONING EVENTS
+Controls whether or not you will view the summoning sequence spells when they are thrown.
+
+
+681: END OF TURN SUMMARY
+Controls whether or not the summary scroll is shown at the end of each turn.
+
+
+682: AUTOMATIC ADVICE
+Controls whether or not you will be given suggestions by the computer as the game progresses.
+
+
+683: RANDOM EVENTS
+Controls whether or not random events affecting you or anyone else occur during the game.
+
+
+684: END OF TURN WAIT
+Controls whether or not you are prompted for the end of turn once all units have been moved.
+
+
+685: STRATEGIC COMBAT ONLY
+Controls whether or not tactical combat takes place. If turned on (check) all battles will take place automatically under computer control.
+
+
+686: AUTO UNIT INFORMATION
+Controls wether or not in combat additional unit statistics on any unit over which the mouse is passed will be displayed. The additional information includes: the unit's attack strength, movement allowance remaining, defense, resistance, ammunition, spell points, level, and hit points.
+
+
+687: ENEMY MOVES
+Controls whether or not your view will be moved while other detected enemy troops move.
+
+
+688: ENEMY SPELLS
+Controls whether or not spells cast by enemy wizards will be displayed.
+
+
+689: SPELL BOOK ORDERING
+Controls whether spells on your spell book are ordered in categories versus one long list.
+
+
+690: SPELL ANIMATIONS
+Controls whether or not the animations dealing with spells you have thrown will be displayed.
+
+
+691: SHOW NODE OWNERS
+Controls whether or not the magic aura of the controlling wizard is displayed surrounding the magic nodes on the main view map.
+
+
+692: EXPANDING HELP
+Controls whether or not the help information expands out from the questioned region.
+
+
+693: ALCHEMY
+Allows the wizard to change gold into mana and mana into gold in a 1 to 1 ratio, instead of loosing 1/2 in the exchange process and gives all units built in cities magic weapons.
+
+
+694: WARLORD
+Increases the level of all units under the wizard's control by one level. In addition, warlord allows your units to achieve ultra elite status which is otherwise unattainable. Warlord costs 2 picks.
+
+
+695: CHANNELER
+Allows the wizard to cast spells in combat as if the battle took place at his fortress, which means channeler does not spend any extra mana when casting any spell in combat. In addition, a channeler only pays one half the normal spell maintenance. Channeler costs 2 picks.
+
+
+696: ARCHMAGE
+Increases the wizard's skill by +10, and makes it twice as hard to dispel any of his spells. Also, there is a 50% bonus to all mana spent on increasing skill.
+
+
+697: ARTIFICER
+Reduces the cost of making magical items by 50%. Artificers also begin the game with the Create Magic Item and Create Artifact spells.
+
+
+698: CONJURER
+Reduces the casting and research costs of all summoning spells by 25% and also reduces the maintenance costs of fantastic creatures by 25%.
+
+
+699: SAGE MASTER
+Increases the speed of the wizard's spell research in all six realms by 25% from all sources.
+
+
+700: MYRRAN
+Wizard begins the game in a city on Myrror instead of Arcanus. The Myrran wizard starts with an unusual race: beastmen, dark elves, draconians, dwarves, and trolls. In addition the wizard's fortress generates 5 additional mana. The Myrran special costs 3 spell picks.
+
+
+701: DIVINE POWER
+Increases the power and the pacifying effects the wizard obtains from shrines, temples, parthenons, and cathedrals by 50%.
+
+
+702: FAMOUS
+Wizard begins the game with 10 fame. Furthermore, being famous doubles the chance of a wizard hiring heroes, recruiting mercenaries, and buying magical items.
+
+
+703: RUNEMASTER
+The power of all dispel magic type spells is doubled. In addition, arcane spells have a 25% bonus to research and a 25% reduction in casting cost.
+
+
+704: CHARISMATIC
+Possesses an unnatural presence that dramatically improves his dealings with others. The charismatic wizard pays half for hiring heroes, mercenaries, and purchasing magical items. In addition, all diplomatic penalties from negative actions are halved and good diplomatic effects are doubled.
+
+
+705: CHAOS MASTERY
+Increases the wizard's chaos spell research by 15%, reduces the casting cost of chaos spells by 15%, makes it twice as hard to dispel the wizard's chaos spells, and doubles the magic power obtained from chaos nodes.
+
+
+706: NATURE MASTERY
+Increases the wizard's nature spell research by 15%, reduces the casting cost of nature spells by 15%, makes it twice as hard to dispel the wizard's nature spells, and doubles the magic power obtained from nature nodes.
+
+
+707: SORCERY MASTERY
+Increases the wizard's sorcery spell research by 15%, reduces the casting cost of sorcery spells by 15%, makes it twice as hard to dispel the wizard's sorcery spells, and doubles the magic power obtained from sorcery nodes.
+
+
+708: INFERNAL POWER
+Increases the power and the pacifying effects the wizard obtains from shrines, temples, parthenons, and cathedrals by 50%.
+
+
+709: MANA FOCUSING
+Increases the mana obtained from power by 25%.
+
+
+710: NODE MASTERY
+Doubles the magical power obtained from all nodes. The wizard's spells are immune to the dispelling power of nodes.
+
+
+711: MAGIC PICKS
+Select your wizard's magic ability in each of the different realms of magic.
+
+
+712: OK BUTTON
+Accept the current wizard design. This option is only valid when you have selected all your picks.
+
+
+713: GUISE
+The unit's physical appearance (not the attributes) are those of any fantastic unit of the casting wizard's choice. Heroes cannot be the target of this enchantment. Hint: this spell will not fool the computer players.
+
+
+714: TRADE GOODS
+A special setting used to produce trade goods and convert 2 production to 1 gold. No other bonus will increase the trade goods gold revenues, including prosperity.
+
+
+715: HOUSING
+A special setting used to build new housing for the local populace to draw them into the city and increase the city's population growth rate.
+
+
+716: BARRACKS
+Maintenance: 0 gold/turn
+Barracks allow a city to train and organize military units.
+
+
+717: ARMORY
+Maintenance: 2 gold/turn
+An armory provides the city with a central location for the distribution and storage of arms and armor.
+
+
+718: FIGHTER'S GUILD
+Maintenance: 3 gold/turn
+A fighter's guild teaches troops basic fighting techniques. All new troops start as regulars.
+
+
+719: ARMORER'S GUILD
+Maintenance: 4 gold/turn
+An armorer's guild provides troops with training in fighting techniques and basic battle tactics.
+
+
+720: WAR COLLEGE
+Maintenance: 5 gold/turn
+A war college serves as a center for the teaching of battle strategy and tactics, as well as advanced fighting techniques. All new troops start as veterans.
+
+
+721: SMITHY
+Maintenance: 1 gold/turn
+A smithy can develop and produce quality weaponry.
+
+
+722: STABLES
+Maintenance: 2 gold/turn
+Stables serve as a place for the training, housing and care of mounted troops and/or war beasts.
+
+
+723: ANIMIST'S GUILD
+Maintenance: 5 gold/turn
+The animist's guild increases each farmer's food harvest by 1, reduces unrest by 1, allows use of nightshade, and doubles the healing rate of units inside the city.
+
+
+724: FANTASTIC STABLE
+Maintenance: 6 gold/turn
+A city's fantastic stable will house and care for magical beasts.
+
+
+725: SHIP WRIGHTS GUILD
+Maintenance: 1 gold/turn
+A ship wrights guild brings together skilled craftsmen to build small boats.
+
+
+726: SHIPYARD
+Maintenance: 2 gold/turn
+A shipyard provides the city with a centralized location that has the necessary equipment and workers to produce medium-sized ships.
+
+
+727: MARITIME GUILD
+Maintenance: 4 gold/turn
+A maritime guild allows the creation of large ships by training, organizing, and supporting experienced ship builders.
+
+
+728: SAWMILL
+Maintenance: 2 gold/turn
+A sawmill will turn wood into deadly weaponry. It increases the production of forest squares by 25%.
+
+
+729: LIBRARY
+Maintenance: 1 gold/turn
+A library acts as a storehouse for knowledge and scholarship. It adds +2 spell research points.
+
+
+730: SAGE'S GUILD
+Maintenance: 2 gold/turn
+A sage's guild is dedicated to the advanced study of magic. It adds +3 spell research points and allows use of nightshade.
+
+
+731: ORACLE
+Maintenance: 4 gold/turn
+An Oracle provides the city with magical guidance, detecting all enemies within 4 squares of the city and reducing unrest by 2.
+
+
+732: ALCHEMISTS GUILD
+Maintenance: 3 gold/turn
+The alchemists' guild equips all new troops with magical weapons with +1 to hit and +3 mana is generated.
+
+
+733: UNIVERSITY
+Maintenance: 2 gold/turn
+A university serves as a stronghold for education and scholarship. It adds +5 spell research points.
+
+
+734: WIZARD'S GUILD
+Maintenance: 5 gold/turn
+A wizard's guild acts as a center for the study and teaching of magic. It adds +8 spell research points at an upkeep cost of 3 mana points a turn.
+
+
+735: SHRINE
+Maintenance: 1 gold/turn
+A shrine provides the people of the city with a center for spiritual comfort. It adds +1 mana, allows use of nightshade, and reduces the unrest level by 1.
+
+
+736: TEMPLE
+Maintenance: 2 gold/turn
+A temple serves as a center for basic religious instruction. It adds +2 mana, allows use of nightshade, and reduces the unrest level by 1.
+
+
+737: PARTHENON
+Maintenance: 3 gold/turn
+A parthenon is a centralized locale for the study of religion. It adds +3 mana and reduces the unrest by 1.
+
+
+738: CATHEDRAL
+Maintenance: 4 gold/turn
+A cathedral provides the city with a cultural and religious center. It adds +4 mana and reduces the unrest level by 1.
+
+
+739: MARKETPLACE
+Maintenance: 1 gold/turn
+A marketplace promotes the city's economic growth by increasing the taxable revenues of the city by +50%.
+
+
+740: BANK
+Maintenance: 3 gold/turn
+A bank increases the taxable revenues of the city by +50%, in addition to the marketplace.
+
+
+741: MERCHANT'S GUILD
+Maintenance: 5 gold/turn
+A merchant's guild increases the taxable revenues of a city by +100%, in addition to the marketplace and bank.
+
+
+742: GRANARY
+Maintenance: 1 gold/turn
+A granary serves as a storehouse for the city's food surplus. It adds +2 food and +20 people per turn.
+
+
+743: FARMER'S MARKET
+Maintenance: 2 gold/turn
+A farmer's market acts as a centralized location for the buying and selling of the city's food surplus. It adds +3 food and +30 people per turn.
+
+
+744: FORESTER'S GUILD
+Maintenance: 2 gold/turn
+A forester's guild trains experienced hunters and lumberjacks, increasing the food harvest by +2 and production by +25%.
+
+
+745: BUILDER'S HALL
+Maintenance: 1 gold/turn
+The builder's hall educates workers in skilled building techniques.
+
+
+746: MECHANICIAN'S GUILD
+Maintenance: 5 gold/turn
+A mechanician's guild teaches advanced engineering techniques, increasing the production points of a city by +50%.
+
+
+747: MINER'S GUILD
+Maintenance: 3 gold/turn
+The miner's guild trains workers in the intricacies of mining. It increases any special mineral bonuses by +50% and production by +50%.
+
+
+748: CITY WALLS
+Maintenance: 2 gold/turn
+Surrounds the city with a high brick wall with towers that extend the detection range out to 3 squares, and lend the city some protection in combat.
+
+
+749: SUMMONING CIRCLE
+When creatures are summoned by the wizard, they appear here in the summoning circle.
+
+
+750: EARTH GATE
+An earth gate serves as a teleportation portal between any two cities held by the wizard.
+
+
+751: STREAM OF LIFE
+Stream of life causes the population growth rate to double and all units in the city heal completely at the end of every game turn. The citizens are so pleased that unrest completely disappears.
+
+
+752: ASTRAL GATE
+The astral gate serves as a portal to the other plane, so that units may travel back and forth.
+
+
+753: FORTRESS
+Each wizard resides in his or her own fortress. This serves as a base of operations. If the fortress is lost, the wizard is banished and must cast the Spell of Return.
+
+
+754: DARK RITUALS
+Dark rituals and sacrifices to the death gods doubles the power generated from shrines, temples, parthenons, and cathedrals. Population growth is reduced by 25%, and unrest increases by 1.
+
+
+755: ALTAR OF BATTLE
+The altar of battle elevates all the city's units to elite level.
+
+
+756: TREATIES
+This is a list of treaties that the wizard has with all other wizards. The scroll indicates a wizard pact, the peace symbol indicates an alliance, and the crossed swords indicate war. The icons will be of the color of the wizard that the treaty is with.
+
+
+757: PAGE BACK
+Turn page of spell book.
+
+
+758: PAGE FORWARD
+Turn page of spell book.
+
+
+759: CANCEL
+Cancel spell. Caster loses all mana spent on spell but does not annoy anyone.
+
+
+760: EXTRA MANA COST
+The extra mana cost to spell blast the currently selected wizard.
+
+
+761: NONE
+This wizard is not currently casting a spell.
+
+
+763: TAX PER POPULATION
+This list allows the setting of the tax rate. Every member of the population pays the indicated amount of gold each turn. The tax rate causes the indicated percentage of unrest in the total city's population. Dwarves generate twice the revenue of other races and pay double the specified tax rate without an increase in the unrest. Each city's gold income is also affected by the presence of shores, rivers, and a marketplace, bank, or merchant's guild.
+
+
+764: ADVISORS
+This list allows you to select a specialist to give you information about your progress and environment.
+
+
+765: FAMOUS
+Fame decreases the total amount a wizard pays for troop maintenance by one gold for each fame point. In addition, more powerful heroes will only approach a famous wizard. 
+
+A wizard may obtain fame from being famous, hiring legendary heroes, winning a major battle (4 or more opponents), building a new city, or by capturing a village, city or capitol. Likewise, any wizard losing a major battle will lose one point of fame.
+
+
+766: NIGHTSHADE
+Nightshade is a magical plant that protects the city from spells. Each plant adds +100 dispel strength against any bad city enchantment.
+
+
+767: MANA LEAK
+All enemy spell casters are drained 5 mana each combat turn. This includes the opponent wizard you are currently battling. Additionally, all units with magical ranged attacks lose one spell shot each turn.
+
+
+768: PLAGUE
+The virulent plague kills one population each turn if the current population exceeds a 1-10 roll. There is a 5% chance each turn that the plague will cease.
+
+
+769: POPULATION BOOM
+The population boom doubles the population growth rate of a city. The boom will continue until a 5% chance roll cancels the event.
+
+
+770: BLUE CONJUNCTION
+The rising triad of blue stars come together, doubling all power gained from sorcery nodes and halving all others. There is a 5% chance each turn that the conjunction will end.
+
+
+771: RED CONJUNCTION
+The rising triad of red stars come together, doubling all power gained from chaos nodes and halving all others. There is a 5% chance each turn that the conjunction will end.
+
+
+772: GREEN CONJUNCTION
+The rising triad of green stars come together, doubling all power gained from nature nodes and halving all others. There is a 5% chance each turn that the conjunction will end.
+
+
+773: BAD MOON
+The moon controlling the powers over evil waxes, increasing the power from bad temples by 50% while halving the power obtained from good temples. There is a 5% chance each turn that the event will cease, returning power levels to normal.
+
+
+774: GOOD MOON
+The moon controlling the powers over good waxes, increasing the power from good temples by 50% while halving the power obtained from bad temples. There is a 5% chance each turn that the event will cease, returning power levels to normal.
+
+
+775: MANA SHORT
+All sources of power are shorted out. No player receives any form of new power from any source until the event ends (5% chance per turn).
+
+
+776: POPULATION
+This is the actual population of the city and the population growth rate shown in parenthesis. Each townsfolk figure represents 1000 townsfolk. The growth rate is how many people the city grows each turn.
+
+
+777: DEATH SPELLS
+Death spells provide the summoning and controlling of the dead and the forces of darkness. Death magic has powerful enchantments that strike disease and misfortune upon their enemies.
+
+
+778: CHAOS SPELLS
+Chaos spells deal primarily with corruption and destruction, calling upon the elemental forces of change.
+
+
+779: LIFE SPELLS
+Life spells focus on healing, protections and inspirational enchantments, and planar travel. Life magic forcefully opposes the forces of death and mildly resists the forces of chaos.
+
+
+780: NATURE SPELLS
+Nature spells control the raw forces of earth and water, as well as fertility and growth.
+
+
+781: SORCERY SPELLS
+Sorcery spells focus on elemental forces of air and illusion. Sorcery also has a number of meta-magic spells that resist and control other wizard's spells.
+
+
+782: MANIACAL
+Maniacal wizards hate everyone, halving effects of positive diplomacy and doubling the diplomatic effects of hostile actions.
+
+
+783: RUTHLESS
+Ruthless wizards attack with little or no provocation and are quite willing to sacrifice troops and people to achieve their goals.
+
+
+784: AGGRESSIVE
+Aggressive wizards will attack any time they are put in a favorable situation.
+
+
+785: CHAOTIC
+Chaotic wizards are totally unpredictable. One turn the chaotic may be peaceful and non-violent, while the next the wizard will go to war over any little excuse.
+
+
+786: LAWFUL
+Lawful wizards will never attack anyone that they are on good terms with. However, they will react twice as strongly against unprovoked attacks.
+
+
+787: PEACEFUL
+Peaceful wizards are eager to maintain peaceful relations even after being attacked.
+
+
+788: PRAGMATIST
+The pragmatist seeks a balance between military buildup, expansion, and spell research.
+
+
+789: MILITARIST
+The militarist seeks to build great and powerful armies. The wizard will build and maintain large and powerful armies.
+
+
+790: THEURGIST
+The theurgist will focus resources on the development of new spells with little emphasis placed on any one single area.
+
+
+791: PERFECTIONIST
+The perfectionist wishes to develop and maintain huge prosperous cities. The wizard will concentrate on creating new buildings and city improvements. The perfectionist prefers to research beneficial city enchantments.
+
+
+792: EXPANSIONIST
+The expansionist is primarily interested in expanding controlled territory. The wizard will spend considerable resources on settlers and new outposts.
+
+
+793: WIZARD PACT
+Wizard pacts are mutual agreements not to attack the opponent wizard or enter his/her territory. You agree not to move within 2 squares of any of the wizard's cities. The wizard pact does not immediately effect diplomatic relations, but instead improves the relations as long as the treaty is enforced.
+
+
+794: ALLIANCE
+An alliance is a stronger version of a wizard pact. The alliance also carries with if the expectation that the allied wizard will come to the aid of the ally should someone declare war on them. The alliance does not immediately effect diplomatic relations, but instead improves the relations as long as the treaty is enforced.
+
+
+795: NO REPORT
+You are unable to determine what units this city has in its garrison because the city is beyond your detection range.
+
+
+796: MOVEMENT ANIMATIONS
+Controls whether or not troops in combat will animate while moving from square to square.
+
+
+797: BLUR
+Blurs the outline all friendly units making them more difficult to hit. There is a 10% chance that each point of damage done will miss.
+
+
+798: HALL OF FAME
+Displays the top 10 scores ever attained in Master Of Magic!
+
+
+799: SPELLS
+You receive one point for every spell that you learned.
+
+
+800: TOWNSFOLK
+You recieve 1/2 a point for every thousand townsfolk you have in all cities that you control.
+
+
+801: BANISHED WIZARDS
+You receive 50 points for every wizard that you banished.
+
+
+802: FAME
+You recieve your fame * 2 points.
+
+
+803: YEAR
+The amount of points that you recieve for time is 2000 - (total months * 2). You will only receive points for time if you actually win the game.
+
+
+804: SPELL OF MASTERY
+You receive 250 points for successfully casting the Spell Of Mastery.
+
+
+805: FINAL SCORE
+Your final score is the sum of all points gained and then is modified by the game difficulty level.
+Intro: score * .5
+Easy: score * .75
+Normal: score * 1
+Hard: score * 2
+Impossible: score * 3
+
+

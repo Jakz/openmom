@@ -8,6 +8,7 @@
 #include "Data.h"
 #include "GfxData.h"
 #include "Localization.h"
+#include "Help.h"
 
 #include "Level.h"
 #include "UnitSpec.h"
@@ -1206,9 +1207,26 @@ void yaml::parseLocalization()
   }
 }
 
+void yaml::parseHelp()
+{
+  N file = parse("help.yaml");
+  auto entries = file["entries"];
+  
+  for (const auto entry : entries)
+  {
+    const std::string& key = entry.first;
+    
+    // support for structure [lbx, string] only for now
+    assert(entry.second.IsSequence() && entry.second.size() == 2);
+    help::Data::mapping[key] = help::Data::getFromLBX(entry.second[1].asString());
+  }
+    
+}
+
 void yaml::parse()
 {
   parseLocalization();
+  parseHelp();
   parseRaces();
   parseSkills();
   parseLevels();

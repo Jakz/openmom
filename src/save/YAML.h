@@ -30,6 +30,7 @@ private:
 public:
   static void parse();
   static void parseLocalization();
+  static void parseHelp();
   static void parseSkills();
   static void parseSpells();
   static void parseUnits();

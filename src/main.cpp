@@ -23,7 +23,6 @@ void saveScreenshots(Game* game);
 
 int main(int argc, char* arg[])
 {
-  yaml::parse();
   //return 0;
   
   lbx::Repository::init();
@@ -87,6 +86,8 @@ int main(int argc, char* arg[])
   lbx::Repository::loadLBX(LBXID::VORTEX);
   lbx::Repository::loadLBX(LBXID::WIZLAB);
   lbx::Repository::loadLBX(LBXID::WIZARDS);
+  
+  yaml::parse();
   
   Viewport::createMapTextureAtlas();
   
