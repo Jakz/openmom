@@ -15,8 +15,6 @@
 #include <functional>
 #include <vector>
 
-typedef std::function<void()> Action;
-
 class Button;
 class Clickable;
 class LocalPlayer;
@@ -84,8 +82,8 @@ public:
   
   friend class ViewManager;
   
-  Action buildSwitchViewAction(View* view, ViewID newView);
-  Action buildSwitchOverviewAction(View* view, ViewID newView);
+  action_t buildSwitchViewAction(View* view, ViewID newView);
+  action_t buildSwitchOverviewAction(View* view, ViewID newView);
   
 };
 

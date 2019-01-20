@@ -13,12 +13,12 @@
 
 #include "ViewManager.h"
 
-Action View::buildSwitchViewAction(View* view, ViewID newView)
+action_t View::buildSwitchViewAction(View* view, ViewID newView)
 {
   return [&](){gvm->switchView(newView);};
 }
 
-Action View::buildSwitchOverviewAction(View* view, ViewID newView)
+action_t View::buildSwitchOverviewAction(View* view, ViewID newView)
 {
   return [&](){gvm->switchOverview(newView);};
 }
@@ -63,10 +63,14 @@ bool View::doMouseReleased(u16 x, u16 y, MouseButton b)
   
   for (const auto& c : areas)
   {
-    if (c && c->isActive() && c->isCorrectButton(b) && c->isInside(x,y) && c->getAction())
+    if (c && c->isActive() && c->isInside(x,y) && c->getAction())
     {
-      c->getAction()(x,y);
-      handled = true;
+      if (c->getAction())
+        if (c->getAction()(x,y,b))
+        {
+          handled = true;
+          break;
+        }
     }
   }
   

@@ -47,7 +47,7 @@ private:
   SkillDraw skillDraw;
   Point c;
   
-  Unit* unit;
+  const Unit* unit;
   u32 hireCost;
   
   void draw() override;
@@ -66,7 +66,7 @@ public:
   bool mousePressed(u16 x, u16 y, MouseButton b) override;
   
   void setHeroHire(Hero* hero, u32 cost);
-  void setUnit(Unit* unit, bool withButtons = true);
+  void setUnit(const Unit* unit, bool withButtons = true);
 };
 
 #endif

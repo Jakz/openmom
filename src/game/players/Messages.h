@@ -23,9 +23,7 @@ class Place;
 class Building;
 
 namespace msgs {
-  
-  typedef std::function<void()> Action;
-  
+      
   class Message
   {
   protected:
@@ -66,8 +64,8 @@ namespace msgs {
   class Confirm : public Message
   {
   public:
-    Confirm(std::string message, Action&& action) : Message(Type::CONFIRM, message), action(action) { }
-    const Action action;
+    Confirm(std::string message, action_t&& action) : Message(Type::CONFIRM, message), action(action) { }
+    const action_t action;
   };
   
   class NewBuilding : public Message

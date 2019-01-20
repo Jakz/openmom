@@ -250,7 +250,7 @@ public:
 };
 
 //TODO: this constructs a std::string which is not efficient, we should find a way to invoke keyForString on string_view type
-inline I18 operator"" _i18n(const char* key, size_t size) { return i18n::keyForString(key); }
+inline I18 operator"" _i18k(const char* key, size_t size) { return i18n::keyForString(key); }
 
 struct i18n_cached_key
 {

@@ -140,7 +140,7 @@ void UnitDetailView::draw()
   else
   {
     Gfx::draw(hero_portrait_border, c.x + 8, c.y + 6);
-    UnitDraw::drawHeroPortrait(static_cast<Hero*>(unit), c.x + 9, c.y + 7);
+    UnitDraw::drawHeroPortrait(static_cast<const Hero*>(unit), c.x + 9, c.y + 7);
   }
   
   // draw unit name
@@ -172,7 +172,7 @@ void UnitDetailView::setHeroHire(Hero* hero, u32 cost)
   skillDraw.reset(unit);
 }
 
-void UnitDetailView::setUnit(Unit *unit, bool withButtons)
+void UnitDetailView::setUnit(const Unit *unit, bool withButtons)
 {
   this->unit = unit;
   switchMode(withButtons ? Mode::NORMAL : Mode::VIEW_ONLY);

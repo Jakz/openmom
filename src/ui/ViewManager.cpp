@@ -271,3 +271,8 @@ void ViewManager::setPlayer(LocalPlayer* player)
 
 
 void ViewManager::showMessage(const msgs::Message* message) { messageView()->showMessage(message); }
+void ViewManager::showUnitDetail(const Unit* unit, bool withButtons)
+{
+  unitDetailView()->setUnit(unit, withButtons);
+  switchOverview(VIEW_UNIT);
+}

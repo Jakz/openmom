@@ -40,6 +40,23 @@ ArmiesView::ArmiesView(ViewManager* gvm) : View(gvm), offset(0), unit(nullptr), 
   buttons[NEXT1] = Button::buildTristate("Next1", 60, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
   buttons[PREV2] = Button::buildTristate("Prev2", 250, 26, LSI(ARMYLIST, 1))->setAction(lambdaScrollUp);
   buttons[NEXT2] = Button::buildTristate("Next1", 250, 139, LSI(ARMYLIST, 2))->setAction(lambdaScrollDown);
+  
+  ClickableGrid* heroesAreas = new ClickableGrid(11, 4, 33, 33, 3, 2, 232, 18);
+  heroesAreas->setCellAction([this](coord_t x, coord_t y, MouseButton b) {
+    if (b == MouseButton::BUTTON_RIGHT)
+    {
+      const size_t heroIndex = y + x*3;
+      const auto& heroes = player->getHeroes();
+      if (heroIndex < heroes.size())
+        this->gvm->showUnitDetail(heroes[heroIndex]);
+      return true;
+    }
+    
+    return false;
+  });
+  addArea(heroesAreas);
+  
+  
 }
 
 void ArmiesView::updateScrollButtons()
@@ -62,13 +79,13 @@ void ArmiesView::draw()
   {
     UnitDraw::drawHeroPortrait(hero, HERO_PORTRAITS[i][0], HERO_PORTRAITS[i][1]);
     // TODO: fixare color map, serve pale red apposita
-    Fonts::drawString(hero->name(), FontFaces::Tiny::WHITE, 27+265*(i/3), 41+51*(i%3), ALIGN_CENTER);
+    Fonts::drawString(hero->firstName(), FontFaces::Tiny::WHITE, 27+265*(i/3), 41+51*(i%3), ALIGN_CENTER);
     ++i;
   }
   
   // draw armies
-  u8 armiesPosition[2] = {78,25};
-  u8 armiesYdelta = 22;
+  static coord_t armiesPosition[2] = { 78,25 };
+  constexpr coord_t armiesYdelta = 22;
   
   // draw at most 6 armies and don't go over the armies count of the player
   auto armies = player->getArmies();

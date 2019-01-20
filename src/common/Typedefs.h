@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
+
+using action_t = std::function<void()>;
 
 #pragma mark Base integral types
 using u8 = uint8_t;

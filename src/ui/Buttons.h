@@ -20,30 +20,27 @@
 
 class FontSpriteSheet;
 
-using Action = std::function<void()>;
-using positioned_action_t = std::function<void(coord_t, coord_t)>;
+using clickable_action_t = std::function<bool(coord_t, coord_t, MouseButton)>;
 
 class Clickable
 {
 protected:
   coord_t x, y, w, h;
-  MouseButton button;
-  positioned_action_t action;
-  Action onEnter;
-  Action onExit;
+  clickable_action_t action;
+  action_t onEnter;
+  action_t onExit;
   
   bool active;
   bool hover;
   
 public:
-  Clickable(u16 x, u16 y, u16 w, u16 h, MouseButton b = BUTTON_LEFT) :
-    x(x), y(y), w(w), h(h), button(b), active(true), hover(false),
+  Clickable(u16 x, u16 y, u16 w, u16 h) :
+    x(x), y(y), w(w), h(h), active(true), hover(false),
     onEnter([](){}), onExit([](){})
   { }
   
   void setXY(coord_t x, coord_t y) { this->x = x; this->y = y; }
   
-  bool isCorrectButton(MouseButton b) const { return b == button; }
   //TODO: removed <= in favor of < for rect check, this was necessary because otherwise ClickableGrid ad a dummy 1 pixel wide cell over the bounds
   bool isInside(coord_t x, coord_t y) const { return x >= this->x && x < this->x+w && y >= this->y && y < this->y+h; }
   virtual bool isActive() const { return active; }
@@ -52,13 +49,24 @@ public:
   inline void activateIf(bool condition) { active = condition; }
   virtual void setPosition(u16 x, u16 y) { this->x = x; this->y = y; }
   
-  Clickable* setAction(positioned_action_t action) { this->action = action; return this; }
-  Clickable* setAction(Action action) { this->action = [action](coord_t, coord_t) { action(); }; return this; }
+  Clickable* setAction(clickable_action_t action) { this->action = action; return this; }
+  Clickable* setAction(action_t action)
+  {
+    this->action = [action](coord_t, coord_t, MouseButton b) {
+      if (b == MouseButton::BUTTON_LEFT)
+      {
+        action();
+        return true;
+      }
+      return false;
+    };
+    return this;
+  }
 
-  inline const positioned_action_t& getAction() const { return action; }
+  inline const clickable_action_t& getAction() const { return action; }
   
-  void setOnEnterAction(Action action) { this->onEnter = action; }
-  void setOnExitAction(Action action) { this->onExit = action; }
+  void setOnEnterAction(action_t action) { this->onEnter = action; }
+  void setOnExitAction(action_t action) { this->onExit = action; }
   
   void mouseEntered()
   {
@@ -80,7 +88,7 @@ class ClickableGrid : public Clickable
 public:
   struct Cell { coord_t x, y; };
 
-  using action_t = std::function<void(coord_t,coord_t)>;
+  using action_t = std::function<bool(coord_t, coord_t, MouseButton)>;
   
 private:
   coord_t cw, ch;
@@ -90,14 +98,18 @@ private:
   
 public:
   ClickableGrid() : ClickableGrid(0,0,1,1,0,0) { }
+  ClickableGrid(coord_t x, coord_t y, coord_t cw, coord_t ch, size_t rows, size_t cols, coord_t mx, coord_t my) :
+    ClickableGrid(x, y, cw, ch, rows, cols) { setMargin(mx, my); }
   ClickableGrid(coord_t x, coord_t y, coord_t cw, coord_t ch, size_t rows, size_t cols) :
     Clickable(x, y, cw*cols, ch*rows),
-    cw(cw), ch(ch), mx(0), my(0), rows(rows), cols(cols), cellAction([](coord_t, coord_t) {})
+    cw(cw), ch(ch), mx(0), my(0), rows(rows), cols(cols), cellAction([](coord_t, coord_t, MouseButton) { return false; })
   { 
-    Clickable::setAction([this](coord_t x, coord_t y) {
+    Clickable::setAction([this](coord_t x, coord_t y, MouseButton bt) {
       const auto cell = getCell(x, y);
       if (cell.x >= 0)
-        cellAction(cell.x, cell.y);
+        return cellAction(cell.x, cell.y, bt);
+      
+      return false;
     });
   }
 
@@ -108,6 +120,21 @@ public:
   }
   
   ClickableGrid* setCellAction(action_t action) { this->cellAction = action; return this; }
+  ClickableGrid* setCellAction(std::function<void(coord_t,coord_t)> action)
+  {
+    setCellAction([action](coord_t x, coord_t y, MouseButton bt) {
+      if (bt == MouseButton::BUTTON_LEFT)
+      {
+        action(x, y);
+        return true;
+      }
+      
+      return false;
+    });
+    
+    return this;
+  }
+
   
   void forEachCell(std::function<void(coord_t,coord_t,coord_t,coord_t)> lambda) const
   {
@@ -149,10 +176,9 @@ public:
   bool handleEvent(u16 x, u16 y, MouseButton b)
   {
     for (const auto& area : areas)
-      if (area->isActive() && area->isCorrectButton(b) && area->isInside(x,y))
+      if (area->isActive() && area->isInside(x,y))
       {
-        area->getAction()(x,y);
-        return true;
+        return area->getAction()(x,y,b);
       }
     
     return false;
@@ -211,7 +237,7 @@ public:
   Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal, pressed) { }
   Button(const std::string& name, u16 x, u16 y, SpriteInfo normal, SpriteInfo pressed, SpriteInfo inactive) : Clickable(x, y, normal.sw(), normal.sh()), name(name), pressed(false), visible(true), gfx(normal, pressed, inactive) { }
 
-  Button* setAction(Action action) { this->action = [action](coord_t, coord_t) { action(); }; return this; }
+  Button* setAction(action_t action) { Clickable::setAction(action); return this; }
   
   ButtonGfx& graphics() { return gfx; }
 
@@ -223,8 +249,7 @@ public:
   
   void setPalette(const Palette* palette) { gfx.palette = palette; }
   
-  inline void execute() { if (action) action(0,0); }
-  virtual void click() { execute(); }
+  virtual void click() { getAction()(0, 0, MouseButton::BUTTON_LEFT); }
   
   inline void showIf(bool condition) { visible = condition;}
   inline Button* hide() { visible = false; return this; }

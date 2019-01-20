@@ -173,8 +173,13 @@ const std::string RaceUnit::name() const {
 #pragma mark Hero
 const std::string Hero::name() const
 {
+  return fmt::format("{} the {}", firstName(), GfxData::unitGfx(spec).name);
+}
+
+const std::string& Hero::firstName() const
+{
   //TODO: choose name according to owner
-  return fmt::format("{} the {}", spec->as<HeroSpec>()->names()[0], GfxData::unitGfx(spec).name);
+  return spec->as<HeroSpec>()->names()[0];
 }
 
 prop_value Hero::getBonusProperty(Property property) const
