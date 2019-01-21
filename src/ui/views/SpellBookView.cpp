@@ -48,13 +48,22 @@ SpellBookView::SpellBookView(ViewManager* gvm) : View(gvm), book(new BookView(6)
   
   addArea((new Clickable(175,165,18,29))->setAction([gvm](){ gvm->closeOverview(); }));
 
-
+  ClickableGrid* spellGrid = new ClickableGrid(topLeftX[0]-2, topLeftY[0]-2, 125, 22, 6, 2, 7, 0);
+  spellGrid->setCellAction([this](coord_t x, coord_t y, MouseButton bt) {
+    if (bt == MouseButton::BUTTON_LEFT)
+      startCast(book->getEntry(x*6 + y));
+    else
+      return true;
+    return true;
+  });
+  addArea(spellGrid);
   
+  /*
   for (u16 k = 0; k < 2; ++k)
     for (u16 i = 0; i < 6;++i)
-      addArea((new Clickable(topLeftX[k]-2,topLeftY[k]+22*i-2,125,22))->setAction([k,i,this](){
+      addArea((new Clickable(topLeftX[k]-2,topLeftY[k]+22*i-2,125,22))->setAction([k,i,this](coord_t, coord_t, MouseButton bt){
         startCast(book->getEntry(k*6 + i));
-      }));
+      }));*/
 }
 
 void SpellBookView::activate()

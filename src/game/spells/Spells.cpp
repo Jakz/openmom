@@ -57,7 +57,7 @@ spell_list& Spells::spellsByRarityAndSchool(SpellRarity rarity, School school)
 }
 
 Spell::Spell(I18 name, SpellType type, SpellRarity rarity, SpellKind kind, SpellDuration duration, School school, Target target, const ManaInfo mana) :
-name(name), type(type), rarity(rarity), kind(kind), duration(duration), school(school), target(target), mana(mana)
+name(name), type(type), rarity(rarity), kind(kind), duration(duration), school(school), target(target), mana(mana), help(nullptr)
 {
   //TODO: non funziona SPELLS[school][rarity].push_back(this);
 }

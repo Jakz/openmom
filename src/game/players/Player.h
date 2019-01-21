@@ -69,6 +69,8 @@ public:
   virtual void combatTurnEnded() = 0;
 };
 
+using item_vault_t = std::array<std::unique_ptr<items::Item>, 4>;
+
 class Player : public PlayerInterface, public CombatPlayerInterface
 {
 protected:
@@ -79,6 +81,8 @@ protected:
   std::list<ManaNode*> nodes;
   /* global spells of the player */
   cast_list spells;
+  
+  item_vault_t _vault;
 
   std::unordered_set<const Retort*> retorts;
 
@@ -126,6 +130,8 @@ public:
   value_t manaRatio(size_t index) const { return manaRatios[index]; }
   value_t getAvailableMana() const { return availableMana; }
   value_t getManaGain() const { return manaGain; }
+  
+  item_vault_t& vault() { return _vault; }
   
   const TaxRate& getTaxRate();
   value_t getFame() const { return fame; }

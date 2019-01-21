@@ -1,4 +1,6 @@
-entries:
+entries:  
   skill_might: [lbx, MIGHT]
+  
+  skill_thrown: [lbx, THROWN]
   
   skill_fire_breath: [lbx, FIRE BREATH]

@@ -132,6 +132,7 @@ bool SpellMechanics::applyTileSpell(const SpellCast& cast, Tile *tile)
     tile->type = newType;
     
     g->world->calcSubTile(tile->position.x, tile->position.y, tile->position.plane);
+    //TODO: also on neighbors
   }
   else if (cast.spell == Spells::RAISE_VOLCANO)
   {

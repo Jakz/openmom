@@ -179,7 +179,10 @@ void ViewManager::draw()
     Gfx::fillRect(0, 0, WIDTH, HEIGHT, Color(0,0,0,180));
 
     for (View *v : overviews)
+    {
       v->doDraw();
+      v->drawPost();
+    }
   }
   
   for (const auto& a : animations)

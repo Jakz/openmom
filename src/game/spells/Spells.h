@@ -95,15 +95,16 @@ struct ManaInfo
 
 class Spell
 {
-  public:
-    const I18 name;
-    const SpellType type;
-    const SpellRarity rarity;
-    const SpellKind kind;
-    const SpellDuration duration;
-    const School school;
-    const Target target;
-    const ManaInfo mana;
+public:
+  const I18 name;
+  const SpellType type;
+  const SpellRarity rarity;
+  const SpellKind kind;
+  const SpellDuration duration;
+  const School school;
+  const Target target;
+  const ManaInfo mana;
+  const help_ref help;
   
   Spell(I18 name, SpellType type, SpellRarity rarity, SpellKind kind, SpellDuration duration, School school, Target target, const ManaInfo mana);
   

@@ -43,6 +43,9 @@ static const Point heroPositions[] = {{32,15},{32,61},{32,107},{167,15},{167,61}
 
 ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
 {
+  mouseX = 0;
+  mouseY = 0;
+  
   buttons.resize(BUTTON_COUNT);
   
   buttons[ALCHEMY] = Button::buildBistate("Alchemy", 236, 157, LSI(ARMYLIST, 7))->setAction([gvm](){gvm->switchOverview(VIEW_ALCHEMY);});
@@ -52,18 +55,21 @@ ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
   {
     ClickableGrid* grid = new ClickableGrid(heroPositions[i].x+38+29*0, heroPositions[i].y+14, 24, 20, 1, 3);
     grid->setMargin(5, 0);
-    grid->setCellAction([this, i](coord_t x, coord_t y) {
-      clickOnHeroItemSlot(i, x);
+    grid->setCellAction([this, i](index_t x, index_t y, MouseButton bt) {
+      clickOnItemSlot(ItemLocation(player->getHeroes()[i], x), bt);
+      return true;
     });
     addArea(grid);
   }
   
   heldItem = nullptr;
+  heldLocation = ItemLocation();
 }
 
 void ArmiesItemsView::activate()
 {
   heldItem = nullptr;
+  heldLocation = ItemLocation();
 }
 
 void ArmiesItemsView::draw()
@@ -82,7 +88,7 @@ void ArmiesItemsView::draw()
     // TODO: unit names and items
     
     // TODO: real colors
-    Fonts::drawString(hero->name(), FontFaces::Small::YELLOW, heroPositions[i].x+35, heroPositions[i].y-2, ALIGN_LEFT);
+    Fonts::drawString(hero->firstName(), FontFaces::Small::YELLOW, heroPositions[i].x+35, heroPositions[i].y-2, ALIGN_LEFT);
     
     Gfx::draw(hero_gold_portrait, heroPositions[i].x-1, heroPositions[i].y-1);
     UnitDraw::drawHeroPortrait(hero, heroPositions[i].x, heroPositions[i].y);
@@ -93,7 +99,7 @@ void ArmiesItemsView::draw()
       const items::Item* item = hero->itemAt(j);
       const Point pos = Point(heroPositions[i].x+40+29*j, heroPositions[i].y+16);
       
-      if (!item)
+      if (!item || heldItem == item)
         Gfx::draw(emptyItemBackground[slots.types[j]], pos);
       else
       {
@@ -104,20 +110,40 @@ void ArmiesItemsView::draw()
         //Gfx::drawGlow(gfx, pos.x+1, pos.y, School::NATURE);
       }
     }
-    
   }
 }
 
-void ArmiesItemsView::clickOnHeroItemSlot(index_t heroIndex, index_t slotIndex)
+void ArmiesItemsView::drawPost()
 {
-  const auto* hero = player->getHeroes()[heroIndex];
-  const auto* item = hero->items()[slotIndex];
-  
-  if (item)
+  if (heldItem)
   {
-    player->send(new msgs::Error("stiquazzi"));
-    gvm->showMessage(new msgs::ItemDetail(item));
+    auto gfx = GfxData::itemGfxSpec(heldItem->type(), heldItem->gfx());
+    Gfx::draw(gfx, mouseX - gfx.sw()/2, mouseY - gfx.sh()/2);
   }
+}
 
-  LOGD("Clicked on slot %d of hero %d", slotIndex, heroIndex);
+void ArmiesItemsView::clickOnItemSlot(ItemLocation location, MouseButton bt)
+{
+  const auto* hero = location.hero;
+  const auto* item = location.type == ItemLocation::Type::HERO ? hero->items()[location.index] : player->vault()[location.index].get();
+  
+  if (bt == MouseButton::BUTTON_LEFT)
+  {
+    /* pickup item */
+    if (item && !heldItem)
+    {
+      
+      heldItem = item;
+    }
+    /* drop in same slot */
+    else if (item && (heldItem == item))
+      heldItem = nullptr;
+      
+  }
+  else if (bt == MouseButton::BUTTON_RIGHT)
+  {
+    if (item)
+      gvm->showMessage(new msgs::ItemDetail(item));
+
+  }
 }
