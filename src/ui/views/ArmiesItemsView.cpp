@@ -53,14 +53,20 @@ ArmiesItemsView::ArmiesItemsView(ViewManager* gvm) : View(gvm)
   
   for (int i = 0; i < MAX_HEROES; ++i)
   {
-    ClickableGrid* grid = new ClickableGrid(heroPositions[i].x+38+29*0, heroPositions[i].y+14, 24, 20, 1, 3);
-    grid->setMargin(5, 0);
+    ClickableGrid* grid = new ClickableGrid(heroPositions[i].x+38+29*0, heroPositions[i].y+14, 24, 20, 1, 3, 5, 0);
     grid->setCellAction([this, i](index_t x, index_t y, MouseButton bt) {
       clickOnItemSlot(ItemLocation(player->getHeroes()[i], x), bt);
       return true;
     });
     addArea(grid);
   }
+  
+  ClickableGrid* vaultGrid = new ClickableGrid(32+36, 173, 21, 17, 1, 4);
+  vaultGrid->setCellAction([this](index_t x, index_t y, MouseButton bt) {
+    clickOnItemSlot(ItemLocation(x), bt);
+    return true;
+  });
+  addArea(vaultGrid);
   
   heldItem = nullptr;
   heldLocation = ItemLocation();
@@ -111,6 +117,17 @@ void ArmiesItemsView::draw()
       }
     }
   }
+  
+  for (int i = 0; i < player->vault().size(); ++i)
+  {
+    const auto& item = player->vault()[i];
+    
+    if (item && (item.get() != heldItem))
+    {
+      auto gfx = GfxData::itemGfxSpec(item->type(), item->gfx());
+      Gfx::draw(gfx, 32+36 + 21*i, 173);
+    }
+  }
 }
 
 void ArmiesItemsView::drawPost()
@@ -124,20 +141,45 @@ void ArmiesItemsView::drawPost()
 
 void ArmiesItemsView::clickOnItemSlot(ItemLocation location, MouseButton bt)
 {
-  const auto* hero = location.hero;
-  const auto* item = location.type == ItemLocation::Type::HERO ? hero->items()[location.index] : player->vault()[location.index].get();
+  Hero* hero = location.hero;
+  const items::Item* item = location.type == ItemLocation::Type::HERO ? hero->items()[location.index] : player->vault()[location.index].get();
   
   if (bt == MouseButton::BUTTON_LEFT)
   {
     /* pickup item */
     if (item && !heldItem)
     {
-      
       heldItem = item;
+      heldLocation = location;
     }
     /* drop in same slot */
     else if (item && (heldItem == item))
+    {
       heldItem = nullptr;
+      heldLocation = ItemLocation();
+    }
+    else if (heldItem && !item)
+    {
+      bool isFreeTransport = location.type == ItemLocation::Type::VAULT; // || same location
+     
+      if (isFreeTransport)
+      {
+        const items::Item* temp = nullptr;
+        
+        if (heldLocation.type == ItemLocation::Type::VAULT)
+          temp = player->vault()[heldLocation.index].release();
+        else
+          temp = player->getHeroes()[heldLocation.index]->items().retrieve(heldLocation.index);
+        
+        if (location.type == ItemLocation::Type::VAULT)
+          player->vault()[location.index].reset(temp);
+        else
+          hero->items().set(location.index, temp);
+        
+        heldItem = nullptr;
+        heldLocation = ItemLocation();
+      }
+    }
       
   }
   else if (bt == MouseButton::BUTTON_RIGHT)

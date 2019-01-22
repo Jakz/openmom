@@ -27,11 +27,11 @@ private:
   struct ItemLocation
   {
     enum class Type { HERO, VAULT, NONE } type;
-    const Hero* hero;
+    Hero* hero;
     size_t index;
     
     ItemLocation() : type(Type::NONE) { }
-    ItemLocation(const Hero* hero, size_t index) : type(Type::HERO), hero(hero), index(index) { }
+    ItemLocation(Hero* hero, size_t index) : type(Type::HERO), hero(hero), index(index) { }
     ItemLocation(size_t index) : type(Type::VAULT), hero(nullptr), index(index) { }
   };
   

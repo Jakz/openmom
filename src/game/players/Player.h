@@ -69,7 +69,7 @@ public:
   virtual void combatTurnEnded() = 0;
 };
 
-using item_vault_t = std::array<std::unique_ptr<items::Item>, 4>;
+using item_vault_t = std::array<std::unique_ptr<const items::Item>, 4>;
 
 class Player : public PlayerInterface, public CombatPlayerInterface
 {

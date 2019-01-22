@@ -104,14 +104,14 @@ namespace items
   class ItemSlots
   {
   private:
-    std::array<const Item*, SIZE> _items; //TODO: unique_ptr?
+    std::array<std::unique_ptr<const Item>, SIZE> _items;
     
     /* we keep this cached because it's useful to have it cached */
     skill_list _skills;
 
     void cacheSkills()
     {
-      std::for_each(_items.begin(), _items.end(), [this](const Item* item) {
+      std::for_each(_items.begin(), _items.end(), [this](const typename decltype(_items)::value_type& item) {
         if (item != nullptr)
           _skills.insert(_skills.end(), item->skills().begin(), item->skills().end());
       });
@@ -127,8 +127,16 @@ namespace items
     iterator begin() const { return _items.begin(); }
     iterator end() const { return _items.end(); }
     
-    void set(size_t index, const Item* item) { _items[index] = item; cacheSkills(); }
-    const Item* operator[](size_t index) const { return _items[index]; }
+    void set(size_t index, const Item* item)
+    {
+      assert(!_items[index]);
+      _items[index].reset(item);
+      cacheSkills();
+    }
+    
+    const Item* retrieve(size_t index) { return _items[index].release(); }
+    
+    const items::Item* operator[](size_t index) const { return _items[index].get(); }
   };
   
   class PropertyAffixSpec
