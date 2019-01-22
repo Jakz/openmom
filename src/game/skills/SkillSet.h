@@ -54,7 +54,7 @@ public:
   
   void purgeCombatSpells()
   {
-    auto nend = std::remove_if(spells.begin(), spells.end(), [] (const cast_list::value_type& spell) { return spell.castedInCombat; });
+    auto nend = std::remove_if(spells.begin(), spells.end(), [] (const cast_list::value_type& spell) { return spell.castInCombat; });
     spells.erase(nend, spells.end());
   }
   

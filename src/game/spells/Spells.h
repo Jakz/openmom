@@ -82,14 +82,14 @@ enum class Target : u8
 
 struct ManaInfo
 {
-  const s16 researchCost;
-  const s16 manaCost;
-  const s16 manaCostDelta;
-  const s16 combatManaCost;
-  const s16 combatManaCostDelta;
-  const s16 upkeep;
+  const value_t researchCost;
+  const value_t manaCost;
+  const value_t manaCostDelta;
+  const value_t combatManaCost;
+  const value_t combatManaCostDelta;
+  const value_t upkeep;
   
-  ManaInfo(s16 rc, s16 mc, s16 mcd, s16 cmc, s16 cmcd, s16 upk) :
+  ManaInfo(value_t rc, value_t mc, value_t mcd, value_t cmc, value_t cmcd, value_t upk) :
   researchCost(rc), manaCost(mc), manaCostDelta(mcd), combatManaCost(cmc), combatManaCostDelta(cmcd), upkeep(upk) { }
 };
 
@@ -192,23 +192,44 @@ public:
   const SummonSpec* unit;
 };
 
+class SpellCaster
+{
+  enum class Type { WIZARD, UNIT };
+  
+  Type type;
+  union { const Player* _player; const Unit* _unit; };
+  
+public:
+  SpellCaster(const Player* player) : type(Type::WIZARD), _player(player) { }
+  SpellCaster(const Unit* unit) : type(Type::UNIT), _unit(unit) { }
+  bool isWizard() const { return type == Type::WIZARD; }
+  
+  const Player* player() const { return _player; }
+  const Unit* unit() const { return _unit; }
+};
 
 class SpellCast
 {
+private:
+  SpellCaster _caster;
+  
 public:
-  const Player* player;
   const Spell* spell;
-  u16 extraMana;
+  value_t extraMana;
   bool isVariable;
-  bool castedInCombat;
+  bool castInCombat;
 
   SpellCast(const Player* player, const Spell* spell, u16 extraMana = 0) : SpellCast(player, spell, false, extraMana) { }
-  SpellCast(const Player* player, const Spell* spell, bool castedInCombat, u16 extraMana = 0) : player(player), spell(spell), extraMana(extraMana), isVariable(extraMana > 0), castedInCombat(castedInCombat) { }
+  SpellCast(const Player* player, const Spell* spell, bool castInCombat, u16 extraMana = 0) : _caster(player), spell(spell), extraMana(extraMana), isVariable(extraMana > 0), castInCombat(castInCombat) { }
   
   bool operator==(const Spell* spell) const { return this->spell == spell; }
 
   template<typename T> const T* as() const { return static_cast<const T*>(spell); }
 
+  value_t totalMana() const { return (castInCombat ? spell->mana.combatManaCost : spell->mana.manaCost) + extraMana; }
+  
+  const SpellCaster& caster() const { return _caster; }
+  
   const UnitSpell* asUnitSpell() const { return as<UnitSpell>(); }
   const CitySpell* asCitySpell() const { return as<CitySpell>(); }
   const CombatEnchSpell* asCombatEnchSpell() { return spell->type == SpellType::COMBAT_ENCHANT ? as<CombatEnchSpell>() : nullptr; }

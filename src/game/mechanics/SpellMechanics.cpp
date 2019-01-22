@@ -180,22 +180,30 @@ value_t SpellMechanics::actualResearchGain(const Player *player, const Spell *sp
   return research;
 }
 
-bool SpellMechanics::willDispel(const SpellCast &cast, const SpellCast &dispelCast)
+float SpellMechanics::computeDispelChance(const SpellCast& cast, const SpellCast& dispelCast, float dispelMultiplier)
 {
-  value_t dispelMana = dispelCast.spell->mana.combatManaCost + dispelCast.extraMana;
+  value_t dispelMana = dispelCast.totalMana();
+  value_t castMana = cast.totalMana();
+
+  dispelMana *= dispelMultiplier;
   
-  // TODO: only combat mana cost of spell to dispel is considered, should we distinguish
-  // ever lasting
-  float chance = dispelMana / (dispelMana + cast.spell->mana.combatManaCost);
+  /* runemaster helps dispelling */
+  if (dispelCast.caster().isWizard() && dispelCast.caster().player()->hasRetort("runemaster"))
+    dispelMana *= 2.0f;
   
-  // TODO: are traits like ARCHMAGE + NATURE MASTERY cumulative?
-  if (cast.player->hasRetort("archmage") || cast.player->hasRetort("runemaster"))
-    chance /= 2.0f;
+  if (cast.caster().isWizard())
+  {
+    /* archmage prevents dispelling */
+    if (cast.caster().player()->hasRetort("archmage"))
+      castMana += cast.totalMana();
+    
+    /* school mastery prevents dispelling */
+    if (cast.caster().player()->hasMastery(cast.spell->school))
+      castMana += cast.totalMana();
+
+  }
   
-  if (cast.player->hasMastery(cast.spell->school))
-    chance /= 2.0f;
-  
-  return Math::chance(chance);
+  return dispelMana / (float)(dispelMana + castMana);
 }
 
 

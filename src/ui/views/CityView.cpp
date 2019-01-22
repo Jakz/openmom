@@ -84,8 +84,9 @@ void CityView::clickOnCitySpell(size_t index)
   
   if (realIndex < spells.size())
   {
-    const SpellCast& cast = *next(spells.begin(), realIndex);
-    if (cast.player == player)
+    const SpellCast& cast = spells[realIndex];
+    assert(cast.caster().isWizard());
+    if (cast.caster().player() == player)
     {
       player->send(new msgs::Confirm(fmt::sprintf("Do you wish to turn off ^s%s^^?", i18n::s(cast.spell->name)), [&]() {
         city->removeSpell(cast);
@@ -258,7 +259,8 @@ void CityView::draw()
   for (int i = 0; i < CITY_ENCHANT_PER_PAGE && it != spells.end(); ++i, ++it)
   {
     const SpellCast& cast = *it;
-    const FontSpriteSheet* face = Fonts::fontForColor(cast.player->color);
+    assert(cast.caster().isWizard());
+    const FontSpriteSheet* face = Fonts::fontForColor(cast.caster().player()->color);
     //Fonts::drawString(i18n::s(cast.spell->name), face, 138, 50+7*i, ALIGN_LEFT);
     Fonts::drawString(fmt::sprintf("%s%d", i18n::s(cast.spell->name), cityEnchantPage*CITY_ENCHANT_PER_PAGE + i), face, 138, 50+7*i, ALIGN_LEFT);
   }

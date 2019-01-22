@@ -32,7 +32,7 @@ public:
   value_t actualManaCost(Player* player, const Spell* spell, bool combat);
   value_t actualResearchGain(const Player* player, const Spell* spell);
   
-  bool willDispel(const SpellCast& cast, const SpellCast& dispelCast);
+  float computeDispelChance(const SpellCast& cast, const SpellCast& dispelCast, float dispelMultiplier);
   
   count_t guaranteedSpellAmountForRarity(SpellRarity rarity, School school, count_t books);
   spell_rarity_map<s32> guaranteedSpells(School school, u32 books);
