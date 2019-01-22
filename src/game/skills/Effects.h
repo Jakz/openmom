@@ -151,8 +151,8 @@ public:
 class SimpleParametricEffect : public SimpleEffect
 {
 public:
-  SimpleParametricEffect(SkillEffect::Type type, Type effect, s16 param) : SimpleEffect(type, effect), param(param) { }
-  const s16 param;
+  SimpleParametricEffect(SkillEffect::Type type, Type effect, value_t param) : SimpleEffect(type, effect), param(param) { }
+  const value_t param;
 };
 
 class PropertyBonus : public SkillEffect
@@ -167,17 +167,17 @@ public:
   };
   
 protected:
-  PropertyBonus(SkillEffect::Type type, Property property, Mode mode, s16 value) : SkillEffect(type), property(property), mode(mode), value(value) { }
+  PropertyBonus(SkillEffect::Type type, Property property, Mode mode, value_t value) : SkillEffect(type), property(property), mode(mode), value(value) { }
   
 public:
 
   const Mode mode;
   const Property property;
-  const s16 value;
+  const value_t value;
   
   bool sameProperty(Property property) const { return this->property == property; }
   
-  virtual s16 getValue(const Unit* unit) const { return value; }
+  virtual value_t getValue(const Unit* unit) const { return value; }
   
   Order compare(const Unit* unit, const SkillEffect* other) const override
   {
@@ -205,8 +205,8 @@ public:
 class UnitBonus : public PropertyBonus
 {
 public:
-  UnitBonus(Property property, Mode mode, s16 value) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, mode, value) { }
-  UnitBonus(Property property, s16 value) : UnitBonus(property, PropertyBonus::Mode::ADDITIVE, value) { }
+  UnitBonus(Property property, Mode mode, value_t value) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, mode, value) { }
+  UnitBonus(Property property, value_t value) : UnitBonus(property, PropertyBonus::Mode::ADDITIVE, value) { }
 };
 
 class UnitLevelBonus : public UnitBonus
@@ -217,7 +217,7 @@ private:
 public:
   UnitLevelBonus(Property property, float multiplier) : UnitBonus(property, 0), multiplier(multiplier) { }
 
-  s16 getValue(const Unit* unit) const override;
+  value_t getValue(const Unit* unit) const override;
 };
 
 class FilterUnitBonus : public UnitBonus
@@ -226,8 +226,8 @@ private:
   predicate<const Unit*> filter;
   
 public:
-  FilterUnitBonus(Property property, s16 value, School school);
-  s16 getValue(const Unit* unit) const override;
+  FilterUnitBonus(Property property, value_t value, School school);
+  value_t getValue(const Unit* unit) const override;
 };
 
 class ArmyBonus : public PropertyBonus
@@ -238,9 +238,9 @@ protected:
 public:
   const enum class Type { WHOLE_ARMY, NORMAL_UNITS } target;
   
-  ArmyBonus(Property property, Mode mode, s16 value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, mode, value), target(target) { }
-  ArmyBonus(Property property, s16 value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, PropertyBonus::Mode::ADDITIVE, value), target(target) { }
-  s16 getValue(const Unit* unit) const override;
+  ArmyBonus(Property property, Mode mode, value_t value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, mode, value), target(target) { }
+  ArmyBonus(Property property, value_t value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, PropertyBonus::Mode::ADDITIVE, value), target(target) { }
+  value_t getValue(const Unit* unit) const override;
 };
 
 class ArmyLevelBonus : public ArmyBonus
@@ -251,7 +251,7 @@ private:
 public:
   ArmyLevelBonus(Property property, float multiplier, Type target) : ArmyBonus(property, 0, target), multiplier(multiplier) { }
   
-  s16 getValue(const Unit* unit) const override;
+  value_t getValue(const Unit* unit) const override;
 };
 
 class CombatBonus : public SkillEffect
@@ -270,12 +270,12 @@ public:
     DEFENDER,
   };
   
-  CombatBonus(Property property, s16 value, Phase trigger, Target target, bool boundToSkill) : SkillEffect(SkillEffect::Type::COMBAT_BONUS), property(property), value(value), trigger(trigger), target(target), boundToSkill(boundToSkill) { }
+  CombatBonus(Property property, value_t value, Phase trigger, Target target, bool boundToSkill) : SkillEffect(SkillEffect::Type::COMBAT_BONUS), property(property), value(value), trigger(trigger), target(target), boundToSkill(boundToSkill) { }
   
   const Phase trigger;
   const Target target;
   const Property property;
-  const s16 value;
+  const value_t value;
   const bool boundToSkill; // TODO wtf?
 };
 
@@ -314,9 +314,9 @@ private:
   value_t _strength;
   
 public:
-  SpecialAttackEffect(SpecialAttackType type, s16 strength) : SkillEnumEffect(type), _strength(strength) { }
+  SpecialAttackEffect(SpecialAttackType type, value_t strength) : SkillEnumEffect(type), _strength(strength) { }
   
-  s16 strength() const { return _strength; }
+  value_t strength() const { return _strength; }
 };
 
 //TODO: technically is a combat instant spell
@@ -326,15 +326,15 @@ class SpellGrantEffect : public SkillEffect
 {
 private:
   const Spell* _spell;
-  const u16 _times;
-  const s16 _strength;
+  const value_t _times;
+  const value_t _strength;
   
 public:
-  SpellGrantEffect(const Spell* spell, const u16 times, const s16 strength = 0) : SkillEffect(SkillEffect::Type::GRANT_SPELL), _spell(spell), _times(times), _strength(strength) { }
+  SpellGrantEffect(const Spell* spell, const value_t times, const value_t strength = 0) : SkillEffect(SkillEffect::Type::GRANT_SPELL), _spell(spell), _times(times), _strength(strength) { }
   
   const Spell* spell() const { return _spell; }
-  u16 times() const { return _times; }
-  s16 strength() const { return _strength; }
+  value_t times() const { return _times; }
+  value_t strength() const { return _strength; }
 };
 
 using effect_init_list = const std::initializer_list<const SkillEffect*>;
@@ -399,7 +399,7 @@ public:
 };
 
 //TODO: to remove after hardcoded effects has been removed
-static const effect_list unit_bonus_build(std::initializer_list<Property> properties, s16 value)
+static const effect_list unit_bonus_build(std::initializer_list<Property> properties, value_t value)
 {
   effect_list effects;
   effects.resize(properties.size());
