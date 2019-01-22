@@ -27,7 +27,7 @@ public:
     return path;
   }
   
-  Path findFile(const Path& folder, const std::string& name) override
+  Path findFile(const Path& folder, const std::string& name) const override
   {
     DIR *dir;
     struct dirent *ent;

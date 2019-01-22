@@ -20,6 +20,12 @@ public:
     // TODO
     return path;
   }
+
+  Path findFile(const Path& folder, const std::string& name) const override
+  {
+    return folder + name;
+  }
+
 };
 
 Platform* Platform::instance()
@@ -63,7 +69,6 @@ void init()
 
 int main(int argc, char* arg[])
 {
-  yaml::parse();
   //return 0;
 
   lbx::Repository::init();
@@ -124,8 +129,11 @@ int main(int argc, char* arg[])
   lbx::Repository::loadLBX(LBXID::UNITVIEW);
   lbx::Repository::loadLBX(LBXID::UNITS1);
   lbx::Repository::loadLBX(LBXID::UNITS2);
+  lbx::Repository::loadLBX(LBXID::VORTEX);
   lbx::Repository::loadLBX(LBXID::WIZLAB);
   lbx::Repository::loadLBX(LBXID::WIZARDS);
+
+  yaml::parse();
 
   Viewport::createMapTextureAtlas();
   /*return 0;*/
