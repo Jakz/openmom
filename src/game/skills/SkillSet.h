@@ -60,7 +60,6 @@ public:
   
   bool hasSpell(const Spell* spell) const;
   bool hasSkill(const Skill* skill) const;
-  bool hasSkillEffect(const SkillEffect* effect) const;
   bool hasSimpleEffect(SimpleEffect::Type type) const;
     
   bool has(const std::function<bool(const SkillEffect*)>& predicate) const;

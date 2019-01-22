@@ -141,8 +141,8 @@ public:
   const combat::Combat* getCombat() const { return combat; }
   void setCombat(combat::Combat* combat) { this->combat = combat; }
   
-  s32 baseResearchPoints() const { return researchGain + manaRatios[1]; }
-  s32 researchPoints() const;
+  value_t baseResearchPoints() const { return researchGain + manaRatios[1]; }
+  value_t researchPoints() const;
   
   void setManaRatios(value_t m, value_t r, value_t s) { manaRatios[0] = m; manaRatios[1] = r; manaRatios[2] = s; }
   

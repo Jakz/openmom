@@ -30,33 +30,33 @@ private:
   
   const std::string name;
   
-  u16 population;
-  u16 maxPopulation;
-  u16 growthRate;
+  value_t population;
+  value_t maxPopulation;
+  value_t growthRate;
   
   Position position;
   
   std::set<const Building*> buildings;
   const Productable* production;
-  s16 productionPool;
+  value_t productionPool;
   
-  s16 reservedPopulation;
-  s16 workers;
-  s16 unrest;
-  s16 farmers;
+  value_t reservedPopulation;
+  value_t workers;
+  value_t unrest;
+  value_t farmers;
   
-  s16 necessaryFood;
-  s16 food;
+  value_t necessaryFood;
+  value_t food;
   
-  s16 work;
+  value_t work;
   
   Upkeep upkeep;
   
-  s16 gold;
+  value_t gold;
   
-  s16 mana;
+  value_t mana;
   
-  s16 knowledge;
+  value_t knowledge;
   
   mutable bool revalidateLayout; // TODO: should be here?
   
@@ -68,7 +68,7 @@ private:
   
 
 public:
-  City(Player *owner, std::string name, u16 population, Position position);
+  City(Player *owner, std::string name, value_t population, Position position);
   
   const std::string& getName() const { return name; }
   u16 tileSize() const
@@ -87,16 +87,16 @@ public:
   bool isOutpost() const { return isStillOutpost; }
   Upkeep getUpkeep() const { return upkeep; }
   Upkeep getProduction() const { return Upkeep(gold, mana, food); }
-  s32 getKnowledge() const { return knowledge; }
-  s32 getWork() const { return work; }
+  value_t getKnowledge() const { return knowledge; }
+  value_t getWork() const { return work; }
   
-  u16 getPopulationInThousands() const { return getPopulation() / 1000; }
-  u16 getPopulation() const { return population; }
-  u16 getMaxPopulation() const { return maxPopulation; }
+  value_t getPopulationInThousands() const { return getPopulation() / 1000; }
+  value_t getPopulation() const { return population; }
+  value_t getMaxPopulation() const { return maxPopulation; }
   
   Player* getOwner() const { return owner; }
   
-  u16 sightRange() { return 2; } // TODO
+  value_t sightRange() { return 2; } // TODO
   
   bool hasPlacement(CityPlacement flag) const { return (placement & flag) != 0; }
   void setPlacement(CityPlacement flag) { placement = static_cast<CityPlacement>(placement | flag); }

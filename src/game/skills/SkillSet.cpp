@@ -145,20 +145,6 @@ bool SkillSet::has(MovementType type) const {
   return hasType && !hasPreventType;
 }
 
-bool SkillSet::hasSkillEffect(const SkillEffect* effect) const
-{
-  for (auto skill : *this)
-  {
-    const effect_list& effects = skill->getEffects();
-    
-    for (const auto e : effects)
-      if (e == effect)
-        return true;
-  }
-  
-  return false;
-}
-
 bool SkillSet::hasSimpleEffect(SimpleEffect::Type type) const
 {
   return skills::hasSimpleEffect(*this, type);
