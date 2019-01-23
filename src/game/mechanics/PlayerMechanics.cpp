@@ -128,6 +128,7 @@ value_t PlayerMechanics::computeManaFromNodes(const Player *player)
 value_t PlayerMechanics::computeResearchGain(const Player* player)
 {
   value_t knowledge = 0;
+
   for (auto c : player->cities)
     knowledge += c->getKnowledge();
   return knowledge;

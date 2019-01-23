@@ -72,6 +72,9 @@ public:
   virtual bool isCompound() const { return false; }
   virtual size_t size() const { return 1; }
 
+  /* get value of property for unit having this effect */
+  virtual value_t getUnitPropertyValue(const Unit* unit, Property property, value_t value) const { return value;  }
+
   void setGroup(const SkillEffectGroup* group, SKillEffectGroupParam param = 0) { this->_group = group; this->_groupParam = param; }
   const SkillEffectGroup* group() const { return _group; }
   SKillEffectGroupParam groupParam() const { return _groupParam;  }
@@ -168,16 +171,15 @@ public:
   
 protected:
   PropertyBonus(SkillEffect::Type type, Property property, Mode mode, value_t value) : SkillEffect(type), property(property), mode(mode), value(value) { }
-  
+
 public:
 
   const Mode mode;
   const Property property;
   const value_t value;
   
-  bool sameProperty(Property property) const { return this->property == property; }
-  
   virtual value_t getValue(const Unit* unit) const { return value; }
+  bool sameProperty(Property property) const { return this->property == property; }
   
   Order compare(const Unit* unit, const SkillEffect* other) const override
   {
@@ -200,6 +202,8 @@ public:
       }
     }
   }
+
+  value_t getUnitPropertyValue(const Unit* unit, Property property, value_t value) const override { return value + getValue(unit); }
 };
 
 class UnitBonus : public PropertyBonus
@@ -207,6 +211,7 @@ class UnitBonus : public PropertyBonus
 public:
   UnitBonus(Property property, Mode mode, value_t value) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, mode, value) { }
   UnitBonus(Property property, value_t value) : UnitBonus(property, PropertyBonus::Mode::ADDITIVE, value) { }
+
 };
 
 class UnitLevelBonus : public UnitBonus

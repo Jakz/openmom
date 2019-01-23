@@ -84,10 +84,10 @@ public:
   typedef std::function<CastResult(const combat::Combat*, const Unit*, const SpellCast&, Property property)> lambda_type;
   CombatEnchModifier(std::initializer_list<const UnitBonus*> effects) : CombatEnchEffect(UNIT_MODIFIER), effects(effects) { }
   
-  s16 apply(const combat::Combat* combat, const SpellCast& cast, const Unit* unit, Property property) const;
+  value_t apply(const combat::Combat* combat, const SpellCast& cast, const Unit* unit, Property property) const;
   
 private:
-  s16 doApply(const Unit* unit, Property property) const
+  value_t doApply(const Unit* unit, Property property) const
   {
     s16 bonus = 0;
     for (auto e : effects)
