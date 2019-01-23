@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "LBXRepository.h"
 
 #include "format.h"
@@ -255,8 +257,8 @@ public:
 
 void drawSprite(const u8* data, int w, int h, int& sx, int& sy, int S, const Palette* palette, bool autoClip = true, int cw = std::numeric_limits<int>::max(), int ch = std::numeric_limits<int>::max())
 {
-  cw = std::min(w, cw);
-  ch = std::min(h, ch);
+  cw = w < cw ? w : cw;
+  ch = h < ch ? h : ch;
   
   u8* tdata = new u8[cw*ch*3 * S*S];
   
@@ -1013,7 +1015,9 @@ public:
   }
 };
 
-
+#ifdef _WIN32
+#define LBX_STATUS_PATH "C:\\Users\\Jack\\Documents\\dev\\openmom\\data"
+#endif
 
 void loadStatus()
 {
@@ -1102,3 +1106,44 @@ int main(int argc, char **argv) {
 
   return result;
 }
+
+#ifdef _WIN32
+
+#include "platform/Path.h"
+#include "platform/platform.h"
+
+class PlatformWin : public Platform
+{
+public:
+  Path getResourcePath() const override
+  {
+    return "C:\\Users\\Jack\\Documents\\dev\\openmom";
+  }
+
+  bool exists(const Path& path) const override
+  {
+    struct stat buffer;
+    return stat(path.c_str(), &buffer) == 0;
+  }
+
+  Path absolute(const Path& path) const override
+  {
+    // TODO
+    return path;
+  }
+
+  Path findFile(const Path& folder, const std::string& name) const override
+  {
+    return folder + name;
+  }
+
+};
+
+Platform* Platform::instance()
+{
+  static PlatformWin platform;
+  return &platform;
+}
+
+
+#endif

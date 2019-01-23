@@ -11,11 +11,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LbxLibrary", "LbxLibrary\LbxLibrary.vcxproj", "{8375CCDD-3690-4E7E-BD6D-819FEA59D523}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LbxViewer", "LBXViewer\LbxViewer.vcxproj", "{F86C3C65-7348-42C3-81AA-59C3F3702A40}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Code\Code.vcxitems*{05f4e4b4-e97f-4b89-808e-13b45975f7f4}*SharedItemsImports = 4
 		Code\Code.vcxitems*{d622248b-f310-4b3b-b920-94fd6f92bce1}*SharedItemsImports = 9
 		Code\Code.vcxitems*{e6a07d2d-8510-415e-a6f6-5de5e121e2f7}*SharedItemsImports = 4
+		Code\Code.vcxitems*{f86c3c65-7348-42c3-81aa-59c3f3702a40}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,6 +51,14 @@ Global
 		{8375CCDD-3690-4E7E-BD6D-819FEA59D523}.Release|x64.Build.0 = Release|x64
 		{8375CCDD-3690-4E7E-BD6D-819FEA59D523}.Release|x86.ActiveCfg = Release|Win32
 		{8375CCDD-3690-4E7E-BD6D-819FEA59D523}.Release|x86.Build.0 = Release|Win32
+		{F86C3C65-7348-42C3-81AA-59C3F3702A40}.Debug|x64.ActiveCfg = Debug|x64
+		{F86C3C65-7348-42C3-81AA-59C3F3702A40}.Debug|x64.Build.0 = Debug|x64
+		{F86C3C65-7348-42C3-81AA-59C3F3702A40}.Debug|x86.ActiveCfg = Debug|Win32
+		{F86C3C65-7348-42C3-81AA-59C3F3702A40}.Debug|x86.Build.0 = Debug|Win32
+		{F86C3C65-7348-42C3-81AA-59C3F3702A40}.Release|x64.ActiveCfg = Release|x64
+		{F86C3C65-7348-42C3-81AA-59C3F3702A40}.Release|x64.Build.0 = Release|x64
+		{F86C3C65-7348-42C3-81AA-59C3F3702A40}.Release|x86.ActiveCfg = Release|Win32
+		{F86C3C65-7348-42C3-81AA-59C3F3702A40}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
