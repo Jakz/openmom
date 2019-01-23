@@ -116,6 +116,8 @@ prop_value Unit::getBonusProperty(Property property) const
     return 0;
   
 
+  /* TODO: these are considered base since they're not gold in original game
+           so this should be moved in getBaseProperty? */
   bonus += experience.getBonusProperty(property);
   
   switch (property)

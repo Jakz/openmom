@@ -230,7 +230,7 @@ void CityView::draw()
     /* compute and draw missing turns to complete production */
     /* TODO: localize */
     int turns = g->cityMechanics.turnsRequiredForProduction(city);
-    Fonts::drawString(Fonts::format("%d Turn%s", turns, (turns == 1 ? "" : "s")), FontFaces::Small::YELLOW, 316, 139, ALIGN_RIGHT);
+    Fonts::drawString(fmt::format("{} Turn{}", turns, (turns == 1 ? "" : "s")), FontFaces::Small::YELLOW, 316, 139, ALIGN_RIGHT);
     
     /* draw production coins */
     int max = 10;

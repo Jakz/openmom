@@ -80,6 +80,7 @@ public:
   //TODO: manage bonus levels with retorts and such through getBonusProperty
   const Level* getExperienceLevel() const { return experience.level(); }
   experience_t getExperience() const { return experience.xp(); }
+  virtual value_t experienceMultiplier() const { return experience.level()->ordinal(); }
   
   Productable::Type type() const { return spec->productionType(); }
   
@@ -152,6 +153,8 @@ class FantasticUnit : public Unit
 {
 public:
   FantasticUnit(const SummonSpec* spec) : Unit(spec) { }
+  
+  value_t experienceMultiplier() const override { return 1; }
 };
 
 inline Hero* Unit::asHero() { return type() == Productable::Type::HERO ? static_cast<Hero*>(this) : nullptr; }

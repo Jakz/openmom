@@ -71,17 +71,6 @@ public:
 
 using item_vault_t = std::array<std::unique_ptr<const items::Item>, 4>;
 
-enum class PlayerValue
-{
-   RESEARCH,
-   GOLD_GAIN,
-   GOLD_UPKEEP,
-   MANA_GAIN,
-   MAIN_UPKEEP,
-   FOOD_GAIN,
-   FOOD_UPKEEP,
-};
-
 class Player : public PlayerInterface, public CombatPlayerInterface
 {
 protected:

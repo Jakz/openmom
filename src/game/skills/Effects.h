@@ -17,7 +17,7 @@ enum class Property : u8;
 class Unit;
 class SkillEffect;
 
-using SKillEffectGroupParam = value_t;
+using SkillEffectGroupParam = value_t;
 struct SkillEffectGroup
 {
 public:
@@ -34,6 +34,18 @@ public:
   Mode mode() const { return _mode; }
 };
 
+struct ModifierValue
+{
+  enum Priority { FIRST, ANY, LAST } priority;
+  enum Type { FLAT, MULTIPLIER, LEVEL_BASED } type;
+  union {
+    float multiplier;
+    value_t value;
+  };
+  ModifierValue(value_t value) : priority(Priority::ANY), type(Type::FLAT), value(value) { }
+  ModifierValue(float multiplier) : priority(Priority::ANY), type(Type::LEVEL_BASED), multiplier(multiplier) { }
+};
+
 class SkillEffect
 {
 public:
@@ -41,7 +53,7 @@ public:
   
 protected:
   const SkillEffectGroup* _group;
-  SKillEffectGroupParam _groupParam;
+  SkillEffectGroupParam _groupParam;
   
 public:
   const enum class Type : u8
@@ -61,6 +73,8 @@ public:
     GRANT_SPELL,
     
     SPECIAL_ATTACK,
+    
+    PLAYER_BONUS,
 
     COMPOUND
   } type;
@@ -72,25 +86,14 @@ public:
   virtual bool isCompound() const { return false; }
   virtual size_t size() const { return 1; }
 
-  /* get value of property for unit having this effect */
-  virtual value_t getUnitPropertyValue(const Unit* unit, Property property, value_t value) const { return value;  }
-
-  void setGroup(const SkillEffectGroup* group, SKillEffectGroupParam param = 0) { this->_group = group; this->_groupParam = param; }
+  void setGroup(const SkillEffectGroup* group, SkillEffectGroupParam param = 0) { this->_group = group; this->_groupParam = param; }
   const SkillEffectGroup* group() const { return _group; }
-  SKillEffectGroupParam groupParam() const { return _groupParam;  }
+  SkillEffectGroupParam groupParam() const { return _groupParam;  }
 
   virtual Order compare(const Unit* unit, const SkillEffect* other) const { return Order::UNCOMPARABLE; }
   
-  template<typename T> Type typeForClass() const { return SkillEffect::Type::UNIT_BONUS;  }
-  template<typename T> const T* as() const { return true || type == typeForClass<T>() ? static_cast<const T*>(this) : nullptr; }
+  template<typename T> const T* as() const { return static_cast<const T*>(this); }
 };
-
-class ArmyBonus;
-class UnitBonus;
-
-template<> inline SkillEffect::Type SkillEffect::typeForClass<ArmyBonus>() const { return SkillEffect::Type::ARMY_BONUS; }
-template<> inline SkillEffect::Type SkillEffect::typeForClass<UnitBonus>() const { return SkillEffect::Type::UNIT_BONUS; }
-
 
 template<typename T, SkillEffect::Type TYPE>
 class SkillEnumEffect : public SkillEffect
@@ -160,21 +163,10 @@ public:
 
 class PropertyBonus : public SkillEffect
 {
-public:
-  enum class Mode
-  {
-    ADDITIVE,
-    OVERRIDE, 
-    OVERRIDE_IF_GREATER,
-    OVERRIDE_IF_LESSER
-  };
-  
 protected:
-  PropertyBonus(SkillEffect::Type type, Property property, Mode mode, value_t value) : SkillEffect(type), property(property), mode(mode), value(value) { }
+  PropertyBonus(SkillEffect::Type type, Property property, value_t value) : SkillEffect(type), property(property), value(value) { }
 
 public:
-
-  const Mode mode;
   const Property property;
   const value_t value;
   
@@ -202,16 +194,12 @@ public:
       }
     }
   }
-
-  value_t getUnitPropertyValue(const Unit* unit, Property property, value_t value) const override { return value + getValue(unit); }
 };
 
 class UnitBonus : public PropertyBonus
 {
 public:
-  UnitBonus(Property property, Mode mode, value_t value) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, mode, value) { }
-  UnitBonus(Property property, value_t value) : UnitBonus(property, PropertyBonus::Mode::ADDITIVE, value) { }
-
+  UnitBonus(Property property, value_t value) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, value) { }
 };
 
 class UnitLevelBonus : public UnitBonus
@@ -237,14 +225,13 @@ public:
 
 class ArmyBonus : public PropertyBonus
 {
-protected:
-  bool applicableOn(const Unit* unit) const;
-  
 public:
   const enum class Type { WHOLE_ARMY, NORMAL_UNITS } target;
-  
-  ArmyBonus(Property property, Mode mode, value_t value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, mode, value), target(target) { }
-  ArmyBonus(Property property, value_t value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, PropertyBonus::Mode::ADDITIVE, value), target(target) { }
+
+protected:
+  bool applicableOn(const Unit* unit) const;
+public:
+  ArmyBonus(Property property, value_t value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, value), target(target) { }
   value_t getValue(const Unit* unit) const override;
 };
 
@@ -258,6 +245,22 @@ public:
   
   value_t getValue(const Unit* unit) const override;
 };
+
+template<typename EnumType, SkillEffect::Type SkillType>
+class ModifierEffect : public SkillEffect
+{
+private:
+  EnumType _property;
+  ModifierValue _value;
+  
+public:
+  ModifierEffect(PlayerAttribute attribute, value_t value) : SkillEffect(SkillType), _property(attribute), _value(value) { }
+  ModifierEffect(PlayerAttribute attribute, float value) : SkillEffect(SkillType), _property(attribute), _value(value) { }
+  
+  value_t getValue(const Unit* unit, EnumType attribute) const;
+};
+
+using PlayerAttributeModifier = ModifierEffect<PlayerAttribute, SkillEffect::Type::PLAYER_BONUS>;
 
 class CombatBonus : public SkillEffect
 {

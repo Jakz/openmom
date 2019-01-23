@@ -834,7 +834,7 @@ value_t CityMechanics::turnsRequiredForProduction(const City* city)
   else
   {
     int missing = city->production->productionCost() - city->productionPool;
-    return std::min(1, Math::roundWithMod(missing, city->work));
+    return std::max(1, Math::roundWithMod(missing, city->work));
   }
 }
 

@@ -32,6 +32,18 @@ enum PlayerColor : u8
   NEUTRAL,
 };
 
+#pragma mark Player Related
+
+enum class PlayerAttribute
+{
+  RESEARCH,
+  GOLD_GAIN,
+  GOLD_UPKEEP,
+  MANA_GAIN,
+  MAIN_UPKEEP,
+  FOOD_GAIN,
+  FOOD_UPKEEP,
+};
 
 #pragma mark Map Related
 

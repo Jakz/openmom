@@ -376,20 +376,6 @@ template<> CombatBonus::Target yaml::parse(const N& node)
   FETCH_OR_FAIL("CombatBonus::Target", mapping, node);
 }
 
-template<> PropertyBonus::Mode yaml::parse(const N& node)
-{
-  using Mode = PropertyBonus::Mode;
-  static const std::unordered_map<std::string, Mode> mapping = {
-    { "additive", Mode::ADDITIVE },
-    { "override", Mode::OVERRIDE },
-    { "override_if_greater", Mode::OVERRIDE_IF_GREATER },
-    { "override_if_lesser", Mode::OVERRIDE_IF_LESSER }
-
-  };
-  
-  FETCH_OR_FAIL("SkillEffectGroup::Mode", mapping, node);
-}
-
 #ifdef _WIN32
 #pragma warning(pop)
 #endif
@@ -578,8 +564,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
   {
     Property property = parse<Property>(node["property"]);
     s16 value = parse<s16>(node["value"]);
-    PropertyBonus::Mode mode = optionalParse(node, "mode", PropertyBonus::Mode::ADDITIVE);
-    effect = new UnitBonus(property, mode, value);
+    effect = new UnitBonus(property, value);
   }
   else if (type == "unit_level_bonus")
   {
@@ -591,9 +576,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
   {
     Property property = parse<Property>(node["property"]);
     s16 value = parse<s16>(node["value"]);
-    PropertyBonus::Mode mode = optionalParse(node, "mode", PropertyBonus::Mode::ADDITIVE);
-
-    effect = new ArmyBonus(property, mode, value, ArmyBonus::Type::WHOLE_ARMY);
+    effect = new ArmyBonus(property, value, ArmyBonus::Type::WHOLE_ARMY);
   }
   else if (type == "combat_bonus")
   {
@@ -698,7 +681,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
     if (hasStackableGroup)
     {
       std::string groupIdentifier;
-      SKillEffectGroupParam groupParam = 0;
+      SkillEffectGroupParam groupParam = 0;
 
       if (node["group"].IsSequence())
       {

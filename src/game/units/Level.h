@@ -11,21 +11,21 @@ using level_bonuses = std::unordered_map<Property, s16, enum_hash>;
 class Level
 {
 protected:
-  s32 _index;
+  value_t _index;
   experience_t _minXP;
   bool _canAdvanceToNext;
   const level_bonuses bonuses;
   const Level* const next;
 
 public:
-  Level(s32 index, I18 name, SpriteInfo icon, const Level* next, s32 minXP, level_bonuses bonuses, bool canAdvanceToNext = true) :
+  Level(value_t index, I18 name, SpriteInfo icon, const Level* next, experience_t minXP, level_bonuses bonuses, bool canAdvanceToNext = true) :
   _index(index), visuals({name,icon}), next(next), _minXP(minXP), bonuses(bonuses), _canAdvanceToNext(canAdvanceToNext)
   { }
   
   bool hasLeveled(s32 xp) const { return next && _canAdvanceToNext && xp >= next->_minXP; }
   
-  s32 index() const { return _index; }
-  s32 ordinal() const { return index() + 1; }
+  value_t index() const { return _index; }
+  value_t ordinal() const { return index() + 1; }
   
   prop_value getBonusProperty(Property property) const { auto it = bonuses.find(property); return it != bonuses.end() ? it->second : 0; }
   

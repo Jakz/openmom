@@ -2,9 +2,28 @@
 
 #include "Unit.h"
 
+template<typename EnumType, SkillEffect::Type SkillType>
+value_t ModifierEffect<EnumType, SkillType>::getValue(const Unit* unit, EnumType property) const
+{
+  if (property == _property)
+  {
+    if (_value.type == ModifierValue::Type::FLAT)
+      return _value.value;
+    else if (_value.type == ModifierValue::Type::LEVEL_BASED)
+      return static_cast<value_t>(std::floor((unit->experienceMultiplier())*_value.multiplier));
+    else
+      assert(false); //TODO: no support for flat multipliers yet
+  }
+  else
+    return 0;
+}
+
+template class ModifierEffect<PlayerAttribute, SkillEffect::Type::PLAYER_BONUS>;
+
+
 value_t UnitLevelBonus::getValue(const Unit* unit) const
 {
-  return static_cast<u16>(std::floor((unit->getExperienceLevel()->index()+1)*multiplier)); // TODO: is +1 intended behavior? According to OSG it is.
+  return static_cast<value_t>(std::floor((unit->getExperienceLevel()->ordinal())*multiplier)); // TODO: is +1 intended behavior? According to OSG it is.
 }
 
 
@@ -18,7 +37,7 @@ value_t ArmyBonus::getValue(const Unit* unit) const {
 }
 value_t ArmyLevelBonus::getValue(const Unit* unit) const
 {
-  return applicableOn(unit) ? static_cast<u16>(std::floor((unit->getExperienceLevel()->index()+1)*multiplier)) : 0;
+  return applicableOn(unit) ? static_cast<value_t>(std::floor((unit->getExperienceLevel()->index()+1)*multiplier)) : 0;
   // TODO: is +1 intended behavior? According to OSG it is.
 }
 
@@ -29,6 +48,8 @@ value_t FilterUnitBonus::getValue(const Unit* unit) const
 {
   return filter(unit) ? value : 0;
 }
+
+
 
 
 
