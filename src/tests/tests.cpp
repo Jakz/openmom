@@ -214,13 +214,15 @@ TEST_CASE("items") {
     auto hero1 = test::anyHeroUnit();
     auto hero2 = test::anyHeroUnit();
 
-    items::Item item(items::TypeID::SWORD, 0);
-    item.addAffix({ Property::MELEE, 3 });
-    hero1->placeItem(0, &item);
+    items::Item* item = new items::Item(items::TypeID::SWORD, 0);
+    item->addAffix({ Property::MELEE, 3 });
+    hero1->placeItem(0, item);
 
     test::testModifiers(hero1.get(), hero2.get(), {
       { Property::MELEE, 3}
     });
+
+
   }
 }
 

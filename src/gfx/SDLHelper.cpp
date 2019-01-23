@@ -16,6 +16,7 @@
 #include "ViewManager.h"
 
 //#define HQXFILTER
+static constexpr bool USE_ORIGINAL_ASPECT_RATIO = false;
 
 SDL_Window* SDL::window = nullptr;
 SDL_Renderer* SDL::renderer = nullptr;
@@ -34,7 +35,7 @@ bool SDL::init()
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     return false;
   
-  window = SDL_CreateWindow("OpenMoM v0.01a", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH*SCALE_FACTOR, HEIGHT*SCALE_FACTOR, SDL_WINDOW_OPENGL);
+  window = SDL_CreateWindow("OpenMoM v0.01a", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH*SCALE_FACTOR, USE_ORIGINAL_ASPECT_RATIO ? 240*SCALE_FACTOR : HEIGHT*SCALE_FACTOR, SDL_WINDOW_OPENGL);
   renderer = SDL_CreateRenderer(window, -1, 0);
   
 #ifndef HQXFILTER
@@ -118,6 +119,12 @@ void SDL::deinit()
   SDL_Quit();
 }
 
+void SDL::convertCoordinates(int& x, int& y)
+{
+  x = x / SCALE_FACTOR;
+  y = USE_ORIGINAL_ASPECT_RATIO ? ((y / (float)(SCALE_FACTOR * 240)) * HEIGHT) : (y / SCALE_FACTOR);
+}
+
 bool buttonDown = false;
 MouseButton lastButton = BUTTON_LEFT;
 void SDL::handleEvents()
@@ -131,23 +138,27 @@ void SDL::handleEvents()
       
       case SDL_MOUSEBUTTONDOWN:
       {
-        gvm->mousePressed(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, static_cast<MouseButton>(event.button.button));
+        convertCoordinates(event.button.x, event.button.y);
+        gvm->mousePressed(event.button.x, event.button.y, static_cast<MouseButton>(event.button.button));
         buttonDown = true;
         lastButton = static_cast<MouseButton>(event.button.button);
         break;
       }
       case SDL_MOUSEBUTTONUP:
       {
-        gvm->mouseReleased(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, static_cast<MouseButton>(event.button.button));
+        convertCoordinates(event.button.x, event.button.y);
+        gvm->mouseReleased(event.button.x, event.button.y, static_cast<MouseButton>(event.button.button));
         buttonDown = false;
         break;
       }
       case SDL_MOUSEMOTION:
       {
+        convertCoordinates(event.button.x, event.button.y);
+
         if (buttonDown)
-          gvm->mouseDragged(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, lastButton);
+          gvm->mouseDragged(event.button.x, event.button.y, lastButton);
         else
-          gvm->mouseMoved(event.button.x/SCALE_FACTOR, event.button.y/SCALE_FACTOR, BUTTON_LEFT);
+          gvm->mouseMoved(event.button.x, event.button.y, BUTTON_LEFT);
         break;
       }
         

@@ -34,6 +34,11 @@ public:
     // TODO
     return path;
   }
+
+  Path findFile(const Path& folder, const std::string& name) const override
+  {
+    return folder + name;
+  }
 };
 
 Platform* Platform::instance()

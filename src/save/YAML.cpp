@@ -1221,7 +1221,9 @@ void yaml::parseHelp()
     
     // support for structure [lbx, string] only for now
     assert(entry.second.IsSequence() && entry.second.size() == 2);
-    help::Data::mapping[key] = help::Data::getFromLBX(entry.second[1].asString());
+
+    const help::Paragraph* paragraph = help::Data::getFromLBX(entry.second[1].asString());
+    help::Data::mapping[key] = new help::Paragraph(fmt::format("#%s#", key).c_str(), fmt::format("#%s#", key).c_str());
   }
     
 }

@@ -33,6 +33,8 @@ private:
   static u32 animTicksCounter;
   
   static bool willQuit;
+
+  static void convertCoordinates(int& x, int& y);
     
 public:
   static bool init();

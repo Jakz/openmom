@@ -47,8 +47,8 @@ namespace help
     static const Paragraph* getFromLBX(const std::string& title)
     {
       auto it = lbxHelpMapping.find(title);
-      assert(it != lbxHelpMapping.end());
-      return it->second;
+      //TODO: reenable assert(it != lbxHelpMapping.end());
+      return it != lbxHelpMapping.end() ? it->second : nullptr;
     }
     
     friend class lbx::Repository;
