@@ -171,6 +171,7 @@ void Game::dummyInit()
     placeArmy(darmy, Position(4, 8, ARCANUS));
     
     items::Item* item = new items::Item(items::TypeID::MISC, 2);
+    item->addAffix({ Property::MELEE, 3 });
     item->add(Data::skill("item_power_guardian_wind"));
     darmy->get(1)->asHero()->items().set(2, item);
     

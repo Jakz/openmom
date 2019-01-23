@@ -62,7 +62,7 @@ void HitPoints::killFigures(const unit_figure_flag& indices)
 {
   assert(indices.size() == size());
   
-  s16 current = 0;
+  value_t current = 0;
   auto nend = remove_if(begin(), end(), [&](value_t) { return indices[current++]; });
   erase(nend, end());
 }

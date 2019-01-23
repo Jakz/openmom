@@ -71,10 +71,9 @@ CityView::CityView(ViewManager* gvm) : View(gvm)
   buttons[OK]->setAction([gvm](){ gvm->switchView(VIEW_MAIN); });
   buttons[CHANGE]->setAction([gvm,this]{ gvm->productionView()->setCity(city); gvm->switchOverview(VIEW_PRODUCTION); });
   
-  for (int i = 0; i < 6; ++i)
-    addArea((new Clickable(139, 50 + 7*i, 60, 7))->setAction([this,i](){
-      this->clickOnCitySpell(i);
-    }));
+  addArea(new ClickableGrid(139, 50, 60, 7, 6, 1))->setCellAction([this](coord_t x, coord_t y) { 
+    clickOnCitySpell(y);
+  });
 }
 
 void CityView::clickOnCitySpell(size_t index)

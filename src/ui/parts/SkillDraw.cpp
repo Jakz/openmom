@@ -31,7 +31,7 @@ void SkillDraw::setPosition(coord_t x, coord_t y)
 
 ClickableGrid* SkillDraw::createClickable()
 {
-  return new ClickableGrid(base.x - 2, base.y - 1, CELL_WIDTH - 7, CELL_HEIGHT, ROWS, TOTAL / ROWS, 7, 0);
+  return new ClickableGrid(base.x - 2, base.y - 1, CELL_WIDTH - 10, CELL_HEIGHT, ROWS, TOTAL / ROWS, 10, 0);
 }
 
 void SkillDraw::reset(const Unit* unit)

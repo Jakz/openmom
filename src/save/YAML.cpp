@@ -1223,7 +1223,7 @@ void yaml::parseHelp()
     assert(entry.second.IsSequence() && entry.second.size() == 2);
 
     const help::Paragraph* paragraph = help::Data::getFromLBX(entry.second[1].asString());
-    help::Data::mapping[key] = new help::Paragraph(fmt::format("#%s#", key).c_str(), fmt::format("#%s#", key).c_str());
+    help::Data::mapping[key] = paragraph != nullptr ? paragraph : new help::Paragraph(fmt::format("#help#{}#", key).c_str(), fmt::format("#help#{}#", key).c_str());
   }
     
 }

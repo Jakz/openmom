@@ -42,7 +42,8 @@ protected:
   
   void setPlayer(LocalPlayer* player) { this->player = player; }
   
-  Clickable* addArea(Clickable* clickable) { areas.push_back(std::unique_ptr<Clickable>(clickable)); return clickable; }
+  template<typename T> T* addArea(T* area) { areas.push_back(std::unique_ptr<Clickable>(area)); return area; }
+  //Clickable* addArea(Clickable* clickable) { areas.push_back(std::unique_ptr<Clickable>(clickable)); return clickable; }
   Button* addButton(Button* button) { buttons.push_back(button); return button; }
   
   ViewManager *gvm;

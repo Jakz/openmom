@@ -44,7 +44,7 @@ void AlchemyView::draw()
 {
   const u16 bar_length = 49;
   
-  printf("Percent: %f\n", percent);
+  //printf("Percent: %f\n", percent);
   
   // draw backdrop
   Gfx::drawClipped(LSI(MAGIC, 52), 77, 66, 0, 0, 166, 67);
@@ -83,8 +83,8 @@ void AlchemyView::draw()
   }
   
   // TODO: font is not exactly the same, and space is removed otherwise it would go over the box
-  Fonts::drawString(Fonts::format("%dGP",gamount), FontFaces::Small::YELLOW, flx, fy, ALIGN_LEFT);
-  Fonts::drawString(Fonts::format("%dMP",mamount), FontFaces::Small::YELLOW, frx, fy, ALIGN_LEFT);
+  Fonts::drawString(fmt::format("{}GP", gamount), FontFaces::Small::YELLOW, flx, fy, ALIGN_LEFT);
+  Fonts::drawString(fmt::format("{}MP", mamount), FontFaces::Small::YELLOW, frx, fy, ALIGN_LEFT);
   
 }
 
