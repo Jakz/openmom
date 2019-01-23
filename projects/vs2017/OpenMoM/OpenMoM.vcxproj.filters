@@ -14,7 +14,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\platform\windows\windows.cpp">
+    <ClCompile Include="..\..\..\src\platform\windows\main.cpp">
       <Filter>platform\windows</Filter>
     </ClCompile>
   </ItemGroup>

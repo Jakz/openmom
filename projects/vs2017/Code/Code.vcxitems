@@ -73,6 +73,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\platform\windows\Precompiled.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\platform\windows\windows.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\save\Data.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\save\OriginalSave.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\save\YAML.cpp" />

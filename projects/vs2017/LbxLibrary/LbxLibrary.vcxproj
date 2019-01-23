@@ -141,6 +141,7 @@
     <ClCompile Include="..\..\..\src\gfx\LBX.cpp" />
     <ClCompile Include="..\..\..\src\lbx\lbxlib.cpp" />
     <ClCompile Include="..\..\..\src\platform\Path.cpp" />
+    <ClCompile Include="..\..\..\src\platform\windows\windows.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\lbx\lbxlib.h" />

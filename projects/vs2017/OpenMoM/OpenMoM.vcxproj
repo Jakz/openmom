@@ -22,7 +22,7 @@
     <ClInclude Include="..\..\..\src\platform\windows\dirent.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\platform\windows\windows.cpp" />
+    <ClCompile Include="..\..\..\src\platform\windows\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

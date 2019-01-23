@@ -24,6 +24,9 @@
     <ClCompile Include="..\..\..\src\gfx\LBX.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\platform\windows\windows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\lbx\lbxlib.h">
