@@ -34,22 +34,41 @@ public:
   Mode mode() const { return _mode; }
 };
 
+enum class Order { GREATER, LESSER, EQUAL, UNCOMPARABLE, DIFFERENT };
+
 struct ModifierValue
 {
-  enum Priority { FIRST, ANY, LAST } priority;
-  enum Type { FLAT, MULTIPLIER, LEVEL_BASED } type;
+  enum Priority { BASE, FIRST, ANY, LAST } priority;
+  enum Type { ADDITIVE, ADDITIVE_LEVEL_BASED, MULTIPLICATIVE  } type;
   union {
     float multiplier;
     value_t value;
   };
-  ModifierValue(value_t value) : priority(Priority::ANY), type(Type::FLAT), value(value) { }
-  ModifierValue(float multiplier) : priority(Priority::ANY), type(Type::LEVEL_BASED), multiplier(multiplier) { }
+
+  ModifierValue(value_t value) : priority(Priority::ANY), type(Type::ADDITIVE), value(value) { }
+  ModifierValue(float multiplier) : priority(Priority::ANY), type(Type::ADDITIVE_LEVEL_BASED), multiplier(multiplier) { }
+
+  value_t transformValue(value_t value, const Unit* unit) const;
+
+  Order compare(const ModifierValue& other) const
+  {
+    if (priority < other.priority) return Order::LESSER;
+    else if (priority > other.priority) return Order::GREATER;
+    else
+    {
+      if (type < other.type) return Order::LESSER;
+      else if (type > other.type) return Order::GREATER;
+      else return Order::EQUAL;
+    }
+
+  }
+
+  bool operator<(const ModifierValue& other) { return compare(other) == Order::LESSER; }
 };
 
 class SkillEffect
 {
 public:
-  enum class Order { GREATER, LESSER, EQUAL, UNCOMPARABLE, DIFFERENT };
   
 protected:
   const SkillEffectGroup* _group;
@@ -161,6 +180,20 @@ public:
   const value_t param;
 };
 
+template<typename EnumType, SkillEffect::Type SkillType>
+class ModifierEffect : public SkillEffect
+{
+private:
+  EnumType _property;
+  ModifierValue _value;
+
+public:
+  ModifierEffect(PlayerAttribute attribute, value_t value) : SkillEffect(SkillType), _property(attribute), _value(value) { }
+  ModifierEffect(PlayerAttribute attribute, float value) : SkillEffect(SkillType), _property(attribute), _value(value) { }
+
+  value_t getValue(const Unit* unit, EnumType attribute) const;
+};
+
 class PropertyBonus : public SkillEffect
 {
 protected:
@@ -246,21 +279,7 @@ public:
   value_t getValue(const Unit* unit) const override;
 };
 
-template<typename EnumType, SkillEffect::Type SkillType>
-class ModifierEffect : public SkillEffect
-{
-private:
-  EnumType _property;
-  ModifierValue _value;
-  
-public:
-  ModifierEffect(PlayerAttribute attribute, value_t value) : SkillEffect(SkillType), _property(attribute), _value(value) { }
-  ModifierEffect(PlayerAttribute attribute, float value) : SkillEffect(SkillType), _property(attribute), _value(value) { }
-  
-  value_t getValue(const Unit* unit, EnumType attribute) const;
-};
-
-using PlayerAttributeModifier = ModifierEffect<PlayerAttribute, SkillEffect::Type::PLAYER_BONUS>;
+using WizardAttributeModifier = ModifierEffect<PlayerAttribute, SkillEffect::Type::PLAYER_BONUS>;
 
 class CombatBonus : public SkillEffect
 {
@@ -343,6 +362,18 @@ public:
   const Spell* spell() const { return _spell; }
   value_t times() const { return _times; }
   value_t strength() const { return _strength; }
+};
+
+struct modifier_list : public std::vector<const ModifierValue*>
+{
+public:
+
+  value_t get(const Unit* unit, value_t base = 0)
+  {
+    return std::accumulate(begin(), end(), base, [unit](value_t a, const ModifierValue* modifier) {
+      return modifier->transformValue(a, unit);
+    });
+  }
 };
 
 using effect_init_list = const std::initializer_list<const SkillEffect*>;

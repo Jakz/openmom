@@ -73,7 +73,7 @@ value_t SkillSet::spellsUpkeep() const
   );
 }
 
-prop_value SkillSet::bonusForProperty(Property property) const
+value_t SkillSet::bonusForProperty(Property property) const
 {
   effect_list effects;
 
@@ -114,6 +114,12 @@ prop_value SkillSet::bonusForProperty(Property property) const
     bonus += effect->as<PropertyBonus>()->getValue(unit);
 
   return bonus;
+}
+
+value_t SkillSet::bonusForPlayerAttribute(PlayerAttribute attribute) const
+{
+  //TODO: implement
+  return 0;
 }
 
 bool SkillSet::hasSpell(const Spell* spell) const {

@@ -131,6 +131,11 @@ value_t PlayerMechanics::computeResearchGain(const Player* player)
 
   for (auto c : player->cities)
     knowledge += c->getKnowledge();
+
+  for (const auto* army : player->armies)
+    for (const auto* unit : army->getUnits())
+      knowledge += unit->skills()->bonusForPlayerAttribute(PlayerAttribute::RESEARCH);
+
   return knowledge;
 }
 

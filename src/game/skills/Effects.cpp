@@ -2,18 +2,21 @@
 
 #include "Unit.h"
 
+value_t ModifierValue::transformValue(value_t previous, const Unit* unit) const
+{
+  if (type == Type::ADDITIVE)
+    return previous + value;
+  else if (type == Type::ADDITIVE_LEVEL_BASED)
+    return previous + static_cast<value_t>(std::floor((unit->experienceMultiplier())*multiplier));
+  else if (type == Type::MULTIPLICATIVE)
+    return static_cast<value_t>(std::floor(previous * multiplier));
+}
+
 template<typename EnumType, SkillEffect::Type SkillType>
 value_t ModifierEffect<EnumType, SkillType>::getValue(const Unit* unit, EnumType property) const
 {
   if (property == _property)
-  {
-    if (_value.type == ModifierValue::Type::FLAT)
-      return _value.value;
-    else if (_value.type == ModifierValue::Type::LEVEL_BASED)
-      return static_cast<value_t>(std::floor((unit->experienceMultiplier())*_value.multiplier));
-    else
-      assert(false); //TODO: no support for flat multipliers yet
-  }
+    return _value.transformValue(0, unit); //TODO: mind that this doesn't work for MULTIPLICATIVE
   else
     return 0;
 }
@@ -59,7 +62,7 @@ effect_list effect_list::actuals(const Unit* unit) const
   std::unordered_multimap<const SkillEffectGroup*, const SkillEffect*> byGroup;
 
   using pair_t = const decltype(byGroup)::value_type;
-  const auto sorterByEffect = [unit](const pair_t& e1, const pair_t& e2) { return e1.second->compare(unit, e2.second) == SkillEffect::Order::LESSER; };
+  const auto sorterByMagnitude = [unit](const pair_t& e1, const pair_t& e2) { return e1.second->compare(unit, e2.second) == Order::LESSER; };
   static const auto sorterByPriority = [](const pair_t& e1, const pair_t& e2) { return e1.second->groupParam() < e2.second->groupParam(); };
 
   /* group effects by group */
@@ -89,14 +92,14 @@ effect_list effect_list::actuals(const Unit* unit) const
           
         case SkillEffectGroup::Mode::KEEP_GREATER:
         {
-          auto max = std::max_element(pair.first, pair.second, sorterByEffect);
+          auto max = std::max_element(pair.first, pair.second, sorterByMagnitude);
           actuals.push_back(max->second);
           break;
         }
           
         case SkillEffectGroup::Mode::KEEP_LESSER:
         {
-          auto min = std::min_element(pair.first, pair.second, sorterByEffect);
+          auto min = std::min_element(pair.first, pair.second, sorterByMagnitude);
           actuals.push_back(min->second);
           break;
         }
