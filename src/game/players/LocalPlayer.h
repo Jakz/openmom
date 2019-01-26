@@ -61,7 +61,7 @@ public:
   s16 selectedCount() const override { return selectedUnits.size(); }
   void selectNone();
   void selectAll() override;
-  s16 selectedAvailMoves();
+  value_t selectedAvailMoves();
   bool wholeSelected() { return selectedCount() == selectedArmy->size(); }
   void resetArmy();
   const std::unique_ptr<Route>& getRoute() const { return selectedRoute; }

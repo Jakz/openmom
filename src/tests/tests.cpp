@@ -11,6 +11,15 @@
 
 #include "common/mystrings.h"
 
+namespace mock
+{
+  class Level : public ::Level
+  {
+  public:
+    Level(value_t multiplier) : ::Level(multiplier - 1, I18::PLACEHOLDER, SpriteInfo(), nullptr, 0, {}) { }
+  };
+}
+
 class DummyEffect : public SkillEffect {
 public:
   std::string v;
@@ -364,7 +373,9 @@ TEST_CASE("effect_list class") {
       REQUIRE((*actuals.begin())->as<DummyEffect>()->v == "first");
     }
   }
+}
 
+TEST_CASE("ModifierValue") {
 
 }
 

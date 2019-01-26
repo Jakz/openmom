@@ -10,6 +10,13 @@ value_t ModifierValue::transformValue(value_t previous, const Unit* unit) const
     return previous + static_cast<value_t>(std::floor((unit->experienceMultiplier())*multiplier));
   else if (type == Type::MULTIPLICATIVE)
     return static_cast<value_t>(std::floor(previous * multiplier));
+  else if (type == Type::FIXED)
+    return value;
+  else
+  {
+    assert(false);
+    return 0;
+  }
 }
 
 template<typename EnumType, SkillEffect::Type SkillType>
@@ -21,7 +28,7 @@ value_t ModifierEffect<EnumType, SkillType>::getValue(const Unit* unit, EnumType
     return 0;
 }
 
-template class ModifierEffect<PlayerAttribute, SkillEffect::Type::PLAYER_BONUS>;
+template class ModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
 
 
 value_t UnitLevelBonus::getValue(const Unit* unit) const

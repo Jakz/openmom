@@ -39,11 +39,21 @@ enum class Order { GREATER, LESSER, EQUAL, UNCOMPARABLE, DIFFERENT };
 struct ModifierValue
 {
   enum Priority { BASE, FIRST, ANY, LAST } priority;
-  enum Type { ADDITIVE, ADDITIVE_LEVEL_BASED, MULTIPLICATIVE  } type;
+  enum Type { ADDITIVE, ADDITIVE_LEVEL_BASED, MULTIPLICATIVE, FIXED  } type;
   union {
     float multiplier;
     value_t value;
   };
+
+  ModifierValue(Type type, float value, Priority priority) : priority(priority), type(type), multiplier(value) 
+  { 
+    assert(type == Type::ADDITIVE_LEVEL_BASED || type == Type::MULTIPLICATIVE);
+  }
+
+  ModifierValue(Type type, value_t value, Priority priority) : priority(priority), type(type), value(value) 
+  { 
+    assert(type == Type::ADDITIVE || type == Type::FIXED);
+  }
 
   ModifierValue(value_t value) : priority(Priority::ANY), type(Type::ADDITIVE), value(value) { }
   ModifierValue(float multiplier) : priority(Priority::ANY), type(Type::ADDITIVE_LEVEL_BASED), multiplier(multiplier) { }
@@ -93,7 +103,7 @@ public:
     
     SPECIAL_ATTACK,
     
-    PLAYER_BONUS,
+    WIZARD_BONUS,
 
     COMPOUND
   } type;
@@ -188,8 +198,11 @@ private:
   ModifierValue _value;
 
 public:
-  ModifierEffect(PlayerAttribute attribute, value_t value) : SkillEffect(SkillType), _property(attribute), _value(value) { }
-  ModifierEffect(PlayerAttribute attribute, float value) : SkillEffect(SkillType), _property(attribute), _value(value) { }
+  ModifierEffect(EnumType property, value_t value) : ModifierEffect(property, ModifierValue(value)) { }
+  ModifierEffect(EnumType property, float value) : ModifierEffect(property, ModifierValue(value)) { }
+  ModifierEffect(EnumType property, ModifierValue value) : SkillEffect(SkillType), _property(property), _value(value) { }
+
+  const ModifierValue& modifier() const { return _value; }
 
   value_t getValue(const Unit* unit, EnumType attribute) const;
 };
@@ -279,7 +292,7 @@ public:
   value_t getValue(const Unit* unit) const override;
 };
 
-using WizardAttributeModifier = ModifierEffect<PlayerAttribute, SkillEffect::Type::PLAYER_BONUS>;
+using WizardAttributeModifier = ModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
 
 class CombatBonus : public SkillEffect
 {
@@ -364,18 +377,6 @@ public:
   value_t strength() const { return _strength; }
 };
 
-struct modifier_list : public std::vector<const ModifierValue*>
-{
-public:
-
-  value_t get(const Unit* unit, value_t base = 0)
-  {
-    return std::accumulate(begin(), end(), base, [unit](value_t a, const ModifierValue* modifier) {
-      return modifier->transformValue(a, unit);
-    });
-  }
-};
-
 using effect_init_list = const std::initializer_list<const SkillEffect*>;
 struct effect_list;
 struct effect_list_deep_iterator;
@@ -428,6 +429,18 @@ public:
     data.insert(data.end(), other.data.begin(), other.data.end());
     return *this;
   }
+
+  template<typename EnumType, SkillEffect::Type Type> 
+  value_t reduceAsModifier(const Unit* unit, value_t base = 0) const
+  {
+    //TODO: begin or deep begin?
+    return std::accumulate(begin(), end(), base, [unit](value_t v, const SkillEffect* effect) {
+      const ModifierValue& modifier = effect->as<ModifierEffect<EnumType, Type>>()->modifier();
+      return modifier.transformValue(v, unit);
+    });
+  }
+
+  void sort() { std::sort(data.begin(), data.end()); }
 
   /* flatten nested effects */
   effect_list flatten();
@@ -548,4 +561,18 @@ inline effect_list_deep_iterator effect_list::dbegin() const { return effect_lis
 inline effect_list_deep_iterator effect_list::dend() const { return effect_list_deep_iterator(this, end()); }
 
 
+struct modifier_list : public std::vector<const ModifierValue*>
+{
+public:
+  modifier_list(const effect_list& effects)
+  {
 
+  }
+
+  value_t get(const Unit* unit, value_t base = 0)
+  {
+    return std::accumulate(begin(), end(), base, [unit](value_t a, const ModifierValue* modifier) {
+      return modifier->transformValue(a, unit);
+    });
+  }
+};

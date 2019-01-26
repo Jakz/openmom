@@ -612,6 +612,27 @@ units:
       icon: [lbx, units1, 1]
       figure: [lbx, figures1, 8]
       portrait: [lbx, portrait, 17]
+  - identifier: hero_sage
+    type: hero
+    slots: [staff_wand, jewelry, jewelry]
+    required_fame: 0
+    upkeep: 2
+    cost: 100
+    melee: 1
+    ranged: [6, sorcery, 3] # TODO: 3 is cost in mana from mana pool, not ammunition
+    defense: 4
+    resistance: 6
+    hits: 5
+    figures: 1
+    movement: 2
+    sight: 1
+    skills: [ sage ] # TODO: caster 7.5
+    names: [ Zaldron, Jesrael, Sardon, Tiberius, Zorin ]
+    visuals:
+      i18n: unit_hero_sage
+      icon: [lbx, units1, 2]
+      figure: [lbx, figures1, 16]
+      portrait: [lbx, portrait, 28]
 # fantastic units
 # arcane
   - identifier: funit_magic_spirit

@@ -109,7 +109,7 @@ void Game::dummyInit()
   //WorldGenerator.generate(world, MYRRAN);
 
   Army* a = new Army(player, {
-    unit("hero_barbarian"),
+    unit("hero_sage"),
     unit("hero_dwarf"),
 		new RaceUnit(Data::unit("dark_elves_halberdiers")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("dark_elves_cavalry")->as<RaceUnitSpec>()),

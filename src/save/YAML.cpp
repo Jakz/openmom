@@ -329,6 +329,15 @@ template<> Ranged yaml::parse(const N& node)
   FETCH_OR_FAIL("Ranged", mapping, node);
 }
 
+template<> WizardAttribute yaml::parse(const N& node)
+{
+  static const std::unordered_map<std::string, WizardAttribute> mapping = {
+    { "research_point", WizardAttribute::RESEARCH }
+  };
+
+  FETCH_OR_FAIL("WizardAttribute", mapping, node);
+}
+
 template<> Property yaml::parse(const N& node)
 {
   static const std::unordered_map<std::string, Property> mapping = {
@@ -387,9 +396,9 @@ template<> RangedInfo yaml::parse(const N& node)
   else
   {
     assert(node.IsSequence() && node.size() == 3);
-    s16 strength = node[0];
+    value_t strength = node[0];
     Ranged type = parse<Ranged>(node[1]);
-    s16 ammo = node[2];
+    value_t ammo = node[2];
     
     return RangedInfo(type, strength, ammo);
   }
@@ -555,6 +564,31 @@ template<> const SkillEffectGroup* yaml::parse(const N& node)
 }
 
 #pragma mark SkillEffect
+template<> ModifierValue yaml::parse(const N& node)
+{
+  if (node.IsScalar())
+    return ModifierValue(node.as<value_t>());
+  else if (node.IsSequence())
+  {
+    /* fixed value, assuming additive */
+    if (node.size() == 1)
+      return ModifierValue(ModifierValue::Type::ADDITIVE, node[0].as<value_t>(), ModifierValue::Priority::ANY);
+    else if (node.size() == 2)
+    {
+      const std::string& type = node[1];
+
+      if (type == "per_level")
+        return ModifierValue(ModifierValue::Type::ADDITIVE_LEVEL_BASED, node[0].as<float>(), ModifierValue::Priority::ANY);
+    }
+  }
+
+  //TODO: fix macro
+  PARSE_ERROR("Cannot parse ModifierValue%s", "");
+  assert(false);
+  return ModifierValue(0);
+}
+
+
 template<> const SkillEffect* yaml::parse(const N& node)
 {
   const std::string& type = node["type"];
@@ -577,6 +611,12 @@ template<> const SkillEffect* yaml::parse(const N& node)
     Property property = parse<Property>(node["property"]);
     s16 value = parse<s16>(node["value"]);
     effect = new ArmyBonus(property, value, ArmyBonus::Type::WHOLE_ARMY);
+  }
+  else if (type == "wizard_bonus")
+  {
+    WizardAttribute attribute = parse<WizardAttribute>(node["attribute"]);
+    ModifierValue modifier = parse<ModifierValue>(node["modifier"]);
+    return new WizardAttributeModifier(attribute, modifier);
   }
   else if (type == "combat_bonus")
   {

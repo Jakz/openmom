@@ -123,10 +123,10 @@ enum class MovementBaseType
 struct RangedInfo
 {
   Ranged type;
-  s16 strength;
-  s16 ammo;
+  value_t strength;
+  value_t ammo;
   
-  RangedInfo(Ranged type, s16 strength, s16 ammo) : type(type), strength(strength), ammo(ammo) { }
+  RangedInfo(Ranged type, value_t strength, value_t ammo) : type(type), strength(strength), ammo(ammo) { }
   RangedInfo() : RangedInfo(Ranged::NONE, 0, 0) { }
   bool isPresent() const { return type != Ranged::NONE; }
 };
@@ -186,6 +186,10 @@ enum class Property : u8
   BREATH_ATTACK, // TODO: implement to get it from skills
   
   HEALTH_REGEN, // expressed in percent, (eg. 20 = 20% of total hits)
+
+  GOLD_UPKEEP,
+  FOOD_UPKEEP,
+  MANA_UPKEEP,
   
   AVAILABLE_MOVEMENT,
   AVAILABLE_AMMO
@@ -256,13 +260,14 @@ protected:
   UnitSpec(UnitType type, Upkeep upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, const skill_list& skills) :
   type(type), upkeep(upkeep), cost(cost), melee(melee), ranged(ranged), defense(defense), resistance(resistance), hits(hits), figures(figures), movement(movement), sight(sight), skills(skills) { }
 
+  const Upkeep upkeep;
+
 public:
   virtual ~UnitSpec() { }
   
   // TODO: there is already productableType(), this should be useless and removed
   const UnitType type;
   
-  const Upkeep upkeep;
 
   const s16 cost;
   const s16 melee;

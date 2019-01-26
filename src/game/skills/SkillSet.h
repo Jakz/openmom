@@ -48,7 +48,7 @@ public:
   value_t spellsUpkeep() const;
   
   value_t bonusForProperty(Property property) const;
-  value_t bonusForPlayerAttribute(PlayerAttribute attribute) const;
+  value_t bonusForPlayerAttribute(WizardAttribute attribute) const;
   
   cast_list::iterator spellIterator() { return spells.begin(); }
   cast_list::const_iterator spellIterator() const { return spells.begin(); }

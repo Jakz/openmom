@@ -34,7 +34,7 @@ enum PlayerColor : u8
 
 #pragma mark Player Related
 
-enum class PlayerAttribute
+enum class WizardAttribute
 {
   RESEARCH,
   GOLD_GAIN,

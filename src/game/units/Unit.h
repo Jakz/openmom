@@ -70,7 +70,7 @@ protected:
   bool selected;
   
   experience_level experience;
-  s16 availableMoves;
+  value_t availableMoves;
 
 public:
   
@@ -88,14 +88,14 @@ public:
   prop_value getBonusProperty(Property property) const override;
   
   void resetMoves() { availableMoves = getProperty(Property::MOVEMENT)*2; }
-  s16 getAvailableMoves() const { return availableMoves; }
-  void useMoves(s16 moves) { availableMoves -= moves; }
+  value_t getAvailableMoves() const { return availableMoves; }
+  void useMoves(value_t moves) { availableMoves -= moves; }
   
   bool isSelected() const { return selected;}
   void select() { selected = true; }
   void unselect() { selected = false; }
   
-  Upkeep upkeep() const { return spec->upkeep + spellUpkeep(); }
+  Upkeep upkeep() const { return Upkeep(getProperty(Property::GOLD_UPKEEP), getProperty(Property::MANA_UPKEEP), getProperty(Property::FOOD_UPKEEP)) + spellUpkeep(); }
   Upkeep spellUpkeep() const { return Upkeep(0, _skills.spellsUpkeep(), 0); }
   void removeSpell(const Spell* spell);
   

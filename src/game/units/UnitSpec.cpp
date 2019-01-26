@@ -49,6 +49,10 @@ prop_value UnitSpec::getProperty(Property property) const
     case Property::TO_DEFEND: return 30;
     case Property::FIGURES: return figures;
     case Property::AMMO: return ranged.ammo;
+
+    case Property::GOLD_UPKEEP: return upkeep.gold;
+    case Property::FOOD_UPKEEP: return upkeep.food;
+    case Property::MANA_UPKEEP: return upkeep.mana;
       
     //case Property::UPKEEP: // TODO: commented
 

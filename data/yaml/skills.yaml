@@ -353,6 +353,19 @@ skills:
       hide_value: true
       icon: [lbx, special, 52]
       i18n: skill_might
+  - identifier: sage
+    type: hero
+    classes: [ mage ]
+    effects:
+      - type: wizard_bonus
+        modifier: [3.0, per_level]
+        #super 4.5 per level
+        attribute: research_point
+    visuals:
+      hide_value: true
+      icon: [lbx, special, 61]
+      i18n: skill_sage
+
 # spell skills
 # life
   - identifier: spell_bless

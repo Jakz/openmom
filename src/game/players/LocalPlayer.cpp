@@ -134,9 +134,9 @@ void LocalPlayer::resetArmy()
   selectedRoute.reset(nullptr);
 }
 
-s16 LocalPlayer::selectedAvailMoves()
+value_t LocalPlayer::selectedAvailMoves()
 {
-  s16 min = numeric_limits<s16>::max();
+  value_t min = numeric_limits<value_t>::max();
   for (auto u : selectedUnits)
   {
     min = std::min(u->getAvailableMoves(),min);

@@ -116,10 +116,16 @@ value_t SkillSet::bonusForProperty(Property property) const
   return bonus;
 }
 
-value_t SkillSet::bonusForPlayerAttribute(PlayerAttribute attribute) const
+value_t SkillSet::bonusForPlayerAttribute(WizardAttribute attribute) const
 {
-  //TODO: implement
-  return 0;
+  effect_list effects;
+  for (const Skill* skill : *this)
+    effects += skill->getEffects();
+
+  effects.filter([](const SkillEffect* e) { return e->type == SkillEffect::Type::WIZARD_BONUS; });
+  effects.sort();
+
+  return effects.reduceAsModifier<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>(unit);
 }
 
 bool SkillSet::hasSpell(const Spell* spell) const {

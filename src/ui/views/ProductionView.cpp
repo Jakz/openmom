@@ -87,7 +87,7 @@ void ProductionView::draw()
     Fonts::drawString("Moves", FontFaces::Small::TEAL, 128, 19, ALIGN_LEFT);
     Fonts::drawString("Upkeep", FontFaces::Small::TEAL, 128, 26, ALIGN_LEFT);
     CommonDraw::drawMovement(spec->movement, MovementBaseType::WALKING, 163, 19, 0); // TODO: use real type value
-    CommonDraw::drawUpkeep(spec->upkeep, 164, 26);
+    CommonDraw::drawUpkeep(spec->productionUpkeep(), 164, 26);
     UnitDraw::drawUnitIso(spec, 83, 5, nullptr, player);
     CommonDraw::drawUnitProps(spec, 128, 47, 10);
     Fonts::drawString(Fonts::format("Cost %u(%u)", cost, cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
