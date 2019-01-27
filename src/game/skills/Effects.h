@@ -45,12 +45,12 @@ struct ModifierValue
     value_t value;
   };
 
-  ModifierValue(Type type, float value, Priority priority) : priority(priority), type(type), multiplier(value) 
+  ModifierValue(Type type, float value, Priority priority = Priority::ANY) : priority(priority), type(type), multiplier(value) 
   { 
     assert(type == Type::ADDITIVE_LEVEL_BASED || type == Type::MULTIPLICATIVE);
   }
 
-  ModifierValue(Type type, value_t value, Priority priority) : priority(priority), type(type), value(value) 
+  ModifierValue(Type type, value_t value, Priority priority = Priority::ANY) : priority(priority), type(type), value(value) 
   { 
     assert(type == Type::ADDITIVE || type == Type::FIXED);
   }
@@ -190,21 +190,27 @@ public:
   const value_t param;
 };
 
-template<typename EnumType, SkillEffect::Type SkillType>
 class ModifierEffect : public SkillEffect
 {
-private:
-  EnumType _property;
+protected:
   ModifierValue _value;
 
 public:
-  ModifierEffect(EnumType property, value_t value) : ModifierEffect(property, ModifierValue(value)) { }
-  ModifierEffect(EnumType property, float value) : ModifierEffect(property, ModifierValue(value)) { }
-  ModifierEffect(EnumType property, ModifierValue value) : SkillEffect(SkillType), _property(property), _value(value) { }
-
+  ModifierEffect(SkillEffect::Type type, ModifierValue value) : SkillEffect(type), _value(value) { }
+  value_t transformValue(value_t value, const Unit* unit) const { return _value.transformValue(value, unit); }
   const ModifierValue& modifier() const { return _value; }
+};
 
-  value_t getValue(const Unit* unit, EnumType attribute) const;
+template<typename EnumType, SkillEffect::Type SkillType>
+class PropertyModifierEffect : public ModifierEffect
+{
+private:
+  EnumType _property;
+
+public:
+  PropertyModifierEffect(EnumType property, value_t value) : PropertyModifierEffect(property, ModifierValue(value)) { }
+  PropertyModifierEffect(EnumType property, float value) : PropertyModifierEffect(property, ModifierValue(value)) { }
+  PropertyModifierEffect(EnumType property, ModifierValue value) : ModifierEffect(SkillType, value) { }
 };
 
 class PropertyBonus : public SkillEffect
@@ -292,7 +298,7 @@ public:
   value_t getValue(const Unit* unit) const override;
 };
 
-using WizardAttributeModifier = ModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
+using WizardAttributeModifier = PropertyModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
 
 class CombatBonus : public SkillEffect
 {
@@ -435,8 +441,8 @@ public:
   {
     //TODO: begin or deep begin?
     return std::accumulate(begin(), end(), base, [unit](value_t v, const SkillEffect* effect) {
-      const ModifierValue& modifier = effect->as<ModifierEffect<EnumType, Type>>()->modifier();
-      return modifier.transformValue(v, unit);
+      const ModifierEffect* modifier = effect->as<ModifierEffect>();
+      return modifier->transformValue(v, unit);
     });
   }
 

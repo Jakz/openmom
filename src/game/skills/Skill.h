@@ -294,7 +294,7 @@ namespace skills
 
 class ConcreteSkill : public Skill
 {
-private:
+protected:
   effect_list effects;
   
 public:

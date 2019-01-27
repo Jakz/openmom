@@ -19,16 +19,7 @@ value_t ModifierValue::transformValue(value_t previous, const Unit* unit) const
   }
 }
 
-template<typename EnumType, SkillEffect::Type SkillType>
-value_t ModifierEffect<EnumType, SkillType>::getValue(const Unit* unit, EnumType property) const
-{
-  if (property == _property)
-    return _value.transformValue(0, unit); //TODO: mind that this doesn't work for MULTIPLICATIVE
-  else
-    return 0;
-}
-
-template class ModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
+template class PropertyModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
 
 
 value_t UnitLevelBonus::getValue(const Unit* unit) const

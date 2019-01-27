@@ -18,6 +18,33 @@ namespace mock
   public:
     Level(value_t multiplier) : ::Level(multiplier - 1, I18::PLACEHOLDER, SpriteInfo(), nullptr, 0, {}) { }
   };
+
+  class RaceUnitSpec : public ::RaceUnitSpec
+  {
+  public:
+    RaceUnitSpec() : ::RaceUnitSpec(nullptr, 1, 50, 1, RangedInfo(), 1, 1, 1, 1, 1, 1, {}) { }
+  };
+
+  class RaceUnit : public ::RaceUnit
+  {
+  private:
+    const Level* level;
+
+  public:
+    RaceUnit(const RaceUnitSpec* spec) : ::RaceUnit(spec) { }
+    value_t experienceMultiplier() const override { return level->index()+1; }
+
+    void setLevel(const Level* level) { this->level = level;  }
+  };
+
+  class Skill : public ::ConcreteSkill
+  {
+  public:
+    Skill() : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, {}) { }
+    Skill(effect_list effects) : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, effects) { }
+
+    void addEffect(const SkillEffect* effect) { effects.push_back(effect); }
+  };
 }
 
 class DummyEffect : public SkillEffect {
@@ -29,7 +56,7 @@ public:
 struct PropertyModifier
 {
   Property property;
-  s16 value;
+  value_t value;
 };
 
 static const std::unordered_map<Property, std::string, enum_hash> propertyNames = {
@@ -376,7 +403,50 @@ TEST_CASE("effect_list class") {
 }
 
 TEST_CASE("ModifierValue") {
+  SECTION("integral multiplier") {
+    const auto l = GENERATE(range(1, 10));
+    const auto m = GENERATE(1.0f, 2.0f, 3.0f, 4.0f, 5.0f);
 
+    const ModifierValue modifier = ModifierValue(ModifierValue::Type::ADDITIVE_LEVEL_BASED, m);
+    const auto level = mock::Level(l);
+    const auto spec = mock::RaceUnitSpec();
+    auto unit = mock::RaceUnit(&spec);
+    unit.setLevel(&level);
+
+    REQUIRE(modifier.transformValue(0, &unit) == l * static_cast<value_t>(m));
+  }
+
+  SECTION("fractional multiplier") {
+    const auto l = GENERATE(range(1, 10));
+    const auto m = GENERATE(1.5f, 2.5f, 3.5f, 4.5f, 5.5f);
+
+    const ModifierValue modifier = ModifierValue(ModifierValue::Type::ADDITIVE_LEVEL_BASED, m);
+    const auto level = mock::Level(l);
+    const auto spec = mock::RaceUnitSpec();
+    auto unit = mock::RaceUnit(&spec);
+    unit.setLevel(&level);
+
+    REQUIRE(modifier.transformValue(0, &unit) == static_cast<value_t>(l * m));
+  }
+
+  SECTION("priority last is applied at the end")
+  {
+    const ModifierValue modifier = ModifierValue(ModifierValue::Type::ADDITIVE, 5);
+    const ModifierValue zeroer = ModifierValue(ModifierValue::Type::FIXED, 0, ModifierValue::Priority::LAST);
+
+    const auto spec = mock::RaceUnitSpec();
+    auto unit = mock::RaceUnit(&spec);
+
+    const auto effect1 = PropertyModifierEffect<Property, SkillEffect::Type::UNIT_BONUS>(Property::MELEE, modifier);
+    const auto effect2 = PropertyModifierEffect<Property, SkillEffect::Type::UNIT_BONUS>(Property::MELEE, zeroer);
+
+    /* order is swapped to ensure sorting occurs */
+    effect_list effects = effect_list({ &effect2, &effect1 });
+    effects.sort();
+
+    REQUIRE(effects.reduceAsModifier<Property, SkillEffect::Type::UNIT_BONUS>(&unit, 0) == 0);
+
+  }
 }
 
 #pragma mark SkillSet
