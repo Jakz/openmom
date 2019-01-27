@@ -82,22 +82,21 @@ class CombatEnchModifier : public CombatEnchEffect
 {
 public:
   typedef std::function<CastResult(const combat::Combat*, const Unit*, const SpellCast&, Property property)> lambda_type;
-  CombatEnchModifier(std::initializer_list<const UnitBonus*> effects) : CombatEnchEffect(UNIT_MODIFIER), effects(effects) { }
+  CombatEnchModifier(std::initializer_list<const UnitPropertyBonus*> effects) : CombatEnchEffect(UNIT_MODIFIER), effects(effects) { }
   
   value_t apply(const combat::Combat* combat, const SpellCast& cast, const Unit* unit, Property property) const;
   
 private:
   value_t doApply(const Unit* unit, Property property) const
   {
-    s16 bonus = 0;
-    for (auto e : effects)
-      if (e->sameProperty(property))
-        bonus += e->getValue(unit);
+    value_t value = 0;
+    for (const auto effect : effects)
+      value = effect->transformValue(property, value, unit);
 
-    return bonus;
+    return value;
   }
 
-  std::vector<const UnitBonus*> effects;
+  std::vector<const UnitPropertyBonus*> effects;
 };
 
 class CombatEffects
@@ -153,20 +152,20 @@ class CombatEffects
   
   
   const CombatEnchModifier TRUE_LIGHT = CombatEnchModifier({
-    new FilterUnitBonus(Property::MELEE, 1, LIFE),
-    new FilterUnitBonus(Property::RANGED, 1, LIFE),
-    new FilterUnitBonus(Property::SHIELDS, 1, LIFE),
-    new FilterUnitBonus(Property::RESIST, 1, LIFE),
-    new FilterUnitBonus(Property::MELEE, -1, DEATH),
-    new FilterUnitBonus(Property::RANGED, -1, DEATH),
-    new FilterUnitBonus(Property::SHIELDS, -1, DEATH),
-    new FilterUnitBonus(Property::RESIST, -1, DEATH)
+    new UnitPropertyBonus(Property::MELEE, 1, LIFE),
+    new UnitPropertyBonus(Property::RANGED, 1, LIFE),
+    new UnitPropertyBonus(Property::SHIELDS, 1, LIFE),
+    new UnitPropertyBonus(Property::RESIST, 1, LIFE),
+    new UnitPropertyBonus(Property::MELEE, -1, DEATH),
+    new UnitPropertyBonus(Property::RANGED, -1, DEATH),
+    new UnitPropertyBonus(Property::SHIELDS, -1, DEATH),
+    new UnitPropertyBonus(Property::RESIST, -1, DEATH)
   });
   
   const CombatEnchModifier PRAYER = CombatEnchModifier({
-    new UnitBonus(Property::TO_HIT, 1),
-    new UnitBonus(Property::TO_DEFEND, 1),
-    new UnitBonus(Property::RESIST, 1)
+    new UnitPropertyBonus(Property::TO_HIT, 1),
+    new UnitPropertyBonus(Property::TO_DEFEND, 1),
+    new UnitPropertyBonus(Property::RESIST, 1)
   });
 };
 

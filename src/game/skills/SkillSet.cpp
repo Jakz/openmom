@@ -125,7 +125,7 @@ value_t SkillSet::bonusForPlayerAttribute(WizardAttribute attribute) const
   effects.filter([](const SkillEffect* e) { return e->type == SkillEffect::Type::WIZARD_BONUS; });
   effects.sort();
 
-  return effects.reduceAsModifier<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>(unit);
+  return effects.reduceAsModifier<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>(attribute, unit);
 }
 
 bool SkillSet::hasSpell(const Spell* spell) const {

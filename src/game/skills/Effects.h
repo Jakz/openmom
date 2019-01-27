@@ -59,8 +59,20 @@ struct ModifierValue
   ModifierValue(float multiplier) : priority(Priority::ANY), type(Type::ADDITIVE_LEVEL_BASED), multiplier(multiplier) { }
 
   value_t transformValue(value_t value, const Unit* unit) const;
+ 
+  Order compareMagnitude(const Unit* unit, const ModifierValue& other) const
+  {
+    value_t v1 = transformValue(0, unit), v2 = transformValue(0, unit);
+    
+    assert(type == Type::ADDITIVE || type == Type::ADDITIVE_LEVEL_BASED);
+    assert(other.type == Type::ADDITIVE || other.type == Type::ADDITIVE_LEVEL_BASED);
 
-  Order compare(const ModifierValue& other) const
+    if (v1 > v2) return Order::GREATER;
+    else if (v1 < v2) return Order::LESSER;
+    else return Order::EQUAL;
+  }
+
+  Order compareForSorting(const ModifierValue& other) const
   {
     if (priority < other.priority) return Order::LESSER;
     else if (priority > other.priority) return Order::GREATER;
@@ -73,7 +85,7 @@ struct ModifierValue
 
   }
 
-  bool operator<(const ModifierValue& other) { return compare(other) == Order::LESSER; }
+  bool operator<(const ModifierValue& other) { return compareForSorting(other) == Order::LESSER; }
 };
 
 class SkillEffect
@@ -112,6 +124,7 @@ public:
   SkillEffect(Type type, const SkillEffectGroup* group) : type(type), _group(group) { }
   SkillEffect(Type type) : SkillEffect(type, nullptr) { }
   
+  virtual bool isModifier() const { return false; }
   virtual bool isCompound() const { return false; }
   virtual size_t size() const { return 1; }
 
@@ -194,11 +207,26 @@ class ModifierEffect : public SkillEffect
 {
 protected:
   ModifierValue _value;
+  predicate<const Unit*> _predicate;
+  value_t transformValue(value_t value, const Unit* unit) const { return _value.transformValue(value, unit); }
 
 public:
-  ModifierEffect(SkillEffect::Type type, ModifierValue value) : SkillEffect(type), _value(value) { }
-  value_t transformValue(value_t value, const Unit* unit) const { return _value.transformValue(value, unit); }
+  ModifierEffect(SkillEffect::Type type, ModifierValue value) : SkillEffect(type), _value(value), _predicate([](auto unit) { return true; }) { }
+  ModifierEffect(SkillEffect::Type type, ModifierValue value, predicate<const Unit*> predicate) : SkillEffect(type), _value(value), _predicate(predicate) { }
+
   const ModifierValue& modifier() const { return _value; }
+  bool isModifier() const override { return true; }
+
+  Order compare(const Unit* unit, const SkillEffect* other) const override
+  {
+    //TODO: this doesn't check if kind of modifier is the same so it should be used only when this is sure (eg in an yaml defined SkillGroup) 
+    if (other->isModifier())
+    {
+      return modifier().compareMagnitude(unit, other->as<ModifierEffect>()->modifier());
+    }
+    else
+      return Order::UNCOMPARABLE;
+  }
 };
 
 template<typename EnumType, SkillEffect::Type SkillType>
@@ -208,9 +236,16 @@ private:
   EnumType _property;
 
 public:
-  PropertyModifierEffect(EnumType property, value_t value) : PropertyModifierEffect(property, ModifierValue(value)) { }
-  PropertyModifierEffect(EnumType property, float value) : PropertyModifierEffect(property, ModifierValue(value)) { }
   PropertyModifierEffect(EnumType property, ModifierValue value) : ModifierEffect(SkillType, value) { }
+  PropertyModifierEffect(EnumType property, ModifierValue value, predicate<const Unit*> predicate) : ModifierEffect(SkillType, value, predicate) { }
+
+  PropertyModifierEffect(EnumType property, ModifierValue value, School school) : ModifierEffect(SkillType, value, [school](const Unit* unit) { return unit->school() == school; }) { }
+
+
+  value_t transformValue(EnumType property, value_t value, const Unit* unit) const
+  {
+    return property == _property ? _value.transformValue(value, unit) : value;
+  }
 };
 
 class PropertyBonus : public SkillEffect
@@ -248,33 +283,6 @@ public:
   }
 };
 
-class UnitBonus : public PropertyBonus
-{
-public:
-  UnitBonus(Property property, value_t value) : PropertyBonus(SkillEffect::Type::UNIT_BONUS, property, value) { }
-};
-
-class UnitLevelBonus : public UnitBonus
-{
-private:
-  const float multiplier;
-  
-public:
-  UnitLevelBonus(Property property, float multiplier) : UnitBonus(property, 0), multiplier(multiplier) { }
-
-  value_t getValue(const Unit* unit) const override;
-};
-
-class FilterUnitBonus : public UnitBonus
-{
-private:
-  predicate<const Unit*> filter;
-  
-public:
-  FilterUnitBonus(Property property, value_t value, School school);
-  value_t getValue(const Unit* unit) const override;
-};
-
 class ArmyBonus : public PropertyBonus
 {
 public:
@@ -299,6 +307,7 @@ public:
 };
 
 using WizardAttributeModifier = PropertyModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
+using UnitPropertyBonus = PropertyModifierEffect<Property, SkillEffect::Type::UNIT_BONUS>;
 
 class CombatBonus : public SkillEffect
 {
@@ -437,12 +446,11 @@ public:
   }
 
   template<typename EnumType, SkillEffect::Type Type> 
-  value_t reduceAsModifier(const Unit* unit, value_t base = 0) const
+  value_t reduceAsModifier(EnumType property, const Unit* unit, value_t base = 0) const
   {
     //TODO: begin or deep begin?
-    return std::accumulate(begin(), end(), base, [unit](value_t v, const SkillEffect* effect) {
-      const ModifierEffect* modifier = effect->as<ModifierEffect>();
-      return modifier->transformValue(v, unit);
+    return std::accumulate(begin(), end(), base, [property, unit](value_t v, const SkillEffect* effect) {
+      return effect->as<PropertyModifierEffect<EnumType, Type>>()->transformValue(property, v, unit);
     });
   }
 
@@ -461,7 +469,7 @@ static const effect_list unit_bonus_build(std::initializer_list<Property> proper
 {
   effect_list effects;
   effects.resize(properties.size());
-  std::transform(properties.begin(), properties.end(), std::back_inserter(effects), [&] (const Property& property) { return new UnitBonus(property, value); });
+  std::transform(properties.begin(), properties.end(), std::back_inserter(effects), [&] (const Property& property) { return new UnitPropertyBonus(property, value); });
   return effects;
 }
 

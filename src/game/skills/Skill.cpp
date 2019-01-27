@@ -129,23 +129,24 @@ namespace skillimpl
 
   // TODO: a parametric throw weapon is needed for hero ability
   
-  static const ConcreteSkill MITHRIL_WEAPONS = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,1)});
-  static const ConcreteSkill ADAMANTIUM_WEAPONS = ConcreteSkill(SkillBase::ADAMANTIUM_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::MELEE,2)});
+  /**/
+  static const ConcreteSkill MITHRIL_WEAPONS = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitPropertyBonus(Property::MELEE,1)});
+  static const ConcreteSkill ADAMANTIUM_WEAPONS = ConcreteSkill(SkillBase::ADAMANTIUM_WEAPONS, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitPropertyBonus(Property::MELEE,2)});
   
-  static const ConcreteSkill IMMUNITY_MAGIC = ConcreteSkill(SkillBase::IMMUNITY_MAGIC, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MAGIC), new UnitBonus(Property::RESIST, 50)} );
-  static const ConcreteSkill IMMUNITY_MISSILE = ConcreteSkill(SkillBase::IMMUNITY_MISSILE, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MISSILE), new UnitBonus(Property::SHIELDS_RANGED, 50)} );
+  static const ConcreteSkill IMMUNITY_MAGIC = ConcreteSkill(SkillBase::IMMUNITY_MAGIC, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MAGIC), new UnitPropertyBonus(Property::RESIST, 50)} );
+  static const ConcreteSkill IMMUNITY_MISSILE = ConcreteSkill(SkillBase::IMMUNITY_MISSILE, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MISSILE), new UnitPropertyBonus(Property::SHIELDS_RANGED, 50)} );
   static const ConcreteSkill IMMUNITY_ILLUSIONS = ConcreteSkill(SkillBase::IMMUNITY_ILLUSIONS, {new SimpleEffect(SkillEffect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_ILLUSIONS)} );
   
-  static const ConcreteSkill HERO_AGILITY = ConcreteSkill(SkillBase::HERO_AGILITY, {new UnitLevelBonus(Property::SHIELDS, 1.0f)});
+  static const ConcreteSkill HERO_AGILITY = ConcreteSkill(SkillBase::HERO_AGILITY, {new UnitPropertyBonus(Property::SHIELDS, 1.0f)});
   // TODO: ARCANE_POWER
   static const ConcreteSkill HERO_ARMS_MASTER = ConcreteSkill(SkillBase::HERO_ARMS_MASTER, {new ArmyBonus(Property::XP, 2, ArmyBonus::Type::NORMAL_UNITS)});
-  static const ConcreteSkill HERO_BLADE_MASTER = ConcreteSkill(SkillBase::HERO_BLADE_MASTER, {new UnitLevelBonus(Property::TO_HIT, 0.5f)}); // TODO: missin effect in mechanics?
+  static const ConcreteSkill HERO_BLADE_MASTER = ConcreteSkill(SkillBase::HERO_BLADE_MASTER, {new UnitPropertyBonus(Property::TO_HIT, 0.5f)}); // TODO: missin effect in mechanics?
   // TODO: CASTER
-  static const ConcreteSkill HERO_CHARMED = ConcreteSkill(SkillBase::HERO_CHARMED, {new UnitBonus(Property::RESIST, 30)}); // TODO: missing effect in mechanics?
-  static const ConcreteSkill HERO_CONSTITUTION = ConcreteSkill(SkillBase::HERO_CONSTITUTION, {new UnitLevelBonus(Property::HIT_POINTS, 1.0f)}); // TODO: missin effect in mechanics?
+  static const ConcreteSkill HERO_CHARMED = ConcreteSkill(SkillBase::HERO_CHARMED, {new UnitPropertyBonus(Property::RESIST, 30)}); // TODO: missing effect in mechanics?
+  static const ConcreteSkill HERO_CONSTITUTION = ConcreteSkill(SkillBase::HERO_CONSTITUTION, {new UnitPropertyBonus(Property::HIT_POINTS, 1.0f)}); // TODO: missin effect in mechanics?
   // TODO: LEADERSHIP
   // TODO: LEGENDARY
-  static const ConcreteSkill HERO_MIGHT = ConcreteSkill(SkillBase::HERO_MIGHT, {new UnitLevelBonus(Property::MELEE, 1.0f)}); // TODO: missin effect in mechanics?
+  static const ConcreteSkill HERO_MIGHT = ConcreteSkill(SkillBase::HERO_MIGHT, {new UnitPropertyBonus(Property::MELEE, 1.0f)}); // TODO: missin effect in mechanics?
   // TODO: NOBLE
   static const ConcreteSkill HERO_PRAYER_MASTER = ConcreteSkill(SkillBase::HERO_PRAYER_MASTER, {new ArmyLevelBonus(Property::RESIST, 1.0f, ArmyBonus::Type::WHOLE_ARMY)});
   // TODO: SAGE
@@ -155,18 +156,18 @@ namespace skillimpl
   static const ConcreteSkill SPELL_FLAME_BLADE = ConcreteSkill(SkillBase::SPELL_FLAME_BLADE, unit_bonus_build({Property::MELEE, Property::RANGED, Property::THROWN_ATTACK}, 2));
 
   static const ConcreteSkill SPELL_RESIST_ELEMENTS = ConcreteSkill(SkillBase::SPELL_RESIST_ELEMENTS, unit_bonus_build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 3));
-  static const ConcreteSkill SPELL_GIANT_STRENGTH = ConcreteSkill(SkillBase::SPELL_GIANT_STRENGTH, {new UnitBonus(Property::MELEE,1)} );
-  static const ConcreteSkill SPELL_STONE_SKIN = ConcreteSkill(SkillBase::SPELL_STONE_SKIN, {new UnitBonus(Property::SHIELDS,1)} );
+  static const ConcreteSkill SPELL_GIANT_STRENGTH = ConcreteSkill(SkillBase::SPELL_GIANT_STRENGTH, {new UnitPropertyBonus(Property::MELEE,1)} );
+  static const ConcreteSkill SPELL_STONE_SKIN = ConcreteSkill(SkillBase::SPELL_STONE_SKIN, {new UnitPropertyBonus(Property::SHIELDS,1)} );
   static const ConcreteSkill SPELL_SWIMMING = ConcreteSkill(SkillBase::SPELL_SWIMMING, {new MovementEffect(MovementType::SWIMMING)});
   static const ConcreteSkill SPELL_PATH_FINDER = ConcreteSkill(SkillBase::SPELL_PATH_FINDER, {new MovementEffect(MovementType::PATH_FINDER)});
   static const ConcreteSkill SPELL_ELEMENTAL_ARMOR = ConcreteSkill(SkillBase::SPELL_ELEMENTAL_ARMOR, unit_bonus_build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 10));
-  static const ConcreteSkill SPELL_IRON_SKIN = ConcreteSkill(SkillBase::SPELL_IRON_SKIN, {new UnitBonus(Property::SHIELDS,10)} );
+  static const ConcreteSkill SPELL_IRON_SKIN = ConcreteSkill(SkillBase::SPELL_IRON_SKIN, {new UnitPropertyBonus(Property::SHIELDS,10)} );
 
-  static const ConcreteSkill SPELL_RESIST_MAGIC = ConcreteSkill(SkillBase::SPELL_RESIST_MAGIC, {new UnitBonus(Property::RESIST,3)} );
+  static const ConcreteSkill SPELL_RESIST_MAGIC = ConcreteSkill(SkillBase::SPELL_RESIST_MAGIC, {new UnitPropertyBonus(Property::RESIST,3)} );
   
-  static const ConcreteSkill SPELL_ENDURANCE = ConcreteSkill(SkillBase::SPELL_ENDURANCE, {new UnitBonus(Property::MOVEMENT,1)} );
-  static const ConcreteSkill SPELL_HOLY_ARMOR = ConcreteSkill(SkillBase::SPELL_HOLY_ARMOR, {new UnitBonus(Property::SHIELDS,2)}); // TODO: should be correct
-  static const ConcreteSkill SPELL_HOLY_WEAPON = ConcreteSkill(SkillBase::SPELL_HOLY_WEAPON, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitBonus(Property::TO_HIT,1)});
+  static const ConcreteSkill SPELL_ENDURANCE = ConcreteSkill(SkillBase::SPELL_ENDURANCE, {new UnitPropertyBonus(Property::MOVEMENT,1)} );
+  static const ConcreteSkill SPELL_HOLY_ARMOR = ConcreteSkill(SkillBase::SPELL_HOLY_ARMOR, {new UnitPropertyBonus(Property::SHIELDS,2)}); // TODO: should be correct
+  static const ConcreteSkill SPELL_HOLY_WEAPON = ConcreteSkill(SkillBase::SPELL_HOLY_WEAPON, {new SkillEffect(SkillEffect::Type::MAGIC_WEAPONS), new UnitPropertyBonus(Property::TO_HIT,1)});
 }
 
 const Skill* Skills::CREATE_ROAD = &skillimpl::CREATE_ROAD;

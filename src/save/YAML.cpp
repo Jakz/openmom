@@ -598,13 +598,13 @@ template<> const SkillEffect* yaml::parse(const N& node)
   {
     Property property = parse<Property>(node["property"]);
     s16 value = parse<s16>(node["value"]);
-    effect = new UnitBonus(property, value);
+    effect = new UnitPropertyBonus(property, value);
   }
   else if (type == "unit_level_bonus")
   {
     Property property = parse<Property>(node["property"]);
     float multiplier = parse<float>(node["multiplier"]);
-    effect = new UnitLevelBonus(property, multiplier);
+    effect = new UnitPropertyBonus(property, multiplier);
   }
   else if (type == "army_bonus")
   {

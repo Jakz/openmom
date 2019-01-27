@@ -20,13 +20,7 @@ value_t ModifierValue::transformValue(value_t previous, const Unit* unit) const
 }
 
 template class PropertyModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
-
-
-value_t UnitLevelBonus::getValue(const Unit* unit) const
-{
-  return static_cast<value_t>(std::floor((unit->getExperienceLevel()->ordinal())*multiplier)); // TODO: is +1 intended behavior? According to OSG it is.
-}
-
+template class PropertyModifierEffect<Property, SkillEffect::Type::UNIT_BONUS>;
 
 bool ArmyBonus::applicableOn(const Unit* unit) const
 {
@@ -40,14 +34,6 @@ value_t ArmyLevelBonus::getValue(const Unit* unit) const
 {
   return applicableOn(unit) ? static_cast<value_t>(std::floor((unit->getExperienceLevel()->index()+1)*multiplier)) : 0;
   // TODO: is +1 intended behavior? According to OSG it is.
-}
-
-FilterUnitBonus::FilterUnitBonus(Property property, value_t value, School school) : UnitBonus(property, value),
-  filter([school](const Unit* unit) { return unit->school() == school; }) { }
-
-value_t FilterUnitBonus::getValue(const Unit* unit) const
-{
-  return filter(unit) ? value : 0;
 }
 
 

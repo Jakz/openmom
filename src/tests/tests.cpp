@@ -444,7 +444,7 @@ TEST_CASE("ModifierValue") {
     effect_list effects = effect_list({ &effect2, &effect1 });
     effects.sort();
 
-    REQUIRE(effects.reduceAsModifier<Property, SkillEffect::Type::UNIT_BONUS>(&unit, 0) == 0);
+    REQUIRE(effects.reduceAsModifier<Property, SkillEffect::Type::UNIT_BONUS>(Property::MELEE, &unit, 0) == 0);
 
   }
 }
