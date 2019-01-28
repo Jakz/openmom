@@ -98,10 +98,12 @@ entries:
   unit_hero_dwarf: Dwarf
   unit_hero_barbarian: Barbarian
   unit_hero_sage: Sage
+  unit_hero_dervish: Dervish
 
   skill_agility: Agility
   skill_constitution: Constitution  
   skill_might: Might
+  skill_noble: Noble
   skill_sage: Sage
 
   skill_construction: Construction

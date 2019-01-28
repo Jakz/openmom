@@ -633,6 +633,27 @@ units:
       icon: [lbx, units1, 2]
       figure: [lbx, figures1, 16]
       portrait: [lbx, portrait, 28]
+  - identifier: hero_dervish
+    type: hero
+    slots: [ ranged, armor, jewelry ]
+    required_fame: 0
+    upkeep: 2
+    cost: 100
+    melee: 4
+    ranged: [4, arrow, 8]
+    defense: 4
+    resistance: 6
+    hits: 6
+    figures: 1
+    movement: 2
+    sight: 1
+    skills: [ noble ]
+    names: [ B'Shan, Abdul, Shaza, Fazeel, Wizier ]
+    visuals:
+      i18n: unit_hero_dervish
+      icon: [lbx, units1, 3]
+      figure: [lbx, figures1, 24]
+      portrait: [lbx, portrait, 2]
 # fantastic units
 # arcane
   - identifier: funit_magic_spirit
