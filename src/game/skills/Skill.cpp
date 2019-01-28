@@ -17,7 +17,7 @@ const std::string skills::ConcreteSkill::name() const
     const SkillEffect *effect = _effects[0];
     
     if (effect->type == SkillEffect::Type::UNIT_BONUS)
-      return string("+") + to_string(static_cast<const PropertyBonus*>(effect)->value) + " " + base;
+      return string("+") + to_string(static_cast<const UnitPropertyBonus*>(effect)->modifier().truncatedValue()) + " " + base;
     else if (_effects[0]->type == SkillEffect::Type::SPECIAL_ATTACK)
       return base + " (" + to_string(effect->as<SpecialAttackEffect>()->strength()) + ")";
   }
@@ -60,7 +60,7 @@ const string ConcreteSkill::name() const
     const SkillEffect *effect = effects[0];
     
     if (effect->type == SkillEffect::Type::UNIT_BONUS)
-      return string("+") + to_string(static_cast<const PropertyBonus*>(effect)->value) + " " + Skill::name();
+      return string("+") + to_string(static_cast<const UnitPropertyBonus*>(effect)->modifier().truncatedValue()) + " " + Skill::name();
     else if (effects[0]->type == SkillEffect::Type::SPECIAL_ATTACK)
       return Skill::name() + " (" + to_string(effect->as<SpecialAttackEffect>()->strength()) + ")";
   }
@@ -139,7 +139,7 @@ namespace skillimpl
   
   static const ConcreteSkill HERO_AGILITY = ConcreteSkill(SkillBase::HERO_AGILITY, {new UnitPropertyBonus(Property::SHIELDS, 1.0f)});
   // TODO: ARCANE_POWER
-  static const ConcreteSkill HERO_ARMS_MASTER = ConcreteSkill(SkillBase::HERO_ARMS_MASTER, {new ArmyBonus(Property::XP, 2, ArmyBonus::Type::NORMAL_UNITS)});
+  static const ConcreteSkill HERO_ARMS_MASTER = ConcreteSkill(SkillBase::HERO_ARMS_MASTER, {new ArmyPropertyBonus(Property::XP, 2/*TODO , ArmyPropertyBonus::Type::NORMAL_UNITS*/)});
   static const ConcreteSkill HERO_BLADE_MASTER = ConcreteSkill(SkillBase::HERO_BLADE_MASTER, {new UnitPropertyBonus(Property::TO_HIT, 0.5f)}); // TODO: missin effect in mechanics?
   // TODO: CASTER
   static const ConcreteSkill HERO_CHARMED = ConcreteSkill(SkillBase::HERO_CHARMED, {new UnitPropertyBonus(Property::RESIST, 30)}); // TODO: missing effect in mechanics?
@@ -148,7 +148,7 @@ namespace skillimpl
   // TODO: LEGENDARY
   static const ConcreteSkill HERO_MIGHT = ConcreteSkill(SkillBase::HERO_MIGHT, {new UnitPropertyBonus(Property::MELEE, 1.0f)}); // TODO: missin effect in mechanics?
   // TODO: NOBLE
-  static const ConcreteSkill HERO_PRAYER_MASTER = ConcreteSkill(SkillBase::HERO_PRAYER_MASTER, {new ArmyLevelBonus(Property::RESIST, 1.0f, ArmyBonus::Type::WHOLE_ARMY)});
+  static const ConcreteSkill HERO_PRAYER_MASTER = ConcreteSkill(SkillBase::HERO_PRAYER_MASTER, {new ArmyPropertyBonus(Property::RESIST, 1.0f/*, ArmyPropertyBonus::Type::WHOLE_ARMY*/)});
   // TODO: SAGE
   // TODO: SPELL_CASTER
   

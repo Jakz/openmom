@@ -40,7 +40,7 @@ skills:
       - type: unit_bonus
         group: sight_property
         property: sight
-        value: 2
+        modifier: 2
     visuals:
       hidden: true
 # to hit
@@ -49,7 +49,7 @@ skills:
     effects:
       - type: unit_bonus
         property: to_hit
-        value: 1
+        modifier: 1
     visuals:
       icon: [lbx, special2, 14]
       i18n: skill_to_hit
@@ -59,7 +59,7 @@ skills:
     effects:
       - type: unit_bonus
         property: to_hit
-        value: 2
+        modifier: 2
     visuals:
       icon: [lbx, special2, 14]
       i18n: skill_to_hit
@@ -68,7 +68,7 @@ skills:
     effects:
       - type: unit_bonus
         property: to_hit
-        value: 3
+        modifier: 3
     visuals:
       icon: [lbx, special2, 14]
       i18n: skill_to_hit
@@ -79,7 +79,7 @@ skills:
       - type: unit_bonus
         group: sight_property
         property: sight
-        value: 2
+        modifier: 2
     visuals:
       icon: [lbx, special, 37]
       i18n: skill_scouting
@@ -89,7 +89,7 @@ skills:
       - type: unit_bonus
         group: sight_property
         property: sight
-        value: 3
+        modifier: 3
     visuals:
       icon: [lbx, special, 37]
       i18n: skill_scouting
@@ -107,7 +107,7 @@ skills:
     effects:
       - type: army_bonus
         property: health_regen
-        value: 20
+        modifier: 20
         group: healer
     visuals:
       icon: [lbx, special, 16]
@@ -171,22 +171,22 @@ skills:
     effects:
       - type: unit_bonus
         property: defense_ranged
-        value: 2
+        modifier: 2
       - type: unit_bonus
         property: defense_chaos
-        value: 2
+        modifier: 2
       - type: unit_bonus
         property: defense_life
-        value: 2
+        modifier: 2
       - type: unit_bonus
         property: defense_death
-        value: 2
+        modifier: 2
       - type: unit_bonus
         property: defense_sorcery
-        value: 2
+        modifier: 2
       - type: unit_bonus
         property: defense_nature
-        value: 2
+        modifier: 2
     visuals:
       icon: [lbx, special, 14]
       i18n: skill_large_shield
@@ -263,7 +263,7 @@ skills:
     effects:
       - type: army_bonus
         property: resistance
-        value: 1
+        modifier: 1
         group: resistance_to_all
     visuals:
       icon: [lbx, special, 33]
@@ -273,7 +273,7 @@ skills:
     effects:
       - type: army_bonus
         property: resistance
-        value: 2
+        modifier: 2
         group: resistance_to_all
     visuals:
       icon: [lbx, special, 33]
@@ -324,9 +324,9 @@ skills:
     type: hero
     classes: [ any, fighter ]
     effects:
-      - type: unit_level_bonus
+      - type: unit_bonus
         property: defense
-        multiplier: 1.0
+        modifier: [1.0, per_level]
     visuals:
       hide_value: true
       icon: [lbx, special2, 32]
@@ -335,9 +335,9 @@ skills:
     type: hero
     classes: [ any, fighter ]
     effects:
-      - type: unit_level_bonus
+      - type: unit_bonus
         property: hits
-        multiplier: 1.0
+        modifier: [1.0, per_level]
     visuals:
       hide_value: true
       icon: [lbx, special, 50]
@@ -346,13 +346,27 @@ skills:
     type: hero
     classes: [ any, fighter ]
     effects:
-      - type: unit_level_bonus
+      - type: unit_bonus
         property: melee
-        multiplier: 1.0
+        modifier: [1.0, per_level]
     visuals:
       hide_value: true
       icon: [lbx, special, 52]
       i18n: skill_might
+  - identifier: noble
+    type: hero
+    classes: [ any, fighter, mage ]
+    effects:
+      - type: wizard_bonus
+        modifier: 10
+        property: gold_gain
+      - type: unit_bonus
+        modifier: [0, fixed, last]
+        property: gold_upkeep
+    visuals:
+      hide_value: true
+      icon: [lbx, special, 60]
+      i18n: skill_noble
   - identifier: sage
     type: hero
     classes: [ mage ]
@@ -360,7 +374,7 @@ skills:
       - type: wizard_bonus
         modifier: [3.0, per_level]
         #super 4.5 per level
-        attribute: research_point
+        property: research_point
     visuals:
       hide_value: true
       icon: [lbx, special, 61]
@@ -373,16 +387,16 @@ skills:
     effects:
       - type: unit_bonus
         property: resist_chaos
-        value: 3
+        modifier: 3
       - type: unit_bonus
         property: resist_death
-        value: 3
+        modifier: 3
       - type: unit_bonus
         property: defense_death
-        value: 3
+        modifier: 3
       - type: unit_bonus
         property: defense_chaos
-        value: 3
+        modifier: 3
     visuals:
       hide_value: true
       icon: [lbx, special, 88]
@@ -396,16 +410,16 @@ skills:
         elements:
           - type: unit_bonus
             property: resist_chaos
-            value: 3
+            modifier: 3
           - type: unit_bonus
             property: resist_nature
-            value: 3
+            modifier: 3
           - type: unit_bonus
             property: defense_nature
-            value: 3
+            modifier: 3
           - type: unit_bonus
             property: defense_chaos
-            value: 3
+            modifier: 3
     visuals:
       hide_value: true
       icon: [lbx, special, 72]
@@ -418,16 +432,16 @@ skills:
         elements:
           - type: unit_bonus
             property: resist_chaos
-            value: 10
+            modifier: 10
           - type: unit_bonus
             property: resist_nature
-            value: 10
+            modifier: 10
           - type: unit_bonus
             property: defense_nature
-            value: 10
+            modifier: 10
           - type: unit_bonus
             property: defense_chaos
-            value: 10
+            modifier: 10
     visuals:
       hide_value: true
       icon: [lbx, special, 73]
@@ -439,7 +453,7 @@ skills:
       - type: unit_bonus
         #TODO group: group_guardian_wind is it unique with item power or they stack?
         property: defense_ranged
-        value: 50
+        modifier: 50
     visuals:
       hide_value: true
       icon: [lbx, special2, 7]

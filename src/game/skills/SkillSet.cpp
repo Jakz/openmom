@@ -86,7 +86,7 @@ value_t SkillSet::bonusForProperty(Property property) const
   /* flatten list and remove overidden skills */
   effects = effects.actuals(unit).flatten();
   /* keep bonuses only */
-  effects.filter([property](const SkillEffect* e) { return e->type == SkillEffect::Type::UNIT_BONUS && static_cast<const PropertyBonus*>(e)->sameProperty(property); });
+  effects.filter([property](const SkillEffect* e) { return e->type == SkillEffect::Type::UNIT_BONUS && static_cast<const UnitPropertyBonus*>(e)->isAffecting(property); });
   
   // add bonuses from specific ArmyBonus effect
   if (unit->getArmy())
@@ -98,8 +98,8 @@ value_t SkillSet::bonusForProperty(Property property) const
         effect_list seffects = skill->getEffects();
         for (const SkillEffect* e : seffects)
         {
-          const PropertyBonus* ub = e->as<ArmyBonus>();
-          if (e->type == SkillEffect::Type::ARMY_BONUS && ub && ub->sameProperty(property))
+          const ArmyPropertyBonus* ub = e->as<ArmyPropertyBonus>();
+          if (e->type == SkillEffect::Type::ARMY_BONUS && ub->isAffecting(property))
             effects.push_back(ub);
         }
       }
@@ -108,10 +108,10 @@ value_t SkillSet::bonusForProperty(Property property) const
 
   effects = effects.actuals(unit);
   
-  prop_value bonus = 0;
+  value_t bonus = 0;
 
   for (const auto* effect : effects)
-    bonus += effect->as<PropertyBonus>()->getValue(unit);
+    bonus = effect->as<ModifierEffect>()->modifier().transformValue(bonus, unit);
 
   return bonus;
 }

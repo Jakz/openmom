@@ -21,24 +21,7 @@ value_t ModifierValue::transformValue(value_t previous, const Unit* unit) const
 
 template class PropertyModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
 template class PropertyModifierEffect<Property, SkillEffect::Type::UNIT_BONUS>;
-
-bool ArmyBonus::applicableOn(const Unit* unit) const
-{
-  return target == Type::WHOLE_ARMY || (target == Type::NORMAL_UNITS && unit->type() == Productable::Type::UNIT);
-}
-
-value_t ArmyBonus::getValue(const Unit* unit) const {
-  return applicableOn(unit) ? value : 0;
-}
-value_t ArmyLevelBonus::getValue(const Unit* unit) const
-{
-  return applicableOn(unit) ? static_cast<value_t>(std::floor((unit->getExperienceLevel()->index()+1)*multiplier)) : 0;
-  // TODO: is +1 intended behavior? According to OSG it is.
-}
-
-
-
-
+template class PropertyModifierEffect<Property, SkillEffect::Type::ARMY_BONUS>;
 
 
 effect_list effect_list::actuals(const Unit* unit) const

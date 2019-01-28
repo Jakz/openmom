@@ -47,18 +47,21 @@ struct ModifierValue
 
   ModifierValue(Type type, float value, Priority priority = Priority::ANY) : priority(priority), type(type), multiplier(value) 
   { 
-    assert(type == Type::ADDITIVE_LEVEL_BASED || type == Type::MULTIPLICATIVE);
+    assert(isFloating());
   }
 
   ModifierValue(Type type, value_t value, Priority priority = Priority::ANY) : priority(priority), type(type), value(value) 
   { 
-    assert(type == Type::ADDITIVE || type == Type::FIXED);
+    assert(!isFloating());
   }
 
   ModifierValue(value_t value) : priority(Priority::ANY), type(Type::ADDITIVE), value(value) { }
   ModifierValue(float multiplier) : priority(Priority::ANY), type(Type::ADDITIVE_LEVEL_BASED), multiplier(multiplier) { }
 
   value_t transformValue(value_t value, const Unit* unit) const;
+  
+  bool isFloating() const { return type == Type::MULTIPLICATIVE || type == Type::ADDITIVE_LEVEL_BASED; }
+  value_t truncatedValue() const { return isFloating() ? multiplier : value; }
  
   Order compareMagnitude(const Unit* unit, const ModifierValue& other) const
   {
@@ -236,11 +239,12 @@ private:
   EnumType _property;
 
 public:
-  PropertyModifierEffect(EnumType property, ModifierValue value) : ModifierEffect(SkillType, value) { }
-  PropertyModifierEffect(EnumType property, ModifierValue value, predicate<const Unit*> predicate) : ModifierEffect(SkillType, value, predicate) { }
+  PropertyModifierEffect(EnumType property, ModifierValue value) : ModifierEffect(SkillType, value), _property(property) { }
+  PropertyModifierEffect(EnumType property, ModifierValue value, predicate<const Unit*> predicate) : ModifierEffect(SkillType, value, predicate), _property(property) { }
 
-  PropertyModifierEffect(EnumType property, ModifierValue value, School school) : ModifierEffect(SkillType, value, [school](const Unit* unit) { return unit->school() == school; }) { }
+  PropertyModifierEffect(EnumType property, ModifierValue value, School school) : PropertyModifierEffect(property, value, [school](const Unit* unit) { return unit->school() == school; }) { }
 
+  bool isAffecting(EnumType property) const { return _property == property; }
 
   value_t transformValue(EnumType property, value_t value, const Unit* unit) const
   {
@@ -248,66 +252,9 @@ public:
   }
 };
 
-class PropertyBonus : public SkillEffect
-{
-protected:
-  PropertyBonus(SkillEffect::Type type, Property property, value_t value) : SkillEffect(type), property(property), value(value) { }
-
-public:
-  const Property property;
-  const value_t value;
-  
-  virtual value_t getValue(const Unit* unit) const { return value; }
-  bool sameProperty(Property property) const { return this->property == property; }
-  
-  Order compare(const Unit* unit, const SkillEffect* other) const override
-  {
-    if (other->type != SkillEffect::Type::UNIT_BONUS && other->type != SkillEffect::Type::ARMY_BONUS && other->type != SkillEffect::Type::COMBAT_BONUS)
-      return Order::UNCOMPARABLE;
-    else
-    {
-      const PropertyBonus* bonus = other->as<PropertyBonus>();
-      
-      if (bonus->property != property)
-        return Order::UNCOMPARABLE;
-      else
-      {
-        if (property < bonus->property)
-          return Order::LESSER;
-        else if (property > bonus->property)
-          return Order::GREATER;
-        else
-          return Order::EQUAL;
-      }
-    }
-  }
-};
-
-class ArmyBonus : public PropertyBonus
-{
-public:
-  const enum class Type { WHOLE_ARMY, NORMAL_UNITS } target;
-
-protected:
-  bool applicableOn(const Unit* unit) const;
-public:
-  ArmyBonus(Property property, value_t value, Type target) : PropertyBonus(SkillEffect::Type::ARMY_BONUS, property, value), target(target) { }
-  value_t getValue(const Unit* unit) const override;
-};
-
-class ArmyLevelBonus : public ArmyBonus
-{
-private:
-  const float multiplier;
-  
-public:
-  ArmyLevelBonus(Property property, float multiplier, Type target) : ArmyBonus(property, 0, target), multiplier(multiplier) { }
-  
-  value_t getValue(const Unit* unit) const override;
-};
-
 using WizardAttributeModifier = PropertyModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
 using UnitPropertyBonus = PropertyModifierEffect<Property, SkillEffect::Type::UNIT_BONUS>;
+using ArmyPropertyBonus = PropertyModifierEffect<Property, SkillEffect::Type::ARMY_BONUS>;
 
 class CombatBonus : public SkillEffect
 {

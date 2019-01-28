@@ -91,9 +91,15 @@ Upkeep PlayerMechanics::computeGain(const Player *player)
   
   for (auto c : player->cities)
     up += c->getProduction();
-  
-  // TODO: noble
-  
+
+  for (const auto* army : player->armies)
+    for (const auto* unit : army->getUnits())
+    {
+      up.gold += unit->skills()->bonusForPlayerAttribute(WizardAttribute::GOLD_GAIN);
+      up.mana += unit->skills()->bonusForPlayerAttribute(WizardAttribute::MANA_GAIN);
+      up.food += unit->skills()->bonusForPlayerAttribute(WizardAttribute::FOOD_GAIN);
+    }
+
   return up;
 }
 

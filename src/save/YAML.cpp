@@ -332,7 +332,8 @@ template<> Ranged yaml::parse(const N& node)
 template<> WizardAttribute yaml::parse(const N& node)
 {
   static const std::unordered_map<std::string, WizardAttribute> mapping = {
-    { "research_point", WizardAttribute::RESEARCH }
+    { "research_point", WizardAttribute::RESEARCH },
+    { "gold_gain", WizardAttribute::GOLD_GAIN }
   };
 
   FETCH_OR_FAIL("WizardAttribute", mapping, node);
@@ -357,7 +358,8 @@ template<> Property yaml::parse(const N& node)
     { "hits", Property::HIT_POINTS },
     { "health_regen", Property::HEALTH_REGEN },
     { "figures", Property::FIGURES },
-    { "sight", Property::SIGHT }
+    { "sight", Property::SIGHT },
+    { "gold_upkeep", Property::GOLD_UPKEEP }
     
   };
   
@@ -567,18 +569,53 @@ template<> const SkillEffectGroup* yaml::parse(const N& node)
 template<> ModifierValue yaml::parse(const N& node)
 {
   if (node.IsScalar())
-    return ModifierValue(node.as<value_t>());
+  {
+    if (node.asString().find('.') != std::string::npos)
+      return ModifierValue(node.as<float>());
+    else
+      return ModifierValue(node.as<value_t>());
+  }
   else if (node.IsSequence())
   {
     /* fixed value, assuming additive */
     if (node.size() == 1)
       return ModifierValue(ModifierValue::Type::ADDITIVE, node[0].as<value_t>(), ModifierValue::Priority::ANY);
-    else if (node.size() == 2)
+    else if (node.size() >= 2)
     {
-      const std::string& type = node[1];
+      const std::string& ttype = node[1];
 
-      if (type == "per_level")
-        return ModifierValue(ModifierValue::Type::ADDITIVE_LEVEL_BASED, node[0].as<float>(), ModifierValue::Priority::ANY);
+      ModifierValue::Type type = ModifierValue::Type::ADDITIVE;
+      ModifierValue::Priority priority = ModifierValue::Priority::ANY;
+      bool asFloat = false;
+
+      if (ttype == "per_level")
+      {
+        type = ModifierValue::Type::ADDITIVE_LEVEL_BASED;
+        asFloat = true;
+      }
+      else if (ttype == "fixed")
+      {
+        type = ModifierValue::Type::FIXED;
+        asFloat = false;
+      }
+      else if (ttype == "additive")
+        ;
+      else
+        assert(false);
+
+      if (node.size() > 2)
+      {
+        const std::string& tpriority = node[2];
+
+        if (tpriority == "last") priority = ModifierValue::Priority::LAST;
+        else if (tpriority == "first") priority = ModifierValue::Priority::LAST;
+        else assert(false);
+      }
+
+      if (asFloat)
+        return ModifierValue(type, node[1].as<float>(), priority);
+      else
+        return ModifierValue(type, node[1].as<value_t>(), priority);
     }
   }
 
@@ -597,26 +634,21 @@ template<> const SkillEffect* yaml::parse(const N& node)
   if (type == "unit_bonus")
   {
     Property property = parse<Property>(node["property"]);
-    s16 value = parse<s16>(node["value"]);
-    effect = new UnitPropertyBonus(property, value);
-  }
-  else if (type == "unit_level_bonus")
-  {
-    Property property = parse<Property>(node["property"]);
-    float multiplier = parse<float>(node["multiplier"]);
-    effect = new UnitPropertyBonus(property, multiplier);
+    ModifierValue modifier = parse<ModifierValue>(node["modifier"]);
+    effect = new UnitPropertyBonus(property, modifier);
   }
   else if (type == "army_bonus")
   {
     Property property = parse<Property>(node["property"]);
-    s16 value = parse<s16>(node["value"]);
-    effect = new ArmyBonus(property, value, ArmyBonus::Type::WHOLE_ARMY);
+    ModifierValue modifier = parse<ModifierValue>(node["modifier"]);
+    //TODO: affects all, normal only etc
+    effect = new ArmyPropertyBonus(property, modifier);
   }
   else if (type == "wizard_bonus")
   {
-    WizardAttribute attribute = parse<WizardAttribute>(node["attribute"]);
+    WizardAttribute attribute = parse<WizardAttribute>(node["property"]);
     ModifierValue modifier = parse<ModifierValue>(node["modifier"]);
-    return new WizardAttributeModifier(attribute, modifier);
+    effect = new WizardAttributeModifier(attribute, modifier);
   }
   else if (type == "combat_bonus")
   {
