@@ -687,6 +687,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
       { "wall_crusher", SimpleEffect::Type::WALL_CRUSHING },
       { "invisibility", SimpleEffect::Type::INVISIBILITY },
       { "allow-melee-attacks-against-flying", SimpleEffect::Type::ALLOW_MELEE_ATTACKS_AGAINST_FLYING },
+      { "use-mana-pool-for-ranged-attacks", SimpleEffect::Type::USE_MANA_POOL_FOR_RANGED_ATTACKS }
     };
     
     if (mapping.find(node["kind"]) == mapping.end())

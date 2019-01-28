@@ -193,7 +193,8 @@ public:
     LONG_RANGE,
     ILLUSIONARY_ATTACK,
     
-    ALLOW_MELEE_ATTACKS_AGAINST_FLYING
+    ALLOW_MELEE_ATTACKS_AGAINST_FLYING,
+    USE_MANA_POOL_FOR_RANGED_ATTACKS,
   } effect;
   
   SimpleEffect(SkillEffect::Type type, Type effect) : SkillEffect(type), effect(effect) { }

@@ -106,6 +106,8 @@ entries:
   skill_noble: Noble
   skill_sage: Sage
 
+  skill_caster: Caster
+
   skill_construction: Construction
   skill_create_outpost: Create Outpost
   skill_purify: Purify

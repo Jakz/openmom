@@ -8,5 +8,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\lbx\main.cpp" />
+    <ClCompile Include="..\..\..\src\common\fmt\format.cc" />
+    <ClCompile Include="..\..\..\src\gfx\LBXRepository.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\LBX.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\Gfx.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\Font.cpp" />
+    <ClCompile Include="..\..\..\src\common\mystrings.cpp" />
+    <ClCompile Include="..\..\..\src\common\Util.cpp" />
+    <ClCompile Include="..\..\..\src\common\Common.cpp" />
+    <ClCompile Include="..\..\..\src\platform\windows\windows.cpp" />
+    <ClCompile Include="..\..\..\src\platform\Path.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\ColorMap.cpp" />
+    <ClCompile Include="..\..\..\src\i18n\Localization.cpp" />
+    <ClCompile Include="..\..\..\src\i18n\Help.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\Texture.cpp" />
   </ItemGroup>
 </Project>

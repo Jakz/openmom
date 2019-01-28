@@ -15,6 +15,7 @@ public:
   static constexpr bool customUnitProps = false;
   static constexpr bool hideCombatEdges = true;
   static constexpr bool drawOverlandGrid = true;
+  static constexpr bool showAmmoInSkillList = true;
 };
 
 #endif

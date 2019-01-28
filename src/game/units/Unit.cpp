@@ -76,6 +76,8 @@ void Unit::removeSpell(const Spell* spell)
 
 prop_value Unit::getBaseProperty(Property property) const
 {
+  //TODO: AVAILABLE_AMMO unhandled
+  
   switch (property) {
     case Property::ALIVE_FIGURES:
       return _health.aliveCount();
@@ -103,6 +105,7 @@ prop_value Unit::getBaseProperty(Property property) const
     case Property::SHIELDS_LIFE:
     case Property::SHIELDS_DEATH:
       return spec->getProperty(Property::SHIELDS);
+
     default:
       return spec->getProperty(property);
   }

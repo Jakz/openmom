@@ -626,7 +626,7 @@ units:
     figures: 1
     movement: 2
     sight: 1
-    skills: [ sage ] # TODO: caster 7.5
+    skills: [ sage, caster_7_5 ]
     names: [ Zaldron, Jesrael, Sardon, Tiberius, Zorin ]
     visuals:
       i18n: unit_hero_sage

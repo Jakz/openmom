@@ -9,6 +9,8 @@
 #include "Localization.h"
 #include "Items.h"
 
+#include "GUISettings.h"
+
 enum_simple_map<items::Class, SpriteInfo, 6> itemSprites = {
   { items::Class::MELEE, LBXI(ITEMISC, 27) },
   { items::Class::RANGED, LBXI(ITEMISC, 28) },
@@ -54,6 +56,18 @@ void SkillDraw::reset(const Unit* unit)
     
     /* add 4 filler items to go next page */
     for (size_t i = 0; i < 4; ++i) entries.emplace_back();
+  }
+
+  /* add ranged if enabled */
+  // TODO: in production view no ammo is shown?
+  if (GUISettings::showAmmoInSkillList)
+  {
+    auto ranged = unit->getRangedInfo();
+    if (ranged.type != Ranged::NONE)
+    {
+      bool useMana = unit->skills()->hasSimpleEffect(SimpleEffect::Type::USE_MANA_POOL_FOR_RANGED_ATTACKS);
+      entries.emplace_back(ranged, useMana); //TODO: should use getActualRangedInfo()?
+    }
   }
   
   /* add skills */
@@ -123,6 +137,27 @@ void SkillDraw::drawEntry(const Entry &entry, size_t index)
   {
     const Skill* skill = entry.skill;
     drawSkill(index, skill->icon(), skill->name(), base.x, base.y);
+  }
+  else if (entry.type == Entry::Type::AMMO)
+  {
+    // TODO: manage mana spent invece of ammo
+    // TODO: use custom icons for boulder, ranged magical and such ?
+
+    const char* type = "";
+    switch (entry.ranged.type)
+    {
+      //TODO: localize
+      case Ranged::ARROW: type = "Arrows"; break;
+      case Ranged::BULLET: type = "Bullets"; break;
+      case Ranged::ROCK: type = "Boulders"; break;
+      case Ranged::NONE: assert(false); break;
+      default: type = "Spells"; break;
+    }
+
+    if (entry.ranged.useManaPool)
+      drawSkill(index, LSI(SPECIAL2, 25), fmt::format("{} {}mp", type, entry.ranged.value), base.x, base.y);
+    else
+      drawSkill(index, LSI(SPECIAL2, 25), fmt::format("{} x{}", type, entry.ranged.value), base.x, base.y);
   }
 }
 

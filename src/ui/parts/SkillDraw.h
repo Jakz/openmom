@@ -1,5 +1,4 @@
-#ifndef _SKILL_DRAW_H_
-#define _SKILL_DRAW_H_
+#pragma once
 
 #include "common/Common.h"
 #include "common/Util.h"
@@ -18,6 +17,7 @@ public:
       EXPERIENCE,
       ITEM,
       SKILL,
+      AMMO,
       FILLER
     } type;
     
@@ -36,11 +36,19 @@ public:
         const Level* level;
         value_t value;
       } xp;
+
+      struct
+      {
+        Ranged type;
+        value_t value;
+        bool useManaPool;
+      } ranged;
     };
     
     Entry(const Skill* skill) : type(Type::SKILL), skill(skill) { }
     Entry(items::Class type, const items::Item* item) : type(Type::ITEM), item({item, type}) { }
     Entry(const Level* level, value_t xp) : type(Type::EXPERIENCE), xp({level, xp}) { }
+    Entry(RangedInfo ranged, bool useManaPool) : type(Type::AMMO), ranged({ ranged.type, ranged.ammo, useManaPool }) { }
     Entry() : type(Type::FILLER) { }
   };
   
@@ -93,5 +101,3 @@ public:
   
   ClickableGrid* createClickable();
 };
-
-#endif

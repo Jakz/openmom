@@ -380,6 +380,19 @@ skills:
       icon: [lbx, special, 61]
       i18n: skill_sage
 
+
+  - identifier: caster_7_5
+    type: hero
+    classes: [ mage ]
+    effects:
+      - type: ability
+        kind: use-mana-pool-for-ranged-attacks
+        # TODO: missing many effects
+    visuals:
+      hide_value: true # TODO: should be false
+      icon: [lbx, special, 55]
+      i18n: skill_caster
+
 # spell skills
 # life
   - identifier: spell_bless

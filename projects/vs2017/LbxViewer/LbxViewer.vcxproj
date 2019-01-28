@@ -55,9 +55,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Label="Shared">
-    <Import Project="..\Code\Code.vcxitems" Label="Shared" />
-  </ImportGroup>
+  <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Configuration.props" />
@@ -84,6 +82,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\libs\fltk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>fltk.lib;fltk_forms.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -98,6 +97,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\libs\fltk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>fltk.lib;fltk_forms.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -112,6 +112,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -128,6 +129,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -137,7 +139,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\common\Common.cpp" />
+    <ClCompile Include="..\..\..\src\common\fmt\format.cc" />
+    <ClCompile Include="..\..\..\src\common\mystrings.cpp" />
+    <ClCompile Include="..\..\..\src\common\Util.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\ColorMap.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\Font.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\Gfx.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\LBX.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\LBXRepository.cpp" />
+    <ClCompile Include="..\..\..\src\gfx\Texture.cpp" />
+    <ClCompile Include="..\..\..\src\i18n\Help.cpp" />
+    <ClCompile Include="..\..\..\src\i18n\Localization.cpp" />
     <ClCompile Include="..\..\..\src\lbx\main.cpp" />
+    <ClCompile Include="..\..\..\src\platform\Path.cpp" />
+    <ClCompile Include="..\..\..\src\platform\windows\windows.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
