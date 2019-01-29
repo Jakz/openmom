@@ -37,8 +37,10 @@ const Texture Texture::textures[] =
     
   /* altezza max help: 200 + 23 pezzo di chiusura da sovrapporre */
   Texture(TextureID::HELP_BACKDROP,"static/help-backdrop.png",1,1,217,223),
-      
+
   Texture(TextureID::COMBAT_MISC_TILES,"combat/misc-tiles.png",3,8,30,16,true,1),
+
+  Texture(TextureID::ADDITIONAL_SKILL_ICONS, "additional-skill-icons.png", 8, 8, 16, 16),
 };
 
 u32 Texture::at(index_t x, index_t y, index_t r, index_t c) const
@@ -96,11 +98,14 @@ const Texture* Texture::get(TextureID ident)
     Path base = Platform::instance()->getResourcePath();
     texture->img = IMG_Load((base + "data/gfx" + texture->name).c_str());
     
-    const SDL_PixelFormat* destFormat = Gfx::format();
+    //const SDL_PixelFormat* destFormat = Gfx::format();
     
+    SDL_PixelFormat* format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
+
     SDL_Surface* original = texture->img;
-    texture->img = SDL_ConvertSurface(texture->img, destFormat, 0);
+    texture->img = SDL_ConvertSurface(texture->img, format, 0);
     SDL_FreeSurface(original);
+    SDL_FreeFormat(format);
   }
   
   return texture;

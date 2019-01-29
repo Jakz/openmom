@@ -42,7 +42,9 @@ skills:
         property: sight
         modifier: 2
     visuals:
-      hidden: true
+      hidden: false
+      icon: [ png, additional-skill-icons, 3 ]
+      i18n: skill_flying
 # to hit
   - identifier: to_hit_1
     type: native
@@ -79,7 +81,7 @@ skills:
       - type: unit_bonus
         group: sight_property
         property: sight
-        modifier: 2
+        modifier: [2, fixed]
     visuals:
       icon: [lbx, special, 37]
       i18n: skill_scouting
@@ -89,7 +91,7 @@ skills:
       - type: unit_bonus
         group: sight_property
         property: sight
-        modifier: 3
+        modifier: [3, fixed]
     visuals:
       icon: [lbx, special, 37]
       i18n: skill_scouting

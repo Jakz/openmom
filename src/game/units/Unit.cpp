@@ -84,11 +84,11 @@ prop_value Unit::getBaseProperty(Property property) const
     case Property::MOVEMENT_BASE_TYPE:
     {
       if (skills()->has(MovementType::FLYING))
-        return static_cast<s16>(MovementBaseType::FLYING);
+        return static_cast<value_t>(MovementBaseType::FLYING);
       else if (skills()->has(MovementType::SWIMMING))
-        return static_cast<s16>(MovementBaseType::SWIMMING);
+        return static_cast<value_t>(MovementBaseType::SWIMMING);
       else
-        return static_cast<s16>(MovementBaseType::WALKING);
+        return static_cast<value_t>(MovementBaseType::WALKING);
     }
     case Property::XP:
       return 1;
@@ -113,7 +113,9 @@ prop_value Unit::getBaseProperty(Property property) const
 
 prop_value Unit::getBonusProperty(Property property) const
 {
-  int bonus = 0;
+  //TODO: the approach here is wrong because some effects set a bonus property to a 
+  // specific value so we can't just return something to add to base property
+  value_t bonus = 0;
   
   if (property == Property::FIGURES || property == Property::MOVEMENT_BASE_TYPE)
     return 0;

@@ -154,10 +154,12 @@ void SkillDraw::drawEntry(const Entry &entry, size_t index)
       default: type = "Spells"; break;
     }
 
+    const char* format = "{} x{}";
+
     if (entry.ranged.useManaPool)
-      drawSkill(index, LSI(SPECIAL2, 25), fmt::format("{} {}mp", type, entry.ranged.value), base.x, base.y);
-    else
-      drawSkill(index, LSI(SPECIAL2, 25), fmt::format("{} x{}", type, entry.ranged.value), base.x, base.y);
+      format = "{} {}mp";
+
+    drawSkill(index, LSI(SPECIAL2, 25), fmt::format(format, type, entry.ranged.value), base.x, base.y);
   }
 }
 

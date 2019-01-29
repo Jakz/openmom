@@ -40,6 +40,8 @@ enum class TextureID : u16
   HELP_BACKDROP,
       
   COMBAT_MISC_TILES,
+
+  ADDITIONAL_SKILL_ICONS,
         
   TEXTURES_COUNT
 };

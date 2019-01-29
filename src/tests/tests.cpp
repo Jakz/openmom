@@ -245,6 +245,17 @@ TEST_CASE("basic stats of units") {
   }
 }
 
+TEST_CASE("souting") {
+  SECTION("scouting sets the range, doesn't add to it")
+  {
+    mock::RaceUnitSpec spec;
+    mock::RaceUnit unit(&spec);
+    unit.skills()->add(Data::skill("scouting_3"));
+
+    REQUIRE(unit.getProperty(Property::SIGHT) == 3);
+  }
+}
+
 TEST_CASE("items") {
   SECTION("affix is applied to hero stats") {
     auto hero1 = test::anyHeroUnit();

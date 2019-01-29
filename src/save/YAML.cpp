@@ -213,6 +213,15 @@ template<> LBXID yaml::parse(const N& node)
   FETCH_OR_FAIL("LBXID", mapping, node);
 }
 
+template<> TextureID yaml::parse(const N& node)
+{
+  static const std::unordered_map<std::string, TextureID> mapping = {
+    { "additional-skill-icons", TextureID::ADDITIONAL_SKILL_ICONS }
+  };
+
+  FETCH_OR_FAIL("TextureID", mapping, node);
+}
+
 //  enum class Class : u8 { MELEE = 0, RANGED, MELEE_STAFF, STAFF_WAND, ARMOR, MISC };
 
 template<> items::Class yaml::parse(const N& node)
@@ -460,6 +469,8 @@ template<> void yaml::parse(const N& node, SpriteInfo& v)
     assert(node.IsSequence());
     if (node[0] == "lbx")
       v = SpriteInfo(parse<LBXID>(node[1]), node[2]);
+    else if (node[0] == "png")
+      v = SpriteInfo(parse<TextureID>(node[1]), node[2]);
     else
       assert(false);
   }
@@ -613,9 +624,9 @@ template<> ModifierValue yaml::parse(const N& node)
       }
 
       if (asFloat)
-        return ModifierValue(type, node[1].as<float>(), priority);
+        return ModifierValue(type, node[0].as<float>(), priority);
       else
-        return ModifierValue(type, node[1].as<value_t>(), priority);
+        return ModifierValue(type, node[0].as<value_t>(), priority);
     }
   }
 

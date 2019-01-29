@@ -33,6 +33,8 @@ void init()
 int main(int argc, char* arg[])
 {
   //return 0;
+  SDL::init();
+
 
   lbx::Repository::init();
   lbx::Repository::loadLBX(LBXID::ARMYLIST);
@@ -115,7 +117,6 @@ int main(int argc, char* arg[])
 
   init();
 
-  SDL::init();
   Gfx::init();
   Texture::load();
   SDL::initGVM();
