@@ -12,6 +12,8 @@ class Player;
 class World;
 class Army;
 
+class movement_list;
+
 namespace pathfind
 {
   struct OverworldContext

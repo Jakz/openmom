@@ -569,6 +569,29 @@ units:
       i18n: unit_racial_engineers
       icon: [lbx, units2, 24]
       figure: [lbx, figure10, 72] 
+
+# ships
+
+  - identifier: trireme
+    type: racial
+    race: lizardmen #TODO: these need a special management since they're not racial specific
+    upkeep: 2
+    cost: 60
+    melee: 6
+    ranged: none
+    defense: 4
+    resistance: 4
+    hits: 10
+    figures: 1
+    movement: 2
+    sight: 1
+    skills: [ sailing ] #TODO: transport 2
+    requires: [ ship_wrights_guild ]
+    visuals:
+      i18n: unit_trireme
+      icon: [lbx, units1, 35 ]
+      figure: [lbx, figures3, 40 ]
+
 # heroes 
   - identifier: hero_dwarf
     type: hero

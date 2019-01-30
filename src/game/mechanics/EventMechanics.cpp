@@ -85,17 +85,17 @@ const Player* EventMechanics::pickVictim(Event::Type type) const
 
 const Event* EventMechanics::pickRandomEvent() const
 {
-  u16 size = sizeof(events)/sizeof(events[0]);
+  value_t size = sizeof(events)/sizeof(events[0]);
   const Event* e = nullptr;
   bool allowed = false;
   
   while (!allowed)
   {
-    u16 r = Math::randomIntUpTo(size);
+    value_t r = Math::randomIntUpTo(size);
     e = events[r];
     
     // two events cannot occur before turn 150
-    if ((e == Events::DIPLOMATIC_MARRIAGE || e == Events::GREAT_METEOR)  && g->getTurnCount() < 150)
+    if ((e == Events::DIPLOMATIC_MARRIAGE || e == Events::GREAT_METEOR) && g->getTurnCount() < 150)
       continue;
     else
     {
@@ -129,8 +129,8 @@ float EventMechanics::chanceOfMercenaryHeroOffer(const Player* player)
 
 u32 EventMechanics::feeForMercenaryHeroOffer(const Player* player, const Hero* hero)
 {
-  u32 base = 100 + (hero->getSpec()->requiredFame * 10);
-  u32 fee = base * (3 * hero->getExperienceLevel()->ordinal()) / 4;
+  value_t base = 100 + (hero->getSpec()->requiredFame * 10);
+  value_t fee = base * (3 * hero->experienceMultiplier()) / 4;
   
   if (player->hasRetort("charismatic"))
     fee /= 2;

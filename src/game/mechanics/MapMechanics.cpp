@@ -170,12 +170,8 @@ s16 MapMechanics::movementCost(World* world, const Position& position, const mov
   }
 }
 
-#define ANY_OF(x) any_of(u.begin(), u.end(), [] (const movement_list& l) { return l.find(Effects::x) != l.end(); })
-#define NONE_OF(x) any_of(u.begin(), u.end(), [] (const movement_list& l) { return l.find(Effects::x) != l.end(); })
-#define ALL_OF(x) any_of(u.begin(), u.end(), [] (const movement_list& l) { return l.find(Effects::x) != l.end(); })
-
-
 //TODO: check behavior
+//@see https://masterofmagic.fandom.com/wiki/Movement_Type
 const movement_list MapMechanics::movementTypeForSetOfEffects(const movement_list_group& u) const
 {  
   using Type = MovementType;
@@ -214,8 +210,9 @@ const movement_list MapMechanics::movementTypeForSetOfEffects(const movement_lis
   if (u.all_of(Type::PLANAR_TRAVEL))
     movements.add(Type::PLANAR_TRAVEL);
   
-  if (u.any_of(Type::WINDWALK))
-    movements.add(Type::WINDWALK);
+  // windwalk is not a real movement mode per se, it just gives flying to whole stack
+  /*if (u.any_of(Type::WINDWALK))
+    movements.add(Type::WINDWALK);*/
   
   return movements;
 }

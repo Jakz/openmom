@@ -67,6 +67,8 @@ template<> const UnitPropGfxMap::Data& UnitPropGfxMap::operator[](MovementBaseTy
     case MovementBaseType::WALKING: return map[Type::MOVEMENT_FOOT];
     case MovementBaseType::SWIMMING: return map[Type::MOVEMENT_WATER];
     case MovementBaseType::FLYING: return map[Type::MOVEMENT_FLYING];
+    case MovementBaseType::SAILING: return map[Type::MOVEMENT_WATER]; //TODO: same prop icon for swimming
+
   }
   assert(false);
 }

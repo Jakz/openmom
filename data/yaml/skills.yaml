@@ -17,6 +17,14 @@ skills:
     visuals:
       icon: [lbx, special, 2]
       i18n: skill_mountaineer
+  - identifier: forester
+    type: native
+    effects:
+      - type: movement
+        kind: forester
+    visuals:
+      icon: [lbx, special, 1]
+      i18n: skill_forester
   - identifier: non_corporeal
     type: native
     effects:
@@ -32,6 +40,23 @@ skills:
         kind: swimming
     visuals:
       hidden: true
+  - identifier: windwalking
+    type: native
+    effects:
+      - type: movement
+        kind: windwalking
+    visuals:
+      icon: [lbx, special, 23]
+      i18n: skill_windwalking
+  - identifier: sailing
+    type: native
+    effects:
+      - type: movement
+        kind: sailing
+    visuals:
+      hidden: false
+      icon: [ png, additional-skill-icons, 5 ]
+      i18n: skill_sailing
   - identifier: flying
     type: native
     effects:

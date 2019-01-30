@@ -117,6 +117,7 @@ enum class MovementBaseType
 {
   WALKING,
   SWIMMING,
+  SAILING,
   FLYING
 };
 

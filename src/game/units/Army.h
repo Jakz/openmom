@@ -28,6 +28,11 @@ public:
   movement_list(const std::vector<const MovementEffect*>& effects) {
     for (const auto* e : effects) data.insert(e->subType());
   }
+  
+  movement_list& operator+=(std::initializer_list<MovementType> types) {
+    data.insert(types);
+    return *this;
+  }
 
   size_t size() const { return data.size(); }
   
@@ -37,7 +42,9 @@ public:
   const_iterator begin() const{ return data.begin(); }
   const_iterator end() const { return data.end(); }
 
-  bool contains(MovementType type) const { return std::find(data.begin(), data.end(), type) != data.end(); }
+  bool operator==(const movement_list& other) const { return data == other.data; }
+
+  bool contains(MovementType type) const { return data.find(type) != data.end(); }
 };
 
 class movement_list_group
@@ -100,6 +107,7 @@ private:
 
 public:
   Army(Player* owner, std::initializer_list<Unit*> units = {});
+  ~Army();
   
   value_t sightRange();
   

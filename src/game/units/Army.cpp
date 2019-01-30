@@ -18,6 +18,11 @@ Army::Army(Player* owner, initializer_list<Unit*> units) : owner(owner), isPatro
     updateMovementType();
 }
 
+Army::~Army()
+{
+  //definition is here for destructor of std::unique_ptr<Route> which requires Route
+}
+
 const unit_list Army::getUnits(std::function<bool(const Unit*)> predicate) const
 {
   unit_list units;

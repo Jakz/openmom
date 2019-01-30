@@ -260,7 +260,7 @@ void MainView::draw()
     }
     
     /* compute and draw movement of current selection */
-    s16 moves = player->selectedAvailMoves();
+    value_t moves = player->selectedAvailMoves();
     if (moves > 0)
     {
       Fonts::drawString(fmt::sprintf("Moves: %s", UnitDraw::stringForDoubleMovement(moves)), FontFaces::Small::WHITE, 245, 166, ALIGN_LEFT);

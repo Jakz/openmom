@@ -251,6 +251,9 @@ public:
   {
     return property == _property ? _value.transformValue(value, unit) : value;
   }
+
+  using property_type = EnumType;
+  using skill_type = std::integral_constant<SkillEffect::Type, SkillType>;
 };
 
 using WizardAttributeModifier = PropertyModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
@@ -369,6 +372,12 @@ public:
   
   size_t size() const { return data.size(); }
   size_t flatSize() const { return std::accumulate(data.begin(), data.end(), 0UL, [](size_t v, const SkillEffect* effect) { return v + effect->size(); }); }
+
+  template<typename T, typename EnumType> void filter(EnumType property) {
+    filter([property](const SkillEffect* effect) {
+      return effect->type == T::skill_type::value && effect->as<T>()->isAffecting(property);
+    });
+  }
 
   void filter(std::function<bool(const SkillEffect*)> predicate)
   {

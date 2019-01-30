@@ -721,9 +721,12 @@ template<> const SkillEffect* yaml::parse(const N& node)
   {
     static std::unordered_map<std::string, MovementType> mapping = {
       { "mountaineer", MovementType::MOUNTAINWALK },
+      { "forester", MovementType::FORESTWALK },
       { "flying", MovementType::FLYING },
       { "swimming", MovementType::SWIMMING },
-      { "non_corporeal", MovementType::NON_CORPOREAL }
+      { "non_corporeal", MovementType::NON_CORPOREAL },
+      { "windwalking", MovementType::WINDWALK },
+      { "sailing", MovementType::SAILING }
     };
     
     if (mapping.find(node["kind"]) == mapping.end())

@@ -87,6 +87,8 @@ prop_value Unit::getBaseProperty(Property property) const
         return static_cast<value_t>(MovementBaseType::FLYING);
       else if (skills()->has(MovementType::SWIMMING))
         return static_cast<value_t>(MovementBaseType::SWIMMING);
+      else if (skills()->has(MovementType::SAILING))
+        return static_cast<value_t>(MovementBaseType::SAILING);
       else
         return static_cast<value_t>(MovementBaseType::WALKING);
     }
