@@ -19,59 +19,59 @@ value_t ModifierValue::transformValue(value_t previous, const Unit* unit) const
   }
 }
 
-template class PropertyModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
-template class PropertyModifierEffect<Property, SkillEffect::Type::UNIT_BONUS>;
-template class PropertyModifierEffect<Property, SkillEffect::Type::ARMY_BONUS>;
+template class PropertyModifierEffect<WizardAttribute, Effect::Type::WIZARD_BONUS>;
+template class PropertyModifierEffect<Property, Effect::Type::UNIT_BONUS>;
+template class PropertyModifierEffect<Property, Effect::Type::ARMY_BONUS>;
 
 
 effect_list effect_list::actuals(const Unit* unit) const
 {
-  std::unordered_multimap<const SkillEffectGroup*, const SkillEffect*> byGroup;
+  std::unordered_multimap<const EffectGroup*, const Effect*> byGroup;
 
   using pair_t = const decltype(byGroup)::value_type;
   const auto sorterByMagnitude = [unit](const pair_t& e1, const pair_t& e2) { return e1.second->compare(unit, e2.second) == Order::LESSER; };
   static const auto sorterByPriority = [](const pair_t& e1, const pair_t& e2) { return e1.second->groupParam() < e2.second->groupParam(); };
 
   /* group effects by group */
-  std::transform(data.begin(), data.end(), std::inserter(byGroup, byGroup.begin()), [] (const SkillEffect* effect) { return std::make_pair(effect->group(), effect); });
+  std::transform(data.begin(), data.end(), std::inserter(byGroup, byGroup.begin()), [] (const Effect* effect) { return std::make_pair(effect->group(), effect); });
   
   effect_list actuals;
   
   for (auto it = byGroup.begin(); it != byGroup.end(); /**/)
   {
-    const SkillEffectGroup* group = it->first;
+    const EffectGroup* group = it->first;
     
     auto pair = byGroup.equal_range(group);
     
-    if (!group || group->mode()== SkillEffectGroup::Mode::KEEP_ALL)
+    if (!group || group->mode()== EffectGroup::Mode::KEEP_ALL)
       std::transform(pair.first, pair.second, std::back_inserter(actuals), [] (const pair_t& entry) { return entry.second; });
     else
     {
       //TODO: write tests in Data YAML loading for preconditions about these modes
       switch (group->mode())
       {
-        case SkillEffectGroup::Mode::UNIQUE:
+        case EffectGroup::Mode::UNIQUE:
         {
           /* just push one, they should be all equal for the same group */
           actuals.push_back(pair.first->second);
           break;
         }
           
-        case SkillEffectGroup::Mode::KEEP_GREATER:
+        case EffectGroup::Mode::KEEP_GREATER:
         {
           auto max = std::max_element(pair.first, pair.second, sorterByMagnitude);
           actuals.push_back(max->second);
           break;
         }
           
-        case SkillEffectGroup::Mode::KEEP_LESSER:
+        case EffectGroup::Mode::KEEP_LESSER:
         {
           auto min = std::min_element(pair.first, pair.second, sorterByMagnitude);
           actuals.push_back(min->second);
           break;
         }
 
-        case SkillEffectGroup::Mode::PRIORITY:
+        case EffectGroup::Mode::PRIORITY:
         {
           /* higher has priority */
           auto min = std::min_element(pair.first, pair.second, sorterByPriority);
@@ -79,7 +79,7 @@ effect_list effect_list::actuals(const Unit* unit) const
           break;
         }
           
-        case SkillEffectGroup::Mode::KEEP_ALL:
+        case EffectGroup::Mode::KEEP_ALL:
         {
           /* already handled in general case outside switch */
           break;
@@ -96,7 +96,7 @@ effect_list effect_list::actuals(const Unit* unit) const
 /* flatten nested effects */
 effect_list effect_list::flatten()
 {
-  std::vector<const SkillEffect*> data;
+  std::vector<const Effect*> data;
   std::copy(dbegin(), dend(), std::back_inserter(data));
 
   return data;

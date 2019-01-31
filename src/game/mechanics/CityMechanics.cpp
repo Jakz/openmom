@@ -229,7 +229,7 @@ bool CityMechanics::isBuildingAllowedForTerrain(const City *city, const Building
   if (!requirement.empty())
   {
     for (auto it : requirement)
-      if (countSurroundTileType(city, it) > 0)
+      if (countSurroundTileType(city, it).total() > 0)
         return true;
     
     return false;
@@ -352,36 +352,40 @@ void CityMechanics::lambdaOnCitySurroundings(const City* city, const std::functi
 }
 
 
-value_t CityMechanics::countSurroundTileType(const City* city, TileType type)
+tilecount_t CityMechanics::countSurroundTileType(const City* city, TileType type)
 {
-  value_t count = 0;
+  tilecount_t count;
   lambdaOnCitySurroundings(city, [&count, type](const Tile* tile) {
-    count += tile->type == type ? 1 : 0;
+    if (tile->type == type)
+      count.incr(tile->isResourceShared());
   });
   return count;
 }
 
-value_t CityMechanics::countSurroundResource(const City* city, Resource type)
+tilecount_t CityMechanics::countSurroundResource(const City* city, Resource type)
 {
-  value_t count = 0;
+  tilecount_t count;
   lambdaOnCitySurroundings(city, [&count, type](const Tile* tile) {
-    count += tile->resource == type ? 1 : 0;
+    if (tile->resource == type)
+      count.incr(tile->isResourceShared());
   });
   return count;
 }
 
-value_t CityMechanics::countSurroundManaNode(const City* city, School school)
+tilecount_t CityMechanics::countSurroundManaNode(const City* city, School school)
 {
-  value_t count = 0;
+  tilecount_t count;
   lambdaOnCitySurroundings(city, [&count, school](const Tile* tile) {
-    count += tile->node() && tile->node()->school == school ? 1 : 0;
+    if (tile->node() && tile->node()->school == school)
+      count.incr(tile->isResourceShared());
   });
   return count;
 }
 
 float CityMechanics::resourceBonus(const City* city, Resource resource, float value)
 {
-  value_t count = countSurroundResource(city, resource);
+  //TODO: if shared does it change?
+  value_t count = countSurroundResource(city, resource).total();
   
   float ret = value*count;
   
@@ -504,6 +508,7 @@ value_t CityMechanics::baseProduction(const City *city)
 {
   value_t multiplier = city->race->baseProduction;
   
+  // workers * 2 (3) + ceil(farmers / 2.0)
   return (city->workers*multiplier) + (value_t)std::ceil(city->farmers/2.0);
 }
 
@@ -522,12 +527,24 @@ value_t CityMechanics::computeProductionBonus(const City *city)
     bonus += 0.50f;
   
   // bonuses given by terrain features
-  bonus += countSurroundTileType(city, TileType::HILL)*0.03f; // TODO: broken, check
-  bonus += countSurroundTileType(city, TileType::HILL)*0.03f;
-  bonus += countSurroundTileType(city, TileType::HILL)*0.03f;
-  bonus += countSurroundTileType(city, TileType::HILL)*0.05f;
-  bonus += countSurroundManaNode(city, CHAOS)*0.05f;
-  bonus += countSurroundManaNode(city, NATURE)*0.03f;
+  //TODO: mind that a tile with a mana node could be of a type which is counted anyway, so check behavior
+  // for example Nature Node is considered a forest by the game
+  tilecount_t count =
+    countSurroundTileType(city, TileType::DESERT) +
+    countSurroundTileType(city, TileType::FOREST) +
+    countSurroundTileType(city, TileType::HILL) +
+    countSurroundManaNode(city, School::NATURE);
+
+  bonus += count.exclusive() * 0.03f + count.shared() * 0.01f;
+
+  count = 
+    countSurroundTileType(city, TileType::MOUNTAIN) + 
+    countSurroundManaNode(city, School::CHAOS);
+
+  bonus += count.exclusive() * 0.05 + count.shared() * 0.02f;
+  
+  //TODO: remove tiles which are corrupted
+  //TODO: Gaia's blessing doubles forest and nature node to 3%/6%
   
   return bonus;
 }

@@ -223,7 +223,7 @@ const movement_list MapMechanics::movementTypeOfArmy(const unit_list& units) con
   
   std::transform(units.begin(), units.end(), std::back_inserter(umovements), [] (const Unit* unit) {
     std::vector<const MovementEffect*> effects;
-    unit->skills()->findAllEffectsOftype(effects, SkillEffect::Type::MOVEMENT);
+    unit->skills()->findAllEffectsOftype(effects, Effect::Type::MOVEMENT);
     return movement_list(effects);
   });
   

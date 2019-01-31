@@ -273,7 +273,7 @@ namespace skills
   };
   
   
-  template<typename T, typename S> void findAllEffectsOftype(const S& src, T& effects, SkillEffect::Type type)
+  template<typename T, typename S> void findAllEffectsOftype(const S& src, T& effects, Effect::Type type)
   {
     for (const Skill* skill : src)
       for (const auto* effect : skill->getEffects())
@@ -285,7 +285,7 @@ namespace skills
   {
     for (const Skill* skill : src)
       for (const auto e : skill->getEffects())
-        if (e->type == SkillEffect::Type::ABILITY && e->as<SimpleEffect>()->effect == type)
+        if (e->type == Effect::Type::ABILITY && e->as<SimpleEffect>()->effect == type)
           return true;
     
     return false;

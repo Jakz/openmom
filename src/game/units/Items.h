@@ -12,7 +12,7 @@
 
 class Spell;
 class Skill;
-class SkillEffect;
+class Effect;
 enum class Property : u8;
 
 namespace items

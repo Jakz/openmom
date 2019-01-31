@@ -63,13 +63,13 @@ public:
   bool hasSkill(const Skill* skill) const;
   bool hasSimpleEffect(SimpleEffect::Type type) const;
     
-  bool has(const std::function<bool(const SkillEffect*)>& predicate) const;
+  bool has(const std::function<bool(const Effect*)>& predicate) const;
   
   bool has(MovementType type) const;
   
-  void forEachEffect(std::function<void(const SkillEffect*)> lambda) const;
+  void forEachEffect(std::function<void(const Effect*)> lambda) const;
   
-  template<typename T> void findAllEffectsOftype(T& effects, SkillEffect::Type type) const
+  template<typename T> void findAllEffectsOftype(T& effects, Effect::Type type) const
   {
     skills::findAllEffectsOftype(*this, effects, type);
   }

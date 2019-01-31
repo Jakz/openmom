@@ -107,7 +107,7 @@ value_t SkillSet::bonusForProperty(Property property) const
   value_t bonus = 0;
 
   for (const auto* effect : effects)
-    bonus = effect->as<ModifierEffect>()->modifier().transformValue(bonus, unit);
+    bonus = effect->as<SkillModifierEffect>()->modifier().transformValue(bonus, unit);
 
   return bonus;
 }
@@ -118,10 +118,10 @@ value_t SkillSet::bonusForPlayerAttribute(WizardAttribute attribute) const
   for (const Skill* skill : *this)
     effects += skill->getEffects();
 
-  effects.filter([](const SkillEffect* e) { return e->type == SkillEffect::Type::WIZARD_BONUS; });
+  effects.filter([](const Effect* e) { return e->type == Effect::Type::WIZARD_BONUS; });
   effects.sort();
 
-  return effects.reduceAsModifier<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>(attribute, unit);
+  return effects.reduceAsModifier<WizardAttribute, Effect::Type::WIZARD_BONUS>(attribute, unit);
 }
 
 bool SkillSet::hasSpell(const Spell* spell) const {
@@ -133,10 +133,10 @@ bool SkillSet::hasSkill(const Skill* skill) const
   return std::find_if(this->begin(), this->end(), [skill](const Skill* it) { return it == skill; }) != this->end();
 }
 
-bool SkillSet::has(const std::function<bool(const SkillEffect*)>& predicate) const
+bool SkillSet::has(const std::function<bool(const Effect*)>& predicate) const
 {
   return std::any_of(this->begin(), this->end(), [&predicate] (const Skill* skill) {
-    return std::any_of(skill->getEffects().dbegin(), skill->getEffects().dend(), [&predicate] (const SkillEffect* effect) {
+    return std::any_of(skill->getEffects().dbegin(), skill->getEffects().dend(), [&predicate] (const Effect* effect) {
       return predicate(effect);
     });
   });
@@ -145,9 +145,9 @@ bool SkillSet::has(const std::function<bool(const SkillEffect*)>& predicate) con
 bool SkillSet::has(MovementType type) const {
   bool hasType = false, hasPreventType = false;
   
-  forEachEffect([&hasType, &hasPreventType, type] (const SkillEffect* effect) {
-    hasType |= effect->type == SkillEffect::Type::MOVEMENT && effect->as<MovementEffect>()->subType() == type;
-    hasPreventType |= effect->type == SkillEffect::Type::DISALLOW_MOVEMENT && effect->as<MovementEffect>()->subType() == type;
+  forEachEffect([&hasType, &hasPreventType, type] (const Effect* effect) {
+    hasType |= effect->type == Effect::Type::MOVEMENT && effect->as<MovementEffect>()->subType() == type;
+    hasPreventType |= effect->type == Effect::Type::DISALLOW_MOVEMENT && effect->as<MovementEffect>()->subType() == type;
   });
   
   return hasType && !hasPreventType;
@@ -158,10 +158,10 @@ bool SkillSet::hasSimpleEffect(SimpleEffect::Type type) const
   return skills::hasSimpleEffect(*this, type);
 }
 
-void SkillSet::forEachEffect(std::function<void(const SkillEffect*)> lambda) const
+void SkillSet::forEachEffect(std::function<void(const Effect*)> lambda) const
 {
   std::for_each(begin(), end(), [&lambda] (const Skill* skill) {
-    std::for_each(skill->getEffects().dbegin(), skill->getEffects().dend(), [&lambda] (const SkillEffect* effect) {
+    std::for_each(skill->getEffects().dbegin(), skill->getEffects().dend(), [&lambda] (const Effect* effect) {
       lambda(effect);
     });
   });

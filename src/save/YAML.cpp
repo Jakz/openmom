@@ -552,32 +552,32 @@ template<> const Spell* yaml::parse(const N& node)
   return nullptr;
 }
 
-#pragma mark SkillEffectGroup
+#pragma mark EffectGroup
 
 // TODO: it's here because it's not needed by the game but for consistency
 // maybe we should move it to Data
-static std::unordered_map<std::string, const SkillEffectGroup*> skillGroups;
+static std::unordered_map<std::string, const EffectGroup*> skillGroups;
 
-template<> SkillEffectGroup::Mode yaml::parse(const N& node)
+template<> EffectGroup::Mode yaml::parse(const N& node)
 {
-  using Mode = SkillEffectGroup::Mode;
+  using Mode = EffectGroup::Mode;
   static const std::unordered_map<std::string, Mode> mapping = {
-    { "keep_greater", SkillEffectGroup::Mode::KEEP_GREATER },
-    { "unique", SkillEffectGroup::Mode::UNIQUE },
-    { "priority", SkillEffectGroup::Mode::PRIORITY }
+    { "keep_greater", EffectGroup::Mode::KEEP_GREATER },
+    { "unique", EffectGroup::Mode::UNIQUE },
+    { "priority", EffectGroup::Mode::PRIORITY }
   };
   
-  FETCH_OR_FAIL("SkillEffectGroup::Mode", mapping, node);
+  FETCH_OR_FAIL("EffectGroup::Mode", mapping, node);
 }
                                           
-template<> const SkillEffectGroup* yaml::parse(const N& node)
+template<> const EffectGroup* yaml::parse(const N& node)
 {
   //const std::string& identifier = node["identifier"];
-  SkillEffectGroup::Mode mode = parse<SkillEffectGroup::Mode>(node["policy"]);
-  return new SkillEffectGroup(mode);
+  EffectGroup::Mode mode = parse<EffectGroup::Mode>(node["policy"]);
+  return new EffectGroup(mode);
 }
 
-#pragma mark SkillEffect
+#pragma mark Effect
 template<> ModifierValue yaml::parse(const N& node)
 {
   if (node.IsScalar())
@@ -638,10 +638,10 @@ template<> ModifierValue yaml::parse(const N& node)
 }
 
 
-template<> const SkillEffect* yaml::parse(const N& node)
+template<> const Effect* yaml::parse(const N& node)
 {
   const std::string& type = node["type"];
-  SkillEffect* effect = nullptr;
+  Effect* effect = nullptr;
   
   if (type == "unit_bonus")
   {
@@ -713,10 +713,10 @@ template<> const SkillEffect* yaml::parse(const N& node)
     if (type == "parametric_ability")
     {
       s16 value = parse<s16>(node["value"]);
-      effect = new SimpleParametricEffect(SkillEffect::Type::ABILITY, kind, value);
+      effect = new SimpleParametricEffect(Effect::Type::ABILITY, kind, value);
     }
     else
-      effect = new SimpleEffect(SkillEffect::Type::ABILITY, kind);
+      effect = new SimpleEffect(Effect::Type::ABILITY, kind);
   }
   else if (type == "movement" || type == "disallow-movement")
   {
@@ -737,7 +737,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
     
     MovementType kind = mapping[node["kind"]];
     
-    effect = isDisallow ? static_cast<SkillEffect*>(new MovementDisallowEffect(kind)) :  new MovementEffect(kind);
+    effect = isDisallow ? static_cast<Effect*>(new MovementDisallowEffect(kind)) :  new MovementEffect(kind);
   }
   else if (type == "spell_grant")
   {
@@ -750,7 +750,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
   }
   else if (type == "compound")
   {
-    std::vector<const SkillEffect*> effects;
+    std::vector<const Effect*> effects;
     parse(node["elements"], effects);
 
     effect = new CompoundEffect(effects);
@@ -769,7 +769,7 @@ template<> const SkillEffect* yaml::parse(const N& node)
     if (hasStackableGroup)
     {
       std::string groupIdentifier;
-      SkillEffectGroupParam groupParam = 0;
+      EffectGroupParam groupParam = 0;
 
       if (node["group"].IsSequence())
       {
@@ -843,7 +843,7 @@ template<> const Skill* yaml::parse(const N& node)
   
   if (node.hasChild("effects"))
   {
-    std::vector<const SkillEffect*> effects;
+    std::vector<const Effect*> effects;
     parse(node["effects"], effects);
     skill = new skills::ConcreteSkill(type, effect_list(effects), visualInfo);
   }
@@ -1191,7 +1191,7 @@ void yaml::parseSkills()
   for (const auto& ygroup : groups)
   {
     const std::string& identifier = getIdentifier(ygroup);
-    skillGroups[identifier] = parse<const SkillEffectGroup*>(ygroup);
+    skillGroups[identifier] = parse<const EffectGroup*>(ygroup);
   }
   
   auto skills = file["skills"];

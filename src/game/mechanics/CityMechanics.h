@@ -15,6 +15,22 @@ class Tile;
 
 enum class RaceID: u8;
 
+struct tilecount_t
+{
+  value_t _count;
+  value_t _shared;
+
+  tilecount_t(value_t count, value_t shared) :_count(count), _shared(shared) { }
+  tilecount_t() : tilecount_t(0,0) { }
+
+  void incr(bool shared) { ++_count; if (shared) ++_shared; }
+  tilecount_t operator+(const tilecount_t& other) { return tilecount_t(_count + other._count, _shared + other._shared); }
+
+  value_t total() const { return _count; }
+  value_t shared() const { return _shared; }
+  value_t exclusive() const { return _count - _shared; }
+};
+
 namespace std
 {
   template<> struct hash<RaceID> { std::size_t operator()(const RaceID& k) const { return static_cast<u8>(k); } };
@@ -46,9 +62,9 @@ public:
   
   void lambdaOnCitySurroundings(const City* city, const std::function<void(Tile*)>& functor);
   
-  value_t countSurroundTileType(const City* city, TileType type);
-  value_t countSurroundResource(const City* city, Resource type);
-  value_t countSurroundManaNode(const City* city, School type);
+  tilecount_t countSurroundTileType(const City* city, TileType type);
+  tilecount_t countSurroundResource(const City* city, Resource type);
+  tilecount_t countSurroundManaNode(const City* city, School type);
   float resourceBonus(const City* city, Resource resource, float value);
   
   value_t computeInitialPopulation(const Player* player, const Position& position) { return 300; } // TODO: real behavior

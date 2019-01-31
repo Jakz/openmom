@@ -58,7 +58,7 @@ namespace mock
     Skill() : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, {}) { }
     Skill(effect_list effects) : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, effects) { }
 
-    void addEffect(const SkillEffect* effect) { effects.push_back(effect); }
+    void addEffect(const Effect* effect) { effects.push_back(effect); }
   };
 
   class Army : public ::Army
@@ -114,10 +114,10 @@ namespace Catch
   };
 }
 
-class DummyEffect : public SkillEffect {
+class DummyEffect : public Effect {
 public:
   std::string v;
-  DummyEffect(std::string v) : SkillEffect(SkillEffect::Type::MOVEMENT), v(v) { }
+  DummyEffect(std::string v) : Effect(Effect::Type::MOVEMENT), v(v) { }
 };
 
 struct PropertyModifier
@@ -507,7 +507,7 @@ TEST_CASE("effect_list class") {
   SECTION("effect groups") {
     SECTION("grouping by priority keeps higher priority effect")
     {
-      SkillEffectGroup group = SkillEffectGroup(SkillEffectGroup::Mode::PRIORITY);
+      EffectGroup group = EffectGroup(EffectGroup::Mode::PRIORITY);
       DummyEffect e1 = DummyEffect("first"), e2 = DummyEffect("second");
       e1.setGroup(&group, 0);
       e2.setGroup(&group, 1);
@@ -520,7 +520,7 @@ TEST_CASE("effect_list class") {
     }
 
     SECTION("grouping by priority works with compound effects") {
-      SkillEffectGroup group = SkillEffectGroup(SkillEffectGroup::Mode::PRIORITY);
+      EffectGroup group = EffectGroup(EffectGroup::Mode::PRIORITY);
       DummyEffect e1 = DummyEffect("first"), e2 = DummyEffect("second");
       CompoundEffect c1 = CompoundEffect({ &e1 }), c2 = CompoundEffect({ &e2 });
       c1.setGroup(&group, 0);
@@ -568,14 +568,14 @@ TEST_CASE("ModifierValue") {
 
     auto unit = mock::RaceUnit();
 
-    const auto effect1 = PropertyModifierEffect<Property, SkillEffect::Type::UNIT_BONUS>(Property::MELEE, modifier);
-    const auto effect2 = PropertyModifierEffect<Property, SkillEffect::Type::UNIT_BONUS>(Property::MELEE, zeroer);
+    const auto effect1 = PropertyModifierEffect<Property, Effect::Type::UNIT_BONUS>(Property::MELEE, modifier);
+    const auto effect2 = PropertyModifierEffect<Property, Effect::Type::UNIT_BONUS>(Property::MELEE, zeroer);
 
     /* order is swapped to ensure sorting occurs */
     effect_list effects = effect_list({ &effect2, &effect1 });
     effects.sort();
 
-    REQUIRE(effects.reduceAsModifier<Property, SkillEffect::Type::UNIT_BONUS>(Property::MELEE, &unit, 0) == 0);
+    REQUIRE(effects.reduceAsModifier<Property, Effect::Type::UNIT_BONUS>(Property::MELEE, &unit, 0) == 0);
 
   }
 }

@@ -15,22 +15,22 @@
 
 enum class Property : u8;
 class Unit;
-class SkillEffect;
+class Effect;
 
-using SkillEffectGroupParam = value_t;
-struct SkillEffectGroup
+using EffectGroupParam = value_t;
+struct EffectGroup
 {
 public:
   enum class Mode : u16 { KEEP_ALL, UNIQUE, KEEP_GREATER, KEEP_LESSER, PRIORITY };
  
 private:
   Mode _mode;
-  const SkillEffect* _specific;
+  const Effect* _specific;
   
 public:
-  SkillEffectGroup(Mode mode) : _mode(mode), _specific(nullptr) { }
+  EffectGroup(Mode mode) : _mode(mode), _specific(nullptr) { }
   
-  const SkillEffect* master() { return _specific; }
+  const Effect* master() { return _specific; }
   Mode mode() const { return _mode; }
 };
 
@@ -91,13 +91,13 @@ struct ModifierValue
   bool operator<(const ModifierValue& other) { return compareForSorting(other) == Order::LESSER; }
 };
 
-class SkillEffect
+class Effect
 {
 public:
   
 protected:
-  const SkillEffectGroup* _group;
-  SkillEffectGroupParam _groupParam;
+  const EffectGroup* _group;
+  EffectGroupParam _groupParam;
   
 public:
   const enum class Type : u8
@@ -124,34 +124,34 @@ public:
   } type;
   
   
-  SkillEffect(Type type, const SkillEffectGroup* group) : type(type), _group(group) { }
-  SkillEffect(Type type) : SkillEffect(type, nullptr) { }
+  Effect(Type type, const EffectGroup* group) : type(type), _group(group) { }
+  Effect(Type type) : Effect(type, nullptr) { }
   
   virtual bool isModifier() const { return false; }
   virtual bool isCompound() const { return false; }
   virtual size_t size() const { return 1; }
 
-  void setGroup(const SkillEffectGroup* group, SkillEffectGroupParam param = 0) { this->_group = group; this->_groupParam = param; }
-  const SkillEffectGroup* group() const { return _group; }
-  SkillEffectGroupParam groupParam() const { return _groupParam;  }
+  void setGroup(const EffectGroup* group, EffectGroupParam param = 0) { this->_group = group; this->_groupParam = param; }
+  const EffectGroup* group() const { return _group; }
+  EffectGroupParam groupParam() const { return _groupParam;  }
 
-  virtual Order compare(const Unit* unit, const SkillEffect* other) const { return Order::UNCOMPARABLE; }
+  virtual Order compare(const Unit* unit, const Effect* other) const { return Order::UNCOMPARABLE; }
   
   template<typename T> const T* as() const { return static_cast<const T*>(this); }
 };
 
-template<typename T, SkillEffect::Type TYPE>
-class SkillEnumEffect : public SkillEffect
+template<typename T, Effect::Type TYPE>
+class SkillEnumEffect : public Effect
 {
 private:
   const T _subType;
 public:
-  SkillEnumEffect(T type) : SkillEffect(TYPE), _subType(type) { }
+  SkillEnumEffect(T type) : Effect(TYPE), _subType(type) { }
   
   bool operator==(T type) const { return _subType == type; }
   T subType() const { return _subType; }
   
-  Order compare(const Unit* unit, const SkillEffect* other) const override
+  Order compare(const Unit* unit, const Effect* other) const override
   {
     if (other->type == type)
       return other->as<SkillEnumEffect<T, TYPE>>()->subType() == subType() ? Order::EQUAL : Order::DIFFERENT;
@@ -160,7 +160,7 @@ public:
   }
 };
 
-class SimpleEffect : public SkillEffect
+class SimpleEffect : public Effect
 {
 public:
   const enum class Type : u16
@@ -197,17 +197,17 @@ public:
     USE_MANA_POOL_FOR_RANGED_ATTACKS,
   } effect;
   
-  SimpleEffect(SkillEffect::Type type, Type effect) : SkillEffect(type), effect(effect) { }
+  SimpleEffect(Effect::Type type, Type effect) : Effect(type), effect(effect) { }
 };
 
 class SimpleParametricEffect : public SimpleEffect
 {
 public:
-  SimpleParametricEffect(SkillEffect::Type type, Type effect, value_t param) : SimpleEffect(type, effect), param(param) { }
+  SimpleParametricEffect(Effect::Type type, Type effect, value_t param) : SimpleEffect(type, effect), param(param) { }
   const value_t param;
 };
 
-class ModifierEffect : public SkillEffect
+class SkillModifierEffect : public Effect
 {
 protected:
   ModifierValue _value;
@@ -215,33 +215,33 @@ protected:
   value_t transformValue(value_t value, const Unit* unit) const { return _value.transformValue(value, unit); }
 
 public:
-  ModifierEffect(SkillEffect::Type type, ModifierValue value) : SkillEffect(type), _value(value), _predicate([](auto unit) { return true; }) { }
-  ModifierEffect(SkillEffect::Type type, ModifierValue value, predicate<const Unit*> predicate) : SkillEffect(type), _value(value), _predicate(predicate) { }
+  SkillModifierEffect(Effect::Type type, ModifierValue value) : Effect(type), _value(value), _predicate([](auto unit) { return true; }) { }
+  SkillModifierEffect(Effect::Type type, ModifierValue value, predicate<const Unit*> predicate) : Effect(type), _value(value), _predicate(predicate) { }
 
   const ModifierValue& modifier() const { return _value; }
   bool isModifier() const override { return true; }
 
-  Order compare(const Unit* unit, const SkillEffect* other) const override
+  Order compare(const Unit* unit, const Effect* other) const override
   {
     //TODO: this doesn't check if kind of modifier is the same so it should be used only when this is sure (eg in an yaml defined SkillGroup) 
     if (other->isModifier())
     {
-      return modifier().compareMagnitude(unit, other->as<ModifierEffect>()->modifier());
+      return modifier().compareMagnitude(unit, other->as<SkillModifierEffect>()->modifier());
     }
     else
       return Order::UNCOMPARABLE;
   }
 };
 
-template<typename EnumType, SkillEffect::Type SkillType>
-class PropertyModifierEffect : public ModifierEffect
+template<typename EnumType, Effect::Type SkillType>
+class PropertyModifierEffect : public SkillModifierEffect
 {
 private:
   EnumType _property;
 
 public:
-  PropertyModifierEffect(EnumType property, ModifierValue value) : ModifierEffect(SkillType, value), _property(property) { }
-  PropertyModifierEffect(EnumType property, ModifierValue value, predicate<const Unit*> predicate) : ModifierEffect(SkillType, value, predicate), _property(property) { }
+  PropertyModifierEffect(EnumType property, ModifierValue value) : SkillModifierEffect(SkillType, value), _property(property) { }
+  PropertyModifierEffect(EnumType property, ModifierValue value, predicate<const Unit*> predicate) : SkillModifierEffect(SkillType, value, predicate), _property(property) { }
 
   PropertyModifierEffect(EnumType property, ModifierValue value, School school) : PropertyModifierEffect(property, value, [school](const Unit* unit) { return unit->school() == school; }) { }
 
@@ -253,14 +253,14 @@ public:
   }
 
   using property_type = EnumType;
-  using skill_type = std::integral_constant<SkillEffect::Type, SkillType>;
+  using skill_type = std::integral_constant<Effect::Type, SkillType>;
 };
 
-using WizardAttributeModifier = PropertyModifierEffect<WizardAttribute, SkillEffect::Type::WIZARD_BONUS>;
-using UnitPropertyBonus = PropertyModifierEffect<Property, SkillEffect::Type::UNIT_BONUS>;
-using ArmyPropertyBonus = PropertyModifierEffect<Property, SkillEffect::Type::ARMY_BONUS>;
+using WizardAttributeModifier = PropertyModifierEffect<WizardAttribute, Effect::Type::WIZARD_BONUS>;
+using UnitPropertyBonus = PropertyModifierEffect<Property, Effect::Type::UNIT_BONUS>;
+using ArmyPropertyBonus = PropertyModifierEffect<Property, Effect::Type::ARMY_BONUS>;
 
-class CombatBonus : public SkillEffect
+class CombatBonus : public Effect
 {
 public:
   enum class Phase : u8
@@ -276,7 +276,7 @@ public:
     DEFENDER,
   };
   
-  CombatBonus(Property property, value_t value, Phase trigger, Target target, bool boundToSkill) : SkillEffect(SkillEffect::Type::COMBAT_BONUS), property(property), value(value), trigger(trigger), target(target), boundToSkill(boundToSkill) { }
+  CombatBonus(Property property, value_t value, Phase trigger, Target target, bool boundToSkill) : Effect(Effect::Type::COMBAT_BONUS), property(property), value(value), trigger(trigger), target(target), boundToSkill(boundToSkill) { }
   
   const Phase trigger;
   const Target target;
@@ -302,8 +302,8 @@ enum class MovementType
   SAILING,
 };
 
-using MovementEffect = SkillEnumEffect<MovementType, SkillEffect::Type::MOVEMENT>;
-using MovementDisallowEffect = SkillEnumEffect<MovementType, SkillEffect::Type::DISALLOW_MOVEMENT>;
+using MovementEffect = SkillEnumEffect<MovementType, Effect::Type::MOVEMENT>;
+using MovementDisallowEffect = SkillEnumEffect<MovementType, Effect::Type::DISALLOW_MOVEMENT>;
 
 enum SpecialAttackType
 {
@@ -314,7 +314,7 @@ enum SpecialAttackType
   POISON_TOUCH
 };
 
-class SpecialAttackEffect : public SkillEnumEffect<SpecialAttackType, SkillEffect::Type::SPECIAL_ATTACK>
+class SpecialAttackEffect : public SkillEnumEffect<SpecialAttackType, Effect::Type::SPECIAL_ATTACK>
 {
 private:
   value_t _strength;
@@ -328,7 +328,7 @@ public:
 //TODO: technically is a combat instant spell
 //TODO: implement mechanics
 class Spell;
-class SpellGrantEffect : public SkillEffect
+class SpellGrantEffect : public Effect
 {
 private:
   const Spell* _spell;
@@ -336,21 +336,21 @@ private:
   const value_t _strength;
   
 public:
-  SpellGrantEffect(const Spell* spell, const value_t times, const value_t strength = 0) : SkillEffect(SkillEffect::Type::GRANT_SPELL), _spell(spell), _times(times), _strength(strength) { }
+  SpellGrantEffect(const Spell* spell, const value_t times, const value_t strength = 0) : Effect(Effect::Type::GRANT_SPELL), _spell(spell), _times(times), _strength(strength) { }
   
   const Spell* spell() const { return _spell; }
   value_t times() const { return _times; }
   value_t strength() const { return _strength; }
 };
 
-using effect_init_list = const std::initializer_list<const SkillEffect*>;
+using effect_init_list = const std::initializer_list<const Effect*>;
 struct effect_list;
 struct effect_list_deep_iterator;
 
 struct effect_list
 {
 private:
-  using inner_type_t = std::vector<const SkillEffect*>;
+  using inner_type_t = std::vector<const Effect*>;
   inner_type_t data;
   
 public:
@@ -361,7 +361,7 @@ public:
   effect_list(const inner_type_t& effects) : data(effects) { }
   effect_list(const effect_init_list& list) : data(list) { }
   
-  void push_back(const SkillEffect* effect) { data.push_back(effect); }
+  void push_back(const Effect* effect) { data.push_back(effect); }
   void resize(size_t size) { data.resize(size); }
   
   iterator begin() const { return data.begin(); }
@@ -371,21 +371,21 @@ public:
   effect_list_deep_iterator dend() const;
   
   size_t size() const { return data.size(); }
-  size_t flatSize() const { return std::accumulate(data.begin(), data.end(), 0UL, [](size_t v, const SkillEffect* effect) { return v + effect->size(); }); }
+  size_t flatSize() const { return std::accumulate(data.begin(), data.end(), 0UL, [](size_t v, const Effect* effect) { return v + effect->size(); }); }
 
   template<typename T, typename EnumType> void filter(EnumType property) {
-    filter([property](const SkillEffect* effect) {
+    filter([property](const Effect* effect) {
       return effect->type == T::skill_type::value && effect->as<T>()->isAffecting(property);
     });
   }
 
-  void filter(std::function<bool(const SkillEffect*)> predicate)
+  void filter(std::function<bool(const Effect*)> predicate)
   {
-    auto nend = std::remove_if(data.begin(), data.end(), [&predicate](const SkillEffect* effect) { return !predicate(effect); });
+    auto nend = std::remove_if(data.begin(), data.end(), [&predicate](const Effect* effect) { return !predicate(effect); });
     data.erase(nend, data.end());
   }
   
-  const SkillEffect* operator[](size_t index) const { return data[index]; }
+  const Effect* operator[](size_t index) const { return data[index]; }
   
   effect_list operator+(const effect_list& other) const {
     effect_list result;
@@ -402,11 +402,11 @@ public:
     return *this;
   }
 
-  template<typename EnumType, SkillEffect::Type Type> 
+  template<typename EnumType, Effect::Type Type> 
   value_t reduceAsModifier(EnumType property, const Unit* unit, value_t base = 0) const
   {
     //TODO: begin or deep begin?
-    return std::accumulate(begin(), end(), base, [property, unit](value_t v, const SkillEffect* effect) {
+    return std::accumulate(begin(), end(), base, [property, unit](value_t v, const Effect* effect) {
       return effect->as<PropertyModifierEffect<EnumType, Type>>()->transformValue(property, v, unit);
     });
   }
@@ -430,15 +430,15 @@ static const effect_list unit_bonus_build(std::initializer_list<Property> proper
   return effects;
 }
 
-class CompoundEffect : public SkillEffect
+class CompoundEffect : public Effect
 {
 private:
   effect_list effects;
 
 public:
-  CompoundEffect() : SkillEffect(SkillEffect::Type::COMPOUND) { }
-  CompoundEffect(SkillEffectGroup* group) : SkillEffect(SkillEffect::Type::COMPOUND, group) { }
-  CompoundEffect(const effect_list& effects) : SkillEffect(SkillEffect::Type::COMPOUND), effects(effects) { }
+  CompoundEffect() : Effect(Effect::Type::COMPOUND) { }
+  CompoundEffect(EffectGroup* group) : Effect(Effect::Type::COMPOUND, group) { }
+  CompoundEffect(const effect_list& effects) : Effect(Effect::Type::COMPOUND), effects(effects) { }
 
   bool isCompound() const override { return true; }
   size_t size() const override { return effects.size(); }
@@ -456,7 +456,7 @@ private:
     const effect_list* list;
     effect_list::iterator it;
     bool end() const { return it == list->end(); }
-    const SkillEffect* operator*() const { return *it; }
+    const Effect* operator*() const { return *it; }
     stack_v(const effect_list* list, effect_list::iterator it) : list(list), it(it) { }
     bool operator==(const stack_v& other) const { return list == other.list && it == other.it; }
   };
@@ -468,7 +468,7 @@ private:
     if (stack.top().end())
       return;
     
-    const SkillEffect* c = operator*();
+    const Effect* c = operator*();
     
     while (c && c->isCompound())
     {
@@ -488,9 +488,9 @@ private:
   
 public:
   using difference_type = ptrdiff_t;
-  using value_type = SkillEffect * ;
-  using reference = const SkillEffect&;
-  using pointer = const SkillEffect*;
+  using value_type = Effect * ;
+  using reference = const Effect&;
+  using pointer = const Effect*;
   using iterator_category = std::forward_iterator_tag;
   
 public:
@@ -525,7 +525,7 @@ public:
   bool operator==(const effect_list_deep_iterator& other) const { return stack == other.stack; }
   bool operator!=(const effect_list_deep_iterator& other) const { return stack != other.stack; }
   
-  const SkillEffect* operator*() const { return *stack.top(); }
+  const Effect* operator*() const { return *stack.top(); }
 };
 
 inline effect_list_deep_iterator effect_list::dbegin() const { return effect_list_deep_iterator(this, begin()); }
