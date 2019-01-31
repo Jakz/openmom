@@ -345,7 +345,7 @@ void CityMechanics::lambdaOnCitySurroundings(const City* city, const std::functi
     for (int y = -2; y <= 2; ++y)
       if ((x != 2 && x != -2) || (y != 2 && y != -2))
       {
-        Tile* tile = game->world->get(city->position.x + x, city->position.y + y, city->position.plane);
+        Tile* tile = game->world->get(city->position);
         if (tile)
           functor(tile);
       }
@@ -487,9 +487,9 @@ value_t CityMechanics::computeGold(const City *city)
   
   // boost gold income according to buildings
   if (city->hasBuilding(Building::MARKETPLACE))
-    totalGold += (s16)std::floor(base*0.5f);
+    totalGold += (value_t)std::floor(base*0.5f);
   if (city->hasBuilding(Building::BANK))
-    totalGold += (s16)std::floor(base*0.5f);
+    totalGold += (value_t)std::floor(base*0.5f);
   if (city->hasBuilding(Building::MERCHANTS_GUILD))
     totalGold += base;
   
@@ -502,9 +502,9 @@ value_t CityMechanics::computeGold(const City *city)
 
 value_t CityMechanics::baseProduction(const City *city)
 {
-  int multiplier = city->race->baseProduction;
+  value_t multiplier = city->race->baseProduction;
   
-  return (city->workers*multiplier) + (s16)std::ceil(city->farmers/2.0);
+  return (city->workers*multiplier) + (value_t)std::ceil(city->farmers/2.0);
 }
 
 value_t CityMechanics::computeProductionBonus(const City *city)

@@ -66,7 +66,7 @@ void FogMap::setRange(const Position& pos, s16 range)
 
 
 
-Player::Player(Game *game, std::string name, const Wizard* wizard, PlayerColor color, const Race* race, u16 mapWidth, u16 mapHeight) :
+Player::Player(Game *game, const std::string& name, const Wizard* wizard, PlayerColor color, const Race* race, u16 mapWidth, u16 mapHeight) :
 g(game), wizard(wizard), race(race), color(color), name(name), fogMap(new FogMap(this, mapWidth, mapHeight)), combat(nullptr), spellBook(SpellBook(*this)), relations(this, game),
 castingSkillCounter(0), castingSkillGained_(0), availableMana(0)
 {

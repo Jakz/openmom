@@ -111,7 +111,7 @@ protected:
   Game *g;
   
 public:
-  Player(Game *game, std::string name, const Wizard* wizard, PlayerColor color, const Race* race, u16 mapWidth, u16 mapHeight);
+  Player(Game *game, const std::string& name, const Wizard* wizard, PlayerColor color, const Race* race, u16 mapWidth, u16 mapHeight);
 
   bool isAlive() const { return alive; }
   

@@ -6,8 +6,10 @@
 
 #include "save/Data.h"
 
+#include "game/world/World.h"
 #include "game/combat/Combat.h"
 #include "game/combat/CombatMechanics.h"
+
 
 #include "common/mystrings.h"
 
@@ -64,6 +66,30 @@ namespace mock
   public:
     Army(std::initializer_list<Unit*> units) : ::Army(nullptr, units) { }
 
+  };
+
+  class Game : public ::Game
+  {
+
+  };
+
+  class Player : public ::LocalPlayer
+  {
+  public:
+    Player(Game* game) : ::LocalPlayer(game, "", nullptr, PlayerColor::BLUE, Data::race("beastmen"), 60, 40) { }
+  };
+  
+  // City::City(Player* owner, const Race* race, const std::string& name, value_t population, Position position) :
+  class City : public ::City
+  {
+  public:
+    City(const Race* race, Position position, value_t population) : ::City(nullptr, race, "", population, position)
+    {
+
+    }
+    
+    void setFarmers(value_t farmers) { this->farmers = farmers; }
+    void setWorkers(value_t workers) { this->workers = workers; }
   };
 
   const RaceUnitSpec dummy::raceUnitSpec = RaceUnitSpec();
@@ -551,6 +577,31 @@ TEST_CASE("ModifierValue") {
 
     REQUIRE(effects.reduceAsModifier<Property, SkillEffect::Type::UNIT_BONUS>(Property::MELEE, &unit, 0) == 0);
 
+  }
+}
+
+#pragma mark Cities
+
+TEST_CASE("city production") {
+  auto race = Data::race("beastmen");
+  auto game = mock::Game();
+  auto player = mock::Player(&game);
+  auto city = mock::City(race, Position(10, 10, Plane::ARCANUS), 10000);
+  auto mechanics = CityMechanics(&game);
+
+  SECTION("base formula 1/2 per farmer rounded up + 2 (3) per worker")
+  {
+    //TODO: nerfed because it's time consuming, need to fix release compilation and check again
+    value_t farmers = GENERATE(range(1, /*25*/5));
+    value_t workers = GENERATE(range(1, /*25*/5));
+
+    city.setFarmers(farmers);
+    city.setWorkers(workers);
+
+    value_t production = mechanics.baseProduction(&city);
+    
+    INFO("with farmers = " << farmers << " and workers " << workers);
+    REQUIRE(production == workers*race->baseProduction + static_cast<value_t>(std::ceil(farmers / 2.0f)));
   }
 }
 

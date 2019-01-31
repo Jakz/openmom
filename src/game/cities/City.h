@@ -25,7 +25,7 @@ enum CityPlacement : u16
 
 class City
 {
-private:
+protected:
   Player* owner;
   
   const std::string name;
@@ -68,7 +68,8 @@ private:
   
 
 public:
-  City(Player *owner, std::string name, value_t population, Position position);
+  City(Player* owner, const Race* race, const std::string& name, value_t population, Position position);
+  City(Player *owner, const std::string& name, value_t population, Position position);
   
   const std::string& getName() const { return name; }
   u16 tileSize() const
