@@ -145,7 +145,7 @@ std::vector<const RaceUnitSpec*> Data::unitsForRace(const Race* race)
     if (entry.second->productionType() == Productable::Type::UNIT)
     {
       const RaceUnitSpec* rspec = static_cast<const RaceUnitSpec*>(entry.second);
-      if (rspec->race == race)
+      if (!rspec->race() || rspec->race() == race)
         racialUnits.push_back(rspec);
     }
   }

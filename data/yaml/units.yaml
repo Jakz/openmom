@@ -574,7 +574,7 @@ units:
 
   - identifier: trireme
     type: racial
-    race: lizardmen #TODO: these need a special management since they're not racial specific
+    race: any
     upkeep: 2
     cost: 60
     melee: 6

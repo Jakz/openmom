@@ -174,10 +174,7 @@ prop_value Unit::getBonusProperty(Property property) const
 }
 
 
-const std::string RaceUnit::name() const {
-  const RaceUnitSpec* rspec = static_cast<const RaceUnitSpec*>(spec);
-  return i18n::s(GfxData::raceGfxSpec(rspec->race).unitName) + " " + spec->productionName();
-}
+const std::string RaceUnit::name() const { return spec->fullName(); }
 
 #pragma mark Hero
 const std::string Hero::name() const

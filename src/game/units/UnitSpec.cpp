@@ -61,4 +61,7 @@ prop_value UnitSpec::getProperty(Property property) const
 }
 
 
-const std::string RaceUnitSpec::fullName() const { return i18n::s(GfxData::raceGfxSpec(race).unitName) + " " + productionName(); }
+const std::string RaceUnitSpec::fullName() const { 
+  return _race != nullptr ?
+  fmt::format("{} {}", GfxData::raceGfxSpec(_race).unitName, productionName()) : productionName();
+}

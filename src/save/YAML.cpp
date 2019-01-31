@@ -545,6 +545,7 @@ template<> const Spell* yaml::parse(const N& node)
     }
       
     default:
+      assert(false);
       break;
   }
   
@@ -910,7 +911,7 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
   /* create racial unit spec */
   if (type == "racial")
   {
-    const Race* race = Data::get<const Race*>(node["race"]);
+    const Race* race = node["race"].asString() != "any" ? Data::get<const Race*>(node["race"]) : nullptr;
     
     data.first = new RaceUnitSpec(
                             race,
@@ -927,9 +928,10 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
                             skills // TODO
     );
   }
+  /* hero unit spec */
   else if (type == "hero")
   {
-    s32 requiredFame = node["required_fame"];
+    value_t requiredFame = node["required_fame"];
     
     const N yslots = node["slots"];
     using iclass = items::Class;
@@ -959,6 +961,7 @@ template<> std::pair<const UnitSpec*, UnitGfxSpec> yaml::parse(const N& node)
     
     data.second.hero.portrait = parse<SpriteInfo>(visuals["portrait"]);
   }
+  /* fantastic unit */
   else if (type == "fantastic")
   {
     School school = parse<School>(node["school"]);
@@ -1312,6 +1315,10 @@ void yaml::parse()
   solveCopiedSkillEffects();
 
 #if defined(DEBUG)
+  LOGD("[yaml] loaded %zu skills", Data::containerFor<const Skill*>().size());
+  LOGD("[yaml] loaded %zu spells", Data::containerFor<const Spell*>().size());
+  LOGD("[yaml] loaded %zu units", Data::containerFor<const UnitSpec*>().size());
+
   const auto i18missing = i18n::unlocalizedEntries();
   for (const auto& entry : i18missing)
     LOGD("[i18n] Missing localized entry: %s", entry.c_str());

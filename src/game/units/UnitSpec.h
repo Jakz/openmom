@@ -258,7 +258,7 @@ class SummonSpec;
 class UnitSpec : public Productable
 {
 protected:
-  UnitSpec(UnitType type, Upkeep upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, const skill_list& skills) :
+  UnitSpec(UnitType type, Upkeep upkeep, value_t cost, value_t melee, RangedInfo ranged, value_t defense, value_t resistance, value_t hits, value_t figures, value_t movement, value_t sight, const skill_list& skills) :
   type(type), upkeep(upkeep), cost(cost), melee(melee), ranged(ranged), defense(defense), resistance(resistance), hits(hits), figures(figures), movement(movement), sight(sight), skills(skills) { }
 
   const Upkeep upkeep;
@@ -270,15 +270,15 @@ public:
   const UnitType type;
   
 
-  const s16 cost;
-  const s16 melee;
+  const value_t cost;
+  const value_t melee;
   RangedInfo ranged;
-  const s16 defense;
-  const s16 resistance;
-  const s16 hits;
-  const s16 figures;
-  const s16 movement;
-  const s16 sight;
+  const value_t defense;
+  const value_t resistance;
+  const value_t hits;
+  const value_t figures;
+  const value_t movement;
+  const value_t sight;
   
   const skill_list skills;
   
@@ -298,20 +298,23 @@ public:
 
 class RaceUnitSpec : public UnitSpec
 {
+private:
+  //TODO: this could be null (eg ship) so maybe we should instantiate RaceUnit by passing the race in case
+  const Race* const _race;
+
 public:
-  RaceUnitSpec(const Race* race, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, const skill_list& skills) :
-    UnitSpec(UnitType::RACIAL, Upkeep(upkeep,0,1), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), race(race) { }
+  RaceUnitSpec(const Race* race, value_t upkeep, value_t cost, value_t melee, RangedInfo ranged, value_t defense, value_t resistance, value_t hits, value_t figures, value_t movement, value_t sight, const skill_list& skills) :
+    UnitSpec(UnitType::RACIAL, Upkeep(upkeep,0,1), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), _race(race) { }
 
   const std::string fullName() const override;
   Type productionType() const override { return Type::UNIT; }
-  
-  const Race* const race;
+  const Race* race() const { return _race;  }
 };
 
 class SummonSpec : public UnitSpec
 {
 public:
-  SummonSpec(School school, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, skill_init_list skills) :
+  SummonSpec(School school, value_t upkeep, value_t cost, value_t melee, RangedInfo ranged, value_t defense, value_t resistance, value_t hits, value_t figures, value_t movement, value_t sight, skill_init_list skills) :
     UnitSpec(UnitType::FANTASTIC, Upkeep(0,upkeep,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), school(school) { }
   
   const School school;
@@ -325,12 +328,12 @@ private:
   std::vector<std::string> _names;
   
 public:
-  HeroSpec(HeroType type, u32 requiredFame, items::AllowedSlots<3> items, s16 upkeep, s16 cost, s16 melee, RangedInfo ranged, s16 defense, s16 resistance, s16 hits, s16 figures, s16 movement, s16 sight, const std::vector<std::string>& names, skill_init_list skills) :
+  HeroSpec(HeroType type, value_t requiredFame, items::AllowedSlots<3> items, value_t upkeep, value_t cost, value_t melee, RangedInfo ranged, value_t defense, value_t resistance, value_t hits, value_t figures, value_t movement, value_t sight, const std::vector<std::string>& names, skill_init_list skills) :
     UnitSpec(UnitType::HERO, Upkeep(upkeep,0,0), cost, melee, ranged, defense, resistance, hits, figures, movement, sight, skills), type(type), items(items), requiredFame(requiredFame), _names(names) { }
   
   const HeroType type;
   const items::AllowedSlots<3> items;
-  const u32 requiredFame;
+  const value_t requiredFame;
   
   const std::vector<std::string>& names() const { return _names; }
   
