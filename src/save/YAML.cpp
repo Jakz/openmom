@@ -591,23 +591,23 @@ template<> ModifierValue yaml::parse(const N& node)
   {
     /* fixed value, assuming additive */
     if (node.size() == 1)
-      return ModifierValue(ModifierValue::Type::ADDITIVE, node[0].as<value_t>(), ModifierValue::Priority::ANY);
+      return ModifierValue(ModifierValue::Mode::ADDITIVE, node[0].as<value_t>(), ModifierValue::Priority::ANY);
     else if (node.size() >= 2)
     {
       const std::string& ttype = node[1];
 
-      ModifierValue::Type type = ModifierValue::Type::ADDITIVE;
+      ModifierValue::Mode mode = ModifierValue::Mode::ADDITIVE;
       ModifierValue::Priority priority = ModifierValue::Priority::ANY;
       bool asFloat = false;
 
       if (ttype == "per_level")
       {
-        type = ModifierValue::Type::ADDITIVE_LEVEL_BASED;
+        mode = ModifierValue::Mode::ADDITIVE_LEVEL_BASED;
         asFloat = true;
       }
       else if (ttype == "fixed")
       {
-        type = ModifierValue::Type::FIXED;
+        mode = ModifierValue::Mode::FIXED;
         asFloat = false;
       }
       else if (ttype == "additive")
@@ -625,9 +625,9 @@ template<> ModifierValue yaml::parse(const N& node)
       }
 
       if (asFloat)
-        return ModifierValue(type, node[0].as<float>(), priority);
+        return ModifierValue(mode, node[0].as<float>(), priority);
       else
-        return ModifierValue(type, node[0].as<value_t>(), priority);
+        return ModifierValue(mode, node[0].as<value_t>(), priority);
     }
   }
 

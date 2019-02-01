@@ -2,22 +2,26 @@
 
 #include "Unit.h"
 
-value_t ModifierValue::transformValue(value_t previous, const Unit* unit) const
+template<typename ReturnType>
+ReturnType Modifier<ReturnType>::transformValue(ReturnType previous, const Unit* unit) const
 {
-  if (type == Type::ADDITIVE)
-    return previous + value;
-  else if (type == Type::ADDITIVE_LEVEL_BASED)
-    return previous + static_cast<value_t>(std::floor((unit->experienceMultiplier())*multiplier));
-  else if (type == Type::MULTIPLICATIVE)
-    return static_cast<value_t>(std::floor(previous * multiplier));
-  else if (type == Type::FIXED)
-    return value;
-  else
+  switch (mode)
   {
-    assert(false);
-    return 0;
+    case Mode::ADDITIVE:
+      return previous + (type == Type::FLOATING ? static_cast<ReturnType>(multiplier) : value);
+    case Mode::ADDITIVE_LEVEL_BASED:
+      return previous + static_cast<ReturnType>(std::floor((unit->experienceMultiplier())*multiplier));
+    case Mode::MULTIPLICATIVE:
+      return static_cast<ReturnType>(std::floor(previous * multiplier));
+    case Mode::FIXED:
+      return value;
+    default:
+      assert(false);
+      return 0;
   }
 }
+
+template class Modifier<value_t>;
 
 template class PropertyModifierEffect<WizardAttribute, Effect::Type::WIZARD_BONUS>;
 template class PropertyModifierEffect<Property, Effect::Type::UNIT_BONUS>;

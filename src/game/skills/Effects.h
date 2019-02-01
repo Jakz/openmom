@@ -36,46 +36,48 @@ public:
 
 enum class Order { GREATER, LESSER, EQUAL, UNCOMPARABLE, DIFFERENT };
 
-struct ModifierValue
+template<typename ReturnType>
+struct Modifier
 {
-  enum Priority { BASE, FIRST, ANY, LAST } priority;
-  enum Type { ADDITIVE, ADDITIVE_LEVEL_BASED, MULTIPLICATIVE, FIXED  } type;
+  enum class Priority { BASE, FIRST, ANY, LAST } priority;
+  enum class Type { INTEGER, FLOATING } type;
+  enum class Mode { ADDITIVE, ADDITIVE_LEVEL_BASED, MULTIPLICATIVE, FIXED  } mode;
   union {
     float multiplier;
     value_t value;
   };
 
-  ModifierValue(Type type, float value, Priority priority = Priority::ANY) : priority(priority), type(type), multiplier(value) 
+  Modifier(Mode mode, float value, Priority priority = Priority::ANY) : priority(priority), type(Type::FLOATING), mode(mode), multiplier(value)
   { 
     assert(isFloating());
   }
 
-  ModifierValue(Type type, value_t value, Priority priority = Priority::ANY) : priority(priority), type(type), value(value) 
+  Modifier(Mode mode, value_t value, Priority priority = Priority::ANY) : priority(priority), type(Type::INTEGER), mode(mode), value(value)
   { 
     assert(!isFloating());
   }
 
-  ModifierValue(value_t value) : priority(Priority::ANY), type(Type::ADDITIVE), value(value) { }
-  ModifierValue(float multiplier) : priority(Priority::ANY), type(Type::ADDITIVE_LEVEL_BASED), multiplier(multiplier) { }
+  Modifier(value_t value) : priority(Priority::ANY), mode(Mode::ADDITIVE), type(Type::INTEGER), value(value) { }
+  Modifier(float multiplier) : priority(Priority::ANY), mode(Mode::ADDITIVE_LEVEL_BASED), type(Type::FLOATING), multiplier(multiplier) { }
 
-  value_t transformValue(value_t value, const Unit* unit) const;
+  ReturnType transformValue(ReturnType value, const Unit* unit) const;
   
-  bool isFloating() const { return type == Type::MULTIPLICATIVE || type == Type::ADDITIVE_LEVEL_BASED; }
+  bool isFloating() const { return type == Type::FLOATING; }
   value_t truncatedValue() const { return isFloating() ? multiplier : value; }
  
-  Order compareMagnitude(const Unit* unit, const ModifierValue& other) const
+  Order compareMagnitude(const Unit* unit, const Modifier<ReturnType>& other) const
   {
-    value_t v1 = transformValue(0, unit), v2 = transformValue(0, unit);
+    ReturnType v1 = transformValue(0, unit), v2 = transformValue(0, unit);
     
-    assert(type == Type::ADDITIVE || type == Type::ADDITIVE_LEVEL_BASED);
-    assert(other.type == Type::ADDITIVE || other.type == Type::ADDITIVE_LEVEL_BASED);
+    assert(mode == Mode::ADDITIVE || mode == Mode::ADDITIVE_LEVEL_BASED);
+    assert(other.mode == Mode::ADDITIVE || other.mode == Mode::ADDITIVE_LEVEL_BASED);
 
     if (v1 > v2) return Order::GREATER;
     else if (v1 < v2) return Order::LESSER;
     else return Order::EQUAL;
   }
 
-  Order compareForSorting(const ModifierValue& other) const
+  Order compareForSorting(const Modifier<ReturnType>& other) const
   {
     if (priority < other.priority) return Order::LESSER;
     else if (priority > other.priority) return Order::GREATER;
@@ -88,7 +90,7 @@ struct ModifierValue
 
   }
 
-  bool operator<(const ModifierValue& other) { return compareForSorting(other) == Order::LESSER; }
+  bool operator<(const Modifier<ReturnType>& other) { return compareForSorting(other) == Order::LESSER; }
 };
 
 class Effect
@@ -141,12 +143,12 @@ public:
 };
 
 template<typename T, Effect::Type TYPE>
-class SkillEnumEffect : public Effect
+class EnumEffect : public Effect
 {
 private:
   const T _subType;
 public:
-  SkillEnumEffect(T type) : Effect(TYPE), _subType(type) { }
+  EnumEffect(T type) : Effect(TYPE), _subType(type) { }
   
   bool operator==(T type) const { return _subType == type; }
   T subType() const { return _subType; }
@@ -154,7 +156,7 @@ public:
   Order compare(const Unit* unit, const Effect* other) const override
   {
     if (other->type == type)
-      return other->as<SkillEnumEffect<T, TYPE>>()->subType() == subType() ? Order::EQUAL : Order::DIFFERENT;
+      return other->as<EnumEffect<T, TYPE>>()->subType() == subType() ? Order::EQUAL : Order::DIFFERENT;
     else
       return Order::UNCOMPARABLE;
   }
@@ -206,6 +208,8 @@ public:
   SimpleParametricEffect(Effect::Type type, Type effect, value_t param) : SimpleEffect(type, effect), param(param) { }
   const value_t param;
 };
+
+using ModifierValue = Modifier<value_t>;
 
 class SkillModifierEffect : public Effect
 {
@@ -302,8 +306,8 @@ enum class MovementType
   SAILING,
 };
 
-using MovementEffect = SkillEnumEffect<MovementType, Effect::Type::MOVEMENT>;
-using MovementDisallowEffect = SkillEnumEffect<MovementType, Effect::Type::DISALLOW_MOVEMENT>;
+using MovementEffect = EnumEffect<MovementType, Effect::Type::MOVEMENT>;
+using MovementDisallowEffect = EnumEffect<MovementType, Effect::Type::DISALLOW_MOVEMENT>;
 
 enum SpecialAttackType
 {
@@ -314,14 +318,13 @@ enum SpecialAttackType
   POISON_TOUCH
 };
 
-class SpecialAttackEffect : public SkillEnumEffect<SpecialAttackType, Effect::Type::SPECIAL_ATTACK>
+class SpecialAttackEffect : public EnumEffect<SpecialAttackType, Effect::Type::SPECIAL_ATTACK>
 {
 private:
   value_t _strength;
   
 public:
-  SpecialAttackEffect(SpecialAttackType type, value_t strength) : SkillEnumEffect(type), _strength(strength) { }
-  
+  SpecialAttackEffect(SpecialAttackType type, value_t strength) : EnumEffect(type), _strength(strength) { }
   value_t strength() const { return _strength; }
 };
 
