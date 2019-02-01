@@ -602,7 +602,7 @@ template<> ModifierValue yaml::parse(const N& node)
 
       if (ttype == "per_level")
       {
-        mode = ModifierValue::Mode::ADDITIVE_LEVEL_BASED;
+        mode = ModifierValue::Mode::ADDITIVE_PARAMETRIC;
         asFloat = true;
       }
       else if (ttype == "fixed")

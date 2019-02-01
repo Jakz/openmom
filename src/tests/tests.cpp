@@ -541,7 +541,7 @@ TEST_CASE("ModifierValue") {
     const auto l = GENERATE(range(1, 10));
     const auto m = GENERATE(1.0f, 2.0f, 3.0f, 4.0f, 5.0f);
 
-    const ModifierValue modifier = ModifierValue(ModifierValue::Mode::ADDITIVE_LEVEL_BASED, m);
+    const ModifierValue modifier = ModifierValue(ModifierValue::Mode::ADDITIVE_PARAMETRIC, m);
     const auto level = mock::Level(l);
     auto unit = mock::RaceUnit();
     unit.setLevel(&level);
@@ -553,7 +553,7 @@ TEST_CASE("ModifierValue") {
     const auto l = GENERATE(range(1, 10));
     const auto m = GENERATE(1.5f, 2.5f, 3.5f, 4.5f, 5.5f);
 
-    const ModifierValue modifier = ModifierValue(ModifierValue::Mode::ADDITIVE_LEVEL_BASED, m);
+    const ModifierValue modifier = ModifierValue(ModifierValue::Mode::ADDITIVE_PARAMETRIC, m);
     const auto level = mock::Level(l);
     auto unit = mock::RaceUnit();
     unit.setLevel(&level);

@@ -387,6 +387,8 @@ float CityMechanics::resourceBonus(const City* city, Resource resource, float va
   //TODO: if shared does it change?
   value_t count = countSurroundResource(city, resource).total();
   
+  //TODO: broken formula, should be rounded before being multiplicated by value, since a shared mithril
+  // gives no points but in this way 2 shared mithril would give 1
   float ret = value*count;
   
   if (city->hasBuilding(Building::MINERS_GUILD))

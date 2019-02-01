@@ -2,15 +2,15 @@
 
 #include "Unit.h"
 
-template<typename ReturnType>
-ReturnType Modifier<ReturnType>::transformValue(ReturnType previous, const Unit* unit) const
+template<typename ReturnType, typename T, typename F>
+ReturnType Modifier<ReturnType, T, F>::transformValue(ReturnType previous, const T* owner) const
 {
   switch (mode)
   {
     case Mode::ADDITIVE:
       return previous + (type == Type::FLOATING ? static_cast<ReturnType>(multiplier) : value);
-    case Mode::ADDITIVE_LEVEL_BASED:
-      return previous + static_cast<ReturnType>(std::floor((unit->experienceMultiplier())*multiplier));
+    case Mode::ADDITIVE_PARAMETRIC:
+      return previous + static_cast<ReturnType>(std::floor(F()(owner)*multiplier));
     case Mode::MULTIPLICATIVE:
       return static_cast<ReturnType>(std::floor(previous * multiplier));
     case Mode::FIXED:
@@ -21,7 +21,9 @@ ReturnType Modifier<ReturnType>::transformValue(ReturnType previous, const Unit*
   }
 }
 
-template class Modifier<value_t>;
+value_t UnitModifierLevelGetter::operator()(const Unit* unit) const { return unit->experienceMultiplier(); }
+
+template class Modifier<value_t, Unit, UnitModifierLevelGetter>;
 
 template class PropertyModifierEffect<WizardAttribute, Effect::Type::WIZARD_BONUS>;
 template class PropertyModifierEffect<Property, Effect::Type::UNIT_BONUS>;

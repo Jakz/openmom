@@ -36,12 +36,34 @@ public:
 
 enum class Order { GREATER, LESSER, EQUAL, UNCOMPARABLE, DIFFERENT };
 
-template<typename ReturnType>
+/*
+template<typename T>
+class Value
+{
+private:
+  T _base;
+  float _multiplier;
+
+public:
+  Value(T base, float multiplier) : _base(base), _multiplier(multiplier) { assert(_multiplier >= 0.0f); }
+  Value(T base) : Value(base, 1.0f) { }
+  Value() : Value(0) { }
+
+  inline Value operator+(T value) const { return Value(_base + value, _multiplier); }
+  inline Value operator-(T value) const { return Value(_base - value, _multiplier); }
+  inline Value operator*(float multiplier) const { return Value(_base, _multiplier + multiplier); }
+  inline Value operator/(float multiplier) const { return Value(_base, _multiplier - multiplier); }
+
+  inline operator T() const { return _base * _multiplier; }
+};
+*/
+
+template<typename ReturnType, typename T, typename F>
 struct Modifier
 {
   enum class Priority { BASE, FIRST, ANY, LAST } priority;
   enum class Type { INTEGER, FLOATING } type;
-  enum class Mode { ADDITIVE, ADDITIVE_LEVEL_BASED, MULTIPLICATIVE, FIXED  } mode;
+  enum class Mode { ADDITIVE, ADDITIVE_PARAMETRIC, MULTIPLICATIVE, FIXED  } mode;
   union {
     float multiplier;
     value_t value;
@@ -58,26 +80,26 @@ struct Modifier
   }
 
   Modifier(value_t value) : priority(Priority::ANY), mode(Mode::ADDITIVE), type(Type::INTEGER), value(value) { }
-  Modifier(float multiplier) : priority(Priority::ANY), mode(Mode::ADDITIVE_LEVEL_BASED), type(Type::FLOATING), multiplier(multiplier) { }
+  Modifier(float multiplier) : priority(Priority::ANY), mode(Mode::ADDITIVE_PARAMETRIC), type(Type::FLOATING), multiplier(multiplier) { }
 
-  ReturnType transformValue(ReturnType value, const Unit* unit) const;
+  ReturnType transformValue(ReturnType value, const T* owner) const;
   
   bool isFloating() const { return type == Type::FLOATING; }
   value_t truncatedValue() const { return isFloating() ? multiplier : value; }
  
-  Order compareMagnitude(const Unit* unit, const Modifier<ReturnType>& other) const
+  Order compareMagnitude(const T* owner, const Modifier<ReturnType, T, F>& other) const
   {
-    ReturnType v1 = transformValue(0, unit), v2 = transformValue(0, unit);
+    ReturnType v1 = transformValue(0, owner), v2 = transformValue(0, owner);
     
-    assert(mode == Mode::ADDITIVE || mode == Mode::ADDITIVE_LEVEL_BASED);
-    assert(other.mode == Mode::ADDITIVE || other.mode == Mode::ADDITIVE_LEVEL_BASED);
+    assert(mode == Mode::ADDITIVE || mode == Mode::ADDITIVE_PARAMETRIC);
+    assert(other.mode == Mode::ADDITIVE || other.mode == Mode::ADDITIVE_PARAMETRIC);
 
     if (v1 > v2) return Order::GREATER;
     else if (v1 < v2) return Order::LESSER;
     else return Order::EQUAL;
   }
 
-  Order compareForSorting(const Modifier<ReturnType>& other) const
+  Order compareForSorting(const Modifier<ReturnType, T, F>& other) const
   {
     if (priority < other.priority) return Order::LESSER;
     else if (priority > other.priority) return Order::GREATER;
@@ -90,7 +112,7 @@ struct Modifier
 
   }
 
-  bool operator<(const Modifier<ReturnType>& other) { return compareForSorting(other) == Order::LESSER; }
+  bool operator<(const Modifier<ReturnType, T, F>& other) { return compareForSorting(other) == Order::LESSER; }
 };
 
 class Effect
@@ -209,7 +231,12 @@ public:
   const value_t param;
 };
 
-using ModifierValue = Modifier<value_t>;
+struct UnitModifierLevelGetter
+{
+  value_t operator()(const Unit* unit) const;
+};
+
+using ModifierValue = Modifier<value_t, Unit, UnitModifierLevelGetter>;
 
 class SkillModifierEffect : public Effect
 {
