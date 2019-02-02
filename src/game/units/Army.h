@@ -2,7 +2,7 @@
 #define _ARMY_H_
 
 #include "common/Common.h"
-#include "Effects.h"
+#include "UnitEffects.h"
 
 #include <list>
 #include <unordered_set>

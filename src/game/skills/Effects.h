@@ -184,195 +184,6 @@ public:
   }
 };
 
-class SimpleEffect : public Effect
-{
-public:
-  const enum class Type : u16
-  {
-    INVISIBILITY,
-    
-    
-    IMMUNITY_MAGIC,
-    IMMUNITY_ILLUSIONS,
-    IMMUNITY_MISSILE,
-    
-    
-    POISON,
-    LIFE_STEALING,
-    STONE_TOUCH,
-    
-    IMMOLATION,
-
-    HEALER, 
-    
-    CREATE_OUTPOST,
-    CREATE_ROAD,
-    MELD_NODE,
-    WALL_CRUSHING,
-    PURIFY,
-    
-    FIRST_STRIKE,
-    NEGATE_FIRST_STRIKE,
-    ARMOR_PIERCING,
-    LONG_RANGE,
-    ILLUSIONARY_ATTACK,
-    
-    ALLOW_MELEE_ATTACKS_AGAINST_FLYING,
-    USE_MANA_POOL_FOR_RANGED_ATTACKS,
-  } effect;
-  
-  SimpleEffect(Effect::Type type, Type effect) : Effect(type), effect(effect) { }
-};
-
-class SimpleParametricEffect : public SimpleEffect
-{
-public:
-  SimpleParametricEffect(Effect::Type type, Type effect, value_t param) : SimpleEffect(type, effect), param(param) { }
-  const value_t param;
-};
-
-struct UnitModifierLevelGetter
-{
-  value_t operator()(const Unit* unit) const;
-};
-
-using ModifierValue = Modifier<value_t, Unit, UnitModifierLevelGetter>;
-
-class SkillModifierEffect : public Effect
-{
-protected:
-  ModifierValue _value;
-  predicate<const Unit*> _predicate;
-  value_t transformValue(value_t value, const Unit* unit) const { return _value.transformValue(value, unit); }
-
-public:
-  SkillModifierEffect(Effect::Type type, ModifierValue value) : Effect(type), _value(value), _predicate([](auto unit) { return true; }) { }
-  SkillModifierEffect(Effect::Type type, ModifierValue value, predicate<const Unit*> predicate) : Effect(type), _value(value), _predicate(predicate) { }
-
-  const ModifierValue& modifier() const { return _value; }
-  bool isModifier() const override { return true; }
-
-  Order compare(const Unit* unit, const Effect* other) const override
-  {
-    //TODO: this doesn't check if kind of modifier is the same so it should be used only when this is sure (eg in an yaml defined SkillGroup) 
-    if (other->isModifier())
-    {
-      return modifier().compareMagnitude(unit, other->as<SkillModifierEffect>()->modifier());
-    }
-    else
-      return Order::UNCOMPARABLE;
-  }
-};
-
-template<typename EnumType, Effect::Type SkillType>
-class PropertyModifierEffect : public SkillModifierEffect
-{
-private:
-  EnumType _property;
-
-public:
-  PropertyModifierEffect(EnumType property, ModifierValue value) : SkillModifierEffect(SkillType, value), _property(property) { }
-  PropertyModifierEffect(EnumType property, ModifierValue value, predicate<const Unit*> predicate) : SkillModifierEffect(SkillType, value, predicate), _property(property) { }
-
-  PropertyModifierEffect(EnumType property, ModifierValue value, School school) : PropertyModifierEffect(property, value, [school](const Unit* unit) { return unit->school() == school; }) { }
-
-  bool isAffecting(EnumType property) const { return _property == property; }
-
-  value_t transformValue(EnumType property, value_t value, const Unit* unit) const
-  {
-    return property == _property ? _value.transformValue(value, unit) : value;
-  }
-
-  using property_type = EnumType;
-  using skill_type = std::integral_constant<Effect::Type, SkillType>;
-};
-
-using WizardAttributeModifier = PropertyModifierEffect<WizardAttribute, Effect::Type::WIZARD_BONUS>;
-using UnitPropertyBonus = PropertyModifierEffect<Property, Effect::Type::UNIT_BONUS>;
-using ArmyPropertyBonus = PropertyModifierEffect<Property, Effect::Type::ARMY_BONUS>;
-
-class CombatBonus : public Effect
-{
-public:
-  enum class Phase : u8
-  {
-    BOTH,
-    ATTACKING,
-    DEFENDING
-  };
-  
-  enum class Target : u8
-  {
-    ATTACKER,
-    DEFENDER,
-  };
-  
-  CombatBonus(Property property, value_t value, Phase trigger, Target target, bool boundToSkill) : Effect(Effect::Type::COMBAT_BONUS), property(property), value(value), trigger(trigger), target(target), boundToSkill(boundToSkill) { }
-  
-  const Phase trigger;
-  const Target target;
-  const Property property;
-  const value_t value;
-  const bool boundToSkill; // TODO wtf?
-};
-
-
-enum class MovementType
-{
-  NORMAL = 0,
-  FORESTWALK,
-  FLYING,
-  UNDERGROUND,
-  MOUNTAINWALK,
-  NON_CORPOREAL,
-  PATH_FINDER,
-  PLANAR_TRAVEL,
-  TELEPORT,
-  SWIMMING,
-  WINDWALK,
-  SAILING,
-};
-
-using MovementEffect = EnumEffect<MovementType, Effect::Type::MOVEMENT>;
-using MovementDisallowEffect = EnumEffect<MovementType, Effect::Type::DISALLOW_MOVEMENT>;
-
-enum SpecialAttackType
-{
-  THROWN_ATTACK,
-  
-  FIRE_BREATH,
-  
-  POISON_TOUCH
-};
-
-class SpecialAttackEffect : public EnumEffect<SpecialAttackType, Effect::Type::SPECIAL_ATTACK>
-{
-private:
-  value_t _strength;
-  
-public:
-  SpecialAttackEffect(SpecialAttackType type, value_t strength) : EnumEffect(type), _strength(strength) { }
-  value_t strength() const { return _strength; }
-};
-
-//TODO: technically is a combat instant spell
-//TODO: implement mechanics
-class Spell;
-class SpellGrantEffect : public Effect
-{
-private:
-  const Spell* _spell;
-  const value_t _times;
-  const value_t _strength;
-  
-public:
-  SpellGrantEffect(const Spell* spell, const value_t times, const value_t strength = 0) : Effect(Effect::Type::GRANT_SPELL), _spell(spell), _times(times), _strength(strength) { }
-  
-  const Spell* spell() const { return _spell; }
-  value_t times() const { return _times; }
-  value_t strength() const { return _strength; }
-};
-
 using effect_init_list = const std::initializer_list<const Effect*>;
 struct effect_list;
 struct effect_list_deep_iterator;
@@ -432,12 +243,12 @@ public:
     return *this;
   }
 
-  template<typename EnumType, Effect::Type Type> 
-  value_t reduceAsModifier(EnumType property, const Unit* unit, value_t base = 0) const
+  template<typename ModifierEffect> 
+  value_t reduceAsModifier(typename ModifierEffect::property_type property, const Unit* unit, value_t base = 0) const
   {
     //TODO: begin or deep begin?
     return std::accumulate(begin(), end(), base, [property, unit](value_t v, const Effect* effect) {
-      return effect->as<PropertyModifierEffect<EnumType, Type>>()->transformValue(property, v, unit);
+      return effect->as<ModifierEffect>()->transformValue(property, v, unit);
     });
   }
 
@@ -450,15 +261,6 @@ public:
    that some effects override or replace others */
   effect_list actuals(const Unit* unit) const;
 };
-
-//TODO: to remove after hardcoded effects has been removed
-static const effect_list unit_bonus_build(std::initializer_list<Property> properties, value_t value)
-{
-  effect_list effects;
-  effects.resize(properties.size());
-  std::transform(properties.begin(), properties.end(), std::back_inserter(effects), [&] (const Property& property) { return new UnitPropertyBonus(property, value); });
-  return effects;
-}
 
 class CompoundEffect : public Effect
 {
@@ -560,20 +362,3 @@ public:
 
 inline effect_list_deep_iterator effect_list::dbegin() const { return effect_list_deep_iterator(this, begin()); }
 inline effect_list_deep_iterator effect_list::dend() const { return effect_list_deep_iterator(this, end()); }
-
-
-struct modifier_list : public std::vector<const ModifierValue*>
-{
-public:
-  modifier_list(const effect_list& effects)
-  {
-
-  }
-
-  value_t get(const Unit* unit, value_t base = 0)
-  {
-    return std::accumulate(begin(), end(), base, [unit](value_t a, const ModifierValue* modifier) {
-      return modifier->transformValue(a, unit);
-    });
-  }
-};

@@ -42,6 +42,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Effects.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Skill.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\SkillSet.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\UnitEffects.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\CombatSpells.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\SpellBook.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\Spells.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Effects.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Skill.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\SkillSet.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\UnitEffects.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\CombatSpells.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\SpellBook.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\spells\Spells.h" />

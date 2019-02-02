@@ -393,6 +393,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\platform\windows\windows.cpp">
       <Filter>platform\windows</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\UnitEffects.cpp">
+      <Filter>game\skills</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Common.h">
@@ -721,6 +724,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\common\fmt\format.h">
       <Filter>common\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\UnitEffects.h">
+      <Filter>game\skills</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

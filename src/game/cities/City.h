@@ -21,7 +21,7 @@ enum class CityAttribute
   GOLD_OUTPUT,
   WORK_OUTPUT,
   RESEARCH_OUTPUT,
-  MANA_OUTPUT,
+  MANA_POWER_OUTPUT,
   UNREST_COUNT,
 };
 

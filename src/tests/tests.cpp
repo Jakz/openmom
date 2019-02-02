@@ -279,37 +279,6 @@ TEST_CASE("basic stats of units") {
       REQUIRE(spec->getProperty(Property::TO_DEFEND) == 30);
     }
   }
-  
-  SECTION("large shield modifier") {
-    const UnitSpec* spec = Data::unit("barbarian_swordsmen");
-    Unit* unit = new RaceUnit(spec->as<RaceUnitSpec>());
-
-    REQUIRE(spec != nullptr);
-    REQUIRE(unit->skills()->hasSkill(Data::skill("large_shield")));
-    
-    THEN("ranged and magic defense should be +2 compared to normal defense") {
-      REQUIRE(unit->getProperty(Property::SHIELDS) == (unit->getProperty(Property::SHIELDS_CHAOS) - 2));
-      REQUIRE(unit->getProperty(Property::SHIELDS) == (unit->getProperty(Property::SHIELDS_RANGED) - 2));
-    }
-    
-    delete unit;
-  }
-  
-  SECTION("to hit modifiers") {
-    const UnitSpec* spec = Data::unit("barbarian_swordsmen");
-    
-    GIVEN("holy weapon spell") {
-      Unit* unit = new RaceUnit(spec->as<RaceUnitSpec>());
-      unit->skills()->add(Skills::SPELL_HOLY_WEAPON);
-      REQUIRE(spec->getProperty(Property::TO_HIT) == 30);
-
-      THEN("holy weapon modifies to hit") {
-        REQUIRE(unit->getProperty(Property::TO_HIT) == 40);
-      }
-      
-      delete unit;
-    }
-  }
 }
 
 TEST_CASE("movement of armies")
@@ -395,6 +364,55 @@ TEST_CASE("items") {
 
   }
 }
+
+
+#pragma mark Unit Abilities
+
+TEST_CASE("Abilities")
+{
+  SECTION("large shield modifier") {
+    const UnitSpec* spec = Data::unit("barbarian_swordsmen");
+    Unit* unit = new RaceUnit(spec->as<RaceUnitSpec>());
+
+    REQUIRE(spec != nullptr);
+    REQUIRE(unit->skills()->hasSkill(Data::skill("large_shield")));
+
+    THEN("ranged and magic defense should be +2 compared to normal defense") {
+      REQUIRE(unit->getProperty(Property::SHIELDS) == (unit->getProperty(Property::SHIELDS_CHAOS) - 2));
+      REQUIRE(unit->getProperty(Property::SHIELDS) == (unit->getProperty(Property::SHIELDS_RANGED) - 2));
+    }
+
+    delete unit;
+  }
+
+  SECTION("to hit modifiers") {
+    const UnitSpec* spec = Data::unit("barbarian_swordsmen");
+
+    GIVEN("holy weapon spell") {
+      Unit* unit = new RaceUnit(spec->as<RaceUnitSpec>());
+      unit->skills()->add(Skills::SPELL_HOLY_WEAPON);
+      REQUIRE(spec->getProperty(Property::TO_HIT) == 30);
+
+      THEN("holy weapon modifies to hit") {
+        REQUIRE(unit->getProperty(Property::TO_HIT) == 40);
+      }
+
+      delete unit;
+    }
+  }
+}
+
+TEST_CASE("Hero Abilities")
+{
+  SECTION("Noble") {
+    mock::RaceUnit unit;
+    //TODO: requires FIXED modifiers to be applied to base property too
+    /*REQUIRE(unit.getProperty(Property::GOLD_UPKEEP) > 0);
+    unit.skills()->add(Data::skill("noble"));
+    REQUIRE(unit.getProperty(Property::GOLD_UPKEEP) == 0);*/
+  }
+}
+
 
 #pragma mark Nature Spells
 
@@ -536,12 +554,12 @@ TEST_CASE("effect_list class") {
   }
 }
 
-TEST_CASE("ModifierValue") {
+TEST_CASE("UnitModifierValue") {
   SECTION("integral multiplier") {
     const auto l = GENERATE(range(1, 10));
     const auto m = GENERATE(1.0f, 2.0f, 3.0f, 4.0f, 5.0f);
 
-    const ModifierValue modifier = ModifierValue(ModifierValue::Mode::ADDITIVE_PARAMETRIC, m);
+    const UnitModifierValue modifier = UnitModifierValue(UnitModifierValue::Mode::ADDITIVE_PARAMETRIC, m);
     const auto level = mock::Level(l);
     auto unit = mock::RaceUnit();
     unit.setLevel(&level);
@@ -553,7 +571,7 @@ TEST_CASE("ModifierValue") {
     const auto l = GENERATE(range(1, 10));
     const auto m = GENERATE(1.5f, 2.5f, 3.5f, 4.5f, 5.5f);
 
-    const ModifierValue modifier = ModifierValue(ModifierValue::Mode::ADDITIVE_PARAMETRIC, m);
+    const UnitModifierValue modifier = UnitModifierValue(UnitModifierValue::Mode::ADDITIVE_PARAMETRIC, m);
     const auto level = mock::Level(l);
     auto unit = mock::RaceUnit();
     unit.setLevel(&level);
@@ -563,8 +581,8 @@ TEST_CASE("ModifierValue") {
 
   SECTION("priority last is applied at the end")
   {
-    const ModifierValue modifier = ModifierValue(ModifierValue::Mode::ADDITIVE, 5);
-    const ModifierValue zeroer = ModifierValue(ModifierValue::Mode::FIXED, 0, ModifierValue::Priority::LAST);
+    const UnitModifierValue modifier = UnitModifierValue(UnitModifierValue::Mode::ADDITIVE, 5);
+    const UnitModifierValue zeroer = UnitModifierValue(UnitModifierValue::Mode::FIXED, 0, UnitModifierValue::Priority::LAST);
 
     auto unit = mock::RaceUnit();
 
@@ -575,7 +593,7 @@ TEST_CASE("ModifierValue") {
     effect_list effects = effect_list({ &effect2, &effect1 });
     effects.sort();
 
-    REQUIRE(effects.reduceAsModifier<Property, Effect::Type::UNIT_BONUS>(Property::MELEE, &unit, 0) == 0);
+    REQUIRE(effects.reduceAsModifier<UnitPropertyBonus>(Property::MELEE, &unit, 0) == 0);
 
   }
 }

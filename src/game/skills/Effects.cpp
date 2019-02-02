@@ -21,14 +21,9 @@ ReturnType Modifier<ReturnType, T, F>::transformValue(ReturnType previous, const
   }
 }
 
-value_t UnitModifierLevelGetter::operator()(const Unit* unit) const { return unit->experienceMultiplier(); }
-
-template class Modifier<value_t, Unit, UnitModifierLevelGetter>;
-
 template class PropertyModifierEffect<WizardAttribute, Effect::Type::WIZARD_BONUS>;
 template class PropertyModifierEffect<Property, Effect::Type::UNIT_BONUS>;
 template class PropertyModifierEffect<Property, Effect::Type::ARMY_BONUS>;
-
 
 effect_list effect_list::actuals(const Unit* unit) const
 {

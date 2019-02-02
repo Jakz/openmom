@@ -583,36 +583,36 @@ template<> const EffectGroup* yaml::parse(const N& node)
 }
 
 #pragma mark Effect
-template<> ModifierValue yaml::parse(const N& node)
+template<> UnitModifierValue yaml::parse(const N& node)
 {
   if (node.IsScalar())
   {
     if (node.asString().find('.') != std::string::npos)
-      return ModifierValue(node.as<float>());
+      return UnitModifierValue(node.as<float>());
     else
-      return ModifierValue(node.as<value_t>());
+      return UnitModifierValue(node.as<value_t>());
   }
   else if (node.IsSequence())
   {
     /* fixed value, assuming additive */
     if (node.size() == 1)
-      return ModifierValue(ModifierValue::Mode::ADDITIVE, node[0].as<value_t>(), ModifierValue::Priority::ANY);
+      return UnitModifierValue(UnitModifierValue::Mode::ADDITIVE, node[0].as<value_t>(), UnitModifierValue::Priority::ANY);
     else if (node.size() >= 2)
     {
       const std::string& ttype = node[1];
 
-      ModifierValue::Mode mode = ModifierValue::Mode::ADDITIVE;
-      ModifierValue::Priority priority = ModifierValue::Priority::ANY;
+      UnitModifierValue::Mode mode = UnitModifierValue::Mode::ADDITIVE;
+      UnitModifierValue::Priority priority = UnitModifierValue::Priority::ANY;
       bool asFloat = false;
 
       if (ttype == "per_level")
       {
-        mode = ModifierValue::Mode::ADDITIVE_PARAMETRIC;
+        mode = UnitModifierValue::Mode::ADDITIVE_PARAMETRIC;
         asFloat = true;
       }
       else if (ttype == "fixed")
       {
-        mode = ModifierValue::Mode::FIXED;
+        mode = UnitModifierValue::Mode::FIXED;
         asFloat = false;
       }
       else if (ttype == "additive")
@@ -624,22 +624,22 @@ template<> ModifierValue yaml::parse(const N& node)
       {
         const std::string& tpriority = node[2];
 
-        if (tpriority == "last") priority = ModifierValue::Priority::LAST;
-        else if (tpriority == "first") priority = ModifierValue::Priority::LAST;
+        if (tpriority == "last") priority = UnitModifierValue::Priority::LAST;
+        else if (tpriority == "first") priority = UnitModifierValue::Priority::LAST;
         else assert(false);
       }
 
       if (asFloat)
-        return ModifierValue(mode, node[0].as<float>(), priority);
+        return UnitModifierValue(mode, node[0].as<float>(), priority);
       else
-        return ModifierValue(mode, node[0].as<value_t>(), priority);
+        return UnitModifierValue(mode, node[0].as<value_t>(), priority);
     }
   }
 
   //TODO: fix macro
-  PARSE_ERROR("Cannot parse ModifierValue%s", "");
+  PARSE_ERROR("Cannot parse UnitModifierValue%s", "");
   assert(false);
-  return ModifierValue(0);
+  return UnitModifierValue(0);
 }
 
 
@@ -651,20 +651,20 @@ template<> const Effect* yaml::parse(const N& node)
   if (type == "unit_bonus")
   {
     Property property = parse<Property>(node["property"]);
-    ModifierValue modifier = parse<ModifierValue>(node["modifier"]);
+    UnitModifierValue modifier = parse<UnitModifierValue>(node["modifier"]);
     effect = new UnitPropertyBonus(property, modifier);
   }
   else if (type == "army_bonus")
   {
     Property property = parse<Property>(node["property"]);
-    ModifierValue modifier = parse<ModifierValue>(node["modifier"]);
+    UnitModifierValue modifier = parse<UnitModifierValue>(node["modifier"]);
     //TODO: affects all, normal only etc
     effect = new ArmyPropertyBonus(property, modifier);
   }
   else if (type == "wizard_bonus")
   {
     WizardAttribute attribute = parse<WizardAttribute>(node["property"]);
-    ModifierValue modifier = parse<ModifierValue>(node["modifier"]);
+    UnitModifierValue modifier = parse<UnitModifierValue>(node["modifier"]);
     effect = new WizardAttributeModifier(attribute, modifier);
   }
   else if (type == "combat_bonus")
