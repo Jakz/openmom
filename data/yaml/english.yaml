@@ -172,6 +172,81 @@ entries:
   
   spell_guardian_wind: Guardian Wind
 
+  building_builders_hall: Builders hall
+  building_smithy: Smithy
+  building_city_walls: City walls
+  building_shrine: Shrine
+  building_temple: Temple
+  building_parthenon: Parthenon
+  building_cathedral: Cathedral
+  building_animists_guild: Animists guild
+  building_oracle: Oracle
+  building_alchemists_guild: Alchemists guild
+  building_wizards_guild: Wizards guild
+  building_stable: Stable
+  building_fantastic_stable: Fantastic stable
+  building_barracks: Barracks
+  building_armory: Armory
+  building_fighters_guild: Fighters guild
+  building_armorers_guild: Armorers guild
+  building_war_college: War college
+  building_ship_wrights_guild: Ship wrights guild
+  building_ship_yard: Ship yard
+  building_maritime_guild: Maritime guild
+  building_marketplace: Marketplace
+  building_bank: Bank
+  building_merchants_guild: Merchants guild
+  building_granary: Granary
+  building_farmers_market: Farmers market
+  building_library: Library
+  building_university: University
+  building_sages_guild: Sages guild
+  building_miners_guild: Miners guild
+  building_mechanicians_guild: Mechanicians guild
+  building_sawmill: Sawmill
+  building_foresters_guild: Forester's guild
+  building_trade_goods: Trade goods
+  building_housing: Housing
+  building_mage_fortress: Fortress
+  building_summoning_circle: Summoning circle
+
+  building_desc_builders_hall: Desc
+  building_desc_smithy: Desc
+  building_desc_city_walls: Desc
+  building_desc_shrine: Desc
+  building_desc_temple: Desc
+  building_desc_parthenon: Desc
+  building_desc_cathedral: Desc
+  building_desc_animists_guild: Desc
+  building_desc_oracle: Desc
+  building_desc_alchemists_guild: Desc
+  building_desc_wizards_guild: Desc
+  building_desc_stable: Desc
+  building_desc_fantastic_stable: Desc
+  building_desc_barracks: Desc
+  building_desc_armory: Desc
+  building_desc_fighters_guild: Desc
+  building_desc_armorers_guild: Desc
+  building_desc_war_college: Desc
+  building_desc_ship_wrights_guild: Desc
+  building_desc_ship_yard: Desc
+  building_desc_maritime_guild: Desc
+  building_desc_marketplace: Desc
+  building_desc_bank: Desc
+  building_desc_merchants_guild: Desc
+  building_desc_granary: Desc
+  building_desc_farmers_market: Desc
+  building_desc_library: A library acts as a storehouse for knowledge and scholarship. it adds +2 spell research points.
+  building_desc_university: Desc
+  building_desc_sages_guild: Desc
+  building_desc_miners_guild: Desc
+  building_desc_mechanicians_guild: Desc
+  building_desc_sawmill: Desc
+  building_desc_foresters_guild: Desc
+  building_desc_trade_goods: This special setting produces trade goods and converts 2 production to 1 gold.
+  building_desc_housing: This special setting builds new housing for the local populace to draw them into the city and increase the city's population growth rate.
+
+
   game_option_difficulty_intro: Intro
   game_option_difficulty_easy: Easy
   game_option_difficulty_normal: Normal

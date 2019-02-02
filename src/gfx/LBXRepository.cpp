@@ -518,7 +518,6 @@ void Repository::init()
 
 void Repository::loadBuildDesc()
 {
-  
   {
     FileInfo info;
     file_handle in = file_handle(getLBXPath("buildesc"), file_mode::READING);

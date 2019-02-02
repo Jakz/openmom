@@ -141,7 +141,7 @@ void LBX::loadArrayFile(const FileInfo& info, std::vector<TextFiller>& inserters
 void LBX::scanGfxFrame(const LBXGfxHeader& header, const LBXPaletteHeader& pheader, u16 index, u8* image, u8* data, u32 dataLength)
 {
   s32 i = 0, x = 0;
-  const u32 w = header.width, h = header.height;
+  const s32 w = header.width, h = header.height;
   s32 y = 0;
   
   /* first byte is used to tell if a successive frame should be cleared

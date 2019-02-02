@@ -27,30 +27,30 @@ class Productable
 
 class Building : public Productable
 {
-  public:
-    enum class Type { NORMAL, SPECIAL, SPELL };
+public:
+  enum class Type { NORMAL, SPECIAL, SPELL };
 
-  public:
-    const Type type;
-    const value_t cost;
-    const Upkeep upkeep;
+public:
+  const Type type;
+  const value_t cost;
+  const Upkeep upkeep;
 
-    Building(Type type, value_t cost, value_t gupkeep, value_t mupkeep) : type(type), cost(cost), upkeep(Upkeep(gupkeep,mupkeep)) { }
+  Building(Type type, value_t cost, value_t gupkeep, value_t mupkeep) : type(type), cost(cost), upkeep(Upkeep(gupkeep,mupkeep)) { }
   
-    const std::string& productionName() const override;
-    u16 productionCost() const override { return cost; }
-    const Upkeep& productionUpkeep() const override { return upkeep; }
-    Productable::Type productionType() const override { return Productable::Type::BUILDING; }
+  const std::string& productionName() const override;
+  u16 productionCost() const override { return cost; }
+  const Upkeep& productionUpkeep() const override { return upkeep; }
+  Productable::Type productionType() const override { return Productable::Type::BUILDING; }
 
-    bool isAllowedForBuilding() const { return type == Type::NORMAL; };
+  bool isAllowedForBuilding() const { return type == Type::NORMAL; };
   
-    struct ComparatorByName
+  struct ComparatorByName
+  {
+    bool operator() (const Productable *b1, const Productable* b2) const
     {
-      bool operator() (const Productable *b1, const Productable* b2) const
-      {
-        return b1->productionName().compare(b2->productionName()) < 0;
-      }
-    };
+      return b1->productionName().compare(b2->productionName()) < 0;
+    }
+  };
   
   static const Building* BUILDERS_HALL;
   static const Building* SMITHY;

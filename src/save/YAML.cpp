@@ -1311,6 +1311,7 @@ void yaml::parseBuildings()
   N file = parse("buildings.yaml");
   auto buildings = file["buildings"];
 
+  /* load data */
   for (const auto& ybuilding : buildings)
   {
     const std::string& identifier = getIdentifier(ybuilding);
@@ -1318,6 +1319,30 @@ void yaml::parseBuildings()
 
     Data::registerData(identifier, building.first);
     GfxData::registerData(building.first, building.second);
+  }
+
+  /* load requirements, must be done later because we need to populate data before */
+  {
+    for (const auto& ybuilding : buildings)
+    {
+      const std::string& identifier = getIdentifier(ybuilding);
+      const Building* building = Data::building(identifier);
+
+      if (ybuilding["requires"].IsDefined())
+      {
+        std::vector<std::string> requirements;
+        parse(ybuilding["requires"], requirements);
+
+        std::transform(requirements.begin(), requirements.end(), std::inserter(Data::buildingDependsOnBuilding, Data::buildingDependsOnBuilding.end()), [building](const std::string& key) {
+          const Building* requirement = Data::building(key);
+
+          if (requirement == nullptr)
+            assert(false);
+
+          return std::make_pair(building, requirement);
+        });
+      }
+    }
   }
   
   //TODO: hardcoded because they're useful in code for now, let's hope to be able to remove most of them through effects

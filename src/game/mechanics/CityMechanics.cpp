@@ -24,73 +24,6 @@
 
 using namespace std;
 
-const std::multimap<const Building*, const Building*> CityMechanics::buildingDependsOn = {
-  {Building::CITY_WALLS, Building::BUILDERS_HALL},
-  
-  {Building::SHRINE, Building::BUILDERS_HALL},
-  {Building::TEMPLE, Building::SHRINE},
-  {Building::PARTHENON, Building::TEMPLE},
-  {Building::CATHEDRAL, Building::PARTHENON},
-  
-  {Building::ANIMISTS_GUILD, Building::STABLE},
-  {Building::ANIMISTS_GUILD, Building::UNIVERSITY},
-
-  {Building::ORACLE, Building::PARTHENON},
-  {Building::ORACLE, Building::UNIVERSITY},
-  
-  {Building::ALCHEMISTS_GUILD, Building::SAGES_GUILD},
-  
-  {Building::WIZARDS_GUILD, Building::ALCHEMISTS_GUILD},
-  {Building::WIZARDS_GUILD, Building::UNIVERSITY},
-  
-  {Building::STABLE, Building::SMITHY},
-
-  {Building::FANTASTIC_STABLE, Building::STABLE},
-  {Building::FANTASTIC_STABLE, Building::ANIMISTS_GUILD},
-  {Building::FANTASTIC_STABLE, Building::ARMORERS_GUILD},
-  
-  {Building::ARMORY, Building::SMITHY},
-  {Building::ARMORY, Building::BARRACKS},
-  
-  {Building::FIGHTERS_GUILD, Building::ARMORY},
-  {Building::ARMORERS_GUILD, Building::FIGHTERS_GUILD},
-
-  {Building::WAR_COLLEGE, Building::ARMORERS_GUILD},
-  {Building::WAR_COLLEGE, Building::UNIVERSITY},
-  
-  {Building::SHIP_YARD, Building::SHIP_WRIGHTS_GUILD},
-  {Building::SHIP_YARD, Building::SAWMILL},
-  
-  {Building::MARITIME_GUILD, Building::SHIP_YARD},
-  {Building::MARITIME_GUILD, Building::ARMORY},
-  
-  {Building::MARKETPLACE, Building::SMITHY},
-  
-  {Building::BANK, Building::MARKETPLACE},
-  {Building::BANK, Building::UNIVERSITY},
-  
-  {Building::MERCHANTS_GUILD, Building::BANK},
-  {Building::MERCHANTS_GUILD, Building::SHIP_YARD},
-  
-  {Building::GRANARY, Building::BUILDERS_HALL},
-
-  {Building::FARMERS_MARKET, Building::MARKETPLACE},
-  {Building::FARMERS_MARKET, Building::GRANARY},
-  
-  {Building::LIBRARY, Building::BUILDERS_HALL},
-  
-  {Building::UNIVERSITY, Building::LIBRARY},
-  {Building::UNIVERSITY, Building::SAGES_GUILD},
-  
-  {Building::SAGES_GUILD, Building::LIBRARY},
-  
-  {Building::MINERS_GUILD, Building::BUILDERS_HALL},
-  
-  {Building::MECHANICIANS_GUILD, Building::UNIVERSITY},
-  {Building::MECHANICIANS_GUILD, Building::MINERS_GUILD},
-  
-  {Building::FORESTERS_GUILD, Building::SAWMILL}
-};
 /*
 const std::multimap<UnitID, const Building*> CityMechanics::unitDependsOn = {
   {UnitID::SWORDSMEN, Building::SMITHY},
@@ -212,7 +145,7 @@ bool CityMechanics::isBuildingAllowed(const City* city, const Building* building
   if (!building->isAllowedForBuilding() || city->hasBuilding(building))
     return false;
 
-  auto it = buildingDependsOn.equal_range(building);
+  auto it = Data::requiredBuildingsForBuilding(building);
   return std::all_of(it.first, it.second, [city](decltype(*it.first)& iit) { return city->hasBuilding(iit.second); });
 }
 
@@ -268,15 +201,14 @@ const list<const RaceUnitSpec*> CityMechanics::availableUnits(const City* city)
 
 const std::vector<const Building*> CityMechanics::availableBuildings(const City* city)
 {
-  std::vector<const Building*> buildings;
+  std::vector<const Building*> allowedBuildings;
+  const auto& buildings = Data::values<const Building*>();
 
-  auto iterators = Data::iterators<const Building*>();
-
-  std::copy_if(iterators.first, iterators.second, std::back_inserter(buildings), [this, city](const Building* building) {
+  std::copy_if(buildings.obegin(), buildings.oend(), std::back_inserter(allowedBuildings), [this, city](const Building* building) {
     return isBuildingAllowed(city, building);
   });
 
-  return buildings;
+  return allowedBuildings;
 }
 
 
@@ -288,9 +220,10 @@ list<const Productable*> CityMechanics::itemsUnlockedByBuilding(const Building* 
   list<const Productable*> items;
   
   //TODO: remove ancestors
-  for (const auto it : buildingDependsOn)
+  auto buildings = Data::iterators<const Building*>();
+  for (auto it = buildings.first; it != buildings.second; ++it)
   {
-    auto iit = buildingDependsOn.equal_range(it.first); // all the dependencies of current building
+    auto iit = Data::requiredBuildingsForBuilding(*it); // all the dependencies of current building
 
     // if building was a dependency of it
     for (auto iitb = iit.first; iitb != iit.second; ++iitb)
@@ -299,7 +232,7 @@ list<const Productable*> CityMechanics::itemsUnlockedByBuilding(const Building* 
       {
         bool wholeTree = true;
         list<const Building*> dependTree;
-        dependTree.push_back(it.first);
+        dependTree.push_back(*it);
         
         while (!dependTree.empty())
         {
@@ -312,13 +245,13 @@ list<const Productable*> CityMechanics::itemsUnlockedByBuilding(const Building* 
             break;
           }
           
-          auto dependsOn = buildingDependsOn.equal_range(cb);
+          auto dependsOn = Data::requiredBuildingsForBuilding(cb);
           for (auto dit = dependsOn.first; dit != dependsOn.second; ++dit)
             dependTree.push_back(dit->second);
         }
         
         if (wholeTree)
-          items.push_back(it.first);
+          items.push_back(*it);
         
         break;
       }

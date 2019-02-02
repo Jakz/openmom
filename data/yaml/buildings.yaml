@@ -29,7 +29,7 @@ buildings:
     type: normal
     cost: 100
     upkeep: [1, 0]
-    requires: [ ]
+    requires: [ builders_hall ]
     effects:
       - type: city_bonus
         property: mana_power
@@ -50,7 +50,7 @@ buildings:
     type: normal
     cost: 200
     upkeep: [2, 0]
-    requires: [ ]
+    requires: [ shrine ]
     effects: [ ]
     visuals:
       i18n: building_temple
@@ -63,7 +63,7 @@ buildings:
     type: normal
     cost: 400
     upkeep: [3, 0]
-    requires: [ ]
+    requires: [ temple ]
     effects: [ ]
     visuals:
       i18n: building_parthenon
@@ -76,7 +76,7 @@ buildings:
     type: normal
     cost: 800
     upkeep: [4, 0]
-    requires: [ ]
+    requires: [ parthenon ]
     effects: [ ]
     visuals:
       i18n: building_cathedral
@@ -89,7 +89,7 @@ buildings:
     type: normal
     cost: 300
     upkeep: [5, 0]
-    requires: [ ]
+    requires: [ stable, university ]
     effects: [ ]
     visuals:
       i18n: building_animists_guild
@@ -102,7 +102,7 @@ buildings:
     type: normal
     cost: 500
     upkeep: [4, 0]
-    requires: [ ]
+    requires: [ parthenon, university ]
     effects: [ ]
     visuals:
       i18n: building_oracle
@@ -115,7 +115,7 @@ buildings:
     type: normal
     cost: 250
     upkeep: [3, 0]
-    requires: [ ]
+    requires: [ sages_guild ]
     effects: [ ]
     visuals:
       i18n: building_alchemists_guild
@@ -128,7 +128,7 @@ buildings:
     type: normal
     cost: 1000
     upkeep: [5, 3]
-    requires: [ ]
+    requires: [ alchemists_guild, university ]
     effects: [ ]
     visuals:
       i18n: building_wizards_guild
@@ -141,7 +141,7 @@ buildings:
     type: normal
     cost: 80
     upkeep: [2, 0]
-    requires: [ ]
+    requires: [ smithy ]
     effects: [ ]
     visuals:
       i18n: building_stable
@@ -154,7 +154,7 @@ buildings:
     type: normal
     cost: 600
     upkeep: [6, 0]
-    requires: [ ]
+    requires: [ stable, animists_guild, armorers_guild]
     effects: [ ]
     visuals:
       i18n: building_fantastic_stable
@@ -167,7 +167,7 @@ buildings:
     type: normal
     cost: 30
     upkeep: [0, 0]
-    requires: [ ]
+    requires: [  ]
     effects: [ ]
     visuals:
       i18n: building_barracks
@@ -180,7 +180,7 @@ buildings:
     type: normal
     cost: 80
     upkeep: [2, 0]
-    requires: [ ]
+    requires: [ smithy, barracks ]
     effects: [ ]
     visuals:
       i18n: building_armory
@@ -193,7 +193,7 @@ buildings:
     type: normal
     cost: 200
     upkeep: [3, 0]
-    requires: [ ]
+    requires: [ armory ]
     effects: [ ]
     visuals:
       i18n: building_fighters_guild
@@ -206,7 +206,7 @@ buildings:
     type: normal
     cost: 350
     upkeep: [4, 0]
-    requires: [ ]
+    requires: [ fighters_guild ]
     effects: [ ]
     visuals:
       i18n: building_armorers_guild
@@ -219,7 +219,7 @@ buildings:
     type: normal
     cost: 500
     upkeep: [5, 0]
-    requires: [ ]
+    requires: [ armorers_guild, university ]
     effects: [ ]
     visuals:
       i18n: building_war_college
@@ -245,7 +245,7 @@ buildings:
     type: normal
     cost: 200
     upkeep: [2, 0]
-    requires: [ ]
+    requires: [ ship_wrights_guild, sawmill ]
     effects: [ ]
     visuals:
       i18n: building_ship_yard
@@ -258,7 +258,7 @@ buildings:
     type: normal
     cost: 400
     upkeep: [4, 0]
-    requires: [ ]
+    requires: [ ship_yard, armory ]
     effects: [ ]
     visuals:
       i18n: building_maritime_guild
@@ -271,7 +271,7 @@ buildings:
     type: normal
     cost: 100
     upkeep: [1, 0]
-    requires: [ ]
+    requires: [ smithy ]
     effects: [ ]
     visuals:
       i18n: building_marketplace
@@ -284,7 +284,7 @@ buildings:
     type: normal
     cost: 250
     upkeep: [3, 0]
-    requires: [ ]
+    requires: [ marketplace, university ]
     effects: [ ]
     visuals:
       i18n: building_bank
@@ -297,7 +297,7 @@ buildings:
     type: normal
     cost: 600
     upkeep: [5, 0]
-    requires: [ ]
+    requires: [ bank, ship_yard ]
     effects: [ ]
     visuals:
       i18n: building_merchants_guild
@@ -310,7 +310,7 @@ buildings:
     type: normal
     cost: 40
     upkeep: [1, 0]
-    requires: [ ]
+    requires: [ builders_hall ]
     effects: [ ]
     visuals:
       i18n: building_granary
@@ -323,7 +323,7 @@ buildings:
     type: normal
     cost: 100
     upkeep: [2, 0]
-    requires: [ ]
+    requires: [ marketplace, granary ]
     effects: [ ]
     visuals:
       i18n: building_farmers_market
@@ -336,7 +336,7 @@ buildings:
     type: normal
     cost: 60
     upkeep: [1, 0]
-    requires: [ ]
+    requires: [ builders_hall ]
     effects: [ ]
     visuals:
       i18n: building_library
@@ -349,7 +349,7 @@ buildings:
     type: normal
     cost: 300
     upkeep: [3, 0]
-    requires: [ ]
+    requires: [ library, sages_guild ]
     effects: [ ]
     visuals:
       i18n: building_university
@@ -362,7 +362,7 @@ buildings:
     type: normal
     cost: 120
     upkeep: [2, 0]
-    requires: [ ]
+    requires: [ library ]
     effects: [ ]
     visuals:
       i18n: building_sages_guild
@@ -375,7 +375,7 @@ buildings:
     type: normal
     cost: 300
     upkeep: [3, 0]
-    requires: [ ]
+    requires: [ builders_hall ]
     effects: [ ]
     visuals:
       i18n: building_miners_guild
@@ -388,7 +388,7 @@ buildings:
     type: normal
     cost: 600
     upkeep: [5, 0]
-    requires: [ ]
+    requires: [ university, miners_guild ]
     effects: [ ]
     visuals:
       i18n: building_mechanicians_guild
@@ -401,7 +401,7 @@ buildings:
     type: normal
     cost: 100
     upkeep: [2, 0]
-    requires: [ ]
+    requires: [ ] # TOOD: requires forest
     effects: [ ]
     visuals:
       i18n: building_sawmill
@@ -414,7 +414,7 @@ buildings:
     type: normal
     cost: 200
     upkeep: [2, 0]
-    requires: [ ]
+    requires: [ sawmill ]
     effects: [ ]
     visuals:
       i18n: building_foresters_guild
@@ -426,7 +426,7 @@ buildings:
 
 
 
-
+#TODO: order, move here to move them in production view
   - identifier: housing
     type: normal
     cost: 0
@@ -470,7 +470,6 @@ buildings:
 # special
   - identifier: mage_fortress
     type: special
-    requires: disallowed
     effects: [ ]
     visuals:
       i18n: building_mage_fortress # TODO: manage localization
@@ -482,7 +481,6 @@ buildings:
 
   - identifier: summoning_circle
     type: spell
-    requires: disallowed
     effects: [ ]
     visuals:
       i18n: building_summoning_circle

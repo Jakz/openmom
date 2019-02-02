@@ -43,14 +43,8 @@ public:
     class const_iterator
     {
     public:
-      using inner_it = typename std::vector<std::reference_wrapper<const key_type>>::const_iterator;
-      
-      using value_type = T; //std::pair<const std::string&, T>;
-      using difference_type = ptrdiff_t;
-      using pointer = T*;
-      using reference = T&;
-      using iterator_category = std::random_access_iterator_tag;
-      
+      using inner_it = typename std::vector<std::reference_wrapper<const key_type>>::const_iterator;      
+
     private:
       const insertion_ordered_map<T>& data;
       inner_it it;
@@ -60,9 +54,17 @@ public:
       
       const_iterator& operator+=(size_t i) { it += i; return *this; }
       
-      inline bool operator!=(const const_iterator& other) const { return &data != &other.data || it != other.it; }
+      inline bool operator!=(const const_iterator& other) const { return it != other.it; }
+      inline bool operator==(const const_iterator& other) const { return it == other.it; }
+
       inline const const_iterator& operator++() { ++it; return *this; }
       T operator*() const { return data.find((*it).get())->second; }
+
+      using value_type = T;
+      using difference_type = typename map_iterator::difference_type;
+      using pointer = const T* ;
+      using reference = const T& ;
+      using iterator_category = typename map_iterator::iterator_category;
     };
     
     insertion_ordered_map() { }
@@ -120,6 +122,7 @@ public:
   
   template<typename T> using map_t = insertion_ordered_map<T>; //std::unordered_map<key_type, T>;
 
+  using building_dependency_map_t = std::unordered_multimap<const Building*, const Building*>;
   using unit_dependency_map_t = std::unordered_map<const UnitSpec*, const Building*>;
   using item_power_requirements_map_t = std::unordered_map<const Skill*, school_value_map>;
   
@@ -128,6 +131,7 @@ public:
 private:
   template<typename T> static map_t<T>& containerFor();
   
+  static building_dependency_map_t buildingDependsOnBuilding;
   static unit_dependency_map_t unitDependsOnBuilding;
   static item_power_requirements_map_t _itemPowerRequirements;
   
@@ -198,13 +202,20 @@ public:
       map_t<T>::value_iterator(containerFor<T>().end())
     );
   }
+
+  template <typename T> static auto orderedIterators()
+  {
+    return std::make_pair(
+      containerFor<T>().begin(),
+      containerFor<T>().end()
+    );
+  }
+
     
   static std::vector<const RaceUnitSpec*> unitsForRace(const Race* race);
   
-  static std::pair<unit_dependency_map_t::const_iterator, unit_dependency_map_t::const_iterator> requiredBuildingsForUnit(const UnitSpec* unit)
-  {
-    return unitDependsOnBuilding.equal_range(unit);
-  }
+  static auto requiredBuildingsForUnit(const UnitSpec* unit) { return unitDependsOnBuilding.equal_range(unit); }
+  static auto requiredBuildingsForBuilding(const Building* building) { return buildingDependsOnBuilding.equal_range(building); }
   
 #if defined(DEBUG)
   template<typename T> static const char* nameForDataType();// { return "unnamed"; }
