@@ -58,6 +58,8 @@ public:
     return YAML::Node::operator[](key);
   }
 
+  operator SpriteInfo() const { return yaml::parse<SpriteInfo>(*this); }
+
   //TODO: this is istantiated for all char[4], char[8], char[11]...
   template<typename T> const
   YAML::Node operator[](const T& key) const
@@ -1088,6 +1090,37 @@ template<> std::pair<const Wizard*, WizardGfxSpec> yaml::parse(const N& node)
   }
   
   return data;
+}
+
+#pragma mark Buildings
+
+template<> std::pair<const Building*, BuildingGfxSpec> yaml::parse(const N& node)
+{
+ // Building(I18 name, I18 desc, u16 cost, u16 gupkeep, u16 mupkeep)
+
+  value_t cost = node["cost"];
+  value_t goldUpkeep = node["upkeep"][0];
+  value_t manaUpkeep = node["upkeep"][1];
+
+  // dependency
+
+
+
+
+  /* visuals */
+  {
+    const auto& visuals = node["visuals"];
+    BuildingGfxSpec gfx;
+
+    gfx.name = i18n::keyForString(visuals["i18n"]);
+    gfx.desc = i18n::keyForString(visuals["i18desc"]);
+    
+    gfx.gfx = parse<SpriteInfo>(visuals["gfx"]["sprite"]);
+    gfx.width = parse<coord_t>(visuals["gfx"]["width"]);
+    gfx.slotSize = Size(visuals["gfx"]["slot_size"][0].as<int_type>(), visuals["gfx"]["slot_size"][1].as<int_type>());
+  }
+  
+  return std::make_pair(nullptr, BuildingGfxSpec());
 }
 
 #pragma mark Retort

@@ -2,11 +2,428 @@ buildings:
   - identifier: builders_hall
     cost: 60
     upkeep: [1, 0]
-    requires: none
+    requires: [ ]
+    effects: [ ]
     visuals:
       i18n: building_builders_hall
       i18desc: building_desc_builders_hall
       gfx:
         sprite: [lbx, cityscap, 73]
-        pixel_width: 27
+        width: 27
         slot_size: [2, 3]
+  - identifier: smithy
+    cost: 40
+    upkeep: [1, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_smithy
+      i18desc: building_desc_smithy
+      gfx:
+        sprite: [lbx, cityscap, 50]
+        width: 25
+        slot_size: [2, 2]
+  - identifier: shrine
+    cost: 100
+    upkeep: [1, 0]
+    requires: [ ]
+    effects:
+      - type: city_bonus
+        property: mana_power
+        value: 1
+      - type: city_bonus
+        property: unrest_count
+        value: -1
+      - type: city_effect
+        kind: allows-nightshade
+    visuals:
+      i18n: building_shrine
+      i18desc: building_desc_shrine
+      gfx:
+        sprite: [lbx, cityscap, 64]
+        width: 32
+        slot_size: [3, 2]
+  - identifier: temple
+    cost: 200
+    upkeep: [2, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_temple
+      i18desc: building_desc_temple
+      gfx:
+        sprite: [lbx, cityscap, 65]
+        width: 36
+        slot_size: [3, 2]
+  - identifier: parthenon
+    cost: 400
+    upkeep: [3, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_parthenon
+      i18desc: building_desc_parthenon
+      gfx:
+        sprite: [lbx, cityscap, 66]
+        width: 40
+        slot_size: [3, 3]
+  - identifier: cathedral
+    cost: 800
+    upkeep: [4, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_cathedral
+      i18desc: building_desc_cathedral
+      gfx:
+        sprite: [lbx, cityscap, 67]
+        width: 34
+        slot_size: [3, 3]
+  - identifier: animists_guild
+    cost: 300
+    upkeep: [5, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_animists_guild
+      i18desc: building_desc_animists_guild
+      gfx:
+        sprite: [lbx, cityscap, 52]
+        width: 24
+        slot_size: [2, 2]
+  - identifier: oracle
+    cost: 500
+    upkeep: [4, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_oracle
+      i18desc: building_desc_oracle
+      gfx:
+        sprite: [lbx, cityscap, 60]
+        width: 25
+        slot_size: [2, 2]
+  - identifier: alchemists_guild
+    cost: 250
+    upkeep: [3, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_alchemists_guild
+      i18desc: building_desc_alchemists_guild
+      gfx:
+        sprite: [lbx, cityscap, 61]
+        width: 14
+        slot_size: [1, 1]
+  - identifier: wizards_guild
+    cost: 1000
+    upkeep: [5, 3]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_wizards_guild
+      i18desc: building_desc_wizards_guild
+      gfx:
+        sprite: [lbx, cityscap, 63]
+        width: 17
+        slot_size: [2, 2]
+  - identifier: stable
+    cost: 80
+    upkeep: [2, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_stable
+      i18desc: building_desc_stable
+      gfx:
+        sprite: [lbx, cityscap, 51]
+        width: 40
+        slot_size: [3, 3]
+  - identifier: fantastic_stable
+    cost: 600
+    upkeep: [6, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_fantastic_stable
+      i18desc: building_desc_fantastic_stable
+      gfx:
+        sprite: [lbx, cityscap, 53]
+        width: 40
+        slot_size: [3, 3]
+  - identifier: barracks
+    cost: 30
+    upkeep: [0, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_barracks
+      i18desc: building_desc_barracks
+      gfx:
+        sprite: [lbx, cityscap, 45]
+        width: 30
+        slot_size: [2, 3]
+  - identifier: armory
+    cost: 80
+    upkeep: [2, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_armory
+      i18desc: building_desc_armory
+      gfx:
+        sprite: [lbx, cityscap, 46]
+        width: 25
+        slot_size: [2, 2]
+  - identifier: fighters_guild
+    cost: 200
+    upkeep: [3, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_fighters_guild
+      i18desc: building_desc_fighters_guild
+      gfx:
+        sprite: [lbx, cityscap, 47]
+        width: 35
+        slot_size: [3, 2]
+  - identifier: armorers_guild
+    cost: 350
+    upkeep: [4, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_armorers_guild
+      i18desc: building_desc_armorers_guild
+      gfx:
+        sprite: [lbx, cityscap, 48]
+        width: 36
+        slot_size: [3, 2]
+  - identifier: war_college
+    cost: 500
+    upkeep: [5, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_war_college
+      i18desc: building_desc_war_college
+      gfx:
+        sprite: [lbx, cityscap, 49]
+        width: 36
+        slot_size: [3, 2]
+  - identifier: ship_wrights_guild
+    cost: 100
+    upkeep: [1, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_ship_wrights_guild
+      i18desc: building_desc_ship_wrights_guild
+      gfx:
+        sprite: [lbx, cityscap, 54]
+        width: 22
+        slot_size: [2, 3]
+  - identifier: ship_yard
+    cost: 200
+    upkeep: [2, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_ship_yard
+      i18desc: building_desc_ship_yard
+      gfx:
+        sprite: [lbx, cityscap, 55]
+        width: 32
+        slot_size: [2, 3]
+  - identifier: maritime_guild
+    cost: 400
+    upkeep: [4, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_maritime_guild
+      i18desc: building_desc_maritime_guild
+      gfx:
+        sprite: [lbx, cityscap, 56]
+        width: 30
+        slot_size: [2, 3]
+  - identifier: marketplace
+    cost: 100
+    upkeep: [1, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_marketplace
+      i18desc: building_desc_marketplace
+      gfx:
+        sprite: [lbx, cityscap, 68]
+        width: 25
+        slot_size: [2, 2]
+  - identifier: bank
+    cost: 250
+    upkeep: [3, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_bank
+      i18desc: building_desc_bank
+      gfx:
+        sprite: [lbx, cityscap, 70]
+        width: 26
+        slot_size: [2, 2]
+  - identifier: merchants_guild
+    cost: 600
+    upkeep: [5, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_merchants_guild
+      i18desc: building_desc_merchants_guild
+      gfx:
+        sprite: [lbx, cityscap, 69]
+        width: 25
+        slot_size: [2, 2]
+  - identifier: granary
+    cost: 40
+    upkeep: [1, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_granary
+      i18desc: building_desc_granary
+      gfx:
+        sprite: [lbx, cityscap, 71]
+        width: 17
+        slot_size: [2, 2]
+  - identifier: farmers_market
+    cost: 100
+    upkeep: [2, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_farmers_market
+      i18desc: building_desc_farmers_market
+      gfx:
+        sprite: [lbx, cityscap, 72]
+        width: 24
+        slot_size: [2, 2]
+  - identifier: library
+    cost: 60
+    upkeep: [1, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_library
+      i18desc: building_desc_library
+      gfx:
+        sprite: [lbx, cityscap, 58]
+        width: 36
+        slot_size: [3, 2]
+  - identifier: university
+    cost: 300
+    upkeep: [3, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_university
+      i18desc: building_desc_university
+      gfx:
+        sprite: [lbx, cityscap, 62]
+        width: 36
+        slot_size: [3, 2]
+  - identifier: sages_guild
+    cost: 120
+    upkeep: [2, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_sages_guild
+      i18desc: building_desc_sages_guild
+      gfx:
+        sprite: [lbx, cityscap, 59]
+        width: 25
+        slot_size: [2, 2]
+  - identifier: miners_guild
+    cost: 300
+    upkeep: [3, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_miners_guild
+      i18desc: building_desc_miners_guild
+      gfx:
+        sprite: [lbx, cityscap, 75]
+        width: 23
+        slot_size: [2, 2]
+  - identifier: mechanicians_guild
+    cost: 600
+    upkeep: [5, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_mechanicians_guild
+      i18desc: building_desc_mechanicians_guild
+      gfx:
+        sprite: [lbx, cityscap, 74]
+        width: 21
+        slot_size: [2, 2]
+  - identifier: sawmill
+    cost: 100
+    upkeep: [2, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_sawmill
+      i18desc: building_desc_sawmill
+      gfx:
+        sprite: [lbx, cityscap, 57]
+        width: 25
+        slot_size: [2, 3]
+  - identifier: foresters_guild
+    cost: 200
+    upkeep: [2, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_foresters_guild
+      i18desc: building_desc_foresters_guild
+      gfx:
+        sprite: [lbx, cityscap, 78]
+        width: 25
+        slot_size: [2, 2]
+  - identifier: housing
+    cost: 0
+    upkeep: [0, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_housing
+      i18desc: building_desc_housing
+      gfx:
+        sprite: [lbx, cityscap, 42]
+        width: 40
+        slot_size: [2, 2]
+  - identifier: trade_goods
+    cost: 0
+    upkeep: [0, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_trade_goods
+      i18desc: building_desc_trade_goods
+      gfx:
+        sprite: [lbx, cityscap, 41]
+        width: 40
+        slot_size: [2, 2]
+  - identifier: city_walls
+    cost: 150
+    upkeep: [2, 0]
+    requires: [ ]
+    effects: [ ]
+    visuals:
+      i18n: building_city_walls
+      i18desc: building_desc_city_walls
+      gfx:
+        sprite: [lbx, cityscap, 114]
+        width: 40
+        slot_size: [2, 2]

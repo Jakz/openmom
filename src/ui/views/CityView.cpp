@@ -178,7 +178,7 @@ void CityView::draw()
   drawCityProp(city->gold, UpkeepSymbol::GOLD, sx, sy);
   sx = 6;
   sy += 8;
-  drawCityProp(city->mana, UpkeepSymbol::MANA, sx, sy);
+  drawCityProp(city->magicPower, UpkeepSymbol::MANA, sx, sy);
   sx = 6;
   sy += 8;
   drawCityProp(city->knowledge, UpkeepSymbol::RESEARCH, sx, sy);

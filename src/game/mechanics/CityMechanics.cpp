@@ -561,7 +561,7 @@ value_t CityMechanics::computeProduction(const City* city)
   return (s16)std::floor(production);
 }
 
-value_t CityMechanics::computeMana(const City *city)
+value_t CityMechanics::computeMagicPower(const City *city)
 {
   value_t totalMana = 0;
   
@@ -655,7 +655,9 @@ value_t CityMechanics::computeGrowthRate(const City *city)
 value_t CityMechanics::computeMaxPopulationForTile(const Tile* tile)
 {
   float maxPop = 0.0f;
-  
+
+  //TODO: some shore with river mouths have special values
+
   for (int x = -2; x <= 2; ++x)
     for (int y = -2; y <= 2; ++y)
       if ((x != 2 && x != -2) || (y != 2 && y != -2))
@@ -682,7 +684,7 @@ value_t CityMechanics::computeMaxPopulationForTile(const Tile* tile)
         }
       }
   
-  return std::min(static_cast<int>(std::ceil(maxPop)), 25);
+  return std::min(static_cast<int>(std::floor(maxPop)), 25);
 }
 
 float CityMechanics::getRacialUnrest(const Race *cityRace, const Race *ownerRace)

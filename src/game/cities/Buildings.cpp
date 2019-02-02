@@ -36,13 +36,13 @@ namespace buildingimpl {
   static const Building MECHANICIANS_GUILD = Building(I18::BUILDING_MECHANICIANS_GUILD, I18::BUILDING_DESC_MECHANICIANS_GUILD, 600, 5, 0);
   static const Building SAWMILL = Building(I18::BUILDING_SAWMILL, I18::BUILDING_DESC_SAWMILL, 100, 2, 0);
   static const Building FORESTERS_GUILD = Building(I18::BUILDING_FORESTERS_GUILD, I18::BUILDING_DESC_FORESTERS_GUILD, 200, 2, 0);
-  
+
   static const Building TRADE_GOODS = Building(I18::BUILDING_TRADE_GOODS, I18::BUILDING_DESC_TRADE_GOODS, 0, 0, 0);
   static const Building HOUSING = Building(I18::BUILDING_HOUSING, I18::BUILDING_DESC_HOUSING, 0, 0, 0);
-  
+
   /* TODO: manage name, eg Jack's Fortress */
   static const Building MAGE_FORTRESS = Building(I18::BUILDING_MAGE_FORTRESS, I18::EMPTY, 0, 0, 0);
-  
+
   static const Building SUMMONING_CIRCLE = Building(I18::BUILDING_SUMMONING_CIRCLE, I18::EMPTY, 0, 0, 0);
 }
 

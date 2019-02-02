@@ -65,7 +65,7 @@ namespace items
 
 namespace help
 {
-  class Paragraph;
+  struct Paragraph;
 };
 
 using help_ref = const help::Paragraph*;

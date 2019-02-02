@@ -311,14 +311,14 @@ static const std::unordered_map<DirJoin, RoadGfxSpec, enum_hash> roadGraphics = 
 
 #pragma mark Buildings
 
-struct BuildingGfxSpec
+struct CombatBuildingGfxSpec
 {
   SpriteInfo info;
   u32 count;
   Point offset;
 };
 
-static const std::unordered_map<TileBuilding, BuildingGfxSpec, enum_hash> buildingGraphics = {
+static const std::unordered_map<TileBuilding, CombatBuildingGfxSpec, enum_hash> buildingGraphics = {
   { TileBuilding::FORTRESS, { LSI(CMBTCITY, 17), 1, {-1, 14} } },
   { TileBuilding::TOWER_WIZARDRY, { LSI(CMBTCITY, 20), 1, {-1, 14} } },
   { TileBuilding::CAVE, { LSI(CMBTCITY, 19), 1, {-1, 14} } },

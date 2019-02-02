@@ -184,6 +184,16 @@ struct SkillGfxSpec
   help_ref help;
 };
 
+struct BuildingGfxSpec
+{
+  I18 name;
+  I18 desc;
+
+  SpriteInfo gfx;
+  coord_t width;
+  Size slotSize;
+};
+
 
 template<typename K, typename V, typename M, template<class> class S>
 class multi_enum_map

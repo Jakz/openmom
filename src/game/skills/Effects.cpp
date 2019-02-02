@@ -10,9 +10,9 @@ ReturnType Modifier<ReturnType, T, F>::transformValue(ReturnType previous, const
     case Mode::ADDITIVE:
       return previous + (type == Type::FLOATING ? static_cast<ReturnType>(multiplier) : value);
     case Mode::ADDITIVE_PARAMETRIC:
-      return previous + static_cast<ReturnType>(std::floor(F()(owner)*multiplier));
+      return previous + static_cast<ReturnType>(F()(owner)*multiplier);
     case Mode::MULTIPLICATIVE:
-      return static_cast<ReturnType>(std::floor(previous * multiplier));
+      return static_cast<ReturnType>(previous * multiplier);
     case Mode::FIXED:
       return value;
     default:

@@ -75,7 +75,7 @@ public:
   value_t computeGold(const City* city);
   value_t computeProductionBonus(const City* city);
   value_t computeProduction(const City* city);
-  value_t computeMana(const City* city);
+  value_t computeMagicPower(const City* city);
   value_t computeKnowledge(const City* city);
   
   float getRacialUnrest(const Race* cityRace, const Race* ownerRace);
@@ -108,7 +108,7 @@ public:
     city->upkeep = computeUpkeep(city);
     city->gold = computeGold(city);
     city->work = computeProduction(city);
-    city->mana = computeMana(city);
+    city->magicPower = computeMagicPower(city);
     city->knowledge = computeKnowledge(city);
     
     updateProduction(city);

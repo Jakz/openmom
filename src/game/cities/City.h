@@ -15,6 +15,16 @@ class Race;
 class Productable;
 class Building;
 
+enum class CityAttribute
+{
+  FOOD_OUTPUT,
+  GOLD_OUTPUT,
+  WORK_OUTPUT,
+  RESEARCH_OUTPUT,
+  MANA_OUTPUT,
+  UNREST_COUNT,
+};
+
 enum CityPlacement : u16
 {
   CITY_BY_RIVER,
@@ -54,7 +64,7 @@ protected:
   
   value_t gold;
   
-  value_t mana;
+  value_t magicPower;
   
   value_t knowledge;
   
@@ -87,7 +97,7 @@ public:
   
   bool isOutpost() const { return isStillOutpost; }
   Upkeep getUpkeep() const { return upkeep; }
-  Upkeep getProduction() const { return Upkeep(gold, mana, food); }
+  Upkeep getProduction() const { return Upkeep(gold, magicPower, food); }
   value_t getKnowledge() const { return knowledge; }
   value_t getWork() const { return work; }
   

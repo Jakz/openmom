@@ -476,7 +476,7 @@ public:
   effect_list::iterator begin() const { return effects.begin(); }
   effect_list::iterator end() const { return effects.end(); }
 
-  friend class effect_list_deep_iterator;
+  friend struct effect_list_deep_iterator;
 };
 
 struct effect_list_deep_iterator
