@@ -37,4 +37,5 @@ public:
   static void parseRaces();
   static void parseLevels();
   static void parseWizards();
+  static void parseBuildings();
 };

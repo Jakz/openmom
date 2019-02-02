@@ -58,7 +58,7 @@ public:
   bool isUnitAllowed(const City* city, const RaceUnitSpec* unit);
   std::list<const Productable*> itemsUnlockedByBuilding(const Building* building, const City *city);
   const std::list<const RaceUnitSpec*> availableUnits(const City* city);
-  const std::list<const Building*> availableBuildings(const City* city);
+  const std::vector<const Building*> availableBuildings(const City* city);
   
   void lambdaOnCitySurroundings(const City* city, const std::function<void(Tile*)>& functor);
   

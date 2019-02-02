@@ -2,6 +2,7 @@
 #include "ProductionView.h"
 
 #include "Gfx.h"
+#include "GfxData.h"
 #include "Font.h"
 #include "ViewManager.h"
 #include "CityView.h"
@@ -65,7 +66,7 @@ void ProductionView::draw()
     CityLayout::drawBuildingCentered(city, static_cast<const Building*>(product), 82, 38);
     
     Fonts::drawString(Fonts::format("Cost %u",cost), FontFaces::Small::TEAL, 128, 33, ALIGN_LEFT);
-    Fonts::drawStringBounded(i18n::s(static_cast<const Building*>(product)->desc), FontFaces::Serif::TEAL, 86, 106, 150, ALIGN_LEFT);
+    Fonts::drawStringBounded(i18n::s(GfxData::buildingGfx(static_cast<const Building*>(product)).desc), FontFaces::Serif::TEAL, 86, 106, 150, ALIGN_LEFT);
     
     Fonts::drawString("Maintenance", FontFaces::Serif::TEAL, 85, 46, ALIGN_LEFT);
     Fonts::drawString("Allows", FontFaces::Serif::TEAL, 85, 46+11, ALIGN_LEFT);

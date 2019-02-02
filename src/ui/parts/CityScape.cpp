@@ -11,53 +11,6 @@
 
 using namespace std;
 
-//TODO: finish conversion using LBX entries
-unordered_map<const Building*, CityLayout::BuildingSpecs> CityLayout::specs = {
-  {Building::MAGE_FORTRESS,      BuildingSpecs(LSI(CITYSCAP, 40),  0, 2, 3)},
-  
-  {Building::BUILDERS_HALL,      BuildingSpecs(LSI(CITYSCAP, 73), 27, 2, 3)},
-  {Building::SMITHY,             BuildingSpecs(LSI(CITYSCAP, 50), 25, 2, 2)},
-  {Building::SHRINE,             BuildingSpecs(LSI(CITYSCAP, 64), 32, 3, 2)}, /*24*/
-  {Building::TEMPLE,             BuildingSpecs(LSI(CITYSCAP, 65), 36, 3, 2)},
-  {Building::PARTHENON,          BuildingSpecs(LSI(CITYSCAP, 66), 40, 3, 3)},
-  {Building::CATHEDRAL,          BuildingSpecs(LSI(CITYSCAP, 67), 34, 3, 3)},
-  {Building::ANIMISTS_GUILD,     BuildingSpecs(LSI(CITYSCAP, 52), 24, 2, 2)},
-  {Building::ORACLE,             BuildingSpecs(LSI(CITYSCAP, 60), 25, 2, 2)},
-  {Building::ALCHEMISTS_GUILD,   BuildingSpecs(LSI(CITYSCAP, 61), 14, 1, 1)},
-  {Building::WIZARDS_GUILD,      BuildingSpecs(LSI(CITYSCAP, 63), 17, 2, 2)},
-  {Building::STABLE,             BuildingSpecs(LSI(CITYSCAP, 51), 40, 3, 3)},
-  {Building::FANTASTIC_STABLE,   BuildingSpecs(LSI(CITYSCAP, 53), 40, 3, 3)},
-  {Building::BARRACKS,           BuildingSpecs(LSI(CITYSCAP, 45), 30, 2, 3)},
-  {Building::ARMORY,             BuildingSpecs(LSI(CITYSCAP, 46), 25, 2, 2)},
-  {Building::FIGHTERS_GUILD,     BuildingSpecs(LSI(CITYSCAP, 47), 35, 3, 2)},
-  {Building::ARMORERS_GUILD,     BuildingSpecs(LSI(CITYSCAP, 48), 36, 3, 2)},
-  {Building::WAR_COLLEGE,        BuildingSpecs(LSI(CITYSCAP, 49), 36, 3, 2)},
-  {Building::SHIP_WRIGHTS_GUILD, BuildingSpecs(LSI(CITYSCAP, 54), 22, 2, 3)},
-  {Building::SHIP_YARD,          BuildingSpecs(LSI(CITYSCAP, 55), 32, 2, 3)},
-  {Building::MARITIME_GUILD,     BuildingSpecs(LSI(CITYSCAP, 56), 30, 2, 3)},
-  {Building::MARKETPLACE,        BuildingSpecs(LSI(CITYSCAP, 68), 25, 2, 2)},
-  {Building::BANK,               BuildingSpecs(LSI(CITYSCAP, 70), 26, 2, 2)},
-  {Building::MERCHANTS_GUILD,    BuildingSpecs(LSI(CITYSCAP, 69), 25, 2, 2)},
-  {Building::GRANARY,            BuildingSpecs(LSI(CITYSCAP, 71), 17, 2, 2)},
-  {Building::FARMERS_MARKET,     BuildingSpecs(LSI(CITYSCAP, 72), 24, 2, 2)},
-  {Building::LIBRARY,            BuildingSpecs(LSI(CITYSCAP, 58), 36, 3, 2)},
-  {Building::UNIVERSITY,         BuildingSpecs(LSI(CITYSCAP, 62), 36, 3, 2)},
-  {Building::SAGES_GUILD,        BuildingSpecs(LSI(CITYSCAP, 59), 25, 2, 2)},
-  {Building::MINERS_GUILD,       BuildingSpecs(LSI(CITYSCAP, 75), 23, 2, 2)},
-  {Building::MECHANICIANS_GUILD, BuildingSpecs(LSI(CITYSCAP, 74), 21, 2, 2)},
-  {Building::SAWMILL,            BuildingSpecs(LSI(CITYSCAP, 57), 25, 2, 3)},
-  {Building::FORESTERS_GUILD,    BuildingSpecs(LSI(CITYSCAP, 78), 25, 2, 2)},
-  
-  {Building::HOUSING,            BuildingSpecs(LSI(CITYSCAP, 42), 40, 2, 2)}, //TODO: changes accordingly to race building type
-  {Building::TRADE_GOODS,        BuildingSpecs(LSI(CITYSCAP, 41), 40, 2, 2)},
-  {Building::CITY_WALLS,         BuildingSpecs(LSI(CITYSCAP, 114), 40, 2, 2)},
-  
-  {Building::SUMMONING_CIRCLE,   BuildingSpecs(LSI(CITYSCAP, 6), 25, 3, 2)}
-};
-
-
-CityLayout::GfxComparator CityLayout::GFX_COMPARATOR;
-
 map<const City*, CityLayout*> CityLayout::layouts;
 
 /*
@@ -198,8 +151,8 @@ void CityLayout::draw(const City *city, LocalPlayer *player)
 
 void CityLayout::drawBuilding(const Building *building, s16 x, s16 y)
 {
-  const BuildingSpecs& spec = specs[building];
-  drawBuildingSprite(spec.info, x, y);
+  const BuildingGfxSpec& spec = GfxData::buildingGfx(building);
+  drawBuildingSprite(spec.gfx, x, y);
 }
 
 void CityLayout::drawBuildingSprite(SpriteInfo info, s16 x, s16 y)
@@ -219,10 +172,10 @@ void CityLayout::drawBuildingCentered(const City* city, const Building *building
     drawBuilding(building, x, y);
   else
   {
-    const BuildingSpecs& spec = specs[building];
-    int height = spec.info.sh();
+    const BuildingGfxSpec& spec = GfxData::buildingGfx(building);
+    int height = spec.gfx.sh();
 
-    Gfx::drawAnimated(spec.info, x + (40 - spec.pixelWidth)/2, y - height, 0);
+    Gfx::drawAnimated(spec.gfx, x + (40 - spec.width)/2, y - height, 0);
   }
 }
 
@@ -262,6 +215,17 @@ void CityLayout::deploy()
   
   vector<const Building*> vbuildings;
   vbuildings.reserve(buildings.size());
+
+  auto GFX_COMPARATOR = [] (const Building *b1, const Building* b2)
+  {
+    const auto& s1 = GfxData::buildingGfx(b1);
+    const auto& s2 = GfxData::buildingGfx(b2);
+
+    s32 t1 = s1.slotSize.w*s1.slotSize.h;
+    s32 t2 = s2.slotSize.w*s2.slotSize.h;
+
+    return t1 < t2;
+  };
   
   std::copy(buildings.begin(), buildings.end(), std::back_inserter(vbuildings));
   std::sort(vbuildings.begin(), vbuildings.end(), GFX_COMPARATOR);
@@ -295,7 +259,7 @@ void CityLayout::deploy()
 CityLayout::LayoutPosition CityLayout::createPosition(const LayoutZone& zone, s16 ox, s16 oy, const Building *building)
 {
   int sx = zone.x + ox;
-  int sy = zone.y + oy + (building ? (specs[building].depth) - 1 : 0);
+  int sy = zone.y + oy + (building ? GfxData::buildingGfx(building).slotSize.h - 1 : 0);
   
   int fx = zone.coords.x + sx*U*2 - sy*U;
   int fy = zone.coords.y + sy*U;
@@ -309,15 +273,21 @@ CityLayout::LayoutPosition CityLayout::createPosition(const LayoutZone& zone, s1
 const vector<CityLayout::LayoutZone> CityLayout::findSuitable(const Building* building)
 {
   vector<LayoutZone> zn;
-  copy_if(zones.begin(), zones.end(), back_inserter(zn), [&](const LayoutZone& z) { return z.w >= specs[building].width && z.h >= specs[building].depth; });
+  copy_if(zones.begin(), zones.end(), back_inserter(zn), [&](const LayoutZone& z) { return z.w >= GfxData::buildingGfx(building).slotSize.w && z.h >= GfxData::buildingGfx(building).slotSize.h; });
   return zn;
 }
 
 void CityLayout::placeAndSplit(const Building *b, zone_iterator it)
 {
-  s16 bw = b ? specs[b].width : 1;
-  s16 bh = b ? specs[b].depth : 1;
-  
+  int bw = 1, bh = 1;
+
+  if (b)
+  {
+    const auto& spec = GfxData::buildingGfx(b);
+    bw = GfxData::buildingGfx(b).slotSize.w;
+    bh = GfxData::buildingGfx(b).slotSize.h;
+  }
+
   LayoutZone z = *it;
   positions.push_back(createPosition(z,0,0,b));
   zones.erase(it);

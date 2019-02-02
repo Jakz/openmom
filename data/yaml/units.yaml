@@ -70,7 +70,7 @@ units:
     movement: 2
     sight: 1
     skills: [ thrown_1, first_strike ]
-    requires: [ barracks, stables ]
+    requires: [ barracks, stable ]
     visuals:
       i18n: unit_racial_cavalry
       icon: [lbx, units1, 42]
@@ -295,7 +295,7 @@ units:
     figures: 4
     movement: 2
     sight: 1
-    requires: [ barracks, stables ]
+    requires: [ barracks, stable ]
     visuals:
       i18n: unit_racial_centaurs
       icon: [lbx, units1, 54]
@@ -409,7 +409,7 @@ units:
     movement: 2
     sight: 1
     skills: [ first_strike ]
-    requires: [ barracks, stables ]
+    requires: [ barracks, stable ]
     visuals:
       i18n: unit_racial_cavalry
       icon: [lbx, units1, 60]
@@ -544,7 +544,7 @@ units:
     movement: 2
     sight: 1
     skills: [ swimming, fire_breath_5 ]
-    requires: [ armorers_guild, stables ]
+    requires: [ armorers_guild, stable ]
     visuals:
       i18n: unit_racial_dragon_turtle
       icon: [lbx, units2, 6]

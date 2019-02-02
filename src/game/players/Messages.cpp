@@ -17,7 +17,7 @@
 //using namespace messages;
 
 msgs::NewBuilding::NewBuilding(City* city, const Building* building) :
-Message(Type::NEW_BUILDING, fmt::sprintf(i18n::s(I18::MESSAGE_NEW_BUILDING), i18n::s(i18n::CITY_SIZE_NAMES[city->tileSize()]), city->getName(), i18n::s(building->name))),
+Message(Type::NEW_BUILDING, fmt::format(i18n::s(I18::MESSAGE_NEW_BUILDING), i18n::CITY_SIZE_NAMES[city->tileSize()], city->getName(), building->productionName())),
 city(city), building(building) { }
 
 

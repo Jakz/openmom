@@ -65,7 +65,7 @@ i18n::strings_table<I18>& i18n::getData()
     { I18::CITY_CITY, "City" },
     { I18::CITY_CAPITOL, "Capitol" },
 
-    { I18::MESSAGE_NEW_BUILDING, "The %s of %s has completed the construction of a %s." },
+    { I18::MESSAGE_NEW_BUILDING, "The {} of {} has completed the construction of a {}." },
     { I18::MESSAGE_OUTPOST_GROWN_TO_CITY, "The outpost of %s has grown into a hamlet." },
 
     { I18::SURVEYOR_CITY_FORBID_DISTANCE, "Cities cannot be built less than 3 squares form any other city." },
@@ -88,6 +88,7 @@ i18n::strings_table<I18>& i18n::getData()
     { I18::WIZARD_NAME_TLALOC, "Tlaloc" },
     { I18::WIZARD_NAME_KALI, "Kali" },
 
+    //TODO: move to english.yaml
     { I18::BUILDING_BUILDERS_HALL,"Builders Hall" },
     { I18::BUILDING_SMITHY,"Smithy" },
     { I18::BUILDING_CITY_WALLS,"City Walls" },
@@ -126,6 +127,7 @@ i18n::strings_table<I18>& i18n::getData()
     { I18::BUILDING_MAGE_FORTRESS,"Fortress" },
     { I18::BUILDING_SUMMONING_CIRCLE,"Summoning Circle" },
 
+    //TODO: move to english.yaml
     { I18::BUILDING_DESC_BUILDERS_HALL,"desc" },
     { I18::BUILDING_DESC_SMITHY,"desc" },
     { I18::BUILDING_DESC_CITY_WALLS,"desc" },

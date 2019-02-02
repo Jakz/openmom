@@ -346,7 +346,7 @@ public:
   static const RaceGfxSpec& raceGfxSpec(const Race* race) { return gfxDataFor<const Race*, RaceGfxSpec>(race); }
   static const UnitGfxSpec& unitGfx(const UnitSpec* spec) { return gfxDataFor<const UnitSpec*, UnitGfxSpec>(spec); }
   static const WizardGfxSpec& wizardGfx(const Wizard* spec) { return gfxDataFor<const Wizard*, WizardGfxSpec>(spec); }
-
+  static const BuildingGfxSpec& buildingGfx(const Building* spec) { return gfxDataFor<const Building*, BuildingGfxSpec>(spec); }
   
   template<typename K, typename V> static const V& gfxDataFor(K k) { return containerFor<K,V>().find(k)->second; }
   template<typename K, typename V> static void registerData(K k, V v) { containerFor<K,V>().insert(std::make_pair(k,v)); }

@@ -27,20 +27,22 @@ class Productable
 
 class Building : public Productable
 {
-  private:
-  
   public:
-    const I18 name;
-    const I18 desc;
-    const u16 cost;
+    enum class Type { NORMAL, SPECIAL, SPELL };
+
+  public:
+    const Type type;
+    const value_t cost;
     const Upkeep upkeep;
-  
-    Building(I18 name, I18 desc, u16 cost, u16 gupkeep, u16 mupkeep) : name(name), desc(desc), cost(cost), upkeep(Upkeep(gupkeep,mupkeep)) { }
+
+    Building(Type type, value_t cost, value_t gupkeep, value_t mupkeep) : type(type), cost(cost), upkeep(Upkeep(gupkeep,mupkeep)) { }
   
     const std::string& productionName() const override;
     u16 productionCost() const override { return cost; }
     const Upkeep& productionUpkeep() const override { return upkeep; }
-    Productable::Type productionType() const override { return Type::BUILDING; }
+    Productable::Type productionType() const override { return Productable::Type::BUILDING; }
+
+    bool isAllowedForBuilding() const { return type == Type::NORMAL; };
   
     struct ComparatorByName
     {
@@ -87,9 +89,7 @@ class Building : public Productable
   static const Building* HOUSING;
   static const Building* MAGE_FORTRESS;
   static const Building* SUMMONING_CIRCLE;
-  
-  static const size_t COUNT; // TODO: ugly
-  static const Building* buildings[];
+
 };
 
 #endif

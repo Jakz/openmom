@@ -1,5 +1,6 @@
 buildings:
   - identifier: builders_hall
+    type: normal
     cost: 60
     upkeep: [1, 0]
     requires: [ ]
@@ -12,6 +13,7 @@ buildings:
         width: 27
         slot_size: [2, 3]
   - identifier: smithy
+    type: normal
     cost: 40
     upkeep: [1, 0]
     requires: [ ]
@@ -24,6 +26,7 @@ buildings:
         width: 25
         slot_size: [2, 2]
   - identifier: shrine
+    type: normal
     cost: 100
     upkeep: [1, 0]
     requires: [ ]
@@ -41,9 +44,10 @@ buildings:
       i18desc: building_desc_shrine
       gfx:
         sprite: [lbx, cityscap, 64]
-        width: 32
+        width: 32 # 24?
         slot_size: [3, 2]
   - identifier: temple
+    type: normal
     cost: 200
     upkeep: [2, 0]
     requires: [ ]
@@ -56,6 +60,7 @@ buildings:
         width: 36
         slot_size: [3, 2]
   - identifier: parthenon
+    type: normal
     cost: 400
     upkeep: [3, 0]
     requires: [ ]
@@ -68,6 +73,7 @@ buildings:
         width: 40
         slot_size: [3, 3]
   - identifier: cathedral
+    type: normal
     cost: 800
     upkeep: [4, 0]
     requires: [ ]
@@ -80,6 +86,7 @@ buildings:
         width: 34
         slot_size: [3, 3]
   - identifier: animists_guild
+    type: normal
     cost: 300
     upkeep: [5, 0]
     requires: [ ]
@@ -92,6 +99,7 @@ buildings:
         width: 24
         slot_size: [2, 2]
   - identifier: oracle
+    type: normal
     cost: 500
     upkeep: [4, 0]
     requires: [ ]
@@ -104,6 +112,7 @@ buildings:
         width: 25
         slot_size: [2, 2]
   - identifier: alchemists_guild
+    type: normal
     cost: 250
     upkeep: [3, 0]
     requires: [ ]
@@ -116,6 +125,7 @@ buildings:
         width: 14
         slot_size: [1, 1]
   - identifier: wizards_guild
+    type: normal
     cost: 1000
     upkeep: [5, 3]
     requires: [ ]
@@ -128,6 +138,7 @@ buildings:
         width: 17
         slot_size: [2, 2]
   - identifier: stable
+    type: normal
     cost: 80
     upkeep: [2, 0]
     requires: [ ]
@@ -140,6 +151,7 @@ buildings:
         width: 40
         slot_size: [3, 3]
   - identifier: fantastic_stable
+    type: normal
     cost: 600
     upkeep: [6, 0]
     requires: [ ]
@@ -152,6 +164,7 @@ buildings:
         width: 40
         slot_size: [3, 3]
   - identifier: barracks
+    type: normal
     cost: 30
     upkeep: [0, 0]
     requires: [ ]
@@ -164,6 +177,7 @@ buildings:
         width: 30
         slot_size: [2, 3]
   - identifier: armory
+    type: normal
     cost: 80
     upkeep: [2, 0]
     requires: [ ]
@@ -176,6 +190,7 @@ buildings:
         width: 25
         slot_size: [2, 2]
   - identifier: fighters_guild
+    type: normal
     cost: 200
     upkeep: [3, 0]
     requires: [ ]
@@ -188,6 +203,7 @@ buildings:
         width: 35
         slot_size: [3, 2]
   - identifier: armorers_guild
+    type: normal
     cost: 350
     upkeep: [4, 0]
     requires: [ ]
@@ -200,6 +216,7 @@ buildings:
         width: 36
         slot_size: [3, 2]
   - identifier: war_college
+    type: normal
     cost: 500
     upkeep: [5, 0]
     requires: [ ]
@@ -212,6 +229,7 @@ buildings:
         width: 36
         slot_size: [3, 2]
   - identifier: ship_wrights_guild
+    type: normal
     cost: 100
     upkeep: [1, 0]
     requires: [ ]
@@ -224,6 +242,7 @@ buildings:
         width: 22
         slot_size: [2, 3]
   - identifier: ship_yard
+    type: normal
     cost: 200
     upkeep: [2, 0]
     requires: [ ]
@@ -236,6 +255,7 @@ buildings:
         width: 32
         slot_size: [2, 3]
   - identifier: maritime_guild
+    type: normal
     cost: 400
     upkeep: [4, 0]
     requires: [ ]
@@ -248,6 +268,7 @@ buildings:
         width: 30
         slot_size: [2, 3]
   - identifier: marketplace
+    type: normal
     cost: 100
     upkeep: [1, 0]
     requires: [ ]
@@ -260,6 +281,7 @@ buildings:
         width: 25
         slot_size: [2, 2]
   - identifier: bank
+    type: normal
     cost: 250
     upkeep: [3, 0]
     requires: [ ]
@@ -272,6 +294,7 @@ buildings:
         width: 26
         slot_size: [2, 2]
   - identifier: merchants_guild
+    type: normal
     cost: 600
     upkeep: [5, 0]
     requires: [ ]
@@ -284,6 +307,7 @@ buildings:
         width: 25
         slot_size: [2, 2]
   - identifier: granary
+    type: normal
     cost: 40
     upkeep: [1, 0]
     requires: [ ]
@@ -296,6 +320,7 @@ buildings:
         width: 17
         slot_size: [2, 2]
   - identifier: farmers_market
+    type: normal
     cost: 100
     upkeep: [2, 0]
     requires: [ ]
@@ -308,6 +333,7 @@ buildings:
         width: 24
         slot_size: [2, 2]
   - identifier: library
+    type: normal
     cost: 60
     upkeep: [1, 0]
     requires: [ ]
@@ -320,6 +346,7 @@ buildings:
         width: 36
         slot_size: [3, 2]
   - identifier: university
+    type: normal
     cost: 300
     upkeep: [3, 0]
     requires: [ ]
@@ -332,6 +359,7 @@ buildings:
         width: 36
         slot_size: [3, 2]
   - identifier: sages_guild
+    type: normal
     cost: 120
     upkeep: [2, 0]
     requires: [ ]
@@ -344,6 +372,7 @@ buildings:
         width: 25
         slot_size: [2, 2]
   - identifier: miners_guild
+    type: normal
     cost: 300
     upkeep: [3, 0]
     requires: [ ]
@@ -356,6 +385,7 @@ buildings:
         width: 23
         slot_size: [2, 2]
   - identifier: mechanicians_guild
+    type: normal
     cost: 600
     upkeep: [5, 0]
     requires: [ ]
@@ -368,6 +398,7 @@ buildings:
         width: 21
         slot_size: [2, 2]
   - identifier: sawmill
+    type: normal
     cost: 100
     upkeep: [2, 0]
     requires: [ ]
@@ -380,6 +411,7 @@ buildings:
         width: 25
         slot_size: [2, 3]
   - identifier: foresters_guild
+    type: normal
     cost: 200
     upkeep: [2, 0]
     requires: [ ]
@@ -391,7 +423,12 @@ buildings:
         sprite: [lbx, cityscap, 78]
         width: 25
         slot_size: [2, 2]
+
+
+
+
   - identifier: housing
+    type: normal
     cost: 0
     upkeep: [0, 0]
     requires: [ ]
@@ -404,6 +441,7 @@ buildings:
         width: 40
         slot_size: [2, 2]
   - identifier: trade_goods
+    type: normal
     cost: 0
     upkeep: [0, 0]
     requires: [ ]
@@ -416,6 +454,7 @@ buildings:
         width: 40
         slot_size: [2, 2]
   - identifier: city_walls
+    type: normal
     cost: 150
     upkeep: [2, 0]
     requires: [ ]
@@ -427,3 +466,29 @@ buildings:
         sprite: [lbx, cityscap, 114]
         width: 40
         slot_size: [2, 2]
+
+# special
+  - identifier: mage_fortress
+    type: special
+    requires: disallowed
+    effects: [ ]
+    visuals:
+      i18n: building_mage_fortress # TODO: manage localization
+      i18desc: empty # unused
+      gfx:
+        sprite: [lbx, cityscap, 40]
+        width: 0 # unused
+        slot_size: [2, 3]
+
+  - identifier: summoning_circle
+    type: spell
+    requires: disallowed
+    effects: [ ]
+    visuals:
+      i18n: building_summoning_circle
+      i18desc: empty # unused
+      gfx:
+        sprite: [lbx, cityscap, 6]
+        width: 25 # unused
+        slot_size: [3, 2]
+

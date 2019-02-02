@@ -26,6 +26,7 @@ DEFINE_GFX_MAP(const Skill*, SkillGfxSpec);
 DEFINE_GFX_MAP(const UnitSpec*, UnitGfxSpec);
 DEFINE_GFX_MAP(const Race*, RaceGfxSpec);
 DEFINE_GFX_MAP(const Wizard*, WizardGfxSpec);
+DEFINE_GFX_MAP(const Building*, BuildingGfxSpec);
 
 
 #include "i18n/Localization.h"

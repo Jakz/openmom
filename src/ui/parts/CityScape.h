@@ -25,35 +25,8 @@ enum class HouseType : u8;
 class CityLayout
 {
 private:
-  struct BuildingSpecs
-  {
-    SpriteInfo info;
-    s16 width, depth;
-    s16 pixelWidth;
-    
-    BuildingSpecs() : info(LSI_PLACEHOLD) { }
-    BuildingSpecs(SpriteInfo info, s16 pixelWidth, s16 width, s16 depth) : info(info), pixelWidth(pixelWidth), width(width), depth(depth) { }
-  };
-  
-  static std::unordered_map<const Building*, BuildingSpecs> specs;
-
   static constexpr int U = 5;
   static std::map<const City*, CityLayout*> layouts;
-
-  
-  static struct GfxComparator 
-  {
-    bool operator()(const Building *b1, const Building* b2) const
-    {
-      const BuildingSpecs& s1 = specs[b1];
-      const BuildingSpecs& s2 = specs[b2];
-      
-      s32 t1 = s1.width*s1.depth;
-      s32 t2 = s2.width*s2.depth;
-      
-      return t1 < t2;
-    }
-  } GFX_COMPARATOR;
   
   struct LayoutPosition
   {

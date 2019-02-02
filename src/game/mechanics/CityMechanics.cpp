@@ -209,7 +209,7 @@ bool CityMechanics::isBuildingAllowed(const City* city, const Building* building
   if (!isBuildingAllowedForRace(city, building) || !isBuildingAllowedForTerrain(city, building))
     return false;
   
-  if (city->hasBuilding(building) || building == Building::SUMMONING_CIRCLE || building == Building::MAGE_FORTRESS)
+  if (!building->isAllowedForBuilding() || city->hasBuilding(building))
     return false;
 
   auto it = buildingDependsOn.equal_range(building);
@@ -266,14 +266,16 @@ const list<const RaceUnitSpec*> CityMechanics::availableUnits(const City* city)
   return units;
 }
 
-const list<const Building*> CityMechanics::availableBuildings(const City* city)
+const std::vector<const Building*> CityMechanics::availableBuildings(const City* city)
 {
-  list<const Building*> buildings;
-  
-  for (size_t i = 0; i < Building::COUNT; ++i)
-    if (isBuildingAllowed(city, Building::buildings[i]))
-      buildings.push_back(Building::buildings[i]);
-  
+  std::vector<const Building*> buildings;
+
+  auto iterators = Data::iterators<const Building*>();
+
+  std::copy_if(iterators.first, iterators.second, std::back_inserter(buildings), [this, city](const Building* building) {
+    return isBuildingAllowed(city, building);
+  });
+
   return buildings;
 }
 
@@ -281,7 +283,7 @@ const list<const Building*> CityMechanics::availableBuildings(const City* city)
 // FIXME: something is wrong here, must be redesigned to use yaml in any case
 list<const Productable*> CityMechanics::itemsUnlockedByBuilding(const Building* building, const City *city)
 {
-  LOGD3("[city] computing unlocked entries by %s", i18n::c(building->name));
+  LOGD3("[city] computing unlocked entries by %s", building->productionName().c_str());
   
   list<const Productable*> items;
   

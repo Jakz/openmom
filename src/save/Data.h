@@ -74,6 +74,27 @@ public:
         order.push_back(std::cref(it.first->first));
       }
     }
+
+    class value_iterator
+    {
+    private:
+      map_iterator it;
+
+    public:
+      value_iterator(map_iterator it) : it(it) { }
+
+      inline value_iterator& operator++() { ++it; return *this; }
+
+      inline bool operator!=(const value_iterator& other) const { return it != other.it; }
+      inline bool operator==(const value_iterator& other) const { return it == other.it; }
+      inline T operator*() const { return it->second; }
+
+      using difference_type = typename map_iterator::difference_type;
+      using value_type = T;
+      using pointer = const T*;
+      using reference = const T&;
+      using iterator_category = typename map_iterator::iterator_category;
+    };
     
     insertion_ordered_map(const insertion_ordered_map& other) = delete;
     insertion_ordered_map operator=(const insertion_ordered_map& other) = delete;
@@ -167,6 +188,16 @@ public:
     const auto& map = containerFor<T>();
     return map;
   }
+
+  template <typename T> static size_t count() { return containerFor<T>().size(); }
+  //TODO: maybe return something which can be used in a foreach loop
+  template <typename T> static auto iterators()
+  { 
+    return std::make_pair(
+      map_t<T>::value_iterator(containerFor<T>().begin()),
+      map_t<T>::value_iterator(containerFor<T>().end())
+    );
+  }
     
   static std::vector<const RaceUnitSpec*> unitsForRace(const Race* race);
   
@@ -196,4 +227,8 @@ public:
   
   friend class yaml;
 };
+
+inline const Building*  operator"" _building(const char* key, size_t size) { return Data::building(key); }
+inline const Skill*  operator"" _skill(const char* key, size_t size) { return Data::skill(key); }
+inline const UnitSpec*  operator"" _unitspec(const char* key, size_t size) { return Data::unit(key); }
 

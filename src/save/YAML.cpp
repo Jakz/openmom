@@ -109,6 +109,8 @@ template<typename T> void yaml::Node::keyNotFoundError(const T& key) const
 using NNN = YAML::Node;
 
 bool operator==(const N& n, const std::string& string) { return n.Scalar() == string; }
+bool operator!=(const N& n, const std::string& string) { return n.Scalar() != string; }
+
 
 N yaml::parse(const std::string& fileName)
 {
@@ -179,6 +181,7 @@ template<> LBXID yaml::parse(const N& node)
 {
   static const std::unordered_map<std::string, LBXID> mapping = {
     { "backgrnd", LBXID::BACKGRND },
+    { "cityscap", LBXID::CITYSCAP },
     
     { "diplomac", LBXID::DIPLOMAC },
     
@@ -1094,23 +1097,37 @@ template<> std::pair<const Wizard*, WizardGfxSpec> yaml::parse(const N& node)
 
 #pragma mark Buildings
 
+#include "CityScape.h"
+
 template<> std::pair<const Building*, BuildingGfxSpec> yaml::parse(const N& node)
 {
- // Building(I18 name, I18 desc, u16 cost, u16 gupkeep, u16 mupkeep)
+  value_t cost = 0;
+  value_t goldUpkeep = 0;
+  value_t manaUpkeep = 0;
 
-  value_t cost = node["cost"];
-  value_t goldUpkeep = node["upkeep"][0];
-  value_t manaUpkeep = node["upkeep"][1];
+  auto type = Building::Type::NORMAL;
+
+  if (node["type"] == "special") type = Building::Type::SPECIAL;
+  else if (node["type"] == "spell") type = Building::Type::SPELL;
+  else if (node["type"] != "normal") assert(false);
+
+  if (type == Building::Type::NORMAL)
+  {
+    cost = node["cost"];
+    goldUpkeep = node["upkeep"][0];
+    manaUpkeep = node["upkeep"][1];
+  }
+
+  const Building* building = new Building(type, cost, goldUpkeep, manaUpkeep);
+  BuildingGfxSpec gfx;
 
   // dependency
-
 
 
 
   /* visuals */
   {
     const auto& visuals = node["visuals"];
-    BuildingGfxSpec gfx;
 
     gfx.name = i18n::keyForString(visuals["i18n"]);
     gfx.desc = i18n::keyForString(visuals["i18desc"]);
@@ -1120,7 +1137,7 @@ template<> std::pair<const Building*, BuildingGfxSpec> yaml::parse(const N& node
     gfx.slotSize = Size(visuals["gfx"]["slot_size"][0].as<int_type>(), visuals["gfx"]["slot_size"][1].as<int_type>());
   }
   
-  return std::make_pair(nullptr, BuildingGfxSpec());
+  return std::make_pair(building, gfx);
 }
 
 #pragma mark Retort
@@ -1279,7 +1296,7 @@ void yaml::parseWizards()
   for (const auto& ywizard : wizards)
   {
     const std::string& identifier = getIdentifier(ywizard);
-    const std::pair<const Wizard*, WizardGfxSpec> pair = parse<std::pair<const Wizard*, WizardGfxSpec>>(ywizard);
+    const auto pair = parse<std::pair<const Wizard*, WizardGfxSpec>>(ywizard);
     const Wizard* wizard = pair.first;
     const WizardGfxSpec& gfx = pair.second;
     Data::registerData(identifier, wizard);
@@ -1287,6 +1304,61 @@ void yaml::parseWizards()
   }
   
   
+}
+
+void yaml::parseBuildings()
+{
+  N file = parse("buildings.yaml");
+  auto buildings = file["buildings"];
+
+  for (const auto& ybuilding : buildings)
+  {
+    const std::string& identifier = getIdentifier(ybuilding);
+    const auto building = parse<std::pair<const Building*, BuildingGfxSpec>>(ybuilding);
+
+    Data::registerData(identifier, building.first);
+    GfxData::registerData(building.first, building.second);
+  }
+  
+  //TODO: hardcoded because they're useful in code for now, let's hope to be able to remove most of them through effects
+  Building::BUILDERS_HALL = Data::building("builders_hall");
+  Building::BARRACKS = Data::building("barracks");
+  Building::ARMORY = Data::building("armory");
+  Building::FIGHTERS_GUILD = Data::building("fighters_guild");
+  Building::ARMORERS_GUILD = Data::building("armorers_guild");
+  Building::WAR_COLLEGE = Data::building("war_college");
+  Building::SMITHY = Data::building("smithy");
+  Building::STABLE = Data::building("stable");
+  Building::ANIMISTS_GUILD = Data::building("animists_guild");
+  Building::FANTASTIC_STABLE = Data::building("fantastic_stable");
+  Building::SHIP_WRIGHTS_GUILD = Data::building("ship_wrights_guild");
+  Building::SHIP_YARD = Data::building("ship_yard");
+  Building::MARITIME_GUILD = Data::building("maritime_guild");
+  Building::SAWMILL = Data::building("sawmill");
+  Building::LIBRARY = Data::building("library");
+  Building::SAGES_GUILD = Data::building("sages_guild");
+  Building::ORACLE = Data::building("oracle");
+  Building::ALCHEMISTS_GUILD = Data::building("alchemists_guild");
+  Building::UNIVERSITY = Data::building("university");
+  Building::WIZARDS_GUILD = Data::building("wizards_guild");
+  Building::SHRINE = Data::building("shrine");
+  Building::TEMPLE = Data::building("temple");
+  Building::PARTHENON = Data::building("parthenon");
+  Building::CATHEDRAL = Data::building("cathedral");
+  Building::MARKETPLACE = Data::building("marketplace");
+  Building::BANK = Data::building("bank");
+  Building::MERCHANTS_GUILD = Data::building("merchants_guild");
+  Building::GRANARY = Data::building("granary");
+  Building::FARMERS_MARKET = Data::building("farmers_market");
+  Building::FORESTERS_GUILD = Data::building("foresters_guild");
+  Building::BUILDERS_HALL = Data::building("builders_hall");
+  Building::MECHANICIANS_GUILD = Data::building("mechanicians_guild");
+  Building::MINERS_GUILD = Data::building("miners_guild");
+  Building::CITY_WALLS = Data::building("city_walls");
+  Building::TRADE_GOODS = Data::building("trade_goods");
+  Building::HOUSING = Data::building("housing");
+  Building::MAGE_FORTRESS = Data::building("mage_fortress");
+  Building::SUMMONING_CIRCLE = Data::building("summoning_circle");
 }
 
 void yaml::parseRaces()
@@ -1297,7 +1369,7 @@ void yaml::parseRaces()
   for (const auto& yrace : races)
   {
     const std::string& identifier = getIdentifier(yrace);
-    const std::pair<const Race*, RaceGfxSpec> race = parse<std::pair<const Race*, RaceGfxSpec>>(yrace);
+    const auto race = parse<std::pair<const Race*, RaceGfxSpec>>(yrace);
     Data::registerData(identifier, race.first);
     GfxData::registerData(race.first, race.second);
   }
@@ -1339,6 +1411,7 @@ void yaml::parse()
   parseLocalization();
   parseHelp();
   parseRaces();
+  parseBuildings();
   parseSkills();
   parseLevels();
   parseUnits();
