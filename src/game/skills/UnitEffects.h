@@ -16,7 +16,6 @@
 
 enum class Property : u8;
 class Unit;
-class Effect;
 
 /*
 template<typename T>
@@ -40,7 +39,7 @@ public:
 };
 */
 
-class SimpleEffect : public Effect
+class SimpleEffect : public UnitEffect
 {
 public:
   const enum class Type : u16
@@ -77,13 +76,13 @@ public:
     USE_MANA_POOL_FOR_RANGED_ATTACKS,
   } effect;
   
-  SimpleEffect(Effect::Type type, Type effect) : Effect(type), effect(effect) { }
+  SimpleEffect(UnitEffectType type, Type effect) : UnitEffect(type), effect(effect) { }
 };
 
 class SimpleParametricEffect : public SimpleEffect
 {
 public:
-  SimpleParametricEffect(Effect::Type type, Type effect, value_t param) : SimpleEffect(type, effect), param(param) { }
+  SimpleParametricEffect(UnitEffectType type, Type effect, value_t param) : SimpleEffect(type, effect), param(param) { }
   const value_t param;
 };
 
@@ -94,7 +93,7 @@ struct UnitModifierLevelGetter
 
 using UnitModifierValue = Modifier<value_t, Unit, UnitModifierLevelGetter>;
 
-class SkillModifierEffect : public Effect
+class SkillModifierEffect : public UnitEffect
 {
 protected:
   UnitModifierValue _value;
@@ -102,13 +101,13 @@ protected:
   value_t transformValue(value_t value, const Unit* unit) const { return _value.transformValue(value, unit); }
 
 public:
-  SkillModifierEffect(Effect::Type type, UnitModifierValue value) : Effect(type), _value(value), _predicate([](auto unit) { return true; }) { }
-  SkillModifierEffect(Effect::Type type, UnitModifierValue value, predicate<const Unit*> predicate) : Effect(type), _value(value), _predicate(predicate) { }
+  SkillModifierEffect(UnitEffectType type, UnitModifierValue value) : UnitEffect(type), _value(value), _predicate([](auto unit) { return true; }) { }
+  SkillModifierEffect(UnitEffectType type, UnitModifierValue value, predicate<const Unit*> predicate) : UnitEffect(type), _value(value), _predicate(predicate) { }
 
   const UnitModifierValue& modifier() const { return _value; }
   bool isModifier() const override { return true; }
 
-  Order compare(const Unit* unit, const Effect* other) const override
+  Order compare(const Unit* unit, const UnitEffect* other) const override
   {
     //TODO: this doesn't check if kind of modifier is the same so it should be used only when this is sure (eg in an yaml defined SkillGroup) 
     if (other->isModifier())
@@ -118,9 +117,11 @@ public:
     else
       return Order::UNCOMPARABLE;
   }
+
+  using modifier_type = UnitModifierValue;
 };
 
-template<typename EnumType, Effect::Type SkillType>
+template<typename EnumType, UnitEffectType SkillType>
 class PropertyModifierEffect : public SkillModifierEffect
 {
 private:
@@ -140,14 +141,14 @@ public:
   }
 
   using property_type = EnumType;
-  using skill_type = std::integral_constant<Effect::Type, SkillType>;
+  using skill_type = std::integral_constant<UnitEffectType, SkillType>;
 };
 
-using WizardAttributeModifier = PropertyModifierEffect<WizardAttribute, Effect::Type::WIZARD_BONUS>;
-using UnitPropertyBonus = PropertyModifierEffect<Property, Effect::Type::UNIT_BONUS>;
-using ArmyPropertyBonus = PropertyModifierEffect<Property, Effect::Type::ARMY_BONUS>;
+using WizardAttributeModifier = PropertyModifierEffect<WizardAttribute, UnitEffectType::WIZARD_BONUS>;
+using UnitPropertyBonus = PropertyModifierEffect<Property, UnitEffectType::UNIT_BONUS>;
+using ArmyPropertyBonus = PropertyModifierEffect<Property, UnitEffectType::ARMY_BONUS>;
 
-class CombatBonus : public Effect
+class CombatBonus : public UnitEffect
 {
 public:
   enum class Phase : u8
@@ -163,7 +164,7 @@ public:
     DEFENDER,
   };
   
-  CombatBonus(Property property, value_t value, Phase trigger, Target target, bool boundToSkill) : Effect(Effect::Type::COMBAT_BONUS), property(property), value(value), trigger(trigger), target(target), boundToSkill(boundToSkill) { }
+  CombatBonus(Property property, value_t value, Phase trigger, Target target, bool boundToSkill) : UnitEffect(UnitEffectType::COMBAT_BONUS), property(property), value(value), trigger(trigger), target(target), boundToSkill(boundToSkill) { }
   
   const Phase trigger;
   const Target target;
@@ -189,8 +190,8 @@ enum class MovementType
   SAILING,
 };
 
-using MovementEffect = EnumEffect<MovementType, Effect::Type::MOVEMENT>;
-using MovementDisallowEffect = EnumEffect<MovementType, Effect::Type::DISALLOW_MOVEMENT>;
+using MovementEffect = EnumEffect<MovementType, UnitEffectType::MOVEMENT>;
+using MovementDisallowEffect = EnumEffect<MovementType, UnitEffectType::DISALLOW_MOVEMENT>;
 
 enum SpecialAttackType
 {
@@ -201,7 +202,7 @@ enum SpecialAttackType
   POISON_TOUCH
 };
 
-class SpecialAttackEffect : public EnumEffect<SpecialAttackType, Effect::Type::SPECIAL_ATTACK>
+class SpecialAttackEffect : public EnumEffect<SpecialAttackType, UnitEffectType::SPECIAL_ATTACK>
 {
 private:
   value_t _strength;
@@ -214,7 +215,7 @@ public:
 //TODO: technically is a combat instant spell
 //TODO: implement mechanics
 class Spell;
-class SpellGrantEffect : public Effect
+class SpellGrantEffect : public UnitEffect
 {
 private:
   const Spell* _spell;
@@ -222,7 +223,7 @@ private:
   const value_t _strength;
   
 public:
-  SpellGrantEffect(const Spell* spell, const value_t times, const value_t strength = 0) : Effect(Effect::Type::GRANT_SPELL), _spell(spell), _times(times), _strength(strength) { }
+  SpellGrantEffect(const Spell* spell, const value_t times, const value_t strength = 0) : UnitEffect(UnitEffectType::GRANT_SPELL), _spell(spell), _times(times), _strength(strength) { }
   
   const Spell* spell() const { return _spell; }
   value_t times() const { return _times; }

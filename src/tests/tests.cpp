@@ -58,7 +58,7 @@ namespace mock
     Skill() : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, {}) { }
     Skill(effect_list effects) : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, effects) { }
 
-    void addEffect(const Effect* effect) { effects.push_back(effect); }
+    void addEffect(const UnitEffect* effect) { effects.push_back(effect); }
   };
 
   class Army : public ::Army
@@ -114,10 +114,10 @@ namespace Catch
   };
 }
 
-class DummyEffect : public Effect {
+class DummyEffect : public UnitEffect {
 public:
   std::string v;
-  DummyEffect(std::string v) : Effect(Effect::Type::MOVEMENT), v(v) { }
+  DummyEffect(std::string v) : UnitEffect(UnitEffectType::MOVEMENT), v(v) { }
 };
 
 struct PropertyModifier
@@ -586,8 +586,8 @@ TEST_CASE("UnitModifierValue") {
 
     auto unit = mock::RaceUnit();
 
-    const auto effect1 = PropertyModifierEffect<Property, Effect::Type::UNIT_BONUS>(Property::MELEE, modifier);
-    const auto effect2 = PropertyModifierEffect<Property, Effect::Type::UNIT_BONUS>(Property::MELEE, zeroer);
+    const auto effect1 = PropertyModifierEffect<Property, UnitEffectType::UNIT_BONUS>(Property::MELEE, modifier);
+    const auto effect2 = PropertyModifierEffect<Property, UnitEffectType::UNIT_BONUS>(Property::MELEE, zeroer);
 
     /* order is swapped to ensure sorting occurs */
     effect_list effects = effect_list({ &effect2, &effect1 });

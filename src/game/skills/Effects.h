@@ -15,7 +15,6 @@
 
 enum class Property : u8;
 class Unit;
-class Effect;
 
 using EffectGroupParam = value_t;
 struct EffectGroup
@@ -25,12 +24,9 @@ public:
  
 private:
   Mode _mode;
-  const Effect* _specific;
   
 public:
-  EffectGroup(Mode mode) : _mode(mode), _specific(nullptr) { }
-  
-  const Effect* master() { return _specific; }
+  EffectGroup(Mode mode) : _mode(mode) { }
   Mode mode() const { return _mode; }
 };
 
@@ -61,6 +57,8 @@ public:
 template<typename ReturnType, typename T, typename F>
 struct Modifier
 {
+  using owner_type = T;
+  
   enum class Priority { BASE, FIRST, ANY, LAST } priority;
   enum class Type { INTEGER, FLOATING } type;
   enum class Mode { ADDITIVE, ADDITIVE_PARAMETRIC, MULTIPLICATIVE, FIXED  } mode;
@@ -117,65 +115,70 @@ struct Modifier
 
 class Effect
 {
-public:
-  
 protected:
   const EffectGroup* _group;
   EffectGroupParam _groupParam;
-  
-public:
-  const enum class Type : u8
-  {
-    MOVEMENT,
-    DISALLOW_MOVEMENT,
-    
-    ABILITY,
-    PARAMETRIC_ABILITY,
-    IMMUNITY,
-    MAGIC_WEAPONS,
-    
-    COMBAT_BONUS,
-    UNIT_BONUS,
-    ARMY_BONUS,
-    
-    GRANT_SPELL,
-    
-    SPECIAL_ATTACK,
-    
-    WIZARD_BONUS,
 
-    COMPOUND
-  } type;
-  
-  
-  Effect(Type type, const EffectGroup* group) : type(type), _group(group) { }
-  Effect(Type type) : Effect(type, nullptr) { }
-  
+public:
+  Effect() : _group(nullptr), _groupParam(0) { }
+
   virtual bool isModifier() const { return false; }
   virtual bool isCompound() const { return false; }
   virtual size_t size() const { return 1; }
 
   void setGroup(const EffectGroup* group, EffectGroupParam param = 0) { this->_group = group; this->_groupParam = param; }
   const EffectGroup* group() const { return _group; }
-  EffectGroupParam groupParam() const { return _groupParam;  }
+  EffectGroupParam groupParam() const { return _groupParam; }
 
-  virtual Order compare(const Unit* unit, const Effect* other) const { return Order::UNCOMPARABLE; }
-  
   template<typename T> const T* as() const { return static_cast<const T*>(this); }
 };
 
-template<typename T, Effect::Type TYPE>
-class EnumEffect : public Effect
+template<typename BaseType, typename OwnerType>
+class BaseEffect : public Effect
+{
+public:
+  static constexpr BaseType COMPOUND = static_cast<BaseType>(std::numeric_limits<std::underlying_type<BaseType>::type>::max()); //TODO: used as a marker, maybe find a better design?
+  const BaseType type;
+
+  BaseEffect(BaseType type) : type(type) { }
+  virtual Order compare(const OwnerType* owner, const BaseEffect<BaseType, OwnerType>* other) const { return Order::UNCOMPARABLE; }
+};
+
+enum class UnitEffectType
+{
+  MOVEMENT,
+  DISALLOW_MOVEMENT,
+
+  ABILITY,
+  PARAMETRIC_ABILITY,
+  IMMUNITY,
+  MAGIC_WEAPONS,
+
+  COMBAT_BONUS,
+  UNIT_BONUS,
+  ARMY_BONUS,
+
+  GRANT_SPELL,
+
+  SPECIAL_ATTACK,
+
+  WIZARD_BONUS,
+};
+
+using UnitEffect = BaseEffect<UnitEffectType, Unit>;
+
+template<typename T, UnitEffectType TYPE>
+class EnumEffect : public UnitEffect
 {
 private:
   const T _subType;
 public:
-  EnumEffect(T type) : Effect(TYPE), _subType(type) { }
+  EnumEffect(T type) : UnitEffect(TYPE), _subType(type) { }
   
   bool operator==(T type) const { return _subType == type; }
   T subType() const { return _subType; }
   
-  Order compare(const Unit* unit, const Effect* other) const override
+  Order compare(const Unit* unit, const UnitEffect* other) const override
   {
     if (other->type == type)
       return other->as<EnumEffect<T, TYPE>>()->subType() == subType() ? Order::EQUAL : Order::DIFFERENT;
@@ -184,14 +187,14 @@ public:
   }
 };
 
-using effect_init_list = const std::initializer_list<const Effect*>;
+using effect_init_list = const std::initializer_list<const UnitEffect*>;
 struct effect_list;
 struct effect_list_deep_iterator;
 
 struct effect_list
 {
 private:
-  using inner_type_t = std::vector<const Effect*>;
+  using inner_type_t = std::vector<const UnitEffect*>;
   inner_type_t data;
   
 public:
@@ -202,7 +205,7 @@ public:
   effect_list(const inner_type_t& effects) : data(effects) { }
   effect_list(const effect_init_list& list) : data(list) { }
   
-  void push_back(const Effect* effect) { data.push_back(effect); }
+  void push_back(const UnitEffect* effect) { data.push_back(effect); }
   void resize(size_t size) { data.resize(size); }
   
   iterator begin() const { return data.begin(); }
@@ -212,21 +215,21 @@ public:
   effect_list_deep_iterator dend() const;
   
   size_t size() const { return data.size(); }
-  size_t flatSize() const { return std::accumulate(data.begin(), data.end(), 0UL, [](size_t v, const Effect* effect) { return v + effect->size(); }); }
+  size_t flatSize() const { return std::accumulate(data.begin(), data.end(), 0UL, [](size_t v, const UnitEffect* effect) { return v + effect->size(); }); }
 
   template<typename T, typename EnumType> void filter(EnumType property) {
-    filter([property](const Effect* effect) {
+    filter([property](const UnitEffect* effect) {
       return effect->type == T::skill_type::value && effect->as<T>()->isAffecting(property);
     });
   }
 
-  void filter(std::function<bool(const Effect*)> predicate)
+  void filter(std::function<bool(const UnitEffect*)> predicate)
   {
-    auto nend = std::remove_if(data.begin(), data.end(), [&predicate](const Effect* effect) { return !predicate(effect); });
+    auto nend = std::remove_if(data.begin(), data.end(), [&predicate](const UnitEffect* effect) { return !predicate(effect); });
     data.erase(nend, data.end());
   }
   
-  const Effect* operator[](size_t index) const { return data[index]; }
+  const UnitEffect* operator[](size_t index) const { return data[index]; }
   
   effect_list operator+(const effect_list& other) const {
     effect_list result;
@@ -244,11 +247,11 @@ public:
   }
 
   template<typename ModifierEffect> 
-  value_t reduceAsModifier(typename ModifierEffect::property_type property, const Unit* unit, value_t base = 0) const
+  value_t reduceAsModifier(typename ModifierEffect::property_type property, const typename ModifierEffect::modifier_type::owner_type* owner, value_t base = 0) const
   {
     //TODO: begin or deep begin?
-    return std::accumulate(begin(), end(), base, [property, unit](value_t v, const Effect* effect) {
-      return effect->as<ModifierEffect>()->transformValue(property, v, unit);
+    return std::accumulate(begin(), end(), base, [property, owner](value_t v, const UnitEffect* effect) {
+      return effect->as<ModifierEffect>()->transformValue(property, v, owner);
     });
   }
 
@@ -262,15 +265,14 @@ public:
   effect_list actuals(const Unit* unit) const;
 };
 
-class CompoundEffect : public Effect
+class CompoundEffect : public UnitEffect
 {
 private:
   effect_list effects;
 
 public:
-  CompoundEffect() : Effect(Effect::Type::COMPOUND) { }
-  CompoundEffect(EffectGroup* group) : Effect(Effect::Type::COMPOUND, group) { }
-  CompoundEffect(const effect_list& effects) : Effect(Effect::Type::COMPOUND), effects(effects) { }
+  CompoundEffect() : UnitEffect(UnitEffect::COMPOUND) { }
+  CompoundEffect(const effect_list& effects) : UnitEffect(UnitEffect::COMPOUND), effects(effects) { }
 
   bool isCompound() const override { return true; }
   size_t size() const override { return effects.size(); }
@@ -288,7 +290,7 @@ private:
     const effect_list* list;
     effect_list::iterator it;
     bool end() const { return it == list->end(); }
-    const Effect* operator*() const { return *it; }
+    const UnitEffect* operator*() const { return *it; }
     stack_v(const effect_list* list, effect_list::iterator it) : list(list), it(it) { }
     bool operator==(const stack_v& other) const { return list == other.list && it == other.it; }
   };
@@ -300,7 +302,7 @@ private:
     if (stack.top().end())
       return;
     
-    const Effect* c = operator*();
+    const UnitEffect* c = operator*();
     
     while (c && c->isCompound())
     {
@@ -320,9 +322,9 @@ private:
   
 public:
   using difference_type = ptrdiff_t;
-  using value_type = Effect * ;
-  using reference = const Effect&;
-  using pointer = const Effect*;
+  using value_type = UnitEffect * ;
+  using reference = const UnitEffect&;
+  using pointer = const UnitEffect*;
   using iterator_category = std::forward_iterator_tag;
   
 public:
@@ -357,7 +359,7 @@ public:
   bool operator==(const effect_list_deep_iterator& other) const { return stack == other.stack; }
   bool operator!=(const effect_list_deep_iterator& other) const { return stack != other.stack; }
   
-  const Effect* operator*() const { return *stack.top(); }
+  const UnitEffect* operator*() const { return *stack.top(); }
 };
 
 inline effect_list_deep_iterator effect_list::dbegin() const { return effect_list_deep_iterator(this, begin()); }

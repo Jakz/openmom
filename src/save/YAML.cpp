@@ -643,10 +643,10 @@ template<> UnitModifierValue yaml::parse(const N& node)
 }
 
 
-template<> const Effect* yaml::parse(const N& node)
+template<> const UnitEffect* yaml::parse(const N& node)
 {
   const std::string& type = node["type"];
-  Effect* effect = nullptr;
+  UnitEffect* effect = nullptr;
   
   if (type == "unit_bonus")
   {
@@ -718,10 +718,10 @@ template<> const Effect* yaml::parse(const N& node)
     if (type == "parametric_ability")
     {
       s16 value = parse<s16>(node["value"]);
-      effect = new SimpleParametricEffect(Effect::Type::ABILITY, kind, value);
+      effect = new SimpleParametricEffect(UnitEffectType::ABILITY, kind, value);
     }
     else
-      effect = new SimpleEffect(Effect::Type::ABILITY, kind);
+      effect = new SimpleEffect(UnitEffectType::ABILITY, kind);
   }
   else if (type == "movement" || type == "disallow-movement")
   {
@@ -742,7 +742,7 @@ template<> const Effect* yaml::parse(const N& node)
     
     MovementType kind = mapping[node["kind"]];
     
-    effect = isDisallow ? static_cast<Effect*>(new MovementDisallowEffect(kind)) :  new MovementEffect(kind);
+    effect = isDisallow ? static_cast<UnitEffect*>(new MovementDisallowEffect(kind)) :  new MovementEffect(kind);
   }
   else if (type == "spell_grant")
   {
@@ -755,7 +755,7 @@ template<> const Effect* yaml::parse(const N& node)
   }
   else if (type == "compound")
   {
-    std::vector<const Effect*> effects;
+    std::vector<const UnitEffect*> effects;
     parse(node["elements"], effects);
 
     effect = new CompoundEffect(effects);
@@ -848,7 +848,7 @@ template<> const Skill* yaml::parse(const N& node)
   
   if (node.hasChild("effects"))
   {
-    std::vector<const Effect*> effects;
+    std::vector<const UnitEffect*> effects;
     parse(node["effects"], effects);
     skill = new skills::ConcreteSkill(type, effect_list(effects), visualInfo);
   }

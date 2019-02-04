@@ -14,11 +14,11 @@ const std::string skills::ConcreteSkill::name() const
   if (_visual.hideValue) return base;
   else
   {
-    const Effect *effect = _effects[0];
+    const UnitEffect *effect = _effects[0];
     
-    if (effect->type == Effect::Type::UNIT_BONUS)
+    if (effect->type == UnitEffectType::UNIT_BONUS)
       return string("+") + to_string(static_cast<const UnitPropertyBonus*>(effect)->modifier().truncatedValue()) + " " + base;
-    else if (_effects[0]->type == Effect::Type::SPECIAL_ATTACK)
+    else if (_effects[0]->type == UnitEffectType::SPECIAL_ATTACK)
       return base + " (" + to_string(effect->as<SpecialAttackEffect>()->strength()) + ")";
   }
   
@@ -57,11 +57,11 @@ const string ConcreteSkill::name() const
   if (hideValue) return Skill::name();
   else
   {
-    const Effect *effect = effects[0];
+    const UnitEffect *effect = effects[0];
     
-    if (effect->type == Effect::Type::UNIT_BONUS)
+    if (effect->type == UnitEffectType::UNIT_BONUS)
       return string("+") + to_string(static_cast<const UnitPropertyBonus*>(effect)->modifier().truncatedValue()) + " " + Skill::name();
-    else if (effects[0]->type == Effect::Type::SPECIAL_ATTACK)
+    else if (effects[0]->type == UnitEffectType::SPECIAL_ATTACK)
       return Skill::name() + " (" + to_string(effect->as<SpecialAttackEffect>()->strength()) + ")";
   }
   
@@ -70,12 +70,12 @@ const string ConcreteSkill::name() const
 
 bool ConcreteSkill::hasSimpleEffect(SimpleEffect::Type type)
 {
-  auto it = find_if(effects.begin(), effects.end(), [&](const Effect* effect) {
+  auto it = find_if(effects.begin(), effects.end(), [&](const UnitEffect* effect) {
     switch (effect->type)
     {
-      case Effect::Type::IMMUNITY:
-      case Effect::Type::MOVEMENT:
-      case Effect::Type::ABILITY:
+      case UnitEffectType::IMMUNITY:
+      case UnitEffectType::MOVEMENT:
+      case UnitEffectType::ABILITY:
         return static_cast<const SimpleEffect*>(effect)->effect == type;
       default: return false;
     }
@@ -86,21 +86,21 @@ bool ConcreteSkill::hasSimpleEffect(SimpleEffect::Type type)
 
 const SpecialAttackEffect* ConcreteSkill::hasEffect(SimpleEffect::Type ident)
 {
-  auto it = find_if(effects.begin(), effects.end(), [&](const Effect* effect) { return effect->type == Effect::Type::SPECIAL_ATTACK && static_cast<const SimpleEffect*>(effect)->effect == ident; });
+  auto it = find_if(effects.begin(), effects.end(), [&](const UnitEffect* effect) { return effect->type == UnitEffectType::SPECIAL_ATTACK && static_cast<const SimpleEffect*>(effect)->effect == ident; });
   return it != effects.end() ? static_cast<const SpecialAttackEffect*>(*it) : nullptr;
 }
 
 namespace skillimpl
 {
-  static const ConcreteSkill CREATE_ROAD = ConcreteSkill(SkillBase::CREATE_ROAD, {new SimpleEffect(Effect::Type::ABILITY, SimpleEffect::Type::CREATE_ROAD)});
-  static const ConcreteSkill WALL_CRUSHING = ConcreteSkill(SkillBase::WALL_CRUSHING, {new SimpleEffect(Effect::Type::ABILITY, SimpleEffect::Type::WALL_CRUSHING)}); // maybe should be combat?
+  static const ConcreteSkill CREATE_ROAD = ConcreteSkill(SkillBase::CREATE_ROAD, {new SimpleEffect(UnitEffectType::ABILITY, SimpleEffect::Type::CREATE_ROAD)});
+  static const ConcreteSkill WALL_CRUSHING = ConcreteSkill(SkillBase::WALL_CRUSHING, {new SimpleEffect(UnitEffectType::ABILITY, SimpleEffect::Type::WALL_CRUSHING)}); // maybe should be combat?
   
   static const ConcreteSkill LUCKY = ConcreteSkill(SkillBase::LUCKY, unit_bonus_build({Property::TO_HIT, Property::TO_DEFEND, Property::RESIST}, 1));
   
-  static const ConcreteSkill NEGATE_FIRST_STRIKE = ConcreteSkill(SkillBase::NEGATE_FIRST_STRIKE, {new SimpleEffect(Effect::Type::ABILITY, SimpleEffect::Type::NEGATE_FIRST_STRIKE)} );
-  static const ConcreteSkill ARMOR_PIERCING = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(Effect::Type::ABILITY, SimpleEffect::Type::ARMOR_PIERCING)} );
-  static const ConcreteSkill LONG_RANGE = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(Effect::Type::ABILITY, SimpleEffect::Type::LONG_RANGE)} );
-  static const ConcreteSkill ILLUSIONARY_ATTACK = ConcreteSkill(SkillBase::ILLUSIONARY_ATTACK, {new SimpleEffect(Effect::Type::ABILITY, SimpleEffect::Type::ILLUSIONARY_ATTACK)} );
+  static const ConcreteSkill NEGATE_FIRST_STRIKE = ConcreteSkill(SkillBase::NEGATE_FIRST_STRIKE, {new SimpleEffect(UnitEffectType::ABILITY, SimpleEffect::Type::NEGATE_FIRST_STRIKE)} );
+  static const ConcreteSkill ARMOR_PIERCING = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(UnitEffectType::ABILITY, SimpleEffect::Type::ARMOR_PIERCING)} );
+  static const ConcreteSkill LONG_RANGE = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(UnitEffectType::ABILITY, SimpleEffect::Type::LONG_RANGE)} );
+  static const ConcreteSkill ILLUSIONARY_ATTACK = ConcreteSkill(SkillBase::ILLUSIONARY_ATTACK, {new SimpleEffect(UnitEffectType::ABILITY, SimpleEffect::Type::ILLUSIONARY_ATTACK)} );
 
   /*static const ConcreteSkill POISON_ATTACK1 = ConcreteSkill(SkillBase::POISON_ATTACK, {new SpecialAttackEffect(SpecialAttackEffect::Type::POISON, 1)}, false);
   static const ConcreteSkill POISON_ATTACK4 = ConcreteSkill(SkillBase::POISON_ATTACK, {new SpecialAttackEffect(SpecialAttackEffect::Type::POISON, 4)}, false);
@@ -130,12 +130,12 @@ namespace skillimpl
   // TODO: a parametric throw weapon is needed for hero ability
   
   /**/
-  static const ConcreteSkill MITHRIL_WEAPONS = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new Effect(Effect::Type::MAGIC_WEAPONS), new UnitPropertyBonus(Property::MELEE,1)});
-  static const ConcreteSkill ADAMANTIUM_WEAPONS = ConcreteSkill(SkillBase::ADAMANTIUM_WEAPONS, {new Effect(Effect::Type::MAGIC_WEAPONS), new UnitPropertyBonus(Property::MELEE,2)});
+  static const ConcreteSkill MITHRIL_WEAPONS = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new UnitEffect(UnitEffectType::MAGIC_WEAPONS), new UnitPropertyBonus(Property::MELEE,1)});
+  static const ConcreteSkill ADAMANTIUM_WEAPONS = ConcreteSkill(SkillBase::ADAMANTIUM_WEAPONS, {new UnitEffect(UnitEffectType::MAGIC_WEAPONS), new UnitPropertyBonus(Property::MELEE,2)});
   
-  static const ConcreteSkill IMMUNITY_MAGIC = ConcreteSkill(SkillBase::IMMUNITY_MAGIC, {new SimpleEffect(Effect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MAGIC), new UnitPropertyBonus(Property::RESIST, 50)} );
-  static const ConcreteSkill IMMUNITY_MISSILE = ConcreteSkill(SkillBase::IMMUNITY_MISSILE, {new SimpleEffect(Effect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_MISSILE), new UnitPropertyBonus(Property::SHIELDS_RANGED, 50)} );
-  static const ConcreteSkill IMMUNITY_ILLUSIONS = ConcreteSkill(SkillBase::IMMUNITY_ILLUSIONS, {new SimpleEffect(Effect::Type::IMMUNITY, SimpleEffect::Type::IMMUNITY_ILLUSIONS)} );
+  static const ConcreteSkill IMMUNITY_MAGIC = ConcreteSkill(SkillBase::IMMUNITY_MAGIC, {new SimpleEffect(UnitEffectType::IMMUNITY, SimpleEffect::Type::IMMUNITY_MAGIC), new UnitPropertyBonus(Property::RESIST, 50)} );
+  static const ConcreteSkill IMMUNITY_MISSILE = ConcreteSkill(SkillBase::IMMUNITY_MISSILE, {new SimpleEffect(UnitEffectType::IMMUNITY, SimpleEffect::Type::IMMUNITY_MISSILE), new UnitPropertyBonus(Property::SHIELDS_RANGED, 50)} );
+  static const ConcreteSkill IMMUNITY_ILLUSIONS = ConcreteSkill(SkillBase::IMMUNITY_ILLUSIONS, {new SimpleEffect(UnitEffectType::IMMUNITY, SimpleEffect::Type::IMMUNITY_ILLUSIONS)} );
   
   static const ConcreteSkill HERO_AGILITY = ConcreteSkill(SkillBase::HERO_AGILITY, {new UnitPropertyBonus(Property::SHIELDS, 1.0f)});
   // TODO: ARCANE_POWER
@@ -152,7 +152,7 @@ namespace skillimpl
   // TODO: SAGE
   // TODO: SPELL_CASTER
   
-  static const ConcreteSkill SPELL_ELDRITCH_WEAPON = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new Effect(Effect::Type::MAGIC_WEAPONS), new CombatBonus(Property::TO_DEFEND, -1, CombatBonus::Phase::ATTACKING, CombatBonus::Target::DEFENDER, false)});
+  static const ConcreteSkill SPELL_ELDRITCH_WEAPON = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new UnitEffect(UnitEffectType::MAGIC_WEAPONS), new CombatBonus(Property::TO_DEFEND, -1, CombatBonus::Phase::ATTACKING, CombatBonus::Target::DEFENDER, false)});
   static const ConcreteSkill SPELL_FLAME_BLADE = ConcreteSkill(SkillBase::SPELL_FLAME_BLADE, unit_bonus_build({Property::MELEE, Property::RANGED, Property::THROWN_ATTACK}, 2));
 
   static const ConcreteSkill SPELL_RESIST_ELEMENTS = ConcreteSkill(SkillBase::SPELL_RESIST_ELEMENTS, unit_bonus_build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 3));
@@ -167,7 +167,7 @@ namespace skillimpl
   
   static const ConcreteSkill SPELL_ENDURANCE = ConcreteSkill(SkillBase::SPELL_ENDURANCE, {new UnitPropertyBonus(Property::MOVEMENT,1)} );
   static const ConcreteSkill SPELL_HOLY_ARMOR = ConcreteSkill(SkillBase::SPELL_HOLY_ARMOR, {new UnitPropertyBonus(Property::SHIELDS,2)}); // TODO: should be correct
-  static const ConcreteSkill SPELL_HOLY_WEAPON = ConcreteSkill(SkillBase::SPELL_HOLY_WEAPON, {new Effect(Effect::Type::MAGIC_WEAPONS), new UnitPropertyBonus(Property::TO_HIT,1)});
+  static const ConcreteSkill SPELL_HOLY_WEAPON = ConcreteSkill(SkillBase::SPELL_HOLY_WEAPON, {new UnitEffect(UnitEffectType::MAGIC_WEAPONS), new UnitPropertyBonus(Property::TO_HIT,1)});
 }
 
 const Skill* Skills::CREATE_ROAD = &skillimpl::CREATE_ROAD;
