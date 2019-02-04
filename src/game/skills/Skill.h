@@ -222,8 +222,8 @@ public:
   virtual bool isHidden() const { return false; }
   virtual help_ref help() const { return nullptr; }
   
-  virtual void setEffects(const effect_list& effects) = 0;
-  virtual const effect_list& getEffects() const = 0;
+  virtual void setEffects(const unit_effect_list& effects) = 0;
+  virtual const unit_effect_list& getEffects() const = 0;
     
   struct Comparator
   {
@@ -255,16 +255,16 @@ namespace skills
   {
   private:
     Type _type;
-    effect_list _effects;
+    unit_effect_list _effects;
     VisualInfo _visual;
     
   public:
-    ConcreteSkill(Type type, const effect_list effects, VisualInfo visual) : Skill(SkillBase::FIRST_STRIKE), _type(type), _effects(effects), _visual(visual) { }
+    ConcreteSkill(Type type, const unit_effect_list& effects, VisualInfo visual) : Skill(SkillBase::FIRST_STRIKE), _type(type), _effects(effects), _visual(visual) { }
     
     Type type() const { return _type; }
     
-    void setEffects(const effect_list& effects) override { _effects = effects; }
-    const effect_list& getEffects() const override { return _effects; }
+    void setEffects(const unit_effect_list& effects) override { _effects = effects; }
+    const unit_effect_list& getEffects() const override { return _effects; }
     
     const std::string name() const override;
     SpriteInfo icon() const override { return _visual.icon; }
@@ -295,16 +295,16 @@ namespace skills
 class ConcreteSkill : public Skill
 {
 protected:
-  effect_list effects;
+  unit_effect_list effects;
   
 public:
   bool hideValue;
   
   ConcreteSkill(SkillBase base, effect_init_list effects, bool hideValue = true) : Skill(base), effects(effects), hideValue(hideValue) { }
-  ConcreteSkill(SkillBase base, effect_list effects, bool hideValue = true) : Skill(base), effects(effects), hideValue(hideValue) { }
+  ConcreteSkill(SkillBase base, unit_effect_list effects, bool hideValue = true) : Skill(base), effects(effects), hideValue(hideValue) { }
 
-  void setEffects(const effect_list& efts) override { effects = efts; }
-  const effect_list& getEffects() const override { return effects; }
+  void setEffects(const unit_effect_list& efts) override { effects = efts; }
+  const unit_effect_list& getEffects() const override { return effects; }
   
   bool hasSimpleEffect(SimpleEffect::Type type);
   const SpecialAttackEffect* hasEffect(SimpleEffect::Type ident);

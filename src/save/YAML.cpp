@@ -758,7 +758,8 @@ template<> const UnitEffect* yaml::parse(const N& node)
     std::vector<const UnitEffect*> effects;
     parse(node["elements"], effects);
 
-    effect = new CompoundEffect(effects);
+    //TODO: change with generic code for effects of different sources
+    effect = new CompoundEffect<UnitEffect>(effects);
   }
   else
   {

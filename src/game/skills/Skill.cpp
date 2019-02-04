@@ -95,7 +95,7 @@ namespace skillimpl
   static const ConcreteSkill CREATE_ROAD = ConcreteSkill(SkillBase::CREATE_ROAD, {new SimpleEffect(UnitEffectType::ABILITY, SimpleEffect::Type::CREATE_ROAD)});
   static const ConcreteSkill WALL_CRUSHING = ConcreteSkill(SkillBase::WALL_CRUSHING, {new SimpleEffect(UnitEffectType::ABILITY, SimpleEffect::Type::WALL_CRUSHING)}); // maybe should be combat?
   
-  static const ConcreteSkill LUCKY = ConcreteSkill(SkillBase::LUCKY, unit_bonus_build({Property::TO_HIT, Property::TO_DEFEND, Property::RESIST}, 1));
+  //static const ConcreteSkill LUCKY = ConcreteSkill(SkillBase::LUCKY, unit_bonus_build({ Property::TO_HIT, Property::TO_DEFEND, Property::RESIST }, 1));
   
   static const ConcreteSkill NEGATE_FIRST_STRIKE = ConcreteSkill(SkillBase::NEGATE_FIRST_STRIKE, {new SimpleEffect(UnitEffectType::ABILITY, SimpleEffect::Type::NEGATE_FIRST_STRIKE)} );
   static const ConcreteSkill ARMOR_PIERCING = ConcreteSkill(SkillBase::FIRST_STRIKE, {new SimpleEffect(UnitEffectType::ABILITY, SimpleEffect::Type::ARMOR_PIERCING)} );
@@ -153,14 +153,11 @@ namespace skillimpl
   // TODO: SPELL_CASTER
   
   static const ConcreteSkill SPELL_ELDRITCH_WEAPON = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new UnitEffect(UnitEffectType::MAGIC_WEAPONS), new CombatBonus(Property::TO_DEFEND, -1, CombatBonus::Phase::ATTACKING, CombatBonus::Target::DEFENDER, false)});
-  static const ConcreteSkill SPELL_FLAME_BLADE = ConcreteSkill(SkillBase::SPELL_FLAME_BLADE, unit_bonus_build({Property::MELEE, Property::RANGED, Property::THROWN_ATTACK}, 2));
 
-  static const ConcreteSkill SPELL_RESIST_ELEMENTS = ConcreteSkill(SkillBase::SPELL_RESIST_ELEMENTS, unit_bonus_build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 3));
   static const ConcreteSkill SPELL_GIANT_STRENGTH = ConcreteSkill(SkillBase::SPELL_GIANT_STRENGTH, {new UnitPropertyBonus(Property::MELEE,1)} );
   static const ConcreteSkill SPELL_STONE_SKIN = ConcreteSkill(SkillBase::SPELL_STONE_SKIN, {new UnitPropertyBonus(Property::SHIELDS,1)} );
   static const ConcreteSkill SPELL_SWIMMING = ConcreteSkill(SkillBase::SPELL_SWIMMING, {new MovementEffect(MovementType::SWIMMING)});
   static const ConcreteSkill SPELL_PATH_FINDER = ConcreteSkill(SkillBase::SPELL_PATH_FINDER, {new MovementEffect(MovementType::PATH_FINDER)});
-  static const ConcreteSkill SPELL_ELEMENTAL_ARMOR = ConcreteSkill(SkillBase::SPELL_ELEMENTAL_ARMOR, unit_bonus_build({Property::RESIST_CHAOS, Property::RESIST_NATURE, Property::SHIELDS_CHAOS, Property::SHIELDS_NATURE}, 10));
   static const ConcreteSkill SPELL_IRON_SKIN = ConcreteSkill(SkillBase::SPELL_IRON_SKIN, {new UnitPropertyBonus(Property::SHIELDS,10)} );
 
   static const ConcreteSkill SPELL_RESIST_MAGIC = ConcreteSkill(SkillBase::SPELL_RESIST_MAGIC, {new UnitPropertyBonus(Property::RESIST,3)} );
@@ -173,7 +170,7 @@ namespace skillimpl
 const Skill* Skills::CREATE_ROAD = &skillimpl::CREATE_ROAD;
 const Skill* Skills::WALL_CRUSHING = &skillimpl::WALL_CRUSHING; // maybe should be combat?
 
-const Skill* Skills::LUCKY = &skillimpl::LUCKY;
+const Skill* Skills::LUCKY = nullptr;
 
 const Skill* Skills::NEGATE_FIRST_STRIKE = &skillimpl::NEGATE_FIRST_STRIKE;
 const Skill* Skills::ARMOR_PIERCING = &skillimpl::ARMOR_PIERCING;
@@ -211,14 +208,14 @@ const Skill* Skills::IMMUNITY_ILLUSIONS = &skillimpl::IMMUNITY_ILLUSIONS;
 
 
 const Skill* Skills::SPELL_ELDRITCH_WEAPON = &skillimpl::SPELL_ELDRITCH_WEAPON;
-const Skill* Skills::SPELL_FLAME_BLADE = &skillimpl::SPELL_FLAME_BLADE;
+const Skill* Skills::SPELL_FLAME_BLADE = nullptr;
 
-const Skill* Skills::SPELL_RESIST_ELEMENTS = &skillimpl::SPELL_RESIST_ELEMENTS;
+const Skill* Skills::SPELL_RESIST_ELEMENTS = nullptr;
 const Skill* Skills::SPELL_GIANT_STRENGTH = &skillimpl::SPELL_GIANT_STRENGTH;
 const Skill* Skills::SPELL_STONE_SKIN = &skillimpl::SPELL_STONE_SKIN;
 const Skill* Skills::SPELL_SWIMMING = &skillimpl::SPELL_SWIMMING;
 const Skill* Skills::SPELL_PATH_FINDER = &skillimpl::SPELL_PATH_FINDER;
-const Skill* Skills::SPELL_ELEMENTAL_ARMOR = &skillimpl::SPELL_ELEMENTAL_ARMOR;
+const Skill* Skills::SPELL_ELEMENTAL_ARMOR = nullptr;
 const Skill* Skills::SPELL_IRON_SKIN = &skillimpl::SPELL_IRON_SKIN;
 
 const Skill* Skills::SPELL_RESIST_MAGIC = &skillimpl::SPELL_RESIST_MAGIC;

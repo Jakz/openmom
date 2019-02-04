@@ -190,8 +190,8 @@ enum class MovementType
   SAILING,
 };
 
-using MovementEffect = EnumEffect<MovementType, UnitEffectType::MOVEMENT>;
-using MovementDisallowEffect = EnumEffect<MovementType, UnitEffectType::DISALLOW_MOVEMENT>;
+using MovementEffect = EnumEffect<UnitEffect, UnitEffectType::MOVEMENT, MovementType>;
+using MovementDisallowEffect = EnumEffect<UnitEffect, UnitEffectType::DISALLOW_MOVEMENT, MovementType>;
 
 enum SpecialAttackType
 {
@@ -202,7 +202,7 @@ enum SpecialAttackType
   POISON_TOUCH
 };
 
-class SpecialAttackEffect : public EnumEffect<SpecialAttackType, UnitEffectType::SPECIAL_ATTACK>
+class SpecialAttackEffect : public EnumEffect<UnitEffect, UnitEffectType::SPECIAL_ATTACK, SpecialAttackType>
 {
 private:
   value_t _strength;
@@ -229,30 +229,3 @@ public:
   value_t times() const { return _times; }
   value_t strength() const { return _strength; }
 };
-
-struct modifier_list : public std::vector<const UnitModifierValue*>
-{
-public:
-  modifier_list(const effect_list& effects)
-  {
-
-  }
-
-  value_t get(const Unit* unit, value_t base = 0)
-  {
-    return std::accumulate(begin(), end(), base, [unit](value_t a, const UnitModifierValue* modifier) {
-      return modifier->transformValue(a, unit);
-    });
-  }
-};
-
-
-
-//TODO: to remove after hardcoded effects has been removed
-static const effect_list unit_bonus_build(std::initializer_list<Property> properties, value_t value)
-{
-  effect_list effects;
-  effects.resize(properties.size());
-  std::transform(properties.begin(), properties.end(), std::back_inserter(effects), [&](const Property& property) { return new UnitPropertyBonus(property, value); });
-  return effects;
-}

@@ -142,6 +142,9 @@ public:
 
   BaseEffect(BaseType type) : type(type) { }
   virtual Order compare(const OwnerType* owner, const BaseEffect<BaseType, OwnerType>* other) const { return Order::UNCOMPARABLE; }
+
+  using base_type = BaseType;
+  using owner_type = OwnerType;
 };
 
 enum class UnitEffectType
@@ -167,77 +170,74 @@ enum class UnitEffectType
 
 using UnitEffect = BaseEffect<UnitEffectType, Unit>;
 
-template<typename T, UnitEffectType TYPE>
-class EnumEffect : public UnitEffect
+template<typename Effect, typename Effect::base_type Type, typename EnumType>
+class EnumEffect : public Effect
 {
 private:
-  const T _subType;
+  const EnumType _subType;
 public:
-  EnumEffect(T type) : UnitEffect(TYPE), _subType(type) { }
+  EnumEffect(EnumType type) : Effect(Type), _subType(type) { }
   
-  bool operator==(T type) const { return _subType == type; }
-  T subType() const { return _subType; }
+  bool operator==(EnumType type) const { return _subType == type; }
+  EnumType subType() const { return _subType; }
   
-  Order compare(const Unit* unit, const UnitEffect* other) const override
+  Order compare(const typename Effect::owner_type* owner, const Effect* other) const override
   {
-    if (other->type == type)
-      return other->as<EnumEffect<T, TYPE>>()->subType() == subType() ? Order::EQUAL : Order::DIFFERENT;
+    if (other->type == this->type)
+      return other->as<EnumEffect<Effect, Type, EnumType>>()->subType() == subType() ? Order::EQUAL : Order::DIFFERENT;
     else
       return Order::UNCOMPARABLE;
   }
 };
 
 using effect_init_list = const std::initializer_list<const UnitEffect*>;
-struct effect_list;
-struct effect_list_deep_iterator;
+template<typename EffectBase> struct effect_list_deep_iterator;
 
+template<typename EffectBase = UnitEffect>
 struct effect_list
 {
 private:
-  using inner_type_t = std::vector<const UnitEffect*>;
+  using inner_type_t = std::vector<const EffectBase*>;
   inner_type_t data;
   
 public:
-  using iterator = inner_type_t::const_iterator;
-  using value_type = inner_type_t::value_type;
+  using iterator = typename inner_type_t::const_iterator;
+  using value_type = typename inner_type_t::value_type;
   
   effect_list() { }
   effect_list(const inner_type_t& effects) : data(effects) { }
   effect_list(const effect_init_list& list) : data(list) { }
   
-  void push_back(const UnitEffect* effect) { data.push_back(effect); }
+  void push_back(const EffectBase* effect) { data.push_back(effect); }
   void resize(size_t size) { data.resize(size); }
   
   iterator begin() const { return data.begin(); }
   iterator end() const { return data.end(); }
   
-  effect_list_deep_iterator dbegin() const;
-  effect_list_deep_iterator dend() const;
+  effect_list_deep_iterator<EffectBase> dbegin() const;
+  effect_list_deep_iterator<EffectBase> dend() const;
   
   size_t size() const { return data.size(); }
-  size_t flatSize() const { return std::accumulate(data.begin(), data.end(), 0UL, [](size_t v, const UnitEffect* effect) { return v + effect->size(); }); }
+  size_t flatSize() const { return std::accumulate(data.begin(), data.end(), 0UL, [](size_t v, const Effect* effect) { return v + effect->size(); }); }
 
   template<typename T, typename EnumType> void filter(EnumType property) {
-    filter([property](const UnitEffect* effect) {
+    filter([property](const EffectBase* effect) {
       return effect->type == T::skill_type::value && effect->as<T>()->isAffecting(property);
     });
   }
 
-  void filter(std::function<bool(const UnitEffect*)> predicate)
+  void filter(std::function<bool(const EffectBase*)> predicate)
   {
-    auto nend = std::remove_if(data.begin(), data.end(), [&predicate](const UnitEffect* effect) { return !predicate(effect); });
+    auto nend = std::remove_if(data.begin(), data.end(), [&predicate](const EffectBase* effect) { return !predicate(effect); });
     data.erase(nend, data.end());
   }
   
-  const UnitEffect* operator[](size_t index) const { return data[index]; }
+  const EffectBase* operator[](size_t index) const { return data[index]; }
   
   effect_list operator+(const effect_list& other) const {
-    effect_list result;
-    auto& rdata = result.data;
-    rdata.reserve(data.size() + other.data.size());
-    rdata.insert(rdata.end(), data.begin(), data.end());
-    rdata.insert(rdata.end(), other.data.begin(), other.data.end());
-    return result;
+    effect_list result = effect_list(*this);
+    result += other;
+    return data;
   }
   
   effect_list& operator+=(const effect_list& other) {
@@ -247,10 +247,10 @@ public:
   }
 
   template<typename ModifierEffect> 
-  value_t reduceAsModifier(typename ModifierEffect::property_type property, const typename ModifierEffect::modifier_type::owner_type* owner, value_t base = 0) const
+  value_t reduceAsModifier(typename ModifierEffect::property_type property, const typename ModifierEffect::owner_type* owner, value_t base = 0) const
   {
     //TODO: begin or deep begin?
-    return std::accumulate(begin(), end(), base, [property, owner](value_t v, const UnitEffect* effect) {
+    return std::accumulate(begin(), end(), base, [property, owner](value_t v, const EffectBase* effect) {
       return effect->as<ModifierEffect>()->transformValue(property, v, owner);
     });
   }
@@ -258,40 +258,42 @@ public:
   void sort() { std::sort(data.begin(), data.end()); }
 
   /* flatten nested effects */
-  effect_list flatten();
+  effect_list<EffectBase> flatten();
   
   /* this method builds the actual effects taking into consideration
    that some effects override or replace others */
-  effect_list actuals(const Unit* unit) const;
+  effect_list<EffectBase> actuals(const typename EffectBase::owner_type* owner) const;
 };
 
-class CompoundEffect : public UnitEffect
+template<typename EffectBase>
+class CompoundEffect : public EffectBase
 {
 private:
-  effect_list effects;
+  effect_list<EffectBase> effects;
 
 public:
-  CompoundEffect() : UnitEffect(UnitEffect::COMPOUND) { }
-  CompoundEffect(const effect_list& effects) : UnitEffect(UnitEffect::COMPOUND), effects(effects) { }
+  CompoundEffect() : EffectBase(EffectBase::COMPOUND) { }
+  CompoundEffect(const effect_list<EffectBase>& effects) : EffectBase(EffectBase::COMPOUND), effects(effects) { }
 
   bool isCompound() const override { return true; }
   size_t size() const override { return effects.size(); }
 
-  effect_list::iterator begin() const { return effects.begin(); }
-  effect_list::iterator end() const { return effects.end(); }
+  typename effect_list<EffectBase>::iterator begin() const { return effects.begin(); }
+  typename effect_list<EffectBase>::iterator end() const { return effects.end(); }
 
-  friend struct effect_list_deep_iterator;
+  friend struct effect_list_deep_iterator<EffectBase>;
 };
 
+template<typename EffectBase>
 struct effect_list_deep_iterator
 {
 private:
   struct stack_v {
-    const effect_list* list;
-    effect_list::iterator it;
+    const effect_list<EffectBase>* list;
+    typename effect_list<EffectBase>::iterator it;
     bool end() const { return it == list->end(); }
     const UnitEffect* operator*() const { return *it; }
-    stack_v(const effect_list* list, effect_list::iterator it) : list(list), it(it) { }
+    stack_v(const effect_list<EffectBase>* list, typename effect_list<EffectBase>::iterator it) : list(list), it(it) { }
     bool operator==(const stack_v& other) const { return list == other.list && it == other.it; }
   };
   
@@ -302,11 +304,11 @@ private:
     if (stack.top().end())
       return;
     
-    const UnitEffect* c = operator*();
+    const EffectBase* c = operator*();
     
     while (c && c->isCompound())
     {
-      const CompoundEffect* ce = c->as<CompoundEffect>();
+      const auto* ce = c->as<CompoundEffect<EffectBase>>();
       stack.emplace(&ce->effects, ce->effects.begin());
       adjust();
       
@@ -328,7 +330,7 @@ public:
   using iterator_category = std::forward_iterator_tag;
   
 public:
-  effect_list_deep_iterator(const effect_list* list, effect_list::iterator it) { stack.emplace(list, it); adjust(); }
+  effect_list_deep_iterator(const effect_list<EffectBase>* list, typename effect_list<EffectBase>::iterator it) { stack.emplace(list, it); adjust(); }
   
   effect_list_deep_iterator& operator++()
   {
@@ -362,5 +364,7 @@ public:
   const UnitEffect* operator*() const { return *stack.top(); }
 };
 
-inline effect_list_deep_iterator effect_list::dbegin() const { return effect_list_deep_iterator(this, begin()); }
-inline effect_list_deep_iterator effect_list::dend() const { return effect_list_deep_iterator(this, end()); }
+template<typename EffectBase> inline effect_list_deep_iterator<EffectBase> effect_list<EffectBase>::dbegin() const { return effect_list_deep_iterator<EffectBase>(this, begin()); }
+template<typename EffectBase> inline effect_list_deep_iterator<EffectBase> effect_list<EffectBase>::dend() const { return effect_list_deep_iterator<EffectBase>(this, end()); }
+
+using unit_effect_list = effect_list<UnitEffect>;

@@ -21,22 +21,19 @@ ReturnType Modifier<ReturnType, T, F>::transformValue(ReturnType previous, const
   }
 }
 
-template class PropertyModifierEffect<WizardAttribute, UnitEffectType::WIZARD_BONUS>;
-template class PropertyModifierEffect<Property, UnitEffectType::UNIT_BONUS>;
-template class PropertyModifierEffect<Property, UnitEffectType::ARMY_BONUS>;
-
-effect_list effect_list::actuals(const Unit* unit) const
+template<typename EffectBase>
+effect_list<EffectBase> effect_list<EffectBase>::actuals(const typename EffectBase::owner_type* unit) const
 {
-  std::unordered_multimap<const EffectGroup*, const UnitEffect*> byGroup;
+  std::unordered_multimap<const EffectGroup*, const EffectBase*> byGroup;
 
-  using pair_t = const decltype(byGroup)::value_type;
+  using pair_t = const typename decltype(byGroup)::value_type;
   const auto sorterByMagnitude = [unit](const pair_t& e1, const pair_t& e2) { return e1.second->compare(unit, e2.second) == Order::LESSER; };
   static const auto sorterByPriority = [](const pair_t& e1, const pair_t& e2) { return e1.second->groupParam() < e2.second->groupParam(); };
 
   /* group effects by group */
-  std::transform(data.begin(), data.end(), std::inserter(byGroup, byGroup.begin()), [] (const UnitEffect* effect) { return std::make_pair(effect->group(), effect); });
+  std::transform(data.begin(), data.end(), std::inserter(byGroup, byGroup.begin()), [] (const EffectBase* effect) { return std::make_pair(effect->group(), effect); });
   
-  effect_list actuals;
+  effect_list<EffectBase> actuals;
   
   for (auto it = byGroup.begin(); it != byGroup.end(); /**/)
   {
@@ -95,10 +92,19 @@ effect_list effect_list::actuals(const Unit* unit) const
 }
 
 /* flatten nested effects */
-effect_list effect_list::flatten()
+template<typename EffectBase>
+effect_list<EffectBase> effect_list<EffectBase>::flatten()
 {
-  std::vector<const UnitEffect*> data;
+  std::vector<const EffectBase*> data;
   std::copy(dbegin(), dend(), std::back_inserter(data));
 
   return data;
 }
+
+
+template class PropertyModifierEffect<WizardAttribute, UnitEffectType::WIZARD_BONUS>;
+template class PropertyModifierEffect<Property, UnitEffectType::UNIT_BONUS>;
+template class PropertyModifierEffect<Property, UnitEffectType::ARMY_BONUS>;
+
+template struct effect_list<UnitEffect>;
+template struct effect_list_deep_iterator<UnitEffect>;

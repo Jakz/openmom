@@ -75,7 +75,7 @@ value_t SkillSet::spellsUpkeep() const
 
 value_t SkillSet::bonusForProperty(Property property) const
 {
-  effect_list effects;
+  unit_effect_list effects;
 
   //TODO: rewrite interely, this only works with additive property bonuses, doesnt't sort them by priority and such
 
@@ -114,7 +114,7 @@ value_t SkillSet::bonusForProperty(Property property) const
 
 value_t SkillSet::bonusForPlayerAttribute(WizardAttribute attribute) const
 {
-  effect_list effects;
+  unit_effect_list effects;
   for (const Skill* skill : *this)
     effects += skill->getEffects();
 

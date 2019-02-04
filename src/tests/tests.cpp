@@ -56,7 +56,7 @@ namespace mock
   {
   public:
     Skill() : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, {}) { }
-    Skill(effect_list effects) : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, effects) { }
+    Skill(unit_effect_list effects) : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, effects) { }
 
     void addEffect(const UnitEffect* effect) { effects.push_back(effect); }
   };
@@ -227,9 +227,9 @@ namespace test
     return std::make_pair(raceUnit("barbarian_swordsmen"), raceUnitWithSkills("barbarian_swordsmen", skills));
   }
   
-  effect_list effectListWithSkills(identifier_list skills)
+  unit_effect_list effectListWithSkills(identifier_list skills)
   {
-    effect_list effects;
+    unit_effect_list effects;
     
     std::for_each(skills.begin(), skills.end(), [&effects] (identifier ident) {
       const Skill* skill = Data::skill(ident);
@@ -458,9 +458,9 @@ TEST_CASE("effect_list class") {
       const auto me1 = new MovementEffect(MovementType::FLYING);
       const auto me2 = new MovementEffect(MovementType::FORESTWALK);
       const auto me3 = new MovementEffect(MovementType::FORESTWALK);
-      const auto ce = new CompoundEffect({ me1, me2 });
+      const auto ce = new CompoundEffect<UnitEffect>({ me1, me2 });
 
-      effect_list effects = effect_list({ ce, me3 });
+      auto effects = unit_effect_list({ ce, me3 });
 
       REQUIRE(effects.size() == 2);
       REQUIRE(effects.flatSize() == 3);
@@ -469,9 +469,9 @@ TEST_CASE("effect_list class") {
   
   SECTION("deep iteration of effect_list") {    
     struct helper {
-      static effect_list build(const std::string& encoding) {
-        std::stack<effect_list> effects;
-        effects.push(effect_list());
+      static unit_effect_list build(const std::string& encoding) {
+        std::stack<unit_effect_list> effects;
+        effects.push(unit_effect_list());
         
         for (char c : encoding)
         {
@@ -488,7 +488,7 @@ TEST_CASE("effect_list class") {
         return effects.top();
       }
       
-      static std::string print(const effect_list& effects)
+      static std::string print(const unit_effect_list& effects)
       {
         std::string v = "";
         
@@ -540,12 +540,12 @@ TEST_CASE("effect_list class") {
     SECTION("grouping by priority works with compound effects") {
       EffectGroup group = EffectGroup(EffectGroup::Mode::PRIORITY);
       DummyEffect e1 = DummyEffect("first"), e2 = DummyEffect("second");
-      CompoundEffect c1 = CompoundEffect({ &e1 }), c2 = CompoundEffect({ &e2 });
+      auto c1 = CompoundEffect<UnitEffect>({ &e1 }), c2 = CompoundEffect<UnitEffect>({ &e2 });
       c1.setGroup(&group, 0);
       c2.setGroup(&group, 1);
 
-      effect_list effects = effect_list({ &c2, &c1 });
-      effect_list actuals = effects.actuals(nullptr).flatten();
+      unit_effect_list effects = unit_effect_list({ &c2, &c1 });
+      auto actuals = effects.actuals(nullptr).flatten();
 
       REQUIRE(effects.flatSize() == 2);
       REQUIRE(actuals.size() == 1);
@@ -590,7 +590,7 @@ TEST_CASE("UnitModifierValue") {
     const auto effect2 = PropertyModifierEffect<Property, UnitEffectType::UNIT_BONUS>(Property::MELEE, zeroer);
 
     /* order is swapped to ensure sorting occurs */
-    effect_list effects = effect_list({ &effect2, &effect1 });
+    unit_effect_list effects = unit_effect_list({ &effect2, &effect1 });
     effects.sort();
 
     REQUIRE(effects.reduceAsModifier<UnitPropertyBonus>(Property::MELEE, &unit, 0) == 0);
@@ -674,8 +674,8 @@ TEST_CASE("skill effects groups") {
   WHEN("a skill with a keep greater group") {
     GIVEN("two skill effects, one more powerful") {
       const auto unit = test::anyRaceUnit();
-      const effect_list effects = test::effectListWithSkills({"resistance_to_all_2", "resistance_to_all_1"});
-      const effect_list actuals = effects.actuals(unit.get());
+      const unit_effect_list effects = test::effectListWithSkills({"resistance_to_all_2", "resistance_to_all_1"});
+      const unit_effect_list actuals = effects.actuals(unit.get());
       
       THEN("only the most powerful is kept") {
         REQUIRE(actuals.size() == 1);
@@ -688,8 +688,8 @@ TEST_CASE("skill effects groups") {
   SECTION("unique effect group" ) {
     GIVEN("multiple skill effect with same unique group") {
       const auto unit = test::anyRaceUnit();
-      const effect_list effects = test::effectListWithSkills({"healer", "healer", "healer"});
-      const effect_list actuals = effects.actuals(unit.get());
+      const unit_effect_list effects = test::effectListWithSkills({"healer", "healer", "healer"});
+      const unit_effect_list actuals = effects.actuals(unit.get());
 
       THEN("only one effect is kept") {
         REQUIRE(actuals.size() == 1);
