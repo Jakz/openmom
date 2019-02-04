@@ -4,4 +4,4 @@
 
 value_t UnitModifierLevelGetter::operator()(const Unit* unit) const { return unit->experienceMultiplier(); }
 
-template class Modifier<value_t, Unit, UnitModifierLevelGetter>;
+template struct Modifier<value_t, Unit, UnitModifierLevelGetter>;

@@ -40,6 +40,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Race.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\Settings.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Effects.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Modifiers.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Skill.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\SkillSet.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\UnitEffects.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Race.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\Settings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Effects.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Modifiers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Skill.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\SkillSet.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\UnitEffects.h" />

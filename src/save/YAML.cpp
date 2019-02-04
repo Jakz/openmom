@@ -717,7 +717,7 @@ template<> const UnitEffect* yaml::parse(const N& node)
     
     if (type == "parametric_ability")
     {
-      s16 value = parse<s16>(node["value"]);
+      value_t value = parse<value_t>(node["value"]);
       effect = new SimpleParametricEffect(UnitEffectType::ABILITY, kind, value);
     }
     else
@@ -851,11 +851,11 @@ template<> const Skill* yaml::parse(const N& node)
   {
     std::vector<const UnitEffect*> effects;
     parse(node["effects"], effects);
-    skill = new skills::ConcreteSkill(type, effect_list(effects), visualInfo);
+    skill = new skills::ConcreteSkill(type, unit_effect_list(effects), visualInfo);
   }
   else if (node.hasChild("copy_effects_from"))
   {
-    skill = new skills::ConcreteSkill(type, effect_list(), visualInfo);
+    skill = new skills::ConcreteSkill(type, unit_effect_list(), visualInfo);
     effectsCopyReferences[skill] = node["copy_effects_from"].asString();
   }
   else

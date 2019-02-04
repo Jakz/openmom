@@ -22,7 +22,6 @@ private:
   
   template<typename T, typename std::enable_if<!std::is_pointer<T>::value, int>::type = 0> static T parse(const N& node);
   template<typename T, typename std::enable_if<std::is_pointer<T>::value, int>::type = 0> static T parse(const N& node);
-  template<typename T, typename EffectType> static T parse(const N& node);
 
   
   static const std::string& getIdentifier(const N& node, const char* key = "identifier");

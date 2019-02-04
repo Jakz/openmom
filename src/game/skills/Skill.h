@@ -300,7 +300,7 @@ protected:
 public:
   bool hideValue;
   
-  ConcreteSkill(SkillBase base, effect_init_list effects, bool hideValue = true) : Skill(base), effects(effects), hideValue(hideValue) { }
+  ConcreteSkill(SkillBase base, unit_effect_list::init_list effects, bool hideValue = true) : Skill(base), effects(effects), hideValue(hideValue) { }
   ConcreteSkill(SkillBase base, unit_effect_list effects, bool hideValue = true) : Skill(base), effects(effects), hideValue(hideValue) { }
 
   void setEffects(const unit_effect_list& efts) override { effects = efts; }

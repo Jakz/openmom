@@ -32,87 +32,6 @@ public:
 
 enum class Order { GREATER, LESSER, EQUAL, UNCOMPARABLE, DIFFERENT };
 
-/*
-template<typename T>
-class Value
-{
-private:
-  T _base;
-  float _multiplier;
-
-public:
-  Value(T base, float multiplier) : _base(base), _multiplier(multiplier) { assert(_multiplier >= 0.0f); }
-  Value(T base) : Value(base, 1.0f) { }
-  Value() : Value(0) { }
-
-  inline Value operator+(T value) const { return Value(_base + value, _multiplier); }
-  inline Value operator-(T value) const { return Value(_base - value, _multiplier); }
-  inline Value operator*(float multiplier) const { return Value(_base, _multiplier + multiplier); }
-  inline Value operator/(float multiplier) const { return Value(_base, _multiplier - multiplier); }
-
-  inline operator T() const { return _base * _multiplier; }
-};
-*/
-
-template<typename ReturnType, typename T, typename F>
-struct Modifier
-{
-  using owner_type = T;
-  
-  enum class Priority { BASE, FIRST, ANY, LAST } priority;
-  enum class Type { INTEGER, FLOATING } type;
-  enum class Mode { ADDITIVE, ADDITIVE_PARAMETRIC, MULTIPLICATIVE, FIXED  } mode;
-  union {
-    float multiplier;
-    value_t value;
-  };
-
-  Modifier(Mode mode, float value, Priority priority = Priority::ANY) : priority(priority), type(Type::FLOATING), mode(mode), multiplier(value)
-  { 
-    assert(isFloating());
-  }
-
-  Modifier(Mode mode, value_t value, Priority priority = Priority::ANY) : priority(priority), type(Type::INTEGER), mode(mode), value(value)
-  { 
-    assert(!isFloating());
-  }
-
-  Modifier(value_t value) : priority(Priority::ANY), mode(Mode::ADDITIVE), type(Type::INTEGER), value(value) { }
-  Modifier(float multiplier) : priority(Priority::ANY), mode(Mode::ADDITIVE_PARAMETRIC), type(Type::FLOATING), multiplier(multiplier) { }
-
-  ReturnType transformValue(ReturnType value, const T* owner) const;
-  
-  bool isFloating() const { return type == Type::FLOATING; }
-  value_t truncatedValue() const { return isFloating() ? multiplier : value; }
- 
-  Order compareMagnitude(const T* owner, const Modifier<ReturnType, T, F>& other) const
-  {
-    ReturnType v1 = transformValue(0, owner), v2 = transformValue(0, owner);
-    
-    assert(mode == Mode::ADDITIVE || mode == Mode::ADDITIVE_PARAMETRIC);
-    assert(other.mode == Mode::ADDITIVE || other.mode == Mode::ADDITIVE_PARAMETRIC);
-
-    if (v1 > v2) return Order::GREATER;
-    else if (v1 < v2) return Order::LESSER;
-    else return Order::EQUAL;
-  }
-
-  Order compareForSorting(const Modifier<ReturnType, T, F>& other) const
-  {
-    if (priority < other.priority) return Order::LESSER;
-    else if (priority > other.priority) return Order::GREATER;
-    else
-    {
-      if (type < other.type) return Order::LESSER;
-      else if (type > other.type) return Order::GREATER;
-      else return Order::EQUAL;
-    }
-
-  }
-
-  bool operator<(const Modifier<ReturnType, T, F>& other) { return compareForSorting(other) == Order::LESSER; }
-};
-
 class Effect
 {
 protected:
@@ -147,33 +66,10 @@ public:
   using owner_type = OwnerType;
 };
 
-enum class UnitEffectType
-{
-  MOVEMENT,
-  DISALLOW_MOVEMENT,
-
-  ABILITY,
-  PARAMETRIC_ABILITY,
-  IMMUNITY,
-  MAGIC_WEAPONS,
-
-  COMBAT_BONUS,
-  UNIT_BONUS,
-  ARMY_BONUS,
-
-  GRANT_SPELL,
-
-  SPECIAL_ATTACK,
-
-  WIZARD_BONUS,
-};
-
-using UnitEffect = BaseEffect<UnitEffectType, Unit>;
-
 template<typename Effect, typename Effect::base_type Type, typename EnumType>
 class EnumEffect : public Effect
 {
-private:
+protected:
   const EnumType _subType;
 public:
   EnumEffect(EnumType type) : Effect(Type), _subType(type) { }
@@ -190,10 +86,21 @@ public:
   }
 };
 
-using effect_init_list = const std::initializer_list<const UnitEffect*>;
+template<typename Effect, typename Effect::base_type Type, typename EnumType, typename DataType>
+class EnumEffectWithData : public EnumEffect<Effect, Type, EnumType>
+{
+protected:
+  const DataType _data;
+
+public:
+  EnumEffectWithData(EnumType type, DataType data) : EnumEffect(type), _data(data) { }
+  const DataType& data() { return _data; }
+};
+
+
 template<typename EffectBase> struct effect_list_deep_iterator;
 
-template<typename EffectBase = UnitEffect>
+template<typename EffectBase>
 struct effect_list
 {
 private:
@@ -201,12 +108,13 @@ private:
   inner_type_t data;
   
 public:
+  using init_list = std::initializer_list<const EffectBase*>;
   using iterator = typename inner_type_t::const_iterator;
   using value_type = typename inner_type_t::value_type;
   
   effect_list() { }
   effect_list(const inner_type_t& effects) : data(effects) { }
-  effect_list(const effect_init_list& list) : data(list) { }
+  effect_list(const init_list& list) : data(list) { }
   
   void push_back(const EffectBase* effect) { data.push_back(effect); }
   void resize(size_t size) { data.resize(size); }
@@ -246,12 +154,12 @@ public:
     return *this;
   }
 
-  template<typename ModifierEffect> 
-  value_t reduceAsModifier(typename ModifierEffect::property_type property, const typename ModifierEffect::owner_type* owner, value_t base = 0) const
+  template<typename ModifierEffect_> 
+  value_t reduceAsModifier(typename ModifierEffect_::property_type property, const typename ModifierEffect_::owner_type* owner, value_t base = 0) const
   {
     //TODO: begin or deep begin?
     return std::accumulate(begin(), end(), base, [property, owner](value_t v, const EffectBase* effect) {
-      return effect->as<ModifierEffect>()->transformValue(property, v, owner);
+      return effect->as<ModifierEffect_>()->transformValue(property, v, owner);
     });
   }
 
@@ -292,7 +200,7 @@ private:
     const effect_list<EffectBase>* list;
     typename effect_list<EffectBase>::iterator it;
     bool end() const { return it == list->end(); }
-    const UnitEffect* operator*() const { return *it; }
+    const EffectBase* operator*() const { return *it; }
     stack_v(const effect_list<EffectBase>* list, typename effect_list<EffectBase>::iterator it) : list(list), it(it) { }
     bool operator==(const stack_v& other) const { return list == other.list && it == other.it; }
   };
@@ -324,9 +232,9 @@ private:
   
 public:
   using difference_type = ptrdiff_t;
-  using value_type = UnitEffect * ;
-  using reference = const UnitEffect&;
-  using pointer = const UnitEffect*;
+  using value_type = EffectBase* ;
+  using reference = const EffectBase&;
+  using pointer = const EffectBase*;
   using iterator_category = std::forward_iterator_tag;
   
 public:
@@ -361,10 +269,47 @@ public:
   bool operator==(const effect_list_deep_iterator& other) const { return stack == other.stack; }
   bool operator!=(const effect_list_deep_iterator& other) const { return stack != other.stack; }
   
-  const UnitEffect* operator*() const { return *stack.top(); }
+  const EffectBase* operator*() const { return *stack.top(); }
 };
 
 template<typename EffectBase> inline effect_list_deep_iterator<EffectBase> effect_list<EffectBase>::dbegin() const { return effect_list_deep_iterator<EffectBase>(this, begin()); }
 template<typename EffectBase> inline effect_list_deep_iterator<EffectBase> effect_list<EffectBase>::dend() const { return effect_list_deep_iterator<EffectBase>(this, end()); }
 
+
+
+
+
+enum class UnitEffectType
+{
+  MOVEMENT,
+  DISALLOW_MOVEMENT,
+
+  ABILITY,
+  PARAMETRIC_ABILITY,
+  IMMUNITY,
+  MAGIC_WEAPONS,
+
+  COMBAT_BONUS,
+  UNIT_BONUS,
+  ARMY_BONUS,
+
+  GRANT_SPELL,
+
+  SPECIAL_ATTACK,
+
+  WIZARD_BONUS,
+};
+
+using UnitEffect = BaseEffect<UnitEffectType, Unit>;
 using unit_effect_list = effect_list<UnitEffect>;
+
+
+
+enum class CityEffectType
+{
+  CITY_BONUS,
+  SIMPLE_EFFECT
+};
+
+using CityEffect = BaseEffect<CityEffectType, City>;
+using city_effect_list = effect_list<CityEffect>;

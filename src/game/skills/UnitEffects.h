@@ -9,7 +9,9 @@
 #pragma once
 
 #include "common/Common.h"
+
 #include "Effects.h"
+#include "Modifiers.h"
 
 #include <vector>
 #include <stack>
@@ -92,34 +94,7 @@ struct UnitModifierLevelGetter
 };
 
 using UnitModifierValue = Modifier<value_t, Unit, UnitModifierLevelGetter>;
-
-class SkillModifierEffect : public UnitEffect
-{
-protected:
-  UnitModifierValue _value;
-  predicate<const Unit*> _predicate;
-  value_t transformValue(value_t value, const Unit* unit) const { return _value.transformValue(value, unit); }
-
-public:
-  SkillModifierEffect(UnitEffectType type, UnitModifierValue value) : UnitEffect(type), _value(value), _predicate([](auto unit) { return true; }) { }
-  SkillModifierEffect(UnitEffectType type, UnitModifierValue value, predicate<const Unit*> predicate) : UnitEffect(type), _value(value), _predicate(predicate) { }
-
-  const UnitModifierValue& modifier() const { return _value; }
-  bool isModifier() const override { return true; }
-
-  Order compare(const Unit* unit, const UnitEffect* other) const override
-  {
-    //TODO: this doesn't check if kind of modifier is the same so it should be used only when this is sure (eg in an yaml defined SkillGroup) 
-    if (other->isModifier())
-    {
-      return modifier().compareMagnitude(unit, other->as<SkillModifierEffect>()->modifier());
-    }
-    else
-      return Order::UNCOMPARABLE;
-  }
-
-  using modifier_type = UnitModifierValue;
-};
+using SkillModifierEffect = ModifierEffect<UnitEffect, UnitModifierValue>;
 
 template<typename EnumType, UnitEffectType SkillType>
 class PropertyModifierEffect : public SkillModifierEffect
@@ -140,6 +115,7 @@ public:
     return property == _property ? _value.transformValue(value, unit) : value;
   }
 
+  using owner_type = typename SkillModifierEffect::owner_type;
   using property_type = EnumType;
   using skill_type = std::integral_constant<UnitEffectType, SkillType>;
 };
