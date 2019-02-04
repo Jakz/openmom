@@ -107,7 +107,7 @@ value_t SkillSet::bonusForProperty(Property property) const
   value_t bonus = 0;
 
   for (const auto* effect : effects)
-    bonus = effect->as<SkillModifierEffect>()->modifier().transformValue(bonus, unit);
+    bonus = effect->as<ModifierEffect<UnitEffect, UnitModifierValue, Property>>()->transformValue(property, bonus, unit);
 
   return bonus;
 }
@@ -147,7 +147,7 @@ bool SkillSet::has(MovementType type) const {
   
   forEachEffect([&hasType, &hasPreventType, type] (const UnitEffect* effect) {
     hasType |= effect->type == UnitEffectType::MOVEMENT && effect->as<MovementEffect>()->subType() == type;
-    hasPreventType |= effect->type == UnitEffectType::DISALLOW_MOVEMENT && effect->as<MovementEffect>()->subType() == type;
+    hasPreventType |= effect->type == UnitEffectType::DISALLOW_MOVEMENT && effect->as<MovementDisallowEffect>()->subType() == type;
   });
   
   return hasType && !hasPreventType;

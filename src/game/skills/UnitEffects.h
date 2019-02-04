@@ -94,35 +94,10 @@ struct UnitModifierLevelGetter
 };
 
 using UnitModifierValue = Modifier<value_t, Unit, UnitModifierLevelGetter>;
-using SkillModifierEffect = ModifierEffect<UnitEffect, UnitModifierValue>;
 
-template<typename EnumType, UnitEffectType SkillType>
-class PropertyModifierEffect : public SkillModifierEffect
-{
-private:
-  EnumType _property;
-
-public:
-  PropertyModifierEffect(EnumType property, UnitModifierValue value) : SkillModifierEffect(SkillType, value), _property(property) { }
-  PropertyModifierEffect(EnumType property, UnitModifierValue value, predicate<const Unit*> predicate) : SkillModifierEffect(SkillType, value, predicate), _property(property) { }
-
-  PropertyModifierEffect(EnumType property, UnitModifierValue value, School school) : PropertyModifierEffect(property, value, [school](const Unit* unit) { return unit->school() == school; }) { }
-
-  bool isAffecting(EnumType property) const { return _property == property; }
-
-  value_t transformValue(EnumType property, value_t value, const Unit* unit) const
-  {
-    return property == _property ? _value.transformValue(value, unit) : value;
-  }
-
-  using owner_type = typename SkillModifierEffect::owner_type;
-  using property_type = EnumType;
-  using skill_type = std::integral_constant<UnitEffectType, SkillType>;
-};
-
-using WizardAttributeModifier = PropertyModifierEffect<WizardAttribute, UnitEffectType::WIZARD_BONUS>;
-using UnitPropertyBonus = PropertyModifierEffect<Property, UnitEffectType::UNIT_BONUS>;
-using ArmyPropertyBonus = PropertyModifierEffect<Property, UnitEffectType::ARMY_BONUS>;
+using WizardAttributeModifier = SpecificModifierEffect<UnitEffect, UnitEffectType::WIZARD_BONUS, UnitModifierValue, WizardAttribute>;
+using UnitPropertyBonus = SpecificModifierEffect<UnitEffect, UnitEffectType::UNIT_BONUS, UnitModifierValue, Property>;
+using ArmyPropertyBonus = SpecificModifierEffect<UnitEffect, UnitEffectType::ARMY_BONUS, UnitModifierValue, Property>;
 
 class CombatBonus : public UnitEffect
 {

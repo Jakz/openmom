@@ -82,10 +82,10 @@ effect_list<EffectBase> effect_list<EffectBase>::flatten()
   return data;
 }
 
+template class SpecificModifierEffect<UnitEffect, UnitEffectType::WIZARD_BONUS, UnitModifierValue, WizardAttribute>;
+template class SpecificModifierEffect<UnitEffect, UnitEffectType::UNIT_BONUS, UnitModifierValue, Property>;
+template class SpecificModifierEffect<UnitEffect, UnitEffectType::ARMY_BONUS, UnitModifierValue, Property>;
 
-template class PropertyModifierEffect<WizardAttribute, UnitEffectType::WIZARD_BONUS>;
-template class PropertyModifierEffect<Property, UnitEffectType::UNIT_BONUS>;
-template class PropertyModifierEffect<Property, UnitEffectType::ARMY_BONUS>;
 
 template struct effect_list<UnitEffect>;
 template struct effect_list_deep_iterator<UnitEffect>;

@@ -148,26 +148,26 @@ class CombatEffects
   });
   
   
-  
+  /*
+  predicate<const Unit*> unitSchoolPredicate(School school) { return [school](const Unit* unit) { return unit->school() == school; }; }
   
   
   const CombatEnchModifier TRUE_LIGHT = CombatEnchModifier({
-    new UnitPropertyBonus(Property::MELEE, 1, LIFE),
-    new UnitPropertyBonus(Property::RANGED, 1, LIFE),
-    new UnitPropertyBonus(Property::SHIELDS, 1, LIFE),
-    new UnitPropertyBonus(Property::RESIST, 1, LIFE),
-    new UnitPropertyBonus(Property::MELEE, -1, DEATH),
-    new UnitPropertyBonus(Property::RANGED, -1, DEATH),
-    new UnitPropertyBonus(Property::SHIELDS, -1, DEATH),
-    new UnitPropertyBonus(Property::RESIST, -1, DEATH)
+    new UnitPropertyBonus(Property::MELEE, 1, unitSchoolPredicate(School::LIFE)),
+    new UnitPropertyBonus(Property::RANGED, 1, unitSchoolPredicate(LIFE)),
+    new UnitPropertyBonus(Property::SHIELDS, 1, unitSchoolPredicate(LIFE)),
+    new UnitPropertyBonus(Property::RESIST, 1, unitSchoolPredicate(LIFE)),
+    new UnitPropertyBonus(Property::MELEE, -1, unitSchoolPredicate(DEATH)),
+    new UnitPropertyBonus(Property::RANGED, -1, unitSchoolPredicate(DEATH)),
+    new UnitPropertyBonus(Property::SHIELDS, -1, unitSchoolPredicate(DEATH)),
+    new UnitPropertyBonus(Property::RESIST, -1, unitSchoolPredicate(DEATH))
   });
   
   const CombatEnchModifier PRAYER = CombatEnchModifier({
     new UnitPropertyBonus(Property::TO_HIT, 1),
     new UnitPropertyBonus(Property::TO_DEFEND, 1),
     new UnitPropertyBonus(Property::RESIST, 1)
-  });
+  });*/
 };
-
 
 #endif

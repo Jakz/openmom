@@ -95,33 +95,60 @@ struct Modifier
   bool operator<(const Modifier<ReturnType, T, F>& other) { return compareForSorting(other) == Order::LESSER; }
 };
 
-template<typename EffectBase, typename ModifierBase>
+template<typename EffectBase, /*typename EffectBase::base_type EffectType,*/ typename ModifierBase, typename PropertyType>
 class ModifierEffect : public EffectBase
 {
-protected:
+public:
+  using modifier_type = ModifierBase;
+  using property_type = PropertyType;
   using owner_type = typename EffectBase::owner_type;
+  using base_type = typename EffectBase::base_type;
 
+protected:
+  PropertyType _property;
   ModifierBase _value;
   predicate<const owner_type*> _predicate;
-  value_t transformValue(value_t value, const owner_type* owner) const { return _predicate(owner) ? _value.transformValue(value, owner) : _value; }
 
 public:
-  ModifierEffect(typename EffectBase::base_type type, ModifierBase value) : EffectBase(type), _value(value), _predicate([](auto owner) { return true; }) { }
-  ModifierEffect(typename EffectBase::base_type type, ModifierBase value, predicate<const owner_type*> predicate) : EffectBase(type), _value(value), _predicate(predicate) { }
+  ModifierEffect(base_type type, PropertyType property, ModifierBase value) : EffectBase(type), _property(property), _value(value), _predicate([](auto owner) { return true; }) { }
+  ModifierEffect(base_type type, PropertyType property, ModifierBase value, predicate<const owner_type*> predicate) : EffectBase(type), _property(property), _value(value), _predicate(predicate) { }
 
   const ModifierBase& modifier() const { return _value; }
   bool isModifier() const override { return true; }
+
+  bool isAffecting(PropertyType property) const { return _property == property; }
 
   Order compare(const Unit* unit, const EffectBase* other) const override
   {
     //TODO: this doesn't check if kind of modifier is the same so it should be used only when this is sure (eg in an yaml defined SkillGroup) 
     if (other->isModifier())
     {
-      return modifier().compareMagnitude(unit, other->as<ModifierEffect<EffectBase, ModifierBase>>()->modifier());
+      return modifier().compareMagnitude(unit, other->as<ModifierEffect<EffectBase, ModifierBase, PropertyType>>()->modifier());
     }
     else
       return Order::UNCOMPARABLE;
   }
 
-  using modifier_type = ModifierBase;
+  value_t transformValue(PropertyType property, value_t value, const owner_type* owner) const
+  { 
+    return (property == _property && _predicate(owner)) ? _value.transformValue(value, owner) : value;
+  }
 };
+
+template<typename EffectBase, typename EffectBase::base_type EffectType, typename ModifierBase, typename PropertyType>
+class SpecificModifierEffect : public ModifierEffect<EffectBase, ModifierBase, PropertyType>
+{
+public:
+  using modifier_type = ModifierBase;
+  using property_type = PropertyType;
+  using owner_type = typename EffectBase::owner_type;
+  using base_type = typename EffectBase::base_type;
+  static constexpr base_type effect_type = EffectType;
+
+public:
+  SpecificModifierEffect(PropertyType property, ModifierBase value) : ModifierEffect<EffectBase, ModifierBase, PropertyType>(EffectType, property, value) { }
+  SpecificModifierEffect(PropertyType property, ModifierBase value, predicate<const typename owner_type*> predicate) : ModifierEffect<EffectBase, ModifierBase, PropertyType>(EffectType, property, value, predicate) { }
+
+};
+
+

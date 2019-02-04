@@ -49,7 +49,10 @@ public:
   const EffectGroup* group() const { return _group; }
   EffectGroupParam groupParam() const { return _groupParam; }
 
-  template<typename T> const T* as() const { return static_cast<const T*>(this); }
+  template<typename T> const T* as() const { 
+    assert(dynamic_cast<const T*>(this));
+    return static_cast<const T*>(this); 
+  }
 };
 
 template<typename BaseType, typename OwnerType>
@@ -130,7 +133,7 @@ public:
 
   template<typename T, typename EnumType> void filter(EnumType property) {
     filter([property](const EffectBase* effect) {
-      return effect->type == T::skill_type::value && effect->as<T>()->isAffecting(property);
+      return effect->type == T::effect_type && effect->as<T>()->isAffecting(property);
     });
   }
 

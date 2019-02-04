@@ -453,6 +453,17 @@ TEST_CASE("nature spells") {
 #pragma mark effect_list
 
 TEST_CASE("effect_list class") {
+  SECTION("modifiers calculation")
+  {
+    unit_effect_list effects;
+    auto modifier = UnitPropertyBonus(Property::MELEE, 2);
+    effects.push_back(&modifier);
+
+    value_t result = effects.reduceAsModifier<UnitPropertyBonus>(Property::MELEE, nullptr, 0);
+    REQUIRE(result == 2);
+  }
+
+
   SECTION("flatSize method with CompoundEffect") {
     SECTION("nested once") {
       const auto me1 = new MovementEffect(MovementType::FLYING);
@@ -475,7 +486,7 @@ TEST_CASE("effect_list class") {
         
         for (char c : encoding)
         {
-          if (c == '{') effects.push(effect_list());
+          if (c == '{') effects.push(unit_effect_list());
           else if (c == '}') {
             effect_list ceffs = effects.top();
             effects.pop();
@@ -530,8 +541,8 @@ TEST_CASE("effect_list class") {
       e1.setGroup(&group, 0);
       e2.setGroup(&group, 1);
 
-      effect_list effects = effect_list({ &e2, &e1 });
-      effect_list actuals = effects.actuals(nullptr);
+      unit_effect_list effects = unit_effect_list({ &e2, &e1 });
+      unit_effect_list actuals = effects.actuals(nullptr);
 
       REQUIRE(actuals.size() == 1);
       REQUIRE((*actuals.begin())->as<DummyEffect>()->v == "first");
@@ -586,8 +597,8 @@ TEST_CASE("UnitModifierValue") {
 
     auto unit = mock::RaceUnit();
 
-    const auto effect1 = PropertyModifierEffect<Property, UnitEffectType::UNIT_BONUS>(Property::MELEE, modifier);
-    const auto effect2 = PropertyModifierEffect<Property, UnitEffectType::UNIT_BONUS>(Property::MELEE, zeroer);
+    const auto effect1 = UnitPropertyBonus(Property::MELEE, modifier);
+    const auto effect2 = UnitPropertyBonus(Property::MELEE, zeroer);
 
     /* order is swapped to ensure sorting occurs */
     unit_effect_list effects = unit_effect_list({ &effect2, &effect1 });
