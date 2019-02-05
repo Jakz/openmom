@@ -112,19 +112,19 @@ value_t PlayerMechanics::computeManaFromNodes(const Player *player)
     /* if node is warped then no mana is generated but instead a malus is subtracted */
     if (node->isWarped())
     {
-      mana -= g->values.get<s32>(Value::WARPED_NODE_POWER_MALUS);
+      mana -= g->values.get<s32>(GameValue::WARPED_NODE_POWER_MALUS);
     }
     else
     {
       s32 nmana = node->getMana();
       
       if (player->hasMastery(node->school))
-        nmana *= g->values.get<float>(Value::SCHOOL_MASTERY_MANA_NODE_MULTIPLIER);
+        nmana *= g->values.get<float>(GameValue::SCHOOL_MASTERY_MANA_NODE_MULTIPLIER);
       
       if (player->hasRetort("node_mastery"))
-        nmana *= g->values.get<float>(Value::NODE_MASTERY_MANA_MULTIPLIER);
+        nmana *= g->values.get<float>(GameValue::NODE_MASTERY_MANA_MULTIPLIER);
       
-      nmana *= g->values.get<float>(Value::DIFFICULTY_MANA_NODE_MULTIPLIER);
+      nmana *= g->values.get<float>(GameValue::DIFFICULTY_MANA_NODE_MULTIPLIER);
     }
   }
   

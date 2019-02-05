@@ -12,7 +12,7 @@
 
 class Game;
 
-enum class Value
+enum class GameValue
 {
   WARPED_NODE_POWER_MALUS,
   
@@ -31,5 +31,5 @@ private:
 public:
   ValuesMechanics(Game* game) : game(game) { }
   
-  template<typename T> T get(Value value);
+  template<typename T> T get(GameValue value);
 };

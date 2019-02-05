@@ -2,6 +2,7 @@
 #define _BUILDINGS_H_
 
 #include "common/Common.h"
+#include "Effects.h"
 
 #include <string>
 
@@ -31,11 +32,12 @@ public:
   enum class Type { NORMAL, SPECIAL, SPELL };
 
 public:
+  const city_effect_list effects;
   const Type type;
   const value_t cost;
   const Upkeep upkeep;
 
-  Building(Type type, value_t cost, value_t gupkeep, value_t mupkeep) : type(type), cost(cost), upkeep(Upkeep(gupkeep,mupkeep)) { }
+  Building(Type type, value_t cost, Upkeep upkeep, city_effect_list effects) : type(type), cost(cost), upkeep(upkeep) { }
   
   const std::string& productionName() const override;
   u16 productionCost() const override { return cost; }

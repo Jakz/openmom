@@ -36,6 +36,9 @@ public:
 };
 */
 
+template<typename T>
+struct ModifierDummyGetter { value_t operator()(const T*) const { return 0; } };
+
 template<typename ReturnType, typename T, typename F>
 struct Modifier
 {
@@ -95,7 +98,7 @@ struct Modifier
   bool operator<(const Modifier<ReturnType, T, F>& other) { return compareForSorting(other) == Order::LESSER; }
 };
 
-template<typename EffectBase, /*typename EffectBase::base_type EffectType,*/ typename ModifierBase, typename PropertyType>
+template<typename EffectBase, typename ModifierBase, typename PropertyType>
 class ModifierEffect : public EffectBase
 {
 public:
@@ -118,12 +121,12 @@ public:
 
   bool isAffecting(PropertyType property) const { return _property == property; }
 
-  Order compare(const Unit* unit, const EffectBase* other) const override
+  Order compare(const owner_type* owner, const EffectBase* other) const override
   {
     //TODO: this doesn't check if kind of modifier is the same so it should be used only when this is sure (eg in an yaml defined SkillGroup) 
     if (other->isModifier())
     {
-      return modifier().compareMagnitude(unit, other->as<ModifierEffect<EffectBase, ModifierBase, PropertyType>>()->modifier());
+      return modifier().compareMagnitude(owner, other->as<ModifierEffect<EffectBase, ModifierBase, PropertyType>>()->modifier());
     }
     else
       return Order::UNCOMPARABLE;
@@ -152,3 +155,5 @@ public:
 };
 
 
+
+using CityModifierValue = Modifier<value_t, City, ModifierDummyGetter<City>>;

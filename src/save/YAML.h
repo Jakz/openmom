@@ -26,6 +26,8 @@ private:
   
   static const std::string& getIdentifier(const N& node, const char* key = "identifier");
   
+  template<typename T> static T parseModifier(const N& node);
+
   static void solveCopiedSkillEffects();
   
 public:

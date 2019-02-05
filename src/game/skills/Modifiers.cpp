@@ -20,3 +20,4 @@ ReturnType Modifier<ReturnType, T, F>::transformValue(ReturnType previous, const
 }
 
 template struct Modifier<value_t, Unit, UnitModifierLevelGetter>;
+template struct Modifier<value_t, City, ModifierDummyGetter<City>>;

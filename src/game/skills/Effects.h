@@ -69,28 +69,28 @@ public:
   using owner_type = OwnerType;
 };
 
-template<typename Effect, typename Effect::base_type Type, typename EnumType>
-class EnumEffect : public Effect
+template<typename EffectBase, typename EffectBase::base_type Type, typename EnumType>
+class EnumEffect : public EffectBase
 {
 protected:
   const EnumType _subType;
 public:
-  EnumEffect(EnumType type) : Effect(Type), _subType(type) { }
+  EnumEffect(EnumType type) : EffectBase(Type), _subType(type) { }
   
   bool operator==(EnumType type) const { return _subType == type; }
   EnumType subType() const { return _subType; }
   
-  Order compare(const typename Effect::owner_type* owner, const Effect* other) const override
+  Order compare(const typename EffectBase::owner_type* owner, const EffectBase* other) const override
   {
     if (other->type == this->type)
-      return other->as<EnumEffect<Effect, Type, EnumType>>()->subType() == subType() ? Order::EQUAL : Order::DIFFERENT;
+      return other->as<EnumEffect<EffectBase, Type, EnumType>>()->subType() == subType() ? Order::EQUAL : Order::DIFFERENT;
     else
       return Order::UNCOMPARABLE;
   }
 };
 
-template<typename Effect, typename Effect::base_type Type, typename EnumType, typename DataType>
-class EnumEffectWithData : public EnumEffect<Effect, Type, EnumType>
+template<typename EffectBase, typename EffectBase::base_type Type, typename EnumType, typename DataType>
+class EnumEffectWithData : public EnumEffect<EffectBase, Type, EnumType>
 {
 protected:
   const DataType _data;
@@ -312,6 +312,11 @@ enum class CityEffectType
 {
   CITY_BONUS,
   SIMPLE_EFFECT
+};
+
+enum class SimpleCityEffect
+{
+  ALLOWS_NIGHTSHADE
 };
 
 using CityEffect = BaseEffect<CityEffectType, City>;

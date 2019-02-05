@@ -33,10 +33,10 @@ buildings:
     effects:
       - type: city_bonus
         property: mana_power
-        value: 1
+        modifier: 1
       - type: city_bonus
         property: unrest_count
-        value: -1
+        modifier: -1
       - type: city_effect
         kind: allows-nightshade
     visuals:
@@ -426,7 +426,7 @@ buildings:
 
 
 
-#TODO: order, move here to move them in production view
+#TODO: order, move these to move them in production view
   - identifier: housing
     type: normal
     cost: 0

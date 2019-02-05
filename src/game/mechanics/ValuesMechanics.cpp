@@ -10,14 +10,14 @@
 
 #include "Game.h"
 
-template<> float ValuesMechanics::get<float>(Value value)
+template<> float ValuesMechanics::get<float>(GameValue value)
 {
   switch (value)
   {
-    case Value::NODE_MASTERY_MANA_MULTIPLIER: return 2.0f;
-    case Value::SCHOOL_MASTERY_MANA_NODE_MULTIPLIER: return 2.0f;
+    case GameValue::NODE_MASTERY_MANA_MULTIPLIER: return 2.0f;
+    case GameValue::SCHOOL_MASTERY_MANA_NODE_MULTIPLIER: return 2.0f;
       
-    case Value::DIFFICULTY_MANA_NODE_MULTIPLIER:
+    case GameValue::DIFFICULTY_MANA_NODE_MULTIPLIER:
     {
       switch (game->settings.magicPower()) {
         case MAGIC_POWER_WEAK: return 0.5f;
@@ -31,13 +31,13 @@ template<> float ValuesMechanics::get<float>(Value value)
   }
 }
 
-template<> value_t ValuesMechanics::get<value_t>(Value value)
+template<> value_t ValuesMechanics::get<value_t>(GameValue value)
 {
   switch (value)
   {
-    case Value::WARPED_NODE_POWER_MALUS: return 5;
+    case GameValue::WARPED_NODE_POWER_MALUS: return 5;
     
-    case Value::MAX_RETORTS_FOR_NEW_WIZARD: return 6;
+    case GameValue::MAX_RETORTS_FOR_NEW_WIZARD: return 6;
       
     default: assert(false); return 0;
   }

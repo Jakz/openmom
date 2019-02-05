@@ -19,28 +19,6 @@
 enum class Property : u8;
 class Unit;
 
-/*
-template<typename T>
-class Value
-{
-private:
-  T _base;
-  float _multiplier;
-
-public:
-  Value(T base, float multiplier) : _base(base), _multiplier(multiplier) { assert(_multiplier >= 0.0f); }
-  Value(T base) : Value(base, 1.0f) { }
-  Value() : Value(0) { }
-
-  inline Value operator+(T value) const { return Value(_base + value, _multiplier); }
-  inline Value operator-(T value) const { return Value(_base - value, _multiplier); }
-  inline Value operator*(float multiplier) const { return Value(_base, _multiplier + multiplier); }
-  inline Value operator/(float multiplier) const { return Value(_base, _multiplier - multiplier); }
-
-  inline operator T() const { return _base * _multiplier; }
-};
-*/
-
 class SimpleEffect : public UnitEffect
 {
 public:

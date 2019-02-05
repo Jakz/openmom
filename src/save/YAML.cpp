@@ -39,6 +39,7 @@ std::string YAML::detail::node_data::empty_scalar;
 
 using namespace YAML;
 using N = yaml::N;
+template<typename T> using string_map = std::unordered_map<std::string, T>;
 
 static std::string currentFile = "";
 static std::string currentEntry = "";
@@ -583,36 +584,39 @@ template<> const EffectGroup* yaml::parse(const N& node)
 }
 
 #pragma mark Effect
-template<> UnitModifierValue yaml::parse(const N& node)
+template<typename ModifierType> ModifierType yaml::parseModifier(const N& node)
 {
+  using Mode = typename ModifierType::Mode;
+  using Priority = typename ModifierType::Priority;
+  
   if (node.IsScalar())
   {
     if (node.asString().find('.') != std::string::npos)
-      return UnitModifierValue(node.as<float>());
+      return ModifierType(node.as<float>());
     else
-      return UnitModifierValue(node.as<value_t>());
+      return ModifierType(node.as<value_t>());
   }
   else if (node.IsSequence())
   {
     /* fixed value, assuming additive */
     if (node.size() == 1)
-      return UnitModifierValue(UnitModifierValue::Mode::ADDITIVE, node[0].as<value_t>(), UnitModifierValue::Priority::ANY);
+      return ModifierType(Mode::ADDITIVE, node[0].as<value_t>(), Priority::ANY);
     else if (node.size() >= 2)
     {
       const std::string& ttype = node[1];
 
-      UnitModifierValue::Mode mode = UnitModifierValue::Mode::ADDITIVE;
-      UnitModifierValue::Priority priority = UnitModifierValue::Priority::ANY;
+      Mode mode = Mode::ADDITIVE;
+      Priority priority = Priority::ANY;
       bool asFloat = false;
 
       if (ttype == "per_level")
       {
-        mode = UnitModifierValue::Mode::ADDITIVE_PARAMETRIC;
+        mode = ModifierType::Mode::ADDITIVE_PARAMETRIC;
         asFloat = true;
       }
       else if (ttype == "fixed")
       {
-        mode = UnitModifierValue::Mode::FIXED;
+        mode = ModifierType::Mode::FIXED;
         asFloat = false;
       }
       else if (ttype == "additive")
@@ -624,24 +628,59 @@ template<> UnitModifierValue yaml::parse(const N& node)
       {
         const std::string& tpriority = node[2];
 
-        if (tpriority == "last") priority = UnitModifierValue::Priority::LAST;
-        else if (tpriority == "first") priority = UnitModifierValue::Priority::LAST;
+        if (tpriority == "last") priority = Priority::LAST;
+        else if (tpriority == "first") priority = Priority::LAST;
         else assert(false);
       }
 
       if (asFloat)
-        return UnitModifierValue(mode, node[0].as<float>(), priority);
+        return ModifierType(mode, node[0].as<float>(), priority);
       else
-        return UnitModifierValue(mode, node[0].as<value_t>(), priority);
+        return ModifierType(mode, node[0].as<value_t>(), priority);
     }
   }
 
   //TODO: fix macro
-  PARSE_ERROR("Cannot parse UnitModifierValue%s", "");
+  PARSE_ERROR("Cannot parse ModifierType%s", "");
   assert(false);
-  return UnitModifierValue(0);
+  return ModifierType(0);
 }
 
+template<> const CityEffect* yaml::parse(const N& node)
+{
+  const std::string& type = node["type"];
+  CityEffect* effect = nullptr;
+
+  if (type == "city_bonus")
+  {
+    static string_map<CityAttribute> mapping = {
+      { "mana_power", CityAttribute::MANA_POWER_OUTPUT },
+      { "unrest_count", CityAttribute::UNREST_COUNT }
+    };
+
+    if (mapping.find(node["property"]) == mapping.end())
+      assert(false);
+
+    CityAttribute attribute = mapping[node["property"]];
+    CityModifierValue modifier = parseModifier<CityModifierValue>(node["modifier"]);
+
+    effect = new SpecificModifierEffect<CityEffect, CityEffectType::CITY_BONUS, CityModifierValue, CityAttribute>(attribute, modifier);
+  }
+  else if (type == "city_effect")
+  {
+    static string_map<SimpleCityEffect> mapping = {
+      { "allows-nightshade", SimpleCityEffect::ALLOWS_NIGHTSHADE }
+    };
+
+    if (mapping.find(node["kind"]) == mapping.end())
+      assert(false);
+
+    effect = new EnumEffect<CityEffect, CityEffectType::SIMPLE_EFFECT, SimpleCityEffect>(mapping[node["kind"]]);
+  }
+
+  assert(effect);
+  return effect;
+}
 
 template<> const UnitEffect* yaml::parse(const N& node)
 {
@@ -651,20 +690,20 @@ template<> const UnitEffect* yaml::parse(const N& node)
   if (type == "unit_bonus")
   {
     Property property = parse<Property>(node["property"]);
-    UnitModifierValue modifier = parse<UnitModifierValue>(node["modifier"]);
+    UnitModifierValue modifier = parseModifier<UnitModifierValue>(node["modifier"]);
     effect = new UnitPropertyBonus(property, modifier);
   }
   else if (type == "army_bonus")
   {
     Property property = parse<Property>(node["property"]);
-    UnitModifierValue modifier = parse<UnitModifierValue>(node["modifier"]);
+    UnitModifierValue modifier = parseModifier<UnitModifierValue>(node["modifier"]);
     //TODO: affects all, normal only etc
     effect = new ArmyPropertyBonus(property, modifier);
   }
   else if (type == "wizard_bonus")
   {
     WizardAttribute attribute = parse<WizardAttribute>(node["property"]);
-    UnitModifierValue modifier = parse<UnitModifierValue>(node["modifier"]);
+    UnitModifierValue modifier = parseModifier<UnitModifierValue>(node["modifier"]);
     effect = new WizardAttributeModifier(attribute, modifier);
   }
   else if (type == "combat_bonus")
@@ -1103,8 +1142,7 @@ template<> std::pair<const Wizard*, WizardGfxSpec> yaml::parse(const N& node)
 template<> std::pair<const Building*, BuildingGfxSpec> yaml::parse(const N& node)
 {
   value_t cost = 0;
-  value_t goldUpkeep = 0;
-  value_t manaUpkeep = 0;
+  Upkeep upkeep;
 
   auto type = Building::Type::NORMAL;
 
@@ -1115,15 +1153,19 @@ template<> std::pair<const Building*, BuildingGfxSpec> yaml::parse(const N& node
   if (type == Building::Type::NORMAL)
   {
     cost = node["cost"];
-    goldUpkeep = node["upkeep"][0];
-    manaUpkeep = node["upkeep"][1];
+    upkeep.gold = node["upkeep"][0];
+    upkeep.mana = node["upkeep"][1];
   }
 
-  const Building* building = new Building(type, cost, goldUpkeep, manaUpkeep);
+  std::vector<const CityEffect*> effects;
+  parse(node["effects"], effects);
+
+  const Building* building = new Building(type, cost, upkeep, city_effect_list(effects));
   BuildingGfxSpec gfx;
 
-  // dependency
-
+  /* requirements are parsed by the caller since they require
+     all the buildings to be loaded
+  */
 
 
   /* visuals */
