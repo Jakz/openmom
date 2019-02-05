@@ -317,6 +317,17 @@ tilecount_t CityMechanics::countSurroundManaNode(const City* city, School school
   return count;
 }
 
+value_t CityMechanics::findAndReduceModifiers(const City* city, CityAttribute attribute)
+{
+  city_effect_list effects = city_effect_list(city->buildings.begin(), city->buildings.end());
+  //TODO: add spells or buildings as spells, still need to figure out how this works
+  using Modifier = SpecificModifierEffect<CityEffect, CityEffectType::CITY_BONUS, CityModifierValue, CityAttribute>;
+  effects.filter<Modifier>(attribute);
+
+  effects.sort();
+  return effects.reduceAsModifier<Modifier>(attribute, city, 0);
+}
+
 float CityMechanics::resourceBonus(const City* city, Resource resource, float value)
 {
   //TODO: if shared does it change?
@@ -509,9 +520,11 @@ value_t CityMechanics::computeMagicPower(const City *city)
   }
   
   // mana bonuses given by racial traits
-  totalMana += (s16)std::floor((city->population/1000)*city->race->manaProducedPerCitizen);
+  totalMana += (value_t)std::floor((city->population/1000)*city->race->manaProducedPerCitizen);
   
   // mana bonuses given by buildings
+  totalMana += findAndReduceModifiers(city, CityAttribute::MANA_POWER_OUTPUT);
+
   if (city->hasBuilding(Building::SHRINE))
     totalMana += 1;
   if (city->hasBuilding(Building::TEMPLE))
@@ -649,7 +662,14 @@ value_t CityMechanics::computeUnrest(const City *city)
     
     flatUnrest -= suppressionFromArmy;
   }
-  
+ 
+  //TODO: maybe effects should be cached
+  city_effect_list effects = city_effect_list(city->buildings.begin(), city->buildings.end());
+  //TODO: add spells or buildings as spells, still need to figure out how this works
+  using UnrestModifier = SpecificModifierEffect<CityEffect, CityEffectType::CITY_BONUS, CityModifierValue, CityAttribute>;
+  effects.filter<UnrestModifier>(CityAttribute::UNREST_COUNT);
+  flatUnrest += effects.reduceAsModifier<UnrestModifier>(CityAttribute::UNREST_COUNT, city, 0);
+
   /*
    dark rituals +1
    cursed lands +1

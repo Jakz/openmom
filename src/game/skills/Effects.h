@@ -116,8 +116,19 @@ public:
   using value_type = typename inner_type_t::value_type;
   
   effect_list() { }
+  effect_list(const effect_list&& other) : data(std::move(other.data)) { }
+  effect_list(const effect_list& other) : data(other.data) { }
+  effect_list(const EffectBase* effect) : data({ effect }) { }
   effect_list(const inner_type_t& effects) : data(effects) { }
   effect_list(const init_list& list) : data(list) { }
+
+  effect_list& operator=(const effect_list& other) { data = other.data; return *this; }
+  effect_list& operator=(effect_list&& other) { data = std::move(other.data); return *this; }
+
+  template<typename T> effect_list(T begin, T end)
+  {
+    for (; begin != end; ++begin) operator+=((*begin)->effects());
+  }
   
   void push_back(const EffectBase* effect) { data.push_back(effect); }
   void resize(size_t size) { data.resize(size); }

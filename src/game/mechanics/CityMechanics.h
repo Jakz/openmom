@@ -45,6 +45,8 @@ private:
   Game* const game;
   
 protected:
+  value_t findAndReduceModifiers(const City* city, CityAttribute attribute);
+
   
 public:
   CityMechanics(Game* game) : game(game) { }

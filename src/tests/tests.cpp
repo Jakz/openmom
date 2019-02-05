@@ -551,7 +551,7 @@ TEST_CASE("effect_list class") {
     SECTION("grouping by priority works with compound effects") {
       EffectGroup group = EffectGroup(EffectGroup::Mode::PRIORITY);
       DummyEffect e1 = DummyEffect("first"), e2 = DummyEffect("second");
-      auto c1 = CompoundEffect<UnitEffect>({ &e1 }), c2 = CompoundEffect<UnitEffect>({ &e2 });
+      auto c1 = CompoundEffect<UnitEffect>(unit_effect_list(&e1)), c2 = CompoundEffect<UnitEffect>(unit_effect_list(&e2));
       c1.setGroup(&group, 0);
       c2.setGroup(&group, 1);
 

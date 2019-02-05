@@ -31,14 +31,18 @@ class Building : public Productable
 public:
   enum class Type { NORMAL, SPECIAL, SPELL };
 
+private:
+  city_effect_list _effects;
+
 public:
-  const city_effect_list effects;
   const Type type;
   const value_t cost;
   const Upkeep upkeep;
 
-  Building(Type type, value_t cost, Upkeep upkeep, city_effect_list effects) : type(type), cost(cost), upkeep(upkeep) { }
+  Building(Type type, value_t cost, Upkeep upkeep, city_effect_list effects) : type(type), cost(cost), upkeep(upkeep), _effects(effects){ }
   
+  const city_effect_list& effects() const { return _effects;  }
+
   const std::string& productionName() const override;
   u16 productionCost() const override { return cost; }
   const Upkeep& productionUpkeep() const override { return upkeep; }

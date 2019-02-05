@@ -43,14 +43,20 @@ template<typename ReturnType, typename T, typename F>
 struct Modifier
 {
   using owner_type = T;
+  using priority_t = value_t;
   
-  enum class Priority { BASE, FIRST, ANY, LAST } priority;
+  enum class Priority { BASE = 0, FIRST = 1, ANY = 512, LAST = 1024, PRIORITY_HIGHEST = 2  } priority;
   enum class Type { INTEGER, FLOATING } type;
   enum class Mode { ADDITIVE, ADDITIVE_PARAMETRIC, MULTIPLICATIVE, FIXED  } mode;
   union {
     float multiplier;
     value_t value;
   };
+
+  Modifier(Mode mode, value_t value, priority_t priority) : priority(static_cast<Priority>(priority)), type(Type::INTEGER), mode(mode), multiplier(value)
+  {
+    assert(!isFloating());
+  }
 
   Modifier(Mode mode, float value, Priority priority = Priority::ANY) : priority(priority), type(Type::FLOATING), mode(mode), multiplier(value)
   { 
