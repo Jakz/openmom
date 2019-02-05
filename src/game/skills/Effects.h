@@ -59,7 +59,7 @@ template<typename BaseType, typename OwnerType>
 class BaseEffect : public Effect
 {
 public:
-  static constexpr BaseType COMPOUND = static_cast<BaseType>(std::numeric_limits<std::underlying_type<BaseType>::type>::max()); //TODO: used as a marker, maybe find a better design?
+  static constexpr BaseType COMPOUND = static_cast<BaseType>(std::numeric_limits<typename std::underlying_type<BaseType>::type>::max()); //TODO: used as a marker, maybe find a better design?
   const BaseType type;
 
   BaseEffect(BaseType type) : type(type) { }
@@ -83,7 +83,7 @@ public:
   Order compare(const typename EffectBase::owner_type* owner, const EffectBase* other) const override
   {
     if (other->type == this->type)
-      return other->as<EnumEffect<EffectBase, Type, EnumType>>()->subType() == subType() ? Order::EQUAL : Order::DIFFERENT;
+      return other->template as<EnumEffect<EffectBase, Type, EnumType>>()->subType() == subType() ? Order::EQUAL : Order::DIFFERENT;
     else
       return Order::UNCOMPARABLE;
   }
@@ -96,7 +96,7 @@ protected:
   const DataType _data;
 
 public:
-  EnumEffectWithData(EnumType type, DataType data) : EnumEffect(type), _data(data) { }
+  EnumEffectWithData(EnumType type, DataType data) : EnumEffect<EffectBase, Type, EnumType>(type), _data(data) { }
   const DataType& data() { return _data; }
 };
 
@@ -144,7 +144,7 @@ public:
 
   template<typename T, typename EnumType> void filter(EnumType property) {
     filter([property](const EffectBase* effect) {
-      return effect->type == T::effect_type && effect->as<T>()->isAffecting(property);
+      return effect->type == T::effect_type && effect->template as<T>()->isAffecting(property);
     });
   }
 
@@ -173,7 +173,7 @@ public:
   {
     //TODO: begin or deep begin?
     return std::accumulate(begin(), end(), base, [property, owner](value_t v, const EffectBase* effect) {
-      return effect->as<ModifierEffect_>()->transformValue(property, v, owner);
+      return effect->template as<ModifierEffect_>()->transformValue(property, v, owner);
     });
   }
 
@@ -230,7 +230,7 @@ private:
     
     while (c && c->isCompound())
     {
-      const auto* ce = c->as<CompoundEffect<EffectBase>>();
+      const auto* ce = c->template as<CompoundEffect<EffectBase>>();
       stack.emplace(&ce->effects, ce->effects.begin());
       adjust();
       

@@ -138,7 +138,7 @@ public:
     //TODO: this doesn't check if kind of modifier is the same so it should be used only when this is sure (eg in an yaml defined SkillGroup) 
     if (other->isModifier())
     {
-      return modifier().compareMagnitude(owner, other->as<ModifierEffect<EffectBase, ModifierBase, PropertyType>>()->modifier());
+      return modifier().compareMagnitude(owner, other->template as<ModifierEffect<EffectBase, ModifierBase, PropertyType>>()->modifier());
     }
     else
       return Order::UNCOMPARABLE;
@@ -162,7 +162,7 @@ public:
 
 public:
   SpecificModifierEffect(PropertyType property, ModifierBase value) : ModifierEffect<EffectBase, ModifierBase, PropertyType>(EffectType, property, value) { }
-  SpecificModifierEffect(PropertyType property, ModifierBase value, predicate<const typename owner_type*> predicate) : ModifierEffect<EffectBase, ModifierBase, PropertyType>(EffectType, property, value, predicate) { }
+  SpecificModifierEffect(PropertyType property, ModifierBase value, predicate<const owner_type*> predicate) : ModifierEffect<EffectBase, ModifierBase, PropertyType>(EffectType, property, value, predicate) { }
 
 };
 

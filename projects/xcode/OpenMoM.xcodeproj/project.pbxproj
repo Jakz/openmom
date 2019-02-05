@@ -209,6 +209,16 @@
 		049B1CF11E2B3D8500A2A449 /* OptionsView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CEE1E2B3D8500A2A449 /* OptionsView.cpp */; };
 		049B1CF41E2DD76700A2A449 /* CombatMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CF21E2DD76700A2A449 /* CombatMap.cpp */; };
 		049B1CF71E2DDB9200A2A449 /* CombatUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B1CF51E2DDB9200A2A449 /* CombatUtils.cpp */; };
+		049B681A220A414E00A0455B /* UnitEffects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B6816220A414E00A0455B /* UnitEffects.cpp */; };
+		049B681B220A414E00A0455B /* UnitEffects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B6816220A414E00A0455B /* UnitEffects.cpp */; };
+		049B681C220A414E00A0455B /* UnitEffects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B6816220A414E00A0455B /* UnitEffects.cpp */; };
+		049B681D220A414E00A0455B /* UnitEffects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B6816220A414E00A0455B /* UnitEffects.cpp */; };
+		049B681E220A414E00A0455B /* Modifiers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B6817220A414E00A0455B /* Modifiers.cpp */; };
+		049B681F220A414E00A0455B /* Modifiers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B6817220A414E00A0455B /* Modifiers.cpp */; };
+		049B6820220A414E00A0455B /* Modifiers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B6817220A414E00A0455B /* Modifiers.cpp */; };
+		049B6821220A414E00A0455B /* Modifiers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049B6817220A414E00A0455B /* Modifiers.cpp */; };
+		049B6822220A414E00A0455B /* UnitEffects.h in Headers */ = {isa = PBXBuildFile; fileRef = 049B6818220A414E00A0455B /* UnitEffects.h */; };
+		049B6823220A414E00A0455B /* Modifiers.h in Headers */ = {isa = PBXBuildFile; fileRef = 049B6819220A414E00A0455B /* Modifiers.h */; };
 		04ABF7B31983286E00291B82 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B11983286E00291B82 /* Viewport.cpp */; };
 		04ABF7B619833C1E00291B82 /* UnitDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04ABF7B419833C1E00291B82 /* UnitDraw.cpp */; };
 		04B6E01D1F17A9FC00A4E4C3 /* MapEditorView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B6E01C1F17A9FC00A4E4C3 /* MapEditorView.cpp */; };
@@ -495,6 +505,10 @@
 		049B1CF31E2DD76700A2A449 /* CombatMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CombatMap.h; sourceTree = "<group>"; };
 		049B1CF51E2DDB9200A2A449 /* CombatUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CombatUtils.cpp; sourceTree = "<group>"; };
 		049B1CF61E2DDB9200A2A449 /* CombatUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CombatUtils.h; sourceTree = "<group>"; };
+		049B6816220A414E00A0455B /* UnitEffects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitEffects.cpp; sourceTree = "<group>"; };
+		049B6817220A414E00A0455B /* Modifiers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Modifiers.cpp; sourceTree = "<group>"; };
+		049B6818220A414E00A0455B /* UnitEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitEffects.h; sourceTree = "<group>"; };
+		049B6819220A414E00A0455B /* Modifiers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Modifiers.h; sourceTree = "<group>"; };
 		04ABF7B11983286E00291B82 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Viewport.cpp; sourceTree = "<group>"; };
 		04ABF7B21983286E00291B82 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		04ABF7B419833C1E00291B82 /* UnitDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitDraw.cpp; sourceTree = "<group>"; };
@@ -866,6 +880,10 @@
 		0420538A197DA9B900B4C2CA /* skills */ = {
 			isa = PBXGroup;
 			children = (
+				049B6817220A414E00A0455B /* Modifiers.cpp */,
+				049B6819220A414E00A0455B /* Modifiers.h */,
+				049B6816220A414E00A0455B /* UnitEffects.cpp */,
+				049B6818220A414E00A0455B /* UnitEffects.h */,
 				0420538E197DA9E900B4C2CA /* Effects.cpp */,
 				0420538F197DA9E900B4C2CA /* Effects.h */,
 				04205390197DA9E900B4C2CA /* Skill.cpp */,
@@ -1106,7 +1124,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				04CDA5F121ED51C0008D5DB3 /* posix.h in Headers */,
+				049B6822220A414E00A0455B /* UnitEffects.h in Headers */,
 				0495064421E64AE10021982B /* Types.h in Headers */,
+				049B6823220A414E00A0455B /* Modifiers.h in Headers */,
 				04CDA5E621ED51C0008D5DB3 /* ranges.h in Headers */,
 				0495064521E64AE10021982B /* Enums.h in Headers */,
 				04CDA5F221ED51C0008D5DB3 /* color.h in Headers */,
@@ -1298,6 +1318,7 @@
 				0489C3B21F0F35B50043ACCB /* CartographerView.cpp in Sources */,
 				0464E11419813E1A009C91ED /* CityMechanics.cpp in Sources */,
 				049B1CF01E2B3D8500A2A449 /* LoadView.cpp in Sources */,
+				049B681E220A414E00A0455B /* Modifiers.cpp in Sources */,
 				048204A5198893BA00D4B699 /* CombatMechanics.cpp in Sources */,
 				040375DE197990B900A5B5FC /* Font.cpp in Sources */,
 				04243F2B197ED3F500E8A716 /* Combat.cpp in Sources */,
@@ -1347,6 +1368,7 @@
 				049B1CF71E2DDB9200A2A449 /* CombatUtils.cpp in Sources */,
 				04C729C119853F4E002F16E6 /* MainView.cpp in Sources */,
 				0403761E197B52F800A5B5FC /* Unit.cpp in Sources */,
+				049B681A220A414E00A0455B /* UnitEffects.cpp in Sources */,
 				0487516D197F612400009661 /* Messages.cpp in Sources */,
 				0464E11A1981D1EF009C91ED /* CityScape.cpp in Sources */,
 				0439E98319868F1B0009BFF7 /* AlchemyView.cpp in Sources */,
@@ -1381,6 +1403,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				049B681B220A414E00A0455B /* UnitEffects.cpp in Sources */,
 				04E729091EBF4E14009DA0D1 /* mystrings.cpp in Sources */,
 				04E729051EBF4A6B009DA0D1 /* Localization.cpp in Sources */,
 				04E729041EBF4991009DA0D1 /* Texture.cpp in Sources */,
@@ -1394,6 +1417,7 @@
 				043A814C1F1FF8CE003E3475 /* LBXRepository.cpp in Sources */,
 				045755E41F0E93C6005F09D6 /* Path.cpp in Sources */,
 				04E282C01E0227CF00DD673D /* Util.cpp in Sources */,
+				049B681F220A414E00A0455B /* Modifiers.cpp in Sources */,
 				04C1F48B1B2535F100F7688A /* ColorMap.cpp in Sources */,
 				04E282BC1E02278700DD673D /* Common.cpp in Sources */,
 			);
@@ -1405,7 +1429,9 @@
 			files = (
 				043A814D1F1FFC09003E3475 /* LBX.cpp in Sources */,
 				043A81481F1FD6ED003E3475 /* osx.mm in Sources */,
+				049B681D220A414E00A0455B /* UnitEffects.cpp in Sources */,
 				04CDA5EF21ED51C0008D5DB3 /* format.cc in Sources */,
+				049B6821220A414E00A0455B /* Modifiers.cpp in Sources */,
 				043A81471F1FD6E2003E3475 /* Path.cpp in Sources */,
 				04DF5B541F1FA792000B1AA2 /* lbxlib.cpp in Sources */,
 			);
@@ -1446,6 +1472,7 @@
 				048616601E038086004B62B7 /* Util.cpp in Sources */,
 				048616611E038086004B62B7 /* Common.cpp in Sources */,
 				048616621E038086004B62B7 /* ValuesMechanics.cpp in Sources */,
+				049B6820220A414E00A0455B /* Modifiers.cpp in Sources */,
 				048616631E038086004B62B7 /* SpellMechanics.cpp in Sources */,
 				048616641E038086004B62B7 /* MapMechanics.cpp in Sources */,
 				048616651E038086004B62B7 /* EventMechanics.cpp in Sources */,
@@ -1495,6 +1522,7 @@
 				048616901E038086004B62B7 /* UnitDraw.cpp in Sources */,
 				048616911E038086004B62B7 /* BookView.cpp in Sources */,
 				048616921E038086004B62B7 /* CommonDraw.cpp in Sources */,
+				049B681C220A414E00A0455B /* UnitEffects.cpp in Sources */,
 				048616931E038086004B62B7 /* AlchemyView.cpp in Sources */,
 				048616941E038086004B62B7 /* ArmiesItemsView.cpp in Sources */,
 				048616951E038086004B62B7 /* ArmiesView.cpp in Sources */,
@@ -1532,7 +1560,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1571,7 +1599,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;

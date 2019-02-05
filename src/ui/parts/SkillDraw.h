@@ -3,6 +3,8 @@
 #include "common/Common.h"
 #include "common/Util.h"
 
+#include "game/units/UnitSpec.h"
+
 #include "Buttons.h"
 
 #include <string>

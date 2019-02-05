@@ -4,6 +4,7 @@
 #include "common/Common.h"
 
 #include "Effects.h"
+#include "UnitEffects.h"
 
 #include <vector>
 

@@ -7,6 +7,7 @@
 
 #include "Data.h"
 #include "GfxData.h"
+#include "Texture.h"
 #include "Localization.h"
 #include "Help.h"
 
@@ -14,6 +15,7 @@
 #include "UnitSpec.h"
 #include "Spells.h"
 #include "Skill.h"
+#include "City.h"
 #include "Effects.h"
 #include "Items.h"
 

@@ -19,6 +19,7 @@ struct CastResult
   CastResult(std::string message) : success(false), message(message) { }
 };
 
+class Cast;
 class CombatEnchSpell;
 template<typename T> class SpellCast;
 using CombatEnchCast = SpellCast<CombatEnchSpell>;

@@ -200,8 +200,8 @@ public:
   template <typename T> static auto iterators()
   { 
     return std::make_pair(
-      map_t<T>::value_iterator(containerFor<T>().begin()),
-      map_t<T>::value_iterator(containerFor<T>().end())
+      typename map_t<T>::value_iterator(containerFor<T>().begin()),
+      typename map_t<T>::value_iterator(containerFor<T>().end())
     );
   }
 
@@ -245,5 +245,5 @@ public:
 inline const Building*  operator"" _building(const char* key, size_t size) { return Data::building(key); }
 inline const Skill*  operator"" _skill(const char* key, size_t size) { return Data::skill(key); }
 inline const UnitSpec*  operator"" _unitspec(const char* key, size_t size) { return Data::unit(key); }
-inline const RaceUnitSpec*  operator"" _raceunitspec(const char* key, size_t size) { return Data::unit(key)->as<RaceUnitSpec>(); }
+//inline const RaceUnitSpec*  operator"" _raceunitspec(const char* key, size_t size) { return Data::unit(key)->as<RaceUnitSpec>(); }
 

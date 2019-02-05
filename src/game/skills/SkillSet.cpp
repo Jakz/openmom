@@ -95,7 +95,7 @@ value_t SkillSet::bonusForProperty(Property property) const
     {
       for (const Skill* skill : *u->skills())
       {        
-        effect_list seffects = skill->getEffects();
+        unit_effect_list seffects = skill->getEffects();
         seffects.filter<ArmyPropertyBonus>(property);
         effects += seffects;
       }
@@ -170,7 +170,7 @@ void SkillSet::forEachEffect(std::function<void(const UnitEffect*)> lambda) cons
 School SkillSet::glowEffect() const
 {
   auto it = std::max_element(spells.begin(), spells.end(), 
-                             [](const auto& c1, const auto& c2) { return c1.spell()->mana.manaCost > c2.spell()->mana.manaCost; });
+                             [](const auto& c1, const auto& c2) { return c1.spell()->mana.manaCost < c2.spell()->mana.manaCost; });
   
   return it != spells.end() ? it->spell()->school : School::NO_SCHOOL;
 }

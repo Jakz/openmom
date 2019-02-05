@@ -24,6 +24,7 @@ enum class MeleeType;
 class HeroSpec;
 class UnitSpec;
 class Spell;
+class Building;
 
 enum class CombatProjectile : sprite_ref
 {
