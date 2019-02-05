@@ -68,7 +68,7 @@ public:
   bool hasRoad, hasEnchantedRoad;
   std::array<bool, 2> resourceUsed;
   
-  cast_list spells;
+  map_tile_cast_list spells;
   
   Tile() { }
   
@@ -99,10 +99,10 @@ public:
   void unplaceArmy() { army = nullptr; }
   void placeArmy(Army* army);
   
-  bool isCorrupted() const { return std::find_if(spells.begin(), spells.end(), [](const SpellCast& cast) { return cast.spell == Spells::CORRUPTION; }) != spells.end(); }
+  bool isCorrupted() const { return std::find_if(spells.begin(), spells.end(), [](const MapTileSpellCast& cast) { return cast.spell() == Spells::CORRUPTION; }) != spells.end(); }
   bool isSolidLand() const { return type != TileType::OCEAN && type != TileType::SHORE; }
     
-  void addSpell(const SpellCast& cast) { spells.push_back(cast); }
+  void addSpell(const MapTileSpellCast& cast) { spells.push_back(cast); }
   
   Tile* neighbor(DirJoin dir) const;
   

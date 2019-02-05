@@ -74,7 +74,7 @@ protected:
   
   bool isStillOutpost;
   
-  cast_list spells;
+  city_cast_list spells;
   
 
 public:
@@ -116,14 +116,14 @@ public:
   bool hasBuilding(const Building *b) const { return buildings.find(b) != buildings.end(); }
   const std::set<const Building*>& getBuildings() { return buildings; }
   
-  void addSpell(const SpellCast spell) { spells.push_back(spell); }
+  void addSpell(const SpellCast<CitySpell> spell) { spells.push_back(spell); }
   bool hasSpell(const CitySpell* spell) const {
-    return std::find_if(spells.begin(), spells.end(), [spell](const SpellCast& cast) { return cast.spell == spell; }) != spells.end();
+    return std::find(spells.begin(), spells.end(), spell) != spells.end();
   }
-  void removeSpell(const SpellCast& cast) {
+  void removeSpell(const SpellCast<CitySpell>& cast) {
     for (auto it = spells.begin(); it != spells.end(); ++it) if (&cast == &(*it)) spells.erase(it);
   }
-  const cast_list& getSpells() { return spells; }
+  const city_cast_list& getSpells() { return spells; }
   
   const Race* const race;
   

@@ -79,9 +79,8 @@ Upkeep PlayerMechanics::computeUpkeep(const Player *player)
   
   // TODO: remove mana from spells on cities (even enemy's)
   
-  for (auto cast : player->spells)
-    up.mana += cast.spell->mana.upkeep;
-  
+  up.mana += std::accumulate(player->spells.begin(), player->spells.end(), 0, 
+                             [](value_t v, const auto& cast) { return v + cast.spell()->mana.upkeep; });
   return up;
 }
 

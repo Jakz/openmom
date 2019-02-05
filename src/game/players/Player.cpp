@@ -117,24 +117,19 @@ City* Player::cityWithSummoningCircle() const
   return nullptr;
 }
 
-s32 Player::castingSkillBase() const { return g->playerMechanics.computeBaseCastingSkill(this) + castingSkillGained_; }
-s32 Player::castingSkill() const { return castingSkillBase() + g->playerMechanics.computeBonusCastingSkill(this); }
-s32 Player::researchPoints() const { return g->spellMechanics.actualResearchGain(this, spellBook.getCurrentResearch()); }
+value_t Player::castingSkillBase() const { return g->playerMechanics.computeBaseCastingSkill(this) + castingSkillGained_; }
+value_t Player::castingSkill() const { return castingSkillBase() + g->playerMechanics.computeBonusCastingSkill(this); }
+value_t Player::researchPoints() const { return g->spellMechanics.actualResearchGain(this, spellBook.getCurrentResearch()); }
 
 bool Player::hasSpell(const GlobalSpell* spell) const
 {
-  for (auto s : spells)
-    if (s.spell == spell)
-      return true;
-  return false;
+  return std::find(spells.begin(), spells.end(), spell) != spells.end();
 }
-
 
 count_t Player::globalSkillSpellsCount(const Unit* u) const
 {
-  count_t count = static_cast<u32>(count_if(spells.begin(), spells.end(), [&](const SpellCast& cast) {
-    const Spell* spell = cast.spell;
-    return spell->type == SpellType::GLOBAL_SKILL;
+  count_t count = static_cast<u32>(std::count_if(spells.begin(), spells.end(), [&](const SpellCast<GlobalSpell>& cast) {
+    return cast.spell()->type == SpellType::GLOBAL_SKILL;
   }));
   
   return count;
@@ -144,7 +139,7 @@ const SkillGlobalSpell* Player::nthGlobalSkillSpell(u16 i, const Unit* u) const
 {
   for (auto& cast : spells)
   {
-    const Spell* spell = cast.spell;
+    const GlobalSpell* spell = cast.spell();
     if (spell->type == SpellType::GLOBAL_SKILL)
     {
       if (i > 0) { --i; continue; }
@@ -152,7 +147,7 @@ const SkillGlobalSpell* Player::nthGlobalSkillSpell(u16 i, const Unit* u) const
     }
   }
   
-  return static_cast<const SkillGlobalSpell*>(spells.front().spell); // TODO: hacky and bad practice, the whole management should be refactored
+  return static_cast<const SkillGlobalSpell*>(spells.front().spell()); // TODO: hacky and bad practice, the whole management should be refactored
 }
 
 

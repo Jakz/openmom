@@ -153,11 +153,11 @@ prop_value Unit::getBonusProperty(Property property) const
   // TODO: use better check to see if it's in combat
   if (army && army->getOwner()->getCombat())
   {
-    const cast_list& spells = army->getOwner()->getCombat()->getSpells();
+    const auto& spells = army->getOwner()->getCombat()->getSpells();
     
     for (auto cast : spells)
     {
-      const CombatEnchSpell* ench = cast.asCombatEnchSpell();
+      const CombatEnchSpell* ench = cast.spell();
 
       if (ench && ench->effect.type == CombatEnchEffect::Type::UNIT_MODIFIER)
       {        

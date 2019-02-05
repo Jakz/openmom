@@ -71,7 +71,7 @@ namespace combat
     combat_pathfind_info reachableTiles(const Combat* combat, const CombatUnit* unit, s16 movement);
     
     /* spells related functions */
-    void castCombatInstant(const SpellCast& cast, const CombatUnit* unit);    
+    void castCombatInstant(const SpellCast<CombatSpell>& cast, const CombatUnit* unit);    
   };
 
   class Damage

@@ -818,7 +818,7 @@ struct Retort
         case Type::ANY_SCHOOL_AT_LEAST:
         {
           u32 valid = 0;
-          for (const auto c : books)
+          for (const auto& c : books)
             valid += c >= count ? 1 : 0;
           
           return valid >= times;

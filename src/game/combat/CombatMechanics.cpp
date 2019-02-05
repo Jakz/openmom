@@ -182,7 +182,7 @@ combat_pathfind_info CombatMechanics::reachableTiles(const Combat* combat, const
   return combat_pathfind_info(unit->position, reachable);
 }
 
-void CombatMechanics::castCombatInstant(const SpellCast& cast, const CombatUnit *unit)
+void CombatMechanics::castCombatInstant(const SpellCast<CombatSpell>& cast, const CombatUnit *unit)
 {
   
 }

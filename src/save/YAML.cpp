@@ -547,7 +547,8 @@ template<> const Spell* yaml::parse(const N& node)
       //SpellDuration duration = parse<SpellDuration>(node["duration"]);
       Target target = parse<Target>(node["target"]);
       YAML_ASSERT_OR_RETURN_NULL(target == Target::ENEMY_CITY || target == Target::FRIENDLY_CITY, "CitySpell target must be a city, found '%s'", node["target"].asString().c_str());
-      return new CitySpell(name, rarity, school, SpellDuration::CONTINUOUS, target, researchCost, manaCost, combatManaCost, upkeep);
+      //TODO: parse effects
+      return new CitySpell(name, rarity, school, SpellDuration::CONTINUOUS, target, researchCost, manaCost, combatManaCost, upkeep, { });
     }
       
     default:

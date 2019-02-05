@@ -902,7 +902,7 @@ void CombatView::prepareGraphics()
     entries.add(gfx);
   }
   
-  combat->getUnits()[7]->skills()->add(SpellCast(combat->getUnits()[0]->getOwner(), Data::spell("bless"), true));
+  combat->getUnits()[7]->skills()->add(UnitSpellCast(combat->getUnits()[0]->getOwner(), Data::spell("bless"), true));
 
   //addRoads();
 

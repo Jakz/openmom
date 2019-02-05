@@ -44,7 +44,7 @@ const Skill* SkillSet::get(size_t index) const
     index -= itemPowerCount;
 
   if (index < spells.size())
-    return spells[index].asUnitSpell()->skill;
+    return spells[index].spell()->skill;
   else
     index -= spells.size();
   
@@ -69,7 +69,7 @@ void SkillSet::remove(const Spell* spell)
 value_t SkillSet::spellsUpkeep() const
 {
   return accumulate(spells.begin(), spells.end(), 0,
-                    [](value_t value, const SpellCast& cast) { return value + cast.spell->mana.upkeep; }
+                    [](value_t value, const auto& cast) { return value + cast.spell()->mana.upkeep; }
   );
 }
 
@@ -125,12 +125,12 @@ value_t SkillSet::bonusForPlayerAttribute(WizardAttribute attribute) const
 }
 
 bool SkillSet::hasSpell(const Spell* spell) const {
-  return std::find_if(spells.begin(), spells.end(), [&](const SpellCast& c) { return c.spell == spell; }) != spells.end();
+  return std::find(spells.begin(), spells.end(), spell) != spells.end();
 }
 
 bool SkillSet::hasSkill(const Skill* skill) const
 {
-  return std::find_if(this->begin(), this->end(), [skill](const Skill* it) { return it == skill; }) != this->end();
+  return std::find(this->begin(), this->end(), skill) != this->end();
 }
 
 bool SkillSet::has(const std::function<bool(const UnitEffect*)>& predicate) const
@@ -169,8 +169,8 @@ void SkillSet::forEachEffect(std::function<void(const UnitEffect*)> lambda) cons
 
 School SkillSet::glowEffect() const
 {
-  School school = NO_SCHOOL;
-  s16 mana = 0;
-  for_each(spells.begin(), spells.end(), [&](const SpellCast& cast) { if (cast.spell->mana.manaCost > mana) { mana = cast.spell->mana.manaCost; school = cast.spell->school; } });
-  return school;
+  auto it = std::max_element(spells.begin(), spells.end(), 
+                             [](const auto& c1, const auto& c2) { return c1.spell()->mana.manaCost > c2.spell()->mana.manaCost; });
+  
+  return it != spells.end() ? it->spell()->school : School::NO_SCHOOL;
 }

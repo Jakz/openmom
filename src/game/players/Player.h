@@ -80,7 +80,7 @@ protected:
   /* mana nodes owned by the player */
   std::list<ManaNode*> nodes;
   /* global spells of the player */
-  cast_list spells;
+  cast_list<GlobalSpell> spells;
   
   item_vault_t _vault;
 
@@ -152,8 +152,8 @@ public:
   void add(Army* army) { armies.push_back(army); }
   void add(Hero* hero) { heroes.push_back(hero); }
   void add(ManaNode* node) { nodes.push_back(node); } // TODO: here we store a raw pointer of a unique_ptr allocated object
-  void add(const SpellCast& spell) { spells.push_back(spell); }
-  const cast_list& getSpells() const { return spells; }
+  void add(const SpellCast<GlobalSpell>& spell) { spells.push_back(spell); }
+  const cast_list<GlobalSpell>& getSpells() const { return spells; }
   
   void updateCities();
   void growCities();

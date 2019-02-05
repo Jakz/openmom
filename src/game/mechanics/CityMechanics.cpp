@@ -500,14 +500,6 @@ value_t CityMechanics::computeMagicPower(const City *city)
   // mana bonuses given by buildings
   totalMana += findAndReduceModifiers(city, CityAttribute::MANA_POWER_OUTPUT);
 
-  if (city->hasBuilding(Building::SHRINE))
-    totalMana += 1;
-  if (city->hasBuilding(Building::TEMPLE))
-    totalMana += 2;
-  if (city->hasBuilding(Building::PARTHENON))
-    totalMana += 3;
-  if (city->hasBuilding(Building::CATHEDRAL))
-    totalMana += 4;
   if (city->hasBuilding(Building::ALCHEMISTS_GUILD))
     totalMana += 3;
   

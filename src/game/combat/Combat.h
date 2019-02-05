@@ -100,7 +100,7 @@ namespace combat
   class Combat : public CombatInterface
   {
   private:
-    cast_list spells;
+    cast_list<CombatEnchSpell> spells;
     Player* players[2];
     std::vector<CombatUnit*> allUnits;
     std::list<CombatUnit*> units[2];
@@ -143,7 +143,7 @@ namespace combat
     
     Dir relativeFacing(CombatUnit *u1, CombatUnit *u2);
     
-    void castEnchantment(const SpellCast &cast) { spells.push_back(cast); }
+    void castEnchantment(const SpellCast<CombatEnchSpell> &cast) { spells.push_back(cast); }
         
     void deployUnits();
     
@@ -163,7 +163,7 @@ namespace combat
       unit->selected = true;
     }
     
-    const cast_list& getSpells() const { return spells; }
+    const cast_list<CombatEnchSpell>& getSpells() const { return spells; }
     
     friend class CombatMechanics;
   };

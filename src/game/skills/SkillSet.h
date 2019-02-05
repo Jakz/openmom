@@ -29,7 +29,7 @@ private:
   const Unit* unit;
 
   skill_list nativeSkills;
-  cast_list spells;
+  unit_cast_list spells;
 
 
 public:
@@ -41,7 +41,7 @@ public:
   const Skill* operator[](size_t index) const { return get(index); }
   
   void add(const Skill* skill) { nativeSkills.push_back(skill); }
-  void add(const SpellCast& cast) { spells.push_back(cast); }
+  void add(const SpellCast<UnitSpell>& cast) { spells.push_back(cast); }
   
   void remove(const Spell* spell);
   
@@ -50,12 +50,12 @@ public:
   value_t bonusForProperty(Property property) const;
   value_t bonusForPlayerAttribute(WizardAttribute attribute) const;
   
-  cast_list::iterator spellIterator() { return spells.begin(); }
-  cast_list::const_iterator spellIterator() const { return spells.begin(); }
+  unit_cast_list::iterator spellIterator() { return spells.begin(); }
+  unit_cast_list::const_iterator spellIterator() const { return spells.begin(); }
   
   void purgeCombatSpells()
   {
-    auto nend = std::remove_if(spells.begin(), spells.end(), [] (const cast_list::value_type& spell) { return spell.castInCombat; });
+    auto nend = std::remove_if(spells.begin(), spells.end(), [] (const unit_cast_list::value_type& spell) { return spell.castInCombat; });
     spells.erase(nend, spells.end());
   }
   

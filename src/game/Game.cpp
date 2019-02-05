@@ -120,9 +120,9 @@ void Game::dummyInit()
   
   //a->get(3)->skills()->add(Data::skill("item_power_elemental_armor"));
   
-  SpellCast cast = SpellCast(player, Data::spell("elemental_armor"));
+  auto cast = UnitSpellCast(player, Data::spell("elemental_armor"));
   a->get(1)->skills()->add(cast);
-  SpellCast cast2 = SpellCast(player, Data::spell("resist_elements"));
+  auto cast2 = UnitSpellCast(player, Data::spell("resist_elements"));
   a->get(1)->skills()->add(cast2);
 
   
@@ -191,7 +191,7 @@ void Game::dummyInit()
   florence->addBuilding(Building::ALCHEMISTS_GUILD);
   
   for (size_t i = 0; i < 8; ++i)
-    florence->addSpell(SpellCast(player, Data::spell("earth_gate")));
+    florence->addSpell({ player, Data::spell("earth_gate")->as<CitySpell>() });
   
   settleCity(florence);
   
@@ -288,24 +288,24 @@ bool Game::startCast(Player* player, const Spell* spell)
   return true;
 }
 
-void Game::castSpell(Unit* unit, const Spell* spell, const Player* player)
+void Game::castSpell(Unit* unit, const UnitSpell* spell, const Player* player)
 {
-  unit->skills()->add(SpellCast(player, spell));
+  unit->skills()->add(UnitSpellCast(player, spell));
 }
 
 
 bool Game::castSpell(Unit* unit, Player* player, bool combat)
 {
-  SpellCast cast = SpellCast(player, player->book()->getCurrentCast());
+  UnitSpellCast cast = UnitSpellCast(player, player->book()->getCurrentCast());
   
-  if (spellMechanics.isUnitAllowed(player, static_cast<const UnitSpell*>(cast.spell), unit))
+  if (spellMechanics.isUnitAllowed(player, cast.spell(), unit))
   {
     unit->skills()->add(cast);
     
     if (!combat)
     {
       //TODO: we need to find correct handling from which players receive the animation but this is just related to possibly multiplayer games
-      localGame->currentPlayer()->push(new anims::SpellEffect(localGame->currentPlayer(), GfxData::schoolGfxSpec(cast.spell->school).overlandUnitSpellCast, unit->getArmy()->getPosition()));
+      localGame->currentPlayer()->push(new anims::SpellEffect(localGame->currentPlayer(), GfxData::schoolGfxSpec(cast.spell()->school).overlandUnitSpellCast, unit->getArmy()->getPosition()));
       cancelCast(player);
       playerMechanics.updateGlobalGains(player);
     }
@@ -328,9 +328,9 @@ bool Game::castSpell(Unit* unit, Player* player, bool combat)
 }
 
 
-void Game::castSpell(City* city, const Spell* spell, const Player* player)
+void Game::castSpell(City* city, const CitySpell* spell, const Player* player)
 {
-  city->addSpell(SpellCast(player, spell));
+  city->addSpell(SpellCast<CitySpell>(player, spell));
 }
 
 void Game::castCombatspell(Player* player, const Spell* spell)
@@ -340,9 +340,9 @@ void Game::castCombatspell(Player* player, const Spell* spell)
 
 bool Game::castSpell(City* city, Player* player)
 {
-  SpellCast cast = SpellCast(player, player->book()->getCurrentCast());
+  SpellCast<CitySpell> cast = SpellCast<CitySpell>(player, player->book()->getCurrentCast());
   
-  if (spellMechanics.isCityAllowed(player, cast.spell, city))
+  if (spellMechanics.isCityAllowed(player, cast.spell(), city))
   {
     city->addSpell(cast);
     cancelCast(player);
@@ -362,7 +362,7 @@ bool Game::castSpell(const GlobalSpell* spell, Player* player)
 {
   if (!player->hasSpell(spell))
   {
-    player->add(SpellCast(player,spell));
+    player->add(SpellCast<GlobalSpell>(player,spell));
     cancelCast(player);
   }
   
@@ -371,14 +371,14 @@ bool Game::castSpell(const GlobalSpell* spell, Player* player)
 
 bool Game::castSpell(Tile* tile, Player* player)
 {
-  SpellCast cast = SpellCast(player, player->book()->getCurrentCast());
+  MapTileSpellCast cast = MapTileSpellCast(player, player->book()->getCurrentCast());
   
-  if (spellMechanics.isTileAllowed(player, cast.spell, tile))
+  if (spellMechanics.isTileAllowed(player, cast.spell(), tile))
   {
     spellMechanics.applyTileSpell(cast, tile);
     cancelCast(player);
     //TODO: we'll need to find a way to manage everything seamlessly for local players and other kind of players such that all players which have a viewport view the animaton
-    localGame->currentPlayer()->push(new anims::SpellEffect(localGame->currentPlayer(), GfxData::specialSpellGfxEffect(cast.spell), tile->position));
+    localGame->currentPlayer()->push(new anims::SpellEffect(localGame->currentPlayer(), GfxData::specialSpellGfxEffect(cast.spell()), tile->position));
     playerMechanics.updateGlobalGains(player);
     
     return true;
@@ -390,7 +390,7 @@ bool Game::castSpell(Tile* tile, Player* player)
   }
 }
 
-void Game::dispelCast(City* city, const SpellCast& cast)
+void Game::dispelCast(City* city, const SpellCast<CitySpell>& cast)
 {
   // TODO: update layout city if spell added building
   city->removeSpell(cast);

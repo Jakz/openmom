@@ -25,7 +25,7 @@
 
 using namespace std;
 
-enum
+enum : u32
 {
   gem_undiscovered = LBXI(MAGIC, 6),
   gem_shattered = LBXI(MAGIC, 51),
@@ -105,7 +105,7 @@ void MagicView::draw()
   s16 yy = 60;
   for (auto cast : player->getSpells())
   {
-    Fonts::drawString(i18n::s(cast.spell->name), FontFaces::Medium::BLACK, 169, yy, ALIGN_LEFT);
+    Fonts::drawString(i18n::s(cast.spell()->name), FontFaces::Medium::BLACK, 169, yy, ALIGN_LEFT);
     yy += 8;
   }
   

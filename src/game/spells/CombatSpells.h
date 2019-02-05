@@ -4,12 +4,11 @@
 #include "common/Common.h"
 #include "Effects.h"
 #include "UnitSpec.h"
+//#include "Spells.h"
 
 #include <string>
 #include <functional>
 #include <vector>
-
-class SpellCast;
 
 struct CastResult
 {
@@ -19,6 +18,10 @@ struct CastResult
   CastResult() : success(true) { }
   CastResult(std::string message) : success(false), message(message) { }
 };
+
+class CombatEnchSpell;
+template<typename T> class SpellCast;
+using CombatEnchCast = SpellCast<CombatEnchSpell>;
 
 class CombatSpellEffect
 {
@@ -36,9 +39,9 @@ protected:
 class CombatSingleUnitEffect : public CombatSpellEffect
 {
 public:
-  typedef std::function<CastResult(const combat::Combat*, const combat::CombatUnit*, const SpellCast&)> lambda_type;
+  typedef std::function<CastResult(const combat::Combat*, const combat::CombatUnit*, const Cast&)> lambda_type;
   CombatSingleUnitEffect(lambda_type effect) : CombatSpellEffect(SINGLE_UNIT), effect(effect) { }
-  CastResult apply(const combat::Combat* combat, combat::CombatUnit* unit, const SpellCast& cast) const { return effect(combat,unit,cast); }
+  CastResult apply(const combat::Combat* combat, combat::CombatUnit* unit, const Cast& cast) const { return effect(combat,unit,cast); }
   
 private:
   const lambda_type effect;
@@ -47,9 +50,9 @@ private:
 class CombatGlobalEffect : public CombatSpellEffect
 {
 public:
-  typedef std::function<CastResult(const combat::Combat*, const SpellCast&)> lambda_type;
+  using lambda_type = std::function<CastResult(const combat::Combat*, const CombatEnchCast&)>;
   CombatGlobalEffect(lambda_type effect) : CombatSpellEffect(SINGLE_UNIT), effect(effect) { }
-  CastResult apply(const combat::Combat* combat, const SpellCast& cast) const { return effect(combat,cast); }
+  CastResult apply(const combat::Combat* combat, const CombatEnchCast& cast) const { return effect(combat,cast); }
 
 private:
   const lambda_type effect;
@@ -70,9 +73,9 @@ protected:
 class CombatPeriodicEnch : public CombatEnchEffect
 {
 public:
-  typedef std::function<CastResult(const combat::Combat*, const SpellCast&)> lambda_type;
+  typedef std::function<CastResult(const combat::Combat*, const CombatEnchCast&)> lambda_type;
   CombatPeriodicEnch(lambda_type effect) : CombatEnchEffect(PERIODIC), effect(effect) { }
-  CastResult applyEachTurn(const combat::Combat* combat, const SpellCast& cast) const { return effect(combat, cast); }
+  CastResult applyEachTurn(const combat::Combat* combat, const CombatEnchCast& cast) const { return effect(combat, cast); }
   
 private:
   lambda_type effect;
@@ -81,10 +84,10 @@ private:
 class CombatEnchModifier : public CombatEnchEffect
 {
 public:
-  typedef std::function<CastResult(const combat::Combat*, const Unit*, const SpellCast&, Property property)> lambda_type;
+  typedef std::function<CastResult(const combat::Combat*, const Unit*, const CombatEnchCast&, Property property)> lambda_type;
   CombatEnchModifier(std::initializer_list<const UnitPropertyBonus*> effects) : CombatEnchEffect(UNIT_MODIFIER), effects(effects) { }
   
-  value_t apply(const combat::Combat* combat, const SpellCast& cast, const Unit* unit, Property property) const;
+  value_t apply(const combat::Combat* combat, const CombatEnchCast& cast, const Unit* unit, Property property) const;
   
 private:
   value_t doApply(const Unit* unit, Property property) const
@@ -101,19 +104,19 @@ private:
 
 class CombatEffects
 {
-  const CombatSingleUnitEffect HEALING = CombatSingleUnitEffect([](const combat::Combat* combat, const combat::CombatUnit* unit, const SpellCast& cast){
+  const CombatSingleUnitEffect HEALING = CombatSingleUnitEffect([](const combat::Combat* combat, const combat::CombatUnit* unit, const Cast& cast){
     return CastResult();
   });
   
-  const CombatSingleUnitEffect STAR_FIRES = CombatSingleUnitEffect([](const combat::Combat* combat, const combat::CombatUnit* unit, const SpellCast& cast){
+  const CombatSingleUnitEffect STAR_FIRES = CombatSingleUnitEffect([](const combat::Combat* combat, const combat::CombatUnit* unit, const Cast& cast){
     return CastResult();
   });
   
-  const CombatSingleUnitEffect DISPEL_EVIL = CombatSingleUnitEffect([](const combat::Combat* combat, const combat::CombatUnit* unit, const SpellCast& cast){
+  const CombatSingleUnitEffect DISPEL_EVIL = CombatSingleUnitEffect([](const combat::Combat* combat, const combat::CombatUnit* unit, const Cast& cast){
     return CastResult();
   });
   
-  const CombatSingleUnitEffect DOOM_BOLT = CombatSingleUnitEffect([](const combat::Combat* combat, const combat::CombatUnit* unit, const SpellCast& cast){
+  const CombatSingleUnitEffect DOOM_BOLT = CombatSingleUnitEffect([](const combat::Combat* combat, const combat::CombatUnit* unit, const Cast& cast){
     
     
     // TODO
@@ -133,7 +136,7 @@ class CombatEffects
     return CastResult();
   });
   
-  const CombatGlobalEffect FLAME_STRIKE = CombatGlobalEffect([](const combat::Combat* combat, const SpellCast& cast){
+  const CombatGlobalEffect FLAME_STRIKE = CombatGlobalEffect([](const combat::Combat* combat, const auto& cast){
     //List<CombatUnit> affected = combat.enemyUnits(cast.owner);
     
     // TODO: damage effect

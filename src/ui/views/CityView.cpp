@@ -79,15 +79,15 @@ CityView::CityView(ViewManager* gvm) : View(gvm)
 void CityView::clickOnCitySpell(size_t index)
 {
   const size_t realIndex = CITY_ENCHANT_PER_PAGE*cityEnchantPage + index;
-  const cast_list& spells = city->getSpells();
+  const auto& spells = city->getSpells();
   
   if (realIndex < spells.size())
   {
-    const SpellCast& cast = spells[realIndex];
+    const auto& cast = spells[realIndex];
     assert(cast.caster().isWizard());
     if (cast.caster().player() == player)
     {
-      player->send(new msgs::Confirm(fmt::sprintf("Do you wish to turn off ^s%s^^?", i18n::s(cast.spell->name)), [&]() {
+      player->send(new msgs::Confirm(fmt::format("Do you wish to turn off ^s{}^^?", cast.spell()->name), [&]() {
         city->removeSpell(cast);
       }));
     }
@@ -257,10 +257,10 @@ void CityView::draw()
   std::advance(it, cityEnchantPage*CITY_ENCHANT_PER_PAGE);
   for (int i = 0; i < CITY_ENCHANT_PER_PAGE && it != spells.end(); ++i, ++it)
   {
-    const SpellCast& cast = *it;
+    const auto& cast = *it;
     assert(cast.caster().isWizard());
     const FontSpriteSheet* face = Fonts::fontForColor(cast.caster().player()->color);
     //Fonts::drawString(i18n::s(cast.spell->name), face, 138, 50+7*i, ALIGN_LEFT);
-    Fonts::drawString(fmt::sprintf("%s%d", i18n::s(cast.spell->name), cityEnchantPage*CITY_ENCHANT_PER_PAGE + i), face, 138, 50+7*i, ALIGN_LEFT);
+    Fonts::drawString(fmt::sprintf("%s%d", i18n::s(cast.spell()->name), cityEnchantPage*CITY_ENCHANT_PER_PAGE + i), face, 138, 50+7*i, ALIGN_LEFT);
   }
 }

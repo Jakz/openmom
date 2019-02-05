@@ -7,7 +7,7 @@
 
 #include "common/Common.h"
 
-struct Path;
+class Path;
 
 class World;
 

@@ -54,14 +54,14 @@ u32 SpellMechanics::researchableSpellAmountForRarity(SpellRarity rarity, School 
   return data[rarity][books];
 }
 
-bool SpellMechanics::isGlobalAllowed(const Player *player, const Spell *spell)
+bool SpellMechanics::isGlobalAllowed(const Player *player, const GlobalSpell *spell)
 {
-  auto spells = player->getSpells();
-  auto it = find_if(spells.begin(), spells.end(), [&](const SpellCast& cast) { return cast.spell == spell; });
-  return it == spells.end();
+  bool hasAlready = std::find(player->getSpells().begin(), player->getSpells().end(), spell) != player->getSpells().end();
+
+  return !hasAlready;
 }
 
-bool SpellMechanics::isCityAllowed(const Player *player, const Spell *spell, const City *city)
+bool SpellMechanics::isCityAllowed(const Player *player, const CitySpell *spell, const City *city)
 {
   // TODO
   return true;
@@ -107,9 +107,9 @@ bool SpellMechanics::isUnitAllowed(const Player *player, const UnitSpell *spell,
   return !unit->skills()->hasSpell(spell);
 }
 
-bool SpellMechanics::applyTileSpell(const SpellCast& cast, Tile *tile)
+bool SpellMechanics::applyTileSpell(const SpellCast<SpecialSpell>& cast, Tile *tile)
 {
-  if (cast.spell == Spells::CHANGE_TERRAIN)
+  if (cast.spell() == Spells::CHANGE_TERRAIN)
   {
     TileType newType;
     
@@ -134,7 +134,7 @@ bool SpellMechanics::applyTileSpell(const SpellCast& cast, Tile *tile)
     g->world->calcSubTile(tile->position.x, tile->position.y, tile->position.plane);
     //TODO: also on neighbors
   }
-  else if (cast.spell == Spells::RAISE_VOLCANO)
+  else if (cast.spell() == Spells::RAISE_VOLCANO)
   {
     tile->resource = Resource::NONE;
     tile->type = TileType::VOLCANO;
@@ -180,7 +180,7 @@ value_t SpellMechanics::actualResearchGain(const Player *player, const Spell *sp
   return research;
 }
 
-float SpellMechanics::computeDispelChance(const SpellCast& cast, const SpellCast& dispelCast, float dispelMultiplier)
+float SpellMechanics::computeDispelChance(const Cast& cast, const Cast& dispelCast, float dispelMultiplier)
 {
   value_t dispelMana = dispelCast.totalMana();
   value_t castMana = cast.totalMana();
@@ -198,7 +198,7 @@ float SpellMechanics::computeDispelChance(const SpellCast& cast, const SpellCast
       castMana += cast.totalMana();
     
     /* school mastery prevents dispelling */
-    if (cast.caster().player()->hasMastery(cast.spell->school))
+    if (cast.caster().player()->hasMastery(cast.spell()->school))
       castMana += cast.totalMana();
 
   }

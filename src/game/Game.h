@@ -68,14 +68,14 @@ public:
   Army* getArmyAtTile(const Position& position);
   
   bool startCast(Player* player, const Spell* spell);
-  void castSpell(Unit* unit, const Spell* spell, const Player* player);
+  void castSpell(Unit* unit, const UnitSpell* spell, const Player* player);
   bool castSpell(Unit* unit, Player* player, bool combat);
-  void castSpell(City* city, const Spell* spell, const Player* player);
+  void castSpell(City* city, const CitySpell* spell, const Player* player);
   void castCombatspell(Player* player, const Spell* spell);
   bool castSpell(City* city, Player* player);
   bool castSpell(const GlobalSpell* spell, Player* player);
   bool castSpell(Tile* tile, Player* player);
-  void dispelCast(City* city, const SpellCast& cast);
+  void dispelCast(City* city, const SpellCast<CitySpell>& cast);
   void cancelCast(Player* player);
   
   void addSkill(Unit* unit, const Skill* skill);
