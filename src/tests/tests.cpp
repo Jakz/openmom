@@ -634,6 +634,28 @@ TEST_CASE("city production") {
   }
 }
 
+TEST_CASE("city magic power") {
+  auto race = Data::race("beastmen");
+  auto game = mock::Game();
+  auto player = mock::Player(&game);
+  auto mechanics = CityMechanics(&game);
+  
+  SECTION("magic fortress") {
+    SECTION("magic fortress give 5 power when in myrran plane") {
+      auto city = mock::City(race, Position(10, 10, Plane::MYRRAN), 10000);
+      city.addBuilding("mage_fortress"_building);
+      
+      REQUIRE(mechanics.reduceModifiers(&city, CityAttribute::MANA_POWER_OUTPUT) == 5);
+    }
+    SECTION("magic fortress on arcanus plane gives 0 mana") {
+      auto city = mock::City(race, Position(10, 10, Plane::ARCANUS), 10000);
+      city.addBuilding("mage_fortress"_building);
+
+      REQUIRE(mechanics.reduceModifiers(&city, CityAttribute::MANA_POWER_OUTPUT) == 0);
+    }
+  }
+}
+
 #pragma mark SkillSet
 
 TEST_CASE("skill set class") {

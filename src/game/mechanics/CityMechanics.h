@@ -42,14 +42,12 @@ private:
   static const std::multimap<RaceID, const Building*> disallowedBuildingsByRace;
   
   Game* const game;
-  
-protected:
-  value_t findAndReduceModifiers(const City* city, CityAttribute attribute);
 
-  
 public:
   CityMechanics(Game* game) : game(game) { }
-  
+
+  value_t reduceModifiers(const City* city, CityAttribute attribute);
+
   bool isBuildingCurrentlyReplaced(const City* city, const Building* building);
   
   bool isBuildingAllowed(const City* city, const Building* building);

@@ -115,15 +115,18 @@ public:
   using property_type = PropertyType;
   using owner_type = typename EffectBase::owner_type;
   using base_type = typename EffectBase::base_type;
+  using predicate_t = predicate<const owner_type*>;
 
 protected:
   PropertyType _property;
   ModifierBase _value;
-  predicate<const owner_type*> _predicate;
+  mutable predicate_t _predicate; //TODO: mutable because they're set 
 
 public:
   ModifierEffect(base_type type, PropertyType property, ModifierBase value) : EffectBase(type), _property(property), _value(value), _predicate([](auto owner) { return true; }) { }
-  ModifierEffect(base_type type, PropertyType property, ModifierBase value, predicate<const owner_type*> predicate) : EffectBase(type), _property(property), _value(value), _predicate(predicate) { }
+  ModifierEffect(base_type type, PropertyType property, ModifierBase value, predicate_t predicate) : EffectBase(type), _property(property), _value(value), _predicate(predicate) { }
+
+  void setCondition(predicate_t condition) const { _predicate = condition; }
 
   const ModifierBase& modifier() const { return _value; }
   bool isModifier() const override { return true; }

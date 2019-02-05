@@ -1394,6 +1394,10 @@ void yaml::parseBuildings()
       Data::buildingReplacedByBuilding[replacedBuilding] = building;
     }
   }
+
+  /* TODO: hardcoded for testing */
+  const CityEffect* effect = Data::building("mage_fortress")->effects()[0];
+  effect->as<SpecificModifierEffect<CityEffect, CityEffectType::CITY_BONUS, CityModifierValue, CityAttribute>>()->setCondition([](const City* city) { return city->getPosition().plane == Plane::MYRRAN; });
   
   //TODO: hardcoded because they're useful in code for now, let's hope to be able to remove most of them through effects
   Building::BUILDERS_HALL = Data::building("builders_hall");

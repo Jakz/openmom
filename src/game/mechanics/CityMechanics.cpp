@@ -292,7 +292,7 @@ tilecount_t CityMechanics::countSurroundManaNode(const City* city, School school
   return count;
 }
 
-value_t CityMechanics::findAndReduceModifiers(const City* city, CityAttribute attribute)
+value_t CityMechanics::reduceModifiers(const City* city, CityAttribute attribute)
 {
   city_effect_list effects = city_effect_list(city->buildings.begin(), city->buildings.end());
   //TODO: add spells or buildings as spells, still need to figure out how this works
@@ -479,26 +479,18 @@ value_t CityMechanics::computeProduction(const City* city)
   
   production += production*bonus;
   
-  return (s16)std::floor(production);
+  return (value_t)std::floor(production);
 }
 
 value_t CityMechanics::computeMagicPower(const City *city)
 {
   value_t totalMana = 0;
   
-  // if city has fortress and it's on myrran then +5 mana bonus
-  if (city->hasBuilding(Building::MAGE_FORTRESS))
-  {
-    totalMana += city->owner->book()->totalBooks();
-    if (city->position.plane == MYRRAN)
-      totalMana += 5;
-  }
-  
   // mana bonuses given by racial traits
   totalMana += (value_t)std::floor((city->population/1000)*city->race->manaProducedPerCitizen);
   
   // mana bonuses given by buildings
-  totalMana += findAndReduceModifiers(city, CityAttribute::MANA_POWER_OUTPUT);
+  totalMana += reduceModifiers(city, CityAttribute::MANA_POWER_OUTPUT);
 
   if (city->hasBuilding(Building::ALCHEMISTS_GUILD))
     totalMana += 3;

@@ -245,4 +245,5 @@ public:
 inline const Building*  operator"" _building(const char* key, size_t size) { return Data::building(key); }
 inline const Skill*  operator"" _skill(const char* key, size_t size) { return Data::skill(key); }
 inline const UnitSpec*  operator"" _unitspec(const char* key, size_t size) { return Data::unit(key); }
+inline const RaceUnitSpec*  operator"" _raceunitspec(const char* key, size_t size) { return Data::unit(key)->as<RaceUnitSpec>(); }
 

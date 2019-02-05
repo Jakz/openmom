@@ -84,7 +84,7 @@ Upkeep PlayerMechanics::computeUpkeep(const Player *player)
   return up;
 }
 
-Upkeep PlayerMechanics::computeGain(const Player *player)
+Upkeep PlayerMechanics::computeGain(const Player* player)
 {
   Upkeep up;
   
@@ -98,6 +98,9 @@ Upkeep PlayerMechanics::computeGain(const Player *player)
       up.mana += unit->skills()->bonusForPlayerAttribute(WizardAttribute::MANA_GAIN);
       up.food += unit->skills()->bonusForPlayerAttribute(WizardAttribute::FOOD_GAIN);
     }
+
+  // +1 mana per spellbook
+  up.mana += player->book()->totalBooks();
 
   return up;
 }

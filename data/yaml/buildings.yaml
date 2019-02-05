@@ -502,7 +502,12 @@ buildings:
 # special
   - identifier: mage_fortress
     type: special
-    effects: [ ]
+    effects:
+      - type: city_bonus
+        property: mana_power
+        modifier: 5
+        # TODO: condition: "city.plane == myrran"
+
     visuals:
       i18n: building_mage_fortress # TODO: manage localization
       i18desc: empty # unused
