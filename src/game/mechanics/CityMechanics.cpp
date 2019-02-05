@@ -93,44 +93,19 @@ const std::multimap<RaceID, const Building*> CityMechanics::disallowedBuildingsB
 };
  */
 
-const std::map<const Building*, const Building*> CityMechanics::buildingReplacementMap = {
-  { Building::BARRACKS, Building::ARMORY },
-  
-  { Building::FIGHTERS_GUILD, Building::ARMORERS_GUILD },
-  { Building::ARMORERS_GUILD, Building::WAR_COLLEGE },
-  
-  { Building::STABLE, Building::ANIMISTS_GUILD },
-  
-  { Building::SHIP_WRIGHTS_GUILD, Building::SHIP_YARD },
-  { Building::MARITIME_GUILD, Building::SHIP_WRIGHTS_GUILD },
-  
-  { Building::LIBRARY, Building::SAGES_GUILD },
-  
-  { Building::ALCHEMISTS_GUILD, Building::UNIVERSITY },
-  
-  { Building::SHRINE, Building::TEMPLE },
-  { Building::TEMPLE, Building::PARTHENON },
-  { Building::PARTHENON, Building::CATHEDRAL },
-  
-  { Building::MARKETPLACE, Building::BANK },
-  { Building::BANK, Building::MERCHANTS_GUILD },
-  
-  { Building::GRANARY, Building::FARMERS_MARKET },
-};
-
 bool CityMechanics::isBuildingCurrentlyReplaced(const City *city, const Building* building)
-{
-  auto it = buildingReplacementMap.find(building);
+{  
+  const Building* it = Data::buildingThatReplacesBuilding(building);
   
   /* if building can have a replacement */
-  while (it != buildingReplacementMap.end())
+  while (it)
   {
     /* if city has the replacement return true */
-    if (city->hasBuilding(it->second))
+    if (city->hasBuilding(it))
       return true;
     /* otherwise traverse to the possible replacement of the replacement and try again */
     else
-      it = buildingReplacementMap.find(it->second);
+      it = Data::buildingThatReplacesBuilding(it);
   }
   
   return false;
@@ -146,7 +121,7 @@ bool CityMechanics::isBuildingAllowed(const City* city, const Building* building
     return false;
 
   auto it = Data::requiredBuildingsForBuilding(building);
-  return std::all_of(it.first, it.second, [city](decltype(*it.first)& iit) { return city->hasBuilding(iit.second); });
+  return std::all_of(it.first, it.second, [city](const auto& iit) { return city->hasBuilding(iit.second); });
 }
 
 bool CityMechanics::isBuildingAllowedForTerrain(const City *city, const Building* building)

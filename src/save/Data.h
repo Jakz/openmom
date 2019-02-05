@@ -123,6 +123,7 @@ public:
   template<typename T> using map_t = insertion_ordered_map<T>; //std::unordered_map<key_type, T>;
 
   using building_dependency_map_t = std::unordered_multimap<const Building*, const Building*>;
+  using building_replacement_map_t = std::unordered_map<const Building*, const Building*>;
   using unit_dependency_map_t = std::unordered_map<const UnitSpec*, const Building*>;
   using item_power_requirements_map_t = std::unordered_map<const Skill*, school_value_map>;
   
@@ -132,6 +133,7 @@ private:
   template<typename T> static map_t<T>& containerFor();
   
   static building_dependency_map_t buildingDependsOnBuilding;
+  static building_replacement_map_t buildingReplacedByBuilding;
   static unit_dependency_map_t unitDependsOnBuilding;
   static item_power_requirements_map_t _itemPowerRequirements;
   
@@ -216,7 +218,8 @@ public:
   
   static auto requiredBuildingsForUnit(const UnitSpec* unit) { return unitDependsOnBuilding.equal_range(unit); }
   static auto requiredBuildingsForBuilding(const Building* building) { return buildingDependsOnBuilding.equal_range(building); }
-  
+  static const Building* buildingThatReplacesBuilding(const Building* building) { auto it = buildingReplacedByBuilding.find(building); return it != buildingReplacedByBuilding.end() ? it->second : nullptr; }
+
 #if defined(DEBUG)
   template<typename T> static const char* nameForDataType();// { return "unnamed"; }
   

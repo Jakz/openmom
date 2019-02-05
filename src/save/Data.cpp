@@ -38,6 +38,7 @@ experience_levels Data::heroLevels;
 
 Data::unit_dependency_map_t Data::unitDependsOnBuilding;
 Data::building_dependency_map_t Data::buildingDependsOnBuilding;
+Data::building_replacement_map_t Data::buildingReplacedByBuilding;
 
 Data::item_power_requirements_map_t Data::_itemPowerRequirements;
 

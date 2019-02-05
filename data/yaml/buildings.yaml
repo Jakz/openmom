@@ -51,7 +51,16 @@ buildings:
     cost: 200
     upkeep: [2, 0]
     requires: [ shrine ]
-    effects: [ ]
+    replaces: shrine
+    effects:
+      - type: city_bonus
+        property: mana_power
+        modifier: 2
+      - type: city_bonus
+        property: unrest_count
+        modifier: -1
+      - type: city_effect
+        kind: allows-nightshade
     visuals:
       i18n: building_temple
       i18desc: building_desc_temple
@@ -64,7 +73,14 @@ buildings:
     cost: 400
     upkeep: [3, 0]
     requires: [ temple ]
-    effects: [ ]
+    replaces: temple
+    effects:
+      - type: city_bonus
+        property: mana_power
+        modifier: 3
+      - type: city_bonus
+        property: unrest_count
+        modifier: -1
     visuals:
       i18n: building_parthenon
       i18desc: building_desc_parthenon
@@ -77,7 +93,14 @@ buildings:
     cost: 800
     upkeep: [4, 0]
     requires: [ parthenon ]
-    effects: [ ]
+    replaces: parthenon
+    effects:
+      - type: city_bonus
+        property: mana_power
+        modifier: 4
+      - type: city_bonus
+        property: unrest_count
+        modifier: -1
     visuals:
       i18n: building_cathedral
       i18desc: building_desc_cathedral
@@ -90,6 +113,7 @@ buildings:
     cost: 300
     upkeep: [5, 0]
     requires: [ stable, university ]
+    replaces: stable
     effects: [ ]
     visuals:
       i18n: building_animists_guild
@@ -181,6 +205,7 @@ buildings:
     cost: 80
     upkeep: [2, 0]
     requires: [ smithy, barracks ]
+    replaces: armory
     effects: [ ]
     visuals:
       i18n: building_armory
@@ -207,6 +232,7 @@ buildings:
     cost: 350
     upkeep: [4, 0]
     requires: [ fighters_guild ]
+    replaces: fighters_guild
     effects: [ ]
     visuals:
       i18n: building_armorers_guild
@@ -220,6 +246,7 @@ buildings:
     cost: 500
     upkeep: [5, 0]
     requires: [ armorers_guild, university ]
+    replaces: armorers_guild
     effects: [ ]
     visuals:
       i18n: building_war_college
@@ -246,6 +273,7 @@ buildings:
     cost: 200
     upkeep: [2, 0]
     requires: [ ship_wrights_guild, sawmill ]
+    replaces: ship_wrights_guild
     effects: [ ]
     visuals:
       i18n: building_ship_yard
@@ -259,6 +287,7 @@ buildings:
     cost: 400
     upkeep: [4, 0]
     requires: [ ship_yard, armory ]
+    replaces: ship_wrights_guild
     effects: [ ]
     visuals:
       i18n: building_maritime_guild
@@ -285,6 +314,7 @@ buildings:
     cost: 250
     upkeep: [3, 0]
     requires: [ marketplace, university ]
+    replaces: marketplace
     effects: [ ]
     visuals:
       i18n: building_bank
@@ -298,6 +328,7 @@ buildings:
     cost: 600
     upkeep: [5, 0]
     requires: [ bank, ship_yard ]
+    replaces: bank
     effects: [ ]
     visuals:
       i18n: building_merchants_guild
@@ -324,6 +355,7 @@ buildings:
     cost: 100
     upkeep: [2, 0]
     requires: [ marketplace, granary ]
+    replaces: granary
     effects: [ ]
     visuals:
       i18n: building_farmers_market

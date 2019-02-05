@@ -40,7 +40,6 @@ class CityMechanics
 {
 private:
   static const std::multimap<RaceID, const Building*> disallowedBuildingsByRace;
-  static const std::map<const Building*, const Building*> buildingReplacementMap;
   
   Game* const game;
   

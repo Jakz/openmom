@@ -628,8 +628,11 @@ template<typename ModifierType> ModifierType yaml::parseModifier(const N& node)
       {
         const std::string& tpriority = node[2];
 
-        if (tpriority == "last") priority = Priority::LAST;
-        else if (tpriority == "first") priority = Priority::LAST;
+        bool isNumber = tpriority.find_first_not_of("0123456789") == std::string::npos;
+
+        if (isNumber) priority = ModifierType::priorityFor(node[2].as<value_t>());
+        else if (tpriority == "last") priority = Priority::LAST;
+        else if (tpriority == "first") priority = Priority::FIRST;
         else assert(false);
       }
 
@@ -1160,13 +1163,13 @@ template<> std::pair<const Building*, BuildingGfxSpec> yaml::parse(const N& node
   std::vector<const CityEffect*> effects;
   parse(node["effects"], effects);
 
+
   const Building* building = new Building(type, cost, upkeep, city_effect_list(effects));
   BuildingGfxSpec gfx;
 
-  /* requirements are parsed by the caller since they require
+  /* requirements and replacements are parsed by the caller since they require
      all the buildings to be loaded
   */
-
 
   /* visuals */
   {
@@ -1385,6 +1388,9 @@ void yaml::parseBuildings()
           return std::make_pair(building, requirement);
         });
       }
+
+      const Building* replacedBuilding = ybuilding["replaces"].IsDefined() ? Data::building(ybuilding["replaces"]) : nullptr;
+      Data::buildingReplacedByBuilding[replacedBuilding] = building;
     }
   }
   

@@ -39,7 +39,8 @@ public:
   const value_t cost;
   const Upkeep upkeep;
 
-  Building(Type type, value_t cost, Upkeep upkeep, city_effect_list effects) : type(type), cost(cost), upkeep(upkeep), _effects(effects){ }
+  Building(Type type, value_t cost, Upkeep upkeep, city_effect_list effects) :
+    type(type), cost(cost), upkeep(upkeep), _effects(effects) { }
   
   const city_effect_list& effects() const { return _effects;  }
 
@@ -96,6 +97,7 @@ public:
   static const Building* MAGE_FORTRESS;
   static const Building* SUMMONING_CIRCLE;
 
+  friend class yaml;
 };
 
 #endif

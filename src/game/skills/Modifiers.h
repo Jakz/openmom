@@ -45,7 +45,7 @@ struct Modifier
   using owner_type = T;
   using priority_t = value_t;
   
-  enum class Priority { BASE = 0, FIRST = 1, ANY = 512, LAST = 1024, PRIORITY_HIGHEST = 2  } priority;
+  enum class Priority { BASE = 0, FIRST = 1, ANY = 512, LAST = 1024, HIGHEST = 2, LOWEST = 511  } priority;
   enum class Type { INTEGER, FLOATING } type;
   enum class Mode { ADDITIVE, ADDITIVE_PARAMETRIC, MULTIPLICATIVE, FIXED  } mode;
   union {
@@ -53,10 +53,7 @@ struct Modifier
     value_t value;
   };
 
-  Modifier(Mode mode, value_t value, priority_t priority) : priority(static_cast<Priority>(priority)), type(Type::INTEGER), mode(mode), multiplier(value)
-  {
-    assert(!isFloating());
-  }
+  Modifier(Mode mode, value_t value, priority_t priority) : Modifier(mode, value, static_cast<Priority>(priority)) { }
 
   Modifier(Mode mode, float value, Priority priority = Priority::ANY) : priority(priority), type(Type::FLOATING), mode(mode), multiplier(value)
   { 
@@ -102,6 +99,12 @@ struct Modifier
   }
 
   bool operator<(const Modifier<ReturnType, T, F>& other) { return compareForSorting(other) == Order::LESSER; }
+
+  static inline Priority priorityFor(priority_t priority)
+  { 
+    assert(priority >= (priority_t)Priority::HIGHEST && priority <= (priority_t)Priority::LOWEST);
+    return static_cast<Priority>(priority);
+  }
 };
 
 template<typename EffectBase, typename ModifierBase, typename PropertyType>
