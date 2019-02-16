@@ -520,7 +520,7 @@ buildings:
       - type: city_bonus
         property: mana_power
         modifier: 5
-        condition: "city.plane == Plane::myrran"
+        condition: city.plane == Plane::MYRRAN
 
     visuals:
       i18n: building_mage_fortress # TODO: manage localization
