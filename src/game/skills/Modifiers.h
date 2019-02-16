@@ -14,27 +14,34 @@
 #include <vector>
 #include <stack>
 
-/*
+constexpr float operator"" _x(unsigned long long int v) { return v / 100.0f; }
+
 template<typename T>
-class Value
+class ScalableValue
 {
 private:
   T _base;
   float _multiplier;
 
 public:
-  Value(T base, float multiplier) : _base(base), _multiplier(multiplier) { assert(_multiplier >= 0.0f); }
-  Value(T base) : Value(base, 1.0f) { }
-  Value() : Value(0) { }
+  ScalableValue(T base, float multiplier) : _base(base), _multiplier(multiplier) { assert(_multiplier >= 0.0f); }
+  ScalableValue(T base) : ScalableValue(base, 1.0f) { }
+  ScalableValue() : ScalableValue(0) { }
 
-  inline Value operator+(T value) const { return Value(_base + value, _multiplier); }
-  inline Value operator-(T value) const { return Value(_base - value, _multiplier); }
-  inline Value operator*(float multiplier) const { return Value(_base, _multiplier + multiplier); }
-  inline Value operator/(float multiplier) const { return Value(_base, _multiplier - multiplier); }
+  inline ScalableValue operator+(T value) const { return ScalableValue(_base + value, _multiplier); }
+  inline ScalableValue operator-(T value) const { return ScalableValue(_base - value, _multiplier); }
+  inline ScalableValue operator*(float multiplier) const { return ScalableValue(_base, _multiplier + multiplier); }
+  inline ScalableValue operator/(float multiplier) const { return ScalableValue(_base, _multiplier - multiplier); }
+
+  ScalableValue& operator+=(T value) { this->_base += value; return *this; }
+  ScalableValue& operator*=(float value) { this->_multiplier += value; return *this; }
+  ScalableValue& operator+=(ScalableValue<T> value) { this->_base += value._base; this->_multiplier += value._multiplier; return *this; }
 
   inline operator T() const { return _base * _multiplier; }
 };
-*/
+
+using FloatValue = ScalableValue<float>;
+using Value = ScalableValue<value_t>;
 
 template<typename T>
 struct ModifierDummyGetter { value_t operator()(const T*) const { return 0; } };
@@ -42,6 +49,7 @@ struct ModifierDummyGetter { value_t operator()(const T*) const { return 0; } };
 template<typename ReturnType, typename T, typename F>
 struct Modifier
 {
+  using value_type = ReturnType;
   using owner_type = T;
   using priority_t = value_t;
   
@@ -53,6 +61,7 @@ struct Modifier
     value_t value;
   };
 
+  Modifier() : Modifier(Mode::ADDITIVE, 0, Priority::ANY) { }
   Modifier(Mode mode, value_t value, priority_t priority) : Modifier(mode, value, static_cast<Priority>(priority)) { }
 
   Modifier(Mode mode, float value, Priority priority = Priority::ANY) : priority(priority), type(Type::FLOATING), mode(mode), multiplier(value)
@@ -68,7 +77,23 @@ struct Modifier
   Modifier(value_t value) : priority(Priority::ANY), mode(Mode::ADDITIVE), type(Type::INTEGER), value(value) { }
   Modifier(float multiplier) : priority(Priority::ANY), mode(Mode::ADDITIVE_PARAMETRIC), type(Type::FLOATING), multiplier(multiplier) { }
 
-  ReturnType transformValue(ReturnType value, const T* owner) const;
+  ReturnType transformValue(ReturnType previous, const T* owner) const
+  {
+    switch (mode)
+    {
+      case Mode::ADDITIVE:
+        return previous + (type == Type::FLOATING ? static_cast<ReturnType>(multiplier) : static_cast<ReturnType>(value));
+      case Mode::ADDITIVE_PARAMETRIC:
+        return previous + static_cast<ReturnType>(F()(owner)*multiplier);
+      case Mode::MULTIPLICATIVE:
+        return static_cast<ReturnType>(previous * multiplier);
+      case Mode::FIXED:
+        return value;
+      default:
+        assert(false);
+        return 0;
+    }
+  }
   
   bool isFloating() const { return type == Type::FLOATING; }
   value_t truncatedValue() const { return isFloating() ? multiplier : value; }
@@ -144,7 +169,7 @@ public:
       return Order::UNCOMPARABLE;
   }
 
-  value_t transformValue(PropertyType property, value_t value, const owner_type* owner) const
+  typename ModifierBase::value_type transformValue(PropertyType property, typename ModifierBase::value_type value, const owner_type* owner) const
   { 
     return (property == _property && _predicate(owner)) ? _value.transformValue(value, owner) : value;
   }
@@ -167,5 +192,27 @@ public:
 };
 
 
+template<typename M, typename R, typename T>
+class modifier_list
+{
+private:
+  std::vector<M> modifiers;
+
+public:
+  modifier_list() { }
+  modifier_list(const std::initializer_list<M>& modifiers) : modifiers(modifiers) { }
+  modifier_list& operator+=(M modifier) { modifiers.push_back(modifier); return *this; }
+
+  R reduce(const T* o = nullptr) const
+  {
+    return std::accumulate(modifiers.begin(), modifiers.end(), R(),
+                          [o](R p, const M& mod) { return mod.transformValue(p, o);
+    });
+  }
+};
+
+
+class Player;
 
 using CityModifierValue = Modifier<value_t, City, ModifierDummyGetter<City>>;
+using WizardModifierValue = Modifier<Value, Player, ModifierDummyGetter<Player>>;

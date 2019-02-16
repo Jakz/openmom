@@ -30,6 +30,8 @@ using count_t = u32;
 #pragma mark Forward Declarations
 /* forward declarations */
 
+class Wizard;
+class Retort;
 class Race;
 class Game;
 class City;
@@ -38,7 +40,12 @@ class Hero;
 class ManaNode;
 class Unit;
 class UnitSpec;
+class RaceUnitSpec;
 class Skill;
+class Level;
+class Building;
+class Skill;
+class Spell;
 class Level;
 
 namespace combat

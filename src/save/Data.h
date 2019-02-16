@@ -12,14 +12,6 @@
 #include <sstream>
 #endif
 
-class UnitSpec;
-class RaceUnitSpec;
-class Race;
-class Building;
-class Skill;
-class Spell;
-class Level;
-
 using experience_levels = std::vector<std::unique_ptr<const Level>>;
 
 class Data

@@ -622,6 +622,11 @@ template<typename ModifierType> ModifierType yaml::parseModifier(const N& node)
         mode = ModifierType::Mode::FIXED;
         asFloat = false;
       }
+      else if (ttype == "multiplier")
+      {
+        mode = ModifierType::Mode::MULTIPLICATIVE;
+        asFloat = true;
+      }
       else if (ttype == "additive")
         ;
       else
@@ -652,6 +657,23 @@ template<typename ModifierType> ModifierType yaml::parseModifier(const N& node)
   return ModifierType(0);
 }
 
+template<> const WizardEffect* yaml::parse(const N& node)
+{
+  const std::string& type = node["type"];
+  WizardEffect* effect = nullptr;
+
+  if (type == "wizard_bonus")
+  {
+    WizardAttribute attribute = parse<WizardAttribute>(node["property"]);
+    WizardModifierValue modifier = parseModifier<WizardModifierValue>(node["modifier"]);
+    effect = new RetortModifierEffect(attribute, modifier);
+  }
+  else
+    assert(false);
+
+  return effect;
+}
+
 template<> const CityEffect* yaml::parse(const N& node)
 {
   const std::string& type = node["type"];
@@ -661,6 +683,7 @@ template<> const CityEffect* yaml::parse(const N& node)
   {
     static string_map<CityAttribute> mapping = {
       { "mana_power", CityAttribute::MANA_POWER_OUTPUT },
+      { "research_point", CityAttribute::RESEARCH_OUTPUT },
       { "unrest_count", CityAttribute::UNREST_COUNT }
     };
 
@@ -1226,8 +1249,13 @@ template<> const Retort* yaml::parse(const N& node)
   std::string identifier = node["identifier"];
   u16 cost = node["cost"];
   I18 i18n = i18n::keyForString(node["i18n"]);
+
+  std::vector<const WizardEffect*> effects;
+
+  if (node.hasChild("effects"))
+    parse(node["effects"], effects);
   
-  Retort* retort = new Retort(identifier, cost);
+  Retort* retort = new Retort(identifier, cost, effects);
   retort->i18n = i18n;
   
   if (node.hasChild("requirements"))

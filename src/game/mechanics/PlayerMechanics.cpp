@@ -135,10 +135,14 @@ value_t PlayerMechanics::computeManaFromNodes(const Player *player)
 
 value_t PlayerMechanics::computeResearchGain(const Player* player)
 {
-  value_t knowledge = 0;
+  Value knowledge;
 
-  for (auto c : player->cities)
+  for (const auto* c : player->cities)
     knowledge += c->getKnowledge();
+
+  /* bonus from retorts */
+  for (const Retort* retort : player->retorts)
+    knowledge += retort->effects.reduceAsModifier<RetortModifierEffect, Value>(WizardAttribute::RESEARCH, player, Value());
 
   for (const auto* army : player->armies)
     for (const auto* unit : army->getUnits())

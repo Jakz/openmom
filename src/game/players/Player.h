@@ -14,6 +14,7 @@
 #include "Spells.h"
 #include "SpellBook.h"
 #include "Army.h"
+#include "Wizard.h"
 
 #include <list>
 #include <string>

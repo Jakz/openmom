@@ -26,6 +26,10 @@ retorts:
       - type: any_school
         count: 1
         times: 2
+    effects:
+      - type: wizard_bonus
+        property: research_point
+        modifier: [0.15, multiplier]
     i18n: retort_sage_master
   - identifier: myrran
     cost: 3

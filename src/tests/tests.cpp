@@ -83,9 +83,10 @@ namespace mock
   class City : public ::City
   {
   public:
-    City(const Race* race, Position position, value_t population) : ::City(nullptr, race, "", population, position)
+    City(const Race* race, Position position, value_t population, std::initializer_list<const Building*> buildings = {}) : ::City(nullptr, race, "", population, position)
     {
-
+      for (const auto* building : buildings)
+        addBuilding(building);
     }
     
     void setFarmers(value_t farmers) { this->farmers = farmers; }
@@ -565,7 +566,7 @@ TEST_CASE("effect_list class") {
   }
 }
 
-TEST_CASE("UnitModifierValue") {
+TEST_CASE("modifiers") {
   SECTION("integral multiplier") {
     const auto l = GENERATE(range(1, 10));
     const auto m = GENERATE(1.0f, 2.0f, 3.0f, 4.0f, 5.0f);
@@ -607,7 +608,69 @@ TEST_CASE("UnitModifierValue") {
     REQUIRE(effects.reduceAsModifier<UnitPropertyBonus>(Property::MELEE, &unit, 0) == 0);
 
   }
+
+
+
+  SECTION("ScalableValue modifiers") {
+
+    SECTION("value_t base") {
+      using Value = ScalableValue<value_t>;
+      using Modifier = ::Modifier<Value, Unit, ModifierDummyGetter<Unit>>;
+      using modifier_list = ::modifier_list<Modifier, Value, Unit>;
+      using Mode = Modifier::Mode;
+      static constexpr auto Any = Modifier::Priority::ANY;
+
+
+      SECTION("base additive values convert to sum") {
+        std::array<Modifier, 5> modifiers;
+        for (value_t i = 0; i < modifiers.size(); ++i)
+          modifiers[i] = Modifier(Mode::ADDITIVE, i + 1, Any);
+
+        Value sresult = std::accumulate(modifiers.begin(), modifiers.end(), Value(), 
+                                      [](Value p, const Modifier& modifier) { return modifier.transformValue(p, nullptr); });
+
+        value_t result = sresult;
+
+        REQUIRE(result == (1 + 2 + 3 + 4 + 5));
+      }
+
+      SECTION("multipliers are added and calculated in the end") {
+        modifier_list mods;
+        mods += Modifier(Mode::ADDITIVE, 7, Any);
+        mods += Modifier(Mode::MULTIPLICATIVE, 70_x, Any); // +70%
+        mods += Modifier(Mode::MULTIPLICATIVE, -25_x, Any); // -25%
+
+        value_t result = mods.reduce();
+        REQUIRE(result == std::floor(7 * (1.0f + 0.7f - 0.25f)));
+      }
+
+      SECTION("single multiplier is applied regardless of order") {
+        Modifier base = Modifier(Mode::ADDITIVE, 7, Any);
+
+        SECTION("additive first") {
+          Modifier mult = Modifier(Mode::MULTIPLICATIVE, 100_x, Any); // adds +100%
+          value_t result = mult.transformValue(base.transformValue(Value(), nullptr), nullptr);
+          REQUIRE(result == (7 * 2));
+        }
+
+        SECTION("multiplier first") {
+          Modifier mult = Modifier(Mode::MULTIPLICATIVE, 100_x, Any); // adds +100%
+          value_t result = base.transformValue(mult.transformValue(Value(), nullptr), nullptr);
+          REQUIRE(result == (7 * 2));
+        }
+      }
+
+      SECTION("non integral results should be floored") {
+        Modifier base = Modifier(Mode::ADDITIVE, 9, Any);
+        Modifier mult = Modifier(Mode::MULTIPLICATIVE, -50_x, Any); // -50%
+        value_t result = base.transformValue(mult.transformValue(Value(), nullptr), nullptr);
+        REQUIRE(result == 4);
+      }
+    }
+
+  }
 }
+
 
 #pragma mark Cities
 
@@ -653,6 +716,39 @@ TEST_CASE("city magic power") {
 
       REQUIRE(mechanics.reduceModifiers(&city, CityAttribute::MANA_POWER_OUTPUT) == 0);
     }
+  }
+}
+
+TEST_CASE("city research output") {
+  auto race = Data::race("beastmen");
+  auto game = mock::Game();
+  auto player = mock::Player(&game);
+  auto mechanics = CityMechanics(&game);
+
+  SECTION("library") {
+    auto city = mock::City(race, Position(10, 10, Plane::ARCANUS), 10000, { "library"_building });
+    REQUIRE(mechanics.reduceModifiers(&city, CityAttribute::RESEARCH_OUTPUT) == 2);
+  }
+
+  SECTION("sage's guild") {
+    auto city = mock::City(race, Position(10, 10, Plane::ARCANUS), 10000, { "sages_guild"_building });
+    REQUIRE(mechanics.reduceModifiers(&city, CityAttribute::RESEARCH_OUTPUT) == 3);
+  }
+
+  SECTION("university") {
+    auto city = mock::City(race, Position(10, 10, Plane::ARCANUS), 10000, { "university"_building });
+    REQUIRE(mechanics.reduceModifiers(&city, CityAttribute::RESEARCH_OUTPUT) == 5);
+  }
+
+  SECTION("wizard's guild") {
+    auto city = mock::City(race, Position(10, 10, Plane::ARCANUS), 10000, { "wizards_guild"_building });
+    REQUIRE(mechanics.reduceModifiers(&city, CityAttribute::RESEARCH_OUTPUT) == 8);
+  }
+
+  SECTION("mechanics correctly works")
+  {
+    auto city = mock::City(race, Position(10, 10, Plane::ARCANUS), 10000, { "wizards_guild"_building, "library"_building });
+    REQUIRE(mechanics.computeKnowledge(&city) == 10);
   }
 }
 
@@ -882,5 +978,3 @@ TEST_CASE("combat formulas") {
     }
   }
 }
-
-

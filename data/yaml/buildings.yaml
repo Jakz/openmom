@@ -153,7 +153,10 @@ buildings:
     cost: 1000
     upkeep: [5, 3]
     requires: [ alchemists_guild, university ]
-    effects: [ ]
+    effects:
+      - type: city_bonus
+        property: research_point
+        modifier: 8
     visuals:
       i18n: building_wizards_guild
       i18desc: building_desc_wizards_guild
@@ -369,7 +372,10 @@ buildings:
     cost: 60
     upkeep: [1, 0]
     requires: [ builders_hall ]
-    effects: [ ]
+    effects:
+      - type: city_bonus
+        property: research_point
+        modifier: 2
     visuals:
       i18n: building_library
       i18desc: building_desc_library
@@ -382,7 +388,10 @@ buildings:
     cost: 300
     upkeep: [3, 0]
     requires: [ library, sages_guild ]
-    effects: [ ]
+    effects:
+      - type: city_bonus
+        property: research_point
+        modifier: 5
     visuals:
       i18n: building_university
       i18desc: building_desc_university
@@ -395,7 +404,12 @@ buildings:
     cost: 120
     upkeep: [2, 0]
     requires: [ library ]
-    effects: [ ]
+    effects:
+      - type: city_bonus
+        property: research_point
+        modifier: 3
+      - type: city_effect
+        kind: allows-nightshade
     visuals:
       i18n: building_sages_guild
       i18desc: building_desc_sages_guild
@@ -506,7 +520,7 @@ buildings:
       - type: city_bonus
         property: mana_power
         modifier: 5
-        # TODO: condition: "city.plane == myrran"
+        condition: "city.plane == Plane::myrran"
 
     visuals:
       i18n: building_mage_fortress # TODO: manage localization

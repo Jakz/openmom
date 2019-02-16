@@ -510,17 +510,10 @@ value_t CityMechanics::computeMagicPower(const City *city)
 
 value_t CityMechanics::computeKnowledge(const City *city)
 {
-  int knowledge = 0;
-  
-  if (city->hasBuilding(Building::LIBRARY))
-    knowledge += 2;
-  if (city->hasBuilding(Building::SAGES_GUILD))
-    knowledge += 3;
-  if (city->hasBuilding(Building::UNIVERSITY))
-    knowledge += 5;
-  if (city->hasBuilding(Building::WIZARDS_GUILD))
-    knowledge += 8;
-  
+  value_t knowledge = 0;
+
+  knowledge += reduceModifiers(city, CityAttribute::RESEARCH_OUTPUT);
+
   return knowledge;
 }
 

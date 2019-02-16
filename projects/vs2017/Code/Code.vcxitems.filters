@@ -734,6 +734,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Modifiers.h">
       <Filter>game\skills</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Wizard.h">
+      <Filter>game\players</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\CMakeLists.txt">

@@ -154,6 +154,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Messages.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Player.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Race.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\players\Wizard.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\Settings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Effects.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\src\game\skills\Modifiers.h" />

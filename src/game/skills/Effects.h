@@ -168,11 +168,11 @@ public:
     return *this;
   }
 
-  template<typename ModifierEffect_> 
-  value_t reduceAsModifier(typename ModifierEffect_::property_type property, const typename ModifierEffect_::owner_type* owner, value_t base = 0) const
+  template<typename ModifierEffect_, typename ReturnType = value_t> 
+  ReturnType reduceAsModifier(typename ModifierEffect_::property_type property, const typename ModifierEffect_::owner_type* owner, ReturnType base = ReturnType()) const
   {
     //TODO: begin or deep begin?
-    return std::accumulate(begin(), end(), base, [property, owner](value_t v, const EffectBase* effect) {
+    return std::accumulate(begin(), end(), base, [property, owner](ReturnType v, const EffectBase* effect) {
       return effect->template as<ModifierEffect_>()->transformValue(property, v, owner);
     });
   }
@@ -332,3 +332,13 @@ enum class SimpleCityEffect
 
 using CityEffect = BaseEffect<CityEffectType, City>;
 using city_effect_list = effect_list<CityEffect>;
+
+enum class WizardEffectType
+{
+  WIZARD_BONUS
+};
+
+class Player;
+
+using WizardEffect = BaseEffect<WizardEffectType, Player>;
+using wizard_effect_list = effect_list<WizardEffect>;
