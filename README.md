@@ -17,9 +17,11 @@ The implementation, though, should be extensible and well designed, especially r
 
 # Running
 
-The code compiles on macOS with the provided XCode project and on Debian Linux supposedly (through CMake). You need to copy all the original LBX files from the game into `data/lbx` to run the game.
+The code compiles on macOS with the provided XCode project, on Windows with the provided VS2017 project and on Debian Linux supposedly (through CMake). You need to copy all the original LBX files from the game into `data/lbx` to run the game.
 
-The XCode project also provides a LBX manager target which is used to see all the data inside LBX files and mark it as used.
+The XCode and VS2017 projects also provide a LBX manager target which is used to see all the data inside LBX files and mark it as used.
+
+On Windows you need to put your SDL2 libraries and includes inside `libs/sdl2/win` folder. Includes should go inside `libs/sdl2/win/include` while libs should go inside `libs/sdl2/win/lib/x64/` (or `x86`) folder. Don't forget to put `SDL2_Image` too which is required to compile.
 
 # Current status
 
