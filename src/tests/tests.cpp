@@ -282,6 +282,8 @@ TEST_CASE("basic stats of units") {
   }
 }
 
+//TODO: check that ranged modifiers by class actually alter values
+
 TEST_CASE("movement of armies")
 {
   MapMechanics mechanics = MapMechanics(nullptr);
@@ -338,7 +340,7 @@ TEST_CASE("movement of armies")
   std::for_each(units.begin(), units.end(), [](auto* unit) { delete unit; });
 }
 
-TEST_CASE("souting") {
+TEST_CASE("scouting") {
   SECTION("scouting sets the range, doesn't add to it")
   {
     mock::RaceUnit unit;

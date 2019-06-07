@@ -118,6 +118,10 @@ void Game::dummyInit()
 		new RaceUnit(Data::unit("barbarian_berserkers")->as<RaceUnitSpec>()),
   });
   
+  a->get(0)->skills()->add(Data::skill("mithril_weapons"));
+  a->get(1)->skills()->add(Data::skill("mithril_weapons"));
+
+  
   //a->get(3)->skills()->add(Data::skill("item_power_elemental_armor"));
   
   auto cast = UnitSpellCast(player, Data::spell("elemental_armor"));
@@ -178,7 +182,6 @@ void Game::dummyInit()
     darmy->get(0)->skills()->add({ player, Data::spell("guardian_wind")});
     darmy->get(0)->skills()->add({ player, Data::spell("elemental_armor")});
     darmy->get(0)->skills()->add({ player, Data::spell("bless")});
-
   }
   
   City* florence = new City(player, "Florence", 4000, Position(3, 3, ARCANUS));

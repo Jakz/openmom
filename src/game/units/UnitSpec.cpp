@@ -19,12 +19,31 @@ using namespace std;
 //TODO: GfxData here is not nice
 const string& UnitSpec::productionName() const { return i18n::s(GfxData::unitGfx(this).name); }
 
+Property Propertable::propertyForRangedType(Ranged ranged)
+{
+  switch (ranged)
+  {
+    case Ranged::ARROW:
+    case Ranged::BULLET:
+      return Property::RANGED_MISSILE;
+    case Ranged::ROCK:
+      return Property::RANGED_BOULDER;
+    default:
+      return Property::RANGED_MISSILE;
+  }
+}
+
 prop_value UnitSpec::getProperty(Property property) const
 {
   switch (property) {
     case Property::MELEE: return melee;
     case Property::RANGED: return ranged.strength;
     case Property::RANGED_TYPE: return static_cast<s16>(ranged.type); // TODO: hack
+      
+    case Property::RANGED_MISSILE:
+    case Property::RANGED_BOULDER:
+    case Property::RANGED_MAGIC:
+      return Propertable::propertyForRangedType(ranged.type) == property ? ranged.strength : 0;
       
     case Property::SHIELDS:
     case Property::SHIELDS_CHAOS:

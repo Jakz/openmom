@@ -54,6 +54,7 @@ public:
     
     ALLOW_MELEE_ATTACKS_AGAINST_FLYING,
     USE_MANA_POOL_FOR_RANGED_ATTACKS,
+    MAGICAL_WEAPONS,
   } effect;
   
   SimpleEffect(UnitEffectType type, Type effect) : UnitEffect(type), effect(effect) { }

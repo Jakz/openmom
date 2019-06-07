@@ -362,6 +362,10 @@ template<> Property yaml::parse(const N& node)
   static const std::unordered_map<std::string, Property> mapping = {
     { "to_hit", Property::TO_HIT },
     { "melee", Property::MELEE },
+    { "thrown_attack", Property::THROWN_ATTACK },
+    { "ranged_missile", Property::RANGED_MISSILE},
+    { "ranged_boulder", Property::RANGED_BOULDER },
+    { "ranged_magic", Property::RANGED_MAGIC },
     { "defense", Property::SHIELDS },
     { "defense_ranged", Property::SHIELDS_RANGED },
     { "defense_chaos", Property::SHIELDS_CHAOS },
@@ -773,7 +777,8 @@ template<> const UnitEffect* yaml::parse(const N& node)
       { "wall_crusher", SimpleEffect::Type::WALL_CRUSHING },
       { "invisibility", SimpleEffect::Type::INVISIBILITY },
       { "allow-melee-attacks-against-flying", SimpleEffect::Type::ALLOW_MELEE_ATTACKS_AGAINST_FLYING },
-      { "use-mana-pool-for-ranged-attacks", SimpleEffect::Type::USE_MANA_POOL_FOR_RANGED_ATTACKS }
+      { "use-mana-pool-for-ranged-attacks", SimpleEffect::Type::USE_MANA_POOL_FOR_RANGED_ATTACKS },
+      { "magical-weapons", SimpleEffect::Type::MAGICAL_WEAPONS },
     };
     
     if (mapping.find(node["kind"]) == mapping.end())

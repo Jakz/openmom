@@ -158,6 +158,9 @@ enum class Property : u8
   MELEE_TYPE,
   RANGED,
   RANGED_TYPE,
+  RANGED_MISSILE,
+  RANGED_BOULDER,
+  RANGED_MAGIC,
   SHIELDS,
   SHIELDS_RANGED,
   SHIELDS_CHAOS,
@@ -202,6 +205,8 @@ using value_t = s32;
 class Propertable
 {
 public:
+  static Property propertyForRangedType(Ranged ranged);
+  
   virtual prop_value getBaseProperty(Property property) const { return 0; }
   virtual prop_value getBonusProperty(Property property) const { return 0; }
   
@@ -216,8 +221,15 @@ public:
   
   MeleeInfo getMeleeInfo() const { return MeleeInfo(getEnumProperty<MeleeType>(Property::MELEE_TYPE), getProperty(Property::MELEE)); }
   
-  RangedInfo getRangedInfo() const { return RangedInfo(getEnumProperty<Ranged>(Property::RANGED_TYPE), getProperty(Property::RANGED), getProperty(Property::AMMO)); }
-  RangedInfo getActualRangedInfo() const { return RangedInfo(getEnumProperty<Ranged>(Property::RANGED_TYPE), getProperty(Property::RANGED), getProperty(Property::AVAILABLE_AMMO)); }
+  RangedInfo getRangedInfo() const {
+    auto type = getEnumProperty<Ranged>(Property::RANGED_TYPE);
+     return RangedInfo(type, getProperty(propertyForRangedType(type)), getProperty(Property::AMMO));
+  }
+  RangedInfo getActualRangedInfo() const {
+    auto info = getRangedInfo();
+    info.ammo = getProperty(Property::AVAILABLE_AMMO);
+    return info;
+  }
   
   prop_value getDefenseForSchool(School school) const
   {

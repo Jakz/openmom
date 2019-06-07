@@ -120,7 +120,7 @@ skills:
     visuals:
       icon: [lbx, special, 37]
       i18n: skill_scouting
-              
+# abilities           
   - identifier: first_strike
     type: native
     effects:
@@ -218,6 +218,47 @@ skills:
       icon: [lbx, special, 14]
       i18n: skill_large_shield
       hide_value: true
+  - identifier: magical_weapons
+    type: native    
+    effects: 
+      - type: unit_bonus
+        property: to_hit
+        modifier: 1
+      - type: ability
+        kind: magical-weapons
+    visuals: 
+      icon: [ png, additional-skill-icons, 0 ]
+      i18n: skill_magical_weapons
+      hide_value: true
+  - identifier: mithril_weapons
+    type: native    
+    effects: 
+      - type: unit_bonus
+        property: to_hit
+        modifier: 1
+      - type: unit_bonus
+        property: melee
+        modifier: 1
+      - type: unit_bonus
+        property: defense
+        modifier: 1
+      - type: unit_bonus
+        property: thrown_attack
+        modifier: 1
+      - type: unit_bonus
+        property: ranged_missile
+        modifier: 1
+      - type: unit_bonus
+        property: ranged_boulder
+        modifier: 1
+      - type: ability
+        kind: magical-weapons
+    visuals: 
+      icon: [ png, additional-skill-icons, 1 ]
+      i18n: skill_mithril_weapons
+      hide_value: true
+      
+      
   - identifier: thrown_1
     type: native
     effects:
