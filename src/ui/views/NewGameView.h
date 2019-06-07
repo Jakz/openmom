@@ -4,6 +4,7 @@
 #include "View.h"
 
 #include "Settings.h"
+#include "game/players/Wizard.h"
 
 class ViewManager;
 

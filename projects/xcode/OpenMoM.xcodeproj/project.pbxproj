@@ -387,6 +387,7 @@
 		04243F2A197ED3F500E8A716 /* Combat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Combat.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		04243F2C197EE9E700E8A716 /* SpellBook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = SpellBook.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		04243F2D197EE9E700E8A716 /* SpellBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpellBook.h; sourceTree = "<group>"; };
+		0427FE8522AA090A004C5883 /* Wizard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wizard.h; sourceTree = "<group>"; };
 		042C480E198B3E75009C7E22 /* LairMechanics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = LairMechanics.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		042C480F198B3E75009C7E22 /* LairMechanics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LairMechanics.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0438DFF11EAE682300981CFB /* StartView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StartView.cpp; sourceTree = "<group>"; };
@@ -673,6 +674,7 @@
 		040375CC197990B900A5B5FC /* players */ = {
 			isa = PBXGroup;
 			children = (
+				0427FE8522AA090A004C5883 /* Wizard.h */,
 				040375CD197990B900A5B5FC /* Race.cpp */,
 				040375CE197990B900A5B5FC /* Race.h */,
 				040375F3197AB04100A5B5FC /* Player.cpp */,

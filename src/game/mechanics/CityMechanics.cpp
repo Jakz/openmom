@@ -668,6 +668,11 @@ void CityMechanics::partitionPopulation(City* city)
   city->unrest = 0;
 }
 
+void CityMechanics::applyEffectsToProducedUnity(const City* city, Unit* unit)
+{
+  //TODO: if alchemy retort or alchemists'guild then magic weapons
+  // if alchemists' guild then also check for mithril and adamantium
+}
 
 void CityMechanics::buyProduction(City *city)
 {
@@ -680,7 +685,7 @@ bool CityMechanics::isProductionBuyable(const City *city)
   return city->production != Building::HOUSING && city->production != Building::TRADE_GOODS && city->owner->totalGoldPool() > (city->production->productionCost() - city->productionPool)*4;
 }
 
-void CityMechanics::updateProduction(City *c)
+void CityMechanics::updateProduction(City* c)
 {
   if (c->isStillOutpost || c->production == Building::HOUSING || c->production == Building::TRADE_GOODS)
     return;
@@ -701,48 +706,62 @@ void CityMechanics::updateProduction(City *c)
     }
     else
     {
-      Tile* t = game->world->get(c->position);
-      Army* a = t->army;
       
-      if (!a)
-        t->placeArmy(new Army(c->owner, {new RaceUnit(static_cast<const RaceUnitSpec*>(c->production))}));
-      else if (a && a->size() < 9)
+      Tile* tile = game->world->get(c->position);
+      Army* army = tile->army;
+      
+      RaceUnit* unit = new RaceUnit(static_cast<const RaceUnitSpec*>(c->production));
+      applyEffectsToProducedUnity(c, unit);
+      
+      /* no army was present, generate new army */
+      if (!army)
+        tile->placeArmy(new Army(c->owner, { unit }));
+      /* add to existing army */
+      else if (army && !army->isFull())
       {
-        a->add(new RaceUnit(static_cast<const RaceUnitSpec*>(c->production)));
-        a->unpatrol();
+        army->add(unit);
+        army->unpatrol();
       }
       else
       {
-        bool done = false;
-        
-        for (const auto& delta : Util::DIRS)
-        {
-          t = game->world->get(c->position, delta);
-          a = t->army;
+        /* add to existing army around city */
+        bool found = tile->for_each_neighbor_failfast([c, unit] (Tile* t) {
+          Army* a = t->army;
           
-          if (a && a->getOwner() == c->owner && a->size() < 9)
+          if (a && a->getOwner() == c->owner && a->isFull())
           {
-            a->add(new RaceUnit(static_cast<const RaceUnitSpec*>(c->production)));
-            done = true;
-            break;
+            a->add(unit);
+            return true;
           }
+          
+          return false;
+        });
+
+        
+        /* add to new army around city */
+        if (!found)
+        {
+          tile->for_each_neighbor([c, unit] (Tile* t) {
+            if (!t->army)
+            {
+              t->placeArmy(new Army(c->owner, { unit }));
+              return true;
+            }
+            
+            return false;
+          });
         }
         
-        if (!done)
+        if (!found)
         {
-          for (const auto& delta : Util::DIRS)
-          {
-            t = game->world->get(c->position, delta);
-            a = t->army;
-            
-            if (!a)
-            {
-              t->placeArmy(new Army(c->owner, {new RaceUnit(static_cast<const RaceUnitSpec*>(c->production))}));
-              done = true;
-              break;
-            }
-          }
+          delete unit;
+          unit = nullptr;
         }
+      }
+      
+      if (!unit)
+      {
+        //TODO: this happens when all surrounding tiles are full, find a way to manage it (follow original game behavior?)
       }
       
       c->productionPool = 0;

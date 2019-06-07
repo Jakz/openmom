@@ -11,6 +11,7 @@
 #include "Localization.h"
 #include "Help.h"
 
+#include "Wizard.h"
 #include "Level.h"
 #include "UnitSpec.h"
 #include "Spells.h"

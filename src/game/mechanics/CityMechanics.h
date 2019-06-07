@@ -94,6 +94,8 @@ public:
   bool canRoadBeBuiltOnTile(const Tile* tile);
   bool canCityBeBuiltOnTile(const Tile* tile);
   
+  void applyEffectsToProducedUnity(const City* city, Unit* unit);
+  
   void updateValues(City* city)
   {
     if (city->isStillOutpost) return;

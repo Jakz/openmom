@@ -3,6 +3,7 @@
 #include "common/Common.h"
 
 #include "Effects.h"
+#include "Modifiers.h"
 
 struct Retort
 {

@@ -327,7 +327,9 @@ enum class CityEffectType
 
 enum class SimpleCityEffect
 {
-  ALLOWS_NIGHTSHADE
+  ALLOWS_NIGHTSHADE,
+  ALLOWS_MAGIC_WEAPONS,
+  ALLOWS_MITHRIL_AND_ADAMANTIUM_WEAPONS,
 };
 
 using CityEffect = BaseEffect<CityEffectType, City>;

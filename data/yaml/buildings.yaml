@@ -114,7 +114,12 @@ buildings:
     upkeep: [5, 0]
     requires: [ stable, university ]
     replaces: stable
-    effects: [ ]
+    effects:
+      - type: city_bonus
+        property: unrest_count
+        modifier: -1
+      # TODO: units regen +6.66667%
+      # TODO: + food equal to farmer count in city
     visuals:
       i18n: building_animists_guild
       i18desc: building_desc_animists_guild

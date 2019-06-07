@@ -31,7 +31,7 @@ public:
   HitPoints(size_t count, value_t hits) : HitPoints(count, hits, hits) { }
   HitPoints(const Unit& unit);
   
-  count_t aliveCount() const { return size(); }
+  count_t aliveCount() const { return static_cast<count_t>(size()); }
   bool isAlive() const { return !empty(); }
   value_t hitsOfFigure(size_t index) const { return operator[](index); }
   value_t hitsOfLeadFigure() const { return operator[](0); }
@@ -131,7 +131,7 @@ public:
   prop_value getBonusProperty(Property property) const override;
   
   const std::string& firstName() const;
-  const std::string name() const;
+  const std::string name() const override;
   
   decltype(_items)& items() { return _items; }
   const decltype(_items)& items() const { return _items; }

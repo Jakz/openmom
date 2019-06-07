@@ -130,6 +130,7 @@ public:
   void add(Unit* unit);
   Unit* remove(Unit* unit);
   
+  bool isFull() const { return size() == 9; } //TODO: magic number
   size_t size() const { return units.size(); }
   Unit* get(size_t index) const { return *std::next(units.begin(), index); }
   const unit_list& getUnits() const { return units; }

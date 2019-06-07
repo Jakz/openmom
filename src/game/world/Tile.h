@@ -108,6 +108,7 @@ public:
   
   void for_each_neighbor_and_itself(const std::function<void(Tile*)> lambda);
   void for_each_neighbor(const std::function<void(Tile*)> lambda) const;
+  bool for_each_neighbor_failfast(const std::function<bool(Tile*)> lambda) const;
   
   DirJoin computeMask(const std::function<bool(const Tile*)> predicate) const;
 };

@@ -69,6 +69,15 @@ void Tile::for_each_neighbor(const std::function<void(Tile*)> lambda) const
     lambda(neighbor(dir));
 }
 
+bool Tile::for_each_neighbor_failfast(const std::function<bool(Tile*)> lambda) const
+{
+  for (DirJoin dir : dirs)
+    if (lambda(neighbor(dir)))
+      return true;
+  
+  return false;
+}
+
 DirJoin Tile::computeMask(const std::function<bool(const Tile*)> predicate) const
 {
   DirJoin mask = DirJoin::NONE;
