@@ -257,7 +257,33 @@ skills:
       icon: [ png, additional-skill-icons, 1 ]
       i18n: skill_mithril_weapons
       hide_value: true
-      
+  - identifier: adamantium_weapons
+    type: native    
+    effects: 
+      - type: unit_bonus
+        property: to_hit
+        modifier: 1
+      - type: unit_bonus
+        property: melee
+        modifier: 2
+      - type: unit_bonus
+        property: defense
+        modifier: 2
+      - type: unit_bonus
+        property: thrown_attack
+        modifier: 2
+      - type: unit_bonus
+        property: ranged_missile
+        modifier: 2
+      - type: unit_bonus
+        property: ranged_boulder
+        modifier: 2
+      - type: ability
+        kind: magical-weapons
+    visuals: 
+      icon: [ png, additional-skill-icons, 2 ]
+      i18n: skill_adamantium_weapons
+      hide_value: true      
       
   - identifier: thrown_1
     type: native

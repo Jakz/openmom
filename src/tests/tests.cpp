@@ -33,6 +33,7 @@ namespace mock
   {
   public:
     RaceUnitSpec() : ::RaceUnitSpec(nullptr, 1, 50, 1, RangedInfo(), 1, 1, 1, 1, 1, 1, {}) { }
+    RaceUnitSpec(RangedInfo&& ranged) : ::RaceUnitSpec(nullptr, 1, 50, 1, ranged, 1, 1, 1, 1, 1, 1, { }) { }
   };
 
   class RaceUnit : public ::RaceUnit
@@ -41,8 +42,9 @@ namespace mock
     const Level* level;
 
   public:
-    RaceUnit() : ::RaceUnit(&dummy::raceUnitSpec) { }
-    RaceUnit(skill_init_list skills) : ::RaceUnit(&dummy::raceUnitSpec)
+    RaceUnit(const RaceUnitSpec& spec) : ::RaceUnit(&spec) { }
+    RaceUnit() : RaceUnit(dummy::raceUnitSpec) { }
+    RaceUnit(skill_init_list skills) : RaceUnit()
     {
       for (const auto* skill : skills) this->skills()->add(skill);
     }
@@ -57,6 +59,12 @@ namespace mock
   public:
     Skill() : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, {}) { }
     Skill(unit_effect_list effects) : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, effects) { }
+
+    Skill(std::initializer_list<const UnitEffect*> effects) : ::ConcreteSkill(SkillBase::ARMOR_PIERCING, { })
+    {
+      for (const auto* effect : effects)
+        addEffect(effect);
+    }
 
     void addEffect(const UnitEffect* effect) { effects.push_back(effect); }
   };
@@ -368,13 +376,27 @@ TEST_CASE("items") {
   }
 }
 
+TEST_CASE("magic weapons") 
+{
+  mock::RaceUnit base;
+  mock::RaceUnit magical({ "magical_weapons"_skill });
+  mock::RaceUnit mithril({ "mithril_weapons"_skill });
+  mock::RaceUnit adamantium({ "adamantium_weapons"_skill });
+
+  SECTION ("to hit") {
+    REQUIRE(base.getProperty(Property::TO_HIT) == magical.getProperty(Property::TO_HIT) - 10);
+    REQUIRE(base.getProperty(Property::TO_HIT) == mithril.getProperty(Property::TO_HIT) - 10);
+    REQUIRE(base.getProperty(Property::TO_HIT) == adamantium.getProperty(Property::TO_HIT) - 10);
+  }
+}
+
 
 #pragma mark Unit Abilities
 
 TEST_CASE("Abilities")
 {
   SECTION("large shield modifier") {
-    const UnitSpec* spec = Data::unit("barbarian_swordsmen");
+    const UnitSpec* spec = "barbarian_swordsmen"_unitspec;
     Unit* unit = new RaceUnit(spec->as<RaceUnitSpec>());
 
     REQUIRE(spec != nullptr);
@@ -611,7 +633,52 @@ TEST_CASE("modifiers") {
 
   }
 
+  SECTION("ranged attack modifiers")
+  {
+    auto spec = mock::RaceUnitSpec(RangedInfo(Ranged::BULLET, 2, 4));
+    auto base = mock::RaceUnit(spec);
 
+    SECTION("only valid ranged type or generic one return correct value")
+    {
+      REQUIRE(base.getEnumProperty<Ranged>(Property::RANGED_TYPE) == Ranged::BULLET);
+      REQUIRE(base.getProperty(Property::RANGED) == 2);
+      REQUIRE(base.getProperty(Property::RANGED_MISSILE) == 2);
+      REQUIRE(base.getProperty(Property::RANGED_MAGIC) == 0);
+      REQUIRE(base.getProperty(Property::RANGED_BOULDER) == 0);
+      REQUIRE(base.getProperty(Property::AMMO) == 4);
+    }
+
+    SECTION("modifiers on different type of ranged doesn't affect value")
+    {
+      auto unit = base;
+
+      const UnitModifierValue modifier = UnitModifierValue(UnitModifierValue::Mode::ADDITIVE, 2);
+      auto effect = UnitPropertyBonus(Property::RANGED_BOULDER, modifier);
+      auto skill = mock::Skill({ &effect });
+
+      unit.skills()->add(&skill);
+
+      auto info = unit.getRangedInfo();
+      REQUIRE(info.strength == 2);
+      REQUIRE(unit.getProperty(Property::RANGED) == 2);
+    }
+
+    SECTION("modifiers on same type of ranged affects value")
+    {
+      auto unit = base;
+
+      const UnitModifierValue modifier = UnitModifierValue(UnitModifierValue::Mode::ADDITIVE, 3);
+      auto effect = UnitPropertyBonus(Property::RANGED_MISSILE, modifier);
+      auto skill = mock::Skill({ &effect });
+
+      unit.skills()->add(&skill);
+
+      auto info = unit.getRangedInfo();
+
+      REQUIRE(info.strength == 5);
+      REQUIRE(unit.getProperty(Property::RANGED) == 5);
+    }
+  }
 
   SECTION("ScalableValue modifiers") {
 

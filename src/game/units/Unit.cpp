@@ -108,6 +108,9 @@ prop_value Unit::getBaseProperty(Property property) const
     case Property::SHIELDS_DEATH:
       return spec->getProperty(Property::SHIELDS);
 
+    case Property::RANGED:
+      return spec->getProperty(Propertable::propertyForRangedType(getEnumProperty<Ranged>(Property::RANGED_TYPE)));
+
     case Property::RANGED_MAGIC:
     case Property::RANGED_BOULDER:
     case Property::RANGED_MISSILE:
@@ -149,11 +152,15 @@ prop_value Unit::getBonusProperty(Property property) const
     case Property::RESIST_DEATH:
       bonus += getBonusProperty(Property::RESIST);
       break;
+
+    case Property::RANGED:
+      bonus += getBonusProperty(Propertable::propertyForRangedType(getEnumProperty<Ranged>(Property::RANGED_TYPE)));
+      break;
       
-    case Property::RANGED_MAGIC:
+    /*case Property::RANGED_MAGIC:
     case Property::RANGED_BOULDER:
     case Property::RANGED_MISSILE:
-      bonus += getBonusProperty(Property::RANGED);
+      bonus += getBonusProperty(Property::RANGED);*/
       
     default: break;
   }
