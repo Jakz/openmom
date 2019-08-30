@@ -210,6 +210,13 @@ bool CombatMechanics::canMeleeAttack(const Combat* combat, const CombatUnit* att
   http://masterofmagic.wikia.com/wiki/Attack_Strength#Table_Of_Attack_Strength_Modifiers
 */
 
+template<typename... Args> 
+void CombatFormulas::log(const std::string& format, Args&&... args)
+{
+  if (logEnabled)
+    COMBAT_LOG(format.c_str(), args...);
+}
+
 value_t CombatFormulas::passingRollsf(value_t count, float chance)
 {
   value_t passed = 0;
@@ -240,9 +247,9 @@ damage_value CombatFormulas::computePhysicalDamage(value_t toHit, value_t streng
   auto currentDefender = defender_hp.begin();
   
   
-  COMBAT_LOG("computing physical damage of magnitude %d against %d figures", strength, hitPoints.size());
-  COMBAT_LOG("  attacking with %d%% hit, defending with %d shields and %d%% chance", toHit, defense, toDefend);
-  COMBAT_LOG("  possible hits: %d", totalPossibleHits);
+  log("computing physical damage of magnitude %d against %d figures", strength, hitPoints.size());
+  log("  attacking with %d%% hit, defending with %d shields and %d%% chance", toHit, defense, toDefend);
+  log("  possible hits: %d", totalPossibleHits);
   
   /* physical damage for multi figure units will make a separate defense roll for each unblocked damage on the lead figure */
   /* while there's still damage to be applied and there are still defenders */
@@ -261,7 +268,7 @@ damage_value CombatFormulas::computePhysicalDamage(value_t toHit, value_t streng
     *currentDefender -= hitsToFigure;
     effectiveHits += hitsToFigure;
     
-    COMBAT_LOG("    lead figure blocked %d of %d hits, received %d damage and %s", defendedHitsByFigure, startingHits, hitsToFigure, *currentDefender == 0 ? "died" : "survived");
+    log("    lead figure blocked %d of %d hits, received %d damage and %s", defendedHitsByFigure, startingHits, hitsToFigure, *currentDefender == 0 ? "died" : "survived");
 
     assert(totalPossibleHits == 0 || *currentDefender == 0);
 
@@ -269,13 +276,18 @@ damage_value CombatFormulas::computePhysicalDamage(value_t toHit, value_t streng
     ++currentDefender;
   }
   
-  COMBAT_LOG("  total damage: %d", effectiveHits);
+  log("  total damage: %d", effectiveHits);
   
   return effectiveHits;
 }
 
+
 damage_value CombatFormulas::computeAreaDamage(value_t toHit, value_t strength, count_t figures, value_t hitPoints, value_t toDefend, value_t defense)
 {
+  /* to hit on each figure, to defend on each figure, each damage applied separately up to max figure HP, 
+     then damage is summed altogether, will be applied as a whole
+  */
+
   /* make attack rolls for each alive figure */
   unit_figure_value registered_hits = unit_figure_value(figures, [strength, toHit] (size_t index) { return passingRolls(strength, toHit); });
   
@@ -290,20 +302,26 @@ damage_value CombatFormulas::computeAreaDamage(value_t toHit, value_t strength, 
 
   value_t totalDamage = effective_hits.sum();
 
-  COMBAT_LOG("computing area damage of magnitude %d against %d figures", strength, figures);
-  COMBAT_LOG("  attacking with %d%% hit, defending with %d shields and %d%% chance", toHit, defense, toDefend);
+  log("computing area damage of magnitude %d against %d figures", strength, figures);
+  log("  attacking with %d%% hit, defending with %d shields and %d%% chance", toHit, defense, toDefend);
   for (count_t i = 0; i < figures; ++i)
-    COMBAT_LOG("    damage for figure %d: %2d - %2d = %2d (%2d)", i+1, registered_hits[i], defended_hits[i], registered_hits[i] - defended_hits[i], effective_hits[i]);
-  COMBAT_LOG("  total damage: %d", totalDamage);
+    log("    damage for figure %d: %2d - %2d = %2d (%2d)", i+1, registered_hits[i], defended_hits[i], registered_hits[i] - defended_hits[i], effective_hits[i]);
+  log("  total damage: %d", totalDamage);
 
   return totalDamage;
 }
 
-unit_figure_value CombatFormulas::computeGazeDamage(gaze_strength strength, count_t figures, value_t resistance, value_t bonus)
+unit_figure_value CombatFormulas::computeGazeDamage(damage_amount strength, count_t figures, value_t resistance, value_t bonus)
 {
+  /* one resistance roll per figure, if passed then damage is resisted */
+  
   resistance = std::max(0, resistance + bonus);
   unit_figure_value result = unit_figure_value(figures, [resistance, strength](size_t) {
-    return Math::chance(resistance) ? strength.toDamage() : 0;
+    return Math::chanceByTenths(resistance) ? 0 : strength.toDamage();
   });
+
+  log("computing gaze damage of strength %d against %d figures with resistance %d (+%d)", strength.toDamage(), figures, resistance, bonus);
+  log("  %d figures affected", result.countPositive());
+
   return result;
 }

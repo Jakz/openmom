@@ -111,8 +111,7 @@ void Game::dummyInit()
   Army* a = new Army(player, {
     unit("hero_sage"),
     unit("hero_dervish"),
-		new RaceUnit(Data::unit("dark_elves_halberdiers")->as<RaceUnitSpec>()),
-		new RaceUnit(Data::unit("trireme")->as<RaceUnitSpec>()),
+    unit("funit_basilisk"),
 		new RaceUnit(Data::unit("dark_elves_priests")->as<RaceUnitSpec>()),
     new RaceUnit(Data::unit("lizardmen_dragon_turtle")->as<RaceUnitSpec>()),
 		new RaceUnit(Data::unit("barbarian_berserkers")->as<RaceUnitSpec>()),

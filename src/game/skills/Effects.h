@@ -20,7 +20,7 @@ using EffectGroupParam = value_t;
 struct EffectGroup
 {
 public:
-  enum class Mode : u16 { KEEP_ALL, UNIQUE, KEEP_GREATER, KEEP_LESSER, PRIORITY };
+  enum class Mode : u16 { KEEP_ALL, UNIQUE, KEEP_GREATER, KEEP_LESSER, PRIORITY, NONE };
  
 private:
   Mode _mode;

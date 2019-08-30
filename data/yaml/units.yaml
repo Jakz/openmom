@@ -717,7 +717,27 @@ units:
       i18n: funit_guardian_spirit
       icon: [lbx, units2, 56]
       figure: [lbx, figure12, 88]
-      summon: [lbx, monster, 22]    
+      summon: [lbx, monster, 22]
+# nature
+  - identifier: funit_basilisk
+    type: fantastic
+    school: nature
+    upkeep: 7
+    cost: 325
+    melee: 15
+    ranged: none
+    defense: 4
+    resistance: 7
+    hits: 30
+    figures: 1
+    movement: 2
+    sight: 2
+    skills: [ to_hit_1, stoning_gaze_1 ]
+    visuals:
+      i18n: funit_basilisk
+      icon: [lbx, units2, 62]
+      figure: [lbx, figure13, 16]
+      summon: [lbx, monster, 28]
 # chaos
   - identifier: funit_hell_hounds
     type: fantastic

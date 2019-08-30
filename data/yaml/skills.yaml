@@ -7,6 +7,8 @@ groups:
     policy: priority
   - identifier: sight_property
     policy: keep_greater
+  - identifier: stoning_attack
+    policy: none
 skills:
 # movement
   - identifier: mountaineer
@@ -372,6 +374,50 @@ skills:
     visuals:
       icon: [lbx, special, 33]
       i18n: skill_resistance_to_all
+
+# special attacks
+  - identifier: stoning_gaze_1
+    type: native
+    effects: 
+      - type: special_attack
+        kind: custom # remove this key once all special attacks has been changed
+        trigger: on_melee_attack 
+        figures: on_each
+        damage: fatal
+        bonus: -1
+        school: nature
+        group: stoning_attack
+    visuals:
+      icon: [lbx, special, 26]
+      i18n: skill_stoning_gaze
+  - identifier: stoning_gaze_2
+    type: native
+    effects: 
+      - type: special_attack
+        kind: custom # remove this key once all special attacks has been changed
+        trigger: on_melee_attack 
+        figures: on_each
+        damage: fatal
+        bonus: -2
+        school: nature
+        group: stoning_attack
+    visuals:
+      icon: [lbx, special, 26]
+      i18n: skill_stoning_gaze
+  - identifier: stoning_gaze_4
+    type: native
+    effects: 
+      - type: special_attack
+        kind: custom # remove this key once all special attacks has been changed
+        trigger: on_melee_attack 
+        figures: on_each
+        damage: fatal
+        bonus: -4
+        school: nature
+        group: stoning_attack
+    visuals:
+      icon: [lbx, special, 26]
+      i18n: skill_stoning_gaze
 # immunities
   - identifier: missile_immunity
     type: native

@@ -129,17 +129,36 @@ enum SpecialAttackType
   
   FIRE_BREATH,
   
-  POISON_TOUCH
+  POISON_TOUCH,
+
+  GENERIC
 };
 
 class SpecialAttackEffect : public EnumEffect<UnitEffect, UnitEffectType::SPECIAL_ATTACK, SpecialAttackType>
 {
-private:
-  value_t _strength;
-  
 public:
-  SpecialAttackEffect(SpecialAttackType type, value_t strength) : EnumEffect(type), _strength(strength) { }
-  value_t strength() const { return _strength; }
+  enum class Trigger { ON_MELEE_ATTACK };
+  enum class Figure { ON_EACH_FIGURE };
+
+private:
+
+  damage_amount _damage;
+  value_t _bonus;
+  Trigger _trigger;
+  Figure _figure;
+  School _school;
+
+public:
+  SpecialAttackEffect(SpecialAttackType type, value_t strength) : EnumEffect(type), _damage(strength) { }
+
+  SpecialAttackEffect(damage_amount strength, value_t bonus, Trigger trigger, Figure figure, School school) : EnumEffect(SpecialAttackType::GENERIC),
+    _damage(strength), _bonus(bonus), _trigger(trigger), _figure(figure), _school(school) { }
+  
+  value_t bonus() const { return _bonus; }
+  damage_amount damage() const { return _damage; }
+
+  Trigger trigger() const { return _trigger; }
+  Figure figure() const { return _figure; }
 };
 
 //TODO: technically is a combat instant spell

@@ -91,6 +91,8 @@ entries:
 
   funit_magic_spirit: Magic Spirit
   funit_guardian_spirit: Guardian Spirit
+
+  funit_basilisk: Basilisk
   
   funit_hell_hounds: Hell Hounds
   funit_great_drake: Great Drake
@@ -122,6 +124,8 @@ entries:
   
   skill_poison_touch: Poison
   skill_fire_breath: Fire Breath  
+
+  skill_stoning_gaze: Stoning Gaze
   
   skill_mountaineer: Mountaineer
   skill_non_corporeal: Non Corporeal

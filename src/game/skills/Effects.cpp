@@ -22,7 +22,7 @@ effect_list<EffectBase> effect_list<EffectBase>::actuals(const typename EffectBa
     
     auto pair = byGroup.equal_range(group);
     
-    if (!group || group->mode()== EffectGroup::Mode::KEEP_ALL)
+    if (!group || group->mode() == EffectGroup::Mode::KEEP_ALL || group->mode() == EffectGroup::Mode::NONE)
       std::transform(pair.first, pair.second, std::back_inserter(actuals), [] (const pair_t& entry) { return entry.second; });
     else
     {

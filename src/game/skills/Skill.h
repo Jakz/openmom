@@ -243,7 +243,7 @@ namespace skills
     COMBAT_EFFECT
   };
   
-  struct VisualInfo
+  struct SkillVisualInfo
   {
     SpriteInfo icon;
     I18 name;
@@ -257,10 +257,10 @@ namespace skills
   private:
     Type _type;
     unit_effect_list _effects;
-    VisualInfo _visual;
+    SkillVisualInfo _visual;
     
   public:
-    ConcreteSkill(Type type, const unit_effect_list& effects, VisualInfo visual) : Skill(SkillBase::FIRST_STRIKE), _type(type), _effects(effects), _visual(visual) { }
+    ConcreteSkill(Type type, const unit_effect_list& effects, SkillVisualInfo visual) : Skill(SkillBase::FIRST_STRIKE), _type(type), _effects(effects), _visual(visual) { }
     
     Type type() const { return _type; }
     
@@ -293,6 +293,7 @@ namespace skills
   }
 }
 
+//TODO: remove when all existing skills have been migrated to YAML
 class ConcreteSkill : public Skill
 {
 protected:

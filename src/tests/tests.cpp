@@ -34,6 +34,9 @@ namespace mock
   public:
     RaceUnitSpec() : ::RaceUnitSpec(nullptr, 1, 50, 1, RangedInfo(), 1, 1, 1, 1, 1, 1, {}) { }
     RaceUnitSpec(RangedInfo&& ranged) : ::RaceUnitSpec(nullptr, 1, 50, 1, ranged, 1, 1, 1, 1, 1, 1, { }) { }
+    RaceUnitSpec(value_t melee, value_t defense, value_t resistance, value_t hits) : ::RaceUnitSpec(nullptr, 1, 50, melee, RangedInfo(), defense, resistance, hits, 1, 1, 1, { }) { }
+    RaceUnitSpec(value_t melee, value_t defense, value_t resistance, value_t hits, value_t figures) : ::RaceUnitSpec(nullptr, 1, 50, melee, RangedInfo(), defense, resistance, hits, figures, 1, 1, { }) { }
+
   };
 
   class RaceUnit : public ::RaceUnit
@@ -963,6 +966,29 @@ TEST_CASE("health management of units") {
     REQUIRE(health->sum() == 0);
     REQUIRE(!health->isAlive());
   }
+}
+
+TEST_CASE("gaze attacks") {
+  constexpr value_t TEST_COUNT = 10000;
+  constexpr value_t CONFIDENCE = TEST_COUNT * 0.03f;
+
+  auto m = combat::CombatMechanics(nullptr);
+
+  SECTION("average figures killed on fatal gaze") {
+    mock::RaceUnitSpec spec = mock::RaceUnitSpec(1, 1, 5, 10, 10);
+
+    value_t killedFigures = 0;
+
+    for (value_t i = 0; i < TEST_COUNT; ++i)
+    {
+      unit_figure_value damage = m.computeGazeDamage(damage_amount(true), spec.figures, spec.resistance, 0);
+      killedFigures += damage.countPositive();
+    }
+
+    value_t expected = TEST_COUNT * (10 - spec.resistance);
+    REQUIRE(std::abs(expected - killedFigures) < CONFIDENCE);
+  }
+
 }
 
 #include "common/Util.h"

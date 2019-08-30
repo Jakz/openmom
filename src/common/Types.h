@@ -92,6 +92,21 @@ inline Size::Size(const Point& point) : w(point.x), h(point.y) { }
 
 #pragma mark Unit Related
 
+//TODO: this maybe not a good idea but for the moment it makes sense
+using damage_value = value_t;
+static constexpr damage_value FATAL_DAMAGE = std::numeric_limits<damage_value>::max();
+
+struct damage_amount
+{
+  value_t strength;
+  bool fatal;
+  bool irreversible;
+
+  damage_amount(bool alwaysFatal, bool irreversible = false) : strength(0), fatal(true), irreversible(irreversible) { }
+  damage_amount(value_t strength) : strength(strength), fatal(false), irreversible(false) { }
+  damage_value toDamage() const { return fatal ? FATAL_DAMAGE : strength; }
+};
+
 /*
 This utility class is used to manage a vector of multiple values for a single unit,
 this is useful for combat related formulas which generate damage, make rolls on separate
@@ -129,6 +144,10 @@ public:
   value_type max() const { return *std::max_element(begin(), end()); }
 
   void forEach(std::function<void(value_type&)> lambda) { std::for_each(begin(), end(), lambda); }
+  value_t count(std::function<bool(value_type)> lambda) const { return static_cast<value_t>(std::count_if(begin(), end(), lambda)); }
+  
+  value_t countPositive() const { return count([](value_type value) { return value > 0; }); }
+  value_t countZero() const { return count([](value_type value) { return value == 0; }); }
 
   void clampNegativeValuesToZero() { forEach([](value_type& v) { v = std::max(v, 0); }); }
 

@@ -18,8 +18,17 @@ const std::string skills::ConcreteSkill::name() const
     
     if (effect->type == UnitEffectType::UNIT_BONUS)
       return string("+") + to_string(static_cast<const UnitPropertyBonus*>(effect)->modifier().truncatedValue()) + " " + base;
+    //TODO: manage custom effect types, for now if there's a bonus we show it
     else if (_effects[0]->type == UnitEffectType::SPECIAL_ATTACK)
-      return base + " (" + to_string(effect->as<SpecialAttackEffect>()->strength()) + ")";
+    {
+      auto seffect = effect->as<SpecialAttackEffect>();
+
+      if (seffect->bonus() != 0)
+        return base + " (" + to_string(seffect->bonus()) + ")";
+      else
+        return base + " (" + to_string(seffect->damage().toDamage()) + ")";
+
+    }
   }
   
   return base;
@@ -62,7 +71,7 @@ const string ConcreteSkill::name() const
     if (effect->type == UnitEffectType::UNIT_BONUS)
       return string("+") + to_string(static_cast<const UnitPropertyBonus*>(effect)->modifier().truncatedValue()) + " " + Skill::name();
     else if (effects[0]->type == UnitEffectType::SPECIAL_ATTACK)
-      return Skill::name() + " (" + to_string(effect->as<SpecialAttackEffect>()->strength()) + ")";
+      return Skill::name() + " (" + to_string(effect->as<SpecialAttackEffect>()->damage().toDamage()) + ")";
   }
   
   return "";

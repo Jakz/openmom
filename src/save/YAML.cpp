@@ -29,6 +29,13 @@ std::string YAML::detail::node_data::empty_scalar;
 
 #define PARSE_ERROR(x, ...) do { LOGD("[yaml] parse error: " x, __VA_ARGS__); } while (false)
 
+#define FETCH_AND_ASSIGN_OR_FAIL(name, map, n, d) do { \
+  auto it = map.find(n.asString()); \
+  if (it != map.end()) { d = it->second; continue; } \
+  PARSE_ERROR("mapped value '%s' not found for %s", n.asString().c_str(), name); \
+  assert(false); \
+  } while(false)
+
 #define FETCH_OR_FAIL(name, map, n) do { \
   auto it = map.find(n.asString()); \
   if (it != map.end()) return it->second; \
@@ -198,6 +205,7 @@ template<> LBXID yaml::parse(const N& node)
     { "figure10", LBXID::FIGURE10 },
     { "figure11", LBXID::FIGURE11 },
     { "figure12", LBXID::FIGURE12 },
+    { "figure13", LBXID::FIGURE13 },
     
     { "itemisc", LBXID::ITEMISC},
     
@@ -413,6 +421,13 @@ template<> CombatBonus::Target yaml::parse(const N& node)
 #pragma warning(pop)
 #endif
 
+template<> damage_amount yaml::parse(const N& node)
+{
+  if (node == "fatal") return damage_amount(true);
+  else if (node.isIntegral()) return damage_amount(node);
+  //TODO: management for irreversible damage? 
+}
+
 template<> RangedInfo yaml::parse(const N& node)
 {
   if (node == "none")
@@ -578,7 +593,8 @@ template<> EffectGroup::Mode yaml::parse(const N& node)
   static const std::unordered_map<std::string, Mode> mapping = {
     { "keep_greater", EffectGroup::Mode::KEEP_GREATER },
     { "unique", EffectGroup::Mode::UNIQUE },
-    { "priority", EffectGroup::Mode::PRIORITY }
+    { "priority", EffectGroup::Mode::PRIORITY },
+    { "none", EffectGroup::Mode::NONE }
   };
   
   FETCH_OR_FAIL("EffectGroup::Mode", mapping, node);
@@ -754,16 +770,46 @@ template<> const UnitEffect* yaml::parse(const N& node)
     static std::unordered_map<std::string, SpecialAttackType> mapping = {
       { "thrown_weapon", SpecialAttackType::THROWN_ATTACK },
       { "fire_breath", SpecialAttackType::FIRE_BREATH },
-      { "poison_touch", SpecialAttackType::POISON_TOUCH }
+      { "poison_touch", SpecialAttackType::POISON_TOUCH },
+      { "custom", SpecialAttackType::GENERIC },
     };
     
     if (mapping.find(node["kind"]) == mapping.end())
       assert(false);
-    
-    s16 value = parse<s16>(node["value"]);
+
+
     SpecialAttackType kind = mapping[node["kind"]];
     
-    effect = new SpecialAttackEffect(kind, value);
+    /* TODO: for now custom management is here, non custom management should be removed completely */
+    if (kind == SpecialAttackType::GENERIC)
+    {
+      using SAE = SpecialAttackEffect;
+      
+      static std::unordered_map<std::string, SAE::Trigger> triggers = {
+        { "on_melee_attack", SAE::Trigger::ON_MELEE_ATTACK}
+      };
+
+      static std::unordered_map<std::string, SAE::Figure> figures = {
+        { "on_each", SAE::Figure::ON_EACH_FIGURE }
+      };
+
+      SAE::Trigger trigger;
+      SAE::Figure figure;
+
+      FETCH_AND_ASSIGN_OR_FAIL("SpecialAttackType::Trigger", triggers, node["trigger"], trigger);
+      FETCH_AND_ASSIGN_OR_FAIL("SpecialAttackType::Figure", figures, node["figures"], figure);
+
+      damage_amount damage = parse<damage_amount>(node["damage"]);
+      School school = parse<School>(node["school"]);
+      value_t bonus = parse<value_t>(node["bonus"]);
+
+      effect = new SpecialAttackEffect(damage, bonus, trigger, figure, school);
+    }
+    else
+    {
+      s16 value = parse<s16>(node["value"]);
+      effect = new SpecialAttackEffect(kind, value);
+    }
   }
   else if (type == "ability" || type == "parametric_ability")
   {
@@ -902,7 +948,7 @@ template<> const Skill* yaml::parse(const N& node)
   
   auto visuals = node["visuals"];
   
-  skills::VisualInfo visualInfo;
+  skills::SkillVisualInfo visualInfo;
   visualInfo.hidden = optionalParse(visuals, "hidden", false);
 
   if (!visualInfo.hidden)
