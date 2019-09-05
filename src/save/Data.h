@@ -181,6 +181,7 @@ public:
   static const Race* race(const key_type& ident);
   static const Retort* retort(const key_type& ident);
   static const Wizard* wizard(const key_type& ident);
+  static const EffectGroup* skillEffectGroup(const key_type& ident);
   
   template <typename T> static const map_t<T>& values() {
     const auto& map = containerFor<T>();
@@ -237,5 +238,6 @@ public:
 inline const Building*  operator"" _building(const char* key, size_t size) { return Data::building(key); }
 inline const Skill*  operator"" _skill(const char* key, size_t size) { return Data::skill(key); }
 inline const UnitSpec*  operator"" _unitspec(const char* key, size_t size) { return Data::unit(key); }
+inline const EffectGroup* operator"" _effectgroup(const char* key, size_t size) { return Data::skillEffectGroup(key); }
 //inline const RaceUnitSpec*  operator"" _raceunitspec(const char* key, size_t size) { return Data::unit(key)->as<RaceUnitSpec>(); }
 

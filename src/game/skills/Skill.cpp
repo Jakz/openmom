@@ -141,11 +141,7 @@ namespace skillimpl
   /**/
   static const ConcreteSkill MITHRIL_WEAPONS = ConcreteSkill(SkillBase::MITHRIL_WEAPONS, {new UnitEffect(UnitEffectType::MAGIC_WEAPONS), new UnitPropertyBonus(Property::MELEE,1)});
   static const ConcreteSkill ADAMANTIUM_WEAPONS = ConcreteSkill(SkillBase::ADAMANTIUM_WEAPONS, {new UnitEffect(UnitEffectType::MAGIC_WEAPONS), new UnitPropertyBonus(Property::MELEE,2)});
-  
-  static const ConcreteSkill IMMUNITY_MAGIC = ConcreteSkill(SkillBase::IMMUNITY_MAGIC, {new SimpleEffect(UnitEffectType::IMMUNITY, SimpleEffect::Type::IMMUNITY_MAGIC), new UnitPropertyBonus(Property::RESIST, 50)} );
-  static const ConcreteSkill IMMUNITY_MISSILE = ConcreteSkill(SkillBase::IMMUNITY_MISSILE, {new SimpleEffect(UnitEffectType::IMMUNITY, SimpleEffect::Type::IMMUNITY_MISSILE), new UnitPropertyBonus(Property::SHIELDS_RANGED, 50)} );
-  static const ConcreteSkill IMMUNITY_ILLUSIONS = ConcreteSkill(SkillBase::IMMUNITY_ILLUSIONS, {new SimpleEffect(UnitEffectType::IMMUNITY, SimpleEffect::Type::IMMUNITY_ILLUSIONS)} );
-  
+
   static const ConcreteSkill HERO_AGILITY = ConcreteSkill(SkillBase::HERO_AGILITY, {new UnitPropertyBonus(Property::SHIELDS, 1.0f)});
   // TODO: ARCANE_POWER
   static const ConcreteSkill HERO_ARMS_MASTER = ConcreteSkill(SkillBase::HERO_ARMS_MASTER, {new ArmyPropertyBonus(Property::XP, 2/*TODO , ArmyPropertyBonus::Type::NORMAL_UNITS*/)});
@@ -210,11 +206,6 @@ const Skill* Skills::STONE_TOUCH3 = nullptr;//&skillimpl::STONE_TOUCH3;
 
 const Skill* Skills::MITHRIL_WEAPONS = &skillimpl::MITHRIL_WEAPONS;
 const Skill* Skills::ADAMANTIUM_WEAPONS = &skillimpl::ADAMANTIUM_WEAPONS;
-
-const Skill* Skills::IMMUNITY_MAGIC = &skillimpl::IMMUNITY_MAGIC;
-const Skill* Skills::IMMUNITY_MISSILE = &skillimpl::IMMUNITY_MISSILE;
-const Skill* Skills::IMMUNITY_ILLUSIONS = &skillimpl::IMMUNITY_ILLUSIONS;
-
 
 const Skill* Skills::SPELL_ELDRITCH_WEAPON = &skillimpl::SPELL_ELDRITCH_WEAPON;
 const Skill* Skills::SPELL_FLAME_BLADE = nullptr;

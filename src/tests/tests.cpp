@@ -857,7 +857,7 @@ TEST_CASE("basic skill set functions") {
 TEST_CASE("movement effects") {
   SECTION("check if basic movement finding behavor works") {
     MovementEffect movement(MovementType::FLYING);
-    skills::ConcreteSkill skill = skills::ConcreteSkill(skills::Type::NATIVE, { &movement }, skills::VisualInfo());
+    skills::ConcreteSkill skill = skills::ConcreteSkill(skills::Type::NATIVE, { &movement }, skills::SkillVisualInfo());
     SkillSet set = SkillSet({ &skill });
     REQUIRE(set.has(MovementType::FLYING));
   }
@@ -865,7 +865,7 @@ TEST_CASE("movement effects") {
   SECTION("behave like if no flying is present with disallow") {
     MovementEffect movement(MovementType::FLYING);
     MovementDisallowEffect dmovement(MovementType::FLYING);
-    skills::ConcreteSkill skill = skills::ConcreteSkill(skills::Type::NATIVE, { &movement, &dmovement }, skills::VisualInfo());
+    skills::ConcreteSkill skill = skills::ConcreteSkill(skills::Type::NATIVE, { &movement, &dmovement }, skills::SkillVisualInfo());
     SkillSet set = SkillSet({ &skill });
     REQUIRE(!set.has(MovementType::FLYING));
   }
@@ -968,11 +968,14 @@ TEST_CASE("health management of units") {
   }
 }
 
-TEST_CASE("gaze attacks") {
-  constexpr value_t TEST_COUNT = 10000;
-  constexpr value_t CONFIDENCE = TEST_COUNT * 0.03f;
+static constexpr value_t TEST_COUNT = 10000;
+static constexpr value_t CONFIDENCE = TEST_COUNT * 0.03f;
 
+static constexpr value_t MAX_RESISTANCE = 10;
+
+TEST_CASE("gaze attacks") {
   auto m = combat::CombatMechanics(nullptr);
+  m.setLogging(false);
 
   SECTION("average figures killed on fatal gaze") {
     mock::RaceUnitSpec spec = mock::RaceUnitSpec(1, 1, 5, 10, 10);
@@ -985,10 +988,41 @@ TEST_CASE("gaze attacks") {
       killedFigures += damage.countPositive();
     }
 
-    value_t expected = TEST_COUNT * (10 - spec.resistance);
-    REQUIRE(std::abs(expected - killedFigures) < CONFIDENCE);
+    value_t expected = TEST_COUNT * std::max(MAX_RESISTANCE - spec.resistance, 0);
+    REQUIRE(std::abs(expected - killedFigures) <= CONFIDENCE);
   }
 
+}
+
+TEST_CASE("poison damage") {
+  auto m = combat::CombatMechanics(nullptr);
+
+  const auto STRENGTH = GENERATE(0, 1, 3, 5, 8, 10, 15);
+  const auto RESISTANCE = GENERATE(0, 1, 3, 5, 8, 10, 15);
+
+  DYNAMIC_SECTION("average damage of " << STRENGTH << " resisted by " << RESISTANCE) {
+    damage_value damage = 0;
+
+    for (value_t i = 0; i < TEST_COUNT; ++i)
+      damage += m.computePoisonDamage(STRENGTH, RESISTANCE, 0);
+
+    value_t expected = TEST_COUNT * STRENGTH * std::max(MAX_RESISTANCE - RESISTANCE, 0) / 10.0f;
+
+    INFO("actual damage: " << damage << " expected average: " << expected);
+    REQUIRE(std::abs(expected - damage) <= CONFIDENCE);
+  }
+
+
+}
+
+TEST_CASE("immunities") {
+  
+  SECTION("poison attack and poison immunity") {
+    auto immunity = "immunity_poison"_skill;
+    auto set = SkillSet({ immunity });
+
+    set.isImmuneTo("poison_attack"_effectgroup);
+  }
 }
 
 #include "common/Util.h"

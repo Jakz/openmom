@@ -158,6 +158,15 @@ bool SkillSet::hasSimpleEffect(SimpleEffect::Type type) const
   return skills::hasSimpleEffect(*this, type);
 }
 
+bool SkillSet::isImmuneTo(const EffectGroup* group) const
+{
+  bool hasImmunity = false;
+  forEachEffect([group, &hasImmunity] (const UnitEffect* effect) {
+    hasImmunity |= effect->type == UnitEffectType::IMMUNITY && effect->as<ImmunityToGroupEffect>()->group() == group;
+  });
+  return hasImmunity;
+}
+
 void SkillSet::forEachEffect(std::function<void(const UnitEffect*)> lambda) const
 {
   std::for_each(begin(), end(), [&lambda] (const Skill* skill) {

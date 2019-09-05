@@ -65,6 +65,7 @@ public:
     
   bool has(const std::function<bool(const UnitEffect*)>& predicate) const;
   
+  bool isImmuneTo(const EffectGroup* group) const;
   bool has(MovementType type) const;
   
   void forEachEffect(std::function<void(const UnitEffect*)> lambda) const;

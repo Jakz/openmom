@@ -40,7 +40,12 @@ namespace combat
     /* School is used but this for no school damage we're using School::NO_SCHOOL which is not a good design */
     damage_value computeAreaDamage(value_t toHit, value_t strength, count_t figures, value_t hitPoints, value_t toDefend, value_t defense);
     damage_value computePhysicalDamage(value_t toHit, value_t strength, const HitPoints& hitPoints, value_t toDefend, value_t defense);
+
+
     unit_figure_value computeGazeDamage(damage_amount strength, count_t figures, value_t resistance, value_t bonus);
+    damage_value computePoisonDamage(damage_amount strength, value_t resistance, value_t bonus);
+
+    void setLogging(bool logEnabled) { this->logEnabled = logEnabled; }
   };
   
   class CombatMechanics : public CombatFormulas

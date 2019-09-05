@@ -18,6 +18,8 @@ template<> const char* Data::nameForDataType<const Race*>() { return "Race"; }
 template<> const char* Data::nameForDataType<const Wizard*>() { return "Wizard"; }
 template<> const char* Data::nameForDataType<const Skill*>() { return "Skill"; }
 template<> const char* Data::nameForDataType<const Building*>() { return "Building"; }
+template<> const char* Data::nameForDataType<const EffectGroup*>() { return "EffectGroup"; }
+
 #endif
 
 const std::array<School, 5>& Data::schoolsWithoutArcane()
@@ -78,6 +80,11 @@ template<> Data::map_t<const Building*>& Data::containerFor() {
   return buildingMap;
 }
 
+template<> Data::map_t<const EffectGroup*>& Data::containerFor() {
+  static map_t<const EffectGroup*> effectsGroupMap;
+  return effectsGroupMap;
+}
+
 const Skill* Data::skill(const key_type& ident) { return get<const Skill*>(ident); }
 const Building* Data::building(const key_type& ident) { return get<const Building*>(ident); }
 const UnitSpec* Data::unit(const key_type& ident) { return get<const UnitSpec*>(ident); }
@@ -85,6 +92,7 @@ const Spell* Data::spell(const key_type& ident) { return get<const Spell*>(ident
 const Race* Data::race(const key_type& ident) { return get<const Race*>(ident); }
 const Retort* Data::retort(const key_type& ident) { return get<const Retort*>(ident); }
 const Wizard* Data::wizard(const key_type& ident) { return get<const Wizard*>(ident); }
+const EffectGroup* Data::skillEffectGroup(const key_type& ident) { return get<const EffectGroup*>(ident); }
 
 std::vector<const RaceUnitSpec*> Data::unitsForRace(const Race* race)
 {

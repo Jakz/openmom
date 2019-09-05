@@ -314,7 +314,6 @@ damage_value CombatFormulas::computeAreaDamage(value_t toHit, value_t strength, 
 unit_figure_value CombatFormulas::computeGazeDamage(damage_amount strength, count_t figures, value_t resistance, value_t bonus)
 {
   /* one resistance roll per figure, if passed then damage is resisted */
-  
   resistance = std::max(0, resistance + bonus);
   unit_figure_value result = unit_figure_value(figures, [resistance, strength](size_t) {
     return Math::chanceByTenths(resistance) ? 0 : strength.toDamage();
@@ -324,4 +323,11 @@ unit_figure_value CombatFormulas::computeGazeDamage(damage_amount strength, coun
   log("  %d figures affected", result.countPositive());
 
   return result;
+}
+
+damage_value CombatFormulas::computePoisonDamage(damage_amount strength, value_t resistance, value_t bonus)
+{
+  /* for each point of damage we do a resistance roll: failure is 1 point of damage */
+  auto passed = passingRolls(strength.toDamage(), (resistance + bonus) * 10);
+  return strength.toDamage() - passed;
 }

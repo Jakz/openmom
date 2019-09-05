@@ -93,6 +93,7 @@ entries:
   funit_guardian_spirit: Guardian Spirit
 
   funit_basilisk: Basilisk
+  funit_colossus: Colossus
   
   funit_hell_hounds: Hell Hounds
   funit_great_drake: Great Drake
@@ -115,6 +116,7 @@ entries:
   skill_purify: Purify
   skill_healer: Healer
   skill_meld_with_node: Meld With Node
+  skill_wall_crusher: Wall Crusher
 
   skill_first_strike: First Strike
   skill_large_shield: Large Shield
@@ -133,6 +135,9 @@ entries:
   skill_resistance_to_all: Resistance To All
   
   skill_immunity_missile: Missile Immunity
+
+  skill_immunity_poison: Poison Immunity
+  skill_immunity_stoning: Stoning Immunity
 
   skill_to_hit: To Hit
   skill_thrown: Thrown

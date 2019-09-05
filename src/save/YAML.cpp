@@ -583,10 +583,6 @@ template<> const Spell* yaml::parse(const N& node)
 
 #pragma mark EffectGroup
 
-// TODO: it's here because it's not needed by the game but for consistency
-// maybe we should move it to Data
-static std::unordered_map<std::string, const EffectGroup*> skillGroups;
-
 template<> EffectGroup::Mode yaml::parse(const N& node)
 {
   using Mode = EffectGroup::Mode;
@@ -864,6 +860,20 @@ template<> const UnitEffect* yaml::parse(const N& node)
     
     effect = isDisallow ? static_cast<UnitEffect*>(new MovementDisallowEffect(kind)) :  new MovementEffect(kind);
   }
+  else if (type == "immunity_to_group")
+  {
+    std::string groupIdentifier = node["target_group"];
+
+    const auto group = Data::skillEffectGroup(groupIdentifier);
+
+    if (group == nullptr)
+    {
+      PARSE_ERROR("skill group '%s' is not defined", node["group"].asString().c_str());
+      assert(false);
+    }
+
+    effect = new ImmunityToGroupEffect(group);
+  }
   else if (type == "spell_grant")
   {
     std::string spellName = node["spell"];
@@ -907,15 +917,15 @@ template<> const UnitEffect* yaml::parse(const N& node)
         groupIdentifier = node["group"].asString();
       }
       
-      const auto it = skillGroups.find(groupIdentifier);
-      
-      if (it == skillGroups.end())
+      const auto group = Data::skillEffectGroup(groupIdentifier);
+
+      if (group == nullptr)
       {
         PARSE_ERROR("skill group '%s' is not defined", node["group"].asString().c_str());
         assert(false);
       }
       
-      effect->setGroup(it->second, groupParam);
+      effect->setGroup(group, groupParam);
     }
   }
 
@@ -1370,7 +1380,8 @@ void yaml::parseSkills()
   for (const auto& ygroup : groups)
   {
     const std::string& identifier = getIdentifier(ygroup);
-    skillGroups[identifier] = parse<const EffectGroup*>(ygroup);
+    const EffectGroup* group = parse<const EffectGroup*>(ygroup);
+    Data::registerData(identifier, group);
   }
   
   auto skills = file["skills"];

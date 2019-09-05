@@ -25,14 +25,7 @@ public:
   const enum class Type : u16
   {
     INVISIBILITY,
-    
-    
-    IMMUNITY_MAGIC,
-    IMMUNITY_ILLUSIONS,
-    IMMUNITY_MISSILE,
-    
-    
-    POISON,
+
     LIFE_STEALING,
     STONE_TOUCH,
     
@@ -159,6 +152,17 @@ public:
 
   Trigger trigger() const { return _trigger; }
   Figure figure() const { return _figure; }
+};
+
+class ImmunityToGroupEffect : public UnitEffect
+{
+private:
+  const EffectGroup* _group;
+
+public:
+  ImmunityToGroupEffect(const EffectGroup* group) : UnitEffect(UnitEffectType::IMMUNITY), _group(group) { }
+
+  const EffectGroup* group() const { return _group; }
 };
 
 //TODO: technically is a combat instant spell

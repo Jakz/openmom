@@ -691,7 +691,7 @@ units:
     hits: 10
     figures: 1
     movement: 1
-    sight: 2
+    sight: 1
     skills: [ meld_with_node, swimming, non_corporeal ]
     visuals:
       i18n: funit_magic_spirit
@@ -711,7 +711,7 @@ units:
     hits: 10
     figures: 1
     movement: 1
-    sight: 2
+    sight: 1
     skills: [ meld_with_node, swimming, non_corporeal, resistance_to_all_1 ]
     visuals:
       i18n: funit_guardian_spirit
@@ -731,13 +731,33 @@ units:
     hits: 30
     figures: 1
     movement: 2
-    sight: 2
+    sight: 1
     skills: [ to_hit_1, stoning_gaze_1 ]
     visuals:
       i18n: funit_basilisk
       icon: [lbx, units2, 62]
       figure: [lbx, figure13, 16]
       summon: [lbx, monster, 28]
+  - identifier: funit_colossus
+    type: fantastic
+    school: nature
+    upkeep: 17
+    cost: 800
+    melee: 20
+    ranged: [20, rock, 2]
+    defense: 10
+    resistance: 15
+    hits: 30
+    figures: 1
+    movement: 2
+    sight: 1
+    skills: [ to_hit_3, wall_crusher, immunity_poison, immunity_stoning, first_strike ]
+    visuals:
+      i18n: funit_colossus
+      icon: [lbx, units2, 65]
+      figure: [lbx, figure13, 40]
+      summon: [lbx, monster, 31]
+
 # chaos
   - identifier: funit_hell_hounds
     type: fantastic

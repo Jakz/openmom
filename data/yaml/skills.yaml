@@ -9,6 +9,8 @@ groups:
     policy: keep_greater
   - identifier: stoning_attack
     policy: none
+  - identifier: poison_attack
+    policy: none
 skills:
 # movement
   - identifier: mountaineer
@@ -336,24 +338,6 @@ skills:
     visuals:
       icon: [lbx, special2, 27]
       i18n: skill_fire_breath
-  - identifier: poison_touch_1
-    type: native
-    effects:
-      - type: special_attack
-        kind: poison_touch
-        value: 1
-    visuals:
-      icon: [lbx, special, 30]
-      i18n: skill_poison_touch
-  - identifier: poison_touch_6
-    type: native
-    effects:
-      - type: special_attack
-        kind: poison_touch
-        value: 6
-    visuals:
-      icon: [lbx, special, 30]
-      i18n: skill_poison_touch
   - identifier: resistance_to_all_1
     type: native
     effects:
@@ -418,6 +402,27 @@ skills:
     visuals:
       icon: [lbx, special, 26]
       i18n: skill_stoning_gaze
+
+  - identifier: poison_touch_1
+    type: native
+    effects:
+      - type: special_attack
+        kind: poison_touch
+        value: 1
+        group: poison_attack
+    visuals:
+      icon: [lbx, special, 30]
+      i18n: skill_poison_touch
+  - identifier: poison_touch_6
+    type: native
+    effects:
+      - type: special_attack
+        kind: poison_touch
+        value: 6
+        group: poison_attack
+    visuals:
+      icon: [lbx, special, 30]
+      i18n: skill_poison_touch
 # immunities
   - identifier: missile_immunity
     type: native
@@ -430,6 +435,22 @@ skills:
     visuals:
       icon: [lbx, special, 9]
       i18n: skill_immunity_missile
+  - identifier: immunity_poison
+    type: native
+    effects:
+      - type: immunity_to_group
+        target_group: poison_attack
+    visuals:
+      icon: [lbx, special, 5]
+      i18n: skill_immunity_poison
+  - identifier: immunity_stoning
+    type: native
+    effects:
+      - type: immunity_to_group
+        target_group: stoning_attack
+    visuals:
+      icon: [lbx, special, 7]
+      i18n: skill_immunity_stoning
 # spell granting abilities
   - identifier: healing_spell
     type: native

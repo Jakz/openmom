@@ -295,16 +295,6 @@ unordered_map<SkillBase, string, enum_hash> i18n::skills =
   {SkillBase::IMMOLATION, "Immolation"},
   {SkillBase::THROW_WEAPON, "Throw Weapon"},
   
-  {SkillBase::IMMUNITY_POISON, "Poison Immunity"},
-  {SkillBase::IMMUNITY_FIRE, "Fire Immunity"},
-  {SkillBase::IMMUNITY_STONING, "Stoning Immunity"},
-  {SkillBase::IMMUNITY_WEAPON, "Weapon Immunity"},
-  {SkillBase::IMMUNITY_MISSILE, "Missiles Immunity"},
-  {SkillBase::IMMUNITY_ILLUSIONS, "Illusions Immunity"},
-  {SkillBase::IMMUNITY_COLD, "Cold Immunity"},
-  {SkillBase::IMMUNITY_MAGIC, "Magic Immunity"},
-  {SkillBase::IMMUNITY_DEATH, "Death Immunity"},
-  
   {SkillBase::MELD, "Meld With Node"},
   {SkillBase::PURIFY, "Purify"},
   {SkillBase::CREATE_OUTPOST, "Create Outpost"},
