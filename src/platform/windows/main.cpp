@@ -20,6 +20,8 @@
 #include "yaml-cpp/node/detail/node_data.h"
 std::string YAML::detail::node_data::empty_scalar;
 
+void saveScreenshots();
+
 void init()
 {
   Game *game = new Game();
@@ -122,7 +124,10 @@ int main(int argc, char* arg[])
   Texture::load();
   SDL::initGVM();
 
+  //saveScreenshots();
+
   SDL::gvm->switchView(VIEW_MAIN);
+
 
   //SDL::gvm->switchView(VIEW_NEW_GAME);
 
@@ -135,10 +140,53 @@ int main(int argc, char* arg[])
 
   SDL::loop();
 
+  Gfx::saveScreenshot("main-view.png");
+
+
   // clean up
   Texture::unload();
   Gfx::deinit();
   SDL::deinit();
 
   return 0;
+}
+
+#include "views/CityView.h"
+#include "views/ArmyView.h"
+#include "views/ProductionView.h"
+#include "views/OutpostView.h"
+
+void saveScreenshots()
+{
+  static const char* VIEW_NAMES[] = {
+    "main", "spellbook", "magic", "research", "alchemy", "armies", "armies-items", "item-craft", "item-craft-charges", "merchant",
+    "city", "unit", "army", "message", "cities", "mirror", "info-menu", "cartographer", "diplomacy", "astrologer", "historian",
+    "combat", "production", "outpost", "new-game", "load", "options", "start", "intro"
+  };
+
+  Game* game = LocalGame::i->getGame();
+
+  game->cityMechanics.updateProduction(game->getCities().front());
+
+  SDL::gvm->cityView()->setCity(game->getCities().front());
+  SDL::gvm->productionView()->setCity(game->getCities().front());
+  SDL::gvm->outpostView()->setCity(game->getCities().front());
+  SDL::gvm->unitDetailView()->setUnit(game->getPlayers().front()->getArmies().front()->get(0));
+  SDL::gvm->armyView()->setArmy(game->getPlayers().front()->getArmies().front());
+  
+  for (ViewID view = VIEW_MAIN; view <= VIEW_INTRO; view = (ViewID)(view+1))
+  {
+    if (view == VIEW_MESSAGE)
+      game->getPlayers().front()->send(new msgs::Error("This is a test error message."));
+
+    SDL::gvm->switchView(view);
+    SDL::render();
+    SDL::handleEvents();
+
+    std::string fileName = std::string("screenshot-") + VIEW_NAMES[view] + ".png";
+    Gfx::saveScreenshot(fileName.c_str());
+
+    if (view == VIEW_MESSAGE)
+      static_cast<LocalPlayer*>(game->getPlayers().front())->clearMessages();
+  }
 }
