@@ -50,5 +50,6 @@ namespace dialogs
     ItemDetailDialog(Point base) : b(base) { }
     void draw(const items::Item* item);
     void setPosition(const Point& b) { this->b = b; }
+    Size size() const;
   };
 }

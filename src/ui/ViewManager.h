@@ -53,6 +53,7 @@ class ViewManagerInterface
 public:
   virtual void showMessage(const msgs::Message* message) = 0;
   virtual void showUnitDetail(const Unit* unit, bool withButtons) = 0;
+  virtual void showItemDetail(const items::Item* item) = 0;
 };
 
 class ViewManager : public EventListener, public ViewManagerInterface
@@ -133,6 +134,7 @@ public:
   
   void showMessage(const msgs::Message* message) override;
   void showUnitDetail(const Unit* unit, bool withButtons = true) override;
+  void showItemDetail(const items::Item* item) override;
 };
 
 #endif

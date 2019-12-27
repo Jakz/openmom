@@ -119,3 +119,9 @@ void ItemDetailDialog::draw(const items::Item* item)
     Fonts::drawString(properties[i], FontFaces::Medium::TEAL_STROKE, b.x + 19, b.y + 32 + 11*i, ALIGN_LEFT);
   }
 }
+
+Size ItemDetailDialog::size() const
+{
+  const SpriteInfo bg = LSI(ITEMISC, 25);
+  return Size(bg.sw(), bg.sh());
+}

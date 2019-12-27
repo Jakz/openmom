@@ -199,6 +199,8 @@ enum class Property : u8
   AVAILABLE_AMMO
 };
 
+static constexpr size_t MAX_PROPERTIES = 128;
+
 using prop_value = s32;
 using value_t = s32;
 

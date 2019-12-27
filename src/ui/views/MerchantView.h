@@ -29,7 +29,8 @@ private:
   
   enum class Mode
   {
-    ITEM
+    MERCHANT,
+    DETAIL
   };
   
   void draw() override;
@@ -37,6 +38,7 @@ private:
   
   void setup();
   
+  const items::Item* item;
   dialogs::ItemDetailDialog itemDetails;
   Mode mode;
 
@@ -47,6 +49,7 @@ public:
   void deactivate() override { }
   
   void openWithOffer(const items::Item* item, u16 price);
+  void openWithDetail(const items::Item* item);
   
   bool mouseReleased(u16 x, u16 y, MouseButton b) override;
 };

@@ -34,7 +34,7 @@ enum lbx_idents : sprite_ref
   list_pin = LBXI(ITEMISC, 26)
 };
 
-MerchantView::MerchantView(ViewManager* gvm) : ViewWithQueue(gvm)
+MerchantView::MerchantView(ViewManager* gvm) : ViewWithQueue(gvm), item(nullptr)
 {
   buttons.resize(2);
   
@@ -42,9 +42,8 @@ MerchantView::MerchantView(ViewManager* gvm) : ViewWithQueue(gvm)
   buttons[BUY] = Button::buildBistate("buy", 257, 136, button, "Buy", fonts::base::SERIF_GOLD);
   buttons[REJECT] = Button::buildBistate("reject", 257, 155, button, "Reject", fonts::base::SERIF_GOLD);
 
-  itemDetails.setPosition({19, 80});
-
-  openWithOffer(nullptr, 200);
+  //itemDetails.setPosition({19, 80});
+  //openWithOffer(nullptr, 200);
 }
 
 void MerchantView::activate()
@@ -54,10 +53,11 @@ void MerchantView::activate()
 
 void MerchantView::draw()
 {
-  Gfx::draw(background, 5, 15);
   
-  if (mode == Mode::ITEM)
+  if (mode == Mode::MERCHANT)
   {
+    Gfx::draw(background, 5, 15);
+
     Gfx::draw(item_box, 19, 80);
     
     //TODO: hardcoded for now
@@ -68,19 +68,37 @@ void MerchantView::draw()
     
     itemDetails.draw(&item);
   }
+  else
+  {
+    itemDetails.draw(item);
+  }
+}
+
+void MerchantView::openWithDetail(const items::Item* item)
+{
+  mode = Mode::DETAIL;
+  itemDetails.setPosition(Point((WIDTH - itemDetails.size().w) / 2, (HEIGHT - itemDetails.size().h) / 2));
+  this->item = item;
+  buttons[BUY]->hide();
+  buttons[REJECT]->hide();
+  gvm->switchOverview(VIEW_MERCHANT);
 }
 
 void MerchantView::openWithOffer(const items::Item* item, u16 price)
 {
-  mode = Mode::ITEM;
-
-  
-  //TODO: reenable gvm->switchOverview(VIEW_MERCHANT);
+  mode = Mode::MERCHANT;
+  itemDetails.setPosition({ 19, 80 });
+  this->item = item;
+  buttons[BUY]->show();
+  buttons[REJECT]->show();
+  gvm->switchOverview(VIEW_MERCHANT);
 }
 
 
 bool MerchantView::mouseReleased(u16 x, u16 y, MouseButton b)
 {
-
-  return true;
+  if (mode == Mode::MERCHANT)
+    return true;
+  else
+    gvm->closeOverview();
 }

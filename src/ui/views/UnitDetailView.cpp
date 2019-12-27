@@ -59,11 +59,23 @@ UnitDetailView::UnitDetailView(ViewManager* gvm) : View(gvm), unit(nullptr), mod
       const size_t index = y + x * 4;
       const auto* entry = skillDraw.visibleEntryAt(index);
       
-      if (entry && entry->type == SkillDraw::Entry::Type::SKILL)
+      if (entry)
       {
-        const auto help = entry->skill->help();
-        if (help)
-          this->gvm->showMessage(new msgs::Help(help));
+        if (entry->type == SkillDraw::Entry::Type::SKILL)
+        {
+          const auto help = entry->skill->help();
+          if (help)
+            this->gvm->showMessage(new msgs::Help(help));
+        }
+        else if (entry->type == SkillDraw::Entry::Type::ITEM)
+        {
+          const auto* item = entry->item.data;
+
+          if (item)
+            this->gvm->showItemDetail(item);
+        }
+        
+
       }
       
       return true;

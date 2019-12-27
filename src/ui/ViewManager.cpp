@@ -95,6 +95,7 @@ ItemCraftView* ViewManager::itemCraftView() { return static_cast<ItemCraftView*>
 ItemCraftChargesView* ViewManager::itemCraftChargesView() { return static_cast<ItemCraftChargesView*>(views[VIEW_ITEM_CRAFT_CHARGES]); }
 MagicView* ViewManager::magicView() { return static_cast<MagicView*>(views[VIEW_MAGIC]); }
 MainView* ViewManager::mainView() { return static_cast<MainView*>(views[VIEW_MAIN]); }
+MerchantView* ViewManager::merchantView() { return static_cast<MerchantView*>(views[VIEW_MERCHANT]); }
 MessageView* ViewManager::messageView() { return static_cast<MessageView*>(views[VIEW_MESSAGE]); }
 MirrorView* ViewManager::mirrorView() { return static_cast<MirrorView*>(views[VIEW_MIRROR]); }
 NewGameView* ViewManager::newGameView() { return static_cast<NewGameView*>(views[VIEW_NEW_GAME]); }
@@ -274,8 +275,14 @@ void ViewManager::setPlayer(LocalPlayer* player)
 
 
 void ViewManager::showMessage(const msgs::Message* message) { messageView()->showMessage(message); }
+
 void ViewManager::showUnitDetail(const Unit* unit, bool withButtons)
 {
   unitDetailView()->setUnit(unit, withButtons);
   switchOverview(VIEW_UNIT);
+}
+
+void ViewManager::showItemDetail(const items::Item* item)
+{
+  merchantView()->openWithDetail(item);
 }

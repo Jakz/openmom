@@ -44,6 +44,7 @@ private:
     HERO_HIRE
   } mode;
   
+  //enum_simple_map<Property, value_t, MAX_PROPERTIES> valueCache;
   ClickableGrid* skillGrid;
   SkillDraw skillDraw;
   Point c;
