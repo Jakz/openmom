@@ -621,6 +621,7 @@ template<typename ModifierType> ModifierType yaml::parseModifier(const N& node)
     /* fixed value, assuming additive */
     if (node.size() == 1)
       return ModifierType(Mode::ADDITIVE, node[0].as<value_t>(), Priority::ANY);
+    /* [ 1.0, per_level, 5 ]*/
     else if (node.size() >= 2)
     {
       const std::string& ttype = node[1];
@@ -653,6 +654,7 @@ template<typename ModifierType> ModifierType yaml::parseModifier(const N& node)
       {
         const std::string& tpriority = node[2];
 
+        /* priority can be a number or first or last */
         bool isNumber = tpriority.find_first_not_of("0123456789") == std::string::npos;
 
         if (isNumber) priority = ModifierType::priorityFor(node[2].as<value_t>());

@@ -16,6 +16,9 @@
 
 constexpr float operator"" _x(unsigned long long int v) { return v / 100.0f; }
 
+/* this class is used to represent a value which as a separate multiplier so that it can be applied separately from the value itself
+   without worrying about the order of operations
+ */
 template<typename T>
 class ScalableValue
 {

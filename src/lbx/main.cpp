@@ -1016,7 +1016,7 @@ public:
 };
 
 #ifdef _WIN32
-#define LBX_STATUS_PATH "C:\\Users\\Jack\\Documents\\dev\\openmom\\data"
+#define LBX_STATUS_PATH "D:/dev/openmom/data"
 #endif
 
 void loadStatus()

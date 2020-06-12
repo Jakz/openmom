@@ -301,20 +301,23 @@ TEST_CASE("movement of armies")
   unit_list units;
   movement_list expected;
 
+
   SECTION("flying") {
+    const auto* flying = Data::skill("flying");
+
     SECTION("single unit") {
-      units.push_back(new mock::RaceUnit({ Data::skill("flying") }));
+      units.push_back(new mock::RaceUnit({ flying }));
       expected += { MovementType::FLYING, MovementType::SWIMMING }; //TODO: is this intended behavior to have swimming not overridden by flying itself?
     }
 
     SECTION("multiple units") {
-      units.push_back(new mock::RaceUnit({ Data::skill("flying") }));
-      units.push_back(new mock::RaceUnit({ Data::skill("flying") }));
+      units.push_back(new mock::RaceUnit({ flying }));
+      units.push_back(new mock::RaceUnit({ flying }));
       expected += { MovementType::FLYING, MovementType::SWIMMING };
     }
 
     SECTION("multiple units not all flying") {
-      units.push_back(new mock::RaceUnit({ Data::skill("flying") }));
+      units.push_back(new mock::RaceUnit({ flying }));
       units.push_back(new mock::RaceUnit());
       expected += { };
     }

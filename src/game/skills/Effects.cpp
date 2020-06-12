@@ -22,6 +22,7 @@ effect_list<EffectBase> effect_list<EffectBase>::actuals(const typename EffectBa
     
     auto pair = byGroup.equal_range(group);
     
+    /* there's no group or group is KEEP_ALL or NONE, just put them all into actuals */
     if (!group || group->mode() == EffectGroup::Mode::KEEP_ALL || group->mode() == EffectGroup::Mode::NONE)
       std::transform(pair.first, pair.second, std::back_inserter(actuals), [] (const pair_t& entry) { return entry.second; });
     else
@@ -57,7 +58,8 @@ effect_list<EffectBase> effect_list<EffectBase>::actuals(const typename EffectBa
           actuals.push_back(min->second);
           break;
         }
-          
+         
+        case EffectGroup::Mode::NONE:
         case EffectGroup::Mode::KEEP_ALL:
         {
           /* already handled in general case outside switch */
