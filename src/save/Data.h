@@ -49,6 +49,7 @@ public:
       inline bool operator!=(const const_iterator& other) const { return it != other.it; }
       inline bool operator==(const const_iterator& other) const { return it == other.it; }
 
+      inline const_iterator operator+(const inner_it::difference_type offset) const { return const_iterator(data, it + offset); }
       inline const const_iterator& operator++() { ++it; return *this; }
       T operator*() const { return data.find((*it).get())->second; }
 
@@ -206,7 +207,6 @@ public:
     );
   }
 
-    
   static std::vector<const RaceUnitSpec*> unitsForRace(const Race* race);
   
   static auto requiredBuildingsForUnit(const UnitSpec* unit) { return unitDependsOnBuilding.equal_range(unit); }
