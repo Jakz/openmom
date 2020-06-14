@@ -200,6 +200,8 @@ enum class SkillBase : u16
   STATUS_POSESSION = 234
 };
 
+namespace skills { enum class Type; }
+
 class Skill
 {
 protected:
@@ -208,6 +210,7 @@ protected:
 
 public:
   
+  virtual skills::Type type() const { return skills::Type(0); }
   virtual SpriteInfo icon() const;
   virtual const std::string name() const;
   virtual bool isHidden() const { return false; }
@@ -252,7 +255,7 @@ namespace skills
   public:
     ConcreteSkill(Type type, const unit_effect_list& effects, SkillVisualInfo visual) : Skill(SkillBase::FIRST_STRIKE), _type(type), _effects(effects), _visual(visual) { }
     
-    Type type() const { return _type; }
+    Type type() const override { return _type; }
     
     void setEffects(const unit_effect_list& effects) override { _effects = effects; }
     const unit_effect_list& getEffects() const override { return _effects; }
