@@ -21,6 +21,19 @@ std::string YAML::detail::node_data::empty_scalar;
 
 Q_DECLARE_METATYPE(skills::Type);
 
+enum
+{
+  melee = LBXI(COMPIX, 61),
+  defense = LBXI(COMPIX, 70),
+  resistance = LBXI(COMPIX, 75),
+  hits = LBXI(COMPIX, 71),
+  ranged_bow = LBXI(COMPIX, 66),
+  movement_ground = LBXI(COMPIX, 72),
+  gold = LBXI(BACKGRND, 42),
+  mana = LBXI(BACKGRND, 43)
+
+};
+
 template<typename T>
 class enum_name_map_t
 {
@@ -83,8 +96,13 @@ QPixmap cacheGet(SpriteInfo info)
 
     for (int y = 0; y < image.height(); ++y)
       for (int x = 0; x < image.width(); ++x)
-        image.setPixel(QPoint(x, y), Gfx::mainPalette->get(data->at(x / 2, y / 2, 0, 0)));
-
+      {
+        auto ci = data->at(x / 2, y / 2, 0, 0);
+        if (ci != 0)
+          image.setPixel(QPoint(x, y), Gfx::mainPalette->get(ci));
+        else
+          image.setPixel(QPoint(x, y), 0);
+      }
 
     QPixmap pixmap = QPixmap::fromImage(image);
     cache.emplace(info, pixmap);
@@ -201,10 +219,18 @@ public:
 class UnitTableModel : public DataTableModel<UnitSpec>
 {
 private:
-  std::array<QString, 2> headers = { { "Identifier", "Melee" } };  
+  std::array<QString, 10> headers = { { "Identifier", "Upkeep", "Cost", "Melee", "Ranged", "Defense", "Resistance", "Hits", "Figures", "Movement" } };  
 
 public:
   int columnCount(const QModelIndex&) const override { return headers.size(); }
+  
+  QVariant headerData(int section, Qt::Orientation orientation, int role) const override
+  {
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+      return headers[section];
+
+    return QVariant();
+  }
 
   QVariant data(const QModelIndex& i, int role) const override
   {
@@ -215,7 +241,15 @@ public:
       switch (i.column())
       {
       case 0: return _data[i.row()].first;
-      case 1: return unit->melee;
+      case 1: return unit->type == UnitType::FANTASTIC ? unit->productionUpkeep().mana : unit->productionUpkeep().gold;
+      case 2: return unit->cost;
+      case 3: return unit->melee;
+      case 4: return unit->ranged.strength;
+      case 5: return unit->defense;
+      case 6: return unit->resistance;
+      case 7: return unit->hits;
+      case 8: return unit->figures;
+      case 9: return unit->movement;
       }
     }
     else if (role == Qt::DecorationRole)
@@ -228,10 +262,24 @@ public:
           auto info = gfx.still;
           return cacheGet(info);
         }
-        case 1:
-        {
-
-        }
+        case 1: 
+        case 2:
+          return unit->type == UnitType::FANTASTIC ? cacheGet(mana) : cacheGet(gold);
+        case 3: return cacheGet(melee);
+        case 4: break;
+        case 5: return cacheGet(defense);
+        case 6: return cacheGet(resistance);
+        case 7: return cacheGet(hits);
+        case 8: break;
+        case 9: return cacheGet(movement_ground);
+      }
+    }
+    else if (role == Qt::TextAlignmentRole)
+    {
+      switch (i.column())
+      {
+      case 0: return Qt::AlignVCenter;
+      default: return Qt::AlignCenter;
       }
     }
 
@@ -243,6 +291,8 @@ int main(int argc, char* argv[])
 {
   Repository::init();
   lbx::Repository::loadLBXFontsAndPalettes();
+  lbx::Repository::loadLBX(LBXID::BACKGRND);
+  lbx::Repository::loadLBX(LBXID::COMPIX);
   lbx::Repository::loadLBX(LBXID::SPECIAL);
   lbx::Repository::loadLBX(LBXID::SPECIAL2);
   lbx::Repository::loadLBX(LBXID::UNITS1);
@@ -259,24 +309,30 @@ int main(int argc, char* argv[])
     QAbstractTableModel* model;
     std::string name;
     int height;
+    QTableView* view;
   };
 
   std::array<TableInfo, 2> tables = { {
-    { new SkillsTableModel(), "Skills", 50 },
-    { new UnitTableModel(), "Units", 50 }
+    { new SkillsTableModel(), "Skills", 50, nullptr },
+    { new UnitTableModel(), "Units", 50, nullptr }
   } };
 
   QTabWidget* tabPane = new QTabWidget();
   tabPane->setTabPosition(QTabWidget::TabPosition::West);
   tabPane->setMinimumSize(QSize(640, 480));
 
-  for (const auto& entry : tables)
+  for (auto& entry : tables)
   {
     QTableView* tableView = new QTableView();
     tableView->verticalHeader()->setDefaultSectionSize(50);
     tableView->setModel(entry.model);
     tabPane->addTab(tableView, entry.name.c_str());
+    entry.view = tableView;
   }
+
+  tables[1].view->setColumnWidth(0, 200);
+  for (int i = 1; i <= 9; ++i)
+    tables[1].view->setColumnWidth(i, 50);
 
   tabPane->setWindowTitle("OpenMoM Editor");
   tabPane->show();
