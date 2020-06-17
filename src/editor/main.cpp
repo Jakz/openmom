@@ -31,7 +31,6 @@ enum
   movement_ground = LBXI(COMPIX, 72),
   gold = LBXI(BACKGRND, 42),
   mana = LBXI(BACKGRND, 43)
-
 };
 
 template<typename T>
@@ -236,50 +235,55 @@ public:
   {
     const UnitSpec* unit = _data[i.row()].second;
 
-    if (role == Qt::DisplayRole)
+    switch (role)
     {
-      switch (i.column())
+      case Qt::DisplayRole:
       {
-      case 0: return _data[i.row()].first;
-      case 1: return unit->type == UnitType::FANTASTIC ? unit->productionUpkeep().mana : unit->productionUpkeep().gold;
-      case 2: return unit->cost;
-      case 3: return unit->melee;
-      case 4: return unit->ranged.strength;
-      case 5: return unit->defense;
-      case 6: return unit->resistance;
-      case 7: return unit->hits;
-      case 8: return unit->figures;
-      case 9: return unit->movement;
-      }
-    }
-    else if (role == Qt::DecorationRole)
-    {
-      switch (i.column())
-      {
-        case 0:
+        switch (i.column())
         {
-          const UnitGfxSpec& gfx = GfxData::unitGfx(unit);
-          auto info = gfx.still;
-          return cacheGet(info);
+          case 0: return _data[i.row()].first;
+          case 1: return unit->type == UnitType::FANTASTIC ? unit->productionUpkeep().mana : unit->productionUpkeep().gold;
+          case 2: return unit->cost;
+          case 3: return unit->melee;
+          case 4: return unit->ranged.strength;
+          case 5: return unit->defense;
+          case 6: return unit->resistance;
+          case 7: return unit->hits;
+          case 8: return unit->figures;
+          case 9: return unit->movement;
         }
-        case 1: 
-        case 2:
-          return unit->type == UnitType::FANTASTIC ? cacheGet(mana) : cacheGet(gold);
-        case 3: return cacheGet(melee);
-        case 4: break;
-        case 5: return cacheGet(defense);
-        case 6: return cacheGet(resistance);
-        case 7: return cacheGet(hits);
-        case 8: break;
-        case 9: return cacheGet(movement_ground);
+        break;
       }
-    }
-    else if (role == Qt::TextAlignmentRole)
-    {
-      switch (i.column())
+      case Qt::DecorationRole:
       {
-      case 0: return Qt::AlignVCenter;
-      default: return Qt::AlignCenter;
+        switch (i.column())
+        {
+          case 0:
+          {
+            const UnitGfxSpec& gfx = GfxData::unitGfx(unit);
+            auto info = gfx.still;
+            return cacheGet(info);
+          }
+          case 1:
+          case 2:
+            return unit->type == UnitType::FANTASTIC ? cacheGet(mana) : cacheGet(gold);
+          case 3: return cacheGet(melee);
+          case 4: break;
+          case 5: return cacheGet(defense);
+          case 6: return cacheGet(resistance);
+          case 7: return cacheGet(hits);
+          case 8: break;
+          case 9: return cacheGet(movement_ground);
+        }
+        break;
+      }
+      case Qt::TextAlignmentRole:
+      {
+        switch (i.column())
+        {
+          case 0: return Qt::AlignVCenter;
+          default: return Qt::AlignCenter;
+        }
       }
     }
 
