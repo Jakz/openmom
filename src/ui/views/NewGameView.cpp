@@ -376,8 +376,8 @@ void NewGameView::spellToggled(const Spell* spell)
     ++available;
   }
   
-  s32 leftPicks = std::accumulate(scd.shownRarities.begin(), scd.shownRarities.end(), 0, [spell, &scd] (s32 v, const optional<SpellRarity>& rarity) {
-    return !rarity.isPresent() ? v : (v + scd.spellChoicePicks[spell->school][rarity]);
+  s32 leftPicks = std::accumulate(scd.shownRarities.begin(), scd.shownRarities.end(), 0, [spell, &scd] (s32 v, const std::optional<SpellRarity>& rarity) {
+    return !rarity ? v : (v + scd.spellChoicePicks[spell->school][rarity.value()]);
   });
   bookPhaseOkButton->activateIf(leftPicks == 0);
 }
@@ -548,7 +548,7 @@ void NewGameView::switchToPhase(Phase phase)
           else
           {
             spellChoiceData.shownRarities[0] = SpellRarity::COMMON;
-            spellChoiceData.shownRarities[1] = optional<SpellRarity>();
+            spellChoiceData.shownRarities[1] = std::optional<SpellRarity>();
           }
           
           break;
@@ -748,9 +748,9 @@ void NewGameView::draw()
 
       for (s32 i = 0; i < scd.shownRarities.size(); ++i)
       {
-        if (scd.shownRarities[i].isPresent())
+        if (scd.shownRarities[i])
         {
-          const SpellRarity rarity = scd.shownRarities[i];
+          const SpellRarity rarity = scd.shownRarities[i].value();
           auto guaranteed = scd.spellChoiceTotals[school][rarity];
 
           Fonts::drawString(fmt::sprintf("%s: %d", raritiesNames[rarity], guaranteed), &headerFont, 166, 37 - 12 + 51*i, ALIGN_LEFT);
@@ -776,8 +776,8 @@ void NewGameView::draw()
       }
 
       /* TODO: code already used in spellToggled */
-      s32 leftPicks = std::accumulate(scd.shownRarities.begin(), scd.shownRarities.end(), 0, [school, &scd] (s32 v, const optional<SpellRarity>& rarity) {
-        return !rarity.isPresent() ? v : (v + scd.spellChoicePicks[school][rarity]);
+      s32 leftPicks = std::accumulate(scd.shownRarities.begin(), scd.shownRarities.end(), 0, [school, &scd] (s32 v, const std::optional<SpellRarity>& rarity) {
+        return !rarity ? v : (v + scd.spellChoicePicks[school][rarity.value()]);
       });
       
       Fonts::drawString(std::to_string(leftPicks)+ " picks", fonts.brightBoldFont, 221, 184, ALIGN_CENTER);
@@ -949,9 +949,9 @@ bool NewGameView::mouseReleased(u16 x, u16 y, MouseButton b)
     
     for (s32 i = 0; i < sr.size(); ++i)
     {
-      if (sr[i].isPresent())
+      if (sr[i])
       {
-        const SpellRarity rarity = sr[i];
+        const SpellRarity rarity = sr[i].value();
         const s32 baseY = SpellChoice::BASE_Y + i * SpellChoice::DELTA_Y;
         
         if (x >= SpellChoice::X[0] && x <= SpellChoice::X[2])

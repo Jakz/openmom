@@ -74,24 +74,6 @@ using fast_string_ref = const std::string&;
 
 template<typename... T> using predicate = std::function<bool(T...)>;
 
-//TODO: optimize for size(T) <= u32 to use a single u64
-template<typename T>
-class optional
-{
-private:
-  T _value;
-  bool _isPresent;
-  
-public:
-  optional(T value) : _value(value), _isPresent(true) { }
-  optional() : _isPresent(false) { }
-  optional& operator=(T value) { _value = value; _isPresent = true; return *this; }
-  bool isPresent() const { return _isPresent; }
-  operator T() const { assert(_isPresent); return _value; }
-  T* operator->() { assert(_isPresent); return &_value; }
-  const T* operator->() const { assert(_isPresent); return &_value; }
-};
-
 struct enum_hash
 {
   template <typename T>

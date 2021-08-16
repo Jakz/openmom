@@ -99,7 +99,7 @@ void Route::consumeMovement(World *world)
       break;
   }
   
-  if (lastMove.isPresent())
+  if (lastMove)
   {
     world->get(lastMove->x, lastMove->y, army->getPosition().plane)->placeArmy(army);
     

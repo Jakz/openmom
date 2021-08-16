@@ -32,8 +32,8 @@ void ButtonGfx::draw(u16 x, u16 y, bool isActive, bool isPressed, bool hovered) 
     /* if a sprite for inactive gfx is specified use it, otherwise assert false
      since it's required
      */
-    if (inactive.isPresent())
-      Gfx::draw(inactive, palette, x, y);
+    if (inactive)
+      Gfx::draw(inactive.value(), palette, x, y);
     else { assert(false); }
     return;
   }
@@ -41,21 +41,21 @@ void ButtonGfx::draw(u16 x, u16 y, bool isActive, bool isPressed, bool hovered) 
   if (isPressed)
   {
     /* if a sprite for pressed gfx is specified use it */
-    if (pressed.isPresent())
-      Gfx::draw(pressed, palette, x, y);
+    if (pressed)
+      Gfx::draw(pressed.value(), palette, x, y);
     /* otherwise it's an offset button so draw normal gfx ofsetted by 1 */
-    else if (normal.isPresent())
+    else if (normal)
     {
       if (shouldOffsetNormal)
-        Gfx::draw(normal, palette, x+1, y+1);
+        Gfx::draw(normal.value(), palette, x+1, y+1);
       else
-        Gfx::draw(normal, palette, x, y);
+        Gfx::draw(normal.value(), palette, x, y);
     }
   }
-  else if (hovered && hover.isPresent())
-    Gfx::draw(hover, palette, x, y);
-  else if (normal.isPresent())
-    Gfx::draw(normal, palette, x, y);
+  else if (hovered && hover)
+    Gfx::draw(hover.value(), palette, x, y);
+  else if (normal)
+    Gfx::draw(normal.value(), palette, x, y);
 }
 
 
@@ -68,7 +68,7 @@ void Button::draw() const
   gfx.draw(x, y, isActive(), pressed, hover);
 
   /* if there is a label draw it accordingly */
-  if (labelGfx.isPresent())
+  if (labelGfx)
   {
     if (pressed)
       Fonts::drawString(labelGfx->label, labelGfx->font, labelGfx->position.x+1, labelGfx->position.y+1, ALIGN_CENTER);
@@ -85,7 +85,7 @@ void Button::setTextInfo(const TextInfo& info)
 
 void Button::setLabel(const std::string& string)
 {
-  assert(labelGfx.isPresent());
+  assert(labelGfx.has_value());
   labelGfx->label = string;
 }
 
@@ -94,7 +94,7 @@ void Button::setPosition(u16 x, u16 y)
   Clickable::setPosition(x, y);
   /* update label position if it was present */
   //TODO: verify offset fomula which is not precise
-  if (labelGfx.isPresent())
+  if (labelGfx)
     labelGfx->position = Point(x + gfx.normal->sw()/2, y + gfx.normal->sh()/2 - labelGfx->font->sh()/2);
 }
 
@@ -111,7 +111,7 @@ void RadioButton<T>::draw() const
   bool isSelected = group->getCurrent() == this;
   
   if (isSelected)
-    Gfx::draw(pressed ? toggledGfx.pressed : toggledGfx.normal, x, y);
+    Gfx::draw(pressed ? toggledGfx.pressed.value() : toggledGfx.normal.value(), x, y);
   else
     Button::draw();
 }

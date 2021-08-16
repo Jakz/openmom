@@ -101,4 +101,6 @@ bool MerchantView::mouseReleased(u16 x, u16 y, MouseButton b)
     return true;
   else
     gvm->closeOverview();
+  
+  return true;
 }

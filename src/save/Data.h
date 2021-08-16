@@ -14,6 +14,8 @@
 
 using experience_levels = std::vector<std::unique_ptr<const Level>>;
 
+struct EffectGroup;
+
 class Data
 {
 public:

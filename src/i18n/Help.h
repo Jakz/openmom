@@ -17,7 +17,7 @@ namespace help
   {
     std::string title;
     std::string text;
-    optional<SpriteInfo> icon;
+    std::optional<SpriteInfo> icon;
     const Paragraph* next;
     
     Paragraph() = default;

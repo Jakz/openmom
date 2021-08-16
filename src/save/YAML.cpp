@@ -424,8 +424,11 @@ template<> CombatBonus::Target yaml::parse(const N& node)
 template<> damage_amount yaml::parse(const N& node)
 {
   if (node == "fatal") return damage_amount(true);
-  else if (node.isIntegral()) return damage_amount(node);
-  //TODO: management for irreversible damage? 
+  else if (node.isIntegral()) return damage_amount(node.as<value_t>());
+  else PARSE_ERROR("required damage amount is invalid", "");
+  //TODO: management for irreversible damage?
+  
+  return damage_amount(true);
 }
 
 template<> RangedInfo yaml::parse(const N& node)

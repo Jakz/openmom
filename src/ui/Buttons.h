@@ -194,10 +194,10 @@ public:
 struct ButtonGfx
 {
   const Palette* palette;
-  optional<SpriteInfo> normal;
-  optional<SpriteInfo> pressed;
-  optional<SpriteInfo> inactive;
-  optional<SpriteInfo> hover;
+  std::optional<SpriteInfo> normal;
+  std::optional<SpriteInfo> pressed;
+  std::optional<SpriteInfo> inactive;
+  std::optional<SpriteInfo> hover;
   bool shouldOffsetNormal;
   
   void draw(u16 x, u16 y, bool isActive, bool isPressed, bool isHover) const;
@@ -228,7 +228,7 @@ protected:
   bool pressed, visible;
   
   ButtonGfx gfx;
-  optional<TextInfo> labelGfx;
+  std::optional<TextInfo> labelGfx;
   uintptr_t data;
   
 public:

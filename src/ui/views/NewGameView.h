@@ -85,7 +85,7 @@ private:
 
   struct
   {
-    std::array<optional<SpellRarity>, 2> shownRarities;
+    std::array<std::optional<SpellRarity>, 2> shownRarities;
     School currentSchool;
     spell_enum_map<s32> spellChoicePicks;
     spell_enum_map<s32> spellChoiceTotals;

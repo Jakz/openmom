@@ -161,15 +161,15 @@ void MessageView::draw()
         {
           int titleX = 4, textX = titleX + 2;
           
-          if (p->icon.isPresent())
+          if (p->icon)
           {
-            Gfx::draw(p->icon, titleX, ty);
+            Gfx::draw(p->icon.value(), titleX, ty);
             titleX += p->icon->sw() + 3;
           }
           
           Fonts::drawString(p->title, titleFace, titleX, ty+2, ALIGN_LEFT);
           
-          if (!p->icon.isPresent())
+          if (!p->icon)
             ty += titleFace->ver + titleFace->sh();
           else
             ty += std::max((index_t)p->icon->sh() + 1, titleFace->ver + titleFace->sh());
