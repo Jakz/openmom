@@ -48,6 +48,8 @@ public:
   static bool chanceByTenths(value_t tenths) { return randomIntUpTo(100) < tenths * 10; }
   
   static bool chance(float percent) { return rand() <= percent; }
+
+  inline static value_t roundDown(float value) { return static_cast<value_t>(std::floor(value)); }
 };
 
 class Util

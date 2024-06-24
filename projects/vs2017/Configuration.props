@@ -10,10 +10,11 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\libs\sdl2\win\include;$(SolutionDir)..\..\src;$(SolutionDir)..\..\src\common;$(SolutionDir)..\..\src\common\fmt;$(SolutionDir)..\..\src\game;$(SolutionDir)..\..\src\game\cities;$(SolutionDir)..\..\src\game\combat;$(SolutionDir)..\..\src\game\data;$(SolutionDir)..\..\src\game\mechanics;$(SolutionDir)..\..\src\game\players;$(SolutionDir)..\..\src\game\skills;$(SolutionDir)..\..\src\game\spells;$(SolutionDir)..\..\src\game\units;$(SolutionDir)..\..\src\game\world;$(SolutionDir)..\..\src\gfx;$(SolutionDir)..\..\src\gfx\filters;$(SolutionDir)..\..\src\i18n;$(SolutionDir)..\..\src\platform;$(SolutionDir)..\..\src\platform\windows;$(SolutionDir)..\..\src\save;$(SolutionDir)..\..\src\ui;$(SolutionDir)..\..\src\ui\animations;$(SolutionDir)..\..\src\ui\parts;$(SolutionDir)..\..\src\ui\views;$(SolutionDir)..\..\src\ui\views\debug;$(SolutionDir)..\..\src\ui\views\extra;$(SolutionDir)..\..\libs\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4068;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <PreprocessorDefinitions>_MBCS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Precompiled.h</ForcedIncludeFiles>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
    	  <SubSystem>Console</SubSystem>

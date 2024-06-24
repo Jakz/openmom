@@ -96,7 +96,14 @@ const Texture* Texture::get(TextureID ident)
   if (!texture->img)
   {
     Path base = Platform::instance()->getResourcePath();
-    texture->img = IMG_Load((base + "data/gfx" + texture->name).c_str());
+    Path fullPath = base + "data/gfx" + texture->name;
+    texture->img = IMG_Load(fullPath.c_str());
+
+    if (!texture->img)
+    {
+      const char* error = IMG_GetError();
+      printf("Error while loading image: %s\n", error);
+    }
     
     //const SDL_PixelFormat* destFormat = Gfx::format();
     

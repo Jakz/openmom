@@ -6,7 +6,7 @@ class PlatformWin : public Platform
 public:
   Path getResourcePath() const override
   {
-    return "D:/dev/openmom";
+    return R"(C:\Users\Jack\Documents\dev\openmom)";
   }
 
   bool exists(const Path& path) const override

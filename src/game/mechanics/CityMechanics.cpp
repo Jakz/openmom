@@ -487,7 +487,7 @@ value_t CityMechanics::computeMagicPower(const City *city)
   value_t totalMana = 0;
   
   // mana bonuses given by racial traits
-  totalMana += (value_t)std::floor((city->population/1000)*city->race->manaProducedPerCitizen);
+  totalMana += Math::roundDown(city->getPopulationInThousands()*city->race->manaProducedPerCitizen);
   
   // mana bonuses given by buildings
   totalMana += reduceModifiers(city, CityAttribute::MANA_POWER_OUTPUT);
@@ -497,10 +497,10 @@ value_t CityMechanics::computeMagicPower(const City *city)
   
   // mana bonuses given by resources surrounding the city
   value_t bonus = 0;
-  bonus += (value_t) std::floor(resourceBonus(city, Resource::CRYSX_CRYSTAL, 5));
-  bonus += (value_t) std::floor(resourceBonus(city, Resource::QOURK_CRYSTAL, 3));
-  bonus += (value_t) std::floor(resourceBonus(city, Resource::ADAMANTIUM, 2));
-  bonus += (value_t) std::floor(resourceBonus(city, Resource::MITHRIL, 1));
+  bonus += Math::roundDown(resourceBonus(city, Resource::CRYSX_CRYSTAL, 5));
+  bonus += Math::roundDown(resourceBonus(city, Resource::QOURK_CRYSTAL, 3));
+  bonus += Math::roundDown(resourceBonus(city, Resource::ADAMANTIUM, 2));
+  bonus += Math::roundDown(resourceBonus(city, Resource::MITHRIL, 1));
   
   // dwarvens gets double bonuses from these resources
   bonus *= city->race->miningBonusMultiplier;
