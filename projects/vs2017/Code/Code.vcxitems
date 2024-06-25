@@ -245,6 +245,15 @@
     <Text Include="$(MSBuildThisFileDirectory)..\..\..\src\ui\views\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\buildings.yaml" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\english.yaml" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\help.yaml" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\levels.yaml" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\races.yaml" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\skills.yaml" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\spells.yaml" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\units.yaml" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\wizards.yaml" />
     <None Include="$(MSBuildThisFileDirectory)..\Configuration.props">
       <SubType>Designer</SubType>
     </None>

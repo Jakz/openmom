@@ -70,6 +70,9 @@
     <Filter Include="common\fmt">
       <UniqueIdentifier>{8e4c0f82-eb98-4ebb-9cf5-fd99a63042e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{da859c2f-edd9-4100-9fb1-c207513104c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\src\common\Common.cpp">
@@ -745,5 +748,32 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\Configuration.props" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\buildings.yaml">
+      <Filter>data</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\english.yaml">
+      <Filter>data</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\help.yaml">
+      <Filter>data</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\levels.yaml">
+      <Filter>data</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\races.yaml">
+      <Filter>data</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\skills.yaml">
+      <Filter>data</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\spells.yaml">
+      <Filter>data</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\units.yaml">
+      <Filter>data</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\data\yaml\wizards.yaml">
+      <Filter>data</Filter>
+    </None>
   </ItemGroup>
 </Project>

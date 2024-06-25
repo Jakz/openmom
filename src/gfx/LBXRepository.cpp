@@ -525,46 +525,46 @@ void Repository::loadBuildDesc()
     
     std::vector<LBX::TextFiller> inserters = {
       LBX::TextFiller(0, [](u16 index, std::string& str) {
-        static const I18 buildings[] = {
-          I18::BUILDING_DESC_TRADE_GOODS,
-          I18::BUILDING_DESC_HOUSING,
-          I18::BUILDING_DESC_BARRACKS,
-          I18::BUILDING_DESC_ARMORY,
-          I18::BUILDING_DESC_FIGHTERS_GUILD,
-          I18::BUILDING_DESC_ARMORERS_GUILD,
-          I18::BUILDING_DESC_WAR_COLLEGE,
-          I18::BUILDING_DESC_SMITHY,
-          I18::BUILDING_DESC_STABLE,
-          I18::BUILDING_DESC_ANIMISTS_GUILD,
-          I18::BUILDING_DESC_FANTASTIC_STABLE,
-          I18::BUILDING_DESC_SHIP_WRIGHTS_GUILD,
-          I18::BUILDING_DESC_SHIP_YARD,
-          I18::BUILDING_DESC_MARITIME_GUILD,
-          I18::BUILDING_DESC_SAWMILL,
-          I18::BUILDING_DESC_LIBRARY,
-          I18::BUILDING_DESC_SAGES_GUILD,
-          I18::BUILDING_DESC_ORACLE,
-          I18::BUILDING_DESC_ALCHEMISTS_GUILD,
-          I18::BUILDING_DESC_UNIVERSITY,
-          I18::BUILDING_DESC_WIZARDS_GUILD,
-          I18::BUILDING_DESC_SHRINE,
-          I18::BUILDING_DESC_TEMPLE,
-          I18::BUILDING_DESC_PARTHENON,
-          I18::BUILDING_DESC_CATHEDRAL,
-          I18::BUILDING_DESC_MARKETPLACE,
-          I18::BUILDING_DESC_BANK,
-          I18::BUILDING_DESC_MERCHANTS_GUILD,
-          I18::BUILDING_DESC_GRANARY,
-          I18::BUILDING_DESC_FARMERS_MARKET,
-          I18::BUILDING_DESC_FORESTERS_GUILD,
-          I18::BUILDING_DESC_BUILDERS_HALL,
-          I18::BUILDING_DESC_MECHANICIANS_GUILD,
-          I18::BUILDING_DESC_MINERS_GUILD,
-          I18::BUILDING_DESC_CITY_WALLS
+        static std::string buildings[] = {
+          "trade_goods"
+          "housing"
+          "barracks"
+          "armory"
+          "fighters_guild"
+          "armorers_guild"
+          "war_college"
+          "smithy"
+          "stable"
+          "animists_guild"
+          "fantastic_stable"
+          "ship_wrights_guild"
+          "ship_yard"
+          "maritime_guild"
+          "sawmill"
+          "library"
+          "sages_guild"
+          "oracle"
+          "alchemists_guild"
+          "university"
+          "wizards_guild"
+          "shrine"
+          "temple"
+          "parthenon"
+          "cathedral"
+          "marketplace"
+          "bank"
+          "merchants_guild"
+          "granary"
+          "farmers_market"
+          "foresters_guild"
+          "builders_hall"
+          "mechanicians_guild"
+          "miners_guild"
+          "city_wall"
         };
         
         if (index > 0)
-          i18n::getData()[buildings[index-1]] = str;
+          i18n::mapCustomEntry("building_desc_" + buildings[index - 1], str);
       })
     };
     
