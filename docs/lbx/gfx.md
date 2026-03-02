@@ -33,8 +33,8 @@ The structure of the header is the following:
  0x04 | `u16` | unknown (always 0)
  0x06 | `u16` | frame count
  0x08 | `u16` | frame loop restart
- 0x0A | `u16` | unkown (always 0)
- 0x0C | `u16` | unkown (always 0)
+ 0x0A | `u16` | unknown (always 0)
+ 0x0C | `u16` | unknown (always 0)
  0x0E | `u16` | palette offset (0 if no custom palette)
  0x10 | `u8` | unknown
  0x11 | `u8` | unknown
